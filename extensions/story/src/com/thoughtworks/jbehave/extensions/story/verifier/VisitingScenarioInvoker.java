@@ -23,20 +23,42 @@ import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.invoker.ScenarioInvoker;
 import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class VisitingScenarioVerifier implements ScenarioVerifier, Visitor {
+public class VisitingScenarioInvoker implements ScenarioInvoker, Visitor {
     protected final Log log = Log.getLog(this);
     private final List listeners = new ArrayList();
     private final Environment environment;
     private boolean beforeEvent = true;
     private boolean usesMocks = false;
 
-    public VisitingScenarioVerifier(Environment environment) {
+    public VisitingScenarioInvoker(Environment environment) {
         this.environment = environment;
+    }
+    
+    public Result invoke(Scenario scenario) {
+        Throwable cause = null;
+        try {
+            System.err.println(1);
+            scenario.accept(this);
+            System.err.println(2);
+        }
+        catch (NestedVerificationException e) {
+            cause = e.getCause();
+        }
+        
+        final Result result;
+        if (cause == null && usesMocks) {
+            result = new ScenarioResult(scenario.getDescription(), ScenarioResult.USES_MOCKS);
+        }
+        else {
+            result = new ScenarioResult(scenario.getDescription(), cause);
+        }
+        return result;
     }
     
     public void visit(Visitable visitable) {
@@ -82,28 +104,6 @@ public class VisitingScenarioVerifier implements ScenarioVerifier, Visitor {
         if (component.containsMocks()) {
             log.debug(component + " uses mocks!");
             usesMocks = true;
-        }
-    }
-
-    public void verifyScenario(Scenario scenario) {
-        Throwable cause = null;
-        try {
-            scenario.accept(this);
-        }
-        catch (NestedVerificationException e) {
-            cause = e.getCause();
-        }
-        
-        final Result result;
-        if (cause == null && usesMocks) {
-            result = new ScenarioResult(scenario.getDescription(), ScenarioResult.USES_MOCKS);
-        }
-        else {
-            result = new ScenarioResult(scenario.getDescription(), cause);
-        }
-        for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ResultListener listener = (ResultListener) i.next();
-            listener.gotResult(result);
         }
     }
 
