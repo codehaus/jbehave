@@ -16,6 +16,20 @@
     <property name="dist.dir" location="${build.dir}/dist"/>
     <property name="dist.jar.file" location="${dist.dir}/${project}-${component.name}.jar" />
 
+    <classpath id="external_jars">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </classpath>
+    
+    <classpath id="dist_jar_with_external_jars">
+        <path location="${dist.jar.file}"/>
+        <path refid="external_jars"/>
+    </classpath>
+
+    <classpath id="all_jars_plus_behaviours">
+        <path refid="dist_jar_with_external_jars"/>
+        <path location="${behaviour.classes.dir}"/>
+    </classpath>
+    
     <target name="-init">
         <!-- sanity checks -->
         <fail message="Property 'component.name' not found" unless="component.name"/>
@@ -30,11 +44,7 @@
 
     <target name="src.compile" depends="-init">
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes">
-            <classpath id="external_jars_only">
-                <fileset dir="${lib.dir}" includes="**/*.jar"/>
-            </classpath>
-        </javac>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" classpathref="external_jars"/>
     </target>
 
     <target name="jar" depends="src.compile">
@@ -49,22 +59,12 @@
 
     <target name="behaviour.compile" depends="jar">
         <mkdir dir="${behaviour.classes.dir}"/>
-        <javac srcdir="${behaviour.dir}" destdir="${behaviour.classes.dir}" debug="yes">
-            <classpath id="dist_jar_with_external_jars">
-                <path location="${dist.jar.file}"/>
-                <path refid="external_jars_only"/>
-            </classpath>
-        </javac>
+        <javac srcdir="${behaviour.dir}" destdir="${behaviour.classes.dir}" debug="yes" classpathref="dist_jar_with_external_jars"/>
     </target>
 
     <target name="verify" depends="behaviour.compile">
-        <java classname="com.thoughtworks.jbehave.core.Run" fork="true" failonerror="true">
-            <classpath id="all_jars_plus_behaviours">
-                <path location="${behaviour.classes.dir}"/>
-                <path refid="dist_jar_with_external_jars"/>
-            </classpath>
-            <arg value="${all.behaviours.class}"/>
-        </java>
+        <java classname="com.thoughtworks.jbehave.core.Run" fork="true" failonerror="true"
+            classpathref="all_jars_plus_behaviours" args="${all.behaviours.class}"/>
     </target>
 
     <target name="dist" depends="verify"/>
