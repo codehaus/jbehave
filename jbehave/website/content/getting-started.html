@@ -36,9 +36,10 @@ public void should[DoSomething]() {
 	describe some criteria. Templates are nice like that.</p>
 	
 	<p>Specs can be contained in, wait for it, a spec container. This is a plain
-	Java class that implements the SpecContainer interface. This has a single method:
-	<tt>getSpecs()</tt>, which returns an array of Classes representing the specs to run.
-	Naturally spec containers can contain other spec containers.</p>
+	Java class that implements the <tt>jbehave.framework.SpecContainer</tt> interface.
+	This has a single method: <tt>getSpecs()</tt>, which returns an array of <tt>Class</tt>
+	objects representing the specs to run. Naturally spec containers can contain other
+	spec containers.</p>
 
 	<p>Specs and criteria are verified by reflecting into the spec classes and invoking
 	the criteria methods. A Listener is notified whenever something interesting happens.</p>
