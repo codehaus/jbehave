@@ -17,19 +17,14 @@ import jbehave.BehaviourFrameworkError;
 import jbehave.framework.CriteriaVerification;
 import jbehave.verify.Verifier;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class TextListener extends ListenerSupport {
-    private static final Log log = LogFactory.getLog(Verifier.class);
 
     private final PrintWriter out;
     private int criteriaVerified = 0;
-    private int specsVerified = 0;
     private final List failures = new ArrayList();
     private final List exceptionsThrown = new ArrayList();
     private final Timer timer;
@@ -86,7 +81,6 @@ public class TextListener extends ListenerSupport {
     }
 
     private void printSummaryCounts() {
-        // TODO change the words!
         out.print("Criteria: " + criteriaVerified + ".");
         if (failures.size() + exceptionsThrown.size() > 0) {
             out.print(" Failures: " + failures.size() + ", Exceptions: " + exceptionsThrown.size() + ".");
