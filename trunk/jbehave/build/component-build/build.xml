@@ -18,9 +18,13 @@
     <target name="-init">
         <!-- sanity checks -->
         <fail message="Property 'component.name' not found" unless="component.name"/>
-        <fail message="Property 'behaviours.class' not found" unless="behaviours.class"/>
+        <fail message="Property 'all.behaviours.class' not found" unless="all.behaviours.class"/>
         <fail message="Property 'version' not found" unless="version"/>
         <mkdir dir="${working.dir}" />
+    </target>
+
+    <target name="-copy.core.jar">
+        <copy file="${core.jar}" todir="${lib.dir}"/>
     </target>
 
     <target name="src.compile" depends="-init">
@@ -56,7 +60,7 @@
                 <path location="${behaviour.classes.dir}"/>
                 <path refid="dist_jar_with_external_jars"/>
             </classpath>
-            <arg value="${behaviours.class}"/>
+            <arg value="${all.behaviours.class}"/>
         </java>
     </target>
 
