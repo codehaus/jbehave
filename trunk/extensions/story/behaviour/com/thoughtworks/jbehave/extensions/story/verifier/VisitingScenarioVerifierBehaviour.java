@@ -7,6 +7,7 @@ import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.core.minimock.Constraint;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
+import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
@@ -254,13 +255,13 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         };
     }
     
-    public void shouldSetResultTypeIfScenarioSucceedsButGivenUsesMocks() throws Exception {
+    /** visit a component that contains mocks and then verify the scenario */
+    private void verifyResultTypeWhenScenarioSucceedsButComponentUsesMocks(Mock component) {
         // given...
         verifier.addListener((ResultListener) listener1);
-        Mock givenThatUsesMocks = mock(Given.class);
-        givenThatUsesMocks.stubs("containsMocks").will(returnValue(true));
-        verifier.visit((Given)givenThatUsesMocks);
-
+        component.stubs("containsMocks").will(returnValue(true));
+        verifier.visit((Visitable)component);
+        
         // expect...
         listener1.expects("gotResult").with(scenarioResultUsingMocks());
         
@@ -269,5 +270,17 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // then...
         verifyMocks();
+    }
+    
+    public void shouldSetResultTypeWhenScenarioSucceedsButGivenUsesMocks() throws Exception {
+        verifyResultTypeWhenScenarioSucceedsButComponentUsesMocks(mock(Given.class));
+    }
+    
+    public void shouldSetResultTypeWhenScenarioSucceedsButEventUsesMocks() throws Exception {
+        verifyResultTypeWhenScenarioSucceedsButComponentUsesMocks(mock(Event.class));
+    }
+    
+    public void shouldSetResultTypeWhenScenarioSucceedsButExpectationUsesMocks() throws Exception {
+        verifyResultTypeWhenScenarioSucceedsButComponentUsesMocks(mock(Expectation.class));
     }
 }
