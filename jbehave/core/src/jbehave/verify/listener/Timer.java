@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.evaluate.listener;
+package jbehave.verify.listener;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

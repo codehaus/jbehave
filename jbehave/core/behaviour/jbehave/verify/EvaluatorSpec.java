@@ -5,16 +5,17 @@
  * 
  * See license.txt for license details
  */
-package jbehave.evaluate;
+package jbehave.verify;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jbehave.evaluate.listener.ListenerSupport;
-import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.Verify;
+import jbehave.verify.Evaluator;
+import jbehave.verify.listener.ListenerSupport;
 
 /**
  * Test the {@link Evaluator} class
