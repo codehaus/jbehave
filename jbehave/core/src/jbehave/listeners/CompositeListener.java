@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.listener;
+package jbehave.listeners;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +13,7 @@ import java.util.List;
 
 import jbehave.framework.CriteriaVerification;
 import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.Listener;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still

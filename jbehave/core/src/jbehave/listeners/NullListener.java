@@ -5,10 +5,11 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.listener;
+package jbehave.listeners;
 
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerification;
+import jbehave.framework.Listener;
 
 /**
  * Null implementations of the listener event methods.

@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
 
 import jbehave.framework.exception.BehaviourFrameworkError;
 import jbehave.framework.exception.VerificationException;
-import jbehave.listener.Listener;
 
 /**
  * Represents a verifier for a single criteria, which can verify

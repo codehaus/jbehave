@@ -5,10 +5,11 @@
  *
  * See license.txt for license details
  */
-package jbehave.listener;
+package jbehave.listeners;
 
 import jbehave.framework.CriteriaVerification;
 import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.Listener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
