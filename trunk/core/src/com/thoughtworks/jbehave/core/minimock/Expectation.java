@@ -153,7 +153,7 @@ public class Expectation extends MiniMockSugar {
         after = ((Registry)otherMock).lookup(otherId);
         return this;
     }
-
+    
     public Expectation after(String otherId) {
         after = registry.lookup(otherId);
         return this;
@@ -173,7 +173,7 @@ public class Expectation extends MiniMockSugar {
     public String toString() {
         return methodName + Arrays.asList(constraints);
     }
-
+    
     public String methodName() {
         return methodName;
     }

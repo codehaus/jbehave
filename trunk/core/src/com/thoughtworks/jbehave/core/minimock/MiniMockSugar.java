@@ -27,6 +27,8 @@ public class MiniMockSugar {
             }
         };
     }
+    
+    // some useful constraints
 
     public Constraint same(final Object expectedArg) {
         return new Constraint() {
@@ -57,6 +59,49 @@ public class MiniMockSugar {
             }
             public String toString() {
                 return "instance of " + type.getName();
+            }
+        };
+    }
+    
+    // boolean constraints - and, or, not
+    
+    public Constraint and(final Constraint a, final Constraint b) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return a.matches(arg) && b.matches(arg);
+            }
+            public String toString() {
+                return a + " and " + b;
+            }
+        };
+    }
+    
+    public Constraint both(final Constraint a, final Constraint b) {
+        return and(a, b);
+    }
+    
+    public Constraint or(final Constraint a, final Constraint b) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return a.matches(arg) || b.matches(arg);
+            }
+            public String toString() {
+                return a + " or " + b;
+            }
+        };
+    }
+    
+    public Constraint either(final Constraint a, final Constraint b) {
+        return either(a, b);
+    }
+    
+    public Constraint not(final Constraint c) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return !c.matches(arg);
+            }
+            public String toString() {
+                return "not " + c;
             }
         };
     }
