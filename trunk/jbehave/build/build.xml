@@ -79,8 +79,10 @@
                 <include name="**/*.java"/>
             </fileset>
 
-            <group title="Core API" packages="*jbehave*"/>
-            <group title="Optional Extensions" packages="*jbehave.extensions*"/>
+            <group title="Core API" packages="com.thoughtworks.jbehave.core*"/>
+            <group title="JMock Extension" packages="com.thoughtworks.jbehave.extensions.jmock*"/>
+            <group title="Ant Task Extension" packages="com.thoughtworks.jbehave.extensions.ant*"/>
+            <group title="JUnit Adapter" packages="com.thoughtworks.jbehave.extensions.junit*"/>
         </javadoc>
     </target>
 

@@ -7,8 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.ant.listeners;
 
+import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 import com.thoughtworks.jbehave.core.responsibility.Result;
-import com.thoughtworks.jbehave.listeners.ListenerSupport;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

@@ -25,8 +25,8 @@ public interface UsingJMock extends JMockMixins {
     /**
      * Convenience methods for managing mocks
      *
-     * The pixies will ensure that
-     * the {@link Mock} gets verified when the Responsibility method ends.
+     * The pixies will ensure that the <tt>Mock</tt> gets verified
+     * when the Responsibility method ends.
      */
     class Mocks {
         private static final Set mocks = new HashSet();

@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.Listener;
-import com.thoughtworks.jbehave.listeners.ListenerSupport;
+import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

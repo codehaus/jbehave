@@ -9,10 +9,8 @@ package com.thoughtworks.jbehave.core;
 
 import java.lang.reflect.Method;
 
+import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 import com.thoughtworks.jbehave.core.responsibility.Result;
-import com.thoughtworks.jbehave.listeners.NullListener;
-
-
 
 
 /**
@@ -29,7 +27,7 @@ import com.thoughtworks.jbehave.listeners.NullListener;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public interface Listener {
-    public static final Listener NULL = new NullListener(); // null object
+    public static final Listener NULL = new ListenerSupport(); // null object
 
     void behaviourClassVerificationStarting(Class behaviourClass);
     void responsibilityVerificationStarting(Method responsibilityMethod);

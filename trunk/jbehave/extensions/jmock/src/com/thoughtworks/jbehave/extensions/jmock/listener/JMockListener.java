@@ -15,9 +15,9 @@ import junit.framework.AssertionFailedError;
 import org.jmock.Mock;
 
 import com.thoughtworks.jbehave.core.exception.VerificationException;
+import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.listeners.ListenerSupport;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

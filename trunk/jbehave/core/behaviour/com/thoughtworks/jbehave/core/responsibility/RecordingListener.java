@@ -10,7 +10,7 @@ package com.thoughtworks.jbehave.core.responsibility;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.thoughtworks.jbehave.listeners.ListenerSupport;
+import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 
 
 /** Listener that captures verification results */

@@ -8,12 +8,12 @@
 package com.thoughtworks.jbehave;
 
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
-import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifierBehaviour;
+import com.thoughtworks.jbehave.core.listeners.CompositeListenerBehaviour;
+import com.thoughtworks.jbehave.core.listeners.TextListenerBehaviour;
+import com.thoughtworks.jbehave.core.listeners.TimerBehaviour;
 import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifierBehaviour;
+import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifierBehaviour;
 import com.thoughtworks.jbehave.core.responsibility.ResultBehaviour;
-import com.thoughtworks.jbehave.listeners.CompositeListenerBehaviour;
-import com.thoughtworks.jbehave.listeners.TextListenerBehaviour;
-import com.thoughtworks.jbehave.listeners.TimerBehaviour;
 import com.thoughtworks.jbehave.util.CaseConverterBehaviour;
 
 /**

@@ -20,11 +20,11 @@ import org.apache.tools.ant.types.CommandlineJava;
 import org.apache.tools.ant.types.Path;
 
 import com.thoughtworks.jbehave.core.Listener;
+import com.thoughtworks.jbehave.core.listeners.CompositeListener;
+import com.thoughtworks.jbehave.core.listeners.TextListener;
 import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifier;
 import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifier;
 import com.thoughtworks.jbehave.extensions.ant.listeners.AntListener;
-import com.thoughtworks.jbehave.listeners.CompositeListener;
-import com.thoughtworks.jbehave.listeners.TextListener;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

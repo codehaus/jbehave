@@ -11,8 +11,8 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestSuite;
 
+import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 import com.thoughtworks.jbehave.extensions.junit.JUnitMethodAdapter;
-import com.thoughtworks.jbehave.listeners.ListenerSupport;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

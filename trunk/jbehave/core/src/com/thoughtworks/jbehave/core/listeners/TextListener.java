@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave.listeners;
+package com.thoughtworks.jbehave.core.listeners;
 
 import java.io.PrintWriter;
 import java.io.Writer;

@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.listeners;
+package com.thoughtworks.jbehave.core.listeners;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
