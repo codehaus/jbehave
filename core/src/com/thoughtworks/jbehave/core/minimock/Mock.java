@@ -18,9 +18,6 @@ public interface Mock {
     /** Create expectation with default invocation properties - invoked zero or more times */
     Expectation stubs(String methodName);
     
-    /** Stub all other method invocations */
-    void stubsEverythingElse();
-    
     /** Verify all the expectations on this mock */
     void verify();
     
