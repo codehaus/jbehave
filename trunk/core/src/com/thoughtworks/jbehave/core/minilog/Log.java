@@ -18,10 +18,16 @@ import java.util.Map;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public abstract class Log {
+    private final String name;
+    
     public abstract void debug(String message, Throwable cause);
     public abstract void info(String message, Throwable cause);
     public abstract void warn(String message, Throwable cause);
     public abstract void error(String message, Throwable cause);
+    
+    public Log(String name) {
+        this.name = name;
+    }
     
     public void debug(String message) {
         debug(message, null);
@@ -36,14 +42,18 @@ public abstract class Log {
         error(message, null);
     }
     
+    public Log childLog(String childName) {
+        return getLog(name + "/" + childName);
+    }
+    
     public interface LogFactory {
-        Log logFor(Class type);
+        Log logFor(String name);
     }
     
     public static class JavaUtilLogFactory implements LogFactory {
-        public Log logFor(final Class type) {
-            return new Log() {
-                private final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(type.getName());
+        public Log logFor(final String name) {
+            return new Log(name) {
+                private final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(name);
                 public void debug(String message, Throwable cause) {
                     logger.log(java.util.logging.Level.FINE, message, cause);
                 }
@@ -61,9 +71,9 @@ public abstract class Log {
     }
     
     public static class Log4jLogFactory implements LogFactory {
-        public Log logFor(final Class type) {
-            return new Log() {
-                private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(type.getName());
+        public Log logFor(final String name) {
+            return new Log(name) {
+                private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(name);
                 public void debug(String message, Throwable cause) {
                     logger.debug(message, cause);
                 }
@@ -81,8 +91,8 @@ public abstract class Log {
     }
     
     public static class NullLogFactory implements LogFactory {
-        public Log logFor(Class type) {
-            return new Log() {
+        public Log logFor(String name) {
+            return new Log(name) {
                 public void debug(String message, Throwable cause) {
                 }
                 public void error(String message, Throwable cause) {
@@ -123,12 +133,17 @@ public abstract class Log {
     
     /** Get a log for a particular class */
     public static Log getLog(Class type) {
-        Log log = (Log)logs.get(type);
+        return getLog(type.getName());
+    }
+    
+    public static Log getLog(String name) {
+        Log log = (Log)logs.get(name);
         if (log == null) {
-            log = logFactory.logFor(type);
-            logs.put(type, log);
+            log = logFactory.logFor(name);
+            logs.put(name, log);
         }
         return log;
+
     }
     
     /**
