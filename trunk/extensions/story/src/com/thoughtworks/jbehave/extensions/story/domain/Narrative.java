@@ -38,4 +38,8 @@ public class Narrative implements Visitable {
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
+    
+    public String toString() {
+        return "[role=" + role + ", feature=" + feature + ", benefit=" + benefit + "]";
+    }
 }

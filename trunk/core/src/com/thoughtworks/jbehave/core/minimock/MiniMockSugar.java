@@ -28,7 +28,7 @@ public class MiniMockSugar {
         };
     }
      
-   
+   /** eq(primitive) for float and double */
     public Constraint eq(final double expectedArg) {
         return new Constraint() {
             public boolean matches(Object arg) {
@@ -37,7 +37,8 @@ public class MiniMockSugar {
             }          
         };
     }
-      
+    
+    /** eq(primitive) for byte, short, integer and long */
     public Constraint eq(final long expectedArg) {
         return new Constraint() {
             public boolean matches(Object arg) {
@@ -47,11 +48,12 @@ public class MiniMockSugar {
         };
     }
     
+    /** eq(primitive) for char - note {@link Character} is not a {@link Number} */
     public Constraint eq(char expectedArg) {
         return eq(new Character(expectedArg));
     }
      
-    
+    /** eq(primitive) for boolean */
     public Constraint eq(boolean expectedArg) {
         return eq(expectedArg ? Boolean.TRUE : Boolean.FALSE);
     }

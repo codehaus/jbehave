@@ -13,17 +13,21 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.thoughtworks.jbehave.core.minilog.Log;
+
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class CompositeVisitable implements Visitable {
-
+    protected final Log log = Log.getLog(getClass());
     protected final List components = new ArrayList();
 
     public void accept(Visitor visitor) {
+        log.debug("telling visitor to visit me");
         visitor.visit(this);
         for (Iterator i = components.iterator(); i.hasNext();) {
+            log.debug("telling visitable to accept visitor");
             ((Visitable) i.next()).accept(visitor);
         }
     }
@@ -42,5 +46,9 @@ public class CompositeVisitable implements Visitable {
     
     public Iterator iterator() {
         return components().iterator();
+    }
+    
+    public String toString() {
+        return components.toString();
     }
 }

@@ -42,6 +42,7 @@ public abstract class Log {
         error(message, null);
     }
     
+    /** Create a nested logger, like Avalon so Joe Walnes tells me */
     public Log childLog(String childName) {
         return getLog(name + "/" + childName);
     }
@@ -131,11 +132,12 @@ public abstract class Log {
         return getLog(object.getClass());
     }
     
-    /** Get a log for a particular class */
+    /** Get a log for a particular class, using the class name as key */
     public static Log getLog(Class type) {
         return getLog(type.getName());
     }
     
+    /** Get a log for a particular key */
     public static Log getLog(String name) {
         Log log = (Log)logs.get(name);
         if (log == null) {
