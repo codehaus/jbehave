@@ -8,7 +8,7 @@
 package jbehave.verify.listener;
 
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerification;
 import jbehave.verify.Verifier;
 
 /**
@@ -18,21 +18,21 @@ import jbehave.verify.Verifier;
  */
 public class ListenerSupport implements Listener {
 
-    public void verificationStarted(Verifier runner) {
+    public void verificationStarted(Verifier verifier) {
     }
 
-    public void verificationEnded(Verifier runner) {
+    public void verificationEnded(Verifier verifier) {
     }
 
-    public void specVerificationStarted(Class behaviourClass) {
+    public void specVerificationStarted(Class spec) {
     }
 
-    public void specVerificationEnded(Class behaviourClass) {
+    public void specVerificationEnded(Class spec) {
     }
 
-    public void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour) {
+    public void beforeCriteriaVerificationStarts(CriteriaVerifier verifier) {
     }
 
-    public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
+    public void afterCriteriaVerificationEnds(CriteriaVerification verification) {
     }
 }

@@ -8,7 +8,7 @@
 package jbehave.extensions.junit.adapter;
 
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerification;
 import jbehave.framework.CriteriaExtractor;
 import jbehave.framework.VerificationException;
 import jbehave.verify.Verifier;
@@ -39,12 +39,12 @@ public class JUnitAdapter implements Test {
         }
         public void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour) {
         }
-        public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
+        public void afterCriteriaVerificationEnds(CriteriaVerification behaviourResult) {
             if (behaviourResult.failed()) {
                 VerificationException e = (VerificationException)behaviourResult.getTargetException();
                 result.addError(adapter, e);
             }
-            else if (behaviourResult.exceptionThrown()) {
+            else if (behaviourResult.threwException()) {
                 result.addError(adapter, behaviourResult.getTargetException());
             }
             result.endTest(adapter);                 
@@ -64,7 +64,7 @@ public class JUnitAdapter implements Test {
     }
 
     public int countTestCases() {
-        return new CriteriaExtractor(behaviours).extractCriteria().size();
+        return new CriteriaExtractor(behaviours).createCriteriaVerifiers().size();
     }
 
     private void setBehaviourClassName(String behaviourClassName) {

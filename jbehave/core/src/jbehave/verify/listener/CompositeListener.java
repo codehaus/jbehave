@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerification;
 import jbehave.verify.Verifier;
 
 /**
@@ -35,39 +35,39 @@ public class CompositeListener implements Listener {
     
     // Listener methods
     
-    public void verificationStarted(Verifier runner) {
+    public void verificationStarted(Verifier verifier) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).verificationStarted(runner);
+            ((Listener)i.next()).verificationStarted(verifier);
         }
     }
 
-    public void verificationEnded(Verifier runner) {
+    public void verificationEnded(Verifier verifier) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).verificationEnded(runner);
+            ((Listener)i.next()).verificationEnded(verifier);
         }
     }
 
-    public void specVerificationStarted(Class behaviourClass) {
+    public void specVerificationStarted(Class spec) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).specVerificationStarted(behaviourClass);
+            ((Listener)i.next()).specVerificationStarted(spec);
         }
     }
 
-    public void specVerificationEnded(Class behaviourClass) {
+    public void specVerificationEnded(Class spec) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).specVerificationEnded(behaviourClass);
+            ((Listener)i.next()).specVerificationEnded(spec);
         }
     }
 
-    public void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour) {
+    public void beforeCriteriaVerificationStarts(CriteriaVerifier verifier) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).beforeCriteriaVerificationStarts(behaviour);
+            ((Listener)i.next()).beforeCriteriaVerificationStarts(verifier);
         }
     }
 
-    public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
+    public void afterCriteriaVerificationEnds(CriteriaVerification verification) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).afterCriteriaVerificationEnds(behaviourResult);
+            ((Listener)i.next()).afterCriteriaVerificationEnds(verification);
         }
     }
 }

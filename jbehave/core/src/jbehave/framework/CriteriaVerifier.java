@@ -13,19 +13,19 @@ import java.lang.reflect.Method;
 import jbehave.BehaviourFrameworkError;
 
 /**
- * Represents a single criterion, which is a method that can evaluate
- * itself and present the results of its evaluation.
+ * Represents a verifier for a single criteria, which can verify
+ * itself and present the results of its verification.
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class CriteriaVerifier {
-    private final Object behaviourInstance;
+    private final Object specInstance;
     private final Method method;
 
     public CriteriaVerifier(Method method) {
         this.method = method;
         try {
-            this.behaviourInstance = method.getDeclaringClass().newInstance();
+            this.specInstance = method.getDeclaringClass().newInstance();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -37,23 +37,23 @@ public class CriteriaVerifier {
         return method.getName();
     }
     
-    public String getBehaviourClassName() {
-        String className = behaviourInstance.getClass().getName();
+    public String getSpecName() {
+        String className = specInstance.getClass().getName();
         int lastDot = className.lastIndexOf('.');
         return className.substring(lastDot + 1);
     }
 
     /**
-     * Run an individual behaviour.<br>
+     * Verify an individual criteria.<br>
      * <br>
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
      * in the appropriate places if either of them exist.
      */
-    public CriteriaVerificationResult verifyCriteria() {
-        CriteriaVerificationResult result = null;
+    public CriteriaVerification verifyCriteria() {
+        CriteriaVerification result = null;
         try {
             setUp();
-            method.invoke(behaviourInstance, new Object[0]);
+            method.invoke(specInstance, new Object[0]);
             return createVerification(null);
         } catch (InvocationTargetException e) {
             // method failed
@@ -77,8 +77,8 @@ public class CriteriaVerifier {
 
 	private void setUp() throws InvocationTargetException {
         try {
-            Method setUp = behaviourInstance.getClass().getMethod("setUp", new Class[0]);
-            setUp.invoke(behaviourInstance, new Object[0]);
+            Method setUp = specInstance.getClass().getMethod("setUp", new Class[0]);
+            setUp.invoke(specInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a setUp() method - never mind
         } catch (InvocationTargetException e) {
@@ -92,8 +92,8 @@ public class CriteriaVerifier {
 
     private void tearDown() throws InvocationTargetException {
         try {
-            Method tearDown = behaviourInstance.getClass().getMethod("tearDown", new Class[0]);
-            tearDown.invoke(behaviourInstance, new Object[0]);
+            Method tearDown = specInstance.getClass().getMethod("tearDown", new Class[0]);
+            tearDown.invoke(specInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a tearDown() method - never mind
         } catch (InvocationTargetException e) {
@@ -106,7 +106,7 @@ public class CriteriaVerifier {
     }
 
     /**
-     * Build an {@link CriteriaVerificationResult} based on an error condition.
+     * Create a {@link CriteriaVerification}, possibly based on an error condition.
      * 
      * This will be one of the following cases:
      * <ul>
@@ -117,14 +117,14 @@ public class CriteriaVerifier {
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
      */
-    private CriteriaVerificationResult createVerification(Throwable targetException) {
+    private CriteriaVerification createVerification(Throwable targetException) {
         
         // propagate thread death otherwise Bad Things happen (or rather Good Things don't)
         if (targetException instanceof ThreadDeath) {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new CriteriaVerificationResult(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
+            return new CriteriaVerification(method.getName(), method.getDeclaringClass().getName(), specInstance, targetException);
         }
     }
 }

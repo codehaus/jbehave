@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.BehaviourFrameworkError;
-import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerification;
 import jbehave.verify.Verifier;
 
 
@@ -24,7 +24,7 @@ import jbehave.verify.Verifier;
 public class TextListener extends ListenerSupport {
     
     private final PrintWriter out;
-    private int behavioursRun = 0;
+    private int criteriaVerified = 0;
     private final List failures = new ArrayList();
     private final List exceptionsThrown = new ArrayList();
     private final Timer timer;
@@ -38,35 +38,35 @@ public class TextListener extends ListenerSupport {
         this(writer, new Timer());
     }
     
-    public void verificationStarted(Verifier runner) {
+    public void verificationStarted(Verifier verifier) {
         timer.start();
     }
 
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
-        behavioursRun++;
-        if (behaviourResult.failed()) {
-            failures.add(behaviourResult);
+    public void afterCriteriaVerificationEnds(CriteriaVerification verification) {
+        criteriaVerified++;
+        if (verification.failed()) {
+            failures.add(verification);
         }
-        else if (behaviourResult.exceptionThrown()) {
-            exceptionsThrown.add(behaviourResult);
+        else if (verification.threwException()) {
+            exceptionsThrown.add(verification);
         }
-        out.print(getSymbol(behaviourResult.getStatus()));
+        out.print(getSymbol(verification.getStatus()));
         out.flush();
     }
 
     private char getSymbol(int status) {
         switch (status) {
-            case CriteriaVerificationResult.SUCCESS:          return '.';
-            case CriteriaVerificationResult.FAILURE: return 'F';
-            case CriteriaVerificationResult.EXCEPTION_THROWN: return 'E';
+            case CriteriaVerification.SUCCESS:          return '.';
+            case CriteriaVerification.FAILURE: return 'F';
+            case CriteriaVerification.EXCEPTION_THROWN: return 'E';
             default: throw new BehaviourFrameworkError("Unknown behaviour status: " + status);
         }
     }
      
-    public void verificationEnded(Verifier runner) {
+    public void verificationEnded(Verifier verifier) {
         timer.stop();
         out.println();
         printElapsedTime();
@@ -81,7 +81,8 @@ public class TextListener extends ListenerSupport {
     }
 
     private void printSummaryCounts() {
-        out.print("Behaviours run: " + behavioursRun);
+        // TODO change the words!
+        out.print("Behaviours run: " + criteriaVerified);
         if (failures.size() + exceptionsThrown.size() > 0) {
             out.print(", Failures: " + failures.size() + ", Exceptions Thrown: " + exceptionsThrown.size());
         }
@@ -102,9 +103,9 @@ public class TextListener extends ListenerSupport {
         out.println();
         int count = 1;
         for (Iterator i = errorList.iterator(); i.hasNext();) {
-            CriteriaVerificationResult result = (CriteriaVerificationResult)i.next();
-            out.println(count + ") " + result.getName() + " [" + result.getClassName() + "]:");
-            result.getTargetException().printStackTrace(out);
+            CriteriaVerification verification = (CriteriaVerification)i.next();
+            out.println(count + ") " + verification.getName() + " [" + verification.getSpec() + "]:");
+            verification.getTargetException().printStackTrace(out);
             out.println();
         }
     }

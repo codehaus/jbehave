@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import jbehave.framework.CriteriaExtractor;
-import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerification;
 import jbehave.framework.CriteriaVerifier;
 import jbehave.verify.listener.CompositeListener;
 import jbehave.verify.listener.Listener;
@@ -30,7 +30,7 @@ public class Verifier {
     private int criteriaCount = 0;
 
     public void addSpec(Class spec) {
-        Collection criteriaVerifiers = new CriteriaExtractor(spec).extractCriteria();
+        Collection criteriaVerifiers = new CriteriaExtractor(spec).createCriteriaVerifiers();
         specs.add(spec);
         criteriaMap.put(spec, criteriaVerifiers);
         criteriaCount += criteriaVerifiers.size();
@@ -62,8 +62,8 @@ public class Verifier {
             for (Iterator j = criteria.iterator(); j.hasNext();) {
                 final CriteriaVerifier verifier = (CriteriaVerifier)j.next();
                 listeners.beforeCriteriaVerificationStarts(verifier);
-                CriteriaVerificationResult result = verifier.verifyCriteria();
-                listeners.afterCriteriaVerificationEnds(result);
+                CriteriaVerification verification = verifier.verifyCriteria();
+                listeners.afterCriteriaVerificationEnds(verification);
             }
             listeners.specVerificationEnded(spec);
         }

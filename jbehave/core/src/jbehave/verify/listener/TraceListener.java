@@ -8,7 +8,7 @@
 package jbehave.verify.listener;
 
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerification;
 import jbehave.verify.Verifier;
 
 import org.apache.commons.logging.Log;
@@ -20,27 +20,27 @@ import org.apache.commons.logging.LogFactory;
 public class TraceListener implements Listener {
     Log log = LogFactory.getLog(TraceListener.class);
 
-    public void verificationStarted(Verifier runner) {
-        log.trace("runStarted");
+    public void verificationStarted(Verifier verifier) {
+        log.trace("verificationStarted");
     }
 
-    public void verificationEnded(Verifier runner) {
-        log.trace("runEnded");
+    public void verificationEnded(Verifier verifier) {
+        log.trace("verificationEnded");
     }
 
-    public void specVerificationStarted(Class behaviour) {
-        log.trace("behaviourEvaluationStarted: " + behaviour.getName());
+    public void specVerificationStarted(Class spec) {
+        log.trace("specVerificationStarted: " + spec.getName());
     }
 
-    public void specVerificationEnded(Class behaviour) {
-        log.trace("behaviourEvaluationEnded: " + behaviour.getName());
+    public void specVerificationEnded(Class spec) {
+        log.trace("specVerificationEnded: " + spec.getName());
     }
 
-    public void beforeCriteriaVerificationStarts(CriteriaVerifier criterion) {
-        log.trace("beforeCriterionEvaluationStarts: " + criterion.getName());
+    public void beforeCriteriaVerificationStarts(CriteriaVerifier verifier) {
+        log.trace("beforeCriteriaVerificationStarts: " + verifier.getName());
     }
 
-    public void afterCriteriaVerificationEnds(CriteriaVerificationResult evaluation) {
-        log.trace("afterCriterionEvaluationEnds: " + evaluation.toString());
+    public void afterCriteriaVerificationEnds(CriteriaVerification evaluation) {
+        log.trace("afterCriteriaVerificationEnds: " + evaluation.toString());
     }
 }
