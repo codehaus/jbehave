@@ -5,9 +5,15 @@
  * 
  * See license.txt for licence details
  */
-package org.xpday.currency;
+package com.thoughtworks.jbehave.core.example.currency;
 
 import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.example.currency.Currency;
+import com.thoughtworks.jbehave.core.example.currency.CurrencyConverter;
+import com.thoughtworks.jbehave.core.example.currency.ExchangeRate;
+import com.thoughtworks.jbehave.core.example.currency.ExchangeRateService;
+import com.thoughtworks.jbehave.core.example.currency.InvalidAmountException;
+import com.thoughtworks.jbehave.core.example.currency.SterlingCurrencyConverter;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 
