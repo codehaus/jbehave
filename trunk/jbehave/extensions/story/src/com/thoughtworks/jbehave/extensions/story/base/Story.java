@@ -11,7 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.domain.Story;
+import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 import com.thoughtworks.jbehave.util.ConvertCase;
@@ -19,24 +20,23 @@ import com.thoughtworks.jbehave.util.ConvertCase;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryBase implements Story {
+public class Story implements Visitable {
 
-    private final String role;
-    private final String feature;
-    private final String benefit;
+    public static final Story NULL = new Story("", "", "");
+    
     private final VisitableArrayList criteria = new VisitableArrayList();
+    private final Narrative narrative;
 
-    public StoryBase(String role, String feature, String benefit) {
-        this.role = role;
-        this.feature = feature;
-        this.benefit = benefit;
+    public Story(String role, String feature, String benefit) {
+        this.narrative = new Narrative(role, feature, benefit);
     }
 
     public void addScenario(Scenario scenario) {
         criteria.add(scenario);
     }
     
-    public String getName() {
+    
+    public String getTitle() {
         return new ConvertCase(this).toSeparateWords();
     }
     
@@ -54,20 +54,13 @@ public class StoryBase implements Story {
         return criteria;
     }
     
-    public String getRole() {
-        return role;
-    }
-    
-    public String getFeature() {
-        return feature;
-    }
-    
-    public String getBenefit() {
-        return benefit;
+    public Narrative getNarrative() {
+        return narrative;
     }
     
     public void accept(Visitor visitor) throws Exception {
         visitor.visitStory(this);
+        narrative.accept(visitor);
         criteria.accept(visitor);
     }
 }

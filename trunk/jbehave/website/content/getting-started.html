@@ -12,9 +12,9 @@
     has the name of the class whose behaviour we are specifying followed
     by the word "Behaviour", so <tt>Foo</tt> has <tt>FooBehaviour</tt>.<br/></p>
 
-	<p>Inside the Behaviour Class are a bunch of responsibilities that specify the
-	behaviour we expect. These are just public void methods that start with "should"
-	and which describe the specific behaviour (e.g. <tt>CustomerServiceBehaviour</tt>
+	<p>Inside the Behaviour Class are a bunch of methods that specify the
+	behaviour we expect. These are just public void methods that start with the word "should"
+	and describe the specific behaviour (e.g. <tt>CustomerServiceBehaviour</tt>
 	might have <tt>shouldFindCustomerBySurname()</tt>).</p>
 	
 	<p>These will typically set up a known environment, execute some behaviour and
@@ -22,7 +22,7 @@
 	<tt>com.thoughtworks.jbehave.core.Verify</tt> that help with this, for instance
 	<tt>Verify.that(somethingHappened)</tt> and <tt>Verify.equal(expectedValue, actualValue)</tt>.</p>
 
-	<p>Our template responsibility method looks like this:</p>
+	<p>Our template behaviour method looks like this:</p>
 	<div class="Shaded"><pre>
 public void should[DoSomething]() {
 	// setup
@@ -33,7 +33,7 @@ public void should[DoSomething]() {
 }
 	</pre></div>
 	<p>The <tt>DoSomething</tt> is highlighted so we know we have to change it to actually
-	describe a responsibility. Templates are nice like that.</p>
+	describe some behaviour. Templates are nice like that.</p>
 	
 	<p>Behaviour classes can be contained in, wait for it, a behaviour class container.
 	This is a plain Java class that implements the <tt>com.thoughtworks.jbehave.core.SpecContainer</tt>
@@ -41,11 +41,10 @@ public void should[DoSomething]() {
 	array of <tt>Class</tt> objects representing the behaviour classes to run. Naturally
 	behaviour class containers can contain other behaviour class containers.</p>
 
-	<p>Behaviour classes and responsibilities are verified by reflecting into the behaviour
-	classes and invoking the responsibility methods. A Listener is notified whenever something
-	interesting happens.</p>
+	<p>Behaviour is verified by reflecting into the behaviour classes and invoking the methods.
+	A Listener is notified whenever something interesting happens.</p>
 
-	<p>A single responsibility is verified by a <tt>ResponsibilityVerifier</tt>, a behaviour class
+	<p>A single behaviour method is verified by a <tt>MethodVerifier</tt>, a behaviour class
 	is verified by a <tt>BehaviourClassVerifier</tt></p>
 
 	<p>So how do we tie this all together? There is a small <tt>main</tt> method inside

@@ -7,7 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
+import com.thoughtworks.jbehave.extensions.story.base.Given;
+import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 
 
@@ -17,7 +18,7 @@ import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class GivenScenario extends GivenBase implements Scenario {
+public class GivenScenario extends Given {
 
     private final Scenario scenario;
 

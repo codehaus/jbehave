@@ -7,15 +7,15 @@
  */
 package com.thoughtworks.jbehave.extensions.story.runner;
 
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.extensions.story.base.Given;
+import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
-import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.domain.Story;
+import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
@@ -31,35 +31,62 @@ public class StoryRunner implements Visitor {
         this.listener = listener;
     }
 
-    public void visitStory(Story story) throws Exception {
+    public void visitStory(Story story) {
+    }
+    
+    public void visitNarrative(Narrative narrative) {
     }
 
-    public void visitScenario(Scenario scenario) throws Exception {
+    public void visitScenario(Scenario scenario) {
         scenario.setListener(listener);
     }
 
-    public void visitContext(Context context) throws Exception {
+    public void visitContext(Context context) {
     }
     
-    public void visitGiven(Given given) throws Exception {
-        given.setUp(environment);
-        if (given instanceof UsingJMock && ((UsingJMock)given).containsMocks()) {
-            listener.componentUsesMocks(given);
+    public void visitGiven(Given given) {
+        try {
+            given.setUp(environment);
+            if (given.containsMocks()) {
+                listener.componentUsesMocks(given);
+            }
+        }
+        catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 
-    public void visitOutcome(Outcome Outcome) throws Exception {
+    public void visitOutcome(Outcome Outcome) {
     }
 
-    public void visitExpectationBeforeTheEvent(Expectation expectation) throws Exception {
-        expectation.setExpectationIn(environment);
+    public void visitExpectationBeforeTheEvent(Expectation expectation) {
+        try {
+            expectation.setExpectationIn(environment);
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
-    public void visitEvent(Event event) throws Exception {
-        event.occurIn(environment);
+    public void visitEvent(Event event) {
+        try {
+            event.occurIn(environment);
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-    public void visitExpectationAfterTheEvent(Expectation expectation) throws Exception {
-        expectation.verify(environment);
+    public void visitExpectationAfterTheEvent(Expectation expectation) {
+        try {
+            expectation.verify(environment);
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

@@ -8,13 +8,13 @@
 package example.givens;
 
 
-import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
+import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 import example.domain.Account;
 
 /** set balance = 50 */
-public class AccountHasEnoughCash extends GivenBase {
+public class AccountHasEnoughCash extends Given {
     
     public void setUp(Environment environment) {
         Mock account = (Mock) environment.get("accountMock", new Mock(Account.class));

@@ -19,7 +19,7 @@ import com.thoughtworks.jbehave.core.verify.Result;
 public class AntListener implements MethodListener {
 	private boolean failBuild;
 
-    public void methodVerificationStarting(Method responsibilityMethod) {
+    public void methodVerificationStarting(Method method) {
     }
 
 	public Result methodVerificationEnding(Result result, Object specInstance) {

@@ -9,6 +9,7 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.verify.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
@@ -19,7 +20,7 @@ public class SimpleContextBehaviour extends UsingJMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
-        Visitable context = new SimpleContext(new Given[0]);
+        Visitable context = new Context(new Given[0]);
         Mock visitor = new Mock(Visitor.class);
         visitor.expects(once()).method("visitContext").with(same(context));
 
@@ -35,7 +36,7 @@ public class SimpleContextBehaviour extends UsingJMock {
         Mock given2 = new Mock(Given.class, "given2");
         Visitor visitor = (Visitor) stub(Visitor.class);
         
-        SimpleContext context = new SimpleContext(
+        Context context = new Context(
                 new Given[] {
                         (Given) given1.proxy(),
                         (Given) given2.proxy()
@@ -58,7 +59,7 @@ public class SimpleContextBehaviour extends UsingJMock {
         // given...
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Mock given = new Mock(Given.class);
-        Context context = new SimpleContext((Given)given.proxy());
+        Context context = new Context((Given)given.proxy());
 
         // expect...
         given.expects(atLeastOnce()).method("accept").will(throwException(new SomeCheckedException()));

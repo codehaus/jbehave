@@ -37,11 +37,11 @@ public class JUnitMethodAdapter extends TestCase {
     
     public void run(TestResult testResult) {
         testResult.startTest(this);
-        verifyResponsibility(testResult);
+        verifyMethod(testResult);
         testResult.endTest(this);
     }
 
-    private void verifyResponsibility(TestResult testResult) {
+    private void verifyMethod(TestResult testResult) {
         final Result result =
             new ExecutingMethodVerifier().verifyMethod(new NULLMethodListener(), method, instance);
         if (result.failed()) {

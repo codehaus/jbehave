@@ -7,12 +7,12 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
+import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
 /** balance = -50, overdraft limit = 100 */
-public class AccountIsOverdrawnWithPermission extends GivenBase {
+public class AccountIsOverdrawnWithPermission extends Given {
     public void setUp(Environment context) {
         new AccountIsOverdrawn().setUp(context);
         new AccountHasOverdraftPermission().setUp(context);

@@ -25,9 +25,8 @@ public class ExpectationBaseBehaviour extends UsingJMock {
         
         Mock visitor = new Mock(Visitor.class);
         
-        // expect...
-        visitor.expectsOnce("visitExpectationBeforeTheEvent", expectation);
-        visitor.expectsOnce("visitExpectationAfterTheEvent", expectation).after("visitExpectationBeforeTheEvent");
+        visitor.expects(once()).method("visitExpectationBeforeTheEvent").with(same(expectation));
+        visitor.expects(once()).method("visitExpectationAfterTheEvent").with(same(expectation)).after("visitExpectationBeforeTheEvent");
 
         // when...
         expectation.accept((Visitor)visitor.proxy());

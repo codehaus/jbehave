@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.junit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Test;
@@ -25,14 +26,14 @@ public class JUnitAdapterBehaviour {
         sequenceOfEvents.clear();
     }
     
-    public static class SomeBehaviour {
+    public static class HasSingleMethod {
         public void shouldDoSomething() throws Exception {
         }
     }
     
-    public void shouldCountSingleResponsibilityMethodAsTest() throws Exception {
+    public void shouldCountSingleBehaviourMethodAsTest() throws Exception {
         // setup
-        JUnitAdapter.setBehaviourClass(SomeBehaviour.class);
+        JUnitAdapter.setBehaviourClass(HasSingleMethod.class);
         Test suite = JUnitAdapter.suite();
         
         // execute
@@ -42,7 +43,7 @@ public class JUnitAdapterBehaviour {
         Verify.equal(1, testCaseCount);
     }
     
-    public static class SomeBehaviourWithMultipleResponsibilities {
+    public static class HasTwoMethods {
         public void shouldDoSomething() throws Exception {
         }
         
@@ -51,9 +52,9 @@ public class JUnitAdapterBehaviour {
         
     }
     
-    public void shouldCountMultipleResponsibilityMethodsAsTests() throws Exception {
+    public void shouldCountMultipleBehaviourMethodsAsTests() throws Exception {
         // setup
-        JUnitAdapter.setBehaviourClass(SomeBehaviourWithMultipleResponsibilities.class);
+        JUnitAdapter.setBehaviourClass(HasTwoMethods.class);
         Test suite = JUnitAdapter.suite();
         // execute
         int testCaseCount = suite.countTestCases();
@@ -64,15 +65,15 @@ public class JUnitAdapterBehaviour {
     
     private static boolean wasCalled = false;
     
-    public static class BehaviourClassWithFailingResponsibility {
+    public static class HasFailingMethod {
         public void shouldDoSomething() throws Exception {
             wasCalled = true;
         }
     }
     
-    public void shouldNotExecuteResponsibilityMethodsWhileCountingThem() throws Exception {
+    public void shouldNotExecuteBehaviourMethodsWhileCountingThem() throws Exception {
         // setup
-        JUnitAdapter.setBehaviourClass(BehaviourClassWithFailingResponsibility.class);
+        JUnitAdapter.setBehaviourClass(HasFailingMethod.class);
         Test suite = JUnitAdapter.suite();
         
         // execute
@@ -91,10 +92,11 @@ public class JUnitAdapterBehaviour {
         }
     }
     
-    public void shouldExecuteResponsibilityMethods() throws Exception {
+    public void shouldExecuteBehaviourMethods() throws Exception {
         // setup
         JUnitAdapter.setBehaviourClass(BehaviourClass2.class);
         Test suite = JUnitAdapter.suite();
+        
         TestResult testResult = new TestResult() {
             public void startTest(Test test) {
                 sequenceOfEvents.add("startTest");
@@ -108,10 +110,10 @@ public class JUnitAdapterBehaviour {
         suite.run(testResult);
         
         // verify
-//        Verify.equal(2, testResult.runCount());
-//        Verify.equal(0, testResult.errorCount());
-//        Verify.equal(0, testResult.failureCount());
-//        Verify.that(testResult.wasSuccessful());
-//        Verify.equal(Arrays.asList(new String[] {"startTest", "endTest"}), sequenceOfEvents);
+        Verify.that(testResult.wasSuccessful());
+        Verify.equal(Arrays.asList(new String[] {
+                "startTest", "shouldDoSomething", "endTest",
+                "startTest", "shouldDoSomethingElse", "endTest"
+        }), sequenceOfEvents);
     }
 }

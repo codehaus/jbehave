@@ -7,6 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import org.jmock.core.stub.DefaultResultStub;
+
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
@@ -14,17 +16,16 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class SimpleScenarioBehaviour extends UsingJMock {
+public class ScenarioBehaviour extends UsingJMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
-        Event dummyEvent = (Event) stub(Event.class);
-        Outcome dummyOutcome = (Outcome) stub(Outcome.class);
-        Scenario scenario = new SimpleScenario("", null, dummyEvent, dummyOutcome);
+        Scenario scenario = Scenario.NULL;
         Mock visitor = new Mock(Visitor.class);
         
         // expect...
         visitor.expects(once()).method("visitScenario").with(same(scenario));
+        visitor.setDefaultStub(new DefaultResultStub());
 
         // when...
         scenario.accept((Visitor)visitor.proxy());
@@ -34,17 +35,16 @@ public class SimpleScenarioBehaviour extends UsingJMock {
         // given...
         Visitor visitor = (Visitor) stub(Visitor.class);
         
-        Mock context = new Mock(Context.class);
+        Mock context = new Mock(MockableContext.class);
         Mock outcome = new Mock(Outcome.class);
         Mock event = new Mock(Event.class);
 
-        // expect...
-        context.expectsOnce("accept", visitor);
-        outcome.expectsOnce("accept", visitor).after(context, "accept").id("acceptBeforeEvent");
-        event.expectsOnce("accept", visitor).after(outcome, "acceptBeforeEvent");
-        outcome.expectsOnce("accept", visitor).after(event, "accept");
+        context.expects(once()).method("accept").with(eq(visitor));
+        outcome.expects(once()).method("accept").with(same(visitor)).after(context, "accept").id("acceptBeforeEvent");
+        event.expects(once()).method("accept").with(same(visitor)).after(outcome, "acceptBeforeEvent");
+        outcome.expects(once()).method("accept").with(same(visitor)).after(event, "accept");
         
-        Scenario scenario = new SimpleScenario("", null, (Context)context.proxy(), (Event)event.proxy(), (Outcome) outcome.proxy());
+        Scenario scenario = new Scenario("", null, (Context)context.proxy(), (Event)event.proxy(), (Outcome) outcome.proxy());
         
         // when...
         scenario.accept(visitor);
@@ -57,11 +57,10 @@ public class SimpleScenarioBehaviour extends UsingJMock {
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         
         Mock listener = new Mock(ScenarioListener.class);
-        SimpleScenario scenario = new SimpleScenario("", null, eventStub, outcomeStub);
+        Scenario scenario = new Scenario("", null, eventStub, outcomeStub);
         scenario.setListener((ScenarioListener)listener.proxy());
         
-        // expect...
-        listener.expectsOnce("scenarioSucceeded", scenario);
+        listener.expects(once()).method("scenarioSucceeded").with(same(scenario));
 
         // when...
         scenario.accept(visitorStub);
@@ -74,15 +73,15 @@ public class SimpleScenarioBehaviour extends UsingJMock {
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Exception cause = new UnimplementedException();
         
-        Mock context = new Mock(Context.class);
+        Mock context = new Mock(MockableContext.class);
         Mock listener = new Mock(ScenarioListener.class);
 
-        SimpleScenario scenario = new SimpleScenario("", null, (Context) context.proxy(), eventStub, outcomeStub);
+        Scenario scenario = new Scenario("", null, (Context) context.proxy(), eventStub, outcomeStub);
         scenario.setListener((ScenarioListener)listener.proxy());
         
         // expect...
-        context.expectsOnce("accept", visitorStub).will(throwException(cause));
-        listener.expectsOnce("scenarioUnimplemented", scenario, cause);
+        context.expects(once()).method("accept").with(same(visitorStub)).will(throwException(cause));
+        listener.expects(once()).method("scenarioUnimplemented").with(same(scenario), same(cause));
 
         // when...
         scenario.accept(visitorStub);
@@ -97,12 +96,12 @@ public class SimpleScenarioBehaviour extends UsingJMock {
         Mock outcome = new Mock(Outcome.class);
         Mock listener = new Mock(ScenarioListener.class);
 
-        SimpleScenario scenario = new SimpleScenario("", null, eventStub, (Outcome) outcome.proxy());
+        Scenario scenario = new Scenario("", null, eventStub, (Outcome) outcome.proxy());
         scenario.setListener((ScenarioListener)listener.proxy());
         
         // expect...
         outcome.expects(atLeastOnce()).method("accept").with(anything()).will(throwException(cause));
-        listener.expectsOnce("scenarioUnimplemented", scenario, cause);
+        listener.expects(once()).method("scenarioUnimplemented").with(same(scenario), same(cause));
 
         // when...
         scenario.accept(visitorStub);
@@ -117,12 +116,12 @@ public class SimpleScenarioBehaviour extends UsingJMock {
         Mock event = new Mock(Event.class);
         Mock listener = new Mock(ScenarioListener.class);
 
-        SimpleScenario scenario = new SimpleScenario("", null, (Event) event.proxy(), outcomeStub);
+        Scenario scenario = new Scenario("", null, (Event) event.proxy(), outcomeStub);
         scenario.setListener((ScenarioListener)listener.proxy());
         
         // expect...
-        event.expectsOnce("accept", visitorStub).will(throwException(cause));
-        listener.expectsOnce("scenarioUnimplemented", scenario, cause);
+        event.expects(once()).method("accept").with(same(visitorStub)).will(throwException(cause));
+        listener.expects(once()).method("scenarioUnimplemented").with(same(scenario), same(cause));
 
         // when...
         scenario.accept(visitorStub);
@@ -135,15 +134,15 @@ public class SimpleScenarioBehaviour extends UsingJMock {
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Exception cause = new Exception();
         
-        Mock context = new Mock(Context.class);
+        Mock context = new Mock(MockableContext.class);
         Mock listener = new Mock(ScenarioListener.class);
 
-        SimpleScenario scenario = new SimpleScenario("", null, (Context) context.proxy(), eventStub, outcomeStub);
+        Scenario scenario = new Scenario("", null, (Context) context.proxy(), eventStub, outcomeStub);
         scenario.setListener((ScenarioListener)listener.proxy());
         
         // expect...
-        context.expectsOnce("accept", visitorStub).will(throwException(cause));
-        listener.expectsOnce("scenarioFailed", scenario, cause);
+        context.expects(once()).method("accept").with(same(visitorStub)).will(throwException(cause));
+        listener.expects(once()).method("scenarioFailed").with(same(scenario), same(cause));
 
         // when...
         scenario.accept(visitorStub);
@@ -158,12 +157,12 @@ public class SimpleScenarioBehaviour extends UsingJMock {
         Mock outcome = new Mock(Outcome.class);
         Mock listener = new Mock(ScenarioListener.class);
 
-        SimpleScenario scenario = new SimpleScenario("", null, eventStub, (Outcome) outcome.proxy());
+        Scenario scenario = new Scenario("", null, eventStub, (Outcome) outcome.proxy());
         scenario.setListener((ScenarioListener)listener.proxy());
         
         // expect...
-        outcome.expectsOnce("accept", visitorStub).will(throwException(cause));
-        listener.expectsOnce("scenarioFailed", scenario, cause);
+        outcome.expects(once()).method("accept").with(same(visitorStub)).will(throwException(cause));
+        listener.expects(once()).method("scenarioFailed").with(same(scenario), same(cause));
         
         // when...
         scenario.accept(visitorStub);
@@ -178,12 +177,12 @@ public class SimpleScenarioBehaviour extends UsingJMock {
         Mock event = new Mock(Event.class);
         Mock listener = new Mock(ScenarioListener.class);
 
-        SimpleScenario scenario = new SimpleScenario("", null, (Event) event.proxy(), outcomeStub);
+        Scenario scenario = new Scenario("", null, (Event) event.proxy(), outcomeStub);
         scenario.setListener((ScenarioListener)listener.proxy());
         
         // expect...
-        event.expectsOnce("accept", visitorStub).will(throwException(cause));
-        listener.expectsOnce("scenarioFailed", scenario, cause);
+        event.expects(once()).method("accept").with(same(visitorStub)).will(throwException(cause));
+        listener.expects(once()).method("scenarioFailed").with(same(scenario), same(cause));
 
         // when...
         scenario.accept(visitorStub);

@@ -9,14 +9,15 @@ package com.thoughtworks.jbehave.extensions.story.renderers;
 
 import java.io.PrintStream;
 
+import com.thoughtworks.jbehave.extensions.story.base.Given;
+import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
-import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.domain.Story;
+import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
@@ -34,11 +35,15 @@ public class PlainTextRenderer implements Visitor {
     }
 
     public void visitStory(Story story) {
-        out.println("Story: " + story.getName());
+        out.println("Story: " + story.getTitle());
         out.println();
-        out.println("As a " + story.getRole());
-        out.println("I want " + story.getFeature());
-        out.println("So that " + story.getBenefit());
+    }
+    
+    public void visitNarrative(Narrative narrative) {
+        out.println("As a " + narrative.getRole());
+        out.println("I want " + narrative.getFeature());
+        out.println("So that " + narrative.getBenefit());
+
     }
 
     public void visitScenario(Scenario scenario) {

@@ -43,14 +43,14 @@ public class TestSuitePopulater implements BehaviourClassListener, MethodListene
     public void behaviourClassVerificationEnding(Class behaviourClass) {
     }
     
-    public void methodVerificationStarting(Method responsibilityMethod) {
+    public void methodVerificationStarting(Method method) {
         try {
             Object instance = currentBehaviourClass.newInstance();
-            currentSuite.addTest(new JUnitMethodAdapter(responsibilityMethod,
+            currentSuite.addTest(new JUnitMethodAdapter(method,
                     instance));
         } catch (Exception e) {
             String message = "Problem adding test for "
-                + currentBehaviourClass.getName() + "." + responsibilityMethod.getName();
+                + currentBehaviourClass.getName() + "." + method.getName();
             throw new JBehaveFrameworkError(message, e);
         }
     }

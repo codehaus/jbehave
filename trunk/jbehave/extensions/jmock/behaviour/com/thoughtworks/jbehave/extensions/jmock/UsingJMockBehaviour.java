@@ -1,5 +1,7 @@
 package com.thoughtworks.jbehave.extensions.jmock;
 
+import java.lang.reflect.Proxy;
+
 import org.jmock.Mock;
 import org.jmock.core.Verifiable;
 
@@ -89,7 +91,7 @@ public class UsingJMockBehaviour extends JMockSugar {
     
     public static class HasMockThatFailsVerify extends UsingJMock {
         {
-            new Mock(Interface.class).expectsOnce("doStuff"); // won't be invoked
+            new Mock(Interface.class).expects(once()).method("doStuff").withNoArguments();
         }
     }
     
@@ -108,10 +110,44 @@ public class UsingJMockBehaviour extends JMockSugar {
     
     public void shouldNotVerifyMocksIfMethodFailed() throws Exception {
         // given...
-        
+        Verify.pending();
 
         // expect...
         // when...
         // verify...
+    }
+    
+    public static interface AnInterface {}
+    public static abstract class AnAbstractClass implements AnInterface {}
+    public static class AConcreteClass extends AnAbstractClass {}
+    
+    public class BehaviourClass extends UsingJMock {
+        public Mock anInterface;
+        public Mock anAbstractClass;
+        public Mock aConcreteClass;
+        
+        public void shouldDoSomething() {
+            anInterface = new Mock(AnInterface.class);
+            anAbstractClass = new Mock(AnAbstractClass.class);
+            aConcreteClass = new Mock(AConcreteClass.class);
+        }
+    }
+    
+    private boolean isDynamicProxy(Object proxy) {
+        return Proxy.isProxyClass(proxy.getClass());
+    }
+
+    public void shouldCreateRegularMockIfAndOnlyIfMockingInterface() throws Exception {
+        // given...
+        BehaviourClass instance = new BehaviourClass();
+        
+        // when...
+        instance.shouldDoSomething();
+        
+        // verify...
+        Verify.that(isDynamicProxy(instance.anInterface.proxy()));
+        Verify.not(isDynamicProxy(instance.anAbstractClass.proxy()));
+        Verify.not(isDynamicProxy(instance.aConcreteClass.proxy()));
+        
     }
 }

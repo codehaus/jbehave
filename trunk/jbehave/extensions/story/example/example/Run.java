@@ -8,8 +8,8 @@
 package example;
 import java.io.OutputStreamWriter;
 
+import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
-import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.renderers.PlainTextRenderer;
 import com.thoughtworks.jbehave.extensions.story.runner.StoryRunner;
@@ -40,7 +40,6 @@ public class Run {
             story.accept(visitor);
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

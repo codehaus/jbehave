@@ -11,11 +11,11 @@ import com.thoughtworks.jbehave.core.BehaviourClassContainer;
 import com.thoughtworks.jbehave.extensions.story.base.EventBaseBehaviour;
 import com.thoughtworks.jbehave.extensions.story.base.ExpectationBaseBehaviour;
 import com.thoughtworks.jbehave.extensions.story.base.GivenBaseBehaviour;
-import com.thoughtworks.jbehave.extensions.story.base.StoryBaseBehaviour;
+import com.thoughtworks.jbehave.extensions.story.base.StoryBehaviour;
 import com.thoughtworks.jbehave.extensions.story.codegen.StoryParserBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.SimpleContextBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.SimpleOutcomeBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.SimpleScenarioBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.ScenarioBehaviour;
 import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListenerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.runner.StoryRunnerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehaviour;
@@ -29,11 +29,11 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
                 EventBaseBehaviour.class,
                 ExpectationBaseBehaviour.class,
                 GivenBaseBehaviour.class,
-                StoryBaseBehaviour.class,
+                StoryBehaviour.class,
                 StoryParserBehaviour.class,
                 SimpleContextBehaviour.class,
                 SimpleOutcomeBehaviour.class,
-                SimpleScenarioBehaviour.class,
+                ScenarioBehaviour.class,
                 TextScenarioListenerBehaviour.class,
                 StoryRunnerBehaviour.class,
                 VisitableArrayListBehaviour.class

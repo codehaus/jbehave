@@ -8,7 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.base;
 
 import com.thoughtworks.jbehave.core.verify.Verify;
-import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
+import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 
 /**
@@ -16,6 +16,6 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
  */
 public class GivenBaseBehaviour {
     public void shouldBeVisitable() throws Exception {
-        Verify.that(Visitable.class.isAssignableFrom(GivenBase.class));
+        Verify.that(Visitable.class.isAssignableFrom(Given.class));
     }
 }

@@ -7,14 +7,13 @@ import java.util.Set;
 
 import junit.framework.AssertionFailedError;
 
-import org.jmock.builder.MatchBuilder;
-import org.jmock.core.Constraint;
+import org.jmock.cglib.CGLIBCoreMock;
+import org.jmock.core.CoreMock;
 import org.jmock.core.DynamicMock;
 import org.jmock.core.Verifiable;
 import org.jmock.core.stub.DefaultResultStub;
 
 import com.thoughtworks.jbehave.core.exception.DelegatingVerificationException;
-import com.thoughtworks.jbehave.core.exception.VerificationException;
 
 /**
  * @author <a href="mailto:dnorth@thoughtworks.com">Dan North</a>
@@ -58,23 +57,21 @@ public abstract class UsingJMock extends JMockSugar {
     protected class Mock extends org.jmock.Mock {
         private final Exception exceptionFromCreationPoint;
 
-        public Mock(Class mockedType) {
-            super(mockedType);
-            exceptionFromCreationPoint = new Exception();
-            addMock(this);
-        }
-
-        public Mock(Class mockedType, String name) {
-            super(mockedType, name);
-            exceptionFromCreationPoint = new Exception();
-            addMock(this);
-        }
-
         public Mock(DynamicMock coreMock) {
             super(coreMock);
             exceptionFromCreationPoint = new Exception();
             addMock(this);
         }
+
+        
+        public Mock(Class mockedType, String name) {
+            this(dynamicMockFor(mockedType, name));
+        }
+
+        public Mock(Class mockedType) {
+            this(mockedType, CoreMock.mockNameFromClass(mockedType));
+        }
+
         
         public void verify() {
             try {
@@ -85,44 +82,22 @@ public abstract class UsingJMock extends JMockSugar {
             }
         }
 
-        public MatchBuilder expectsOnce(String methodName) throws VerificationException {
-            return expects(once()).method(methodName).withNoArguments();
+        public void stubsEverythingElse() {
+            setDefaultStub(new DefaultResultStub());
         }
-
-        public MatchBuilder expectsOnce(String methodName, Object arg1) {
-            return expects(once()).method(methodName).with(eq(arg1));
+    }
+    
+    /**
+     * Create the lightest-weight DynamicMock we can for a particular type.
+     * 
+     * We only use CGLIB if we have to.
+     */
+    private static DynamicMock dynamicMockFor(Class type, String name) {
+        if (type.isInterface()) {
+            return new CoreMock(type, name);
         }
-
-        public MatchBuilder expectsOnce(String methodName, Object arg1, Object arg2) {
-            return expects(once()).method(methodName).with(eq(arg1), eq(arg2));
-        }
-        
-        public MatchBuilder expectsOnce(String methodName, Constraint arg) {
-            return expects(once()).method(methodName).with(arg);
-        }
-        
-        public MatchBuilder expectsOnce(String methodName, Constraint arg1, Constraint arg2) {
-            return expects(once()).method(methodName).with(arg1, arg2);
-        }
-        
-        public MatchBuilder expectsOnce(String methodName, Constraint arg1, Constraint arg2, Constraint arg3) {
-            return expects(once()).method(methodName).with(arg1, arg2, arg3);
-        }
-        
-        public MatchBuilder expectsOnce(String methodName, Constraint arg1, Constraint arg2, Constraint arg3, Constraint arg4) {
-            return expects(once()).method(methodName).with(arg1, arg2, arg3, arg4);
-        }
-
-        public MatchBuilder expectsOnce(String methodName, Constraint[] argumentConstraints) {
-            return expects(once()).method(methodName).with(argumentConstraints);
-        }
-        
-        public MatchBuilder stubs(String methodName) {
-            return stubs().method(methodName).withNoArguments();
-        }
-
-        public MatchBuilder stubs(String methodName, Object arg1) {
-            return stubs().method(methodName).with(eq(arg1));
+        else {
+            return new CGLIBCoreMock(type, name);
         }
     }
     

@@ -13,7 +13,8 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @deprecated use Given abstract class
  */
-public interface Given extends Visitable {
+public interface OldGiven extends Visitable {
     void setUp(Environment environment) throws Exception;
 }

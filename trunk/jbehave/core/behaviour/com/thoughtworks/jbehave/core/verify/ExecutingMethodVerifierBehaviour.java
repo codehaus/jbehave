@@ -258,7 +258,7 @@ public class ExecutingMethodVerifierBehaviour {
     public static class Subclass extends AbstractSuperclass {
     }
     
-    public void shouldExecuteResponsibiltyMethodInheritedFromAbstractSuperclass() throws Exception {
+    public void shouldExecuteBehaviourMethodInheritedFromAbstractSuperclass() throws Exception {
         // when...
         verifyFirstMethod(recordingListener, Subclass.class);
         

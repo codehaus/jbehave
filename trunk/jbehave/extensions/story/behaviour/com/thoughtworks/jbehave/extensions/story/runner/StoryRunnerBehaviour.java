@@ -1,11 +1,10 @@
 package com.thoughtworks.jbehave.extensions.story.runner;
 
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMockWithCGLIB;
-import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
+import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
-import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 
 /*
@@ -19,7 +18,7 @@ import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryRunnerBehaviour extends UsingJMockWithCGLIB {
+public class StoryRunnerBehaviour extends UsingJMock {
     private ScenarioListener listenerStub;
     
     public void setUp() {
@@ -32,8 +31,8 @@ public class StoryRunnerBehaviour extends UsingJMockWithCGLIB {
         StoryRunner runner = new StoryRunner(environment, listenerStub);
         Mock given = new Mock(Given.class);
         
-        // expect...
-        given.expectsOnce("setUp", environment);
+        given.expects(once()).method("setUp").with(same(environment));
+        given.stubsEverythingElse();
         
         // when...
         runner.visitGiven((Given)given.proxy());
@@ -45,8 +44,7 @@ public class StoryRunnerBehaviour extends UsingJMockWithCGLIB {
         StoryRunner runner = new StoryRunner(environment, listenerStub);
         Mock expectation = new Mock(Expectation.class);
         
-        // expect...
-        expectation.expectsOnce("setExpectationIn", environment);
+        expectation.expects(once()).method("setExpectationIn").with(same(environment));
         
         // when...
         runner.visitExpectationBeforeTheEvent((Expectation)expectation.proxy());
@@ -58,8 +56,7 @@ public class StoryRunnerBehaviour extends UsingJMockWithCGLIB {
         StoryRunner runner = new StoryRunner(environment, listenerStub);
         Mock event = new Mock(Event.class);
         
-        // expect...
-        event.expectsOnce("occurIn", environment);
+        event.expects(once()).method("occurIn").with(same(environment));
         
         // when...
         runner.visitEvent((Event)event.proxy());
@@ -71,8 +68,7 @@ public class StoryRunnerBehaviour extends UsingJMockWithCGLIB {
         StoryRunner runner = new StoryRunner(environment, listenerStub);
         Mock expectation = new Mock(Expectation.class);
         
-        // expect...
-        expectation.expectsOnce("verify", environment);
+        expectation.expects(once()).method("verify").with(same(environment));
         
         // when...
         runner.visitExpectationAfterTheEvent((Expectation)expectation.proxy());
@@ -81,8 +77,8 @@ public class StoryRunnerBehaviour extends UsingJMockWithCGLIB {
     public void shouldTellListenerIfGivenUsesMocks() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        Mock givenWithMocks = new Mock(GivenBase.class, "givenWithMocks");
-        Mock givenWithoutMocks = new Mock(GivenBase.class, "givenWithoutMocks");
+        Mock givenWithMocks = new Mock(Given.class, "givenWithMocks");
+        Mock givenWithoutMocks = new Mock(Given.class, "givenWithoutMocks");
         Mock listener = new Mock(ScenarioListener.class);
         StoryRunner runner = new StoryRunner(environment, (ScenarioListener) listener.proxy());
 

@@ -8,14 +8,14 @@
 package example.givens;
 
 
-import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
+import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 import example.domain.Account;
 
 
 /** set overdraft limit = 0 */
-public class AccountDoesNotHaveOverdraftFacility extends GivenBase {
+public class AccountDoesNotHaveOverdraftFacility extends Given {
 
     public void setUp(Environment context) {
         Mock account = (Mock) context.get("accountMock", new Mock(Account.class));
