@@ -1,8 +1,9 @@
-<project name="jbehave" basedir="." default="all">
+<project name="jbehave" basedir="." default="dist">
 	<property name="project" value="${ant.project.name}" />
 	<property name="version" value="0-1.snapshot"/>
 	<property name="extensions.dir" value="extensions"/>
 	<property name="core.dir" value="core"/>
+	<property name="core-src.dir" value="${core.dir}/src"/>
 	<property name="jmock.dir" value="${extensions.dir}/jmock"/>
 	<property name="ant.dir" value="${extensions.dir}/ant"/>
 	<property name="website.dir" value="website"/>
@@ -16,17 +17,11 @@
 	<property name="deploy.dist.bin.dir" value="${deploy.dist.dir}/jars"/>
     <property name="deploy.dist.src.dir" value="${deploy.dist.dir}/distributions"/>
 
-    <import file="${core.dir}/ant.xml"/>
-	<import file="${jmock.dir}/ant.xml"/>
-	<import file="${ant.dir}/ant.xml" />
-
-	<target name="all" depends="core-all, jmock-all, ant-all"/>
-
-	<target name="clean" depends="core-clean, jmock-clean, ant-clean">
+	<target name="clean" >
 		<delete dir="${build.dir}" />
 	</target>
 
-	<target name="clobber" depends="core-clobber, jmock-clobber, ant-clobber, clean">
+	<target name="clobber" depends="clean">
 		<delete dir="${dist.dir}" />
 	</target>
 
@@ -51,7 +46,7 @@
             </javadoc>
     </target>
 
-	<target name="dist" depends="all, website, javadoc">
+	<target name="dist" depends="website, javadoc">
 		<copy todir="${deploy.website.dir}">
 			<fileset dir="${website.dir}/output" />
 		</copy>
@@ -59,43 +54,5 @@
 			<fileset dir="${build.javadoc.dir}" />
 		</copy>
 	</target>
-
-	<target name="rebuild" depends="clobber, all" />
-
-	<macrodef name="compile">
-   		<attribute name="classesdir"/>
-   		<attribute name="srcdir"/>
-		<attribute name="classpath" default=""/> 
-   		<sequential>
-			<echo message="compiling src in @{srcdir}"/>
-      		<mkdir dir="@{classesdir}"/>
-      		<javac srcdir="@{srcdir}" destdir="@{classesdir}" debug="yes" classpath="@{classpath}"/>
-      	</sequential>
-	</macrodef>
-
-	<macrodef name="jar-dist">
-		<attribute name="distdir"/>
-		<attribute name="classesdir"/>
-		<attribute name="srcdir"/>
-		<attribute name="jarfile"/>
-		<sequential>
-			<mkdir dir="@{distdir}" />
-			<copy todir="@{classesdir}">
-				<fileset dir="@{srcdir}" excludes="**/*.java" />
-			</copy>
-			<jar basedir="@{classesdir}" destfile="@{jarfile}" />
-		</sequential>
-	</macrodef>
-
-	<macrodef name="jbehave">
-		<attribute name="spec" />
-		<attribute name="classpath"/>
-		<sequential>
-			<java classname="jbehave.framework.SpecVerifier" fork="true" failonerror="true" classpath="@{classpath}" >
-				<arg value="@{spec}"/>
-			</java>
-		</sequential>
-	</macrodef>
-
 
 </project>

@@ -1,92 +1,12 @@
-<project name="jbehave" default="verify">
-	<property name="version" value="0.1-SNAPSHOT" />
-
-	<property name="project" value="${ant.project.name}" />
-
-	<property name="src.dir" location="src" />
+<project name="jbehave-core" basedir="." default="verify">
+	<property name="src.dir" value="src"/>
+	<property name="version" value="0-1.snapshot"/>
 	<property name="spec.dir" location="behaviour" />
-	<property name="test.dir" location="test" />
-	<property name="behaviour.dir" location="behaviour" />
-
-	<property name="build.dir" location="build" />
+	<property name="build.dir" value="build"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="jar.file" location="${dist.dir}/jbehave-${version}.jar" />
 	<property name="classes.dir" location="${build.dir}/classes" />
 	<property name="spec.classes.dir" location="${build.dir}/specs" />
-	<property name="test.classes.dir" location="${build.dir}/test-classes" />
-	<property name="dist.dir" location="${build.dir}/dist" />
-	<property name="jar.file" location="${dist.dir}/${project}-${version}.jar" />
-
-
-	<target name="-init">
-		<mkdir dir="${build.dir}" />
-	</target>
-
-	<target name="compile" depends="-init">
-		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" />
-	</target>
-
-	<target name="jar" depends="compile">
-		<mkdir dir="${dist.dir}" />
-		<copy todir="${classes.dir}">
-			<fileset dir="${src.dir}" excludes="**/*.java" />
-		</copy>
-		<jar basedir="${classes.dir}" destfile="${jar.file}" />
-	</target>
-
-	<target name="spec.compile" depends="jar">
-		<mkdir dir="${spec.classes.dir}" />
-		<javac fork="true" srcdir="${spec.dir}" destdir="${spec.classes.dir}">
-			<classpath>
-				<pathelement location="${jar.file}" />
-			</classpath>
-		</javac>
-	</target>
-	
-	<target name="verify" depends="spec.compile">
-		<java classname="jbehave.framework.SpecVerifier" fork="true" failonerror="true">
-			<arg value="jbehave.AllSpecs"/>
-			<classpath>
-				<pathelement location="${jar.file}"/>
-				<pathelement location="${spec.classes.dir}"/>
-			</classpath>
-		</java>
-	</target>
-
-	<!--
-	Do we really need or want this?
-	<target name="test.compile" depends="jar">
-		<mkdir dir="${test.classes.dir}" />
-		<javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
-			<classpath>
-				<pathelement location="${jar.file}" />
-			</classpath>
-		</javac>
-	</target>
-
-	<target name="test" depends="test.compile">
-		<junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
-			<formatter type="plain" />
-			<classpath>
-				<path location="${test.classes.dir}" />
-				<path location="${jar.file}" />
-			</classpath>
-			<test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}" />
-		</junit>
-	</target>  -->
-
-	<taskdef name="jbehave"
-                 classname="jbehave.extensions.ant.JBehaveAntTask"
-                 classpath="E:\development\projects\jbehave\classes"/>
-
-	<target name="behave" depends="spec.compile">
-		<jbehave>
-			<spec specname="jbehave.AllSpecs"/>
-			<classpath>
-				<pathelement location="${classes.dir}"/>
-				<pathelement location="${spec.classes.dir}"/>
-			</classpath>
-		</jbehave>
-	</target>
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
@@ -96,16 +16,32 @@
 		<delete dir="${dist.dir}" />
 	</target>
 
-	<target name="rebuild" depends="clobber, jar" />
 
-	<target name="jar-dist" depends="jar">
-		<copy file="${jar.file}" todir="${jar.dist.dir}" />
+	<target name="-init">
+		<mkdir dir="${build.dir}" />
 	</target>
 
-	<target name="jar-dist-plink" depends="jar">
-		<exec dir="." executable="pscp">
-			<arg value="${jar.file}" />
-			<arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
-		</exec>
+	<target name="src.compile" depends="-init">
+		<mkdir dir="${classes.dir}"/>
+      	<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" classpath="${classes.dir}"/>
+	</target>
+
+	<target name="jar" depends="src.compile">
+		<mkdir dir="${dist.dir}" />
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java" />
+		</copy>
+		<jar basedir="${classes.dir}" destfile="${jar.file}" />
+	</target>
+
+	<target name="spec.compile" depends="jar">
+		<mkdir dir="${spec.classes.dir}"/>
+      	<javac srcdir="${spec.dir}" destdir="${spec.classes.dir}" debug="yes" classpath="${jar.file}"/>
+	</target>
+
+	<target name="verify" depends="spec.compile">
+		<java classname="jbehave.framework.SpecVerifier" fork="true" failonerror="true" classpath="${jar.file}:${spec.classes.dir}" >
+			<arg value="jbehave.AllSpecs"/>
+		</java>
 	</target>
 </project>

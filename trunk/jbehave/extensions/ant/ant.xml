@@ -1,56 +1,50 @@
-<project name="jbehave-ant" basedir="." default="all">
-	<property name="ant.basedir" value="${ant.dir}"/>
-	<property name="ant-src.dir" value="${ant.basedir}/src"/>
-	<property name="ant-spec.dir" location="${ant.basedir}/behaviour" />
-	<property name="ant-build.dir" value="${ant.basedir}/build"/>
-	<property name="ant-dist.dir" value="${ant.basedir}/dist"/>
-	<property name="ant-jar.file" location="${ant-dist.dir}/jbehave-ant-${version}.jar" />
-	<property name="ant-classes.dir" location="${ant-build.dir}/classes" />
-	<property name="ant-spec.classes.dir" location="${ant-build.dir}/specs" />
-	<property name="ant-lib.dir" location="${ant.basedir}/lib"/>
+<project name="jbehave-ant" basedir="." default="verify">
+		<property name="src.dir" value="src"/>
+		<property name="version" value="0-1.snapshot"/>
+		<property name="spec.dir" value="behaviour" />
+		<property name="build.dir" value="build"/>
+		<property name="dist.dir" value="dist"/>
+		<property name="jar.file" value="${dist.dir}/jbehave-ant-${version}.jar" />
+		<property name="classes.dir" value="${build.dir}/classes" />
+		<property name="spec.classes.dir" value="${build.dir}/specs" />
+		<property name="lib.dir" location="lib"/>
+		<property name="reqd.libs" value="${lib.dir}/ant.jar:${lib.dir}/jbehave-${version}.jar"/>
 
+		<target name="clean">
+			<delete dir="${build.dir}" />
+		</target>
 
+		<target name="clobber" depends="clean">
+			<delete dir="${dist.dir}" />
+		</target>
 
-	<target name="ant-all" depends="core-all, ant-verify">
- 		<echo>JBehave Ant Done</echo>
-	</target>
+		<target name="init">
+			<mkdir dir="${build.dir}" />
+		</target>
 
-	<target name="ant-clean">
-		<delete dir="${ant-build.dir}" />
-	</target>
+		<target name="src.compile" depends="init">
+			<mkdir dir="${classes.dir}"/>
+			  <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" classpath="${reqd.libs}"/>
+		</target>
 
-	<target name="ant-clobber" depends="ant-clean">
-		<delete dir="${ant-dist.dir}" />
-	</target>
+		<target name="jar" depends="src.compile">
+			<mkdir dir="${dist.dir}" />
+			<copy todir="${classes.dir}">
+				<fileset dir="${src.dir}" excludes="**/*.java" />
+			</copy>
+			<jar basedir="${classes.dir}" destfile="${jar.file}" />
+		</target>
 
-	<target name="ant-init">
-		<mkdir dir="${ant-build.dir}" />
-	</target>
+		<target name="spec.compile" depends="jar">
+			<mkdir dir="${spec.classes.dir}"/>
+			  <javac srcdir="${spec.dir}" destdir="${spec.classes.dir}" debug="yes" classpath="${jar.file}:${reqd.libs}"/>
+		</target>
 
-	<target name="ant-src.compile" depends="ant-init">
- 		<compile classesdir="${ant-classes.dir}"
-				 srcdir="${ant-src.dir}"
-			 	 classpath="${core-jar.file}:${ant-lib.dir}/ant.jar"/>
-	</target>
-
-
-	<target name="ant-jar" depends="ant-src.compile">
-		<jar-dist distdir="${ant-dist.dir}"
-				  classesdir="${ant-classes.dir}"
-				  srcdir="${ant-src.dir}"
-				  jarfile="${ant-jar.file}"/>
-	</target>
-
-	<target name="ant-spec.compile" depends="ant-jar">
-		<compile classesdir="${ant-spec.classes.dir}"
-				 srcdir="${ant-spec.dir}"
-				 classpath="${core-jar.file}:${ant-jar.file}:${ant-lib.dir}/ant.jar"/>
-	</target>
-
-
-	<target name="ant-verify" depends="ant-spec.compile">
-		<jbehave spec="jbehave.extensions.ant.JBehaveAntTaskSpec" classpath="${ant-jar.file}:${ant-lib.dir}/ant.jar:${core-jar.file}:${ant-spec.classes.dir}"/>
-	</target>
+		<target name="verify" depends="spec.compile">
+			<java classname="jbehave.framework.SpecVerifier" fork="true" failonerror="true" classpath="${jar.file}:${reqd.libs}:${spec.classes.dir}" >
+				<arg value="jbehave.extensions.ant.JBehaveAntTaskSpec"/>
+			</java>
+		</target>
 
 
 </project>

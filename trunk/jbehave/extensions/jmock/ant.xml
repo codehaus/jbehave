@@ -1,55 +1,49 @@
-<project name="jbehave-jmock" basedir="." default="all">
-	<property name="jmock-src.dir" value="${jmock.dir}/src"/>
-	<property name="jmock-spec.dir" value="${jmock.dir}/behaviour" />
-	<property name="jmock-build.dir" value="${jmock.dir}/build"/>
-	<property name="jmock-dist.dir" value="${jmock.dir}/dist"/>
-	<property name="jmock-jar.file" value="${jmock-dist.dir}/jbehave-jmock-${version}.jar" />
-	<property name="jmock-classes.dir" value="${jmock-build.dir}/classes" />
-	<property name="jmock-spec.classes.dir" value="${jmock-build.dir}/specs" />
-	<property name="jmock-lib.dir" location="${jmock.dir}/lib"/>
-	<property name="jmock-reqd.libs" value="${jmock-lib.dir}/junit.jar:${jmock-lib.dir}/jmock-1.0.1.jar"/>
+<project name="jbehave-jmock" basedir="." default="verify">
+	<property name="src.dir" value="src"/>
+	<property name="version" value="0-1.snapshot"/>
+	<property name="spec.dir" value="behaviour" />
+	<property name="build.dir" value="build"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="jar.file" value="${dist.dir}/jbehave-jmock-${version}.jar" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="spec.classes.dir" value="${build.dir}/specs" />
+	<property name="lib.dir" location="lib"/>
+	<property name="reqd.libs" value="${lib.dir}/junit.jar:${lib.dir}/jmock-1.0.1.jar:${lib.dir}/jbehave-${version}.jar"/>
 
-
-
-	<target name="jmock-all" depends="core-all, jmock-verify">
- 		<echo>JBehave jmock Done</echo>
+	<target name="clean">
+		<delete dir="${build.dir}" />
 	</target>
 
-	<target name="jmock-clean">
-		<delete dir="${jmock-build.dir}" />
+	<target name="clobber" depends="clean">
+		<delete dir="${dist.dir}" />
 	</target>
 
-	<target name="jmock-clobber" depends="jmock-clean">
-		<delete dir="${jmock-dist.dir}" />
+	<target name="init">
+		<mkdir dir="${build.dir}" />
 	</target>
 
-	<target name="jmock-init">
-		<mkdir dir="${jmock-build.dir}" />
+	<target name="src.compile" depends="init">
+		<mkdir dir="${classes.dir}"/>
+      	<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" classpath="${reqd.libs}"/>
 	</target>
 
-	<target name="jmock-src.compile" depends="jmock-init">
- 		<compile classesdir="${jmock-classes.dir}"
-				 srcdir="${jmock-src.dir}"
-			 	 classpath="${core-jar.file}:${jmock-reqd.libs}"/>
+	<target name="jar" depends="src.compile">
+		<mkdir dir="${dist.dir}" />
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java" />
+		</copy>
+		<jar basedir="${classes.dir}" destfile="${jar.file}" />
 	</target>
 
-
-	<target name="jmock-jar" depends="jmock-src.compile">
-		<jar-dist distdir="${jmock-dist.dir}"
-				  classesdir="${jmock-classes.dir}"
-				  srcdir="${jmock-src.dir}"
-				  jarfile="${jmock-jar.file}"/>
+	<target name="spec.compile" depends="jar">
+		<mkdir dir="${spec.classes.dir}"/>
+      	<javac srcdir="${spec.dir}" destdir="${spec.classes.dir}" debug="yes" classpath="${jar.file}:${reqd.libs}"/>
 	</target>
 
-	<target name="jmock-spec.compile" depends="jmock-jar">
-		<compile classesdir="${jmock-spec.classes.dir}"
-				 srcdir="${jmock-spec.dir}"
-				 classpath="${core-jar.file}:${jmock-jar.file}:${jmock-reqd.libs}"/>
-	</target>
-
-
-	<target name="jmock-verify" depends="jmock-spec.compile">
-		<jbehave spec="jbehave.extensions.jmock.AllSpecs" classpath="${jmock-jar.file}:${jmock-reqd.libs}:${core-jar.file}:${jmock-spec.classes.dir}"/>
+	<target name="verify" depends="spec.compile">
+		<java classname="jbehave.framework.SpecVerifier" fork="true" failonerror="true" classpath="${jar.file}:${reqd.libs}:${spec.classes.dir}" >
+			<arg value="jbehave.extensions.jmock.AllSpecs"/>
+		</java>
 	</target>
 
 </project>
