@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.framework.Listener;
-import jbehave.framework.responsibility.Result;
+import jbehave.core.Listener;
+import jbehave.core.responsibility.Result;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still

@@ -7,7 +7,7 @@
  */
 package jbehave.extensions.ant;
 
-import jbehave.framework.responsibility.Verify;
+import jbehave.core.responsibility.Verify;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

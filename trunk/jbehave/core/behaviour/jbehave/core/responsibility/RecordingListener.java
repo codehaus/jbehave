@@ -5,12 +5,11 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework.responsibility;
+package jbehave.core.responsibility;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jbehave.framework.responsibility.Result;
 import jbehave.listeners.ListenerSupport;
 
 

@@ -7,7 +7,7 @@
  */
 package jbehave.listeners;
 
-import jbehave.framework.responsibility.Verify;
+import jbehave.core.responsibility.Verify;
 
 
 /**

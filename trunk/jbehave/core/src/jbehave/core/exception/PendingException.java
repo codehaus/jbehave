@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework.exception;
+package jbehave.core.exception;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

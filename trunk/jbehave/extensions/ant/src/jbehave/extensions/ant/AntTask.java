@@ -19,12 +19,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.io.OutputStreamWriter;
 
+import jbehave.core.Listener;
+import jbehave.core.responsibility.BehaviourClassVerifier;
+import jbehave.core.responsibility.ExecutingResponsibilityVerifier;
 import jbehave.extensions.ant.listeners.AntListener;
 import jbehave.listeners.CompositeListener;
 import jbehave.listeners.TextListener;
-import jbehave.framework.Listener;
-import jbehave.framework.responsibility.BehaviourClassVerifier;
-import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -106,7 +106,6 @@ public class AntTask extends org.apache.tools.ant.Task {
 	private Class getSpec(String specName) throws ClassNotFoundException {
 		return Class.forName(specName);
 	}
-
 
 	private ClassLoader createClassLoader() {
 		Path path = commandLine.getClasspath();

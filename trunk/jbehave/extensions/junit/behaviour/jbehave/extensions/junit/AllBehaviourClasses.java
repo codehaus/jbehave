@@ -7,7 +7,7 @@
  */
 package jbehave.extensions.junit;
 
-import jbehave.framework.BehaviourClassContainer;
+import jbehave.core.BehaviourClassContainer;
 
 
 /**

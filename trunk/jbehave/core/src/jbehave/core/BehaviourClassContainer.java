@@ -5,9 +5,9 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.framework;
+package jbehave.core;
 
-import jbehave.framework.responsibility.BehaviourClassVerifier;
+import jbehave.core.responsibility.BehaviourClassVerifier;
 
 
 /**

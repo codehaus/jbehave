@@ -5,12 +5,12 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework.responsibility;
+package jbehave.core.responsibility;
 
 import java.util.Arrays;
 import java.util.List;
 
-import jbehave.framework.BehaviourClassContainer;
+import jbehave.core.BehaviourClassContainer;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

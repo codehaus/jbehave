@@ -9,10 +9,10 @@ package jbehave.listeners;
 
 import java.io.StringWriter;
 
-import jbehave.framework.exception.PendingException;
-import jbehave.framework.exception.VerificationException;
-import jbehave.framework.responsibility.Result;
-import jbehave.framework.responsibility.Verify;
+import jbehave.core.exception.PendingException;
+import jbehave.core.exception.VerificationException;
+import jbehave.core.responsibility.Result;
+import jbehave.core.responsibility.Verify;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

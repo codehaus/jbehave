@@ -11,9 +11,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
-import jbehave.framework.Listener;
-import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
-import jbehave.framework.responsibility.Result;
+import jbehave.core.Listener;
+import jbehave.core.responsibility.ExecutingResponsibilityVerifier;
+import jbehave.core.responsibility.Result;
 import jbehave.util.StringUtils;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;

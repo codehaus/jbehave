@@ -5,14 +5,14 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework.responsibility;
+package jbehave.core.responsibility;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jbehave.framework.Listener;
+import jbehave.core.Listener;
 import jbehave.listeners.ListenerSupport;
 
 /**

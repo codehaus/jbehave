@@ -11,9 +11,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import jbehave.framework.Listener;
-import jbehave.framework.responsibility.Result;
-import jbehave.framework.responsibility.Verify;
+import jbehave.core.Listener;
+import jbehave.core.responsibility.Result;
+import jbehave.core.responsibility.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -7,13 +7,13 @@
  */
 package jbehave;
 
-import jbehave.framework.BehaviourClassContainer;
-import jbehave.framework.responsibility.BehaviourClassVerifierBehaviour;
-import jbehave.framework.responsibility.ExecutingResponsibilityVerifierBehaviour;
-import jbehave.framework.responsibility.ResultBehaviour;
+import jbehave.core.BehaviourClassContainer;
+import jbehave.core.responsibility.BehaviourClassVerifierBehaviour;
+import jbehave.core.responsibility.ExecutingResponsibilityVerifierBehaviour;
+import jbehave.core.responsibility.ResultBehaviour;
+import jbehave.listeners.CompositeListenerBehaviour;
 import jbehave.listeners.TextListenerBehaviour;
 import jbehave.listeners.TimerBehaviour;
-import jbehave.listeners.CompositeListenerBehaviour;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

@@ -9,8 +9,8 @@ package jbehave.listeners;
 
 import java.lang.reflect.Method;
 
-import jbehave.framework.Listener;
-import jbehave.framework.responsibility.Result;
+import jbehave.core.Listener;
+import jbehave.core.responsibility.Result;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>

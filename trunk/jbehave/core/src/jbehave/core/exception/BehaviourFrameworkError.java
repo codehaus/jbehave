@@ -5,7 +5,7 @@
  * 
  * See license.txt for license details
  */
-package jbehave.framework.exception;
+package jbehave.core.exception;
 
 /**
  * Signifies that something has gone wrong in the mechanics of executing

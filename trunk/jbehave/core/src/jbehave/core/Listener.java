@@ -5,11 +5,11 @@
  * 
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.core;
 
 import java.lang.reflect.Method;
 
-import jbehave.framework.responsibility.Result;
+import jbehave.core.responsibility.Result;
 import jbehave.listeners.NullListener;
 
 

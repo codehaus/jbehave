@@ -7,7 +7,7 @@
  */
 package jbehave.extensions.ant;
 
-import jbehave.framework.responsibility.Verify;
+import jbehave.core.responsibility.Verify;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;

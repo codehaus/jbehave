@@ -10,9 +10,9 @@ package jbehave.extensions.jmock.listener;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import jbehave.core.exception.VerificationException;
+import jbehave.core.responsibility.Result;
 import jbehave.extensions.jmock.UsingJMock;
-import jbehave.framework.exception.VerificationException;
-import jbehave.framework.responsibility.Result;
 import jbehave.listeners.ListenerSupport;
 import junit.framework.AssertionFailedError;
 

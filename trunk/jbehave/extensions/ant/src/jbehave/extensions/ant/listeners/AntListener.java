@@ -7,7 +7,7 @@
  */
 package jbehave.extensions.ant.listeners;
 
-import jbehave.framework.responsibility.Result;
+import jbehave.core.responsibility.Result;
 import jbehave.listeners.ListenerSupport;
 
 /**

@@ -5,10 +5,10 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework.responsibility;
+package jbehave.core.responsibility;
 
-import jbehave.framework.exception.PendingException;
-import jbehave.framework.exception.VerificationException;
+import jbehave.core.exception.PendingException;
+import jbehave.core.exception.VerificationException;
 
 
 /**

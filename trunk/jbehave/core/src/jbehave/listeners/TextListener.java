@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.framework.exception.BehaviourFrameworkError;
-import jbehave.framework.responsibility.Result;
+import jbehave.core.exception.BehaviourFrameworkError;
+import jbehave.core.responsibility.Result;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

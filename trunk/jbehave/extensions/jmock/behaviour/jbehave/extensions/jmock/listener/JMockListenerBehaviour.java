@@ -10,12 +10,12 @@ package jbehave.extensions.jmock.listener;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import jbehave.core.Listener;
+import jbehave.core.responsibility.ExecutingResponsibilityVerifier;
+import jbehave.core.responsibility.ResponsibilityVerifier;
+import jbehave.core.responsibility.Result;
+import jbehave.core.responsibility.Verify;
 import jbehave.extensions.jmock.UsingJMock;
-import jbehave.framework.Listener;
-import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
-import jbehave.framework.responsibility.Result;
-import jbehave.framework.responsibility.ResponsibilityVerifier;
-import jbehave.framework.responsibility.Verify;
 import junit.framework.AssertionFailedError;
 
 /**

@@ -7,8 +7,8 @@
  */
 package jbehave.extensions.ant;
 
+import jbehave.core.BehaviourClassContainer;
 import jbehave.extensions.ant.AntTaskBehaviour;
-import jbehave.framework.BehaviourClassContainer;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

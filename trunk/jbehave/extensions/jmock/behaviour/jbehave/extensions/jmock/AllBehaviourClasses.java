@@ -7,8 +7,8 @@
  */
 package jbehave.extensions.jmock;
 
+import jbehave.core.BehaviourClassContainer;
 import jbehave.extensions.jmock.listener.JMockListenerBehaviour;
-import jbehave.framework.BehaviourClassContainer;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

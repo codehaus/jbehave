@@ -10,7 +10,7 @@ package jbehave.extensions.junit;
 import java.util.ArrayList;
 import java.util.List;
 
-import jbehave.framework.responsibility.Verify;
+import jbehave.core.responsibility.Verify;
 import junit.framework.Test;
 import junit.framework.TestResult;
 

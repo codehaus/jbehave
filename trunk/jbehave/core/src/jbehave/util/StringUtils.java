@@ -26,4 +26,15 @@ public class StringUtils {
         }
         return buf.toString();
     }
+
+    public static String unCamelCase(Class type) {
+        String name = type.getName();
+        name = name.substring(name.lastIndexOf('.') + 1);
+        name = name.substring(name.lastIndexOf('$') + 1);
+        return unCamelCase(name);
+    }
+
+    public static String unCamelCase(Object obj) {
+        return unCamelCase(obj.getClass());
+    }
 }

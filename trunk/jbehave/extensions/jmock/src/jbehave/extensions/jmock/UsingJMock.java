@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import jbehave.framework.exception.VerificationException;
+import jbehave.core.exception.VerificationException;
 import junit.framework.AssertionFailedError;
 
 import org.jmock.core.DynamicMock;

@@ -5,13 +5,13 @@
  * 
  * See license.txt for license details
  */
-package jbehave.framework.responsibility;
+package jbehave.core.responsibility;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import jbehave.framework.exception.BehaviourFrameworkError;
-import jbehave.framework.exception.VerificationException;
+import jbehave.core.exception.BehaviourFrameworkError;
+import jbehave.core.exception.VerificationException;
 import jbehave.util.StringUtils;
 
 /**

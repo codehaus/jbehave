@@ -5,11 +5,11 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework.responsibility;
+package jbehave.core.responsibility;
 
 import java.lang.reflect.Method;
 
-import jbehave.framework.Listener;
+import jbehave.core.Listener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

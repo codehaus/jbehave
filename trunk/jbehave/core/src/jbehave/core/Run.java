@@ -5,12 +5,12 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.core;
 
 import java.io.PrintWriter;
 
-import jbehave.framework.responsibility.BehaviourClassVerifier;
-import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
+import jbehave.core.responsibility.BehaviourClassVerifier;
+import jbehave.core.responsibility.ExecutingResponsibilityVerifier;
 import jbehave.listeners.TextListener;
 
 
