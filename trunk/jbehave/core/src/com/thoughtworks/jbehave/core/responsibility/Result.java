@@ -27,6 +27,9 @@ public class Result {
     private final int status;
     private final Throwable targetException;
 
+    /**
+     * Constructor for result that contains an exception
+     */
     public Result(String behaviourClassName, String responsibilityMethodName, Throwable targetException) {
         this.name = responsibilityMethodName;
         this.behaviourClassName = behaviourClassName;

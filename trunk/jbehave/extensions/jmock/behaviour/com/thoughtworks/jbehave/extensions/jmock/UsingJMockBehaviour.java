@@ -9,6 +9,10 @@ import com.thoughtworks.jbehave.core.responsibility.Verify;
  */
 public class UsingJMockBehaviour {
     
+    public void shouldStoreEachMockAsItIsConstructed() throws Exception {
+        Verify.pending();
+    }
+    
     interface BehaviourInterface1 {
         void doStuff();
     }
@@ -47,6 +51,4 @@ public class UsingJMockBehaviour {
             // ok
         }
     }
-    
-
 }

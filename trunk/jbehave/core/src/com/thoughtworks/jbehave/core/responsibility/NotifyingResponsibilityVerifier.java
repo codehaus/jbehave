@@ -9,7 +9,7 @@ package com.thoughtworks.jbehave.core.responsibility;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.Listener;
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 
 /**
@@ -20,13 +20,13 @@ public class NotifyingResponsibilityVerifier implements ResponsibilityVerifier {
     /**
      * Verify an individual responsibility.
      * 
-     * The {@link Listener} is alerted before and after the verification,
-     * with calls to {@link Listener#responsibilityVerificationStarting(Method)
+     * The {@link ResponsibilityListener} is alerted before and after the verification,
+     * with calls to {@link ResponsibilityListener#responsibilityVerificationStarting(Method)
      * responsibilityVerificationStarting(this)} and
-     * {@link Listener#responsibilityVerificationEnding(Result, Object)
+     * {@link ResponsibilityListener#responsibilityVerificationEnding(Result, Object)
      * responsibilityVerificationEnding(result)} respectively.
      */
-    public Result verifyResponsibility(Listener listener, Method method, Object instance) {
+    public Result verifyResponsibility(ResponsibilityListener listener, Method method, Object instance) {
         try {
             listener.responsibilityVerificationStarting(method);
             Result result = doVerifyResponsibility(method, instance);

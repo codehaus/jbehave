@@ -19,8 +19,7 @@ import org.apache.tools.ant.taskdefs.LogOutputStream;
 import org.apache.tools.ant.types.CommandlineJava;
 import org.apache.tools.ant.types.Path;
 
-import com.thoughtworks.jbehave.core.Listener;
-import com.thoughtworks.jbehave.core.listeners.CompositeListener;
+import com.thoughtworks.jbehave.core.listeners.ResponsibilityListeners;
 import com.thoughtworks.jbehave.core.listeners.TextListener;
 import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifier;
 import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifier;
@@ -81,30 +80,30 @@ public class AntTask extends org.apache.tools.ant.Task {
 		createClassLoader();
 		AntListener listener = new AntListener();
 		for (Iterator iter = behaviourClassList.iterator(); iter.hasNext(); ) {
-			verifySpec((BehaviourClass) iter.next(), listener);
+			verifyBehaviourClass((BehaviourClass) iter.next(), listener);
 		}
 	}
 
-	private void verifySpec(BehaviourClass spec, AntListener listener) {
+	private void verifyBehaviourClass(BehaviourClass behaviourClass, AntListener antListener) {
 		try {
 			BehaviourClassVerifier verifier = new BehaviourClassVerifier(
-                    getSpec(spec.getBehaviourClassName()), new ExecutingResponsibilityVerifier());
-			verifier.verifyBehaviourClass(createCompositeListener(listener));
-			if (listener.failBuild()) throw new BuildException(spec.getBehaviourClassName() + "failed");
+                    newInstance(behaviourClass), new ExecutingResponsibilityVerifier());
+            
+            TextListener textListener = new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
+            ResponsibilityListeners compositeListener = new ResponsibilityListeners();
+            compositeListener.add(antListener);
+            compositeListener.add(textListener);
+            
+            verifier.verifyBehaviourClass(textListener, compositeListener);
+            
+			if (antListener.failBuild()) throw new BuildException(behaviourClass.getBehaviourClassName() + "failed");
 		} catch (ClassNotFoundException e) {
         	throw new BuildException(e);
 		}
 	}
 
-	private Listener createCompositeListener(AntListener antListener) {
-		CompositeListener compositeListener = new CompositeListener();
-		compositeListener.add(antListener);
-		compositeListener.add(new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO))));
-		return compositeListener;
-	}
-
-	private Class getSpec(String specName) throws ClassNotFoundException {
-		return Class.forName(specName);
+	private Class newInstance(BehaviourClass behaviourClass) throws ClassNotFoundException {
+		return Class.forName(behaviourClass.getBehaviourClassName());
 	}
 
 	private ClassLoader createClassLoader() {

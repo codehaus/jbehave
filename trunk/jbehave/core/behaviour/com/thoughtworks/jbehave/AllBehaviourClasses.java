@@ -8,7 +8,8 @@
 package com.thoughtworks.jbehave;
 
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
-import com.thoughtworks.jbehave.core.listeners.CompositeListenerBehaviour;
+import com.thoughtworks.jbehave.core.listeners.BehaviourClassListenersBehaviour;
+import com.thoughtworks.jbehave.core.listeners.ResponsibilityListenersBehaviour;
 import com.thoughtworks.jbehave.core.listeners.TextListenerBehaviour;
 import com.thoughtworks.jbehave.core.listeners.TimerBehaviour;
 import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifierBehaviour;
@@ -27,7 +28,8 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
             ResultBehaviour.class,
             TextListenerBehaviour.class,
             TimerBehaviour.class,
-			CompositeListenerBehaviour.class,
+			BehaviourClassListenersBehaviour.class,
+			ResponsibilityListenersBehaviour.class,
             CaseConverterBehaviour.class
         };
     }

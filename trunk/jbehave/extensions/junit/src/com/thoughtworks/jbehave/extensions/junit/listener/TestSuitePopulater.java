@@ -11,14 +11,16 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestSuite;
 
+import com.thoughtworks.jbehave.core.BehaviourClassListener;
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
-import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
+import com.thoughtworks.jbehave.core.responsibility.Result;
 import com.thoughtworks.jbehave.extensions.junit.JUnitMethodAdapter;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TestSuitePopulater extends ListenerSupport {
+public class TestSuitePopulater implements BehaviourClassListener, ResponsibilityListener {
     private final TestSuite[] suiteRef;
     private TestSuite currentSuite = null;
     private Class currentBehaviourClass;
@@ -37,6 +39,9 @@ public class TestSuitePopulater extends ListenerSupport {
         }
         currentBehaviourClass = behaviourClass;
     }
+
+    public void behaviourClassVerificationEnding(Class behaviourClass) {
+    }
     
     public void responsibilityVerificationStarting(Method responsibilityMethod) {
         try {
@@ -48,5 +53,9 @@ public class TestSuitePopulater extends ListenerSupport {
                 + currentBehaviourClass.getName() + "." + responsibilityMethod.getName();
             throw new JBehaveFrameworkError(message, e);
         }
+    }
+
+    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
+        return null;
     }
 }

@@ -9,23 +9,14 @@ package com.thoughtworks.jbehave.core.responsibility;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.Listener;
-
-
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface ResponsibilityVerifier {
-    /** Null Object */
-    ResponsibilityVerifier NULL = new ResponsibilityVerifier() {
-        public Result verifyResponsibility(Listener listener, Method method, Object instance) {
-            return new Result(method.getDeclaringClass().getName(), method.getName());
-        }
-    };
-    
     /**
      * Verify an individual responsibility.
      */
-    Result verifyResponsibility(Listener listener, Method method, Object instance);
+    Result verifyResponsibility(ResponsibilityListener listener, Method method, Object instance);
 }

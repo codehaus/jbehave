@@ -2,7 +2,7 @@ package com.thoughtworks.jbehave.core.responsibility;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 
 /**
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>
@@ -10,12 +10,15 @@ import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
  */
 public class NotifyingResponsibilityVerifierBehaviour {
     
-    public static class StubListener extends ListenerSupport {
+    public static class StubListener implements ResponsibilityListener {
         
         private Result result;
 
         public StubListener(Result result) {
             this.result = result;
+        }
+
+        public void responsibilityVerificationStarting(Method responsibilityMethod) {
         }
         
         public Result responsibilityVerificationEnding(Result r,

@@ -9,24 +9,18 @@ package com.thoughtworks.jbehave.core.listeners;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.Listener;
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
  */
-public class ListenerSupport implements Listener {
-
-    public void behaviourClassVerificationStarting(Class behaviourClass) {
-    }
+public class NULLResponsibilityListener implements ResponsibilityListener {
 
     public void responsibilityVerificationStarting(Method responsibilityMethod) {
     }
 
     public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
         return result;
-    }
-
-    public void behaviourClassVerificationEnding(Class behaviourClass) {
     }
 }

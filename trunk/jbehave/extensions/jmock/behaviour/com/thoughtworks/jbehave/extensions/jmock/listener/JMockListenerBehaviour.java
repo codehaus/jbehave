@@ -12,7 +12,7 @@ import java.util.List;
 
 import junit.framework.AssertionFailedError;
 
-import com.thoughtworks.jbehave.core.Listener;
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 import com.thoughtworks.jbehave.core.responsibility.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
@@ -22,7 +22,7 @@ import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
 public class JMockListenerBehaviour {
-	private Listener listener;
+	private ResponsibilityListener listener;
 
 	public void setUp() {
 		listener = new JMockListener();

@@ -16,6 +16,9 @@ import com.thoughtworks.jbehave.extensions.jmock.listener.JMockListenerBehaviour
  */
 public class AllBehaviourClasses implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
-        return new Class[] {JMockListenerBehaviour.class, UsingJMockBehaviour.class};
+        return new Class[] {
+                JMockListenerBehaviour.class,
+                UsingJMockBehaviour.class
+        };
 	}
 }

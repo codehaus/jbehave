@@ -1,7 +1,9 @@
 package com.thoughtworks.jbehave.extensions.jmock;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.AssertionFailedError;
@@ -20,8 +22,8 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  */
 public abstract class UsingJMock extends JMockSugar{
     
-    private Set mocks = new HashSet();
-     
+    private final List mocks = new ArrayList();
+    
     
     public void verify() {
         for (Iterator i = mocks.iterator(); i.hasNext();) {
@@ -40,6 +42,11 @@ public abstract class UsingJMock extends JMockSugar{
     private void addMock(Mock m) {
         mocks.add(m);
     }
+    
+    public Collection getMocks() {
+        return mocks;
+    }
+    
     /**
      * Interceptor class for creating instances of {@link org.jmock.Mock}.
      *
@@ -103,6 +110,10 @@ public abstract class UsingJMock extends JMockSugar{
         public MatchBuilder expectsOnce(String methodName, Object arg1) {
             return expects(once()).method(methodName).with(eq(arg1));
         }
+
+        public MatchBuilder expectsOnce(String methodName, Object arg1, Object arg2) {
+            return expects(once()).method(methodName).with(eq(arg1), eq(arg2));
+        }
         
         public MatchBuilder expectsOnce(String methodName, Constraint arg) {
             return expects(once()).method(methodName).with(arg);
@@ -125,10 +136,14 @@ public abstract class UsingJMock extends JMockSugar{
         }
         
         public MatchBuilder stubs(String methodName) {
-            return stubs().method(methodName).withAnyArguments();
+            return stubs().method(methodName).withNoArguments();
+        }
+
+        public MatchBuilder stubs(String methodName, Object arg1) {
+            return stubs().method(methodName).with(eq(arg1));
         }
     }
-
+    
     // Syntactic sugar methods that use our Mock class
     
     protected Object stub(Class type) {

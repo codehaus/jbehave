@@ -7,13 +7,11 @@
  */
 package com.thoughtworks.jbehave.core.listeners;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.Listener;
-import com.thoughtworks.jbehave.core.responsibility.Result;
+import com.thoughtworks.jbehave.core.BehaviourClassListener;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still
@@ -23,13 +21,13 @@ import com.thoughtworks.jbehave.core.responsibility.Result;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class CompositeListener implements Listener {
+public class BehaviourClassListeners implements BehaviourClassListener {
     private final List listeners = new ArrayList();
     
     /**
      * The composition method for the composite.
      */
-    public void add(Listener listener) {
+    public void add(BehaviourClassListener listener) {
         listeners.add(listener);
     }
     
@@ -37,27 +35,14 @@ public class CompositeListener implements Listener {
     
     public void behaviourClassVerificationStarting(Class behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).behaviourClassVerificationStarting(behaviourClass);
+            ((BehaviourClassListener)i.next()).behaviourClassVerificationStarting(behaviourClass);
         }
     }
 
     public void behaviourClassVerificationEnding(Class behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).behaviourClassVerificationEnding(behaviourClass);
+            ((BehaviourClassListener)i.next()).behaviourClassVerificationEnding(behaviourClass);
         }
-    }
-
-    public void responsibilityVerificationStarting(Method responsibilityMethod) {
-        for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).responsibilityVerificationStarting(responsibilityMethod);
-        }
-    }
-
-    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
-		for (Iterator i = listeners.iterator(); i.hasNext();) {
-           result = ((Listener)i.next()).responsibilityVerificationEnding(result, behaviourClassInstance);
-        }
-		return result;
     }
     
     public String toString() {

@@ -13,7 +13,6 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.thoughtworks.jbehave.core.Listener;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifier;
 import com.thoughtworks.jbehave.core.responsibility.NotifyingResponsibilityVerifier;
@@ -47,8 +46,8 @@ public class JUnitAdapter {
         final TestSuite[] suiteRef = new TestSuite[1]; // Collecting Parameter
         BehaviourClassVerifier behaviourClassVerifier =
             new BehaviourClassVerifier(behaviourClass, new NotifyingResponsibilityVerifier());
-        final Listener listener = new TestSuitePopulater(suiteRef);
-        behaviourClassVerifier.verifyBehaviourClass(listener);
+        final TestSuitePopulater populater = new TestSuitePopulater(suiteRef);
+        behaviourClassVerifier.verifyBehaviourClass(populater, populater);
         return suiteRef[0];
     }
 

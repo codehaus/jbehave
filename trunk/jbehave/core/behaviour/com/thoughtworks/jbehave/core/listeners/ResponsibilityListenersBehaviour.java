@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.thoughtworks.jbehave.core.Listener;
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 import com.thoughtworks.jbehave.core.responsibility.Verify;
 
@@ -19,24 +19,20 @@ import com.thoughtworks.jbehave.core.responsibility.Verify;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
-public class CompositeListenerBehaviour {
-	private CompositeListener composite;
+public class ResponsibilityListenersBehaviour {
+	private ResponsibilityListeners listeners;
 	private Map callMap1;
 	private Map callMap2;
 	private Result nextResult;
 
 	// Mocks would be great for this :(
-	public class StubListener implements Listener {
+	public class StubListener implements ResponsibilityListener {
 		private Map methodsCalled;
 		private Result decoratedResult;
 
 		public StubListener(Map methodsCalled, Result decoratedResult) {
 			this.methodsCalled = methodsCalled;
 			this.decoratedResult = decoratedResult;
-		}
-
-		public void behaviourClassVerificationStarting(Class behaviourClass) {
-			methodsCalled.put("behaviourClassVerificationStarting", behaviourClass);
 		}
 
 		public void responsibilityVerificationStarting(Method responsibilityMethod) {
@@ -47,43 +43,21 @@ public class CompositeListenerBehaviour {
 			methodsCalled.put("responsibilityVerificationEnding", result);
 			return decoratedResult;
 		}
-
-		public void behaviourClassVerificationEnding(Class behaviourClass) {
-			methodsCalled.put("behaviourClassVerificationEnding", behaviourClass);
-		}
 	}
 
 	public void setUp() {
-		composite = new CompositeListener();
+		listeners = new ResponsibilityListeners();
 		callMap1 = new HashMap();
 		callMap2 = new HashMap();
 		nextResult = new Result("blah", "blah");
-		composite.add(new StubListener(callMap1, nextResult));
-		composite.add(new StubListener(callMap2, nextResult));
+		listeners.add(new StubListener(callMap1, nextResult));
+		listeners.add(new StubListener(callMap2, nextResult));
 	}
 
 	private void verifyMethodCalled(String methodName, Map callMap, Object arg) {
 		Verify.equal(1, callMap.size());
 		Verify.that("should have called:" + methodName, callMap.containsKey(methodName));
 		Verify.equal(arg, callMap.get(methodName));
-	}
-
-	public void shouldNotifyAllListenersWhenBehaviourClassVerificationStarting() {
-		// execute
-		composite.behaviourClassVerificationStarting(getClass());
-
-		// verify
-		verifyMethodCalled("behaviourClassVerificationStarting", callMap1, getClass());
-		verifyMethodCalled("behaviourClassVerificationStarting", callMap2, getClass());
-	}
-
-	public void shouldNotifyAllListenersWhenBehaviourClassVerificationFinished() {
-		// execute
-        composite.behaviourClassVerificationEnding(getClass());
-
-		// verify
-		verifyMethodCalled("behaviourClassVerificationEnding", callMap1, getClass());
-		verifyMethodCalled("behaviourClassVerificationEnding", callMap2, getClass());
 	}
 
 	public static class SomeBehaviourClass {
@@ -95,7 +69,7 @@ public class CompositeListenerBehaviour {
 		// setup
 		// execute
 		Method method = SomeBehaviourClass.class.getMethod("shouldDoSomething", new Class[0]);
-        composite.responsibilityVerificationStarting(method);
+        listeners.responsibilityVerificationStarting(method);
 
 		// verify
 		verifyMethodCalled("responsibilityVerificationStarting", callMap1, method);
@@ -108,7 +82,7 @@ public class CompositeListenerBehaviour {
 	    Result result = new Result("behaviourClass", "responsibility");
 
 		// execute
-	    Result returnedResult = composite.responsibilityVerificationEnding(result, new Object());
+	    Result returnedResult = listeners.responsibilityVerificationEnding(result, new Object());
 
 		// verify
 		Verify.equal(nextResult, returnedResult);

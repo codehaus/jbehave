@@ -7,34 +7,19 @@
  */
 package com.thoughtworks.jbehave.core.responsibility;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
+import com.thoughtworks.jbehave.core.BehaviourClassListener;
 
 
 /** Listener that captures verification results */
-class RecordingListener extends ListenerSupport {
+class RecordingBehaviourClassListener implements BehaviourClassListener {
     public Class startedBehaviourClass = null;
     public Class endedBehaviourClass = null;
-    public List verifications = new ArrayList(); // all verifications
-    public Result latestResult = null;
     
-    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
-        verifications.add(result);
-        latestResult = result;
-		return result;
-    }
-
     public void behaviourClassVerificationStarting(Class behaviourClass) {
         startedBehaviourClass = behaviourClass;
     }
     
     public void behaviourClassVerificationEnding(Class behaviourClass) {
         endedBehaviourClass = behaviourClass;
-    }
-    
-    public Result result(int i) {
-        return (Result) verifications.get(i);
     }
 }

@@ -76,7 +76,7 @@ public abstract class JMockSugar {
         return new IsInstanceOf(type);
     }
     
-    protected IsInstanceOf a( Class type ) {
+    protected IsInstanceOf any( Class type ) {
         return instanceOf(type);
     }
     

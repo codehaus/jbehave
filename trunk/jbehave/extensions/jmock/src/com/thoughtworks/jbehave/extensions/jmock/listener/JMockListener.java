@@ -14,8 +14,8 @@ import junit.framework.AssertionFailedError;
 
 import org.jmock.Mock;
 
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 
@@ -23,13 +23,10 @@ import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
-public class JMockListener extends ListenerSupport {
+public class JMockListener implements ResponsibilityListener {
 
-	public void behaviourClassVerificationStarting(Class spec) {
-	}
-
-	public void responsibilityVerificationStarting(Method responsibilityMethod) {
-	}
+    public void responsibilityVerificationStarting(Method responsibilityMethod) {
+    }
 
 	public Result responsibilityVerificationEnding(Result result, Object instance) {
 		try {

@@ -9,17 +9,20 @@ package com.thoughtworks.jbehave.core.listeners;
 
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.thoughtworks.jbehave.core.BehaviourClassListener;
+import com.thoughtworks.jbehave.core.ResponsibilityListener;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextListener extends ListenerSupport {
+public class TextListener implements BehaviourClassListener, ResponsibilityListener {
     public static final String SUCCESS = ".";
     public static final String FAILURE = "F";
     public static final String EXCEPTION_THROWN = "E";
@@ -46,35 +49,6 @@ public class TextListener extends ListenerSupport {
         if (outermostBehaviourClass == null) {
             outermostBehaviourClass = behaviourClass;
             timer.start();
-        }
-    }
-    
-    /**
-     * Write out the traditional dot, E or F as each behaviour runs.
-     */
-    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
-        responsibilitiesVerified++;
-        if (result.failed()) {
-            failures.add(result);
-        }
-        else if (result.threwException()) {
-            exceptionsThrown.add(result);
-        }
-        else if (result.isPending()) {
-            pending.add(result);
-        }
-        out.print(getSymbol(result.getStatus()));
-//        out.flush();
-		return result;
-    }
-
-    private String getSymbol(int status) {
-        switch (status) {
-            case Result.SUCCESS:          return SUCCESS;
-            case Result.FAILURE:          return FAILURE;
-            case Result.EXCEPTION_THROWN: return EXCEPTION_THROWN;
-            case Result.PENDING:          return PENDING;
-            default: throw new JBehaveFrameworkError("Unknown verification status: " + status);
         }
     }
     
@@ -135,6 +109,38 @@ public class TextListener extends ListenerSupport {
                 out.println(count + ")" + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
                 out.println("\t" + verification.getTargetException().getMessage());
             }
+        }
+    }
+
+    public void responsibilityVerificationStarting(Method responsibilityMethod) {
+    }
+    
+    /**
+     * Write out the traditional dot, E or F as each behaviour runs.
+     */
+    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
+        responsibilitiesVerified++;
+        if (result.failed()) {
+            failures.add(result);
+        }
+        else if (result.threwException()) {
+            exceptionsThrown.add(result);
+        }
+        else if (result.isPending()) {
+            pending.add(result);
+        }
+        out.print(getSymbol(result.getStatus()));
+//        out.flush();
+		return result;
+    }
+
+    private String getSymbol(int status) {
+        switch (status) {
+            case Result.SUCCESS:          return SUCCESS;
+            case Result.FAILURE:          return FAILURE;
+            case Result.EXCEPTION_THROWN: return EXCEPTION_THROWN;
+            case Result.PENDING:          return PENDING;
+            default: throw new JBehaveFrameworkError("Unknown verification status: " + status);
         }
     }
 }

@@ -22,7 +22,7 @@ public class Run {
             Class behaviourClass = Class.forName(args[0]);
             TextListener textListener = new TextListener(new PrintWriter(System.out));
             new BehaviourClassVerifier(behaviourClass, new ExecutingResponsibilityVerifier())
-                    .verifyBehaviourClass(textListener);
+                    .verifyBehaviourClass(textListener, textListener);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Problem verifying behaviour class " + args[0]);
