@@ -8,7 +8,7 @@
   <body>
     <h1>Two minute tutorial</h1>
 
-    <p>You create a Behaviour Class, which is a plain Java class which by convention
+    <p>You create a Behaviour Class, which is a plain Java class that by convention
     has the name of the class whose behaviour we are specifying followed
     by the word "Behaviour", so <tt>Foo</tt> has <tt>FooBehaviour</tt>.<br/></p>
 
@@ -16,7 +16,7 @@
 	behaviour we expect. These are just public void methods that start with the word "should"
 	and describe the specific behaviour (e.g. <tt>CustomerServiceBehaviour</tt>
 	might have <tt>shouldFindCustomerBySurname()</tt>).</p>
-	
+
 	<p>These will typically set up a known environment, execute some behaviour and
 	then verify that stuff happened. There are some static methods in
 	<tt>com.thoughtworks.jbehave.core.Verify</tt> that help with this, for instance
@@ -26,17 +26,17 @@
 	<div class="Shaded"><pre>
 public void should[DoSomething]() {
 	// setup
-	
+
 	// execute
-	
+
 	// verify
 }
 	</pre></div>
 	<p>The <tt>DoSomething</tt> is highlighted so we know we have to change it to actually
 	describe some behaviour. Templates are nice like that.</p>
-	
+
 	<p>Behaviour classes can be contained in, wait for it, a behaviour class container.
-	This is a plain Java class that implements the <tt>com.thoughtworks.jbehave.core.SpecContainer</tt>
+	This is a plain Java class that implements the <tt>com.thoughtworks.jbehave.core.BehaviourClassContainer</tt>
 	interface. This has a single method: <tt>getBehaviourClasses()</tt>, which returns an
 	array of <tt>Class</tt> objects representing the behaviour classes to run. Naturally
 	behaviour class containers can contain other behaviour class containers.</p>

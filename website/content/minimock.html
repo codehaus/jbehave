@@ -1,0 +1,58 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Minimock</title>
+  </head>
+  <body>
+    <h1>Two minute tutorial</h1>
+
+    <p>Minimock is exactly what it sounds like - a super-lightweight mocking library
+    with a very similar feel to jmock. Of course if minimock is too light weight for you, we
+    also have an extension for <a href="how-to-use-with-jmock.html">jMock</a></p>
+
+    <h2>How do I use Minimock</h2>
+    <p>It's easy! Simply create a Behaviour Class that extends <tt>UsingMiniMock</tt>.
+    <tt>UsingMiniMock</tt> provides a bunch of "sugar" methods for use when creating mocks
+    and setting up expectations.</p>
+
+    <p>You create a <tt>Mock</tt> by using the <tt>mock(Class)</tt> method. You can then set expectations
+    on the mock in much the same way as you can with jMock, though minimock does provide some useful shortcuts.
+    At the end of your behaviour you call <tt>verifyMocks()</tt> to verify that all expectations have been met.</p>
+
+    <p>For example:</p>
+
+	<div class="Shaded"><pre>
+public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
+	private CurrencyConverter sterlingConverter;
+	private Mock exchangeRateServiceMock;
+
+	public void setUp() {
+		exchangeRateServiceMock = mock(ExchangeRateService.class);
+		sterlingConverter = new SterlingCurrencyConverter((ExchangeRateService)exchangeRateServiceMock);
+	}
+
+	public void shouldConvertToUSD() throws Exception {
+		// expect
+		exchangeRateServiceMock.expects("retrieveRate").
+				with(eq(Currency.USD)).
+				will(returnValue(new ExchangeRate(1.85, 0.54)));
+
+		// execute
+		double convertedAmount = sterlingConverter.convertFromSterling(10.0, Currency.USD);
+
+		// verify
+		Verify.equal(18.50, convertedAmount, 0);
+		verifyMocks();
+	}
+}
+	</pre></div>
+
+	<h2>Some useful features</h2>
+	<ul>
+		<li>By default minimock stubs all method calls and will return reasonable defaults</li>
+		<li><tt>mock.expects("fooMethod")</tt> will allow calls to fooMethod with any, or no, arguments.</li>
+	</ul>
+  </body>
+</html>
