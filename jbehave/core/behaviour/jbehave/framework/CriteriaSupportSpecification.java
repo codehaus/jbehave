@@ -1,7 +1,7 @@
 /*
  * Created on 25-Dec-2003
  *
- * (c) 2003-2004 Dan North
+ * (c) 2003-2004 ThoughtWorks
  *
  * See license.txt for license details
  */
@@ -11,18 +11,18 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Test the {@link BehaviourGroupSupport} class
+ * Test the {@link CriteriaSupport} class
  *
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class BehaviourClassSupportBehaviours {
+public class CriteriaSupportSpecification {
 
     public static class BehaviourClassWithSingleBehaviour {
         public void shouldBehaveInSomeWay() {
         }
     }
 
-    private void assertContainsBehaviourName(String name, Collection behaviours) {
+    private void verifyContainsBehaviourName(String name, Collection behaviours) {
         for (Iterator i = behaviours.iterator(); i.hasNext();) {
             Criterion behaviour = (Criterion)i.next();
             if (behaviour.getName().equals(name)) return;
@@ -31,9 +31,9 @@ public class BehaviourClassSupportBehaviours {
     }
 
     public void shouldRecogniseSingleBehaviour() throws Exception {
-        Collection behaviours = BehaviourGroupSupport.getBehaviours(BehaviourClassWithSingleBehaviour.class);
+        Collection behaviours = CriteriaSupport.getCriteria(BehaviourClassWithSingleBehaviour.class);
         Verify.equal(1, behaviours.size());
-        assertContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
+        verifyContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
     }
 
     public static class BehaviourClassWithTwoBehaviours {
@@ -45,12 +45,11 @@ public class BehaviourClassSupportBehaviours {
     }
 
     public void shouldRecogniseTwoBehaviours() throws Exception {
-        Collection behaviours = BehaviourGroupSupport.getBehaviours(BehaviourClassWithTwoBehaviours.class);
+        Collection behaviours = CriteriaSupport.getCriteria(BehaviourClassWithTwoBehaviours.class);
 
-        // the Java reflection API doesn't guarantee the order of methods - shame
         Verify.equal(2, behaviours.size());
-        assertContainsBehaviourName("shouldDoOneThing", behaviours);
-        assertContainsBehaviourName("shouldDoAnotherThing", behaviours);
+        verifyContainsBehaviourName("shouldDoOneThing", behaviours);
+        verifyContainsBehaviourName("shouldDoAnotherThing", behaviours);
     }
 
     public static class BehaviourClassWithNonPublicMethods {
@@ -62,7 +61,7 @@ public class BehaviourClassSupportBehaviours {
     }
 
     public void shouldIgnoreNonPublicBehaviourMethods() throws Exception {
-        Collection behaviours = BehaviourGroupSupport.getBehaviours(BehaviourClassWithNonPublicMethods.class);
+        Collection behaviours = CriteriaSupport.getCriteria(BehaviourClassWithNonPublicMethods.class);
         Verify.equal(0, behaviours.size());
     }
 
@@ -78,9 +77,9 @@ public class BehaviourClassSupportBehaviours {
     }
 
     public void shouldIgnoreNonPublicBehaviourMethodsMixedWithBehaviours() throws Exception {
-        Collection behaviours = BehaviourGroupSupport.getBehaviours(BehaviourClassWithBehaviourAndNonPublicMethods.class);
+        Collection behaviours = CriteriaSupport.getCriteria(BehaviourClassWithBehaviourAndNonPublicMethods.class);
         Verify.equal(1, behaviours.size());
-        assertContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
+        verifyContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
     }
 
     public static class BehaviourSuperclassWithBehaviour {
@@ -92,9 +91,9 @@ public class BehaviourClassSupportBehaviours {
     }
 
     public void shouldRecogniseBehaviourInheritedFromSuperclass() throws Exception {
-        Collection behaviours = BehaviourGroupSupport.getBehaviours(BehaviourSubclassInheritingBehaviourMethod.class);
+        Collection behaviours = CriteriaSupport.getCriteria(BehaviourSubclassInheritingBehaviourMethod.class);
         Verify.equal(1, behaviours.size());
-        assertContainsBehaviourName("shouldDoSomething", behaviours);
+        verifyContainsBehaviourName("shouldDoSomething", behaviours);
     }
 
     public static class AggregateBehaviourClass implements Aggregate {
@@ -104,9 +103,9 @@ public class BehaviourClassSupportBehaviours {
     }
 
     public void shouldFindMethodsInAggregatedBehaviourClass() throws Exception {
-        Collection behaviours = BehaviourGroupSupport.getBehaviours(AggregateBehaviourClass.class);
+        Collection behaviours = CriteriaSupport.getCriteria(AggregateBehaviourClass.class);
         Verify.equal(1, behaviours.size());
-        assertContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
+        verifyContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
     }
 
     public static class NestedAggregateBehaviourClass implements Aggregate {
@@ -116,8 +115,12 @@ public class BehaviourClassSupportBehaviours {
     }
 
     public void shouldFindMethodsInNestedAggregatedBehaviourClass() throws Exception {
-        Collection behaviours = BehaviourGroupSupport.getBehaviours(NestedAggregateBehaviourClass.class);
+        Collection behaviours = CriteriaSupport.getCriteria(NestedAggregateBehaviourClass.class);
         Verify.equal(1, behaviours.size());
-        assertContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
+        verifyContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
     }
+    
+    public void shouldFindMethodsThatStartWithWill() throws Exception {
+		
+	}
 }
