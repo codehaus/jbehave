@@ -62,12 +62,21 @@ public class SimpleStoryParser implements StoryParser {
      */
     private void parseScenarios(StoryDetails storyDetails, BufferedReader reader) throws Exception {
         String input = null;
-        do {
-            input = reader.readLine();
-        } while (input != null && !scenarioMatcher.matches(input));
-        
-        if (input == null) return;
-        
+        while((input = reader.readLine())!=null) {
+            if (scenarioMatcher.matches(input)) {
+                parseScenario(storyDetails, reader, input);
+            }
+        }
+    }
+
+    
+    /**
+     * @param storyDetails
+     * @param reader
+     * @param input
+     * @throws Exception
+     */
+    private void parseScenario(StoryDetails storyDetails, BufferedReader reader, String input) throws Exception {
         String scenarioTitle = input.substring(scenarioMatcher.keywordLength());
         
         ContextDetails contextDetails = parseContext(reader);
@@ -78,7 +87,6 @@ public class SimpleStoryParser implements StoryParser {
         storyDetails.addScenario(scenario);
     }
 
-    
     /**
      * @param reader
      * @return
