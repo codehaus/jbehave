@@ -12,6 +12,7 @@
     <property name="working.dir" location="${build.dir}/delete_me"/>
     <property name="classes.dir" location="${working.dir}/classes" />
     <property name="behaviour.classes.dir" location="${working.dir}/behaviours" />
+    <property name="core.behaviour.classes.dir" location="../../core/behaviours" />
 
     <property name="dist.dir" location="${build.dir}/dist"/>
     <property name="dist.jar.file" location="${dist.dir}/${project}-${component.name}.jar" />
@@ -28,6 +29,7 @@
     <path id="all_jars_plus_behaviours">
         <path refid="dist_jar_with_external_jars"/>
         <path location="${behaviour.classes.dir}"/>
+        <path location="${core.behaviour.classes.dir}"/>
     </path>
     
     <target name="-init">
