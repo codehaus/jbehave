@@ -22,7 +22,7 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
         Mock visitor = mock(Visitor.class);
         
         // expect...
-        visitor.expects("visit").with(behaviourClass).willReturn("hello").id("1");
+        visitor.expects("visit").with(behaviourClass).will(returnValue("hello")).id("1");
         visitor.expects("visit").with(matchesBehaviourMethodName("shouldDoSomething")).id("2").after("1");
         visitor.expects("visit").with(matchesBehaviourMethodName("shouldDoSomethingElse")).id("3").after("2");
         
