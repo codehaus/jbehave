@@ -32,5 +32,4 @@ public class ListenerSupport implements Listener {
 
     public void behaviourClassVerificationEnding(Class behaviourClass) {
     }
-
 }

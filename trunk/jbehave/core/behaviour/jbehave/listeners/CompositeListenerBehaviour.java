@@ -115,6 +115,4 @@ public class CompositeListenerBehaviour {
 		verifyMethodCalled("responsibilityVerificationEnding", callMap1, verification);
 		verifyMethodCalled("responsibilityVerificationEnding", callMap2, nextVerification);
 	}
-
-
 }

@@ -9,8 +9,8 @@ package jbehave.listeners;
 
 import java.lang.reflect.Method;
 
-import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.Listener;
+import jbehave.framework.ResponsibilityVerification;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -24,11 +24,11 @@ public class TraceListener implements Listener {
     Log log = new Log();
 
     public void behaviourClassVerificationStarting(Class behaviourClass) {
-        log.trace("behaviourClassVerificationStarted: " + behaviourClass.getName());
+        log.trace("behaviourClassVerificationStarting: " + behaviourClass.getName());
     }
 
     public void behaviourClassVerificationEnding(Class behaviourClass) {
-        log.trace("behaviourClassVerificationEnded: " + behaviourClass.getName());
+        log.trace("behaviourClassVerificationEnding: " + behaviourClass.getName());
     }
 
     public void responsibilityVerificationStarting(Method responsibilityMethod) {

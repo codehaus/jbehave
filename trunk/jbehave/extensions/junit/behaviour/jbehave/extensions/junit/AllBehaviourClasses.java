@@ -17,7 +17,8 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
 
     public Class[] getBehaviourClasses() {
         return new Class[] {
-                JUnitAdapterBehaviour.class
+                JUnitAdapterBehaviour.class,
+                JUnitMethodAdapterBehaviour.class
         };
     }
 

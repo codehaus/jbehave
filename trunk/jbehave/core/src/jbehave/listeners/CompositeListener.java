@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.Listener;
+import jbehave.framework.ResponsibilityVerification;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still
@@ -62,10 +62,7 @@ public class CompositeListener implements Listener {
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("[CompositeListener:");
-        buffer.append(" listeners: ");
-        buffer.append(listeners);
-        buffer.append("]");
+        buffer.append("[CompositeListener:").append(" listeners: ").append(listeners).append("]");
         return buffer.toString();
     }
 }
