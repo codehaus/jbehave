@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.codegen.domain;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,5 +23,23 @@ public class OutcomeDetails {
     
     public List getExpectations() {
         return expectations;
+    }
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        for (Iterator iter = expectations.iterator(); iter.hasNext();) {
+            buffer.append(iter.next().toString());
+            buffer.append("\n");
+        }
+        return buffer.toString();
+    }
+    
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof OutcomeDetails)) return false;
+        
+        OutcomeDetails that = (OutcomeDetails)obj;
+        return this.expectations.equals(that.expectations);
     }
 }

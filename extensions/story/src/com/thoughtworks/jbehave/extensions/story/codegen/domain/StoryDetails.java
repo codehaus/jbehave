@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.codegen.domain;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -50,9 +51,36 @@ public class StoryDetails extends BasicDetails {
         if (!super.equals(obj)) return false;
         if (!(obj instanceof StoryDetails)) return false;
         StoryDetails that = (StoryDetails) obj;
+        
+//        if (this.scenarios.size() != that.scenarios.size()) return false;
+//        
+//        for (int i = 0; i < this.scenarios.size(); i++) {
+//            if (!this.scenarios.get(i).equals(that.scenarios.get(i))) return false;
+//        }
+        
         return this.role.equals(that.role)
                 && this.feature.equals(that.feature)
                 && this.benefit.equals(that.benefit)
                 && this.scenarios.equals(that.scenarios);
+                     
+    }
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(name());
+        buffer.append("\n");
+        buffer.append(role);
+        buffer.append("\n");
+        buffer.append(feature);
+        buffer.append("\n");
+        buffer.append(benefit);
+        buffer.append("\n\n");
+        
+        for (Iterator iter = scenarios.iterator(); iter.hasNext();) {
+            buffer.append(iter.next().toString());
+            buffer.append("\n");
+        }
+        return buffer.toString();
+        
     }
 }

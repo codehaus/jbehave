@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.codegen.domain;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,5 +32,22 @@ public class ContextDetails {
     
     public List getGivens() {
         return givens;
+    }
+    
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof ContextDetails)) return false;
+        
+        ContextDetails that = (ContextDetails)obj;
+        return this.givens.equals(that.givens);
+        
+    }
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        for (Iterator iter = givens.iterator(); iter.hasNext();) {
+            buffer.append(iter.next().toString());
+        }
+        return buffer.toString();
     }
 }

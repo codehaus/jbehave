@@ -37,4 +37,8 @@ public class BasicDetails {
         BasicDetails that = (BasicDetails) obj;
         return this.name.equals(that.name) && this.description.equals(that.description);
     }
+    
+    public String toString() {
+        return name + ", " + description + "\n";
+    }
 }
