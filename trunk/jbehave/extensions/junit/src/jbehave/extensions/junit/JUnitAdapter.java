@@ -9,6 +9,7 @@ package jbehave.extensions.junit;
 
 import jbehave.framework.BehaviourClassVerifier;
 import jbehave.framework.Listener;
+import jbehave.framework.NotifyingResponsibilityVerifier;
 import jbehave.framework.ResponsibilityVerifier;
 import jbehave.listeners.ListenerSupport;
 import junit.framework.Test;
@@ -29,7 +30,9 @@ public class JUnitAdapter implements Test {
                 count[0]++;
             }
         };
-        new BehaviourClassVerifier(behaviourClass).verifyBehaviourClass(testCaseCounter);
+        final BehaviourClassVerifier verifier =
+            new BehaviourClassVerifier(behaviourClass, new NotifyingResponsibilityVerifier());
+        verifier.verifyBehaviourClass(testCaseCounter);
        return count[0];
     }
 
