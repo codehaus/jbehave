@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="behaviour"/>
-	<classpathentry exported="true" sourcepath="C:/java/junit3.8.1/src" kind="lib" path="lib/junit.jar"/>
 	<classpathentry exported="true" kind="src" path="/jbehave core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="JBEHAVE_LIB/extensions/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

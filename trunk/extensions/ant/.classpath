@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="behaviour"/>
 	<classpathentry exported="true" kind="src" path="/jbehave core"/>
-	<classpathentry exported="true" kind="var" path="ANT_HOME/lib/ant.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="JBEHAVE_LIB/extensions/ant.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
