@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package banking;
+package example.domain;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

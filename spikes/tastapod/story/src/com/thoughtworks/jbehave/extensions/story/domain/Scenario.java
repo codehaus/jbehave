@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 
 
@@ -19,4 +20,5 @@ public interface Scenario extends Visitable {
     Context getContext();
     Event getEvent();
     Outcome getOutcome();
+    void setListener(ScenarioListener listener);
 }

@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.codegen.domain;
 
-import com.thoughtworks.jbehave.util.CaseConverter;
+import com.thoughtworks.jbehave.util.ConvertCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -27,7 +27,7 @@ public class BasicDetails {
         return name;
     }
     public String getClassName() {
-        return new CaseConverter().toCamelCase(name);
+        return new ConvertCase(name).toCamelCase();
     }
     
     public boolean equals(Object obj)  {

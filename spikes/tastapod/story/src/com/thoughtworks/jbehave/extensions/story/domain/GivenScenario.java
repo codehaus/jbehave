@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
+import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 
 
 /**
@@ -46,5 +47,8 @@ public class GivenScenario extends GivenBase implements Scenario {
     }
     public Story getStory() {
         return scenario.getStory();
+    }
+    public void setListener(ScenarioListener listener) {
+        scenario.setListener(listener);
     }
 }

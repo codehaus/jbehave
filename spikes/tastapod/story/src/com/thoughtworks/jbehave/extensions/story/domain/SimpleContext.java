@@ -40,7 +40,7 @@ public class SimpleContext implements Context {
         this(scenario, new Given[] {given});
     }
     
-    public void accept(Visitor visitor) {
+    public void accept(Visitor visitor) throws Exception {
         visitor.visitContext(this);
         visitables.accept(visitor);
     }

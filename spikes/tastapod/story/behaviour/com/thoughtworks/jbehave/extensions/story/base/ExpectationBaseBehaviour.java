@@ -19,15 +19,15 @@ public class ExpectationBaseBehaviour extends UsingJMock {
     public void shouldDispatchItselfIntoCorrectVisitorMethodEachTimeAcceptIsCalled() throws Exception {
         // given...
         Expectation expectation = new ExpectationBase() {
-            public void setExpectation(Environment environment) throws Exception {}
+            public void setExpectationIn(Environment environment) throws Exception {}
             public void verify(Environment environment) throws Exception {}
         };
         
         Mock visitor = new Mock(Visitor.class);
         
         // expect...
-        visitor.expectsOnce("visitExpectationBeforeEvent", expectation);
-        visitor.expectsOnce("visitExpectationAfterEvent", expectation).after("visitExpectationBeforeEvent");
+        visitor.expectsOnce("visitExpectationBeforeTheEvent", expectation);
+        visitor.expectsOnce("visitExpectationAfterTheEvent", expectation).after("visitExpectationBeforeTheEvent");
 
         // when...
         expectation.accept((Visitor)visitor.proxy());

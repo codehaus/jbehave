@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.core.responsibility.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
@@ -28,11 +29,11 @@ public class SimpleContextBehaviour extends UsingJMock {
         // then... verified by pixies
     }
     
-    public void shouldTellGivensToAcceptVisitor() throws Exception {
+    public void shouldTellGivensToAcceptVisitorInOrder() throws Exception {
         // given...
         Mock given1 = new Mock(Given.class, "given1");
         Mock given2 = new Mock(Given.class, "given2");
-        Visitor visitor = Visitor.NULL;
+        Visitor visitor = (Visitor) stub(Visitor.class);
         
         SimpleContext context = new SimpleContext(
                 new Given[] {
@@ -42,11 +43,31 @@ public class SimpleContextBehaviour extends UsingJMock {
         );
         
         given1.expects(once()).method("accept").with(same(visitor));
-        given2.expects(once()).method("accept").with(same(visitor));
+        given2.expects(once()).method("accept").with(same(visitor)).after(given1, "accept");
         
         // when...
         context.accept(visitor);
         
         // then... verified by framework
+    }
+    
+    private static class SomeCheckedException extends Exception {
+    }
+    
+    public void shouldPropagateExceptionFromCallToGivensAcceptMethod() throws Exception {
+        // given...
+        Visitor visitorStub = (Visitor)stub(Visitor.class);
+        Mock given = new Mock(Given.class);
+        Context context = new SimpleContext((Given)given.proxy());
+
+        // expect...
+        given.expects(atLeastOnce()).method("accept").will(throwException(new SomeCheckedException()));
+        
+        // when...
+        try {
+            context.accept(visitorStub);
+            Verify.impossible("Should have propagated SomeCheckedException");
+        } catch (SomeCheckedException expected) {
+        }
     }
 }

@@ -14,7 +14,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
-import com.thoughtworks.jbehave.util.CaseConverter;
+import com.thoughtworks.jbehave.util.ConvertCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -37,7 +37,7 @@ public class StoryBase implements Story {
     }
     
     public String getName() {
-        return new CaseConverter().toSeparateWords(this);
+        return new ConvertCase(this).toSeparateWords();
     }
     
     public Scenario getScenario(String name) {
@@ -66,7 +66,7 @@ public class StoryBase implements Story {
         return benefit;
     }
     
-    public void accept(Visitor visitor) {
+    public void accept(Visitor visitor) throws Exception {
         visitor.visitStory(this);
         criteria.accept(visitor);
     }

@@ -5,18 +5,19 @@
  *
  * See license.txt for license details
  */
-package givens;
+package example.givens;
 
 import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
-/** @given overdraft limit = 100 */
-public class AccountHasOverdraftPermission extends GivenBase {
+/** set balance = -150 */
+public class AccountIsOverOverdraftLimit extends GivenBase {
     public void setUp(Environment context) {
+        new AccountHasOverdraftPermission().setUp(context);
     }
 
     public String getDescription() {
-        return "overdraft limit = 100";
+        return "set balance = -150";
     }
 }

@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.core.responsibility.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
@@ -28,11 +29,11 @@ public class SimpleOutcomeBehaviour extends UsingJMock {
         // then... verified by pixies
     }
     
-    public void shouldTellExpectationsToAcceptVisitor() throws Exception {
+    public void shouldTellExpectationsToAcceptVisitorInOrder() throws Exception {
         // expectation...
         Mock expectation1 = new Mock(Expectation.class, "expectation1");
         Mock expectation2 = new Mock(Expectation.class, "expectation2");
-        Visitor visitor = Visitor.NULL;
+        Visitor visitor = (Visitor) stub(Visitor.class);
         
         SimpleOutcome outcome = new SimpleOutcome(
                 new Expectation[] {
@@ -42,11 +43,31 @@ public class SimpleOutcomeBehaviour extends UsingJMock {
         );
         
         expectation1.expects(once()).method("accept").with(same(visitor));
-        expectation2.expects(once()).method("accept").with(same(visitor));
+        expectation2.expects(once()).method("accept").with(same(visitor)).after(expectation1, "accept");
         
         // when...
         outcome.accept(visitor);
         
         // then... verified by framework
+    }
+    
+    private static class SomeCheckedException extends Exception {
+    }
+    
+    public void shouldPropagateExceptionFromCallToExpectationsAcceptMethod() throws Exception {
+        // given...
+        Visitor visitorStub = (Visitor)stub(Visitor.class);
+        Mock expectation = new Mock(Expectation.class);
+        Outcome outcome = new SimpleOutcome((Expectation)expectation.proxy());
+
+        // expect...
+        expectation.expects(atLeastOnce()).method("accept").will(throwException(new SomeCheckedException()));
+        
+        // when...
+        try {
+            outcome.accept(visitorStub);
+            Verify.impossible("Should have propagated SomeCheckedException");
+        } catch (SomeCheckedException expected) {
+        }
     }
 }

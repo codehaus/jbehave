@@ -5,18 +5,15 @@
  *
  * See license.txt for license details
  */
-package events;
+package example.events;
 
 import com.thoughtworks.jbehave.extensions.story.base.EventBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
-import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 
-
-public class UserRequestsTwentyPounds extends EventBase {
+public class UserRequestsCash extends EventBase {
     
     public void occurIn(Environment environment) {
-        throw new UnimplementedException();
     }
 
     public String toString() {

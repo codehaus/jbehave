@@ -7,6 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.extensions.story.listener.NULLScenarioListener;
+import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
@@ -27,6 +29,7 @@ public class SimpleScenario implements Scenario, Visitable {
     protected final Outcome outcome;
     protected final String name;
     protected final Story story;
+    private ScenarioListener listener = new NULLScenarioListener();
     
     public SimpleScenario(String name, Story story, Context context, Event event, Outcome outcome) {
         this.name = name;
@@ -58,11 +61,25 @@ public class SimpleScenario implements Scenario, Visitable {
         return outcome;
     }
     
-    public void accept(Visitor visitor) {
-        visitor.visitScenario(this);
-        context.accept(visitor);
-        outcome.accept(visitor);
-        event.accept(visitor);
-        outcome.accept(visitor);
+    public void accept(Visitor visitor) throws Exception {
+        try {
+            visitor.visitScenario(this);
+            context.accept(visitor);
+            outcome.accept(visitor);
+            event.accept(visitor);
+            outcome.accept(visitor);
+            
+            listener.scenarioSucceeded(this);
+        }
+        catch (UnimplementedException e) {
+            listener.scenarioUnimplemented(this, e);
+        }
+        catch (Exception e) {
+            listener.scenarioFailed(this, e);
+        }
+    }
+
+    public void setListener(ScenarioListener listener) {
+        this.listener = listener;
     }
 }

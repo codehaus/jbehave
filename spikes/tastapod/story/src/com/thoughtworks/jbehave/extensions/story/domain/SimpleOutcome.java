@@ -41,7 +41,7 @@ public class SimpleOutcome implements Outcome {
         return expectations;
     }
 
-    public void accept(Visitor visitor) {
+    public void accept(Visitor visitor) throws Exception {
         visitor.visitOutcome(this);
         expectations.accept(visitor);
     }

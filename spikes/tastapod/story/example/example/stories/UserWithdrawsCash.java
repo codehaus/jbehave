@@ -5,30 +5,29 @@
  *
  * See license.txt for license details
  */
-package stories;
+package example.stories;
 
 import com.thoughtworks.jbehave.extensions.story.base.StoryBase;
 import com.thoughtworks.jbehave.extensions.story.domain.SimpleContext;
 import com.thoughtworks.jbehave.extensions.story.domain.SimpleOutcome;
 import com.thoughtworks.jbehave.extensions.story.domain.SimpleScenario;
 
-import events.UserRequestsTwentyPounds;
-import expectations.ATMShouldDispenseCash;
-import expectations.ATMShouldRetainBankCard;
-import expectations.AccountBalanceShouldBeReduced;
-import expectations.ATMShouldRefuseCash;
-import expectations.ATMShouldReturnBankCardToCustomer;
-import givens.AccountHasOverdraftPermission;
-import givens.AccountIsInCredit;
-import givens.AccountIsOverOverdraftLimit;
-import givens.AccountHasNegativeBalanceWithoutPermission;
+import example.events.UserRequestsCash;
+import example.expectations.ATMShouldDispenseCash;
+import example.expectations.ATMShouldRefuseCash;
+import example.expectations.ATMShouldRetainBankCard;
+import example.expectations.ATMShouldReturnBankCardToCustomer;
+import example.expectations.AccountBalanceShouldBeReduced;
+import example.givens.AccountHasNegativeBalanceWithoutPermission;
+import example.givens.AccountHasOverdraftPermission;
+import example.givens.AccountHasEnoughCash;
+import example.givens.AccountIsOverOverdraftLimit;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
  */
 public class UserWithdrawsCash extends StoryBase {
 
-    
     public UserWithdrawsCash() {
         super(
                 "Bank card holder",
@@ -39,9 +38,9 @@ public class UserWithdrawsCash extends StoryBase {
         addScenario(new SimpleScenario(
                 "Happy scenario", this,
                 new SimpleContext(
-                    new AccountIsInCredit()
+                    new AccountHasEnoughCash()
                 ),
-                new UserRequestsTwentyPounds(),
+                new UserRequestsCash(),
                 new SimpleOutcome(
                     new ATMShouldDispenseCash(),
                     new ATMShouldReturnBankCardToCustomer(),
@@ -55,13 +54,13 @@ public class UserWithdrawsCash extends StoryBase {
                 new SimpleContext(
                     new AccountHasOverdraftPermission()
                 ),
-                new UserRequestsTwentyPounds(),
+                new UserRequestsCash(),
                 new SimpleOutcome(
                     new ATMShouldDispenseCash(),
                     new ATMShouldReturnBankCardToCustomer(),
                     new AccountBalanceShouldBeReduced()
                 )
-            )        
+            )
         );
         
         addScenario(new SimpleScenario(
@@ -70,7 +69,7 @@ public class UserWithdrawsCash extends StoryBase {
                         getScenario("Happy story with overdraft"),
                     new AccountHasNegativeBalanceWithoutPermission()
                 ),
-                new UserRequestsTwentyPounds(),
+                new UserRequestsCash(),
                 new SimpleOutcome(
                     new ATMShouldRefuseCash(),
                     new ATMShouldReturnBankCardToCustomer()
@@ -83,7 +82,7 @@ public class UserWithdrawsCash extends StoryBase {
                 new SimpleContext(
                     new AccountIsOverOverdraftLimit()
                 ),
-                new UserRequestsTwentyPounds(),
+                new UserRequestsCash(),
                 new SimpleOutcome(
                     new ATMShouldRefuseCash(),
                     new ATMShouldRetainBankCard()

@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package expectations;
+package example.expectations;
 
 import com.thoughtworks.jbehave.extensions.story.base.ExpectationBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
@@ -13,7 +13,8 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
 public class ATMShouldRetainBankCard extends ExpectationBase {
-    public void setExpectation(Environment environment) throws Exception {
+    public void setExpectationIn(Environment environment) throws Exception {
+        throw new RuntimeException("oops");
     }
 
     public void verify(Environment context) {

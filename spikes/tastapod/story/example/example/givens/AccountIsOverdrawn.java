@@ -5,20 +5,24 @@
  *
  * See license.txt for license details
  */
-package givens;
+package example.givens;
 
 import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
+import example.domain.Account;
 
-/** balance = -50, overdraft limit = 0 */
-public class AccountHasNegativeBalanceWithoutPermission extends GivenBase {
+
+/**
+ * set balance = -50
+ */
+public class AccountIsOverdrawn extends GivenBase {
     public void setUp(Environment environment) {
-        new AccountIsOverdrawn().setUp(environment);
-        new AccountDoesNotHaveOverdraftFacility().setUp(environment);
+        Mock accountMock = (Mock)environment.get("accountMock", new Mock(Account.class));
+        accountMock.stubs().method("getBalance").will(returnValue(-50));
     }
 
     public String getDescription() {
-        return "balance = -50, overdraft limit = 0";
+        return "set balance = -50";
     }
 }

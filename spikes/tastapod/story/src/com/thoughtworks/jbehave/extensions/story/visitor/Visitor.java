@@ -20,14 +20,12 @@ import com.thoughtworks.jbehave.extensions.story.domain.Story;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Visitor {
-    Visitor NULL = new VisitorSupport();
-    
-    void visitContext(Context context);
-    void visitEvent(Event event);
-    void visitExpectationBeforeEvent(Expectation expectation);
-    void visitExpectationAfterEvent(Expectation expectation);
-    void visitGiven(Given given);
-    void visitOutcome(Outcome Outcome);
-    void visitScenario(Scenario scenario);
-    void visitStory(Story story);
+    void visitStory(Story story) throws Exception;
+    void visitScenario(Scenario scenario) throws Exception;
+    void visitContext(Context context) throws Exception;
+    void visitGiven(Given given) throws Exception;
+    void visitOutcome(Outcome Outcome) throws Exception;
+    void visitExpectationBeforeTheEvent(Expectation expectation) throws Exception;
+    void visitEvent(Event event) throws Exception;
+    void visitExpectationAfterTheEvent(Expectation expectation) throws Exception;
 }

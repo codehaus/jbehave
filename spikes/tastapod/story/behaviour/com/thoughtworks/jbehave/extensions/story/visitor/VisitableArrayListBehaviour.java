@@ -18,7 +18,7 @@ public class VisitableArrayListBehaviour extends UsingJMock {
         // child...
         Mock child1 = new Mock(Visitable.class, "child1");
         Mock child2 = new Mock(Visitable.class, "child2");
-        Visitor visitor = Visitor.NULL;
+        Visitor visitor = (Visitor) stub(Visitor.class);
         
         VisitableArrayList list = new VisitableArrayList();
         list.add(child1.proxy());

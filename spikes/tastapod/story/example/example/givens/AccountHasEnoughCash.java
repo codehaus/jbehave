@@ -5,15 +5,16 @@
  *
  * See license.txt for license details
  */
-package givens;
+package example.givens;
 
-import banking.Account;
 
 import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
+import example.domain.Account;
+
 /** set balance = 50 */
-public class AccountIsInCredit extends GivenBase {
+public class AccountHasEnoughCash extends GivenBase {
     
     public void setUp(Environment environment) {
         Mock account = (Mock) environment.get("accountMock", new Mock(Account.class));

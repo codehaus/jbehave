@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package expectations;
+package example.expectations;
 
 import com.thoughtworks.jbehave.extensions.story.base.ExpectationBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
@@ -15,7 +15,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 /** balance = balance - 20 */
 public class AccountBalanceShouldBeReduced extends ExpectationBase {
 
-    public void setExpectation(Environment environment) throws Exception {
+    public void setExpectationIn(Environment environment) throws Exception {
     }
     
     public void verify(Environment context) {

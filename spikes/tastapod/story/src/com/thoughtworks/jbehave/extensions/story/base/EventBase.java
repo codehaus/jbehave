@@ -19,7 +19,7 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 public abstract class EventBase implements Event {
     public abstract void occurIn(Environment environment) throws Exception;
 
-    public void accept(Visitor visitor) {
+    public void accept(Visitor visitor) throws Exception {
         visitor.visitEvent(this);
     }
 }

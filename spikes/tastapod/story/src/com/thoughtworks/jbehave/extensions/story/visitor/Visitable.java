@@ -13,5 +13,5 @@ package com.thoughtworks.jbehave.extensions.story.visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Visitable {
-    void accept(Visitor visitor);
+    void accept(Visitor visitor) throws Exception;
 }

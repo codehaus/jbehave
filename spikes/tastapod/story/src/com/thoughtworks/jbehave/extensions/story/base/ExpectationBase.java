@@ -21,7 +21,7 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public abstract class ExpectationBase implements Expectation {
-    public abstract void setExpectation(Environment environment) throws Exception;
+    public abstract void setExpectationIn(Environment environment) throws Exception;
     public abstract void verify(Environment environment) throws Exception;
 
     private boolean alreadyAcceptedVisitor = false;
@@ -30,20 +30,20 @@ public abstract class ExpectationBase implements Expectation {
      * Passes itself into a {@link Visitor}
      * 
      * The first time this method is called, the object passes itself into
-     * the {@link Visitor#visitExpectationBeforeEvent(Expectation)} method.<br/>
+     * the {@link Visitor#visitExpectationBeforeTheEvent(Expectation)} method.<br/>
      * <br/>
      * The second and subsequent times, it passes itself into the
-     * {@link Visitor#visitExpectationAfterEvent(Expectation)} method.<br/>
+     * {@link Visitor#visitExpectationAfterTheEvent(Expectation)} method.<br/>
      * <br/>
      * It is up to you to ensure that you visit the {@link Event} in the meantime!
      */
-    public void accept(Visitor visitor) {
+    public void accept(Visitor visitor) throws Exception {
         if (!alreadyAcceptedVisitor) {
-            visitor.visitExpectationBeforeEvent(this);
+            visitor.visitExpectationBeforeTheEvent(this);
             alreadyAcceptedVisitor = true;
         }
         else {
-            visitor.visitExpectationAfterEvent(this);
+            visitor.visitExpectationAfterTheEvent(this);
         }
         
     }

@@ -35,7 +35,7 @@ public class StoryBaseBehaviour extends UsingJMock {
         StoryBase story = new StoryBase("role", "feature", "benefit");
         Mock scenario1 = new Mock(Scenario.class, "scenario1");
         Mock scenario2 = new Mock(Scenario.class, "scenario2");
-        Visitor visitor = Visitor.NULL;
+        Visitor visitor = (Visitor) stub(Visitor.class);
 
         scenario1.expects(once()).method("accept").with(same(visitor));
         scenario2.expects(once()).method("accept").with(same(visitor));

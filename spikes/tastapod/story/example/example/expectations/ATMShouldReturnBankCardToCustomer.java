@@ -5,19 +5,18 @@
  *
  * See license.txt for license details
  */
-package expectations;
+package example.expectations;
 
 import com.thoughtworks.jbehave.extensions.story.base.ExpectationBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
 
-public class ATMShouldRefuseCash extends ExpectationBase {
-
-    public void setExpectation(Environment environment) throws Exception {
+public class ATMShouldReturnBankCardToCustomer extends ExpectationBase {
+    public void setExpectationIn(Environment environment) throws Exception {
     }
-    
+
     public void verify(Environment context) {
-        // refuse cash
+        // return bank card
     }
 }

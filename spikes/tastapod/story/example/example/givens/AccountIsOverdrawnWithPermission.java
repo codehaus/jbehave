@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package givens;
+package example.givens;
 
 import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;

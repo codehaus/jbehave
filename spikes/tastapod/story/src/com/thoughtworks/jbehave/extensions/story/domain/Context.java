@@ -21,7 +21,7 @@ public interface Context extends Visitable {
         public List getGivens() {
             return Collections.EMPTY_LIST;
         }
-        public void accept(Visitor visitor) {
+        public void accept(Visitor visitor) throws Exception {
         }
     };
 }

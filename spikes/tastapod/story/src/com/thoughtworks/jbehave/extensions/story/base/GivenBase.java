@@ -20,7 +20,7 @@ public abstract class GivenBase extends UsingJMock implements Given {
 
     public abstract void setUp(Environment environment) throws Exception;
     
-    public void accept(Visitor visitor) {
+    public void accept(Visitor visitor) throws Exception {
         visitor.visitGiven(this);
     }
 }

@@ -22,7 +22,7 @@ public interface Outcome extends Visitable {
         public List getExpectations() {
             return Collections.EMPTY_LIST;
         }
-        public void accept(Visitor visitor) {
+        public void accept(Visitor visitor) throws Exception {
         }
     };
 

@@ -18,7 +18,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
-import com.thoughtworks.jbehave.util.CaseConverter;
+import com.thoughtworks.jbehave.util.ConvertCase;
 
 
 /**
@@ -55,29 +55,29 @@ public class PlainTextRenderer implements Visitor {
         out.print(nextWord);
         if (given instanceof GivenScenario) {
             GivenScenario givenScenario = (GivenScenario) given;
-            out.print("\"" + new CaseConverter().toSeparateWords(givenScenario.getScenario().getDescription()) + "\"");
+            out.print("\"" + new ConvertCase(givenScenario.getScenario().getDescription()).toSeparateWords() + "\"");
             out.print(" from ");
-            out.println("\"" + new CaseConverter().toSeparateWords(givenScenario.getStory()) + "\"");
+            out.println("\"" + new ConvertCase(givenScenario.getStory()).toSeparateWords() + "\"");
         }
         else {
-            out.println(new CaseConverter().toSeparateWords(given));
+            out.println(new ConvertCase(given).toSeparateWords());
         }
         nextWord = "and ";
     }
 
     public void visitEvent(Event event) {
-        out.println("When " + new CaseConverter().toSeparateWords(event));
+        out.println("When " + new ConvertCase(event).toSeparateWords());
     }
 
     public void visitOutcome(Outcome outcome) {
         nextWord = "Then ";
     }
     
-    public void visitExpectationBeforeEvent(Expectation expectation) {
+    public void visitExpectationBeforeTheEvent(Expectation expectation) {
     }
 
-    public void visitExpectationAfterEvent(Expectation expectation) {
-        out.println(nextWord + new CaseConverter().toSeparateWords(expectation));
+    public void visitExpectationAfterTheEvent(Expectation expectation) {
+        out.println(nextWord + new ConvertCase(expectation).toSeparateWords());
         nextWord = "and ";
     }
 }

@@ -19,7 +19,7 @@ public interface Expectation extends Visitable {
      * 
      * Used to set expectations in any mocks before the event
      */
-    void setExpectation(Environment environment) throws Exception;
+    void setExpectationIn(Environment environment) throws Exception;
     
     /**
      * Verify expectation after the event
