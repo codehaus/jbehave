@@ -23,6 +23,6 @@ public class JMockBehaviourClassVerifier {
 		CompositeListener listener = new CompositeListener();
 		listener.add(new JMockListener());
 		listener.add(new TextListener(new OutputStreamWriter(System.out)));
-		new BehaviourClassVerifier(Class.forName(args[0])).verifyBehaviourClass(listener);
+		new BehaviourClassVerifier(Class.forName(args[0]), abc).verifyBehaviourClass(listener);
 	}
 }

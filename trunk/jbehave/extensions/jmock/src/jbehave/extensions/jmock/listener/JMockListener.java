@@ -57,7 +57,7 @@ public class JMockListener extends ListenerSupport {
 	}
 
 	private ResponsibilityVerification createCriteriaVerification(ResponsibilityVerification behaviourResult, VerificationException ve) {
-		return new ResponsibilityVerification(behaviourResult.getName(), behaviourResult.getBehaviourClassName(), ve);
+		return new ResponsibilityVerification(behaviourResult.getBehaviourClassName(), behaviourResult.getName(), ve);
 	}
 
 	private void verifyMock(Field field, Object executedInstance) {

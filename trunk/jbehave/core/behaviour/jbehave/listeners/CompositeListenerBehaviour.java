@@ -7,14 +7,13 @@
  */
 package jbehave.listeners;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
 import jbehave.framework.Listener;
-import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.Verify;
-
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -94,8 +93,6 @@ public class CompositeListenerBehaviour {
 	
 	public void shouldNotifyAllListenersWhenResponsibilityVerificationStarts() throws Exception {
 		// setup
-		ResponsibilityVerifier verifier = new ResponsibilityVerifier();
-
 		// execute
 		Method method = SomeBehaviourClass.class.getMethod("shouldDoSomething", new Class[0]);
         composite.responsibilityVerificationStarting(method);
@@ -108,7 +105,7 @@ public class CompositeListenerBehaviour {
 
 	public void shouldNotifyAllListenersWhenResponsibilityVerificationEndingAndPassOnReturnedResponsibilityVerifierToNextListener() {
 		// setup
-	    ResponsibilityVerification verification = new ResponsibilityVerification("responsibility", "behaviourClass");
+	    ResponsibilityVerification verification = new ResponsibilityVerification("behaviourClass", "responsibility");
 
 		// execute
 	    ResponsibilityVerification returnedVerification = composite.responsibilityVerificationEnding(verification, new Object());

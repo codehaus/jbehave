@@ -42,17 +42,17 @@ public class TextListenerBehaviour {
     }
 
     public void shouldRenderSuccessSymbolForSuccess() throws Exception {
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldSucceed", "SomeClass", null), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldSucceed", null), new Object());
         Verify.equal(SUCCESS, writer.toString());
     }
 
     public void shouldRenderExceptionSymbolForException() throws Exception {
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldThrowException", "SomeClass", new Exception()), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldThrowException", new Exception()), new Object());
         Verify.equal(EXCEPTION_THROWN, writer.toString());
     }
 
     public void shouldRenderFailureSymbolForFailure() throws Exception {
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldFail", "SomeClass", new VerificationException("oops")), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldFail", new VerificationException("oops")), new Object());
         Verify.equal(FAILURE, writer.toString());
     }
 
@@ -65,29 +65,29 @@ public class TextListenerBehaviour {
 
     public void shouldSummarizeSingleSuccessfulResponsibility() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldDoX", BehaviourClass.class.getName(), null), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification(BehaviourClass.class.getName(), "shouldDoX", null), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("\nResponsibilities: 1");
     }
 
     public void shouldSummarizeTwoSuccessfulResponsibilities() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldDoX", "SomeClass", null), new Object());
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldDoY", "SomeClass", null), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldDoX", null), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldDoY", null), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("\nResponsibilities: 2");
     }
 
     public void shouldSummarizeResponsibilityWithVerificationFailure() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldDoX", "SomeClass", new VerificationException("oops")), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldDoX", new VerificationException("oops")), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("\nResponsibilities: 1. Failures: 1");
     }
 
     public void shouldPrintStackTraceForCriteronWithVerificationFailure() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldDoX", "SomeClass", new VerificationException("oops")), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldDoX", new VerificationException("oops")), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("Failures:");
         verifyOutputContains("\n1) shouldDoX [SomeClass]:");
@@ -96,14 +96,14 @@ public class TextListenerBehaviour {
 
     public void shouldSummarizeCriterionWithExceptionThrown() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldDoX", "SomeClass", new Exception()), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldDoX", new Exception()), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("\nResponsibilities: 1. Failures: 0, Exceptions: 1");
     }
 
     public void shouldPrintStackTraceForException() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
-        listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldDoX", "SomeClass", new Exception()), new Object());
+        listener.responsibilityVerificationEnding(new ResponsibilityVerification("SomeClass", "shouldDoX", new Exception()), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("Exceptions Thrown:");
         verifyOutputContains("\n1) shouldDoX [SomeClass]:");

@@ -13,6 +13,7 @@ import java.util.List;
 import jbehave.extensions.jmock.UsingJMock;
 import jbehave.framework.Listener;
 import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.ExecutingResponsibilityVerifier;
 import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.Verify;
 import junit.framework.AssertionFailedError;
@@ -23,12 +24,14 @@ import junit.framework.AssertionFailedError;
  */
 public class JMockListenerBehaviour {
 	private Listener listener;
+    private ResponsibilityVerifier verifier;
 
 	public void setUp() {
 		listener = new JMockListener();
+        verifier = new ExecutingResponsibilityVerifier();
 	}
 
-    public static class BehaviourClassWithPrivateMock implements UsingJMock {
+    public static class BehaviourClass1 implements UsingJMock {
         public boolean verifyWasCalled = false;
         
         private Mock someMock = new Mock(List.class) {
@@ -54,15 +57,10 @@ public class JMockListenerBehaviour {
       throw new Error("No responsibility method found in " + behaviourClass.getName());
     }
 
-    private ResponsibilityVerifier getSingleResponsibilityVerifier(Class behaviourClass) throws Exception {
-        return new ResponsibilityVerifier();
-    }
-    
-	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
-        // setup
-        ResponsibilityVerifier verifier = getSingleResponsibilityVerifier(BehaviourClassWithPrivateMock.class);
-        ResponsibilityVerification verification = verifier.verifyResponsibility(Listener.NULL);
-		BehaviourClassWithPrivateMock behaviourClassInstance = new BehaviourClassWithPrivateMock();
+    public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
+        ResponsibilityVerification verification =
+            verifier.verifyResponsibility(Listener.NULL, firstResponsibilityMethod(BehaviourClass1.class));
+		BehaviourClass1 behaviourClassInstance = new BehaviourClass1();
 
         // execute
         listener.responsibilityVerificationEnding(verification, behaviourClassInstance);
@@ -71,7 +69,7 @@ public class JMockListenerBehaviour {
         Verify.that(behaviourClassInstance.verifyWasCalled);
 	}
 
-	public static class BehaviourClassWithFailingMock implements UsingJMock {
+	public static class BehaviourClass2 implements UsingJMock {
         public boolean verifyWasCalled = false;
 
         private Mock someMock = new Mock(List.class) {
@@ -87,11 +85,13 @@ public class JMockListenerBehaviour {
 
 	public void shouldCreateNewVerificationWhenVerifyFails() throws Exception {
 		// setup
-        ResponsibilityVerifier verifier = getSingleResponsibilityVerifier(BehaviourClassWithPrivateMock.class);
-        ResponsibilityVerification verification = verifier.verifyResponsibility(Listener.NULL);
-        Object behaviourClassInstance = new BehaviourClassWithFailingMock();
-		// execute
-        ResponsibilityVerification verifyMockResult = listener.responsibilityVerificationEnding(verification, behaviourClassInstance);
+        ResponsibilityVerification verification
+            = verifier.verifyResponsibility(Listener.NULL,
+                    firstResponsibilityMethod(BehaviourClass2.class));
+        BehaviourClass2 instance = new BehaviourClass2();
+
+        // execute
+        ResponsibilityVerification verifyMockResult = listener.responsibilityVerificationEnding(verification, instance);
 
 		// verify
 		Verify.notNull(verifyMockResult);
@@ -102,7 +102,7 @@ public class JMockListenerBehaviour {
 		String someMethod();
 	}
 
-	public static class BehaviourClassThatUsesJMock implements UsingJMock {
+	public static class BehaviourClass3 implements UsingJMock {
 
 		public void shouldUseAMockWhoseExpectationWillFail() throws Exception {
 	        Mock foo = new Mock(Foo.class);
@@ -112,17 +112,17 @@ public class JMockListenerBehaviour {
 	}
 
 	public void shouldAutomaticallyVerifyMocks() throws Exception {
-		// setup
-		ResponsibilityVerifier verifier = getSingleResponsibilityVerifier(BehaviourClassThatUsesJMock.class);
-		BehaviourClassThatUsesJMock behaviourClassInstance = new BehaviourClassThatUsesJMock();
-
+        // setup
+        final Method method = firstResponsibilityMethod(BehaviourClass3.class);
+        listener.responsibilityVerificationStarting(method);
+        final BehaviourClass3 instance = new BehaviourClass3();
+        instance.shouldUseAMockWhoseExpectationWillFail();
+        
 		// execute
-	    listener.responsibilityVerificationStarting(abc);
-		behaviourClassInstance.shouldUseAMockWhoseExpectationWillFail();
 		ResponsibilityVerification verification =
             listener.responsibilityVerificationEnding(
-                    new ResponsibilityVerification("shouldUseAMockWhoseExpectationWillFail", "AJMockUsingSpec"),
-                    behaviourClassInstance);
+                    new ResponsibilityVerification(BehaviourClass3.class.getName(), "shouldUseAMockWhoseExpectationWillFail"),
+                    instance);
         
 		// verify
 		Verify.that("should fail JMock verification", verification.failed());

@@ -10,6 +10,7 @@ package jbehave.framework;
 import jbehave.framework.exception.PendingException;
 import jbehave.framework.exception.VerificationException;
 
+
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
@@ -25,25 +26,25 @@ public class ResponsibilityVerificationBehaviour {
 
     public void shouldHaveConsistentStateForSuccess() throws Exception {
         ResponsibilityVerification verification =
-            new ResponsibilityVerification("shouldSucceed", "SomeClass", null);
+            new ResponsibilityVerification("SomeClass", "shouldSucceed", null);
         verifyEvaluationState(verification, ResponsibilityVerification.SUCCESS, true, false, false, false);
     }
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
         ResponsibilityVerification verification =
-            new ResponsibilityVerification("shouldFail", "SomeClass", new VerificationException("oops"));
+            new ResponsibilityVerification("SomeClass", "shouldFail", new VerificationException("oops"));
         verifyEvaluationState(verification, ResponsibilityVerification.FAILURE, false, true, false, false);
     }
 
     public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
         ResponsibilityVerification verification =
-            new ResponsibilityVerification("shouldThrowException", "SomeClass", new Exception());
+            new ResponsibilityVerification("SomeClass", "shouldThrowException", new Exception());
         verifyEvaluationState(verification, ResponsibilityVerification.EXCEPTION_THROWN, false, false, true, false);
     }
     
     public void shouldHaveConsistentStateForPending() throws Exception {
         ResponsibilityVerification verification =
-            new ResponsibilityVerification("shouldBeImplemented", "SomeClass", new PendingException("todo"));
+            new ResponsibilityVerification("SomeClass", "shouldBeImplemented", new PendingException("todo"));
         verifyEvaluationState(verification, ResponsibilityVerification.PENDING, false, false, false, true);
     }
 }

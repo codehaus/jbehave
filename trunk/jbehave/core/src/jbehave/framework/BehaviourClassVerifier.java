@@ -16,9 +16,11 @@ import jbehave.framework.exception.BehaviourFrameworkError;
  */
 public class BehaviourClassVerifier {
     private final Class behaviourClass;
+    private final ResponsibilityVerifier responsibilityVerifier;
 
-    public BehaviourClassVerifier(Class behaviourClass) {
+    public BehaviourClassVerifier(Class behaviourClass, ResponsibilityVerifier responsibilityVerifier) {
         this.behaviourClass = behaviourClass;
+        this.responsibilityVerifier = responsibilityVerifier;
     }
 
     public void verifyBehaviourClass(Listener listener) {
@@ -31,8 +33,7 @@ public class BehaviourClassVerifier {
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
                 if (method.getName().startsWith("should") && method.getParameterTypes().length == 0) {
-                    ResponsibilityVerifier verifier = new ResponsibilityVerifier();
-                    verifier.verifyResponsibility(listener, method);
+                    responsibilityVerifier.verifyResponsibility(listener, method);
                 }
             }
             listener.behaviourClassVerificationEnding(behaviourClass);
@@ -44,7 +45,8 @@ public class BehaviourClassVerifier {
     private void verifyContainedBehaviourClasses(BehaviourClassContainer container, Listener listener) throws Exception {
         Class[] containedBehaviourClasses = container.getBehaviourClasses();
         for (int i = 0; i < containedBehaviourClasses.length; i++) {
-            new BehaviourClassVerifier(containedBehaviourClasses[i]).verifyBehaviourClass(listener);
+            new BehaviourClassVerifier(containedBehaviourClasses[i], responsibilityVerifier)
+                .verifyBehaviourClass(listener);
         }
     }
 }

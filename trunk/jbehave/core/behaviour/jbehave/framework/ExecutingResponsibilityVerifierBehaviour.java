@@ -17,13 +17,13 @@ import jbehave.listeners.ListenerSupport;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class ResponsibilityVerifierBehaviour {
+public class ExecutingResponsibilityVerifierBehaviour {
     private final static List sequenceOfEvents = new ArrayList(); // poor man's mock
     private ResponsibilityVerifier responsibilityVerifier;
 
     public void setUp() {
         sequenceOfEvents.clear();
-        responsibilityVerifier = new ResponsibilityVerifier();
+        responsibilityVerifier = new ExecutingResponsibilityVerifier();
     }
     
     public static class BehaviourClassWithSucceedingResponsibility {
@@ -44,7 +44,7 @@ public class ResponsibilityVerifierBehaviour {
     }
 
     private ResponsibilityVerifier verifierForFirstResponsibility(Class behaviourClass) throws Exception {
-        return new ResponsibilityVerifier();
+        return new ExecutingResponsibilityVerifier();
     }
 
     public static class BehaviourClassWithLoggingResponsibility {
@@ -57,8 +57,8 @@ public class ResponsibilityVerifierBehaviour {
         // setup
         Method responsibilityMethod = firstResponsibility(BehaviourClassWithLoggingResponsibility.class);
         Listener listener = new ListenerSupport() {
-            public void responsibilityVerificationStarting(Method responsibilityMethod) {
-                Verify.equal("shouldSucceed", responsibilityMethod.getName());
+            public void responsibilityVerificationStarting(Method method) {
+                Verify.equal("shouldSucceed", method.getName());
                 sequenceOfEvents.add("listener called");
             }
         };
@@ -75,7 +75,6 @@ public class ResponsibilityVerifierBehaviour {
     
     public void shouldNotifyListenerWhenResponsibilityVerificationSucceeds() throws Exception {
         // setup
-        ResponsibilityVerifier responsibilityVerifier = verifierForFirstResponsibility(BehaviourClassWithSucceedingResponsibility.class);
         RecordingListener listener = new RecordingListener();
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithSucceedingResponsibility.class));
@@ -91,7 +90,6 @@ public class ResponsibilityVerifierBehaviour {
 
     public void shouldNotifyListenerWhenResponsibilityVerificationFails() throws Exception {
         // setup
-        ResponsibilityVerifier responsibilityVerifier = verifierForFirstResponsibility(BehaviourClassWithFailingResponsibility.class);
         RecordingListener listener = new RecordingListener();
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithFailingResponsibility.class));
@@ -109,8 +107,6 @@ public class ResponsibilityVerifierBehaviour {
 
     public void shouldNotifyListenerWhenResponsibilityVerificationThrowsCheckedException() throws Exception {
         // setup
-        ResponsibilityVerifier responsibilityVerifier =
-            verifierForFirstResponsibility(BehaviourClassWithResponsibilityThatThrowsCheckedException.class);
         RecordingListener listener = new RecordingListener();
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsCheckedException.class));
@@ -129,8 +125,6 @@ public class ResponsibilityVerifierBehaviour {
 
     public void shouldNotifyListenerWhenResponsibilityVerificationThrowsRuntimeException() throws Exception {
         // setup
-        ResponsibilityVerifier responsibilityVerifier = 
-            verifierForFirstResponsibility(BehaviourClassWithResponsibilityThatThrowsRuntimeException.class);
         RecordingListener listener = new RecordingListener();
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsRuntimeException.class));
@@ -149,8 +143,6 @@ public class ResponsibilityVerifierBehaviour {
 
     public void shouldNotifyListenerWhenResponsibilityVerificationThrowsError() throws Exception {
         // setup
-        ResponsibilityVerifier responsibilityVerifier =
-            verifierForFirstResponsibility(BehaviourClassWithResponsibilityThatThrowsError.class);
         RecordingListener listener = new RecordingListener();
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsError.class));
@@ -254,7 +246,6 @@ public class ResponsibilityVerifierBehaviour {
     public void shouldNotifyListenerWhenTearDownThrowsException() throws Exception {
 		// setup
         RecordingListener listener = new RecordingListener();
-        ResponsibilityVerifier responsibilityVerifier = verifierForFirstResponsibility(BehaviourClassWithExceptionTearDown.class);
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithExceptionTearDown.class));
         // verify
@@ -273,7 +264,6 @@ public class ResponsibilityVerifierBehaviour {
     public void shouldReportResponsibilityExceptionIfResponsibilityAndTearDownBothThrowExceptions() throws Exception {
 		// setup
         RecordingListener listener = new RecordingListener();
-        ResponsibilityVerifier responsibilityVerifier = verifierForFirstResponsibility(BehaviourClassWithFailingResponsibilityAndExceptionTearDown.class);
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithFailingResponsibilityAndExceptionTearDown.class));
         // verify

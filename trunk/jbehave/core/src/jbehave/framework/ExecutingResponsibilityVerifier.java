@@ -19,29 +19,15 @@ import jbehave.framework.exception.VerificationException;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class ResponsibilityVerifier {
+public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVerifier {
     /**
-     * Verify an individual responsibility.
-     * 
-     * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
+     * We call the lifecycle methods <tt>setUp()</tt> and <tt>tearDown()</tt>
      * in the appropriate places if either of them exist.<br>
-     * <br>
-     * The {@link Listener} is alerted before and after the verification,
-     * with calls to {@link Listener#responsibilityVerificationStarting(Method)
-     * responsibilityVerificationStarting(this)} and
-     * {@link Listener#responsibilityVerificationEnding(ResponsibilityVerification,Object)
-     * responsibilityVerificationEnding(result)} respectively.
-     * @param method TODO
      */
-    public ResponsibilityVerification verifyResponsibility(Listener listener, Method method) {
+    protected ResponsibilityVerification doVerifyResponsibility(Method method, Object instance) {
         ResponsibilityVerification result = null;
         String behaviourClassName = null;
-        Object instance = null;
         try {
-            listener.responsibilityVerificationStarting(method);
-            behaviourClassName = method.getDeclaringClass().getName();
-            instance = method.getDeclaringClass().newInstance();
-            
             setUp(instance);
             method.invoke(instance, new Object[0]);
             result = createVerification(behaviourClassName, method.getName(), null);
@@ -54,8 +40,8 @@ public class ResponsibilityVerifier {
         }
         finally {
             try {
-				tearDown(instance);
-			} catch (InvocationTargetException e) {
+                tearDown(instance);
+            } catch (InvocationTargetException e) {
                 // tearDown failed - override if result would have succeeded
                 if (result != null && result.succeeded()) {
                     result = createVerification(behaviourClassName, method.getName(), e.getTargetException());
@@ -65,11 +51,10 @@ public class ResponsibilityVerifier {
                 throw new BehaviourFrameworkError(e);
             }
         }
-        listener.responsibilityVerificationEnding(result, instance);
         return result;
     }
 
-	private void setUp(Object behaviourClassInstance) throws InvocationTargetException {
+    private void setUp(Object behaviourClassInstance) throws InvocationTargetException {
         try {
             Method setUp = behaviourClassInstance.getClass().getMethod("setUp", new Class[0]);
             setUp.invoke(behaviourClassInstance, new Object[0]);
@@ -118,7 +103,7 @@ public class ResponsibilityVerifier {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new ResponsibilityVerification(methodName, className, targetException);
+            return new ResponsibilityVerification(className, methodName, targetException);
         }
     }
 }

@@ -27,8 +27,8 @@ public class ResponsibilityVerification {
     private final int status;
     private final Throwable targetException;
 
-    public ResponsibilityVerification(String name, String behaviourClassName, Throwable targetException) {
-        this.name = name;
+    public ResponsibilityVerification(String behaviourClassName, String responsibilityMethodName, Throwable targetException) {
+        this.name = responsibilityMethodName;
         this.behaviourClassName = behaviourClassName;
         this.targetException = targetException;
         if (targetException == null) {
@@ -48,8 +48,8 @@ public class ResponsibilityVerification {
     /**
      * Convenience constructor for successful verification
      */
-    public ResponsibilityVerification(String name, String behaviourClassName) {
-        this(name, behaviourClassName, null);
+    public ResponsibilityVerification(String behaviourClassName, String methodName) {
+        this(behaviourClassName, methodName, null);
     }
 
     public String getName() {

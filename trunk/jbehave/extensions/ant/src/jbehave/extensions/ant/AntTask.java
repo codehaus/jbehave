@@ -23,6 +23,7 @@ import jbehave.extensions.ant.listeners.AntListener;
 import jbehave.listeners.CompositeListener;
 import jbehave.listeners.TextListener;
 import jbehave.framework.BehaviourClassVerifier;
+import jbehave.framework.ExecutingResponsibilityVerifier;
 import jbehave.framework.Listener;
 
 /**
@@ -86,7 +87,8 @@ public class AntTask extends org.apache.tools.ant.Task {
 
 	private void verifySpec(BehaviourClass spec, AntListener listener) {
 		try {
-			BehaviourClassVerifier verifier = new BehaviourClassVerifier(getSpec(spec.getBehaviourClassName()));
+			BehaviourClassVerifier verifier = new BehaviourClassVerifier(
+                    getSpec(spec.getBehaviourClassName()), new ExecutingResponsibilityVerifier());
 			verifier.verifyBehaviourClass(createCompositeListener(listener));
 			if (listener.failBuild()) throw new BuildException(spec.getBehaviourClassName() + "failed");
 		} catch (ClassNotFoundException e) {

@@ -14,7 +14,7 @@ import java.util.List;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class BehaviourClassVerifierBehaviour {
-    public static class BehaviourClassWithOneResponsibility {
+    public static class BehaviourClass1 {
         public void shouldSucceed() {
         }
     }
@@ -22,29 +22,30 @@ public class BehaviourClassVerifierBehaviour {
     public void shouldNotifyListenerWhenBehaviourClassVerificationStarts() throws Exception {
         // setup
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneResponsibility.class);
+            new BehaviourClassVerifier(BehaviourClass1.class, ResponsibilityVerifier.NULL);
         RecordingListener listener = new RecordingListener();
         // execute
         behaviourVerifier.verifyBehaviourClass(listener);
         // verify
-        Verify.equal(BehaviourClassWithOneResponsibility.class, listener.startedBehaviourClass);
+        Verify.equal(BehaviourClass1.class, listener.startedBehaviourClass);
     }
     
     public void shouldNotifyListenerWhenBehaviourClassVerificationEnds() throws Exception {
         // setup
         BehaviourClassVerifier verifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneResponsibility.class);
+            new BehaviourClassVerifier(BehaviourClass1.class, ResponsibilityVerifier.NULL);
         RecordingListener listener = new RecordingListener();
         // execute
         verifier.verifyBehaviourClass(listener);
         // verify
-        Verify.equal(BehaviourClassWithOneResponsibility.class, listener.endedBehaviourClass);
+        Verify.equal(BehaviourClass1.class, listener.endedBehaviourClass);
     }
     
     public void shouldVerifyOneResponsibility() throws Exception {
         // setup
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneResponsibility.class);
+            new BehaviourClassVerifier(BehaviourClass1.class,
+                    new NotifyingResponsibilityVerifier());
         RecordingListener listener = new RecordingListener();
         // execute
         behaviourVerifier.verifyBehaviourClass(listener);
@@ -64,7 +65,8 @@ public class BehaviourClassVerifierBehaviour {
     public void shouldVerifyTwoResponsibilities() throws Exception {
         // setup
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourWithTwoResponsibilities.class);
+            new BehaviourClassVerifier(BehaviourWithTwoResponsibilities.class,
+                    new NotifyingResponsibilityVerifier());
         RecordingListener listener = new RecordingListener();
         // execute
         behaviourVerifier.verifyBehaviourClass(listener);
@@ -81,7 +83,7 @@ public class BehaviourClassVerifierBehaviour {
     public static class ContainerWithTwoBehaviours implements BehaviourClassContainer {
         public Class[] getBehaviourClasses() {
             return new Class[] {
-                BehaviourClassWithOneResponsibility.class,
+                BehaviourClass1.class,
                 BehaviourWithTwoResponsibilities.class
             };
         }
@@ -90,7 +92,8 @@ public class BehaviourClassVerifierBehaviour {
     public void shouldVerifyContainedBehaviours() throws Exception {
         // setup
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(ContainerWithTwoBehaviours.class);
+            new BehaviourClassVerifier(ContainerWithTwoBehaviours.class,
+                    new NotifyingResponsibilityVerifier());
         RecordingListener listener = new RecordingListener();
         // execute
         behaviourVerifier.verifyBehaviourClass(listener);

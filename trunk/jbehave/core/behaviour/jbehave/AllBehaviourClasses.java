@@ -8,7 +8,7 @@
 package jbehave;
 
 import jbehave.framework.ResponsibilityVerificationBehaviour;
-import jbehave.framework.ResponsibilityVerifierBehaviour;
+import jbehave.framework.ExecutingResponsibilityVerifierBehaviour;
 import jbehave.framework.BehaviourClassContainer;
 import jbehave.framework.BehaviourClassVerifierBehaviour;
 import jbehave.listeners.TextListenerBehaviour;
@@ -21,7 +21,7 @@ import jbehave.listeners.CompositeListenerBehaviour;
 public class AllBehaviourClasses implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
-            ResponsibilityVerifierBehaviour.class,
+            ExecutingResponsibilityVerifierBehaviour.class,
             BehaviourClassVerifierBehaviour.class,
             ResponsibilityVerificationBehaviour.class,
             TextListenerBehaviour.class,
