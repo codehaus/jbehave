@@ -3,8 +3,8 @@
 	<classpathentry kind="src" path="behaviour"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JDK 1.4"/>
-	<classpathentry kind="src" path="/jbehave core"/>
-	<classpathentry sourcepath="/jmock/core/src" kind="lib" path="lib/jmock-1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/junit.jar"/>
+	<classpathentry exported="true" kind="src" path="/jbehave core"/>
+	<classpathentry exported="true" sourcepath="/jmock/core/src" kind="lib" path="lib/jmock-1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

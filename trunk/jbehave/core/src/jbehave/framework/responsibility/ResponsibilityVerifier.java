@@ -5,9 +5,11 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
 import java.lang.reflect.Method;
+
+import jbehave.framework.Listener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -15,13 +17,13 @@ import java.lang.reflect.Method;
 public interface ResponsibilityVerifier {
     /** Null Object */
     ResponsibilityVerifier NULL = new ResponsibilityVerifier() {
-        public ResponsibilityVerification verifyResponsibility(Listener listener, Method method) {
-            return new ResponsibilityVerification(method.getDeclaringClass().getName(), method.getName());
+        public Result verifyResponsibility(Listener listener, Method method) {
+            return new Result(method.getDeclaringClass().getName(), method.getName());
         }
     };
     
     /**
      * Verify an individual responsibility.
      */
-    ResponsibilityVerification verifyResponsibility(Listener listener, Method method);
+    Result verifyResponsibility(Listener listener, Method method);
 }

@@ -15,7 +15,8 @@ public class PendingException extends VerificationException {
     public PendingException(String message) {
         super(message);
     }
-    public PendingException(String message, Object expected, Object actual) {
-        super(message, expected, actual);
+
+    public PendingException() {
+        this("TODO");
     }
 }

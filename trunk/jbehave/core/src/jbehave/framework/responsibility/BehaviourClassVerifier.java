@@ -5,10 +5,12 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
 import java.lang.reflect.Method;
 
+import jbehave.framework.BehaviourClassContainer;
+import jbehave.framework.Listener;
 import jbehave.framework.exception.BehaviourFrameworkError;
 
 /**

@@ -5,8 +5,9 @@
  * 
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
+import jbehave.framework.exception.PendingException;
 import jbehave.framework.exception.VerificationException;
 
 /**
@@ -119,4 +120,12 @@ public class Verify {
         throw new VerificationException(message, expected, actual);
     }
 
+    // Verify.pending("...")
+    public static void pending(String message) {
+        throw new PendingException(message);
+    }
+    
+    public static void pending() {
+        throw new PendingException();
+    }
 }

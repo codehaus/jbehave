@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import jbehave.framework.Verify;
+import jbehave.framework.responsibility.Verify;
 import junit.framework.TestCase;
 
 /**

@@ -11,10 +11,10 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import jbehave.extensions.junit.listener.TestSuitePopulater;
-import jbehave.framework.BehaviourClassVerifier;
 import jbehave.framework.Listener;
-import jbehave.framework.NotifyingResponsibilityVerifier;
 import jbehave.framework.exception.BehaviourFrameworkError;
+import jbehave.framework.responsibility.BehaviourClassVerifier;
+import jbehave.framework.responsibility.NotifyingResponsibilityVerifier;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -61,6 +61,7 @@ public class JUnitAdapter {
                 in.close();
             }
             behaviourClassName = props.getProperty("behaviourClass", behaviourClassName);
+            System.out.println("Verifying " + behaviourClassName);
             return Class.forName(behaviourClassName);
         } catch (Exception e) {
             throw new BehaviourFrameworkError("No behaviour class found for " + behaviourClassName);

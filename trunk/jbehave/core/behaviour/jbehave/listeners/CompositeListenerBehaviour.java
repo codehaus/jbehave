@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jbehave.framework.Listener;
-import jbehave.framework.ResponsibilityVerification;
-import jbehave.framework.Verify;
+import jbehave.framework.responsibility.Result;
+import jbehave.framework.responsibility.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -23,16 +23,16 @@ public class CompositeListenerBehaviour {
 	private CompositeListener composite;
 	private Map callMap1;
 	private Map callMap2;
-	private ResponsibilityVerification nextVerification;
+	private Result nextResult;
 
 	// Mocks would be great for this :(
 	public class StubListener implements Listener {
 		private Map methodsCalled;
-		private ResponsibilityVerification decoratedVerification;
+		private Result decoratedResult;
 
-		public StubListener(Map methodsCalled, ResponsibilityVerification decoratedVerification) {
+		public StubListener(Map methodsCalled, Result decoratedResult) {
 			this.methodsCalled = methodsCalled;
-			this.decoratedVerification = decoratedVerification;
+			this.decoratedResult = decoratedResult;
 		}
 
 		public void behaviourClassVerificationStarting(Class behaviourClass) {
@@ -43,9 +43,9 @@ public class CompositeListenerBehaviour {
 			methodsCalled.put("responsibilityVerificationStarting", responsibilityMethod);
 		}
 
-		public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
-			methodsCalled.put("responsibilityVerificationEnding", verification);
-			return decoratedVerification;
+		public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
+			methodsCalled.put("responsibilityVerificationEnding", result);
+			return decoratedResult;
 		}
 
 		public void behaviourClassVerificationEnding(Class behaviourClass) {
@@ -57,9 +57,9 @@ public class CompositeListenerBehaviour {
 		composite = new CompositeListener();
 		callMap1 = new HashMap();
 		callMap2 = new HashMap();
-		nextVerification = new ResponsibilityVerification("blah", "blah");
-		composite.add(new StubListener(callMap1, nextVerification));
-		composite.add(new StubListener(callMap2, nextVerification));
+		nextResult = new Result("blah", "blah");
+		composite.add(new StubListener(callMap1, nextResult));
+		composite.add(new StubListener(callMap2, nextResult));
 	}
 
 	private void verifyMethodCalled(String methodName, Map callMap, Object arg) {
@@ -105,14 +105,14 @@ public class CompositeListenerBehaviour {
 
 	public void shouldNotifyAllListenersWhenResponsibilityVerificationEndingAndPassOnReturnedResponsibilityVerifierToNextListener() {
 		// setup
-	    ResponsibilityVerification verification = new ResponsibilityVerification("behaviourClass", "responsibility");
+	    Result result = new Result("behaviourClass", "responsibility");
 
 		// execute
-	    ResponsibilityVerification returnedVerification = composite.responsibilityVerificationEnding(verification, new Object());
+	    Result returnedResult = composite.responsibilityVerificationEnding(result, new Object());
 
 		// verify
-		Verify.equal(nextVerification, returnedVerification);
-		verifyMethodCalled("responsibilityVerificationEnding", callMap1, verification);
-		verifyMethodCalled("responsibilityVerificationEnding", callMap2, nextVerification);
+		Verify.equal(nextResult, returnedResult);
+		verifyMethodCalled("responsibilityVerificationEnding", callMap1, result);
+		verifyMethodCalled("responsibilityVerificationEnding", callMap2, nextResult);
 	}
 }

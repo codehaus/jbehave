@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
 import jbehave.framework.exception.PendingException;
 import jbehave.framework.exception.VerificationException;
@@ -16,7 +16,7 @@ import jbehave.framework.exception.VerificationException;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class ResponsibilityVerification {
+public class Result {
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
     public static final int EXCEPTION_THROWN = 2;
@@ -27,7 +27,7 @@ public class ResponsibilityVerification {
     private final int status;
     private final Throwable targetException;
 
-    public ResponsibilityVerification(String behaviourClassName, String responsibilityMethodName, Throwable targetException) {
+    public Result(String behaviourClassName, String responsibilityMethodName, Throwable targetException) {
         this.name = responsibilityMethodName;
         this.behaviourClassName = behaviourClassName;
         this.targetException = targetException;
@@ -48,7 +48,7 @@ public class ResponsibilityVerification {
     /**
      * Convenience constructor for successful verification
      */
-    public ResponsibilityVerification(String behaviourClassName, String methodName) {
+    public Result(String behaviourClassName, String methodName) {
         this(behaviourClassName, methodName, null);
     }
 
@@ -80,7 +80,7 @@ public class ResponsibilityVerification {
         return status == EXCEPTION_THROWN;
     }
 
-    public boolean pending() {
+    public boolean isPending() {
         return status == PENDING;
     }
 
@@ -98,7 +98,7 @@ public class ResponsibilityVerification {
         if (o.getClass() != getClass()) {
             return false;
         }
-        ResponsibilityVerification other = (ResponsibilityVerification) o;
+        Result other = (Result) o;
         return ((name == null ? other.name == null : name.equals(other.name))
             && (behaviourClassName == null ? other.behaviourClassName == null : behaviourClassName.equals(other.behaviourClassName))
             && (status == other.status)

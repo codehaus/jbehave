@@ -13,18 +13,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.exception.BehaviourFrameworkError;
+import jbehave.framework.responsibility.Result;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class TextListener extends ListenerSupport {
+    public static final String SUCCESS = ".";
+    public static final String FAILURE = "F";
+    public static final String EXCEPTION_THROWN = "E";
+    public static final String PENDING = "P";
 
     private final PrintWriter out;
     private int responsibilitiesVerified = 0;
     private final List failures = new ArrayList();
     private final List exceptionsThrown = new ArrayList();
+    private final List pending = new ArrayList();
     private final Timer timer;
     private Class outermostBehaviourClass = null;
 
@@ -47,24 +52,28 @@ public class TextListener extends ListenerSupport {
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
+    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
         responsibilitiesVerified++;
-        if (verification.failed()) {
-            failures.add(verification);
+        if (result.failed()) {
+            failures.add(result);
         }
-        else if (verification.threwException()) {
-            exceptionsThrown.add(verification);
+        else if (result.threwException()) {
+            exceptionsThrown.add(result);
         }
-        out.print(getSymbol(verification.getStatus()));
+        else if (result.isPending()) {
+            pending.add(result);
+        }
+        out.print(getSymbol(result.getStatus()));
 //        out.flush();
-		return verification;
+		return result;
     }
 
-    private char getSymbol(int status) {
+    private String getSymbol(int status) {
         switch (status) {
-            case ResponsibilityVerification.SUCCESS:          return '.';
-            case ResponsibilityVerification.FAILURE:          return 'F';
-            case ResponsibilityVerification.EXCEPTION_THROWN: return 'E';
+            case Result.SUCCESS:          return SUCCESS;
+            case Result.FAILURE:          return FAILURE;
+            case Result.EXCEPTION_THROWN: return EXCEPTION_THROWN;
+            case Result.PENDING:          return PENDING;
             default: throw new BehaviourFrameworkError("Unknown verification status: " + status);
         }
     }
@@ -76,11 +85,12 @@ public class TextListener extends ListenerSupport {
             printElapsedTime();
             printFailures();
             printExceptionsThrown();
+            printPending();
             printSummaryCounts();
             out.flush();
         }
     }
-    
+
     private void printElapsedTime() {
         out.println("Time: " + timer.elapsedTimeMillis()/1000.0 + "s\n");
     }
@@ -102,15 +112,29 @@ public class TextListener extends ListenerSupport {
     }
     
     private void printErrorList(String title, List errorList) {
-        if (errorList.isEmpty()) return;
-        out.println(title);
-        out.println();
-        int count = 1;
-        for (Iterator i = errorList.iterator(); i.hasNext();) {
-            ResponsibilityVerification verification = (ResponsibilityVerification)i.next();
-            out.println(count + ") " + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
-            verification.getTargetException().printStackTrace(out);
+        if (!errorList.isEmpty()) {
+            out.println(title);
             out.println();
+            int count = 1;
+            for (Iterator i = errorList.iterator(); i.hasNext(); count++) {
+                Result verification = (Result)i.next();
+                out.println(count + ") " + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
+                verification.getTargetException().printStackTrace(out);
+                out.println();
+            }
+        }
+    }
+    
+    private void printPending() {
+        if (!pending.isEmpty()) {
+            out.println("Pending: " + pending.size());
+            out.println();
+            int count = 1;
+            for (Iterator i = pending.iterator(); i.hasNext(); count++) {
+                Result verification = (Result) i.next();
+                out.println(count + ")" + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
+                out.println("\t" + verification.getTargetException().getMessage());
+            }
         }
     }
 }

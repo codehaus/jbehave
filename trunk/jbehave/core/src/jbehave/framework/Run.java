@@ -9,6 +9,8 @@ package jbehave.framework;
 
 import java.io.PrintWriter;
 
+import jbehave.framework.responsibility.BehaviourClassVerifier;
+import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
 import jbehave.listeners.TextListener;
 
 

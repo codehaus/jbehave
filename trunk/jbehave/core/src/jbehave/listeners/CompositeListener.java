@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.framework.Listener;
-import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.responsibility.Result;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still
@@ -53,11 +53,11 @@ public class CompositeListener implements Listener {
         }
     }
 
-    public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
+    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
 		for (Iterator i = listeners.iterator(); i.hasNext();) {
-           verification = ((Listener)i.next()).responsibilityVerificationEnding(verification, behaviourClassInstance);
+           result = ((Listener)i.next()).responsibilityVerificationEnding(result, behaviourClassInstance);
         }
-		return verification;
+		return result;
     }
     
     public String toString() {

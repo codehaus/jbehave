@@ -10,8 +10,8 @@ package jbehave.extensions.jmock;
 import jbehave.listeners.CompositeListener;
 import jbehave.listeners.TextListener;
 import jbehave.extensions.jmock.listener.JMockListener;
-import jbehave.framework.BehaviourClassVerifier;
-import jbehave.framework.ExecutingResponsibilityVerifier;
+import jbehave.framework.responsibility.BehaviourClassVerifier;
+import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
 
 import java.io.OutputStreamWriter;
 

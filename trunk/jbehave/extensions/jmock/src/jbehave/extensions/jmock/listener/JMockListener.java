@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import jbehave.extensions.jmock.UsingJMock;
-import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.exception.VerificationException;
+import jbehave.framework.responsibility.Result;
 import jbehave.listeners.ListenerSupport;
 import junit.framework.AssertionFailedError;
 
@@ -31,33 +31,33 @@ public class JMockListener extends ListenerSupport {
         UsingJMock.Mocks.clear(); // whatever
 	}
 
-	public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification behaviourResult, Object specInstance) {
+	public Result responsibilityVerificationEnding(Result result, Object instance) {
 		try {
 			UsingJMock.Mocks.verify();
 		} catch (VerificationException e) {
-			return createCriteriaVerification(behaviourResult, e);
+			return createResult(result, e);
 		}
 
-		return verifyFields(specInstance, behaviourResult);
+		return verifyFields(instance, result);
 	}
 
-	private ResponsibilityVerification verifyFields(Object specInstance, ResponsibilityVerification behaviourResult) {
-		Field[] fields = specInstance.getClass().getDeclaredFields();
+	private Result verifyFields(Object instance, Result result) {
+		Field[] fields = instance.getClass().getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
 			if (Mock.class.equals(field.getType())) {
 				try {
-					verifyMock(field, specInstance);
+					verifyMock(field, instance);
 				} catch (AssertionFailedError error) {
-					return createCriteriaVerification(behaviourResult,new VerificationException(error.getMessage()));
+					return createResult(result,new VerificationException(error.getMessage()));
 				}
 			}
 		}
-		return behaviourResult;
+		return result;
 	}
 
-	private ResponsibilityVerification createCriteriaVerification(ResponsibilityVerification behaviourResult, VerificationException ve) {
-		return new ResponsibilityVerification(behaviourResult.getBehaviourClassName(), behaviourResult.getName(), ve);
+	private Result createResult(Result result, VerificationException ve) {
+		return new Result(result.getBehaviourClassName(), result.getName(), ve);
 	}
 
 	private void verifyMock(Field field, Object executedInstance) {

@@ -5,10 +5,11 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
 import java.lang.reflect.Method;
 
+import jbehave.framework.Listener;
 import jbehave.framework.exception.BehaviourFrameworkError;
 
 /**
@@ -25,11 +26,11 @@ public class NotifyingResponsibilityVerifier implements ResponsibilityVerifier {
      * {@link Listener#responsibilityVerificationEnding(ResponsibilityVerification,Object)
      * responsibilityVerificationEnding(result)} respectively.
      */
-    public ResponsibilityVerification verifyResponsibility(Listener listener, Method method) {
+    public Result verifyResponsibility(Listener listener, Method method) {
         try {
             listener.responsibilityVerificationStarting(method);
             Object instance = method.getDeclaringClass().newInstance();
-            ResponsibilityVerification result = doVerifyResponsibility(method, instance);
+            Result result = doVerifyResponsibility(method, instance);
             listener.responsibilityVerificationEnding(result, instance);
             return result;
         } catch (Exception e) {
@@ -37,8 +38,8 @@ public class NotifyingResponsibilityVerifier implements ResponsibilityVerifier {
         }
     }
 
-    protected ResponsibilityVerification doVerifyResponsibility(Method method, Object instance) {
-        return new ResponsibilityVerification(method.getDeclaringClass().getName(), method.getName());
+    protected Result doVerifyResponsibility(Method method, Object instance) {
+        return new Result(method.getDeclaringClass().getName(), method.getName());
     }
 
 }

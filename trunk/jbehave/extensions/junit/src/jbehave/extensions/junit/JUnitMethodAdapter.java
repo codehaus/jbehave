@@ -11,9 +11,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
-import jbehave.framework.ExecutingResponsibilityVerifier;
 import jbehave.framework.Listener;
-import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
+import jbehave.framework.responsibility.Result;
 import jbehave.util.StringUtils;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
@@ -39,13 +39,16 @@ public class JUnitMethodAdapter extends TestCase {
     }
 
     private void verifyResponsibility(TestResult testResult) {
-        final ResponsibilityVerification responsibilityVerification =
+        final Result result =
             new ExecutingResponsibilityVerifier().verifyResponsibility(Listener.NULL, method);
-        if (responsibilityVerification.failed()) {
-            testResult.addFailure(this, buildAssertionFailedError(responsibilityVerification.getTargetException()));
+        if (result.failed()) {
+            testResult.addFailure(this, buildAssertionFailedError(result.getTargetException()));
         }
-        else if (responsibilityVerification.threwException()) {
-            testResult.addError(this, responsibilityVerification.getTargetException());
+        else if (result.threwException()) {
+            testResult.addError(this, result.getTargetException());
+        }
+        else if (result.isPending()) {
+            System.out.println(result.getName() + ": " + result.getTargetException().getMessage());
         }
     }
 

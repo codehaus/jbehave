@@ -7,7 +7,8 @@
  */
 package jbehave.extensions.ant;
 
-import jbehave.framework.Verify;
+import jbehave.framework.responsibility.Verify;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
@@ -70,7 +71,7 @@ public class AntTaskBehaviour {
 		Verify.that(BehaviourClassOne.wasCalled);
 	}
 
-	public void shouldFailTheBuildWhenCriteriaFails() throws Exception {
+	public void shouldFailTheBuildWhenVerificationFails() throws Exception {
 		// setup
 		final String behaviourClassName = FailingBehaviourClass.class.getName();
         task.createBehaviourClass().setBehaviourClassName(behaviourClassName);

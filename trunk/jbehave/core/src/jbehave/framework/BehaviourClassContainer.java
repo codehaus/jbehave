@@ -7,6 +7,8 @@
  */
 package jbehave.framework;
 
+import jbehave.framework.responsibility.BehaviourClassVerifier;
+
 
 /**
  * Implemented by classes that contain behaviour classes. It should probably

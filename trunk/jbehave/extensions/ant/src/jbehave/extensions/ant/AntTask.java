@@ -22,9 +22,9 @@ import java.io.OutputStreamWriter;
 import jbehave.extensions.ant.listeners.AntListener;
 import jbehave.listeners.CompositeListener;
 import jbehave.listeners.TextListener;
-import jbehave.framework.BehaviourClassVerifier;
-import jbehave.framework.ExecutingResponsibilityVerifier;
 import jbehave.framework.Listener;
+import jbehave.framework.responsibility.BehaviourClassVerifier;
+import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

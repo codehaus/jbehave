@@ -5,11 +5,12 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import jbehave.framework.responsibility.Result;
 import jbehave.listeners.ListenerSupport;
 
 
@@ -18,12 +19,12 @@ class RecordingListener extends ListenerSupport {
     public Class startedBehaviourClass = null;
     public Class endedBehaviourClass = null;
     public List verifications = new ArrayList(); // all verifications
-    public ResponsibilityVerification lastVerification = null; // latest one
+    public Result latestResult = null;
     
-    public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
-        verifications.add(verification);
-        lastVerification = verification;
-		return verification;
+    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
+        verifications.add(result);
+        latestResult = result;
+		return result;
     }
 
     public void behaviourClassVerificationStarting(Class behaviourClass) {
@@ -34,7 +35,7 @@ class RecordingListener extends ListenerSupport {
         endedBehaviourClass = behaviourClass;
     }
     
-    public ResponsibilityVerification verification(int i) {
-        return (ResponsibilityVerification) verifications.get(i);
+    public Result result(int i) {
+        return (Result) verifications.get(i);
     }
 }

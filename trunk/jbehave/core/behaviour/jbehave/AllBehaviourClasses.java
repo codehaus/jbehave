@@ -7,10 +7,10 @@
  */
 package jbehave;
 
-import jbehave.framework.ResponsibilityVerificationBehaviour;
-import jbehave.framework.ExecutingResponsibilityVerifierBehaviour;
 import jbehave.framework.BehaviourClassContainer;
-import jbehave.framework.BehaviourClassVerifierBehaviour;
+import jbehave.framework.responsibility.BehaviourClassVerifierBehaviour;
+import jbehave.framework.responsibility.ExecutingResponsibilityVerifierBehaviour;
+import jbehave.framework.responsibility.ResultBehaviour;
 import jbehave.listeners.TextListenerBehaviour;
 import jbehave.listeners.TimerBehaviour;
 import jbehave.listeners.CompositeListenerBehaviour;
@@ -23,7 +23,7 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
         return new Class[] {
             ExecutingResponsibilityVerifierBehaviour.class,
             BehaviourClassVerifierBehaviour.class,
-            ResponsibilityVerificationBehaviour.class,
+            ResultBehaviour.class,
             TextListenerBehaviour.class,
             TimerBehaviour.class,
 			CompositeListenerBehaviour.class

@@ -7,7 +7,7 @@
  */
 package jbehave.extensions.ant.listeners;
 
-import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.responsibility.Result;
 import jbehave.listeners.ListenerSupport;
 
 /**
@@ -17,11 +17,11 @@ import jbehave.listeners.ListenerSupport;
 public class AntListener extends ListenerSupport {
 	private boolean failBuild;
 
-	public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object specInstance) {
-		if (!verification.succeeded()) {
+	public Result responsibilityVerificationEnding(Result result, Object specInstance) {
+		if (!result.succeeded()) {
 			failBuild = true;
 		}
-		return verification;
+		return result;
 	}
 
 	public boolean failBuild() {

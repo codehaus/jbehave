@@ -5,10 +5,12 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
 import java.util.Arrays;
 import java.util.List;
+
+import jbehave.framework.BehaviourClassContainer;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -51,8 +53,8 @@ public class BehaviourClassVerifierBehaviour {
         behaviourVerifier.verifyBehaviourClass(listener);
         // verify
         Verify.equal(1, listener.verifications.size());
-        Verify.equal("shouldSucceed", listener.lastVerification.getName());
-        Verify.that(listener.lastVerification.succeeded());
+        Verify.equal("shouldSucceed", listener.latestResult.getName());
+        Verify.that(listener.latestResult.succeeded());
     }
 
     public static class BehaviourWithTwoResponsibilities {
@@ -76,8 +78,8 @@ public class BehaviourClassVerifierBehaviour {
         });
         Verify.equal(2, listener.verifications.size());
         // this nonsense is because we don't know what order the methods were extracted
-        Verify.that(expectedNames.contains(listener.verification(0).getName()));
-        Verify.that(expectedNames.contains(listener.verification(1).getName()));
+        Verify.that(expectedNames.contains(listener.result(0).getName()));
+        Verify.that(expectedNames.contains(listener.result(1).getName()));
     }
     
     public static class ContainerWithTwoBehaviours implements BehaviourClassContainer {

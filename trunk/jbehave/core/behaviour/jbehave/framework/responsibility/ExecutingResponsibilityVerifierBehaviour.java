@@ -5,13 +5,14 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import jbehave.framework.Listener;
 import jbehave.listeners.ListenerSupport;
 
 /**
@@ -79,7 +80,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithSucceedingResponsibility.class));
         // verify
-        Verify.that(listener.lastVerification.succeeded());
+        Verify.that(listener.latestResult.succeeded());
     }
 
     public static class BehaviourClassWithFailingResponsibility {
@@ -94,7 +95,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithFailingResponsibility.class));
         // verify
-        Verify.that(listener.lastVerification.failed());
+        Verify.that(listener.latestResult.failed());
     }
 
     public static class SomeCheckedException extends Exception {}
@@ -111,8 +112,8 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsCheckedException.class));
         // verify
-        Verify.that(listener.lastVerification.threwException());
-        Verify.that(listener.lastVerification.getTargetException() instanceof SomeCheckedException);
+        Verify.that(listener.latestResult.threwException());
+        Verify.that(listener.latestResult.getTargetException() instanceof SomeCheckedException);
     }
 
     public static class SomeRuntimeException extends RuntimeException {}
@@ -129,8 +130,8 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsRuntimeException.class));
         // verify
-        Verify.that(listener.lastVerification.threwException());
-        Verify.that(listener.lastVerification.getTargetException() instanceof SomeRuntimeException);
+        Verify.that(listener.latestResult.threwException());
+        Verify.that(listener.latestResult.getTargetException() instanceof SomeRuntimeException);
     }
 
     private static class SomeError extends Error {}
@@ -147,8 +148,8 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsError.class));
         // verify
-        Verify.that(listener.lastVerification.threwException());
-        Verify.that(listener.lastVerification.getTargetException() instanceof SomeError);
+        Verify.that(listener.latestResult.threwException());
+        Verify.that(listener.latestResult.getTargetException() instanceof SomeError);
     }
 
     public static class BehaviourClassWithResponsibilityThatThrowsThreadDeath {
@@ -187,7 +188,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         verifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithSetUp.class));
         
         // verify
-		Verify.that(listener.lastVerification.succeeded());
+		Verify.that(listener.latestResult.succeeded());
     }
     
     public static class BehaviourClassWithTearDown {
@@ -249,7 +250,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithExceptionTearDown.class));
         // verify
-        Verify.that(listener.lastVerification.threwException());
+        Verify.that(listener.latestResult.threwException());
 	}
 
     public static class BehaviourClassWithFailingResponsibilityAndExceptionTearDown {
@@ -267,7 +268,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // execute
         responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithFailingResponsibilityAndExceptionTearDown.class));
         // verify
-        Verify.that("exception was thrown", listener.lastVerification.threwException());
-        Verify.equal("exception type", IllegalArgumentException.class, listener.lastVerification.getTargetException().getClass());
+        Verify.that("exception was thrown", listener.latestResult.threwException());
+        Verify.equal("exception type", IllegalArgumentException.class, listener.latestResult.getTargetException().getClass());
 	}
 }

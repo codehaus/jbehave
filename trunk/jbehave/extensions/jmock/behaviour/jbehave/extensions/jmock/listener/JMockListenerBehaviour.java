@@ -12,10 +12,10 @@ import java.util.List;
 
 import jbehave.extensions.jmock.UsingJMock;
 import jbehave.framework.Listener;
-import jbehave.framework.ResponsibilityVerification;
-import jbehave.framework.ExecutingResponsibilityVerifier;
-import jbehave.framework.ResponsibilityVerifier;
-import jbehave.framework.Verify;
+import jbehave.framework.responsibility.ExecutingResponsibilityVerifier;
+import jbehave.framework.responsibility.Result;
+import jbehave.framework.responsibility.ResponsibilityVerifier;
+import jbehave.framework.responsibility.Verify;
 import junit.framework.AssertionFailedError;
 
 /**
@@ -58,12 +58,12 @@ public class JMockListenerBehaviour {
     }
 
     public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
-        ResponsibilityVerification verification =
+        Result result =
             verifier.verifyResponsibility(Listener.NULL, firstResponsibilityMethod(BehaviourClass1.class));
 		BehaviourClass1 behaviourClassInstance = new BehaviourClass1();
 
         // execute
-        listener.responsibilityVerificationEnding(verification, behaviourClassInstance);
+        listener.responsibilityVerificationEnding(result, behaviourClassInstance);
         
         // verify
         Verify.that(behaviourClassInstance.verifyWasCalled);
@@ -85,17 +85,17 @@ public class JMockListenerBehaviour {
 
 	public void shouldCreateNewVerificationWhenVerifyFails() throws Exception {
 		// setup
-        ResponsibilityVerification verification
+        Result result
             = verifier.verifyResponsibility(Listener.NULL,
                     firstResponsibilityMethod(BehaviourClass2.class));
         BehaviourClass2 instance = new BehaviourClass2();
 
         // execute
-        ResponsibilityVerification verifyMockResult = listener.responsibilityVerificationEnding(verification, instance);
+        Result verifyMockResult = listener.responsibilityVerificationEnding(result, instance);
 
 		// verify
 		Verify.notNull(verifyMockResult);
-		Verify.not(verifyMockResult == verification);
+		Verify.not(verifyMockResult == result);
 	}
 
 	interface Foo {
@@ -119,12 +119,12 @@ public class JMockListenerBehaviour {
         instance.shouldUseAMockWhoseExpectationWillFail();
         
 		// execute
-		ResponsibilityVerification verification =
+		Result result =
             listener.responsibilityVerificationEnding(
-                    new ResponsibilityVerification(BehaviourClass3.class.getName(), "shouldUseAMockWhoseExpectationWillFail"),
+                    new Result(BehaviourClass3.class.getName(), "shouldUseAMockWhoseExpectationWillFail"),
                     instance);
         
 		// verify
-		Verify.that("should fail JMock verification", verification.failed());
+		Verify.that("should fail JMock verification", result.failed());
 	}
 }

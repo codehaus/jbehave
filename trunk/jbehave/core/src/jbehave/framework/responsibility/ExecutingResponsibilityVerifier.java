@@ -5,7 +5,7 @@
  * 
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.responsibility;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,16 +25,16 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
      * We call the lifecycle methods <tt>setUp()</tt> and <tt>tearDown()</tt>
      * in the appropriate places if either of them exist.<br>
      */
-    protected ResponsibilityVerification doVerifyResponsibility(Method method, Object instance) {
-        ResponsibilityVerification result = null;
+    protected Result doVerifyResponsibility(Method method, Object instance) {
+        Result result = null;
         String behaviourClassName = null;
         try {
             setUp(instance);
             method.invoke(instance, new Object[0]);
-            result = createVerification(behaviourClassName, method.getName(), null);
+            result = createResult(behaviourClassName, method.getName(), null);
         } catch (InvocationTargetException e) {
             // method failed
-            result = createVerification(behaviourClassName, method.getName(), e.getTargetException());
+            result = createResult(behaviourClassName, method.getName(), e.getTargetException());
         } catch (Exception e) {
             throw new BehaviourFrameworkError(
                     "Problem invoking " + method.getDeclaringClass().getName() + "#" + method.getName(), e);
@@ -45,7 +45,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
             } catch (InvocationTargetException e) {
                 // tearDown failed - override if result would have succeeded
                 if (result != null && result.succeeded()) {
-                    result = createVerification(behaviourClassName, method.getName(), e.getTargetException());
+                    result = createResult(behaviourClassName, method.getName(), e.getTargetException());
                 }
             } catch (Exception e) {
                 // anything else is bad news
@@ -86,7 +86,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
     }
 
     /**
-     * Create a {@link ResponsibilityVerification}, possibly based on an error condition.
+     * Create a {@link Result}, possibly based on an error condition.
      * 
      * This will be one of the following cases:
      * <ul>
@@ -97,14 +97,14 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
      */
-    private ResponsibilityVerification createVerification(String className, String methodName, Throwable targetException) {
+    private Result createResult(String className, String methodName, Throwable targetException) {
         
         // propagate thread death otherwise Bad Things happen (or rather Good Things don't)
         if (targetException instanceof ThreadDeath) {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new ResponsibilityVerification(className, StringUtils.unCamelCase(methodName), targetException);
+            return new Result(className, StringUtils.unCamelCase(methodName), targetException);
         }
     }
 }
