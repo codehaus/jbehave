@@ -7,7 +7,8 @@
  */
 package jbehave.framework;
 
-import jbehave.listeners.NullListener;
+import jbehave.framework.listeners.NullListener;
+
 
 
 /**

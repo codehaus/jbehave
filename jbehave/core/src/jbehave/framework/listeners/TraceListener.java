@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package jbehave.listeners;
+package jbehave.framework.listeners;
 
 import jbehave.framework.CriteriaVerification;
 import jbehave.framework.CriteriaVerifier;

@@ -5,15 +5,13 @@
  *
  * See license.txt for licence details
  */
-package jbehave.listeners;
+package jbehave.framework.listeners;
 
 import java.io.StringWriter;
 
 import jbehave.framework.CriteriaVerification;
 import jbehave.framework.Verify;
 import jbehave.framework.exception.VerificationException;
-import jbehave.listeners.TextListener;
-import jbehave.listeners.Timer;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jbehave.listeners.NullListener;
+import jbehave.framework.listeners.NullListener;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.listeners;
+package jbehave.framework.listeners;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
