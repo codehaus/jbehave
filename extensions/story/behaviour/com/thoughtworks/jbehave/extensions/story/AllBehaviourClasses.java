@@ -8,7 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
-import com.thoughtworks.jbehave.extensions.story.codegen.StoryParserBehaviour;
+import com.thoughtworks.jbehave.extensions.story.codegen.parser.SimpleStoryParserBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.NarrativeBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.StoryBehaviour;
@@ -23,7 +23,7 @@ import com.thoughtworks.jbehave.extensions.story.visitor.VisitableUsingMiniMockB
 public class AllBehaviourClasses extends Object implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
-                StoryParserBehaviour.class,
+                SimpleStoryParserBehaviour.class,
                 NarrativeBehaviour.class,
                 ScenarioUsingMiniMockBehaviour.class,
                 StoryBehaviour.class,

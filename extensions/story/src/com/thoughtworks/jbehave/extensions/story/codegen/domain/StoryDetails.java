@@ -30,19 +30,19 @@ public class StoryDetails extends BasicDetails {
         scenarios.add(scenario);
     }
 
-    public String getBenefit() {
+    public String benefit() {
         return benefit;
     }
 
-    public String getFeature() {
+    public String feature() {
         return feature;
     }
 
-    public String getRole() {
+    public String role() {
         return role;
     }
 
-    public List getScenarios() {
+    public List scenarios() {
         return scenarios;
     }
     

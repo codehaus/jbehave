@@ -1,12 +1,19 @@
 Package com.thoughtworks.jbehave.extensions.story.parser;
 
+report = class < DailyReport
+	def generate
+	end
+end.new
+
 Helpers
-	And = 'And' | 'and';
-	Given = 'Given' | 'given';
-	When = 'When' | 'when';
-	Then = 'Then' | 'then';
-	Newline = '\n' | '\r\n' | '\r';
 	
+	and = 'And' | 'and';
+	given = 'Given' | 'given';
+	when = 'When' | 'when';
+	then = 'Then' | 'then';
+	cr = 13;
+	lf = 10;
+	eol = cr lf | cr | lf;
 Productions
 	story =
 		story_title
@@ -44,3 +51,5 @@ Productions
 	outcome = expectation+;
 	
 	expectation = ( Then | And ) line;
+
+	line = 
