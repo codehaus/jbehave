@@ -32,7 +32,6 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
         visitor.expects("visit").with(contextStub).after("1").id("2");
         visitor.expects("visit").with(outcomeStub).after("2").id("3");
         visitor.expects("visit").with(eventStub).after("3").id("4");
-        visitor.expects("visit").with(outcomeStub).after("4").id("5");
         
         // when...
         scenario.accept((Visitor)visitor);

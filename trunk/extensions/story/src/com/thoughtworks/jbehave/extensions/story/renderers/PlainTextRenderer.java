@@ -34,7 +34,7 @@ public class PlainTextRenderer implements Visitor {
     
     private final PrintStream out;
     private String nextWord;
-    boolean visitedEvent;
+    private String outcomeString;
 
     public PlainTextRenderer(PrintStream out) {
         this.out = out;
@@ -49,7 +49,6 @@ public class PlainTextRenderer implements Visitor {
         }
         else if (visitable instanceof Scenario) {
             visitScenario((Scenario) visitable);
-            visitedEvent = false;
         }
         else if (visitable instanceof Context) {
             visitContext((Context) visitable);
@@ -59,7 +58,6 @@ public class PlainTextRenderer implements Visitor {
         }
         else if (visitable instanceof EventUsingMiniMock) {
             visitEvent((Event) visitable);
-            visitedEvent = true;
         }
         else if (visitable instanceof Outcome) {
             visitOutcome((Outcome) visitable);
@@ -107,19 +105,17 @@ public class PlainTextRenderer implements Visitor {
 
     public void visitEvent(Event event) {
         out.println("When " + new ConvertCase(event).toSeparateWords());
+        out.println(outcomeString);
     }
 
     public void visitOutcome(Outcome outcome) {
-        if (visitedEvent) {
-            nextWord = "Then ";
-        }
+        nextWord = "Then ";
+        outcomeString = "";
     }
 
     public void visitExpectation(Expectation expectation) {
-        if (visitedEvent) {
-            out.println(nextWord + new ConvertCase(expectation).toSeparateWords());
-            nextWord = "and ";
-        }
+        outcomeString = outcomeString + nextWord + new ConvertCase(expectation).toSeparateWords();
+        nextWord = System.getProperty("line.separator") + "and ";
     }
 
     public void gotResult(Result result) {

@@ -9,11 +9,12 @@ package com.thoughtworks.jbehave.extensions.story.verifier;
 
 import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface ScenarioVerifier {
-    void verifyScenario(Scenario scenario);
+    ScenarioResult verify(Scenario scenario);
     void addListener(ResultListener listener);
 }

@@ -11,11 +11,16 @@ import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
+import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteria;
+import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
+import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
+import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 
 /*
@@ -68,7 +73,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         verifyMocks();
     }
 
-    public void shouldSetExpectationInEnvironmentBeforeEventOccurs() throws Exception {
+    public void shouldSetExpectationInEnvironment() throws Exception {
         // given...
         Mock expectation = mock(Expectation.class);
         
@@ -91,22 +96,6 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         invoker.visit((Event)event);
-        
-        // verify...
-        verifyMocks();
-    }
-    
-    public void shouldVerifyExpectationInEnvironmentAfterEventOccurs() throws Exception {
-        // given...
-        Mock expectation = mock(Expectation.class);
-        Event eventStub = (Event) stub(Event.class);
-
-        // expect...
-        expectation.expects("verify").with(same(environmentStub));
-        
-        // when...
-        invoker.visit(eventStub);
-        invoker.visit((Expectation)expectation);
         
         // verify...
         verifyMocks();
@@ -150,34 +139,13 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
-    public void shouldThrowNestedVerificationExceptionWhenExpectationThrowsExceptionBeforeEvent() throws Exception {
+    public void shouldThrowNestedVerificationExceptionWhenExpectationThrowsException() throws Exception {
         // given...
         Mock expectation = mock(Expectation.class);
-        RuntimeException cause = new RuntimeException("oops");
-        expectation.expects("setExpectationIn").with(environmentStub).will(throwException(cause));
-        
-        // when...
-        try {
-            invoker.visit((Expectation) expectation);
-            Verify.impossible("should have thrown exception");
-        }
-        catch (NestedVerificationException expected) {
-            Verify.identical(cause, expected.getCause());
-        }
-        
-        // then
-        verifyMocks();
-    }
-    
-    public void shouldThrowNestedVerificationExceptionIfExpectationFailsAfterTheEvent() throws Exception {
-        // given...
-        Mock expectation = mock(Expectation.class);
-        Event eventStub = (Event)stub(Event.class);
         Exception cause = new VerificationException("oops");
-        invoker.visit(eventStub); // we are visiting the verifier after the event
         
         // expect...
-        expectation.expects("verify").with(environmentStub).will(throwException(cause));
+        expectation.expects("setExpectationIn").with(environmentStub).will(throwException(cause));
         
         // when...
         try {
@@ -265,6 +233,57 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // verify...
         Verify.that("should have used mocks", result.usedMocks());
+    }
+    
+    public void shouldClearEnvironmentOnEachInvocationOfAScenario() {
+    	Mock environmentMock = mock(Environment.class);
+    	environmentMock.expects("clear");
+    	Environment environment = (Environment)environmentMock;
+    	
+    	Scenario scenario = (Scenario)stub(Scenario.class);
+    	
+    	invoker = new VisitingScenarioInvoker("story", environment);
+    	invoker.invoke(scenario);
+    	invoker.invoke(scenario);
+    	
+    	environmentMock.verify();
+    }
+    
+    public void shouldSetExpectationsOnEachInvocationOfAScenario() {
+    	Mock expectationMock = mock(Expectation.class);
+    	final Expectation expectation = (Expectation)expectationMock;
+    	expectationMock.expects("accept").will(
+    			visitComponent((Visitable) expectation));
+    	
+    	Scenario scenario = new Scenario() {
+			public Story getStory() {
+				return new Story(new Narrative("","",""), 
+						new AcceptanceCriteria());
+			}
+
+			public String getDescription() { return ""; }
+			public Context getContext() { return new Context(new Given[0]); }
+			public Event getEvent() { return (Event)stub(Event.class); }
+
+			public Outcome getOutcome() {
+				 return new Outcome(expectation);
+			}
+
+			public void accept(Visitor visitor) {
+				visitor.visit(this);
+				getContext().accept(visitor);
+				getOutcome().accept(visitor);
+				getEvent().accept(visitor);
+			}
+    	};
+    	
+    	expectationMock.expects("setExpectationIn");
+    	expectationMock.expects("verify").zeroOrMoreTimes(); // not worried
+    	
+    	invoker.invoke(scenario);
+    	invoker.invoke(scenario);
+    	
+    	expectationMock.verify();
     }
     
     public void shouldDoSomething() throws Exception {

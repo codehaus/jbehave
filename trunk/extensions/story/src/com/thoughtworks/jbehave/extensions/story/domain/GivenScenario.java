@@ -7,6 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.extensions.story.invoker.VisitingScenarioInvoker;
+
 
 
 /**
@@ -28,7 +30,8 @@ public class GivenScenario extends GivenUsingMiniMock {
     }
 
     public void setUp(Environment environment) throws Exception {
-        // TODO recursively apply the givens and the event from the scenario to the current context
+        scenario.accept(new VisitingScenarioInvoker(scenario.getStory().title(), 
+        		environment));
     }
 
     public Context getContext() {
