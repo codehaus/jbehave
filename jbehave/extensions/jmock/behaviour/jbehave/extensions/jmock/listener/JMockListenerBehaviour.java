@@ -11,7 +11,7 @@ import java.util.List;
 
 import jbehave.evaluate.listener.Listener;
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.Result;
+import jbehave.framework.CriteriaVerificationResult;
 import jbehave.framework.CriteriaExtractor;
 import jbehave.framework.Verify;
 
@@ -43,7 +43,7 @@ public class JMockListenerBehaviour {
         // setup
         Listener listener = new JMockListener();
         CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
-        Result behaviourResult = behaviour.verify();
+        CriteriaVerificationResult behaviourResult = behaviour.verify();
         
         // execute
         listener.afterCriterionEvaluationEnds(behaviourResult);

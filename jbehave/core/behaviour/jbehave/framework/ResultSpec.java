@@ -12,7 +12,7 @@ package jbehave.framework;
  */
 public class ResultSpec {
 
-    private void verifyEvaluationState(Result evaluation, int status, boolean succeeded, boolean failed, boolean exceptionThrown) {
+    private void verifyEvaluationState(CriteriaVerificationResult evaluation, int status, boolean succeeded, boolean failed, boolean exceptionThrown) {
         Verify.equal("status", status, evaluation.getStatus());
         Verify.equal("succeeded", succeeded, evaluation.succeeded());
         Verify.equal("failed", failed, evaluation.failed());
@@ -20,17 +20,17 @@ public class ResultSpec {
     }
 
     public void shouldHaveConsistentStateForSuccess() throws Exception {
-        Result result = new Result("shouldSucceed", "SomeClass", null);
-        verifyEvaluationState(result, Result.SUCCESS, true, false, false);
+        CriteriaVerificationResult result = new CriteriaVerificationResult("shouldSucceed", "SomeClass", null);
+        verifyEvaluationState(result, CriteriaVerificationResult.SUCCESS, true, false, false);
     }
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
-        Result result = new Result("shouldFail", "SomeClass", null, new VerificationException("oops"));
-        verifyEvaluationState(result, Result.FAILURE, false, true, false);
+        CriteriaVerificationResult result = new CriteriaVerificationResult("shouldFail", "SomeClass", null, new VerificationException("oops"));
+        verifyEvaluationState(result, CriteriaVerificationResult.FAILURE, false, true, false);
     }
 
     public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
-        Result result = new Result("shouldThrowException", "SomeClass", null, new Exception());
-        verifyEvaluationState(result, Result.EXCEPTION_THROWN, false, false, true);
+        CriteriaVerificationResult result = new CriteriaVerificationResult("shouldThrowException", "SomeClass", null, new Exception());
+        verifyEvaluationState(result, CriteriaVerificationResult.EXCEPTION_THROWN, false, false, true);
     }
 }

@@ -10,7 +10,7 @@ package jbehave.extensions.junit.adapter;
 import jbehave.evaluate.Evaluator;
 import jbehave.evaluate.listener.ListenerSupport;
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.Result;
+import jbehave.framework.CriteriaVerificationResult;
 import jbehave.framework.CriteriaExtractor;
 import jbehave.framework.VerificationException;
 import junit.framework.Test;
@@ -39,7 +39,7 @@ public class JUnitAdapter implements Test {
         }
         public void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour) {
         }
-        public void afterCriterionEvaluationEnds(Result behaviourResult) {
+        public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
             if (behaviourResult.failed()) {
                 VerificationException e = (VerificationException)behaviourResult.getTargetException();
                 result.addError(adapter, e);

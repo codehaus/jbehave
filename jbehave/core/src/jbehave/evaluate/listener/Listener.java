@@ -9,7 +9,7 @@ package jbehave.evaluate.listener;
 
 import jbehave.evaluate.Evaluator;
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.Result;
+import jbehave.framework.CriteriaVerificationResult;
 
 
 /**
@@ -31,5 +31,5 @@ public interface Listener {
     void behaviourEvaluationStarted(Class behaviourClass);
     void behaviourEvaluationEnded(Class behaviourClass);
     void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour);
-    void afterCriterionEvaluationEnds(Result behaviourResult);
+    void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult);
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 import jbehave.evaluate.Evaluator;
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.Result;
+import jbehave.framework.CriteriaVerificationResult;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still
@@ -65,7 +65,7 @@ public class CompositeListener implements Listener {
         }
     }
 
-    public void afterCriterionEvaluationEnds(Result behaviourResult) {
+    public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
             ((Listener)i.next()).afterCriterionEvaluationEnds(behaviourResult);
         }
