@@ -8,10 +8,10 @@
 package jbehave.extensions.junit.adapter;
 
 import jbehave.framework.Criterion;
-import jbehave.framework.Evaluation;
-import jbehave.framework.BehavioursSupport;
+import jbehave.framework.CriterionEvaluation;
+import jbehave.framework.CriteriaSupport;
 import jbehave.framework.VerificationException;
-import jbehave.runner.BehaviourRunner;
+import jbehave.runner.Evaluator;
 import jbehave.runner.listener.ListenerSupport;
 import junit.framework.Test;
 import junit.framework.TestResult;
@@ -31,7 +31,7 @@ public class JUnitAdapter implements Test {
             this.result = result;
             this.adapter = adapter;
         }
-        public void runStarted(BehaviourRunner runner) {
+        public void runStarted(Evaluator runner) {
         }
         public void behaviourEvaluationStarted(Class behaviourClass) {
             setBehaviourClassName(behaviourClass.getName());
@@ -39,7 +39,7 @@ public class JUnitAdapter implements Test {
         }
         public void beforeCriterionEvaluationStarts(Criterion behaviour) {
         }
-        public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
+        public void afterCriterionEvaluationEnds(CriterionEvaluation behaviourResult) {
             if (behaviourResult.failed()) {
                 VerificationException e = (VerificationException)behaviourResult.getTargetException();
                 result.addError(adapter, e);
@@ -64,7 +64,7 @@ public class JUnitAdapter implements Test {
     }
 
     public int countTestCases() {
-        return BehavioursSupport.getCriteria(behaviours).size();
+        return CriteriaSupport.getCriteria(behaviours).size();
     }
 
     private void setBehaviourClassName(String behaviourClassName) {
@@ -72,13 +72,13 @@ public class JUnitAdapter implements Test {
     }
 
     public void run(final TestResult result) {        
-        BehaviourRunner currentRunner = new BehaviourRunner();
+        Evaluator currentRunner = new Evaluator();
         currentRunner.addBehaviourClass(behaviours);
         
         currentRunner.registerListener(
                 new JUnitListener(result, this)
         );
-        currentRunner.runBehaviours();
+        currentRunner.evaluateCriteria();
     }
 
     public String toString() {

@@ -12,14 +12,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.framework.Criterion;
-import jbehave.framework.Evaluation;
-import jbehave.runner.SpecificationRunner;
+import jbehave.framework.CriterionEvaluation;
+import jbehave.runner.Evaluator;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still
  * need to find an excuse to use the Simpleton pattern.<br>
  * <br>
- * <plug>This would be so much cleaner in Ruby.</plug>
+ * &lt;plug&gt;This would be so much cleaner in Ruby.&lt;/plug&gt;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
@@ -35,13 +35,13 @@ public class CompositeListener implements Listener {
     
     // Listener methods
     
-    public void runStarted(SpecificationRunner runner) {
+    public void runStarted(Evaluator runner) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
             ((Listener)i.next()).runStarted(runner);
         }
     }
 
-    public void runEnded(SpecificationRunner runner) {
+    public void runEnded(Evaluator runner) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
             ((Listener)i.next()).runEnded(runner);
         }
@@ -65,7 +65,7 @@ public class CompositeListener implements Listener {
         }
     }
 
-    public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
+    public void afterCriterionEvaluationEnds(CriterionEvaluation behaviourResult) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
             ((Listener)i.next()).afterCriterionEvaluationEnds(behaviourResult);
         }

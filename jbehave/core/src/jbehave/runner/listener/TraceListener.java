@@ -8,8 +8,8 @@
 package jbehave.runner.listener;
 
 import jbehave.framework.Criterion;
-import jbehave.framework.Evaluation;
-import jbehave.runner.SpecificationRunner;
+import jbehave.framework.CriterionEvaluation;
+import jbehave.runner.Evaluator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,11 +20,11 @@ import org.apache.commons.logging.LogFactory;
 public class TraceListener implements Listener {
     Log log = LogFactory.getLog(TraceListener.class);
 
-    public void runStarted(SpecificationRunner runner) {
+    public void runStarted(Evaluator runner) {
         log.trace("runStarted");
     }
 
-    public void runEnded(SpecificationRunner runner) {
+    public void runEnded(Evaluator runner) {
         log.trace("runEnded");
     }
 
@@ -40,7 +40,7 @@ public class TraceListener implements Listener {
         log.trace("beforeCriterionEvaluationStarts: " + criterion.getName());
     }
 
-    public void afterCriterionEvaluationEnds(Evaluation evaluation) {
+    public void afterCriterionEvaluationEnds(CriterionEvaluation evaluation) {
         log.trace("afterCriterionEvaluationEnds: " + evaluation.toString());
     }
 }

@@ -13,21 +13,21 @@ import java.util.List;
 
 import jbehave.framework.Verify;
 import jbehave.framework.Criterion;
-import jbehave.framework.Evaluation;
+import jbehave.framework.CriterionEvaluation;
 import jbehave.framework.CriteriaSupport;
 import jbehave.runner.listener.ListenerSupport;
 
 /**
- * Test the {@link SpecificationRunner} class
+ * Test the {@link Evaluator} class
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class RunnerSpecification {
+public class RunnerBehaviour {
     private final static List results = new ArrayList(); // handy place to store results
-    private SpecificationRunner runner;
+    private Evaluator runner;
     
     public void setUp() {
-        runner = new SpecificationRunner();
+        runner = new Evaluator();
         results.clear();
     }
 
@@ -63,15 +63,15 @@ public class RunnerSpecification {
     }
 
     private static class RunStartedListener extends ListenerSupport {
-        private final SpecificationRunner expectedRunner;
+        private final Evaluator expectedRunner;
         private final String message;
         
-        public RunStartedListener(SpecificationRunner expectedRunner, String message) {
+        public RunStartedListener(Evaluator expectedRunner, String message) {
             this.expectedRunner = expectedRunner;
             this.message = message;
         }
 
-        public void runStarted(SpecificationRunner runner) {
+        public void runStarted(Evaluator runner) {
             Verify.sameInstance(expectedRunner, runner);
             results.add(message);
         }
@@ -87,21 +87,21 @@ public class RunnerSpecification {
         runner.registerListener(new RunStartedListener(runner, "one"));
         runner.registerListener(new RunStartedListener(runner, "two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.runBehaviours();
+        runner.evaluateCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"one", "two", "hello"}), results);
     }
 
     private static class RunEndedListener extends ListenerSupport {
-        private final SpecificationRunner expectedRunner;
+        private final Evaluator expectedRunner;
         private final String message;
         
-        public RunEndedListener(SpecificationRunner expectedRunner, String message) {
+        public RunEndedListener(Evaluator expectedRunner, String message) {
             this.expectedRunner = expectedRunner;
             this.message = message;
         }
         
-        public void runEnded(SpecificationRunner runner) {
+        public void runEnded(Evaluator runner) {
             Verify.sameInstance(expectedRunner, runner);
             results.add(message);
         }
@@ -111,7 +111,7 @@ public class RunnerSpecification {
         runner.registerListener(new RunEndedListener(runner, "one"));
         runner.registerListener(new RunEndedListener(runner, "two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.runBehaviours();
+        runner.evaluateCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"hello", "one", "two"}), results);
     }
@@ -132,7 +132,7 @@ public class RunnerSpecification {
         runner.registerListener(new BehaviourClassStartedListener("one"));
         runner.registerListener(new BehaviourClassStartedListener("two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.runBehaviours();
+        runner.evaluateCriteria();
         
         String expectedName = BehaviourClassThatSaysHello.class.getName();
         String[] expected = {"one:" + expectedName, "two:" + expectedName, "hello"};
@@ -155,7 +155,7 @@ public class RunnerSpecification {
         runner.registerListener(new BehaviourClassEndedListener("one"));
         runner.registerListener(new BehaviourClassEndedListener("two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.runBehaviours();
+        runner.evaluateCriteria();
         
         String expectedName = BehaviourClassThatSaysHello.class.getName();
         Verify.equal(Arrays.asList(
@@ -182,7 +182,7 @@ public class RunnerSpecification {
         runner.registerListener(new BehaviourStartedListener("one"));
         runner.registerListener(new BehaviourStartedListener("two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.runBehaviours();
+        runner.evaluateCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"one:shouldSayHello", "two:shouldSayHello", "hello"}), results);
     }
@@ -194,7 +194,7 @@ public class RunnerSpecification {
             this.message = message;
         }
         
-        public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
+        public void afterCriterionEvaluationEnds(CriterionEvaluation behaviourResult) {
             results.add(message + ":" + behaviourResult.getName());
         }
     }
@@ -203,7 +203,7 @@ public class RunnerSpecification {
         runner.registerListener(new BehaviourEndedListener("one"));
         runner.registerListener(new BehaviourEndedListener("two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.runBehaviours();
+        runner.evaluateCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"hello", "one:shouldSayHello", "two:shouldSayHello"}), results);
     }
@@ -212,7 +212,7 @@ public class RunnerSpecification {
         runner.registerListener(new BehaviourStartedListener("started"));
         runner.registerListener(new BehaviourEndedListener("ended"));
         runner.addBehaviourClass(BehaviourClassWithTwoBehaviours.class);
-        runner.runBehaviours();
+        runner.evaluateCriteria();
         
         Verify.equal(4, results.size());
         
