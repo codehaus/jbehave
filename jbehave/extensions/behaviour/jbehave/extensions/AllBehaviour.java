@@ -8,18 +8,18 @@
 package jbehave.extensions;
 
 import jbehave.extensions.jmock.listener.JMockListenerBehaviour;
-import jbehave.extensions.junit.adapter.JUnitAdapterBehaviours;
+import jbehave.extensions.junit.adapter.JUnitAdapterBehaviour;
 import jbehave.framework.Aggregate;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class AllBehaviours implements Aggregate {
+public class AllBehaviour implements Aggregate {
 
 	public Class[] getBehaviourClasses() {
         return new Class[] {
             jbehave.AllBehaviour.class,
-            JUnitAdapterBehaviours.class,
+            JUnitAdapterBehaviour.class,
             JMockListenerBehaviour.class
         };
 	}
