@@ -31,7 +31,7 @@
         <mkdir dir="${classes.dir}"/>
         <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes">
             <classpath id="external_jars_only">
-                <fileset dir="${lib.dir}" includes="*.jar"/>
+                <fileset dir="${lib.dir}" includes="**/*.jar"/>
             </classpath>
         </javac>
     </target>
