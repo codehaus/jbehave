@@ -4,9 +4,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JDK 1.4"/>
 	<classpathentry exported="true" kind="src" path="/jbehave core"/>
-	<classpathentry exported="true" kind="lib" path="lib/junit.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cglib-full-2.0.jar"/>
-	<classpathentry exported="true" sourcepath="C:/java/jmock/core/src" kind="lib" path="lib/jmock.jar"/>
-	<classpathentry exported="true" sourcepath="C:/java/jmock/extensions/cglib/src" kind="lib" path="lib/jmock-cglib.jar"/>
+	<classpathentry kind="var" path="JBEHAVE_LIB/extensions/cglib-full-2.0.jar"/>
+	<classpathentry kind="var" path="JBEHAVE_LIB/extensions/jmock.jar"/>
+	<classpathentry kind="var" path="JBEHAVE_LIB/extensions/jmock-cglib.jar"/>
+	<classpathentry kind="var" path="JBEHAVE_LIB/extensions/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
