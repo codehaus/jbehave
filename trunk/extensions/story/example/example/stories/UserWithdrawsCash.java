@@ -5,6 +5,7 @@
  *
  * See license.txt for license details
  */
+
 package example.stories;
 
 import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteria;
