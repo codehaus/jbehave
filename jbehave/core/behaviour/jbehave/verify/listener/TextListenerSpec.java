@@ -108,6 +108,7 @@ public class TextListenerSpec {
         verifyOutputContains("\n1) shouldDoX [SomeClass]:");
         verifyOutputContains("java.lang.Exception");
     }
+
     public void shouldStartTimerWhenEvaluationStarts() throws Exception {
         Verify.not(timer.isStarted());
         listener.verificationStarted(null);
