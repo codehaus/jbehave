@@ -15,6 +15,7 @@ public class CriteriaVerification {
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
     public static final int EXCEPTION_THROWN = 2;
+    public static final int PENDING = 3;
 
     private final String name;
     private final String spec;
@@ -29,6 +30,9 @@ public class CriteriaVerification {
         this.targetException = targetException;
         if (targetException == null) {
             status = SUCCESS;
+        }
+        else if (targetException instanceof PendingException) {
+            status = PENDING;
         }
         else if (targetException instanceof VerificationException) {
             status = FAILURE;
@@ -71,6 +75,10 @@ public class CriteriaVerification {
 
     public boolean threwException() {
         return status == EXCEPTION_THROWN;
+    }
+
+    public boolean pending() {
+        return status == PENDING;
     }
 
     public String toString() {

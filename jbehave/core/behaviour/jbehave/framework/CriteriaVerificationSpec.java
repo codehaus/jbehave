@@ -12,25 +12,35 @@ package jbehave.framework;
  */
 public class CriteriaVerificationSpec {
 
-    private void verifyEvaluationState(CriteriaVerification verification, int status, boolean succeeded, boolean failed, boolean exceptionThrown) {
+    private void verifyEvaluationState(CriteriaVerification verification, int status, boolean succeeded, boolean failed, boolean exceptionThrown, boolean pending) {
         Verify.equal("status", status, verification.getStatus());
         Verify.equal("succeeded", succeeded, verification.succeeded());
         Verify.equal("failed", failed, verification.failed());
         Verify.equal("exception thrown", exceptionThrown, verification.threwException());
+        Verify.equal("pending", pending, verification.pending());
     }
 
     public void shouldHaveConsistentStateForSuccess() throws Exception {
-        CriteriaVerification verification = new CriteriaVerification("shouldSucceed", "SomeClass", null);
-        verifyEvaluationState(verification, CriteriaVerification.SUCCESS, true, false, false);
+        CriteriaVerification verification =
+            new CriteriaVerification("shouldSucceed", "SomeClass", null);
+        verifyEvaluationState(verification, CriteriaVerification.SUCCESS, true, false, false, false);
     }
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
-        CriteriaVerification verification = new CriteriaVerification("shouldFail", "SomeClass", null, new VerificationException("oops"));
-        verifyEvaluationState(verification, CriteriaVerification.FAILURE, false, true, false);
+        CriteriaVerification verification =
+            new CriteriaVerification("shouldFail", "SomeClass", null, new VerificationException("oops"));
+        verifyEvaluationState(verification, CriteriaVerification.FAILURE, false, true, false, false);
     }
 
     public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
-        CriteriaVerification verification = new CriteriaVerification("shouldThrowException", "SomeClass", null, new Exception());
-        verifyEvaluationState(verification, CriteriaVerification.EXCEPTION_THROWN, false, false, true);
+        CriteriaVerification verification =
+            new CriteriaVerification("shouldThrowException", "SomeClass", null, new Exception());
+        verifyEvaluationState(verification, CriteriaVerification.EXCEPTION_THROWN, false, false, true, false);
+    }
+    
+    public void shouldHaveConsistentStateForPending() throws Exception {
+        CriteriaVerification verification =
+            new CriteriaVerification("shouldBeImplemented", "SomeClass", null, new PendingException("todo"));
+        verifyEvaluationState(verification, CriteriaVerification.PENDING, false, false, false, true);
     }
 }
