@@ -13,7 +13,7 @@ import com.thoughtworks.jbehave.core.result.Result;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class ScenarioResult extends Result {
-    public static final Type USES_MOCKS = newType("Uses Mocks", "M");
+    public static final Type USED_MOCKS = newType("Used Mocks", "M");
     
     public ScenarioResult(String name, Throwable cause) {
         super(name, cause);
@@ -23,7 +23,7 @@ public class ScenarioResult extends Result {
         super(name, status);
     }
 
-    public boolean succeededUsingMocks() {
-        return status() == USES_MOCKS;
+    public boolean usedMocks() {
+        return status() == USED_MOCKS;
     }
 }
