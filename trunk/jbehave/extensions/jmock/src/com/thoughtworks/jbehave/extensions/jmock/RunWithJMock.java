@@ -10,11 +10,10 @@ package com.thoughtworks.jbehave.extensions.jmock;
 import java.io.OutputStreamWriter;
 
 import com.thoughtworks.jbehave.core.BehaviourClass;
-import com.thoughtworks.jbehave.core.listeners.BehaviourListeners;
+import com.thoughtworks.jbehave.core.BehaviourVerifier;
+import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.core.verify.BehaviourVerifier;
 import com.thoughtworks.jbehave.extensions.jmock.listener.JMockListener;
-import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -23,10 +22,9 @@ import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 public class RunWithJMock {
 	public static void main(String [] args) throws Exception {
         TextListener textListener = new TextListener(new OutputStreamWriter(System.out));
-		BehaviourListeners listener = new BehaviourListeners();
-		listener.add(new JMockListener());
-        listener.add(textListener);
-        BehaviourVerifier verifier = new BehaviourVerifier(listener);
+        BehaviourVerifier verifier = new BehaviourVerifier();
+		verifier.registerListener(new JMockListener());
+        verifier.registerListener(textListener);
         verifier.verify(new BehaviourClass(Class.forName(args[0]), verifier, new InvokeMethodWithSetUpAndTearDown()));
 	}
 }

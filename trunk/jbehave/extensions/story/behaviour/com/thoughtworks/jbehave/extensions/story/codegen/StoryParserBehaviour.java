@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.codegen;
 
-import com.thoughtworks.jbehave.core.verify.Verify;
+import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 
 /**

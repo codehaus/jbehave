@@ -10,7 +10,7 @@ package com.thoughtworks.jbehave.extensions.ant.listeners;
 import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourListener;
 import com.thoughtworks.jbehave.core.BehaviourMethod;
-import com.thoughtworks.jbehave.core.verify.Result;
+import com.thoughtworks.jbehave.core.Result;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

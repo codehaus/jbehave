@@ -5,10 +5,12 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.util;
+package com.thoughtworks.jbehave.core.invokers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import com.thoughtworks.jbehave.core.MethodInvoker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

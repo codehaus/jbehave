@@ -14,7 +14,7 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestResult;
 
-import com.thoughtworks.jbehave.core.verify.Verify;
+import com.thoughtworks.jbehave.core.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

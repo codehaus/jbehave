@@ -5,8 +5,8 @@ import java.lang.reflect.Proxy;
 import org.jmock.Mock;
 import org.jmock.core.Verifiable;
 
+import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.verify.Verify;
 
 /**
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>

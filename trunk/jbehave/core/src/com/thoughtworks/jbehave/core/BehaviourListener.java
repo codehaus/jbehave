@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.jbehave.core;
 
-import com.thoughtworks.jbehave.core.verify.Result;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

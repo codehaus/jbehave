@@ -10,9 +10,9 @@ package com.thoughtworks.jbehave.extensions.jmock.listener;
 import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourListener;
 import com.thoughtworks.jbehave.core.BehaviourMethod;
+import com.thoughtworks.jbehave.core.Result;
 import com.thoughtworks.jbehave.core.exception.DelegatingVerificationException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.verify.Result;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 
 /**

@@ -5,9 +5,9 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.util;
+package com.thoughtworks.jbehave.core.invokers;
 
-import com.thoughtworks.jbehave.core.verify.Verify;
+import com.thoughtworks.jbehave.core.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

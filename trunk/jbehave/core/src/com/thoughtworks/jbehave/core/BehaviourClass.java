@@ -10,9 +10,6 @@ package com.thoughtworks.jbehave.core;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
-import com.thoughtworks.jbehave.core.verify.BehaviourVerifier;
-import com.thoughtworks.jbehave.core.verify.Result;
-import com.thoughtworks.jbehave.util.MethodInvoker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

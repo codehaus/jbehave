@@ -15,10 +15,10 @@ import junit.framework.TestSuite;
 
 import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourClass;
+import com.thoughtworks.jbehave.core.BehaviourVerifier;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
-import com.thoughtworks.jbehave.core.verify.BehaviourVerifier;
+import com.thoughtworks.jbehave.core.invokers.DontInvokeMethod;
 import com.thoughtworks.jbehave.extensions.junit.listener.TestSuitePopulater;
-import com.thoughtworks.jbehave.util.DontInvokeMethod;
 
 /**
  * Runs a behaviour class in a JUnit test runner.
@@ -48,7 +48,8 @@ public class JUnitAdapter {
         
         final TestSuitePopulater populater = new TestSuitePopulater(suiteRef);
         
-        BehaviourVerifier verifier = new BehaviourVerifier(populater);
+        BehaviourVerifier verifier = new BehaviourVerifier();
+        verifier.registerListener(populater);
         Behaviour behaviour = new BehaviourClass(classToVerify, verifier, new DontInvokeMethod());
         verifier.verify(behaviour);
 

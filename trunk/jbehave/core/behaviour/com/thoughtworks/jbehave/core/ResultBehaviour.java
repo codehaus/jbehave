@@ -5,8 +5,10 @@
  *
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave.core.verify;
+package com.thoughtworks.jbehave.core;
 
+import com.thoughtworks.jbehave.core.Result;
+import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 

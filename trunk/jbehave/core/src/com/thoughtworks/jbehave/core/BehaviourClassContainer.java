@@ -7,17 +7,16 @@
  */
 package com.thoughtworks.jbehave.core;
 
-import com.thoughtworks.jbehave.core.verify.BehaviourClassVerifier;
 
 
 /**
  * Implemented by classes that contain behaviour classes. It should probably
  * be called <tt>Composite</tt> but then I'd get strung up by the patterns
  * police because it isn't really an implementation of the Composite
- * pattern - more a way of grouping behaviour classes together.<br>
- * <br>
+ * pattern - more a way of grouping behaviour classes together.<br/>
+ * <br/>
  * Any implementing class must also have a default constructor so that it
- * can be interrogated by a {@link BehaviourClassVerifier}.
+ * can be interrogated by a {@link BehaviourVerifier}.
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */

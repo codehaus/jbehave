@@ -17,7 +17,7 @@ import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourClass;
 import com.thoughtworks.jbehave.core.BehaviourListener;
 import com.thoughtworks.jbehave.core.BehaviourMethod;
-import com.thoughtworks.jbehave.core.verify.Result;
+import com.thoughtworks.jbehave.core.Result;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

@@ -16,9 +16,9 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 
 import com.thoughtworks.jbehave.core.BehaviourMethod;
-import com.thoughtworks.jbehave.core.verify.Result;
+import com.thoughtworks.jbehave.core.Result;
+import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.util.ConvertCase;
-import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 
 public class JUnitMethodAdapter extends TestCase {
     private final Method method;

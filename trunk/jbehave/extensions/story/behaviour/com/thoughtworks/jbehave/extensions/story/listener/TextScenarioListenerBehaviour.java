@@ -9,7 +9,7 @@ package com.thoughtworks.jbehave.extensions.story.listener;
 
 import java.io.StringWriter;
 
-import com.thoughtworks.jbehave.core.verify.Verify;
+import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 import com.thoughtworks.jbehave.extensions.story.domain.MockableScenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;

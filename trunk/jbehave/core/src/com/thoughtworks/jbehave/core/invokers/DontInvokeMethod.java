@@ -5,13 +5,16 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.util;
+package com.thoughtworks.jbehave.core.invokers;
 
 import java.lang.reflect.Method;
+
+import com.thoughtworks.jbehave.core.MethodInvoker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface MethodInvoker {
-    void invoke(Object instance, Method method) throws Throwable;
+public class DontInvokeMethod implements MethodInvoker {
+    public void invoke(Object proxy, Method method) throws Throwable {
+    }
 }

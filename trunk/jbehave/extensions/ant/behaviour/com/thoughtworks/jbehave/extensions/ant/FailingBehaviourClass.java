@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.ant;
 
-import com.thoughtworks.jbehave.core.verify.Verify;
+import com.thoughtworks.jbehave.core.Verify;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

@@ -9,9 +9,8 @@ package com.thoughtworks.jbehave.core;
 
 import java.io.PrintWriter;
 
+import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.core.verify.BehaviourVerifier;
-import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -21,9 +20,10 @@ public class Run {
         try {
             Class classToVerify = Class.forName(args[0]);
             TextListener textListener = new TextListener(new PrintWriter(System.out));
-            BehaviourVerifier methodVerifier = new BehaviourVerifier(textListener);
-            BehaviourClass behaviourClass = new BehaviourClass(classToVerify, methodVerifier, new InvokeMethodWithSetUpAndTearDown());
-            new BehaviourVerifier(textListener).verify(behaviourClass);
+            BehaviourVerifier verifier = new BehaviourVerifier();
+            verifier.registerListener(textListener);
+            BehaviourClass behaviourClass = new BehaviourClass(classToVerify, verifier, new InvokeMethodWithSetUpAndTearDown());
+            verifier.verify(behaviourClass);
             textListener.printReport();
         } catch (Exception e) {
             e.printStackTrace();

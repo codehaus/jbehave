@@ -21,11 +21,10 @@ import org.apache.tools.ant.types.Path;
 
 import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourClass;
-import com.thoughtworks.jbehave.core.listeners.BehaviourListeners;
+import com.thoughtworks.jbehave.core.BehaviourVerifier;
+import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.core.verify.BehaviourVerifier;
 import com.thoughtworks.jbehave.extensions.ant.listeners.AntListener;
-import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -89,10 +88,9 @@ public class AntTask extends org.apache.tools.ant.Task {
 	private void verifyBehaviourClass(BehaviourClassDetails behaviourClassDetails, AntListener antListener) {
 		try {
             TextListener textListener = new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
-            BehaviourListeners compositeListener = new BehaviourListeners();
-            compositeListener.add(antListener);
-            compositeListener.add(textListener);
-            BehaviourVerifier verifier = new BehaviourVerifier(compositeListener);
+            BehaviourVerifier verifier = new BehaviourVerifier();
+            verifier.registerListener(antListener);
+            verifier.registerListener(textListener);
             Behaviour behaviour = new BehaviourClass(classFor(behaviourClassDetails), verifier, new InvokeMethodWithSetUpAndTearDown());
 //            BehaviourClassVerifier verifier = new BehaviourClassVerifier(
 //                    classFor(behaviourClass), new BehaviourVerifier(compositeListener), new InvokeMethodWithSetUpAndTearDown());

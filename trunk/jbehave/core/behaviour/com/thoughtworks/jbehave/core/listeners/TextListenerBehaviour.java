@@ -10,10 +10,10 @@ package com.thoughtworks.jbehave.core.listeners;
 import java.io.StringWriter;
 
 import com.thoughtworks.jbehave.core.BehaviourMethod;
+import com.thoughtworks.jbehave.core.Result;
+import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.verify.Result;
-import com.thoughtworks.jbehave.core.verify.Verify;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

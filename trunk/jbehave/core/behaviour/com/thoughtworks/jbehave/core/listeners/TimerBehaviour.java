@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.listeners;
 
-import com.thoughtworks.jbehave.core.verify.Verify;
+import com.thoughtworks.jbehave.core.Verify;
 
 
 /**
