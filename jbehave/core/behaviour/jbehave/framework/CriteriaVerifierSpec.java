@@ -52,7 +52,7 @@ public class CriteriaVerifierSpec {
         };
         final CriteriaVerifier criteriaVerifier = new CriteriaVerifier(criteria, specInstance);
         Listener listener = new NullListener() {
-            public void criteriaVerificationStarting(CriteriaVerifier verifier) {
+            public void criteriaVerificationStarting(CriteriaVerifier verifier, Object spec) {
                 Verify.sameInstance(criteriaVerifier, verifier);
                 sequenceOfEvents.add("listener called");
             }

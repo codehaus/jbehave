@@ -30,7 +30,7 @@ public class TraceListener implements Listener {
         log.trace("specVerificationEnded: " + spec.getName());
     }
 
-    public void criteriaVerificationStarting(CriteriaVerifier verifier) {
+    public void criteriaVerificationStarting(CriteriaVerifier verifier, Object specInstance) {
         log.trace("beforeCriteriaVerificationStarts: " + verifier.getName());
     }
 

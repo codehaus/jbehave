@@ -39,7 +39,7 @@ public class CompositeListenerSpec {
 			methodsCalled.put("specVerificationStarting", spec);
 		}
 
-		public void criteriaVerificationStarting(CriteriaVerifier verifier) {
+		public void criteriaVerificationStarting(CriteriaVerifier verifier, Object spec) {
 			methodsCalled.put("criteriaVerificationStarting", verifier);
 		}
 
@@ -91,7 +91,7 @@ public class CompositeListenerSpec {
 		CriteriaVerifier verifier = new CriteriaVerifier(getClass().getMethods()[0]);
 
 		// execute
-		composite.criteriaVerificationStarting(verifier);
+		composite.criteriaVerificationStarting(verifier, new Object());
 
 		// verify
 		verifyMethodCalled("criteriaVerificationStarting", callMap1, verifier);

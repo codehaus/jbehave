@@ -62,7 +62,7 @@ public class CriteriaVerifier {
      * in the appropriate places if either of them exist.<br>
      * <br>
      * The {@link Listener} is alerted before and after the verification,
-     * with calls to {@link Listener#criteriaVerificationStarting(CriteriaVerifier)
+     * with calls to {@link Listener#criteriaVerificationStarting(CriteriaVerifier,Object)
      * beforeCriteriaVerificationStarts(this)} and
      * {@link Listener#criteriaVerificationEnding(CriteriaVerification,Object)
      * afterCriteriaVerificationEnds(result)} respectively.
@@ -70,7 +70,7 @@ public class CriteriaVerifier {
     public CriteriaVerification verifyCriteria(Listener listener) {
         CriteriaVerification result = null;
         try {
-            listener.criteriaVerificationStarting(this);
+            listener.criteriaVerificationStarting(this, specInstance);
             setUp();
             method.invoke(specInstance, new Object[0]);
             result = createVerification(null);

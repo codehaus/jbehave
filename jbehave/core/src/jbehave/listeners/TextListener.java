@@ -56,7 +56,7 @@ public class TextListener extends NullListener {
             exceptionsThrown.add(verification);
         }
         out.print(getSymbol(verification.getStatus()));
-        out.flush();
+//        out.flush();
 		return verification;
     }
 

@@ -14,14 +14,24 @@ import jbehave.framework.CriteriaVerification;
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.Verify;
 import jbehave.framework.Listener;
+import jbehave.extensions.jmock.Mocker;
 
 import org.jmock.Mock;
+import org.jmock.core.matcher.InvokeOnceMatcher;
 import junit.framework.AssertionFailedError;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
 public class JMockListenerSpec {
+	private Listener listener;
+
+
+	public void setUp() {
+		listener = new JMockListener();
+	}
+
     public static class BehaviourClassWithPrivateMock {
         public boolean verifyWasCalled = false;
         
@@ -54,7 +64,6 @@ public class JMockListenerSpec {
     
 	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
         // setup
-        Listener listener = new JMockListener();
         CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
         CriteriaVerification behaviourResult = behaviour.verifyCriteria(Listener.NULL);
 		BehaviourClassWithPrivateMock spec = new BehaviourClassWithPrivateMock();
@@ -82,7 +91,6 @@ public class JMockListenerSpec {
 
 	public void shouldCreateNewVerificationWhenVerifyFails() throws Exception {
 		// setup
-		Listener listener = new JMockListener();
         CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
         CriteriaVerification behaviourResult = behaviour.verifyCriteria(Listener.NULL);
         Object spec = new BehaviourClassWithFailingMock();
@@ -92,5 +100,64 @@ public class JMockListenerSpec {
 		// verify
 		Verify.notNull(verifyMockResult);
 		Verify.not(verifyMockResult == behaviourResult);
+	}
+
+	public static class BehaviourClassNeedingAMock {
+		private Mocker mocker = null;
+
+		public void needsMocks(Mocker mocker) {
+			this.mocker = mocker;
+		}
+
+		public Mocker getMocker() {
+			return mocker;
+		}
+
+		public void shouldNeedAMock() throws Exception {
+			//
+		}
+	}
+
+	public void shouldInjectMockerWhenNeedsMockMethodIsPresentOnASpec() throws Exception {
+		// setup
+		CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassNeedingAMock.class);
+		BehaviourClassNeedingAMock spec = new BehaviourClassNeedingAMock();
+
+		// execute
+		listener.criteriaVerificationStarting(behaviour, spec);
+
+		// verify
+		Verify.that("needsMocker should have been invoked", spec.getMocker() != null);
+	}
+
+
+	interface AnIntf {
+		void someMethod();
+	}
+
+	public static class AJMockUsingSpec {
+		Mocker mocker;
+
+		public void needsMocks(Mocker mocker) {
+			this.mocker = mocker;
+		}
+
+		public void shouldUseAMock() throws Exception {
+	        Mock m = mocker.mock(AnIntf.class);
+			m.expects(new InvokeOnceMatcher()).method("someMethod");
+		}
+	}
+
+	public void shouldAutomaticallyVerifyMocksCreatedWithMocker() throws Exception {
+		// setup
+		CriteriaVerifier behaviour = getSingleBehaviour(AJMockUsingSpec.class);
+		AJMockUsingSpec spec = new AJMockUsingSpec();
+
+		// execute
+	    listener.criteriaVerificationStarting(behaviour, spec);
+		spec.shouldUseAMock();
+		CriteriaVerification verification = listener.criteriaVerificationEnding(new CriteriaVerification("shouldUseAMock", "AJMockUsingSpec"), spec);
+		// verify
+		Verify.that("should of failed JMock verification", verification.failed());
 	}
 }

@@ -74,6 +74,20 @@
 		</junit>
 	</target>  -->
 
+	<taskdef name="jbehave"
+                 classname="jbehave.extensions.ant.JBehaveAntTask"
+                 classpath="E:\development\projects\jbehave\classes"/>
+
+	<target name="behave" depends="spec.compile">
+		<jbehave>
+			<spec specname="jbehave.AllSpecs"/>
+			<classpath>
+				<pathelement location="${classes.dir}"/>
+				<pathelement location="${spec.classes.dir}"/>
+			</classpath>
+		</jbehave>
+	</target>
+
 	<target name="clean">
 		<delete dir="${build.dir}" />
 	</target>

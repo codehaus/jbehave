@@ -118,4 +118,5 @@ public class Verify {
     private static void fail(String message, Object expected, Object actual) {
         throw new VerificationException(message, expected, actual);
     }
+
 }

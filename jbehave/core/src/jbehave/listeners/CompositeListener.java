@@ -47,9 +47,9 @@ public class CompositeListener implements Listener {
         }
     }
 
-    public void criteriaVerificationStarting(CriteriaVerifier verifier) {
+    public void criteriaVerificationStarting(CriteriaVerifier verifier, Object spec) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).criteriaVerificationStarting(verifier);
+            ((Listener)i.next()).criteriaVerificationStarting(verifier, spec);
         }
     }
 

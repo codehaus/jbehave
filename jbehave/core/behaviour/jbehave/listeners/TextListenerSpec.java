@@ -162,4 +162,5 @@ public class TextListenerSpec {
         // verify
         Verify.not(timer.isRunning);
     }
+
 }
