@@ -27,5 +27,5 @@ public interface Aggregate {
      * <tt>Aggregate</tt> behaviour classes, analagous to the Composite
      * pattern.
      */
-    Class[] getBehaviourClasses();
+    Class[] getSpecs();
 }

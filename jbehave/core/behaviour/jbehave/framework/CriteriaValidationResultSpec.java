@@ -10,7 +10,7 @@ package jbehave.framework;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class CriteriaEvaluationBehaviour {
+public class CriteriaValidationResultSpec {
 
     private void verifyEvaluationState(Result evaluation, int status, boolean succeeded, boolean failed, boolean exceptionThrown) {
         Verify.equal("status", status, evaluation.getStatus());

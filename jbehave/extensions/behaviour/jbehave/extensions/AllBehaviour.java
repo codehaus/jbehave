@@ -16,9 +16,9 @@ import jbehave.framework.Aggregate;
  */
 public class AllBehaviour implements Aggregate {
 
-	public Class[] getBehaviourClasses() {
+	public Class[] getSpecs() {
         return new Class[] {
-            jbehave.AllBehaviour.class,
+            jbehave.AllSpecs.class,
             JUnitAdapterBehaviour.class,
             JMockListenerBehaviour.class
         };

@@ -6,7 +6,7 @@
  * See license.txt for licence details
  */
 package jbehave.extensions.junit;
-import jbehave.AllBehaviour;
+import jbehave.AllSpecs;
 import jbehave.extensions.junit.adapter.JUnitAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -20,7 +20,7 @@ public class AllBehavioursSuite {
     
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        Class[] behaviourClasses = new AllBehaviour().getBehaviourClasses();
+        Class[] behaviourClasses = new AllSpecs().getSpecs();
         for (int i = 0; i < behaviourClasses.length; i++) {
             suite.addTest(wrap(behaviourClasses[i]));
         }
