@@ -65,26 +65,26 @@ public class TextListenerSpec {
 
     private void verifyOutputContains(String expected) {
         String output = writer.toString();
-        Verify.that("Output should contain: [" + expected + "] but was:\n" + output, output.indexOf(expected) != -1);
+        Verify.that("Output should contain: [" + expected + "] but was:\n>>>\n" + output + "\n<<<", output.indexOf(expected) != -1);
     }
 
-    public void shouldSummarizeSingleSuccessfulCriterion() throws Exception {
+    public void shouldSummarizeSingleSuccessfulCriteria() throws Exception {
         listener.afterCriteriaVerificationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null));
         listener.verificationEnded(null);
-        verifyOutputContains("\nBehaviours run: 1");
+        verifyOutputContains("\nCriteria: 1");
     }
 
     public void shouldSummarizeTwoSuccessfulCriteria() throws Exception {
         listener.afterCriteriaVerificationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null));
         listener.afterCriteriaVerificationEnds(new CriteriaVerification("shouldDoY", "SomeClass", null));
         listener.verificationEnded(null);
-        verifyOutputContains("\nBehaviours run: 2");
+        verifyOutputContains("\nCriteria: 2");
     }
 
     public void shouldSummarizeCriterionWithVerificationFailure() throws Exception {
         listener.afterCriteriaVerificationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null, new VerificationException("oops")));
         listener.verificationEnded(null);
-        verifyOutputContains("\nBehaviours run: 1, Failures: 1");
+        verifyOutputContains("\nCriteria: 1. Failures: 1");
     }
 
     public void shouldPrintStackTraceForCriteronWithVerificationFailure() throws Exception {
@@ -98,7 +98,7 @@ public class TextListenerSpec {
     public void shouldSummarizeCriterionWithExceptionThrown() throws Exception {
         listener.afterCriteriaVerificationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null, new Exception()));
         listener.verificationEnded(null);
-        verifyOutputContains("\nBehaviours run: 1, Failures: 0, Exceptions Thrown: 1");
+        verifyOutputContains("\nCriteria: 1. Failures: 0, Exceptions: 1");
     }
 
     public void shouldPrintStackTraceForException() throws Exception {

@@ -3,6 +3,13 @@ important thing(s) jbehave doesn't do. I'm flying back from Jo'burg to the UK
 so I guess my holiday-mush-brain is starting to revert to it's work-brain state.
 I should have done this all along really...
 
+Verifier should not manage Listeners - it should be constructed with a Listeners (array of Listener)
+NOTE: this will likely break the self-verification while we implement it - hmm
+It should run itself from a separate jar - this sounds like a custom classloader thing??
+Should refactor HashMap anonymous class out of Verifier as MapOfLists with its own Spec
+Maybe the Listeners should visit the Criteria?
+ - Then everything happens as a side-effect - more event driven
+ - Top level Verifier goes away - seems like a Good Thing
 It should have todo-level failure (Verify.todo()) that doesn't break the build
 It should have a jMock listener
 It should be easy to run from inside the IDE

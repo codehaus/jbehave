@@ -26,6 +26,8 @@ import jbehave.verify.Verifier;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public interface Listener {
+    public static final Listener NULL = new ListenerSupport(); // null object
+
     void verificationStarted(Verifier verifier);
     void verificationEnded(Verifier verifier);
     void specVerificationStarted(Class spec);

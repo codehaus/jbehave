@@ -25,14 +25,31 @@ import jbehave.verify.listener.Listener;
  */
 public class Verifier {
     private final List specs = new ArrayList();
-    private final Map criteriaMap = new HashMap();
+    private final Map criteriaMap = new HashMap() {
+        public Object get(Object key) {
+            Object result = super.get(key);
+            return result == null ? new ArrayList() : result;
+        }
+        public Object put(Object key, Object value) {
+            List values = (List)get(key);
+            values.add(value);
+            super.put(key, values);
+            return values;
+        }
+    };
     private final CompositeListener listeners = new CompositeListener();
     private int criteriaCount = 0;
 
     public void addSpec(Class spec) {
         Collection criteriaVerifiers = new CriteriaExtractor(spec).createCriteriaVerifiers();
-        specs.add(spec);
-        criteriaMap.put(spec, criteriaVerifiers);
+        for (Iterator i = criteriaVerifiers.iterator(); i.hasNext();) {
+            CriteriaVerifier currentCriteria = (CriteriaVerifier)i.next();
+            Class currentSpec = currentCriteria.getSpecInstance().getClass();
+            if (!specs.contains(currentSpec)) {
+                specs.add(currentSpec);
+            }
+            criteriaMap.put(currentSpec, currentCriteria);
+        }
         criteriaCount += criteriaVerifiers.size();
     }
     
@@ -54,13 +71,12 @@ public class Verifier {
 
     public void verifyCriteria() {
         listeners.verificationStarted(this);
-        for (Iterator i = specs.iterator(); i.hasNext();) {
-            final Class spec = (Class)i.next();
+        for (Iterator specsIterator = specs.iterator(); specsIterator.hasNext();) {
+            final Class spec = (Class)specsIterator.next();
             listeners.specVerificationStarted(spec);
-            
             final Collection criteria = (Collection)criteriaMap.get(spec);
-            for (Iterator j = criteria.iterator(); j.hasNext();) {
-                final CriteriaVerifier verifier = (CriteriaVerifier)j.next();
+            for (Iterator criteriaIterator = criteria.iterator(); criteriaIterator.hasNext();) {
+                final CriteriaVerifier verifier = (CriteriaVerifier)criteriaIterator.next();
                 listeners.beforeCriteriaVerificationStarts(verifier);
                 CriteriaVerification verification = verifier.verifyCriteria();
                 listeners.afterCriteriaVerificationEnds(verification);
