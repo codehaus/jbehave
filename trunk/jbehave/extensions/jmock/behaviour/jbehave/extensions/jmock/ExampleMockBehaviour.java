@@ -12,7 +12,7 @@ package jbehave.extensions.jmock;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 16-Jul-2004
  */
-public class ExampleMockBehaviour implements JMockable {
+public class ExampleMockBehaviour implements UsingJMock {
 
 	private Mock aMock;
 

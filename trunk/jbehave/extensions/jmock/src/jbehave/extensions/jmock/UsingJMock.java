@@ -19,7 +19,7 @@ import org.jmock.core.DynamicMock;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface JMockable extends JMockMixins {
+public interface UsingJMock extends JMockMixins {
     /**
      * Convenience methods for managing mocks
      * 
@@ -45,7 +45,7 @@ public interface JMockable extends JMockMixins {
                     mock.verify();
                 } catch (AssertionFailedError e) {
                     VerificationException fakedException = new VerificationException(e.getMessage());
-                    mock.fakeException(fakedException);
+                    mock.fakeExceptionStackTrace(fakedException);
                     throw fakedException;
                 }
             }
@@ -60,51 +60,42 @@ public interface JMockable extends JMockMixins {
      * verified later.
      */
     class Mock extends org.jmock.Mock {
-        private Object creationStackTrace;
+        private Exception exceptionFromCreationPoint;
 
         /**
          * Set up a fack stack trace pointing back to the point where the
          * mock was constructed, rather than the obscure part of the framework
          * that actually does the mocking.
          */
-        public void fakeException(Exception e) {
-            if (creationStackTrace != null) {
-                e.setStackTrace((StackTraceElement[]) creationStackTrace);
-                e.printStackTrace();
+        public void fakeExceptionStackTrace(Exception exceptionToFake) {
+            try {
+                StackTraceElement[] creationStackTrace = exceptionFromCreationPoint.getStackTrace();
+                StackTraceElement[] fakedStackTrace =
+                    new StackTraceElement[creationStackTrace.length - 1];
+                System.arraycopy(creationStackTrace, 1, fakedStackTrace, 0, fakedStackTrace.length);
+                exceptionToFake.setStackTrace(fakedStackTrace);
+                exceptionToFake.printStackTrace();
+            } catch (NoSuchMethodError e) {
+                // shame - not running in a 1.4 VM
             }
         }
         
         public Mock(Class mockedType) {
             super(mockedType);
-            setStackTrace();
+            exceptionFromCreationPoint = new Exception();
             Mocks.add(this);
         }
 
         public Mock(Class mockedType, String name) {
             super(mockedType, name);
-            setStackTrace();
+            exceptionFromCreationPoint = new Exception();
             Mocks.add(this);
         }
 
         public Mock(DynamicMock coreMock) {
             super(coreMock);
-            setStackTrace();
+            exceptionFromCreationPoint = new Exception();
             Mocks.add(this);
-        }
-        
-        /**
-         * Strip off bottom two elements of stack trace - they are our
-         * constructor and this method respectively.
-         */
-        private void setStackTrace() {
-            try {
-                StackTraceElement[] stack = new Exception().getStackTrace();
-                StackTraceElement[] editedStackTrace = new StackTraceElement[stack.length - 2];
-                System.arraycopy(stack, 2, editedStackTrace, 0, stack.length - 2);
-                creationStackTrace = editedStackTrace;
-            } catch (NoSuchMethodError e) {
-                // shame - not running in a 1.4 VM
-            }
         }
     }
 }

@@ -10,7 +10,7 @@ package jbehave.extensions.jmock.listener;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import jbehave.extensions.jmock.JMockable;
+import jbehave.extensions.jmock.UsingJMock;
 import jbehave.framework.Listener;
 import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.ResponsibilityVerifier;
@@ -28,7 +28,7 @@ public class JMockListenerBehaviour {
 		listener = new JMockListener();
 	}
 
-    public static class BehaviourClassWithPrivateMock implements JMockable {
+    public static class BehaviourClassWithPrivateMock implements UsingJMock {
         public boolean verifyWasCalled = false;
         
         private Mock someMock = new Mock(List.class) {
@@ -71,7 +71,7 @@ public class JMockListenerBehaviour {
         Verify.that(behaviourClassInstance.verifyWasCalled);
 	}
 
-	public static class BehaviourClassWithFailingMock implements JMockable {
+	public static class BehaviourClassWithFailingMock implements UsingJMock {
         public boolean verifyWasCalled = false;
 
         private Mock someMock = new Mock(List.class) {
@@ -98,15 +98,15 @@ public class JMockListenerBehaviour {
 		Verify.not(verifyMockResult == verification);
 	}
 
-	interface AnIntf {
+	interface Foo {
 		String someMethod();
 	}
 
-	public static class BehaviourClassThatUsesJMock implements JMockable {
+	public static class BehaviourClassThatUsesJMock implements UsingJMock {
 
-		public void shouldUseAMock() throws Exception {
-	        Mock m = new Mock(AnIntf.class);
-			m.expects(Invoked.once()).method("someMethod").withNoArguments()
+		public void shouldUseAMockWhoseExpectationWillFail() throws Exception {
+	        Mock foo = new Mock(Foo.class);
+			foo.expects(Invoked.once()).method("someMethod").withNoArguments()
                 .will(Return.value("hello"));
 		}
 	}
@@ -118,8 +118,12 @@ public class JMockListenerBehaviour {
 
 		// execute
 	    listener.responsibilityVerificationStarting(verifier, behaviourClassInstance);
-		behaviourClassInstance.shouldUseAMock();
-		ResponsibilityVerification verification = listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldUseAMock", "AJMockUsingSpec"), behaviourClassInstance);
+		behaviourClassInstance.shouldUseAMockWhoseExpectationWillFail();
+		ResponsibilityVerification verification =
+            listener.responsibilityVerificationEnding(
+                    new ResponsibilityVerification("shouldUseAMockWhoseExpectationWillFail", "AJMockUsingSpec"),
+                    behaviourClassInstance);
+        
 		// verify
 		Verify.that("should fail JMock verification", verification.failed());
 	}
