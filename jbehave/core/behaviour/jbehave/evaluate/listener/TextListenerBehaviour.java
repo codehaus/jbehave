@@ -48,17 +48,17 @@ public class TextListenerBehaviour {
         listener = new TextListener(writer, timer);
     }
 
-    public void shouldRenderSuccessSymbolForSuccessfulBehaviour() throws Exception {
+    public void shouldRenderSuccessSymbolForSuccess() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldSucceed", "SomeClass", null));
         Verify.equal(SUCCESS, writer.toString());
     }
 
-    public void shouldRenderExceptionSymbolForBehaviourThatThrowsException() throws Exception {
+    public void shouldRenderExceptionSymbolForException() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldThrowException", "SomeClass", null, new Exception()));
         Verify.equal(EXCEPTION_THROWN, writer.toString());
     }
 
-    public void shouldRenderFailureSymbolForFailedBehaviour() throws Exception {
+    public void shouldRenderFailureSymbolForFailure() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldFail", "SomeClass", null, new VerificationException("oops")));
         Verify.equal(FAILURE, writer.toString());
     }
@@ -68,26 +68,26 @@ public class TextListenerBehaviour {
         Verify.that("Output should contain: [" + expected + "] but was:\n" + output, output.indexOf(expected) != -1);
     }
 
-    public void shouldSummarizeSingleSuccessfulBehaviour() throws Exception {
+    public void shouldSummarizeSingleSuccessfulCriterion() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldDoX", "SomeClass", null));
         listener.runEnded(null);
         verifyOutputContains("\nBehaviours run: 1");
     }
 
-    public void shouldSummarizeTwoSuccessfulBehaviours() throws Exception {
+    public void shouldSummarizeTwoSuccessfulCriteria() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldDoX", "SomeClass", null));
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldDoY", "SomeClass", null));
         listener.runEnded(null);
         verifyOutputContains("\nBehaviours run: 2");
     }
 
-    public void shouldSummarizeBehaviourWithVerificationFailure() throws Exception {
+    public void shouldSummarizeCriterionWithVerificationFailure() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldDoX", "SomeClass", null, new VerificationException("oops")));
         listener.runEnded(null);
         verifyOutputContains("\nBehaviours run: 1, Failures: 1");
     }
 
-    public void shouldPrintStackTraceForBehaviourWithVerificationFailure() throws Exception {
+    public void shouldPrintStackTraceForCriteronWithVerificationFailure() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldDoX", "SomeClass", null, new VerificationException("oops")));
         listener.runEnded(null);
         verifyOutputContains("Failures:");
@@ -95,35 +95,28 @@ public class TextListenerBehaviour {
         verifyOutputContains("VerificationException");
     }
 
-    public void shouldSummarizeBehaviourWithExceptionThrown() throws Exception {
+    public void shouldSummarizeCriterionWithExceptionThrown() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldDoX", "SomeClass", null, new Exception()));
         listener.runEnded(null);
         verifyOutputContains("\nBehaviours run: 1, Failures: 0, Exceptions Thrown: 1");
     }
 
-    public void shouldPrintStackTraceForBehaviourWithExceptionThrown() throws Exception {
+    public void shouldPrintStackTraceForException() throws Exception {
         listener.afterCriterionEvaluationEnds(new CriterionEvaluation("shouldDoX", "SomeClass", null, new Exception()));
         listener.runEnded(null);
         verifyOutputContains("Exceptions Thrown:");
         verifyOutputContains("\n1) shouldDoX [SomeClass]:");
         verifyOutputContains("java.lang.Exception");
     }
-    public void shouldStartTimerWhenRunStarts() throws Exception {
+    public void shouldStartTimerWhenEvaluationStarts() throws Exception {
         Verify.not(timer.isStarted());
-        
-        // execute
         listener.runStarted(null);
-        
         Verify.that(timer.isStarted());
     }
     
-    public void shouldStopTimerWhenRunEnds() throws Exception {
-        // setup
+    public void shouldStopTimerWhenEvaluationEnds() throws Exception {
         timer.start();
-        
-        // execute
         listener.runEnded(null);
-        
         Verify.not(timer.isStarted());
     }
 }

@@ -15,7 +15,7 @@ import junit.framework.TestResult;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  * @author <a href="mailto:joe@jbehave.org">Joe Walnes</a>
  */
-public class JUnitAdapterBehaviours {
+public class JUnitAdapterBehaviour {
 
     // behaviour class with 3 behaviours
     public static class BehaviourClassWithTwoBehaviours {
