@@ -30,6 +30,6 @@ public interface Listener {
 
     void specVerificationStarting(Class spec);
     void criteriaVerificationStarting(CriteriaVerifier verifier);
-    CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification);
+    CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance);
     void specVerificationEnding(Class spec);
 }

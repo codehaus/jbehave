@@ -27,7 +27,7 @@ public class NullListener implements Listener {
     public void criteriaVerificationStarting(CriteriaVerifier verifier) {
     }
 
-    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification) {
+    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
 		return verification;
     }
     

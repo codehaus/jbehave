@@ -43,7 +43,7 @@ public class CompositeListenerSpec {
 			methodsCalled.put("criteriaVerificationStarting", verifier);
 		}
 
-		public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification) {
+		public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
 			methodsCalled.put("criteriaVerificationEnding", verification);
 			return nextVerification;
 		}
@@ -104,7 +104,7 @@ public class CompositeListenerSpec {
 	    CriteriaVerification verification = new CriteriaVerification("criteria", "spec");
 
 		// execute
-	    CriteriaVerification returnedVerification = composite.criteriaVerificationEnding(verification);
+	    CriteriaVerification returnedVerification = composite.criteriaVerificationEnding(verification, new Object());
 
 		// verify
 		Verify.equal(nextVerification, returnedVerification);

@@ -47,7 +47,7 @@ public class TextListener extends NullListener {
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification) {
+    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
         criteriaVerified++;
         if (verification.failed()) {
             failures.add(verification);

@@ -64,7 +64,7 @@ public class CriteriaVerifier {
      * The {@link Listener} is alerted before and after the verification,
      * with calls to {@link Listener#criteriaVerificationStarting(CriteriaVerifier)
      * beforeCriteriaVerificationStarts(this)} and
-     * {@link Listener#criteriaVerificationEnding(CriteriaVerification)
+     * {@link Listener#criteriaVerificationEnding(CriteriaVerification,Object)
      * afterCriteriaVerificationEnds(result)} respectively.
      */
     public CriteriaVerification verifyCriteria(Listener listener) {
@@ -94,7 +94,7 @@ public class CriteriaVerifier {
                 throw new BehaviourFrameworkError(e);
             }
         }
-        listener.criteriaVerificationEnding(result);
+        listener.criteriaVerificationEnding(result, specInstance);
         return result;
     }
 

@@ -16,6 +16,7 @@ import jbehave.framework.Verify;
 import jbehave.framework.Listener;
 
 import org.jmock.Mock;
+import junit.framework.AssertionFailedError;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -56,12 +57,40 @@ public class JMockListenerSpec {
         Listener listener = new JMockListener();
         CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
         CriteriaVerification behaviourResult = behaviour.verifyCriteria(Listener.NULL);
-        
+		BehaviourClassWithPrivateMock spec = new BehaviourClassWithPrivateMock();
+
         // execute
-        listener.criteriaVerificationEnding(behaviourResult);
+        listener.criteriaVerificationEnding(behaviourResult, spec);
         
         // verify
-        BehaviourClassWithPrivateMock instance = (BehaviourClassWithPrivateMock)behaviourResult.getSpecInstance();
-        Verify.that(instance.verifyWasCalled);
+        Verify.that(spec.verifyWasCalled);
+	}
+
+	public static class BehaviourClassWithFailingMock {
+        public boolean verifyWasCalled = false;
+
+        private Mock someMock = new Mock(List.class) {
+            public void verify() {
+                throw new AssertionFailedError("blah was not invoked");
+            }
+        };
+
+        public void shouldDoSomething() {
+            someMock.stubs();
+        }
+    }
+
+	public void shouldCreateNewVerificationWhenVerifyFails() throws Exception {
+		// setup
+		Listener listener = new JMockListener();
+        CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
+        CriteriaVerification behaviourResult = behaviour.verifyCriteria(Listener.NULL);
+        Object spec = new BehaviourClassWithFailingMock();
+		// execute
+        CriteriaVerification verifyMockResult = listener.criteriaVerificationEnding(behaviourResult, spec);
+
+		// verify
+		Verify.notNull(verifyMockResult);
+		Verify.not(verifyMockResult == behaviourResult);
 	}
 }

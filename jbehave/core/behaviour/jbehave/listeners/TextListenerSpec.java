@@ -42,17 +42,17 @@ public class TextListenerSpec {
     }
 
     public void shouldRenderSuccessSymbolForSuccess() throws Exception {
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldSucceed", "SomeClass", null));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldSucceed", "SomeClass", null), new Object());
         Verify.equal(SUCCESS, writer.toString());
     }
 
     public void shouldRenderExceptionSymbolForException() throws Exception {
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldThrowException", "SomeClass", new Exception()));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldThrowException", "SomeClass", new Exception()), new Object());
         Verify.equal(EXCEPTION_THROWN, writer.toString());
     }
 
     public void shouldRenderFailureSymbolForFailure() throws Exception {
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldFail", "SomeClass", new VerificationException("oops")));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldFail", "SomeClass", new VerificationException("oops")), new Object());
         Verify.equal(FAILURE, writer.toString());
     }
 
@@ -65,29 +65,29 @@ public class TextListenerSpec {
 
     public void shouldSummarizeSingleSuccessfulCriteria() throws Exception {
         listener.specVerificationStarting(Spec.class);
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", Spec.class.getName(), null));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", Spec.class.getName(), null), new Object());
         listener.specVerificationEnding(Spec.class);
         verifyOutputContains("\nCriteria: 1");
     }
 
     public void shouldSummarizeTwoSuccessfulCriteria() throws Exception {
         listener.specVerificationStarting(Spec.class);
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", null));
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoY", "SomeClass", null));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", null), new Object());
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoY", "SomeClass", null), new Object());
         listener.specVerificationEnding(Spec.class);
         verifyOutputContains("\nCriteria: 2");
     }
 
     public void shouldSummarizeCriterionWithVerificationFailure() throws Exception {
         listener.specVerificationStarting(Spec.class);
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", new VerificationException("oops")));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", new VerificationException("oops")), new Object());
         listener.specVerificationEnding(Spec.class);
         verifyOutputContains("\nCriteria: 1. Failures: 1");
     }
 
     public void shouldPrintStackTraceForCriteronWithVerificationFailure() throws Exception {
         listener.specVerificationStarting(Spec.class);
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", new VerificationException("oops")));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", new VerificationException("oops")), new Object());
         listener.specVerificationEnding(Spec.class);
         verifyOutputContains("Failures:");
         verifyOutputContains("\n1) shouldDoX [SomeClass]:");
@@ -96,14 +96,14 @@ public class TextListenerSpec {
 
     public void shouldSummarizeCriterionWithExceptionThrown() throws Exception {
         listener.specVerificationStarting(Spec.class);
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", new Exception()));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", new Exception()), new Object());
         listener.specVerificationEnding(Spec.class);
         verifyOutputContains("\nCriteria: 1. Failures: 0, Exceptions: 1");
     }
 
     public void shouldPrintStackTraceForException() throws Exception {
         listener.specVerificationStarting(Spec.class);
-        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", new Exception()));
+        listener.criteriaVerificationEnding(new CriteriaVerification("shouldDoX", "SomeClass", new Exception()), new Object());
         listener.specVerificationEnding(Spec.class);
         verifyOutputContains("Exceptions Thrown:");
         verifyOutputContains("\n1) shouldDoX [SomeClass]:");

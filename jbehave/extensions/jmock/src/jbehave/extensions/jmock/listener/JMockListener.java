@@ -10,9 +10,11 @@ package jbehave.extensions.jmock.listener;
 import java.lang.reflect.Field;
 
 import jbehave.framework.CriteriaVerification;
+import jbehave.framework.exception.VerificationException;
 import jbehave.listeners.NullListener;
 
 import org.jmock.Mock;
+import junit.framework.AssertionFailedError;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -25,18 +27,23 @@ public class JMockListener extends NullListener {
 		specBeingVerified = spec;
 	}
 
-	public CriteriaVerification criteriaVerificationEnding(CriteriaVerification behaviourResult) {
-        Object executedInstance = behaviourResult.getSpecInstance();
-        
+	public CriteriaVerification criteriaVerificationEnding(CriteriaVerification behaviourResult, Object specInstance) {
+
         // iterate looking for fields of type Mock
-        Field[] fields = executedInstance.getClass().getDeclaredFields();
+        Field[] fields = specInstance.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             if (Mock.class.equals(field.getType())) {
-                verifyMock(field, executedInstance);
+				try {
+                	verifyMock(field, specInstance);
+				} catch (AssertionFailedError error) {
+					return new CriteriaVerification(behaviourResult.getName(),
+							behaviourResult.getSpecName(),
+							new VerificationException(error.getMessage()));
+				}
             }
 		}
-		return null; // bodge this for now
+		return behaviourResult; 
 	}
 
     private void verifyMock(Field field, Object executedInstance) {

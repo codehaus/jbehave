@@ -20,7 +20,7 @@ class RecordingListener extends NullListener {
     public List verifications = new ArrayList(); // all verifications
     public CriteriaVerification lastVerification = null; // latest one
     
-    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification) {
+    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
         verifications.add(verification);
         lastVerification = verification;
 		return verification;
