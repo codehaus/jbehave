@@ -7,10 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.core.Visitable;
 import com.thoughtworks.jbehave.core.Visitor;
-import com.thoughtworks.jbehave.extensions.story.listener.NULLScenarioListener;
-import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
+import com.thoughtworks.jbehave.util.VisitableUsingMiniMock;
 
 
 /**
@@ -22,15 +20,14 @@ import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Scenario implements Visitable {
+public class ScenarioUsingMiniMock extends VisitableUsingMiniMock implements Scenario {
     protected final Context context;
     protected final Event event;
     protected final Outcome outcome;
     protected final String name;
     protected final Story story;
-    private ScenarioListener listener = new NULLScenarioListener();
     
-    public Scenario(String name, Story story, Context context, Event event, Outcome outcome) {
+    public ScenarioUsingMiniMock(String name, Story story, Context context, Event event, Outcome outcome) {
         this.name = name;
         this.story = story;
         this.context = context;
@@ -38,8 +35,7 @@ public class Scenario implements Visitable {
         this.outcome = outcome;
     }
     
-    /** Scenario with expected outcome in any context */
-    public Scenario(String name, Story story, Event event, Outcome outcome) {
+    public ScenarioUsingMiniMock(String name, Story story, Event event, Outcome outcome) {
         this(name, story, Context.NULL, event, outcome);
     }
     
@@ -61,24 +57,10 @@ public class Scenario implements Visitable {
     }
     
     public void accept(Visitor visitor) {
-        try {
-            visitor.visit(this);
-            context.accept(visitor);
-            outcome.accept(visitor);
-            event.accept(visitor);
-            outcome.accept(visitor);
-            
-            listener.scenarioSucceeded(this);
-        }
-        catch (UnimplementedException e) {
-            listener.scenarioUnimplemented(this, e);
-        }
-        catch (Exception e) {
-            listener.scenarioFailed(this, e);
-        }
-    }
-
-    public void setListener(ScenarioListener listener) {
-        this.listener = listener;
+        super.accept(visitor);
+        context.accept(visitor);
+        outcome.accept(visitor);
+        event.accept(visitor);
+        outcome.accept(visitor);
     }
 }

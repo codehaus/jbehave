@@ -4,7 +4,7 @@
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
 	<classpathentry kind="src" path="behaviour"/>
 	<classpathentry kind="src" path="example"/>
-	<classpathentry kind="src" path="/jbehave jmock extension"/>
 	<classpathentry sourcepath="C:/java/velocity-1.4/src/java" kind="lib" path="lib/velocity-dep-1.4.jar"/>
+	<classpathentry kind="src" path="/jbehave core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -7,26 +7,38 @@
  */
 package com.thoughtworks.jbehave.minimock;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class MiniMockBase {
-    
+    /**
+     * This is the core of MiniMock - it represents an object that can have expectations set on it
+     */
     protected interface Mock {
+        /** Create expectation with default invocation properties - invoked once */
         Expectation expects(String methodName);
+        
+        /** Create expectation with default invocation properties - invoked zero or more times */
         Expectation stubs(String methodName);
-        Expectation expectation(String id);
+        
+        /** Verify all the expectations on this mock */
         void verify();
+        
         /** @deprecated you don't need this if you use {@link UsingMiniMock#mock(Class)} */
         Object proxy();
     }
     
-    protected interface Constraint {
+    public interface Constraint {
         boolean matches(Object arg);
     }
+    
+    // Some handy constraints
 
-    public Constraint eq(final Object expectedArg) {
+    protected Constraint eq(final Object expectedArg) {
         return new Constraint() {
             public boolean matches(Object arg) {
                 return arg == null ? expectedArg == null : arg.equals(expectedArg);
@@ -37,7 +49,7 @@ public class MiniMockBase {
         };
     }
 
-    public Constraint same(final Object expectedArg) {
+    protected Constraint same(final Object expectedArg) {
         return new Constraint() {
             public boolean matches(Object arg) {
                 return expectedArg == arg;
@@ -48,7 +60,7 @@ public class MiniMockBase {
         };
     }
 
-    public Constraint anything() {
+    protected Constraint anything() {
         return new Constraint() {
             public boolean matches(Object arg) {
                 return true;
@@ -68,5 +80,50 @@ public class MiniMockBase {
                 return "instance of " + type.getName();
             }
         };
+    }
+    
+    // some handy invocation handlers for setting up expectations
+    
+    protected InvocationHandler returnValue(final Object result) {
+        return new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) {
+                return result;
+            }
+        };
+    }
+    
+    protected InvocationHandler throwException(final Throwable cause) {
+        return new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                throw cause;
+            }
+        };
+    }
+    
+    // yawn - box all the primitive types
+    
+    protected InvocationHandler returnValue(byte result) {
+        return returnValue(new Byte(result));
+    }
+    protected InvocationHandler returnValue(char result) {
+        return returnValue(new Character(result));
+    }
+    protected InvocationHandler returnValue(short result) {
+        return returnValue(new Short(result));
+    }
+    protected InvocationHandler returnValue(int result) {
+        return returnValue(new Integer(result));
+    }
+    protected InvocationHandler returnValue(long result) {
+        return returnValue(new Long(result));
+    }
+    protected InvocationHandler returnValue(float result) {
+        return returnValue(new Float(result));
+    }
+    protected InvocationHandler returnValue(double result) {
+        return returnValue(new Double(result));
+    }
+    protected InvocationHandler returnValue(boolean result) {
+        return returnValue(result ? Boolean.TRUE : Boolean.FALSE);
     }
 }

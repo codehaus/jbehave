@@ -9,17 +9,10 @@ package com.thoughtworks.jbehave.extensions.story;
 
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
 import com.thoughtworks.jbehave.extensions.story.codegen.StoryParserBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteriaBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.ContextBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.EventBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.ExpectationBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.GivenBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.NarrativeBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.OutcomeBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.ScenarioBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.StoryBehaviour;
-import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListenerBehaviour;
-import com.thoughtworks.jbehave.extensions.story.runner.StoryRunnerBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMockBehaviour;
+import com.thoughtworks.jbehave.extensions.story.listener.ScenarioTextListenerBehaviour;
+import com.thoughtworks.jbehave.extensions.story.runner.ScenarioRunnerBehaviour;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -28,17 +21,10 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
     public Class[] getBehaviourClasses() {
         return new Class[] {
                 StoryParserBehaviour.class,
-                AcceptanceCriteriaBehaviour.class,
-                ContextBehaviour.class,
-                EventBehaviour.class,
-                ExpectationBehaviour.class,
-                GivenBehaviour.class,
                 NarrativeBehaviour.class,
-                OutcomeBehaviour.class,
-                ScenarioBehaviour.class,
-                StoryBehaviour.class,
-                TextScenarioListenerBehaviour.class,
-                StoryRunnerBehaviour.class
+                ScenarioUsingMiniMockBehaviour.class,
+                ScenarioTextListenerBehaviour.class,
+                ScenarioRunnerBehaviour.class
         };
     }
 }

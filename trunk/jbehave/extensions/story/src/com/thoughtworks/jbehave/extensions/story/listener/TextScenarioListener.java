@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMock;
 import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 /**

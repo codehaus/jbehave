@@ -10,15 +10,14 @@ package com.thoughtworks.jbehave.extensions.story.listener;
 import java.io.StringWriter;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.domain.MockableScenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TextScenarioListenerBehaviour extends UsingJMock {
+public class ScenarioTextListenerBehaviour extends UsingMiniMock {
     private StringWriter writer;
     private ScenarioListener listener;
 
@@ -29,7 +28,7 @@ public class TextScenarioListenerBehaviour extends UsingJMock {
 
     public void shouldRenderSuccessSymbolForSuccessfulScenario() throws Exception {
         // given...
-        Scenario scenario = (Scenario) stub(MockableScenario.class);
+        Scenario scenario = (Scenario) stub(Scenario.class);
         
         // when...
         listener.scenarioSucceeded(scenario);
@@ -40,7 +39,7 @@ public class TextScenarioListenerBehaviour extends UsingJMock {
 
     public void shouldRenderFailureSymbolForFailedScenario() throws Exception {
         // given...
-        Scenario scenario = (Scenario) stub(MockableScenario.class);
+        Scenario scenario = (Scenario) stub(Scenario.class);
         
         // when...
         listener.scenarioFailed(scenario, new Exception());
@@ -51,7 +50,7 @@ public class TextScenarioListenerBehaviour extends UsingJMock {
 
     public void shouldRenderUnimplementedSymbolForUnimplementedScenario() throws Exception {
         // given...
-        Scenario scenario = (Scenario)stub(MockableScenario.class);
+        Scenario scenario = (Scenario)stub(Scenario.class);
         
         // when...
         listener.scenarioUnimplemented(scenario, new UnimplementedException());

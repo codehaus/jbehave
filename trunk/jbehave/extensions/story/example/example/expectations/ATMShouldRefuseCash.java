@@ -8,13 +8,13 @@
 package example.expectations;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
-import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
+import com.thoughtworks.jbehave.extensions.story.domain.ExpectationUsingMiniMock;
 
 
 
-public class ATMShouldRefuseCash extends Expectation {
+public class ATMShouldRefuseCash extends ExpectationUsingMiniMock {
 
-    public void setExpectationIn(Environment environment) throws Exception {
+    public void setExpectationIn(Environment environment) {
     }
     
     public void verify(Environment context) {

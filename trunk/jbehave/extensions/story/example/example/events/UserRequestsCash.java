@@ -8,12 +8,12 @@
 package example.events;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
-import com.thoughtworks.jbehave.extensions.story.domain.Event;
+import com.thoughtworks.jbehave.extensions.story.domain.EventUsingMiniMock;
 
 
-public class UserRequestsCash extends Event {
+public class UserRequestsCash extends EventUsingMiniMock {
     
-    public void occurIn(Environment environment) {
+    public void occurIn(Environment environment) throws Exception {
     }
 
     public String toString() {

@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.listener;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMock;
 import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 /**

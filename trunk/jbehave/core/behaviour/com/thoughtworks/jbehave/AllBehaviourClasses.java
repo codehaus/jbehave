@@ -14,9 +14,11 @@ import com.thoughtworks.jbehave.core.BehaviourMethodVerifierBehaviour;
 import com.thoughtworks.jbehave.core.invokers.DontInvokeMethodBehaviour;
 import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDownBehaviour;
 import com.thoughtworks.jbehave.core.listeners.TextListenerBehaviour;
+import com.thoughtworks.jbehave.util.CompositeVisitableBehaviour;
 import com.thoughtworks.jbehave.util.ConvertCaseBehaviour;
 import com.thoughtworks.jbehave.util.TimerBehaviour;
 import com.thoughtworks.jbehave.util.VisitableArrayListBehaviour;
+import com.thoughtworks.jbehave.util.VisitableUsingMiniMockBehaviour;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
@@ -24,12 +26,14 @@ import com.thoughtworks.jbehave.util.VisitableArrayListBehaviour;
 public class AllBehaviourClasses implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
-                DontInvokeMethodBehaviour.class,
-                InvokeMethodWithSetUpAndTearDownBehaviour.class,
-                TextListenerBehaviour.class,
                 BehaviourClassBehaviour.class,
                 BehaviourMethodBehaviour.class,
                 BehaviourMethodVerifierBehaviour.class,
+                DontInvokeMethodBehaviour.class,
+                InvokeMethodWithSetUpAndTearDownBehaviour.class,
+                TextListenerBehaviour.class,
+                CompositeVisitableBehaviour.class,
+                VisitableUsingMiniMockBehaviour.class,
                 ConvertCaseBehaviour.class,
                 TimerBehaviour.class,
                 VisitableArrayListBehaviour.class

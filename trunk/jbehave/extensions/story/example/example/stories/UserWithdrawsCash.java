@@ -11,7 +11,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteria;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
-import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMock;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 
 import example.events.UserRequestsCash;
@@ -20,9 +20,9 @@ import example.expectations.ATMShouldRefuseCash;
 import example.expectations.ATMShouldRetainBankCard;
 import example.expectations.ATMShouldReturnBankCardToCustomer;
 import example.expectations.AccountBalanceShouldBeReduced;
-import example.givens.AccountHasPositiveBalance;
 import example.givens.AccountHasNegativeBalanceWithoutPermission;
 import example.givens.AccountHasOverdraftPermission;
+import example.givens.AccountHasPositiveBalance;
 import example.givens.AccountIsOverOverdraftLimit;
 
 /**
@@ -40,7 +40,7 @@ public class UserWithdrawsCash extends Story {
                 new AcceptanceCriteria()
         );
 
-        addScenario(new Scenario(
+        addScenario(new ScenarioUsingMiniMock(
                 "Happy scenario", this,
                 new Context(
                     new AccountHasPositiveBalance()
@@ -54,7 +54,7 @@ public class UserWithdrawsCash extends Story {
             )
         );
         
-        addScenario(new Scenario(
+        addScenario(new ScenarioUsingMiniMock(
                 "Happy scenario with overdraft", this,
                 new Context(
                     new AccountHasOverdraftPermission()
@@ -68,10 +68,10 @@ public class UserWithdrawsCash extends Story {
             )
         );
         
-        addScenario(new Scenario(
+        addScenario(new ScenarioUsingMiniMock(
                 "Overdrawn without permission", this,
                 new Context(
-                        getScenario("Happy scenario with overdraft"),
+                        scenario("Happy scenario with overdraft"),
                     new AccountHasNegativeBalanceWithoutPermission()
                 ),
                 new UserRequestsCash(),
@@ -82,7 +82,7 @@ public class UserWithdrawsCash extends Story {
             )                
         );
         
-        addScenario(new Scenario(
+        addScenario(new ScenarioUsingMiniMock(
                 "In lots of trouble", this,
                 new Context(
                     new AccountIsOverOverdraftLimit()

@@ -6,13 +6,12 @@
  * See license.txt for license details
  */
 package example;
-import java.io.OutputStreamWriter;
+import java.util.Iterator;
 
 import com.thoughtworks.jbehave.core.Visitor;
-import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
-import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListener;
-import com.thoughtworks.jbehave.extensions.story.runner.StoryRunner;
+import com.thoughtworks.jbehave.extensions.story.renderers.PlainTextRenderer;
 
 import example.stories.UserWithdrawsCash;
 
@@ -25,22 +24,13 @@ public class Run {
     public static void main(String[] args) {
         
         try {
-            Environment environment = new Environment() {
-                public Object get(String key, Object defaultValue) {
-                    return defaultValue;
-                }
-
-                public void put(String key, Object value) {
-                }
-            };
+            Visitor visitor = new PlainTextRenderer(System.out);
             
-            Visitor visitor = new StoryRunner(
-                    environment,
-                    new TextScenarioListener(new OutputStreamWriter(System.out))
-            );
-            
-            visitor = null; //new PlainTextRenderer(System.out);
             Story story = new UserWithdrawsCash();
+            
+            for (Iterator i = story.scenarios().iterator(); i.hasNext();) {
+                Scenario scenario = (Scenario) i.next();
+            }
             story.accept(visitor);
 
         } catch (Exception e) {

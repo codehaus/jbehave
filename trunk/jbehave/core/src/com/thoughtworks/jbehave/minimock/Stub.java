@@ -16,22 +16,24 @@ import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 
 
 public class Stub {
-    public static Object instance(final Class type) {
-        return Proxy.newProxyInstance(type.getClassLoader(), new Class[] {type}, new StubInvocationHandler(type));
+    public static Object instance(final Class type, String name) {
+        return Proxy.newProxyInstance(type.getClassLoader(), new Class[] {type}, new StubInvocationHandler(name));
     }
 
     private static class StubInvocationHandler implements InvocationHandler {
-        private final Class type;
+        private final String name;
 
-        StubInvocationHandler(Class type) {
+        StubInvocationHandler(String name) {
             super();
-            this.type = type;
+            this.name = name;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             if (method.getReturnType().isInterface()) {
                 Class returnType = method.getReturnType();
-                return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {returnType}, new StubInvocationHandler(returnType));
+                return Proxy.newProxyInstance(getClass().getClassLoader(), 
+                        new Class[] {returnType},
+                        new StubInvocationHandler(returnType.getName()));
             }
             else if (method.getReturnType() == boolean.class) {
                 return Boolean.FALSE;
@@ -74,7 +76,7 @@ public class Stub {
         }
 
         public String toString() {
-            return "Stub for " + type.getName();
+            return "Stub for " + name;
         }
     }    
 }

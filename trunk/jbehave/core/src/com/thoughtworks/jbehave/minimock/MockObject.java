@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.exception.VerificationException;
+import com.thoughtworks.jbehave.minilog.Log;
 import com.thoughtworks.jbehave.minimock.MiniMockBase.Mock;
 
 
@@ -25,7 +26,8 @@ import com.thoughtworks.jbehave.minimock.MiniMockBase.Mock;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-class MockObject implements Mock {
+class MockObject implements Mock, Expectation.Finder {
+    protected final Log log = Log.getLog(this);
     private final List expectations = new ArrayList();
     private final Class type;
     private final String name;
@@ -33,20 +35,17 @@ class MockObject implements Mock {
     /** Manages method invocations on the mock */
     private class ExpectationHandler implements InvocationHandler {
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Expectation expectation = findExpectationFor(method, args);
-            expectation.methodCalled();
-            return expectation.returnValue();
-        }
-
-        /** find expectation matching a method invocation */
-        private Expectation findExpectationFor(Method method, Object[] args) {
+            if (args == null) args = new Object[0];
+            
             for (Iterator i = expectations.iterator(); i.hasNext();) {
                 Expectation expectation = (Expectation) i.next();
                 if (expectation.matches(method.getName(), args)) {
-                    return expectation;
+                    return expectation.invoke(proxy, method, args);
                 }
             }
-            throw new VerificationException("Unexpected invocation: " + name + "." + method.getName() + '(' + Arrays.asList(args) + ')');
+            
+            // if we get here we didn't match on any expectations
+            throw new VerificationException("Unexpected invocation: " + name + "." + method.getName() + "(" + Arrays.asList(args) + ")");
         }
     }
     
@@ -65,9 +64,9 @@ class MockObject implements Mock {
     }
 
     public Expectation expects(String methodName) {
-        Expectation expectation = new Expectation(this, methodName);
-        expectations.add(expectation);
-        return expectation;
+        Expectation expects = new Expectation(this, methodName);
+        expectations.add(expects);
+        return expects.once();
     }
 
     /** verify all expectations on the mock */
@@ -77,33 +76,36 @@ class MockObject implements Mock {
         }
     }
 
-    public Expectation expectation(String id) {
+    public Expectation findExpectation(String id) {
         for (Iterator i = expectations.iterator(); i.hasNext();) {
             Expectation expectation = (Expectation) i.next();
+            Log.getLog(this).debug("Comparing expectation " + expectation.id() + " with " + id);
             if (expectation.id().equals(id)) {
                 return expectation;
             }
         }
         throw new VerificationException("Unknown expectation id '" + id + "' for " + this);
     }
+    
+    public String toString() {
+        return '[' + name + ']';
+    }
 
     static Mock mock(final Class type, final String name) {
         Mock result = (Mock) Proxy.newProxyInstance(type.getClassLoader(),
-                new Class[] { type, Mock.class },
+                new Class[] { type, Mock.class, Expectation.Finder.class },
                 new InvocationHandler() {
                     private final MockObject mock = new MockObject(type, name);
                     
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        if (method.getDeclaringClass().equals(Mock.class)) {
-                            return method.invoke(mock, args);
+                        try {
+                            Class targetClass = method.getDeclaringClass();
+                            return (targetClass.isInterface() && targetClass.isAssignableFrom(type))
+                                ? method.invoke(mock.proxy(), args)
+                                : method.invoke(mock, args);
                         }
-                        else {
-                            try {
-                                return method.invoke(mock.proxy(), args);
-                            }
-                            catch (InvocationTargetException e) {
-                                throw e.getTargetException();
-                            }
+                        catch (InvocationTargetException e) {
+                            throw e.getTargetException();
                         }
                     }
                 });

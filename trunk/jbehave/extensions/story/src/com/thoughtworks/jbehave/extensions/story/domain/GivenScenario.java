@@ -7,16 +7,15 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 
 
 /**
- * Adapter to make a {@link Scenario} look like a {@link Given}
+ * Adapter to make a {@link Scenario} look like a {@link GivenUsingMiniMock}
  * so it can be used to set up a {@link Environment}
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class GivenScenario extends Given {
+public class GivenScenario extends GivenUsingMiniMock {
 
     private final Scenario scenario;
 
@@ -46,8 +45,5 @@ public class GivenScenario extends Given {
     }
     public Story getStory() {
         return scenario.getStory();
-    }
-    public void setListener(ScenarioListener listener) {
-        scenario.setListener(listener);
     }
 }

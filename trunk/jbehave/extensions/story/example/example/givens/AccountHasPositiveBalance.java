@@ -9,17 +9,15 @@ package example.givens;
 
 
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
-import com.thoughtworks.jbehave.extensions.story.domain.Given;
+import com.thoughtworks.jbehave.extensions.story.domain.GivenUsingMiniMock;
 
 import example.domain.Account;
 
 /** set balance = 50 */
-public class AccountHasPositiveBalance extends Given {
+public class AccountHasPositiveBalance extends GivenUsingMiniMock {
     
-    public void setUp(Environment environment) {
-        Mock account = (Mock) environment.get("accountMock", new Mock(Account.class));
-        environment.put("account", account.proxy());
-        
-        account.stubs().method("getBalance").withNoArguments().will(returnValue(50));
+    public void setUp(Environment environment) throws Exception {
+        Mock account = (Mock) environment.get("account", mock(Account.class));
+        account.stubs("getBalance").withNoArguments().will(returnValue(50));
     }
 }

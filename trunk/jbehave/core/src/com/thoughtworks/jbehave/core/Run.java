@@ -20,10 +20,6 @@ public class Run {
         try {
             Class classToVerify = Class.forName(args[0]);
             BehaviourClass visitableClass = new BehaviourClass(classToVerify);
-            
-//            TextReporter textReporter = new TextReporter(new PrintWriter(System.out));
-//            visitableClass.accept(textReporter);
-
             TextListener textListener = new TextListener(new PrintWriter(System.out));
             BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
             verifier.add(textListener);

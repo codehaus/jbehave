@@ -14,13 +14,17 @@ import com.thoughtworks.jbehave.core.Visitable;
 import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
+import com.thoughtworks.jbehave.extensions.story.domain.EventUsingMiniMock;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
+import com.thoughtworks.jbehave.extensions.story.domain.ExpectationUsingMiniMock;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
+import com.thoughtworks.jbehave.extensions.story.domain.GivenUsingMiniMock;
 import com.thoughtworks.jbehave.extensions.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
+import com.thoughtworks.jbehave.minilog.Log;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
 
@@ -28,7 +32,8 @@ import com.thoughtworks.jbehave.util.ConvertCase;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class PlainTextRenderer implements Visitor {
-
+    final Log log = Log.getLog(this);
+    
     private final PrintStream out;
     private String nextWord;
     boolean visitedEvent;
@@ -46,22 +51,26 @@ public class PlainTextRenderer implements Visitor {
         }
         else if (visitable instanceof Scenario) {
             visitScenario((Scenario) visitable);
+            visitedEvent = false;
         }
         else if (visitable instanceof Context) {
             visitContext((Context) visitable);
         }
-        else if (visitable instanceof Given) {
+        else if (visitable instanceof GivenUsingMiniMock) {
             visitGiven((Given) visitable);
         }
-        else if (visitable instanceof Event) {
+        else if (visitable instanceof EventUsingMiniMock) {
+            log.debug("Visiting event");
             visitEvent((Event) visitable);
             visitedEvent = true;
         }
         else if (visitable instanceof Outcome) {
+            log.debug("Visiting outcome");
             visitOutcome((Outcome) visitable);
         }
-        else if (visitable instanceof Expectation && visitedEvent) {
-            visitExpectationAfterTheEvent((Expectation) visitable);
+        else if (visitable instanceof ExpectationUsingMiniMock) {
+            log.debug("Visiting expectation");
+            visitExpectation((Expectation) visitable);
         }
     }
     
@@ -106,12 +115,16 @@ public class PlainTextRenderer implements Visitor {
     }
 
     public void visitOutcome(Outcome outcome) {
-        nextWord = "Then ";
+        if (visitedEvent) {
+            nextWord = "Then ";
+        }
     }
 
-    public void visitExpectationAfterTheEvent(Expectation expectation) {
-        out.println(nextWord + new ConvertCase(expectation).toSeparateWords());
-        nextWord = "and ";
+    public void visitExpectation(Expectation expectation) {
+        if (visitedEvent) {
+            out.println(nextWord + new ConvertCase(expectation).toSeparateWords());
+            nextWord = "and ";
+        }
     }
 
     public void gotResult(Result result) {

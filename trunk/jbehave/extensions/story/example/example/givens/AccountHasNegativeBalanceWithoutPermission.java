@@ -8,12 +8,12 @@
 package example.givens;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
-import com.thoughtworks.jbehave.extensions.story.domain.Given;
+import com.thoughtworks.jbehave.extensions.story.domain.GivenUsingMiniMock;
 
 
 /** balance = -50, overdraft limit = 0 */
-public class AccountHasNegativeBalanceWithoutPermission extends Given {
-    public void setUp(Environment environment) {
+public class AccountHasNegativeBalanceWithoutPermission extends GivenUsingMiniMock {
+    public void setUp(Environment environment) throws Exception {
         new AccountIsOverdrawn().setUp(environment);
         new AccountDoesNotHaveOverdraftFacility().setUp(environment);
     }

@@ -13,13 +13,14 @@ import org.jmock.core.DynamicMock;
 import org.jmock.core.Verifiable;
 import org.jmock.core.stub.DefaultResultStub;
 
-import com.thoughtworks.jbehave.core.exception.DelegatingVerificationException;
+import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
+import com.thoughtworks.jbehave.minimock.UsingMocks;
 
 /**
  * @author <a href="mailto:dnorth@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>
  */
-public abstract class UsingJMock extends JMockSugar {
+public abstract class UsingJMock extends JMockSugar implements UsingMocks {
 
     protected final List mocks = new ArrayList();
     
@@ -77,7 +78,7 @@ public abstract class UsingJMock extends JMockSugar {
                 super.verify();
             }
             catch (AssertionFailedError e) {
-                throw new DelegatingVerificationException(e.getMessage(), exceptionFromCreationPoint);
+                throw new NestedVerificationException(e.getMessage(), exceptionFromCreationPoint);
             }
         }
 

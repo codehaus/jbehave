@@ -7,8 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.core.Visitable;
 import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.util.VisitableUsingMiniMock;
 
 
 /**
@@ -18,14 +18,7 @@ import com.thoughtworks.jbehave.core.Visitor;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public abstract class Expectation implements Visitable {
-    public abstract void setExpectationIn(Environment environment) throws Exception;
-    public abstract void verify(Environment environment) throws Exception;
-
-    /**
-     * Passes itself into a {@link Visitor}
-     */
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
+public abstract class ExpectationUsingMiniMock extends VisitableUsingMiniMock implements Expectation {
+    public abstract void setExpectationIn(Environment environment);
+    public abstract void verify(Environment environment);
 }

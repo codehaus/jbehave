@@ -7,19 +7,12 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.core.Visitable;
-import com.thoughtworks.jbehave.core.Visitor;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.util.VisitableUsingMiniMock;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public abstract class Given extends UsingJMock implements Visitable {
-
+public abstract class GivenUsingMiniMock extends VisitableUsingMiniMock implements Given {
     public abstract void setUp(Environment environment) throws Exception;
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
 }

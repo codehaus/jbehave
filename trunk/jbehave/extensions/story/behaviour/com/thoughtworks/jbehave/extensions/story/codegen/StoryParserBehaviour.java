@@ -8,12 +8,13 @@
 package com.thoughtworks.jbehave.extensions.story.codegen;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock;
+
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryParserBehaviour extends UsingJMock {
+public class StoryParserBehaviour extends UsingMiniMock {
     public void shouldParseStorySummaryDetails() throws Exception {
         Verify.pending();
 //        // given...

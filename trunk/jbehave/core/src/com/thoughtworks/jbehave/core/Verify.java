@@ -113,7 +113,7 @@ public class Verify {
 
     // like junit fail()
 	public static void impossible(String message) {
-        throw new VerificationException(("\"Impossible\" situation: " + message));
+        throw new VerificationException(("\"Impossible\" behaviour: " + message));
 	}
     
     private static Boolean toBoolean(boolean value) {

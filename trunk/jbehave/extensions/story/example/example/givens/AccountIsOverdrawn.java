@@ -8,7 +8,7 @@
 package example.givens;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
-import com.thoughtworks.jbehave.extensions.story.domain.Given;
+import com.thoughtworks.jbehave.extensions.story.domain.GivenUsingMiniMock;
 
 import example.domain.Account;
 
@@ -16,10 +16,10 @@ import example.domain.Account;
 /**
  * set balance = -50
  */
-public class AccountIsOverdrawn extends Given {
-    public void setUp(Environment environment) {
-        Mock accountMock = (Mock)environment.get("accountMock", new Mock(Account.class));
-        accountMock.stubs().method("getBalance").will(returnValue(-50));
+public class AccountIsOverdrawn extends GivenUsingMiniMock {
+    public void setUp(Environment environment) throws Exception {
+        Mock accountMock = (Mock)environment.get("account", mock(Account.class));
+        accountMock.stubs("getBalance").will(returnValue(-50));
     }
 
     public String getDescription() {

@@ -7,44 +7,58 @@
  */
 package com.thoughtworks.jbehave.minimock;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import com.thoughtworks.jbehave.core.Verify;
 
 public class Expectation extends MiniMockBase {
-    private final Mock mock;
+    interface Finder {
+        Expectation findExpectation(String id);
+    }
+    
+    private static final InvocationHandler NULL_INVOKER = new InvocationHandler() {
+        public Object invoke(Object proxy, Method method, Object[] args) {
+            return null;
+        }
+    };
+    
+    private final Finder finder;
     private final String methodName;
-
-    private Constraint[] constraints;
-    private int minCalls;
-    private int maxCalls;
-    private int calls;
+    private Constraint[] constraints = new Constraint[0];
+    private int minInvocations = 1;
+    private int maxInvocations;
+    private int invocations;
     private Expectation after;
     private String id;
-    private Throwable throwable;
-    private Object returnValue;
+    private InvocationHandler invoker = NULL_INVOKER;
 
-    public Expectation(Mock mock, String methodName) {
-        this.mock = mock;
+    /**
+     *  Construct an expectation in a default state.
+     * 
+     * It initially expects to be called exactly once and will use a null invoker.
+     */
+    public Expectation(Finder finder, String methodName) {
+        this.finder = finder;
         this.id = this.methodName = methodName;
-        once();
     }
 
-    public void methodCalled() {
-        if (after != null) {
-            after.verify();
-        }
-        Verify.that("Unexpected call to " + methodName + " (Expected " + maxCalls + " calls)", calls < maxCalls);
-        calls++;
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (after != null) after.verify();
+        Verify.that("Unexpected call to " + methodName + " (Expected " + maxInvocations + " calls)", invocations < maxInvocations);
+        invocations++;
+        return invoker.invoke(proxy, method, args);
     }
-
+    
     public boolean matches(String actualName, Object[] args) {
+        // avoid NPEs
+        if (args == null) args = new Object[0];
+        
+        if (invocations >= maxInvocations)  return false; // no calls left
+
         if (!methodName.equals(actualName)) return false;
         
-        if (args == null) {
-            args = new Object[0];
-        }
-
         if (constraints.length != args.length) return false;
 
         for (int i = 0; i < args.length; i++) {
@@ -54,51 +68,54 @@ public class Expectation extends MiniMockBase {
     }
     
     public void verify() {
-        Verify.that("Expected method not called: " + methodName + Arrays.asList(constraints), calls >= minCalls);
+        Verify.that("Expected method not called: " + methodName + Arrays.asList(constraints), invocations >= minInvocations);
     }
     
     // Return value
-    
-    public Expectation willReturn(Object value) {
-        returnValue = value;
+    public Expectation will(InvocationHandler result) {
+        this.invoker = result;
         return this;
     }
 
-    public final Object returnValue() throws Throwable {
-        if (throwable != null) throw throwable;
-        return returnValue;
+    public Expectation isVoid() {
+        invoker = NULL_INVOKER;
+        return this;
     }
     
-    public void willThrow(Throwable throwable) {
-        this.throwable = throwable;
+    public Expectation willReturn(Object value) {
+        return will(returnValue(value));
+    }
+    
+    public void willThrow(Throwable cause) {
+        invoker = throwException(cause);
     }
 
-    // Counts (only used by MockObject class)
+    // Invocations
     
     public Expectation once() {
-        minCalls = maxCalls = 1;
+        minInvocations = maxInvocations = 1;
         return this;
     }
     
     public Expectation never() {
-        minCalls = maxCalls = 0;
+        minInvocations = maxInvocations = 0;
         return this;
     }
     
     public Expectation atLeastOnce() {
-        minCalls = 1;
-        maxCalls = Integer.MAX_VALUE;
+        minInvocations = 1;
+        maxInvocations = Integer.MAX_VALUE;
         return this;
     }
     
     public Expectation zeroOrMoreTimes() {
-        minCalls = 0;
-        maxCalls = Integer.MAX_VALUE;
+        minInvocations = 0;
+        maxInvocations = Integer.MAX_VALUE;
         return this;
     }
     
     public Expectation times(int calls) {
-        minCalls = maxCalls = calls;
+        minInvocations = maxInvocations = calls;
         return this;
     }
     
@@ -116,16 +133,22 @@ public class Expectation extends MiniMockBase {
         this.constraints = constraints;
         return this;
     }
+    
+    public Expectation withNoArguments() {
+        this.constraints = new Constraint[0];
+        return this;
+    }
 
     // after
     
     public Expectation after(Mock otherMock, String otherId) {
-        after = otherMock.expectation(otherId);
+        after = ((Finder)otherMock).findExpectation(otherId);
         return this;
     }
 
     public Expectation after(String otherId) {
-        return after(mock, otherId);
+        after = finder.findExpectation(otherId);
+        return this;
     }
     
     // id

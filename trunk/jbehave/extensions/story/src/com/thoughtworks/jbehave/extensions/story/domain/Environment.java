@@ -22,4 +22,9 @@ public interface Environment {
      * Put a value into the environment, replacing any existing value.
      */
     void put(String key, Object value);
+
+    /**
+     * Reset the environment to its default state
+     */
+    void clear();
 }

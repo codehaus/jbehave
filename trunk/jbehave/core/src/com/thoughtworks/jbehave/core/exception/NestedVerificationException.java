@@ -12,11 +12,11 @@ package com.thoughtworks.jbehave.core.exception;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class DelegatingVerificationException extends VerificationException {
+public class NestedVerificationException extends VerificationException {
 
     private final Throwable delegate;
 
-    public DelegatingVerificationException(String message, Throwable cause) {
+    public NestedVerificationException(String message, Throwable cause) {
         super(message);
         this.delegate = cause;
         try {
@@ -27,7 +27,7 @@ public class DelegatingVerificationException extends VerificationException {
         }
     }
     
-    public DelegatingVerificationException(Throwable cause) {
+    public NestedVerificationException(Throwable cause) {
         this(cause.getMessage(), cause);
     }
     
