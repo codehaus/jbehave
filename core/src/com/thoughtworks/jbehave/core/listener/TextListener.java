@@ -55,6 +55,7 @@ public class TextListener implements ResultListener {
             pending.add(result);
         }
         out.print(result.status().symbol());
+        out.flush();
     }
     
     public void printReport() {

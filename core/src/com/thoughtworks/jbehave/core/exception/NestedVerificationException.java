@@ -14,11 +14,11 @@ package com.thoughtworks.jbehave.core.exception;
  */
 public class NestedVerificationException extends VerificationException {
 
-    private final Throwable delegate;
+    private final Throwable cause;
 
     public NestedVerificationException(String message, Throwable cause) {
         super(message);
-        this.delegate = cause;
+        this.cause = cause;
         try {
             setStackTrace(cause.getStackTrace());
         }
@@ -32,12 +32,12 @@ public class NestedVerificationException extends VerificationException {
     }
     
     public boolean equals(Object obj) {
-        return delegate.equals(obj);
+        return cause.equals(obj);
     }
     public int hashCode() {
-        return delegate.hashCode();
+        return cause.hashCode();
     }
     public Throwable getCause() {
-        return delegate;
+        return cause;
     }
 }

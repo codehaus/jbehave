@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave;
+package com.thoughtworks.jbehave.core;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassBehaviour;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
