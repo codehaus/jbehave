@@ -11,8 +11,8 @@ import jbehave.framework.CriteriaVerificationSpec;
 import jbehave.framework.CriteriaVerifierSpec;
 import jbehave.framework.SpecContainer;
 import jbehave.framework.SpecVerifierSpec;
-import jbehave.listener.TextListenerSpec;
-import jbehave.listener.TimerSpec;
+import jbehave.listeners.TextListenerSpec;
+import jbehave.listeners.TimerSpec;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

@@ -5,9 +5,10 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.listener;
+package jbehave.listeners;
 
 import jbehave.framework.Verify;
+import jbehave.listeners.Timer;
 
 
 /**
