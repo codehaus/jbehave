@@ -3,7 +3,7 @@ important thing(s) jbehave doesn't do. I'm flying back from Jo'burg to the UK
 so I guess my holiday-mush-brain is starting to revert to it's work-brain state.
 I should have done this all along really...
 
-It should have todo-level failure ("will") that doesn't break the build
+It should have todo-level failure (Verify.todo()) that doesn't break the build
 It should have a jMock listener
 It should be easy to run from inside the IDE
 It should have an adapter to run in a junit test runner
