@@ -18,6 +18,7 @@ public class AllBehaviours implements Aggregate {
 
 	public Class[] getBehaviourClasses() {
         return new Class[] {
+            jbehave.AllBehaviours.class,
             JUnitAdapterBehaviours.class,
             JMockListenerBehaviour.class
         };
