@@ -33,7 +33,7 @@
     <!-- BUILD AND ASSEMBLY TARGETS -->
 
     <target name="core" depends="-init">
-        <ant dir="${core.build.dir}" target="dist">
+        <ant dir="${core.dir}" antfile="build/build.xml" target="dist">
             <property name="version" value="${version}"/>
             <property name="dist.dir" location="${dist.dir}"/>
         </ant>
@@ -44,7 +44,7 @@
             <property name="core.jar" value="${dist.dir}/${project}-core.jar"/>
             <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
-        <subant target="dist" failonerror="true" genericantfile="component-build/build.xml">
+        <subant target="dist" failonerror="true">
             <property name="version" value="${version}"/>
             <property name="dist.dir" location="${dist.dir}"/>
             <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
