@@ -7,20 +7,23 @@
  */
 package com.thoughtworks.jbehave.core.listeners;
 
-import java.lang.reflect.Method;
-
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourListener;
 import com.thoughtworks.jbehave.core.verify.Result;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
  */
-public class NULLMethodListener implements MethodListener {
+public class NULLMethodListener implements BehaviourListener {
 
-    public void methodVerificationStarting(Method method) {
+    public boolean caresAbout(Behaviour behaviour) {
+        return false;
     }
 
-    public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
+    public void behaviourVerificationStarting(Behaviour behaviour) {
+    }
+
+    public Result behaviourVerificationEnding(Result result, Behaviour behaviour) {
         return result;
     }
 }

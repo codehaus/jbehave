@@ -9,20 +9,34 @@ package com.thoughtworks.jbehave.core.listeners;
 
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.BehaviourClassListener;
-import com.thoughtworks.jbehave.core.MethodListener;
-import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourClass;
+import com.thoughtworks.jbehave.core.BehaviourListener;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.verify.Result;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextListener implements BehaviourClassListener, MethodListener {
+public class TextListener implements BehaviourListener {
+    /** Stores something interesting to report */
+    private static class Note {
+        public final Result result;
+        public final Class behaviourClass;
+        public Note(Result result, Class behaviourClass) {
+            this.result = result;
+            this.behaviourClass = behaviourClass;
+        }
+    }
+
+    public boolean caresAbout(Behaviour behaviour) {
+        return behaviour instanceof BehaviourClass || behaviour instanceof BehaviourMethod;
+    }
+    
     public static final String SUCCESS = ".";
     public static final String FAILURE = "F";
     public static final String EXCEPTION_THROWN = "E";
@@ -39,6 +53,7 @@ public class TextListener implements BehaviourClassListener, MethodListener {
     public TextListener(Writer writer, Timer timer) {
         out = new PrintWriter(writer);
         this.timer = timer;
+        timer.start();
     }
 
     public TextListener(Writer writer) {
@@ -48,21 +63,24 @@ public class TextListener implements BehaviourClassListener, MethodListener {
     public void behaviourClassVerificationStarting(Class behaviourClass) {
         if (outermostBehaviourClass == null) {
             outermostBehaviourClass = behaviourClass;
-            timer.start();
         }
     }
     
     public void behaviourClassVerificationEnding(Class behaviourClass) {
         if (behaviourClass.equals(outermostBehaviourClass)) {
-            timer.stop();
-            out.println();
-            printElapsedTime();
-            printFailures();
-            printExceptionsThrown();
-            printPending();
-            printSummaryCounts();
-            out.flush();
+            printReport();
         }
+    }
+
+    public void printReport() {
+        timer.stop();
+        out.println();
+        printElapsedTime();
+        printFailures();
+        printExceptionsThrown();
+        printPending();
+        printSummaryCounts();
+        out.flush();
     }
 
     private void printElapsedTime() {
@@ -91,9 +109,9 @@ public class TextListener implements BehaviourClassListener, MethodListener {
             out.println();
             int count = 1;
             for (Iterator i = errorList.iterator(); i.hasNext(); count++) {
-                Result result = (Result)i.next();
-                printReason(count, result);
-                result.getCause().printStackTrace(out);
+                Note note = (Note)i.next();
+                printNote(count, note);
+                note.result.getCause().printStackTrace(out);
                 out.println();
             }
         }
@@ -105,53 +123,53 @@ public class TextListener implements BehaviourClassListener, MethodListener {
             out.println();
             int count = 1;
             for (Iterator i = pending.iterator(); i.hasNext(); count++) {
-                Result result = (Result) i.next();
-                printReason(count, result);
-                out.println("\t" + result.getCause().getMessage());
+                Note note = (Note) i.next();
+                printNote(count, note);
+                out.println("\t" + note.result.getCause().getMessage());
             }
         }
     }
-
-    private void printReason(int count, Result result) {
-        String className = result.getBehaviourClassName();
-        int lastDot = className.lastIndexOf('.');
-        className = className.substring(lastDot + 1);
+    
+    private void printNote(int count, Note note) {
+        String behaviourClassName = note.behaviourClass.getName();
+        int lastDot = behaviourClassName.lastIndexOf('.');
+        String className = behaviourClassName.substring(lastDot + 1);
         int behaviourIndex = className.lastIndexOf("Behaviour");
         if (behaviourIndex > 0) {
             className = className.substring(0, behaviourIndex);
         }
-        out.println(count + ") " + className + " " + result.getName() + " [" + result.getBehaviourClassName() + "]:");
+        out.println(count + ") " + className + " " + note.result.getName() + " [" + behaviourClassName + "]:");
     }
 
-    public void methodVerificationStarting(Method method) {
+    public void behaviourVerificationStarting(Behaviour behaviour) {
+    }
+    
+    public Result behaviourVerificationEnding(Result result, Behaviour behaviour) {
+        if (behaviour instanceof BehaviourClass) {
+            behaviourClassVerificationEnding(((BehaviourClass)behaviour).getClassToVerify());
+        }
+        else if (behaviour instanceof BehaviourMethod) {
+            methodVerificationEnding(result, ((BehaviourMethod)behaviour).getInstance().getClass());
+        }
+        return result;
     }
     
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
+    private Result methodVerificationEnding(Result result, Class currentBehaviourClass) {
         methodsVerified++;
         if (result.failed()) {
-            failures.add(result);
+            failures.add(new Note(result, currentBehaviourClass));
         }
         else if (result.threwException()) {
-            exceptionsThrown.add(result);
+            exceptionsThrown.add(new Note(result, currentBehaviourClass));
         }
         else if (result.isPending()) {
-            pending.add(result);
+            pending.add(new Note(result, currentBehaviourClass));
         }
-        out.print(getSymbol(result.getStatus()));
+        out.print(result.getStatus().getSymbol());
 //        out.flush();
 		return result;
-    }
-
-    private String getSymbol(int status) {
-        switch (status) {
-            case Result.SUCCESS:          return SUCCESS;
-            case Result.FAILURE:          return FAILURE;
-            case Result.EXCEPTION_THROWN: return EXCEPTION_THROWN;
-            case Result.PENDING:          return PENDING;
-            default: throw new JBehaveFrameworkError("Unknown verification status: " + status);
-        }
     }
 }

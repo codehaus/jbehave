@@ -9,14 +9,15 @@ package com.thoughtworks.jbehave.core.verify;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.BehaviourListener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @deprecated use {@link BehaviourVerifier} instead
  */
 public interface MethodVerifier {
     /**
-     * Verify an individual method.
+     * Verify an individual behaviour.
      */
-    Result verifyMethod(MethodListener listener, Method method, Object instance);
+    Result verifyMethod(BehaviourListener listener, Method method, Object instance);
 }

@@ -9,24 +9,23 @@ package com.thoughtworks.jbehave.core.verify;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.BehaviourListener;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.listeners.NULLMethodListener;
+import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class ExecutingMethodVerifierBehaviour {
     private final static List sequenceOfEvents = new ArrayList(); // poor man's mock
-    private MethodVerifier methodVerifier;
-    private RecordingMethodListener recordingListener;
-
+    private RecordingBehaviourListener recordingListener;
+    
     public void setUp() {
         sequenceOfEvents.clear();
-        methodVerifier = new ExecutingMethodVerifier();
-        recordingListener = new RecordingMethodListener();
+        recordingListener = new RecordingBehaviourListener();
     }
     
     public static class HasSucceedingMethod {
@@ -46,10 +45,10 @@ public class ExecutingMethodVerifierBehaviour {
       throw new Error("No suitable method found in " + behaviourClass.getName());
     }
     
-    private void verifyFirstMethod(MethodListener listener, Class behaviourClass) throws Exception {
+    private void verifyFirstMethod(BehaviourListener listener, Class behaviourClass) throws Exception {
         Method method = firstMethod(behaviourClass);
         Object instance = behaviourClass.newInstance();
-        methodVerifier.verifyMethod(listener, method, instance);
+        new BehaviourMethod(new InvokeMethodWithSetUpAndTearDown(), method, instance).verify();
     }
 
     public static class LogsMethodCall {
@@ -58,97 +57,6 @@ public class ExecutingMethodVerifierBehaviour {
         }
     }
     
-    public void shouldNotifyListenerBeforeMethodVerificationStarts() throws Exception {
-        // setup
-        MethodListener listener = new MethodListener() {
-            public void methodVerificationStarting(Method method) {
-                Verify.equal("shouldSucceed", method.getName());
-                sequenceOfEvents.add("listener called");
-            }
-
-            public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
-                return null;
-            }
-        };
-        
-        // execute
-        verifyFirstMethod(listener, LogsMethodCall.class);
-        
-        // verify
-        List expectedSequenceOfEvents = Arrays.asList(
-                new String[]{"listener called", "shouldSucceed() called"}
-        );
-        Verify.equal(expectedSequenceOfEvents, sequenceOfEvents);
-    }
-
-    public void shouldNotifyListenerWhenMethodVerificationSucceeds() throws Exception {
-        // execute
-        verifyFirstMethod(recordingListener, HasSucceedingMethod.class);
-        // verify
-        Verify.that(recordingListener.latestResult.succeeded());
-    }
-
-    public static class HasFailingMethod {
-        public void shouldFail() {
-            Verify.impossible("die die die");
-        }
-    }
-
-    public void shouldNotifyListenerWhenMethodVerificationFails() throws Exception {
-        // execute
-        verifyFirstMethod(recordingListener, HasFailingMethod.class);
-        // verify
-        Verify.that(recordingListener.latestResult.failed());
-    }
-
-    public static class SomeCheckedException extends Exception {}
-
-    public static class HasMethodThatThrowsCheckedException {
-        public void shouldThrowCheckedException() throws Exception {
-            throw new SomeCheckedException();
-        }
-    }
-
-    public void shouldNotifyListenerWhenMethodVerificationThrowsCheckedException() throws Exception {
-        // execute
-        verifyFirstMethod(recordingListener, HasMethodThatThrowsCheckedException.class);
-        // verify
-        Verify.that(recordingListener.latestResult.threwException());
-        Verify.instanceOf(SomeCheckedException.class, recordingListener.latestResult.getCause());
-    }
-
-    public static class SomeRuntimeException extends RuntimeException {}
-
-    public static class HasMethodThatThrowsRuntimeException {
-        public void shouldThrowRuntimeException() {
-            throw new SomeRuntimeException();
-        }
-    }
-
-    public void shouldNotifyListenerWhenMethodThrowsRuntimeException() throws Exception {
-        // execute
-        verifyFirstMethod(recordingListener, HasMethodThatThrowsRuntimeException.class);
-        // verify
-        Verify.that(recordingListener.latestResult.threwException());
-        Verify.instanceOf(SomeRuntimeException.class, recordingListener.latestResult.getCause());
-    }
-
-    private static class SomeError extends Error {}
-
-    public static class HasMethodThatThrowsError {
-        public void shouldThrowError() {
-            throw new SomeError();
-        }
-    }
-
-    public void shouldNotifyListenerWhenMethodThrowsError() throws Exception {
-        // execute
-        verifyFirstMethod(recordingListener, HasMethodThatThrowsError.class);
-        // verify
-        Verify.that(recordingListener.latestResult.threwException());
-        Verify.instanceOf(SomeError.class, recordingListener.latestResult.getCause());
-    }
-
     public static class HasMethodThatThrowsThreadDeath {
         public void shouldThrowThreadDeath() {
             throw new ThreadDeath();

@@ -51,7 +51,7 @@ public class OutcomeBehaviour extends UsingJMock {
         // then... verified by framework
     }
     
-    private static class SomeCheckedException extends Exception {
+    private static class SomeRuntimeException extends RuntimeException {
     }
     
     public void shouldPropagateExceptionFromCallToExpectationsAcceptMethod() throws Exception {
@@ -61,13 +61,13 @@ public class OutcomeBehaviour extends UsingJMock {
         Outcome outcome = new Outcome((Expectation)expectation.proxy());
 
         // expect...
-        expectation.expects(atLeastOnce()).method("accept").will(throwException(new SomeCheckedException()));
+        expectation.expects(atLeastOnce()).method("accept").will(throwException(new SomeRuntimeException()));
         
         // when...
         try {
             outcome.accept(visitorStub);
-            Verify.impossible("Should have propagated SomeCheckedException");
-        } catch (SomeCheckedException expected) {
+            Verify.impossible("Should have propagated SomeRuntimeException");
+        } catch (SomeRuntimeException expected) {
         }
     }
 }

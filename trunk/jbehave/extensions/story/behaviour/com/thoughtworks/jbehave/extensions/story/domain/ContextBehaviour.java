@@ -51,7 +51,7 @@ public class ContextBehaviour extends UsingJMock {
         // then... verified by framework
     }
     
-    private static class SomeCheckedException extends Exception {
+    private static class SomeRuntimeException extends RuntimeException {
     }
     
     public void shouldPropagateExceptionFromCallToGivensAcceptMethod() throws Exception {
@@ -61,13 +61,13 @@ public class ContextBehaviour extends UsingJMock {
         Context context = new Context((Given)given.proxy());
 
         // expect...
-        given.expects(atLeastOnce()).method("accept").will(throwException(new SomeCheckedException()));
+        given.expects(atLeastOnce()).method("accept").will(throwException(new SomeRuntimeException()));
         
         // when...
         try {
             context.accept(visitorStub);
-            Verify.impossible("Should have propagated SomeCheckedException");
-        } catch (SomeCheckedException expected) {
+            Verify.impossible("Should have propagated SomeRuntimeException");
+        } catch (SomeRuntimeException expected) {
         }
     }
 }

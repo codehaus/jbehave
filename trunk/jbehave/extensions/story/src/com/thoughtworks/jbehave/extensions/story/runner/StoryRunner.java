@@ -26,7 +26,7 @@ public class StoryRunner implements Visitor {
     private final Environment environment;
     private final ScenarioListener listener;
 
-    public StoryRunner(Environment environment, ScenarioListener listener) throws Exception {
+    public StoryRunner(Environment environment, ScenarioListener listener) {
         this.environment = environment;
         this.listener = listener;
     }
@@ -53,7 +53,7 @@ public class StoryRunner implements Visitor {
         }
         catch (Exception e) {
             // TODO: handle exception
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -66,7 +66,7 @@ public class StoryRunner implements Visitor {
         }
         catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
     
@@ -76,7 +76,7 @@ public class StoryRunner implements Visitor {
         }
         catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -86,7 +86,7 @@ public class StoryRunner implements Visitor {
         }
         catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 }

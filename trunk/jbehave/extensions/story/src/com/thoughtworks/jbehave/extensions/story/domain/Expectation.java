@@ -35,7 +35,7 @@ public abstract class Expectation implements Visitable {
      * <br/>
      * It is up to you to ensure that you visit the {@link Event} in the meantime!
      */
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         if (!alreadyAcceptedVisitor) {
             visitor.visitExpectationBeforeTheEvent(this);
             alreadyAcceptedVisitor = true;

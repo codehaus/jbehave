@@ -52,7 +52,7 @@ public class Story implements Visitable {
         return narrative;
     }
     
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         visitor.visitStory(this);
         narrative.accept(visitor);
         criteria.accept(visitor);

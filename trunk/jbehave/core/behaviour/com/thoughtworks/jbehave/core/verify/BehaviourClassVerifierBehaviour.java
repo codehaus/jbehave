@@ -13,68 +13,51 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.BehaviourListener;
 import com.thoughtworks.jbehave.core.listeners.NULLBehaviourClassListener;
-import com.thoughtworks.jbehave.core.listeners.NULLMethodListener;
+import com.thoughtworks.jbehave.util.DontInvokeMethod;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class BehaviourClassVerifierBehaviour {
 
-    public static class BehaviourClassWithOneMethod {
+    public static class HasOneMethod {
         public void shouldSucceed() {
         }
     }
     
-    public void shouldNotifyListenerWhenBehaviourClassVerificationStarts() throws Exception {
-        // setup
-        BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, new NULLMethodVerifier());
-        RecordingBehaviourClassListener listener = new RecordingBehaviourClassListener();
-        // execute
-        behaviourVerifier.verifyBehaviourClass(listener, new NULLMethodListener());
-        // verify
-        Verify.equal(BehaviourClassWithOneMethod.class, listener.startedBehaviourClass);
-    }
-    
-    public void shouldNotifyListenerWhenBehaviourClassVerificationEnds() throws Exception {
-        // setup
-        BehaviourClassVerifier verifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, new NULLMethodVerifier());
-        RecordingBehaviourClassListener listener = new RecordingBehaviourClassListener();
-        verifier.verifyBehaviourClass(listener, new NULLMethodListener());
-        // verify
-        Verify.equal(BehaviourClassWithOneMethod.class, listener.endedBehaviourClass);
-    }
-    
-    private static class RecordingMethodVerifier implements MethodVerifier {
+    private static class RecordingBehaviourVerifier extends BehaviourVerifier {
+        public RecordingBehaviourVerifier() {
+            super(null);
+        }
+
         public final List methods = new ArrayList();
         
-        public Result verifyMethod(MethodListener listener, Method method, Object instance) {
+        public Result verifyMethod(BehaviourListener listener, Method method, Object instance) {
             methods.add(method);
-            return new Result(instance.getClass().getName(), method.getName());
+            return new Result(method.getName(), Result.SUCCEEDED);
         }
     }
     
     public void shouldVerifyOneMethod() throws Exception {
         // setup
-        final RecordingMethodVerifier methodVerifier = new RecordingMethodVerifier();
+        final RecordingBehaviourVerifier methodVerifier = new RecordingBehaviourVerifier();
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, methodVerifier);
+            new BehaviourClassVerifier(HasOneMethod.class, methodVerifier, new DontInvokeMethod());
         
         // execute
-        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLMethodListener());
+        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener());
         
         // verify
         List expectedMethods = Arrays.asList(new Method[] {
-                BehaviourClassWithOneMethod.class.getMethod("shouldSucceed", null)
+                HasOneMethod.class.getMethod("shouldSucceed", null)
         });
         
         Verify.equal(expectedMethods, methodVerifier.methods);
     }
 
-    public static class BehaviourClassWithTwoMethods {
+    public static class HasTwoMethods {
         public void shouldSucceed() {
         }
         public void shouldAlsoSucceed() {
@@ -83,39 +66,39 @@ public class BehaviourClassVerifierBehaviour {
     
     public void shouldVerifyTwoMethods() throws Exception {
         // setup
-        final RecordingMethodVerifier methodVerifier = new RecordingMethodVerifier();
+        final RecordingBehaviourVerifier methodVerifier = new RecordingBehaviourVerifier();
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourClassWithTwoMethods.class, methodVerifier);
+            new BehaviourClassVerifier(HasTwoMethods.class, methodVerifier, new DontInvokeMethod());
         
         // execute
-        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLMethodListener());
+        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener());
         
         // verify
         List expectedMethods = Arrays.asList(new Method[] {
-                BehaviourClassWithTwoMethods.class.getMethod("shouldSucceed", null),
-                BehaviourClassWithTwoMethods.class.getMethod("shouldAlsoSucceed", null)
+                HasTwoMethods.class.getMethod("shouldSucceed", null),
+                HasTwoMethods.class.getMethod("shouldAlsoSucceed", null)
         });
         
         Verify.equal(expectedMethods, methodVerifier.methods);
     }
     
-    public static class ContainerWithTwoBehaviours implements BehaviourClassContainer {
+    public static class ContainsTwoBehaviours implements BehaviourClassContainer {
         public Class[] getBehaviourClasses() {
             return new Class[] {
-                BehaviourClassWithOneMethod.class,
-                BehaviourClassWithTwoMethods.class
+                HasOneMethod.class,
+                HasTwoMethods.class
             };
         }
     }
     
     public void shouldVerifyContainedBehaviours() throws Exception {
         // setup
-        RecordingMethodVerifier methodVerifier = new RecordingMethodVerifier();
+        RecordingBehaviourVerifier methodVerifier = new RecordingBehaviourVerifier();
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(ContainerWithTwoBehaviours.class,
-                    methodVerifier);
+            new BehaviourClassVerifier(ContainsTwoBehaviours.class,
+                    methodVerifier, new DontInvokeMethod());
         // execute
-        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLMethodListener());
+        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener());
         // verify
         Verify.equal(3, methodVerifier.methods.size());
     }

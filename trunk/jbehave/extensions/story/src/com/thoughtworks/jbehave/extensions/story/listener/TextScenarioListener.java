@@ -56,5 +56,6 @@ public class TextScenarioListener implements ScenarioListener {
     }
 
     public void componentUsesMocks(Object component) {
+        System.err.println("Component " + component.getClass().getName() + " uses mocks!");
     }
 }

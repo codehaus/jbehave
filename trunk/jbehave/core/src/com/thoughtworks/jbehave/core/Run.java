@@ -10,8 +10,8 @@ package com.thoughtworks.jbehave.core;
 import java.io.PrintWriter;
 
 import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.core.verify.BehaviourClassVerifier;
-import com.thoughtworks.jbehave.core.verify.ExecutingMethodVerifier;
+import com.thoughtworks.jbehave.core.verify.BehaviourVerifier;
+import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -19,10 +19,12 @@ import com.thoughtworks.jbehave.core.verify.ExecutingMethodVerifier;
 public class Run {
     public static void main(String[] args) {
         try {
-            Class behaviourClass = Class.forName(args[0]);
+            Class classToVerify = Class.forName(args[0]);
             TextListener textListener = new TextListener(new PrintWriter(System.out));
-            new BehaviourClassVerifier(behaviourClass, new ExecutingMethodVerifier())
-                    .verifyBehaviourClass(textListener, textListener);
+            BehaviourVerifier methodVerifier = new BehaviourVerifier(textListener);
+            BehaviourClass behaviourClass = new BehaviourClass(classToVerify, methodVerifier, new InvokeMethodWithSetUpAndTearDown());
+            new BehaviourVerifier(textListener).verify(behaviourClass);
+            textListener.printReport();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Problem verifying behaviour class " + args[0]);

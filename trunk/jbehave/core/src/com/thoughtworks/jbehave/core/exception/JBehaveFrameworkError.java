@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.exception;
 
+
 /**
  * Signifies that something has gone wrong in the mechanics of executing
  * behaviours, rather than exceptions or failures in the behaviours themselves.
@@ -15,9 +16,9 @@ package com.thoughtworks.jbehave.core.exception;
  */
 public class JBehaveFrameworkError extends Error {
 
-    private Exception nestedException;
+    private Throwable nestedException;
 
-    public JBehaveFrameworkError(String message, Exception nestedException) {
+    public JBehaveFrameworkError(String message, Throwable nestedException) {
         super(message);
         this.nestedException = nestedException;
     }
@@ -30,12 +31,12 @@ public class JBehaveFrameworkError extends Error {
         this(message, null);
     }
 
-    public JBehaveFrameworkError(Exception nestedException) {
+    public JBehaveFrameworkError(Throwable nestedException) {
         this(null, nestedException);
         nestedException.printStackTrace();
     }
     
-	public Exception getNestedException() {
+	public Throwable getNestedException() {
 		return nestedException;
 	}
 }

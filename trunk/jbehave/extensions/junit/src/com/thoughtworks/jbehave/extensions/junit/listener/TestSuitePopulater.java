@@ -11,8 +11,10 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestSuite;
 
-import com.thoughtworks.jbehave.core.BehaviourClassListener;
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourClass;
+import com.thoughtworks.jbehave.core.BehaviourListener;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.verify.Result;
 import com.thoughtworks.jbehave.extensions.junit.JUnitMethodAdapter;
@@ -20,7 +22,7 @@ import com.thoughtworks.jbehave.extensions.junit.JUnitMethodAdapter;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TestSuitePopulater implements BehaviourClassListener, MethodListener {
+public class TestSuitePopulater implements BehaviourListener {
     private final TestSuite[] suiteRef;
     private TestSuite currentSuite = null;
     private Class currentBehaviourClass;
@@ -29,21 +31,19 @@ public class TestSuitePopulater implements BehaviourClassListener, MethodListene
         this.suiteRef = suiteRef;
     }
 
-    public void behaviourClassVerificationStarting(Class behaviourClass) {
-        currentSuite = new TestSuite(behaviourClass.getName());
+    private void behaviourClassVerificationStarting(BehaviourClass behaviourClass) {
+        currentSuite = new TestSuite(behaviourClass.getClassToVerify().getName());
         if (suiteRef[0] == null) {
             suiteRef[0] = currentSuite;
         }
         else {
             suiteRef[0].addTest(currentSuite);
         }
-        currentBehaviourClass = behaviourClass;
+        currentBehaviourClass = behaviourClass.getClassToVerify();
     }
 
-    public void behaviourClassVerificationEnding(Class behaviourClass) {
-    }
-    
-    public void methodVerificationStarting(Method method) {
+    private void behaviourMethodVerificationStarting(BehaviourMethod behaviourMethod) {
+        Method method = behaviourMethod.getMethodToVerify();
         try {
             Object instance = currentBehaviourClass.newInstance();
             currentSuite.addTest(new JUnitMethodAdapter(method,
@@ -55,7 +55,20 @@ public class TestSuitePopulater implements BehaviourClassListener, MethodListene
         }
     }
 
-    public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
-        return null;
+    public void behaviourVerificationStarting(Behaviour behaviour) {
+        if (behaviour instanceof BehaviourClass) {
+            behaviourClassVerificationStarting((BehaviourClass) behaviour);
+        }
+        else {
+            behaviourMethodVerificationStarting((BehaviourMethod) behaviour);
+        }
+    }
+
+    public Result behaviourVerificationEnding(Result result, Behaviour behaviour) {
+        return result;
+    }
+
+    public boolean caresAbout(Behaviour behaviour) {
+        return behaviour instanceof BehaviourClass || behaviour instanceof BehaviourMethod;
     }
 }

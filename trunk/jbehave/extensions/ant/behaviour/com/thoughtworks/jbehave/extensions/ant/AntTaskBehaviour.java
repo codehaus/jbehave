@@ -30,7 +30,7 @@ public class AntTaskBehaviour {
 
 	public void shouldRunASingleBehaviourClass() throws Exception {
         // setup
-		BehaviourClass behaviourClass = task.createBehaviourClass();
+		BehaviourClassDetails behaviourClass = task.createBehaviourClass();
 		behaviourClass.setBehaviourClassName(BehaviourClassOne.class.getName());
 
 		// execute
@@ -42,9 +42,9 @@ public class AntTaskBehaviour {
 
 	public void shouldRunMultipleBehaviourClasses() throws Exception {
 		// setup
-		BehaviourClass spec = task.createBehaviourClass();
+		BehaviourClassDetails spec = task.createBehaviourClass();
 		spec.setBehaviourClassName(BehaviourClassOne.class.getName());
-		BehaviourClass spec2 = task.createBehaviourClass();
+		BehaviourClassDetails spec2 = task.createBehaviourClass();
 		spec2.setBehaviourClassName(BehaviourClassTwo.class.getName());
 
 		// execute

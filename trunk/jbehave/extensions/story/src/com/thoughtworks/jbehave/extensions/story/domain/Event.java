@@ -18,7 +18,7 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 public abstract class Event implements Visitable {
     public abstract void occurIn(Environment environment) throws Exception;
 
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         visitor.visitEvent(this);
     }
 }

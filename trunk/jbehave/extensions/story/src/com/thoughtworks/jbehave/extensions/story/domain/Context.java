@@ -42,7 +42,7 @@ public class Context implements Visitable {
         this(scenario, new Given[] {given});
     }
     
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         visitor.visitContext(this);
         visitables.accept(visitor);
     }

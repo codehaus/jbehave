@@ -11,7 +11,6 @@ import java.io.OutputStreamWriter;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListener;
-import com.thoughtworks.jbehave.extensions.story.renderers.PlainTextRenderer;
 import com.thoughtworks.jbehave.extensions.story.runner.StoryRunner;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
@@ -34,8 +33,13 @@ public class Run {
                 public void put(String key, Object value) {
                 }
             };
-            Visitor visitor = new StoryRunner(environment, new TextScenarioListener(new OutputStreamWriter(System.out))); // new PlainTextRenderer(System.out);
-            visitor = new PlainTextRenderer(System.out);
+            
+            Visitor visitor = new StoryRunner(
+                    environment,
+                    new TextScenarioListener(new OutputStreamWriter(System.out))
+            );
+            
+//            visitor = new PlainTextRenderer(System.out);
             Story story = new UserWithdrawsCash();
             story.accept(visitor);
 

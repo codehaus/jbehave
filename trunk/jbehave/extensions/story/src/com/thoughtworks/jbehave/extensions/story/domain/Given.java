@@ -19,7 +19,7 @@ public abstract class Given extends UsingJMock implements Visitable {
 
     public abstract void setUp(Environment environment) throws Exception;
     
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         visitor.visitGiven(this);
     }
 }

@@ -7,22 +7,22 @@
  */
 package com.thoughtworks.jbehave.core.verify;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourListener;
 
 
 /** Listener that captures verification results */
-class RecordingMethodListener implements MethodListener {
+public class RecordingBehaviourListener implements BehaviourListener {
     public List verifications = new ArrayList(); // all verifications
     public Result latestResult = null;
 
-    public void methodVerificationStarting(Method method) {
+    public void behaviourVerificationStarting(Behaviour behaviour) {
     }
     
-    public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
+    public Result behaviourVerificationEnding(Result result, Behaviour behaviour) {
         verifications.add(result);
         latestResult = result;
 		return result;
@@ -30,5 +30,9 @@ class RecordingMethodListener implements MethodListener {
     
     public Result result(int i) {
         return (Result) verifications.get(i);
+    }
+
+    public boolean caresAbout(Behaviour behaviour) {
+        return true;
     }
 }

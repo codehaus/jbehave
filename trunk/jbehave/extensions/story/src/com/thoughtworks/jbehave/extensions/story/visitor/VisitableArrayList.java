@@ -28,7 +28,7 @@ public class VisitableArrayList extends ArrayList implements Visitable {
         super(c);
     }
 
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         for (Iterator i = iterator(); i.hasNext();) {
             ((Visitable) i.next()).accept(visitor);
         }

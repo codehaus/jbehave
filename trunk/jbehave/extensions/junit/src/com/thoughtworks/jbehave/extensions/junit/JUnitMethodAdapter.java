@@ -15,11 +15,10 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 
-import com.thoughtworks.jbehave.core.listeners.NULLMethodListener;
-import com.thoughtworks.jbehave.core.verify.ExecutingMethodVerifier;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.verify.Result;
 import com.thoughtworks.jbehave.util.ConvertCase;
-
+import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 
 public class JUnitMethodAdapter extends TestCase {
     private final Method method;
@@ -43,7 +42,7 @@ public class JUnitMethodAdapter extends TestCase {
 
     private void verifyMethod(TestResult testResult) {
         final Result result =
-            new ExecutingMethodVerifier().verifyMethod(new NULLMethodListener(), method, instance);
+            new BehaviourMethod(new InvokeMethodWithSetUpAndTearDown(), method, instance).verify();
         if (result.failed()) {
             testResult.addFailure(this, buildAssertionFailedError(result.getCause()));
         }

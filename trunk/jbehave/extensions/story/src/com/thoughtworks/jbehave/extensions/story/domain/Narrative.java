@@ -33,7 +33,7 @@ public class Narrative implements Visitable {
     public String getRole() {
         return role;
     }
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         visitor.visitNarrative(this);
     }
 }

@@ -16,7 +16,7 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  */
 public class ResultBehaviour {
 
-    private void verifyEvaluationState(Result result, int status, boolean succeeded, boolean failed, boolean exceptionThrown, boolean pending) {
+    private void verifyEvaluationState(Result result, Result.ResultType status, boolean succeeded, boolean failed, boolean exceptionThrown, boolean pending) {
         Verify.equal("status", status, result.getStatus());
         Verify.equal("succeeded", succeeded, result.succeeded());
         Verify.equal("failed", failed, result.failed());
@@ -26,25 +26,25 @@ public class ResultBehaviour {
 
     public void shouldHaveConsistentStateForSuccess() throws Exception {
         Result result =
-            new Result("SomeClass", "shouldSucceed", null);
-        verifyEvaluationState(result, Result.SUCCESS, true, false, false, false);
+            new Result("shouldSucceed", Result.SUCCEEDED);
+        verifyEvaluationState(result, Result.SUCCEEDED, true, false, false, false);
     }
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
         Result result =
-            new Result("SomeClass", "shouldFail", new VerificationException("oops"));
-        verifyEvaluationState(result, Result.FAILURE, false, true, false, false);
+            new Result("shouldFail", new VerificationException("oops"));
+        verifyEvaluationState(result, Result.FAILED, false, true, false, false);
     }
 
     public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
         Result result =
-            new Result("SomeClass", "shouldThrowException", new Exception());
-        verifyEvaluationState(result, Result.EXCEPTION_THROWN, false, false, true, false);
+            new Result("shouldThrowException", new Exception());
+        verifyEvaluationState(result, Result.THREW_EXCEPTION, false, false, true, false);
     }
     
     public void shouldHaveConsistentStateForPending() throws Exception {
         Result result =
-            new Result("SomeClass", "shouldBeImplemented", new PendingException("todo"));
+            new Result("shouldBeImplemented", new PendingException("todo"));
         verifyEvaluationState(result, Result.PENDING, false, false, false, true);
     }
 }

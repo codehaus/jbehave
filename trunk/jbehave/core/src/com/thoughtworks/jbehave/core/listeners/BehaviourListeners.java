@@ -7,12 +7,12 @@
  */
 package com.thoughtworks.jbehave.core.listeners;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourListener;
 import com.thoughtworks.jbehave.core.verify.Result;
 
 /**
@@ -22,28 +22,29 @@ import com.thoughtworks.jbehave.core.verify.Result;
  * &lt;plug&gt;This would be so much cleaner in Ruby.&lt;/plug&gt;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
+ * @deprecated just register lots of Listeners with the BehaviourVerifier
  */
-public class MethodListeners implements MethodListener {
+public class BehaviourListeners implements BehaviourListener {
     private final List listeners = new ArrayList();
     
     /**
      * The composition method for the composite.
      */
-    public void add(MethodListener listener) {
+    public void add(BehaviourListener listener) {
         listeners.add(listener);
     }
     
     // Listener methods
 
-    public void methodVerificationStarting(Method method) {
+    public void behaviourVerificationStarting(Behaviour behaviour) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((MethodListener)i.next()).methodVerificationStarting(method);
+            ((BehaviourListener)i.next()).behaviourVerificationStarting(behaviour);
         }
     }
 
-    public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
+    public Result behaviourVerificationEnding(Result result, Behaviour behaviour) {
 		for (Iterator i = listeners.iterator(); i.hasNext();) {
-		    result = ((MethodListener)i.next()).methodVerificationEnding(result, behaviourClassInstance);
+		    result = ((BehaviourListener)i.next()).behaviourVerificationEnding(result, behaviour);
         }
 		return result;
     }
@@ -52,5 +53,9 @@ public class MethodListeners implements MethodListener {
         StringBuffer buffer = new StringBuffer();
         buffer.append("[CompositeListener:").append(" listeners: ").append(listeners).append("]");
         return buffer.toString();
+    }
+
+    public boolean caresAbout(Behaviour behaviour) {
+        return true;
     }
 }

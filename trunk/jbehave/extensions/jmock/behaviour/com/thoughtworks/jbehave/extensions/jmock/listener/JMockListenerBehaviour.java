@@ -7,14 +7,15 @@
  */
 package com.thoughtworks.jbehave.extensions.jmock.listener;
 
-import java.lang.reflect.Method;
 import java.util.List;
-
-import org.jmock.core.matcher.TestFailureMatcher;
 
 import junit.framework.AssertionFailedError;
 
-import com.thoughtworks.jbehave.core.MethodListener;
+import org.jmock.core.matcher.TestFailureMatcher;
+
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourListener;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.verify.Result;
 import com.thoughtworks.jbehave.core.verify.Verify;
@@ -25,25 +26,13 @@ import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
 public class JMockListenerBehaviour {
-	private MethodListener listener;
+	private BehaviourListener listener;
 
 	public void setUp() {
 		listener = new JMockListener();
 	}
 
-    /** pull out the first behaviour method in a spec */
-    private Method firstMethod(Class behaviourClass) throws Exception {
-        Method[] methods = behaviourClass.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            Method method = methods[i];
-            if (method.getName().startsWith("should")) {
-                return method;
-            }
-        }
-      throw new Error("No behaviour method found in " + behaviourClass.getName());
-    }
-
-    public static class BehaviourClass1 extends UsingJMock {
+    public static class HasMockField extends UsingJMock {
         public boolean verifyWasCalled = false;
         
         private Mock someMock = new Mock(List.class) {
@@ -57,19 +46,21 @@ public class JMockListenerBehaviour {
         }
     }
 
-    public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
+    public void shouldVerifyPrivateMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
         // setup
-		BehaviourClass1 instance = new BehaviourClass1();
-        Result result = new Result("shouldDoSomething", instance.getClass().getName());
+		HasMockField instance = new HasMockField();
+        Result result = new Result("name", Result.SUCCEEDED);
+        Behaviour behaviour = new BehaviourMethod(null, null, instance);
+        listener.behaviourVerificationStarting(behaviour);
 
         // execute
-        listener.methodVerificationEnding(result, instance);
+        listener.behaviourVerificationEnding(result, behaviour);
         
         // verify
         Verify.that(instance.verifyWasCalled);
 	}
 
-    public static class BehaviourClass2 extends UsingJMock {
+    public static class HasFailingMock extends UsingJMock {
         public boolean verifyWasCalled = false;
 
         private Mock someMock = new Mock(List.class) {
@@ -85,11 +76,12 @@ public class JMockListenerBehaviour {
 
 	public void shouldCreateNewVerificationWhenMethodSucceedsButVerifyFails() throws Exception {
 		// setup
-        BehaviourClass2 instance = new BehaviourClass2();
-        Result result = new Result("SomeBehaviourClass", "shouldDoSomething");
+        HasFailingMock instance = new HasFailingMock();
+        Result result = new Result("shouldDoSomething", Result.SUCCEEDED);
+        Behaviour behaviour = new BehaviourMethod(null, null, instance);
 
         // execute
-        Result verifyMockResult = listener.methodVerificationEnding(result, instance);
+        Result verifyMockResult = listener.behaviourVerificationEnding(result, behaviour);
 
 		// verify
 		Verify.notNull(verifyMockResult);
@@ -100,7 +92,7 @@ public class JMockListenerBehaviour {
 		String someMethod();
 	}
 
-	public static class BehaviourClass3 extends UsingJMock {
+	public static class HasFailingExpectation extends UsingJMock {
 
 		public void shouldUseAMockWhoseExpectationWillFail() throws Exception {
 	        Mock foo = new Mock(Foo.class);
@@ -111,27 +103,31 @@ public class JMockListenerBehaviour {
 
 	public void shouldVerifyMocks() throws Exception {
         // setup
-        final Method method = firstMethod(BehaviourClass3.class);
-        listener.methodVerificationStarting(method);
-        final BehaviourClass3 instance = new BehaviourClass3();
+        final HasFailingExpectation instance = new HasFailingExpectation();
+        BehaviourMethod behaviour = new BehaviourMethod(null, null, instance);
+        listener.behaviourVerificationStarting(behaviour);
         instance.shouldUseAMockWhoseExpectationWillFail();
         
 		// execute
 		Result result =
-            listener.methodVerificationEnding(
-                    new Result(BehaviourClass3.class.getName(), "shouldUseAMockWhoseExpectationWillFail"),
-                    instance);
+            listener.behaviourVerificationEnding(
+                    new Result("shouldUseAMockWhoseExpectationWillFail", Result.SUCCEEDED), behaviour);
         
 		// verify
 		Verify.that("should fail JMock verification", result.failed());
 	}
     
-    public void shouldWrapAssertionFailedErrorWithVerificationException() throws Exception {
+    public static class UsesJMock extends UsingJMock {
+    }
+    
+    public void shouldWrapAssertionFailedErrorWithVerificationExceptionWhenUsingJMock() throws Exception {
         // given...
-        Result assertionFailed = new Result("SomeClass", "someMethod", new AssertionFailedError());
+        Result assertionFailed = new Result("someMethod", new AssertionFailedError());
+        Behaviour behaviour = new BehaviourMethod(null, null, new UsesJMock());
+        listener.behaviourVerificationStarting(behaviour);
         
         // when...
-        Result result = listener.methodVerificationEnding(assertionFailed, null);
+        Result result = listener.behaviourVerificationEnding(assertionFailed, behaviour);
         
         // verify...
         Verify.instanceOf(VerificationException.class, result.getCause());
@@ -139,16 +135,17 @@ public class JMockListenerBehaviour {
     
     public void shouldNotVerifyMocksIfMethodFailed() throws Exception {
         // given...
-        RuntimeException cause = new VerificationException("oops");
-        Result methodFailed = new Result("SomeClass", "someMethod", cause);
         org.jmock.cglib.Mock instance = new org.jmock.cglib.Mock(UsingJMock.class);
+        Behaviour behaviour = new BehaviourMethod(null, null, instance);
+        Result methodFailed = new Result("someMethod", Result.FAILED);
+        
 
         // expect...
         TestFailureMatcher never = new TestFailureMatcher("expect not called");
         instance.expects(never).method("verify");
         
         // when...
-        listener.methodVerificationEnding(methodFailed, instance.proxy());
+        listener.behaviourVerificationEnding(methodFailed, behaviour);
         
         // verify...
         instance.verify();
@@ -156,16 +153,16 @@ public class JMockListenerBehaviour {
     
     public void shouldNotVerifyMocksIfMethodThrewException() throws Exception {
         // given...
-        RuntimeException cause = new RuntimeException("oops");
-        Result methodFailed = new Result("SomeClass", "someMethod", cause);
         org.jmock.cglib.Mock instance = new org.jmock.cglib.Mock(UsingJMock.class);
+        Behaviour behaviour = new BehaviourMethod(null, null, instance);
+        Result methodFailed = new Result("someMethod", Result.THREW_EXCEPTION);
 
         // expect...
         TestFailureMatcher never = new TestFailureMatcher("expect not called");
         instance.expects(never).method("verify");
         
         // when...
-        listener.methodVerificationEnding(methodFailed, instance.proxy());
+        listener.behaviourVerificationEnding(methodFailed, behaviour);
         
         // verify...
         instance.verify();

@@ -13,10 +13,12 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourClass;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
-import com.thoughtworks.jbehave.core.verify.BehaviourClassVerifier;
-import com.thoughtworks.jbehave.core.verify.NotifyingMethodVerifier;
+import com.thoughtworks.jbehave.core.verify.BehaviourVerifier;
 import com.thoughtworks.jbehave.extensions.junit.listener.TestSuitePopulater;
+import com.thoughtworks.jbehave.util.DontInvokeMethod;
 
 /**
  * Runs a behaviour class in a JUnit test runner.
@@ -41,13 +43,15 @@ public class JUnitAdapter {
     }
 
     public static Test suite() {
-        Class behaviourClass = (BEHAVIOUR_CLASS != null
-                ? BEHAVIOUR_CLASS : getBehaviourClass());
+        Class classToVerify = (BEHAVIOUR_CLASS != null ? BEHAVIOUR_CLASS : getBehaviourClass());
         final TestSuite[] suiteRef = new TestSuite[1]; // Collecting Parameter
-        BehaviourClassVerifier behaviourClassVerifier =
-            new BehaviourClassVerifier(behaviourClass, new NotifyingMethodVerifier());
+        
         final TestSuitePopulater populater = new TestSuitePopulater(suiteRef);
-        behaviourClassVerifier.verifyBehaviourClass(populater, populater);
+        
+        BehaviourVerifier verifier = new BehaviourVerifier(populater);
+        Behaviour behaviour = new BehaviourClass(classToVerify, verifier, new DontInvokeMethod());
+        verifier.verify(behaviour);
+
         return suiteRef[0];
     }
 
@@ -61,7 +65,6 @@ public class JUnitAdapter {
                 in.close();
             }
             behaviourClassName = props.getProperty("behaviourClass", behaviourClassName);
-            System.out.println("Verifying " + behaviourClassName);
             return behaviourClassForName(behaviourClassName);
         } catch (Exception e) {
             throw new JBehaveFrameworkError("No behaviour class found for " + behaviourClassName);

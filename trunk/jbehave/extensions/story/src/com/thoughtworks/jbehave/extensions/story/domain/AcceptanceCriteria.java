@@ -20,7 +20,7 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 public class AcceptanceCriteria implements Visitable {
     private final VisitableArrayList scenarios = new VisitableArrayList();
     
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         scenarios.accept(visitor);
     }
 

@@ -19,11 +19,13 @@ import org.apache.tools.ant.taskdefs.LogOutputStream;
 import org.apache.tools.ant.types.CommandlineJava;
 import org.apache.tools.ant.types.Path;
 
-import com.thoughtworks.jbehave.core.listeners.MethodListeners;
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourClass;
+import com.thoughtworks.jbehave.core.listeners.BehaviourListeners;
 import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.core.verify.BehaviourClassVerifier;
-import com.thoughtworks.jbehave.core.verify.ExecutingMethodVerifier;
+import com.thoughtworks.jbehave.core.verify.BehaviourVerifier;
 import com.thoughtworks.jbehave.extensions.ant.listeners.AntListener;
+import com.thoughtworks.jbehave.util.InvokeMethodWithSetUpAndTearDown;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -58,10 +60,10 @@ public class AntTask extends org.apache.tools.ant.Task {
 		behaviourClassList = new LinkedList();
 	}
 
-	public BehaviourClass createBehaviourClass() {
-		BehaviourClass behaviourClass = new BehaviourClass();
-		behaviourClassList.add(behaviourClass);
-		return behaviourClass;
+	public BehaviourClassDetails createBehaviourClass() {
+		BehaviourClassDetails details = new BehaviourClassDetails();
+		behaviourClassList.add(details);
+		return details;
 	}
 
 	public Path createClasspath() {
@@ -80,29 +82,29 @@ public class AntTask extends org.apache.tools.ant.Task {
 		createClassLoader();
 		AntListener listener = new AntListener();
 		for (Iterator iter = behaviourClassList.iterator(); iter.hasNext(); ) {
-			verifyBehaviourClass((BehaviourClass) iter.next(), listener);
+			verifyBehaviourClass((BehaviourClassDetails) iter.next(), listener);
 		}
 	}
 
-	private void verifyBehaviourClass(BehaviourClass behaviourClass, AntListener antListener) {
+	private void verifyBehaviourClass(BehaviourClassDetails behaviourClassDetails, AntListener antListener) {
 		try {
-			BehaviourClassVerifier verifier = new BehaviourClassVerifier(
-                    classFor(behaviourClass), new ExecutingMethodVerifier());
-            
             TextListener textListener = new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
-            MethodListeners compositeListener = new MethodListeners();
+            BehaviourListeners compositeListener = new BehaviourListeners();
             compositeListener.add(antListener);
             compositeListener.add(textListener);
+            BehaviourVerifier verifier = new BehaviourVerifier(compositeListener);
+            Behaviour behaviour = new BehaviourClass(classFor(behaviourClassDetails), verifier, new InvokeMethodWithSetUpAndTearDown());
+//            BehaviourClassVerifier verifier = new BehaviourClassVerifier(
+//                    classFor(behaviourClass), new BehaviourVerifier(compositeListener), new InvokeMethodWithSetUpAndTearDown());
             
-            verifier.verifyBehaviourClass(textListener, compositeListener);
-            
-			if (antListener.failBuild()) throw new BuildException(behaviourClass.getBehaviourClassName() + "failed");
+            verifier.verify(behaviour);
+			if (antListener.failBuild()) throw new BuildException(behaviourClassDetails.getBehaviourClassName() + "failed");
 		} catch (ClassNotFoundException e) {
         	throw new BuildException(e);
 		}
 	}
 
-	private Class classFor(BehaviourClass behaviourClass) throws ClassNotFoundException {
+	private Class classFor(BehaviourClassDetails behaviourClass) throws ClassNotFoundException {
 		return Class.forName(behaviourClass.getBehaviourClassName());
 	}
 

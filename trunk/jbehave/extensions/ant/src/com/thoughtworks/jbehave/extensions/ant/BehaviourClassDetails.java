@@ -12,7 +12,7 @@ package com.thoughtworks.jbehave.extensions.ant;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
  */
-public class BehaviourClass {
+public class BehaviourClassDetails {
 	private String behaviourClassName;
 
 	public void setBehaviourClassName(String behaviourClassName) {

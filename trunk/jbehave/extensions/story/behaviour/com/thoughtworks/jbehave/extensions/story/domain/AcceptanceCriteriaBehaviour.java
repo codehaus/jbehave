@@ -17,7 +17,7 @@ public class AcceptanceCriteriaBehaviour extends UsingJMock {
     
     public void shouldTellComponentsToAcceptVisitorInCorrectOrder() throws Exception {
         // given...
-        AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+        AcceptanceCriteria criteria = new AcceptanceCriteria();
         Mock scenario1 = new Mock(MockableScenario.class, "scenario1");
         Mock scenario2 = new Mock(MockableScenario.class, "scenario2");
         Visitor visitor = (Visitor) stub(Visitor.class);
@@ -27,9 +27,9 @@ public class AcceptanceCriteriaBehaviour extends UsingJMock {
         scenario2.expects(once()).method("accept").with(same(visitor)).after(scenario1, "accept");
         
         // when...
-        acceptanceCriteria.addScenario((Scenario) scenario1.proxy());
-        acceptanceCriteria.addScenario((Scenario) scenario2.proxy());
-        acceptanceCriteria.accept(visitor);
+        criteria.addScenario((Scenario) scenario1.proxy());
+        criteria.addScenario((Scenario) scenario2.proxy());
+        criteria.accept(visitor);
     }
 
 }

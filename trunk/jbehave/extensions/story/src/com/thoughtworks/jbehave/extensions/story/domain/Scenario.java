@@ -60,7 +60,7 @@ public class Scenario implements Visitable {
         return outcome;
     }
     
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         try {
             visitor.visitScenario(this);
             context.accept(visitor);

@@ -9,37 +9,41 @@ package com.thoughtworks.jbehave.core.verify;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourListener;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
+import com.thoughtworks.jbehave.util.MethodInvoker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @deprecated
  */
 public class NotifyingMethodVerifier implements MethodVerifier {
 
+    private final MethodInvoker invoker;
+
+    public NotifyingMethodVerifier(MethodInvoker invoker) {
+        this.invoker = invoker;
+    }
+    
     /**
      * Verify an individual method.
      * 
-     * The {@link MethodListener} is alerted before and after the verification,
-     * with calls to {@link MethodListener#methodVerificationStarting(Method)
+     * The {@link BehaviourListener} is alerted before and after the verification,
+     * with calls to {@link BehaviourListener#behaviourVerificationStarting(Behaviour)
      * methodVerificationStarting(this)} and
-     * {@link MethodListener#methodVerificationEnding(Result, Object)
+     * {@link BehaviourListener#behaviourVerificationEnding(Result, Behaviour)
      * methodVerificationEnding(result)} respectively.
      */
-    public Result verifyMethod(MethodListener listener, Method method, Object instance) {
+    public Result verifyMethod(BehaviourListener listener, Method method, Object instance) {
         try {
-            listener.methodVerificationStarting(method);
-            Result result = doVerifyMethod(method, instance);
-            result = listener.methodVerificationEnding(result, instance);
+            Behaviour behaviour = new BehaviourMethod(invoker, method, instance);
+            Result result = new BehaviourVerifier(listener).verify(behaviour);
             return result;
         } catch (Exception e) {
-            System.out.println("Problem verifying " + method);
+            System.err.println("Problem verifying " + method);
             throw new JBehaveFrameworkError(e);
         }
     }
-
-    protected Result doVerifyMethod(Method method, Object instance) {
-        return new Result(method.getDeclaringClass().getName(), method.getName());
-    }
-
 }

@@ -7,11 +7,12 @@
  */
 package com.thoughtworks.jbehave.core.listeners;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.Behaviour;
+import com.thoughtworks.jbehave.core.BehaviourListener;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.verify.Result;
 import com.thoughtworks.jbehave.core.verify.Verify;
 
@@ -19,14 +20,14 @@ import com.thoughtworks.jbehave.core.verify.Verify;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
-public class MethodListenersBehaviour {
-	private MethodListeners listeners;
+public class BehaviourListenersBehaviour {
+	private BehaviourListeners listeners;
 	private Map callMap1;
 	private Map callMap2;
 	private Result nextResult;
 
 	// Mocks would be great for this :(
-	public class StubListener implements MethodListener {
+	public class StubListener implements BehaviourListener {
 		private Map methodsCalled;
 		private Result decoratedResult;
 
@@ -35,21 +36,25 @@ public class MethodListenersBehaviour {
 			this.decoratedResult = decoratedResult;
 		}
 
-		public void methodVerificationStarting(Method method) {
-			methodsCalled.put("methodVerificationStarting", method);
+		public void behaviourVerificationStarting(Behaviour behaviour) {
+			methodsCalled.put("methodVerificationStarting", behaviour);
 		}
 
-		public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
+		public Result behaviourVerificationEnding(Result result, Behaviour behaviour) {
 			methodsCalled.put("methodVerificationEnding", result);
 			return decoratedResult;
 		}
+
+        public boolean caresAbout(Behaviour behaviour) {
+            return true;
+        }
 	}
 
 	public void setUp() {
-		listeners = new MethodListeners();
+		listeners = new BehaviourListeners();
 		callMap1 = new HashMap();
 		callMap2 = new HashMap();
-		nextResult = new Result("blah", "blah");
+		nextResult = new Result("blah", Result.SUCCEEDED);
 		listeners.add(new StubListener(callMap1, nextResult));
 		listeners.add(new StubListener(callMap2, nextResult));
 	}
@@ -68,25 +73,25 @@ public class MethodListenersBehaviour {
 	public void shouldNotifyAllListenersWhenMethodVerificationStarts() throws Exception {
 		// setup
 		// execute
-		Method method = SomeBehaviourClass.class.getMethod("shouldDoSomething", new Class[0]);
-        listeners.methodVerificationStarting(method);
+        BehaviourMethod behaviour = new BehaviourMethod(null, null, null);
+        listeners.behaviourVerificationStarting(behaviour);
 
 		// verify
-		verifyMethodCalled("methodVerificationStarting", callMap1, method);
-		verifyMethodCalled("methodVerificationStarting", callMap2, method);
+		verifyMethodCalled("methodVerificationStarting", callMap1, behaviour);
+		verifyMethodCalled("methodVerificationStarting", callMap2, behaviour);
 
 	}
 
 	public void shouldNotifyAllListenersWhenMethodVerificationEndingAndPassOnReturnedResultToNextListener() {
 		// setup
-	    Result result = new Result("SomeBehaviourClass", "someMethod");
+	    Result result = new Result("someMethod", Result.SUCCEEDED);
 
 		// execute
-	    Result returnedResult = listeners.methodVerificationEnding(result, new Object());
+	    Result returnedResult = listeners.behaviourVerificationEnding(result, null);
 
 		// verify
-		Verify.equal(nextResult, returnedResult);
 		verifyMethodCalled("methodVerificationEnding", callMap1, result);
 		verifyMethodCalled("methodVerificationEnding", callMap2, nextResult);
+        Verify.equal(nextResult, returnedResult);
 	}
 }

@@ -41,7 +41,7 @@ public class Outcome implements Visitable {
         return expectations;
     }
 
-    public void accept(Visitor visitor) throws Exception {
+    public void accept(Visitor visitor) {
         visitor.visitOutcome(this);
         expectations.accept(visitor);
     }

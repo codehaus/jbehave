@@ -108,15 +108,6 @@ public class UsingJMockBehaviour extends JMockSugar {
         }
     }
     
-    public void shouldNotVerifyMocksIfMethodFailed() throws Exception {
-        // given...
-        Verify.pending();
-
-        // expect...
-        // when...
-        // verify...
-    }
-    
     public static interface AnInterface {}
     public static abstract class AnAbstractClass implements AnInterface {}
     public static class AConcreteClass extends AnAbstractClass {}

@@ -9,48 +9,53 @@ package com.thoughtworks.jbehave.core.verify;
 
 import java.lang.reflect.Method;
 
+import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
 import com.thoughtworks.jbehave.core.BehaviourClassListener;
-import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
+import com.thoughtworks.jbehave.util.MethodInvoker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class BehaviourClassVerifier {
     private final Class behaviourClass;
-    private final MethodVerifier methodVerifier;
+    private final BehaviourVerifier methodVerifier;
+    private final MethodInvoker invoker;
 
-    public BehaviourClassVerifier(Class behaviourClass, MethodVerifier methodVerifier) {
+    public BehaviourClassVerifier(Class behaviourClass, BehaviourVerifier methodVerifier, MethodInvoker invoker) {
         this.behaviourClass = behaviourClass;
         this.methodVerifier = methodVerifier;
+        this.invoker = invoker;
     }
 
-    public void verifyBehaviourClass(BehaviourClassListener behaviourClassListener, MethodListener methodListener) {
+    public void verifyBehaviourClass(BehaviourClassListener UNUSED) {
         try {
-            behaviourClassListener.behaviourClassVerificationStarting(behaviourClass);
+            UNUSED.behaviourClassVerificationStarting(behaviourClass);
             if (BehaviourClassContainer.class.isAssignableFrom(behaviourClass)) {
-                verifyContainedBehaviourClasses((BehaviourClassContainer) behaviourClass.newInstance(), behaviourClassListener, methodListener);
+                verifyContainedBehaviourClasses((BehaviourClassContainer) behaviourClass.newInstance(), UNUSED);
             }
             Method methods[] = behaviourClass.getMethods();
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
                 if (method.getName().startsWith("should") && method.getParameterTypes().length == 0) {
                     Object instance = behaviourClass.newInstance();
-                    methodVerifier.verifyMethod(methodListener, method, instance);
+                    Behaviour behaviour = new BehaviourMethod(invoker, method, instance);
+                    methodVerifier.verify(behaviour);
                 }
             }
-            behaviourClassListener.behaviourClassVerificationEnding(behaviourClass);
+            UNUSED.behaviourClassVerificationEnding(behaviourClass);
         } catch (Exception e) {
             throw new JBehaveFrameworkError("Problem verifying behaviour class", e);
         }
     }
     
-    private void verifyContainedBehaviourClasses(BehaviourClassContainer container, BehaviourClassListener behaviourClassListener, MethodListener  methodListener) throws Exception {
+    private void verifyContainedBehaviourClasses(BehaviourClassContainer container, BehaviourClassListener behaviourClassListener) throws Exception {
         Class[] containedBehaviourClasses = container.getBehaviourClasses();
         for (int i = 0; i < containedBehaviourClasses.length; i++) {
-            new BehaviourClassVerifier(containedBehaviourClasses[i], methodVerifier)
-                .verifyBehaviourClass(behaviourClassListener, methodListener);
+            new BehaviourClassVerifier(containedBehaviourClasses[i], methodVerifier, invoker)
+                .verifyBehaviourClass(behaviourClassListener);
         }
     }
 }
