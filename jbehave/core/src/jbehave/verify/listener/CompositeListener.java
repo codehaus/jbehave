@@ -70,4 +70,13 @@ public class CompositeListener implements Listener {
             ((Listener)i.next()).afterCriteriaVerificationEnds(verification);
         }
     }
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[CompositeListener:");
+        buffer.append(" listeners: ");
+        buffer.append(listeners);
+        buffer.append("]");
+        return buffer.toString();
+    }
 }

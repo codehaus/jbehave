@@ -35,4 +35,10 @@ public class ListenerSupport implements Listener {
 
     public void afterCriteriaVerificationEnds(CriteriaVerification verification) {
     }
+    
+    public String toString() {
+        String fullName = getClass().getName();
+        String className = fullName.substring(fullName.lastIndexOf('.') + 1);
+        return className;
+    }
 }

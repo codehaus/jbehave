@@ -42,6 +42,10 @@ public class CriteriaVerifier {
         int lastDot = className.lastIndexOf('.');
         return className.substring(lastDot + 1);
     }
+    
+    public Object getSpecInstance() {
+        return specInstance;
+    }
 
     /**
      * Verify an individual criteria.<br>
@@ -110,9 +114,9 @@ public class CriteriaVerifier {
      * 
      * This will be one of the following cases:
      * <ul>
-     * <li>a <tt>VerificationException</tt>, which means the verification failed.
-     * <li>a {@link ThreadDeath}, which should always be propagated.
-     * <li>some other kind of exception was thrown.
+     * <li>a {@link VerificationException}, which means the verification failed.</li>
+     * <li>a {@link ThreadDeath}, which should always be propagated.</li>
+     * <li>some other kind of exception was thrown.</li>
      * </ul>
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
@@ -126,5 +130,9 @@ public class CriteriaVerifier {
         else {
             return new CriteriaVerification(method.getName(), method.getDeclaringClass().getName(), specInstance, targetException);
         }
+    }
+    
+    public String toString() {
+        return "\n==" + getSpecName() + "." + method.getName() + "==";
     }
 }
