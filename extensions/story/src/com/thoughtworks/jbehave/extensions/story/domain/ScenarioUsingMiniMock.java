@@ -61,6 +61,5 @@ public class ScenarioUsingMiniMock extends VisitableUsingMiniMock implements Sce
         context.accept(visitor);
         outcome.accept(visitor);
         event.accept(visitor);
-        outcome.accept(visitor);
     }
 }

@@ -8,12 +8,15 @@
 package com.thoughtworks.jbehave.extensions.story;
 import java.io.OutputStreamWriter;
 
+import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.HashMapEnvironment;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.invoker.ScenarioInvoker;
 import com.thoughtworks.jbehave.extensions.story.invoker.VisitingScenarioInvoker;
 import com.thoughtworks.jbehave.extensions.story.listener.PlainTextScenarioListener;
+import com.thoughtworks.jbehave.extensions.story.verifier.ScenarioVerifier;
 import com.thoughtworks.jbehave.extensions.story.verifier.StoryVerifier;
+import com.thoughtworks.jbehave.extensions.story.verifier.VisitingScenarioVerifier;
 
 
 /**
@@ -25,8 +28,10 @@ public class Run {
         
         try {
             Story story = (Story) Class.forName(args[0]).newInstance();
-            ScenarioInvoker scenarioInvoker = new VisitingScenarioInvoker(story.getClass().getName(), new HashMapEnvironment());
-            StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker);
+            Environment environment = new HashMapEnvironment();
+            ScenarioInvoker scenarioInvoker = new VisitingScenarioInvoker(story.getClass().getName(), environment);
+            ScenarioVerifier scenarioVerifier = new VisitingScenarioVerifier(story.getClass().getName(), environment);
+            StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker, scenarioVerifier);
             PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(System.out));
             storyVerifier.addListener(listener);
             storyVerifier.verify(story);

@@ -25,9 +25,11 @@ import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 public class StoryVerifier implements Visitor {
     private final List listeners = new ArrayList();
     private final ScenarioInvoker scenarioInvoker;
+    private final ScenarioVerifier scenarioVerifier;
 
-    public StoryVerifier(ScenarioInvoker scenarioInvoker) {
+    public StoryVerifier(ScenarioInvoker scenarioInvoker, ScenarioVerifier scenarioVerifier) {
         this.scenarioInvoker = scenarioInvoker;
+        this.scenarioVerifier = scenarioVerifier;
     }
 
     public void verify(Story story) {
@@ -36,14 +38,26 @@ public class StoryVerifier implements Visitor {
 
     public void visit(Visitable visitable) {
         if (visitable instanceof Scenario) {
-            ScenarioResult result = scenarioInvoker.invoke((Scenario) visitable);
+            ScenarioResult result = verify((Scenario)visitable, 
+            		invoke((Scenario)visitable));
             for (Iterator i = listeners.iterator(); i.hasNext();) {
                 ((ResultListener)i.next()).gotResult(result);
             }
         }
     }
 
-    public void addListener(ResultListener listener) {
+	private ScenarioResult invoke(Scenario scenario) {
+		return scenarioInvoker.invoke(scenario);
+	}
+
+	private ScenarioResult verify(Scenario scenario, ScenarioResult result) {
+		if (result.succeeded() || result.usedMocks()) {
+			result = scenarioVerifier.verify((Scenario)scenario);
+		}
+		return result;
+	}
+	
+	public void addListener(ResultListener listener) {
         listeners.add(listener);
     }
 }
