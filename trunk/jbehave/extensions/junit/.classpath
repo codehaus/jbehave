@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="behaviour"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
-	<classpathentry kind="lib" path="/jbehave ant extension/build/dist/jbehave-ant-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry sourcepath="/jbehave core/src" kind="lib" path="lib/jbehave-core-0.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

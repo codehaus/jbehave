@@ -1,9 +1,9 @@
 <project name="jbehave" default="verify">
-    <!-- optional local settings -->
-    <property file="../build.properties"/>
-
     <property name="project" value="${ant.project.name}"/>
     <property name="version" value="0.0.1-SNAPSHOT"/>
+
+    <!-- optional local settings -->
+    <property file="../build.properties"/>
 
     <property name="src.dir" location="../src"/>
     <property name="behaviour.dir" location="../behaviour" />

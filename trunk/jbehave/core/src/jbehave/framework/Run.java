@@ -25,6 +25,7 @@ public class Run {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Problem verifying behaviour class " + args[0]);
+            System.exit(1);
         }
     }
 }
