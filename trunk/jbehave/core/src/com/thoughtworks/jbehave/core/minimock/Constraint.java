@@ -8,6 +8,11 @@
 package com.thoughtworks.jbehave.core.minimock;
 
 
+/**
+ * Represents a constraint on a method argument.
+ * 
+ * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ */
 public interface Constraint {
     boolean matches(Object arg);
 }

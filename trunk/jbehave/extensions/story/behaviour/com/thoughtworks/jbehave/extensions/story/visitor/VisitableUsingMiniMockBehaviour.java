@@ -5,19 +5,19 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.minimock;
+package com.thoughtworks.jbehave.extensions.story.visitor;
 
+import com.thoughtworks.jbehave.core.minimock.Mock;
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 
 /**
  * This class extends {@link UsingMiniMock} and implements {@Visitable}.
  * 
- * See the JBehave Story Runner extension for some examples of this class in action.
- * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class VisitableUsingMiniMockBehaviour extends VisitableUsingMiniMock {
+public class VisitableUsingMiniMockBehaviour extends UsingMiniMock {
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
         Visitable visitable = new VisitableUsingMiniMock();

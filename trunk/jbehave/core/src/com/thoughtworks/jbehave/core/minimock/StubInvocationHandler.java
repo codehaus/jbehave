@@ -14,7 +14,11 @@ import java.lang.reflect.Proxy;
 
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 
-
+/**
+ * This is a null object implementation
+ * 
+ * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ */
 class StubInvocationHandler implements InvocationHandler {
     private final String name;
 

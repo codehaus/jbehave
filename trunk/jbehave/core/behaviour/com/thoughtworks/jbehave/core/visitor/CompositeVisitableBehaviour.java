@@ -10,7 +10,6 @@ package com.thoughtworks.jbehave.core.visitor;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.minimock.VisitableUsingMiniMock;
 
 /**
  * This is a swiss army knife class - it extends {@link UsingMiniMock}, implements {@Visitable}
@@ -20,7 +19,7 @@ import com.thoughtworks.jbehave.core.minimock.VisitableUsingMiniMock;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class CompositeVisitableBehaviour extends VisitableUsingMiniMock {
+public class CompositeVisitableBehaviour extends UsingMiniMock {
 
     public void shouldPassItselfAndComponentsToVisitorInCorrectOrder() throws Exception {
         // given...

@@ -12,7 +12,11 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import com.thoughtworks.jbehave.core.Verify;
-
+/**
+ * Represents an expectation on a mock
+ * 
+ * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ */
 public class Expectation extends MiniMockSugar {
     interface Finder {
         Expectation findExpectation(String id);

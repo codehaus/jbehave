@@ -5,8 +5,9 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.minimock;
+package com.thoughtworks.jbehave.extensions.story.visitor;
 
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 

@@ -12,6 +12,8 @@ import java.lang.reflect.Method;
 
 
 /**
+ * Syntactic sugar for MiniMock
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class MiniMockSugar {
