@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class CriterionBehaviour {
+public class CriterionSpecification {
     private final static List results = new ArrayList();
 
     public void setUp() throws Exception {
@@ -28,7 +28,7 @@ public class CriterionBehaviour {
     }
 
     private Criterion getSingleCriterion(Class behaviour) {
-        return (Criterion)BehavioursSupport.getCriteria(behaviour).iterator().next();
+        return (Criterion)CriteriaSupport.getCriteria(behaviour).iterator().next();
     }
 
     public void shouldRecogniseWhenBehaviourMethodSucceeds() throws Exception {
@@ -44,7 +44,7 @@ public class CriterionBehaviour {
         Verify.equal(Arrays.asList(new String[] {"success"}), results);
     }
 
-    public static class BehaviourClassWithFailingBehaviour extends BehavioursSupport {
+    public static class BehaviourClassWithFailingBehaviour extends CriteriaSupport {
         public void shouldFail() {
             Verify.impossible(null);
         }
