@@ -18,7 +18,8 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
                 JMockListenerBehaviour.class,
-                UsingJMockBehaviour.class
+                UsingJMockBehaviour.class,
+                UsingJMockWithCGLIBBehaviour.class
         };
 	}
 }

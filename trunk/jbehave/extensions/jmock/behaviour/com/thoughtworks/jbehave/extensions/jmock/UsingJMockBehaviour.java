@@ -21,7 +21,24 @@ public class UsingJMockBehaviour {
         BehaviourClassUsingJMock instance = new BehaviourClassUsingJMock();
         instance.shouldDoSomething();
         Verify.equal(1, instance.getMocks().size());
+        Verify.that(instance.containsMocks());
         Verify.that(instance.getMocks().get(0) instanceof org.jmock.Mock);
+    }
+    
+    public static class BehaviourClassWithoutMocks extends UsingJMock {
+        public void shouldDoSomething() throws Exception {
+        }
+    }
+    public void shouldBeEmptyIfNoMocksWereCreated() throws Exception {
+        // given...
+        BehaviourClassWithoutMocks instance = new BehaviourClassWithoutMocks();
+
+        // when...
+        instance.shouldDoSomething();
+        
+        // verify...
+        Verify.equal(0, instance.getMocks().size());
+        Verify.not(instance.containsMocks());
     }
     
     interface BehaviourInterface1 {

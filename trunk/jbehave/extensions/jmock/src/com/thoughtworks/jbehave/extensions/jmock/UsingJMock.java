@@ -44,6 +44,10 @@ public abstract class UsingJMock extends JMockSugar {
     public List getMocks() {
         return mocks;
     }
+
+    public boolean containsMocks() {
+        return !mocks.isEmpty();
+    }
     
     /**
      * Interceptor class for creating instances of {@link org.jmock.Mock}.
