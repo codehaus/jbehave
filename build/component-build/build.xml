@@ -64,7 +64,9 @@
 
     <target name="verify" depends="behaviour.compile">
         <java classname="com.thoughtworks.jbehave.core.Run" fork="true" failonerror="true"
-            classpathref="all_jars_plus_behaviours" args="${all.behaviours.class}"/>
+            classpathref="all_jars_plus_behaviours">
+            <arg value="${all.behaviours.class}"/>
+        </java>   
     </target>
 
     <target name="dist" depends="verify"/>
