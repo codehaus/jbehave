@@ -27,34 +27,30 @@ public class MiniMockSugar {
             }
         };
     }
-    
-    public Constraint eq(float expectedArg) {
-        return eq(new Float(expectedArg));
+     
+   
+    public Constraint eq(final double expectedArg) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                Number n = (Number)arg;
+                return n.doubleValue() == expectedArg;
+            }          
+        };
     }
-    
-    public Constraint eq(double expectedArg) {
-        return eq(new Double(expectedArg));
-    }
-    
-    public Constraint eq(int expectedArg) {
-        return eq(new Integer(expectedArg));
-    }
-    
-    public Constraint eq(long expectedArg) {
-        return eq(new Long(expectedArg));
+      
+    public Constraint eq(final long expectedArg) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                Number n = (Number)arg;
+                return n.longValue() == expectedArg;
+            }          
+        };
     }
     
     public Constraint eq(char expectedArg) {
         return eq(new Character(expectedArg));
     }
-    
-    public Constraint eq(short expectedArg) {
-        return eq(new Short(expectedArg));
-    }
-    
-    public Constraint eq(byte expectedArg) {
-        return eq(new Byte(expectedArg));
-    }
+     
     
     public Constraint eq(boolean expectedArg) {
         return eq(expectedArg ? Boolean.TRUE : Boolean.FALSE);
