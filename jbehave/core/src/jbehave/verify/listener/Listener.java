@@ -9,7 +9,7 @@ package jbehave.verify.listener;
 
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
-import jbehave.verify.Evaluator;
+import jbehave.verify.VerifierSpec;
 
 
 /**
@@ -26,8 +26,8 @@ import jbehave.verify.Evaluator;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public interface Listener {
-    void verificationStarted(Evaluator runner);
-    void verificationEnded(Evaluator runner);
+    void verificationStarted(VerifierSpec runner);
+    void verificationEnded(VerifierSpec runner);
     void specVerificationStarted(Class behaviourClass);
     void specVerificationEnded(Class behaviourClass);
     void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour);

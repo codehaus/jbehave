@@ -36,7 +36,7 @@ public class JMockListenerSpec {
     }
     
     private CriteriaVerifier getSingleBehaviour(Class behaviourClass) {
-        return (CriteriaVerifier)new CriteriaExtractor(behaviourClass).getCriteriaVerifiers().iterator().next();
+        return (CriteriaVerifier)new CriteriaExtractor(behaviourClass).extractCriteria().iterator().next();
     }
     
 	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
