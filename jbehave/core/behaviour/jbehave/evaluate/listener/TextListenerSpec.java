@@ -9,14 +9,14 @@ package jbehave.evaluate.listener;
 
 import java.io.StringWriter;
 
-import jbehave.framework.CriteriaVerification;
+import jbehave.framework.Result;
 import jbehave.framework.VerificationException;
 import jbehave.framework.Verify;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextListenerBehaviour {
+public class TextListenerSpec {
     private static final String SUCCESS = ".";
     private static final String FAILURE = "F";
     private static final String EXCEPTION_THROWN = "E";
@@ -49,17 +49,17 @@ public class TextListenerBehaviour {
     }
 
     public void shouldRenderSuccessSymbolForSuccess() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldSucceed", "SomeClass", null));
+        listener.afterCriterionEvaluationEnds(new Result("shouldSucceed", "SomeClass", null));
         Verify.equal(SUCCESS, writer.toString());
     }
 
     public void shouldRenderExceptionSymbolForException() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldThrowException", "SomeClass", null, new Exception()));
+        listener.afterCriterionEvaluationEnds(new Result("shouldThrowException", "SomeClass", null, new Exception()));
         Verify.equal(EXCEPTION_THROWN, writer.toString());
     }
 
     public void shouldRenderFailureSymbolForFailure() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldFail", "SomeClass", null, new VerificationException("oops")));
+        listener.afterCriterionEvaluationEnds(new Result("shouldFail", "SomeClass", null, new VerificationException("oops")));
         Verify.equal(FAILURE, writer.toString());
     }
 
@@ -69,26 +69,26 @@ public class TextListenerBehaviour {
     }
 
     public void shouldSummarizeSingleSuccessfulCriterion() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null));
+        listener.afterCriterionEvaluationEnds(new Result("shouldDoX", "SomeClass", null));
         listener.runEnded(null);
         verifyOutputContains("\nBehaviours run: 1");
     }
 
     public void shouldSummarizeTwoSuccessfulCriteria() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null));
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldDoY", "SomeClass", null));
+        listener.afterCriterionEvaluationEnds(new Result("shouldDoX", "SomeClass", null));
+        listener.afterCriterionEvaluationEnds(new Result("shouldDoY", "SomeClass", null));
         listener.runEnded(null);
         verifyOutputContains("\nBehaviours run: 2");
     }
 
     public void shouldSummarizeCriterionWithVerificationFailure() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null, new VerificationException("oops")));
+        listener.afterCriterionEvaluationEnds(new Result("shouldDoX", "SomeClass", null, new VerificationException("oops")));
         listener.runEnded(null);
         verifyOutputContains("\nBehaviours run: 1, Failures: 1");
     }
 
     public void shouldPrintStackTraceForCriteronWithVerificationFailure() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null, new VerificationException("oops")));
+        listener.afterCriterionEvaluationEnds(new Result("shouldDoX", "SomeClass", null, new VerificationException("oops")));
         listener.runEnded(null);
         verifyOutputContains("Failures:");
         verifyOutputContains("\n1) shouldDoX [SomeClass]:");
@@ -96,13 +96,13 @@ public class TextListenerBehaviour {
     }
 
     public void shouldSummarizeCriterionWithExceptionThrown() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null, new Exception()));
+        listener.afterCriterionEvaluationEnds(new Result("shouldDoX", "SomeClass", null, new Exception()));
         listener.runEnded(null);
         verifyOutputContains("\nBehaviours run: 1, Failures: 0, Exceptions Thrown: 1");
     }
 
     public void shouldPrintStackTraceForException() throws Exception {
-        listener.afterCriterionEvaluationEnds(new CriteriaVerification("shouldDoX", "SomeClass", null, new Exception()));
+        listener.afterCriterionEvaluationEnds(new Result("shouldDoX", "SomeClass", null, new Exception()));
         listener.runEnded(null);
         verifyOutputContains("Exceptions Thrown:");
         verifyOutputContains("\n1) shouldDoX [SomeClass]:");

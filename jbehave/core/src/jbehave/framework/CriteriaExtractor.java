@@ -19,12 +19,12 @@ import jbehave.BehaviourFrameworkError;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public abstract class CriteriaSupport {
-    private static final String CRITERION_PREFIX = "should";
+public abstract class CriteriaExtractor {
+    private static final String CRITERIA_PREFIX = "should";
 
     /**
      * Find all criteria in a class and wrap each one in a
-     * {@link Criteria}
+     * {@link CriteriaVerifier}
      * 
      * There is no particular constraint on the class. The criteria
      * are public void methods that take no parameters and start
@@ -56,8 +56,8 @@ public abstract class CriteriaSupport {
         Method[] methods = behaviourClass.getMethods(); // only interested in public methods
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
-            if (method.getName().startsWith(CRITERION_PREFIX) && method.getParameterTypes().length == 0) {
-                result.add(new Criteria(method));
+            if (method.getName().startsWith(CRITERIA_PREFIX) && method.getParameterTypes().length == 0) {
+                result.add(new CriteriaVerifier(method));
             }
         }
         return result;

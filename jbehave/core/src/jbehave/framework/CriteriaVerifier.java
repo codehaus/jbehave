@@ -18,11 +18,11 @@ import jbehave.BehaviourFrameworkError;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class Criteria {
+public class CriteriaVerifier {
     private final Object behaviourInstance;
     private final Method method;
 
-    public Criteria(Method method) {
+    public CriteriaVerifier(Method method) {
         this.method = method;
         try {
             this.behaviourInstance = method.getDeclaringClass().newInstance();
@@ -49,8 +49,8 @@ public class Criteria {
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
      * in the appropriate places if either of them exist.
      */
-    public CriteriaVerification verify() {
-        CriteriaVerification result = null;
+    public Result verify() {
+        Result result = null;
         try {
             setUp();
             method.invoke(behaviourInstance, new Object[0]);
@@ -106,7 +106,7 @@ public class Criteria {
     }
 
     /**
-     * Build an {@link CriteriaVerification} based on an error condition.
+     * Build an {@link Result} based on an error condition.
      * 
      * This will be one of the following cases:
      * <ul>
@@ -117,14 +117,14 @@ public class Criteria {
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
      */
-    private CriteriaVerification createVerification(Throwable targetException) {
+    private Result createVerification(Throwable targetException) {
         
         // propagate thread death otherwise Bad Things happen (or rather Good Things don't)
         if (targetException instanceof ThreadDeath) {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new CriteriaVerification(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
+            return new Result(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
         }
     }
 }
