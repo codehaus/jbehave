@@ -41,7 +41,7 @@
 
     <target name="extensions" depends="core">
         <subant target="-copy.core.jar" failonerror="true">
-            <property name="core.jar" value="${dist.dir}/${project}-core-${version}.jar"/>
+            <property name="core.jar" value="${dist.dir}/${project}-core.jar"/>
             <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
         <subant target="dist" failonerror="true" genericantfile="component-build/build.xml">
