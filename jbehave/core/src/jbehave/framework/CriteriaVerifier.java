@@ -49,8 +49,8 @@ public class CriteriaVerifier {
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
      * in the appropriate places if either of them exist.
      */
-    public Result verify() {
-        Result result = null;
+    public CriteriaVerificationResult verify() {
+        CriteriaVerificationResult result = null;
         try {
             setUp();
             method.invoke(behaviourInstance, new Object[0]);
@@ -106,7 +106,7 @@ public class CriteriaVerifier {
     }
 
     /**
-     * Build an {@link Result} based on an error condition.
+     * Build an {@link CriteriaVerificationResult} based on an error condition.
      * 
      * This will be one of the following cases:
      * <ul>
@@ -117,14 +117,14 @@ public class CriteriaVerifier {
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
      */
-    private Result createVerification(Throwable targetException) {
+    private CriteriaVerificationResult createVerification(Throwable targetException) {
         
         // propagate thread death otherwise Bad Things happen (or rather Good Things don't)
         if (targetException instanceof ThreadDeath) {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new Result(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
+            return new CriteriaVerificationResult(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
         }
     }
 }

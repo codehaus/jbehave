@@ -13,7 +13,7 @@ import java.util.List;
 
 import jbehave.evaluate.listener.ListenerSupport;
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.Result;
+import jbehave.framework.CriteriaVerificationResult;
 import jbehave.framework.Verify;
 
 /**
@@ -193,7 +193,7 @@ public class EvaluatorSpec {
             this.message = message;
         }
         
-        public void afterCriterionEvaluationEnds(Result behaviourResult) {
+        public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
             resultList.add(message + ":" + behaviourResult.getName());
         }
     }

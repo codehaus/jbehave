@@ -11,7 +11,7 @@ package jbehave.framework;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class Result {
+public class CriteriaVerificationResult {
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
     public static final int EXCEPTION_THROWN = 2;
@@ -22,7 +22,7 @@ public class Result {
     private final Object behaviourInstance;
     private final Throwable targetException;
 
-    public Result(String name, String className, Object behaviourInstance, Throwable targetException) {
+    public CriteriaVerificationResult(String name, String className, Object behaviourInstance, Throwable targetException) {
         this.name = name;
         this.className = className;
 		this.behaviourInstance = behaviourInstance;
@@ -39,9 +39,9 @@ public class Result {
     }
 
     /**
-     * Convenience constructor for successful behaviours
+     * Convenience constructor for successful verification
      */
-    public Result(String name, String className, Object behaviourInstance) {
+    public CriteriaVerificationResult(String name, String className, Object behaviourInstance) {
         this(name, className, behaviourInstance, null);
     }
 

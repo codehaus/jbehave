@@ -17,7 +17,7 @@ import java.util.Map;
 import jbehave.evaluate.listener.CompositeListener;
 import jbehave.evaluate.listener.Listener;
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.Result;
+import jbehave.framework.CriteriaVerificationResult;
 import jbehave.framework.CriteriaExtractor;
 
 /**
@@ -62,7 +62,7 @@ public class Evaluator {
             for (Iterator j = criteria.iterator(); j.hasNext();) {
                 final CriteriaVerifier behaviour = (CriteriaVerifier)j.next();
                 listeners.beforeCriterionEvaluationStarts(behaviour);
-                Result behaviourResult = behaviour.verify();
+                CriteriaVerificationResult behaviourResult = behaviour.verify();
                 listeners.afterCriterionEvaluationEnds(behaviourResult);
             }
             listeners.behaviourEvaluationEnded(behaviourClass);
