@@ -22,7 +22,7 @@ public abstract class UsingJMock extends JMockSugar{
     
     private Set mocks = new HashSet();
      
-    // TODO This needs a Behaviour class as this is a responsibility!
+    
     public void verify() {
         for (Iterator i = mocks.iterator(); i.hasNext();) {
             Mock mock = null;
