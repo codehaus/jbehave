@@ -9,7 +9,7 @@ package jbehave.runner;
 
 import java.io.StringWriter;
 
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Evaluation;
 import jbehave.framework.VerificationException;
 import jbehave.framework.Verify;
 import jbehave.runner.listener.Listener;
@@ -36,17 +36,17 @@ public class TextListenerBehaviours {
     }
 
     public void shouldRenderSuccessSymbolForSuccessfulBehaviour() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldSucceed", "SomeClass", null));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldSucceed", "SomeClass", null));
         Verify.equal(SUCCESS, writer.toString());
     }
 
     public void shouldRenderExceptionSymbolForBehaviourThatThrowsException() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldThrowException", "SomeClass", new Exception()));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldThrowException", "SomeClass", new Exception()));
         Verify.equal(EXCEPTION_THROWN, writer.toString());
     }
 
     public void shouldRenderFailureSymbolForBehaviourThatFailsAssertion() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldFail", "SomeClass", new VerificationException("oops")));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldFail", "SomeClass", new VerificationException("oops")));
         Verify.equal(ASSERTION_FAILED, writer.toString());
     }
 
@@ -57,26 +57,26 @@ public class TextListenerBehaviours {
     }
 
     public void shouldSummarizeSingleSuccessfulBehaviour() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldDoX", "SomeClass", null));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldDoX", "SomeClass", null));
         listener.runEnded(null);
         assertOutputContains("\nBehaviours run: 1");
     }
 
     public void shouldSummarizeTwoSuccessfulBehaviours() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldDoX", "SomeClass", null));
-        listener.behaviourEnded(new BehaviourResult("shouldDoY", "SomeClass", null));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldDoX", "SomeClass", null));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldDoY", "SomeClass", null));
         listener.runEnded(null);
         assertOutputContains("\nBehaviours run: 2");
     }
 
     public void shouldSummarizeBehaviourWithAssertionFailure() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldDoX", "SomeClass", new VerificationException("oops")));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldDoX", "SomeClass", new VerificationException("oops")));
         listener.runEnded(null);
         assertOutputContains("\nBehaviours run: 1, Assertion Failures: 1");
     }
 
     public void shouldPrintStackTraceForBehaviourWithAssertionFailure() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldDoX", "SomeClass", new VerificationException("oops")));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldDoX", "SomeClass", new VerificationException("oops")));
         listener.runEnded(null);
         assertOutputContains("Assertion Failures:");
         assertOutputContains("\n1) shouldDoX [SomeClass]:");
@@ -84,13 +84,13 @@ public class TextListenerBehaviours {
     }
 
     public void shouldSummarizeBehaviourWithExceptionThrown() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldDoX", "SomeClass", new Exception()));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldDoX", "SomeClass", new Exception()));
         listener.runEnded(null);
         assertOutputContains("\nBehaviours run: 1, Assertion Failures: 0, Exceptions Thrown: 1");
     }
 
     public void shouldPrintStackTraceForBehaviourWithExceptionThrown() throws Exception {
-        listener.behaviourEnded(new BehaviourResult("shouldDoX", "SomeClass", new Exception()));
+        listener.afterCriterionEvaluationEnds(new Evaluation("shouldDoX", "SomeClass", new Exception()));
         listener.runEnded(null);
         assertOutputContains("Exceptions Thrown:");
         assertOutputContains("\n1) shouldDoX [SomeClass]:");

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.BehaviourFrameworkError;
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Evaluation;
 import jbehave.runner.BehaviourRunner;
 
 
@@ -45,7 +45,7 @@ public class TextListener extends ListenerSupport {
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public void behaviourEnded(BehaviourResult behaviourResult) {
+    public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
         behavioursRun++;
         if (behaviourResult.failed()) {
             failures.add(behaviourResult);
@@ -59,9 +59,9 @@ public class TextListener extends ListenerSupport {
 
     private char getSymbol(int status) {
         switch (status) {
-            case BehaviourResult.SUCCESS:          return '.';
-            case BehaviourResult.FAILURE: return 'F';
-            case BehaviourResult.EXCEPTION_THROWN: return 'E';
+            case Evaluation.SUCCESS:          return '.';
+            case Evaluation.FAILURE: return 'F';
+            case Evaluation.EXCEPTION_THROWN: return 'E';
             default: throw new BehaviourFrameworkError("Unknown behaviour status: " + status);
         }
     }
@@ -102,7 +102,7 @@ public class TextListener extends ListenerSupport {
         out.println();
         int count = 1;
         for (Iterator i = errorList.iterator(); i.hasNext();) {
-            BehaviourResult result = (BehaviourResult)i.next();
+            Evaluation result = (Evaluation)i.next();
             out.println(count + ") " + result.getName() + " [" + result.getClassName() + "]:");
             result.getTargetException().printStackTrace(out);
             out.println();

@@ -14,34 +14,34 @@ import java.util.List;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class BehaviourBehaviours {
+public class CriterionBehaviour {
     private final static List results = new ArrayList();
 
     public void setUp() throws Exception {
         results.clear();
     }
 
-    public static class BehaviourClassWithSucceedingBehaviour {
+    public static class BehaviourWithCriterionThatShouldSucceed {
         public void shouldSucceed() {
-            results.add("hello");
+            results.add("success");
         }
     }
 
-    private Behaviour getSingleBehaviour(Class behaviourClass) {
-        return (Behaviour)BehavioursSupport.getBehaviours(behaviourClass).iterator().next();
+    private Criterion getSingleCriterion(Class behaviour) {
+        return (Criterion)BehavioursSupport.getCriteria(behaviour).iterator().next();
     }
 
     public void shouldRecogniseWhenBehaviourMethodSucceeds() throws Exception {
         // setup
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithSucceedingBehaviour.class);
+        Criterion behaviour = getSingleCriterion(BehaviourWithCriterionThatShouldSucceed.class);
         
         // execute
-        BehaviourResult result = behaviour.run();
+        Evaluation result = behaviour.evaluate();
 
         // verify
         Verify.equal("shouldSucceed", result.getName());
-        Verify.equal(BehaviourResult.SUCCESS, result.getStatus());
-        Verify.equal(Arrays.asList(new String[] {"hello"}), results);
+        Verify.equal(Evaluation.SUCCESS, result.getStatus());
+        Verify.equal(Arrays.asList(new String[] {"success"}), results);
     }
 
     public static class BehaviourClassWithFailingBehaviour extends BehavioursSupport {
@@ -51,10 +51,10 @@ public class BehaviourBehaviours {
     }
 
     public void shouldRecogniseWhenBehaviourMethodFails() throws Exception {
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithFailingBehaviour.class);
-        BehaviourResult result = behaviour.run();
+        Criterion behaviour = getSingleCriterion(BehaviourClassWithFailingBehaviour.class);
+        Evaluation result = behaviour.evaluate();
         Verify.equal("shouldFail", result.getName());
-        Verify.equal(BehaviourResult.FAILURE, result.getStatus());
+        Verify.equal(Evaluation.FAILURE, result.getStatus());
         Verify.equal(VerificationException.class, result.getTargetException().getClass());
     }
 
@@ -67,11 +67,11 @@ public class BehaviourBehaviours {
     }
 
     public void shouldRecogniseWhenBehaviourMethodThrowsCheckedException() throws Exception {
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithBehaviourThatThrowsCheckedException.class);
-        BehaviourResult result = behaviour.run();
+        Criterion behaviour = getSingleCriterion(BehaviourClassWithBehaviourThatThrowsCheckedException.class);
+        Evaluation result = behaviour.evaluate();
         
         Verify.equal("shouldThrowCheckedException", result.getName());
-        Verify.equal(BehaviourResult.EXCEPTION_THROWN, result.getStatus());
+        Verify.equal(Evaluation.EXCEPTION_THROWN, result.getStatus());
         Verify.equal(SomeCheckedException.class, result.getTargetException().getClass());
     }
 
@@ -84,10 +84,10 @@ public class BehaviourBehaviours {
     }
 
     public void shouldRecogniseWhenBehaviourMethodThrowsRuntimeException() throws Exception {
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithBehaviourThatThrowsRuntimeException.class);
-        BehaviourResult result = behaviour.run();
+        Criterion behaviour = getSingleCriterion(BehaviourClassWithBehaviourThatThrowsRuntimeException.class);
+        Evaluation result = behaviour.evaluate();
         Verify.equal("shouldThrowRuntimeException", result.getName());
-        Verify.equal(BehaviourResult.EXCEPTION_THROWN, result.getStatus());
+        Verify.equal(Evaluation.EXCEPTION_THROWN, result.getStatus());
         Verify.equal(SomeRuntimeException.class, result.getTargetException().getClass());
     }
 
@@ -100,10 +100,10 @@ public class BehaviourBehaviours {
     }
 
     public void shouldRecogniseWhenBehaviourMethodThrowsError() throws Exception {
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithBehaviourThatThrowsError.class);
-        BehaviourResult result = behaviour.run();
+        Criterion behaviour = getSingleCriterion(BehaviourClassWithBehaviourThatThrowsError.class);
+        Evaluation result = behaviour.evaluate();
         Verify.equal("shouldThrowError", result.getName());
-        Verify.equal(BehaviourResult.EXCEPTION_THROWN, result.getStatus());
+        Verify.equal(Evaluation.EXCEPTION_THROWN, result.getStatus());
         Verify.equal(SomeError.class, result.getTargetException().getClass());
     }
 
@@ -114,9 +114,9 @@ public class BehaviourBehaviours {
     }
 
     public void shouldPropagateThreadDeath() throws Exception {
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithBehaviourThatThrowsThreadDeath.class);
+        Criterion behaviour = getSingleCriterion(BehaviourClassWithBehaviourThatThrowsThreadDeath.class);
         try {
-            behaviour.run();
+            behaviour.evaluate();
             Verify.impossible("Should have thrown a ThreadDeath");
         }
         catch (ThreadDeath e) { // you should never, ever do this :)
@@ -139,10 +139,10 @@ public class BehaviourBehaviours {
 
     public void shouldCallSetUpBeforeBehaviourMethodRuns() throws Exception {
         // setup
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithSetUp.class);
+        Criterion behaviour = getSingleCriterion(BehaviourClassWithSetUp.class);
         
         // execute
-        BehaviourResult run = behaviour.run();
+        Evaluation run = behaviour.evaluate();
         
         // verify
 		Verify.that(run.succeeded());
@@ -160,9 +160,9 @@ public class BehaviourBehaviours {
     
     public void shouldCallTearDownAfterBehaviourMethodSucceeds() throws Exception {
         // setup
-    	Behaviour behaviour = getSingleBehaviour(BehaviourClassWithTearDown.class);
+    	Criterion behaviour = getSingleCriterion(BehaviourClassWithTearDown.class);
         // execute
-        behaviour.run();
+        behaviour.evaluate();
         // verify
         Verify.equal("hello", results.get(0));
     }
@@ -176,9 +176,9 @@ public class BehaviourBehaviours {
     
     public void shouldCallTearDownAfterBehaviourMethodFails() throws Exception {
         // setup
-        Behaviour behaviour = getSingleBehaviour(FailingBehaviourClassWithTearDown.class);
+        Criterion behaviour = getSingleCriterion(FailingBehaviourClassWithTearDown.class);
         // execute
-        behaviour.run();
+        behaviour.evaluate();
         // verify
         Verify.equal("hello", results.get(0));
 	}
@@ -192,9 +192,9 @@ public class BehaviourBehaviours {
     
     public void shouldCallTearDownAfterBehaviourMethodThrowsException() throws Exception {
         // setup
-        Behaviour behaviour = getSingleBehaviour(ExceptionBehaviourClassWithTearDown.class);
+        Criterion behaviour = getSingleCriterion(ExceptionBehaviourClassWithTearDown.class);
         // execute
-        behaviour.run();
+        behaviour.evaluate();
         // verify
         Verify.equal("hello", results.get(0));
 	}
@@ -209,9 +209,9 @@ public class BehaviourBehaviours {
     
     public void shouldRecogniseWhenTearDownThrowsException() throws Exception {
 		// setup
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithExceptionTearDown.class);
+        Criterion behaviour = getSingleCriterion(BehaviourClassWithExceptionTearDown.class);
         // execute
-        BehaviourResult result = behaviour.run();
+        Evaluation result = behaviour.evaluate();
         // verify
         Verify.that(result.exceptionThrown());
 	}
@@ -227,9 +227,9 @@ public class BehaviourBehaviours {
     
     public void shouldReportBehaviourErrorIfBehaviourFailsAndTearDownThrowsException() throws Exception {
 		// setup
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithFailingBehaviourAndExceptionTearDown.class);
+        Criterion behaviour = getSingleCriterion(BehaviourClassWithFailingBehaviourAndExceptionTearDown.class);
         // execute
-        BehaviourResult result = behaviour.run();
+        Evaluation result = behaviour.evaluate();
         // verify
         Verify.that("exception was thrown", result.exceptionThrown());
         Verify.equal("exception type", IllegalArgumentException.class, result.getTargetException().getClass());
