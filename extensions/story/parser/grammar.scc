@@ -1,0 +1,46 @@
+Package com.thoughtworks.jbehave.extensions.story.parser;
+
+Helpers
+	And = 'And' | 'and';
+	Given = 'Given' | 'given';
+	When = 'When' | 'when';
+	Then = 'Then' | 'then';
+	Newline = '\n' | '\r\n' | '\r';
+	
+Productions
+	story =
+		story_title
+		narrative
+		acceptance_criteria;
+		
+	story_title =
+		line;
+		
+	narrative =
+		as_a role
+		i_want feature
+		so_that benefit;
+		
+	role = line;
+	feature = line;
+	benefit = line;
+		
+	acceptance_criteria =
+		scenario+;
+		
+	scenario =
+		scenario_title
+		context
+		event
+		outcome;
+		
+	scenario_title = line;
+	
+	context = given +;
+	given =  ( Given | And ) line;
+	
+	event = When line;
+	
+	outcome = expectation+;
+	
+	expectation = ( Then | And ) line;
