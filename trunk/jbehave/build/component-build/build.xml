@@ -42,7 +42,7 @@
             <fileset dir="${src.dir}" excludes="**/*.java" />
         </copy>
         <mkdir dir="${classes.dir}/${version}"/>
-        <touch file="${classes.dir}/${version}/empty.txt"/>
+        <echo message="${version}" file="${classes.dir}/${version}/version.txt"/>
         <jar basedir="${classes.dir}" destfile="${dist.jar.file}"/>
     </target>
 
