@@ -16,19 +16,19 @@
     <property name="dist.dir" location="${build.dir}/dist"/>
     <property name="dist.jar.file" location="${dist.dir}/${project}-${component.name}.jar" />
 
-    <classpath id="external_jars">
+    <path id="external_jars">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
-    </classpath>
+    </path>
     
-    <classpath id="dist_jar_with_external_jars">
+    <path id="dist_jar_with_external_jars">
         <path location="${dist.jar.file}"/>
         <path refid="external_jars"/>
-    </classpath>
+    </path>
 
-    <classpath id="all_jars_plus_behaviours">
+    <path id="all_jars_plus_behaviours">
         <path refid="dist_jar_with_external_jars"/>
         <path location="${behaviour.classes.dir}"/>
-    </classpath>
+    </path>
     
     <target name="-init">
         <!-- sanity checks -->
