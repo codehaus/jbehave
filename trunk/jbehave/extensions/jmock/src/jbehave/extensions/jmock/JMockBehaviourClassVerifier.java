@@ -11,6 +11,7 @@ import jbehave.listeners.CompositeListener;
 import jbehave.listeners.TextListener;
 import jbehave.extensions.jmock.listener.JMockListener;
 import jbehave.framework.BehaviourClassVerifier;
+import jbehave.framework.ExecutingResponsibilityVerifier;
 
 import java.io.OutputStreamWriter;
 
@@ -23,6 +24,6 @@ public class JMockBehaviourClassVerifier {
 		CompositeListener listener = new CompositeListener();
 		listener.add(new JMockListener());
 		listener.add(new TextListener(new OutputStreamWriter(System.out)));
-		new BehaviourClassVerifier(Class.forName(args[0]), abc).verifyBehaviourClass(listener);
+		new BehaviourClassVerifier(Class.forName(args[0]), new ExecutingResponsibilityVerifier()).verifyBehaviourClass(listener);
 	}
 }

@@ -190,7 +190,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
 		Verify.that(listener.lastVerification.succeeded());
     }
     
-    private static class BehaviourClassWithTearDown {
+    public static class BehaviourClassWithTearDown {
         public boolean tearDownWasCalled = false;
         public void tearDown() throws Exception {
             sequenceOfEvents.add("tearDown");
@@ -207,7 +207,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         Verify.that(sequenceOfEvents.contains("tearDown"));
     }
     
-    private static class BehaviourClassWithTearDownAndFailingResponsibility extends BehaviourClassWithTearDown {
+    public static class BehaviourClassWithTearDownAndFailingResponsibility extends BehaviourClassWithTearDown {
         public void shouldDoSomething() {
             Verify.impossible("Pigs flying");
         }
