@@ -7,13 +7,13 @@
     <!-- working area stuff -->
     <property name="working.dir" location="delete_me" />
     <property name="working.javadoc.dir" location="${working.dir}/javadoc" />
-    <property name="working.src.jar" location="${working.dir}/${project}-src.jar"/>
 
     <!-- dist stuff -->
     <property name="dist.dir" location="dist"/>
     <property name="dist.website.dir" location="${dist.dir}/website"/>
     <property name="dist.javadoc.dir" location="${dist.website.dir}/docs/javadoc"/>
     <property name="dist.website.dist.dir" location="${dist.website.dir}/dist"/>
+    <property name="dist.src.jar" location="${dist.dir}/${project}-src.jar"/>
 
     <!-- core -->
     <property name="core.dir" location="../core"/>
@@ -88,7 +88,7 @@
     </target>
 
     <target name="srcjar">
-        <jar destfile="${working.src.jar}">
+        <jar destfile="${dist.src.jar}">
             <zipfileset dir=".." prefix="jbehave-${version}">
                 <exclude name="**/*.class" />
                 <exclude name="**/bin/**" />
