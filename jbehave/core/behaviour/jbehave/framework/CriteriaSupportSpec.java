@@ -83,7 +83,7 @@ public class CriteriaSupportSpec {
     }
 
     private Collection getCriteriaVerifiers(Class spec) {
-        return new CriteriaExtractor(spec).getCriteriaVerifiers();
+        return new CriteriaExtractor(spec).extractCriteria();
     }
 
     public static class SpecSuperclassWithCriteria {

@@ -23,14 +23,14 @@ import jbehave.verify.listener.Listener;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class Evaluator {
+public class VerifierSpec {
     private final List specs = new ArrayList();
     private final Map criteriaMap = new HashMap();
     private final CompositeListener listeners = new CompositeListener();
     private int criteriaCount = 0;
 
     public void addBehaviourClass(Class spec) {
-        Collection criteriaVerifiers = new CriteriaExtractor(spec).getCriteriaVerifiers();
+        Collection criteriaVerifiers = new CriteriaExtractor(spec).extractCriteria();
         specs.add(spec);
         criteriaMap.put(spec, criteriaVerifiers);
         criteriaCount += criteriaVerifiers.size();
