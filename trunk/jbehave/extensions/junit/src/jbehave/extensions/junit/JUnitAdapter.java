@@ -42,7 +42,7 @@ public class JUnitAdapter {
 
     public static Test suite() {
         Class behaviourClass = (BEHAVIOUR_CLASS != null
-                ? BEHAVIOUR_CLASS : readBehaviourClassFromResource());
+                ? BEHAVIOUR_CLASS : getBehaviourClass());
         final TestSuite[] suiteRef = new TestSuite[1]; // Collecting Parameter
         BehaviourClassVerifier behaviourClassVerifier =
             new BehaviourClassVerifier(behaviourClass, new NotifyingResponsibilityVerifier());
@@ -51,18 +51,16 @@ public class JUnitAdapter {
         return suiteRef[0];
     }
 
-    private static Class readBehaviourClassFromResource() {
+    private static Class getBehaviourClass() {
         String behaviourClassName = null;
         try {
-            System.out.println("Looking for behaviour class");
+            Properties props = new Properties(System.getProperties());
             InputStream in = JUnitAdapter.class.getClassLoader().getResourceAsStream("jbehave.properties");
             if (in != null) {
-                Properties props = new Properties();
                 props.load(in);
                 in.close();
-                behaviourClassName = props.getProperty("behaviourClass", behaviourClassName);
             }
-            System.out.println("Loading " + behaviourClassName);
+            behaviourClassName = props.getProperty("behaviourClass", behaviourClassName);
             return Class.forName(behaviourClassName);
         } catch (Exception e) {
             throw new BehaviourFrameworkError("No behaviour class found for " + behaviourClassName);
