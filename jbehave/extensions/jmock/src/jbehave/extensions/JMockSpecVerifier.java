@@ -10,7 +10,7 @@ package jbehave.extensions;
 import jbehave.listeners.CompositeListener;
 import jbehave.listeners.TextListener;
 import jbehave.extensions.jmock.listener.JMockListener;
-import jbehave.framework.SpecVerifier;
+import jbehave.framework.BehaviourClassVerifier;
 
 import java.io.OutputStreamWriter;
 
@@ -23,6 +23,6 @@ public class JMockSpecVerifier {
 		CompositeListener listener = new CompositeListener();
 		listener.add(new JMockListener());
 		listener.add(new TextListener(new OutputStreamWriter(System.out)));
-		new SpecVerifier(Class.forName(args[0])).verifySpec(listener);
+		new BehaviourClassVerifier(Class.forName(args[0])).verifyBehaviourClass(listener);
 	}
 }

@@ -10,8 +10,8 @@ package jbehave.extensions.jmock.listener;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import jbehave.framework.CriteriaVerification;
-import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.Verify;
 import jbehave.framework.Listener;
 import jbehave.extensions.jmock.Mocker;
@@ -58,18 +58,18 @@ public class JMockListenerSpec {
       throw new Error("No spec method found in " + spec.getName());
     }
 
-    private CriteriaVerifier getSingleBehaviour(Class behaviourClass) throws Exception {
-        return new CriteriaVerifier(firstCriteria(behaviourClass));
+    private ResponsibilityVerifier getSingleBehaviour(Class behaviourClass) throws Exception {
+        return new ResponsibilityVerifier(firstCriteria(behaviourClass));
     }
     
 	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
         // setup
-        CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
-        CriteriaVerification behaviourResult = behaviour.verifyCriteria(Listener.NULL);
+        ResponsibilityVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
+        ResponsibilityVerification behaviourResult = behaviour.verifyResponsibility(Listener.NULL);
 		BehaviourClassWithPrivateMock spec = new BehaviourClassWithPrivateMock();
 
         // execute
-        listener.criteriaVerificationEnding(behaviourResult, spec);
+        listener.responsibilityVerificationEnding(behaviourResult, spec);
         
         // verify
         Verify.that(spec.verifyWasCalled);
@@ -91,11 +91,11 @@ public class JMockListenerSpec {
 
 	public void shouldCreateNewVerificationWhenVerifyFails() throws Exception {
 		// setup
-        CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
-        CriteriaVerification behaviourResult = behaviour.verifyCriteria(Listener.NULL);
+        ResponsibilityVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
+        ResponsibilityVerification behaviourResult = behaviour.verifyResponsibility(Listener.NULL);
         Object spec = new BehaviourClassWithFailingMock();
 		// execute
-        CriteriaVerification verifyMockResult = listener.criteriaVerificationEnding(behaviourResult, spec);
+        ResponsibilityVerification verifyMockResult = listener.responsibilityVerificationEnding(behaviourResult, spec);
 
 		// verify
 		Verify.notNull(verifyMockResult);
@@ -120,11 +120,11 @@ public class JMockListenerSpec {
 
 	public void shouldInjectMockerWhenNeedsMockMethodIsPresentOnASpec() throws Exception {
 		// setup
-		CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassNeedingAMock.class);
+		ResponsibilityVerifier behaviour = getSingleBehaviour(BehaviourClassNeedingAMock.class);
 		BehaviourClassNeedingAMock spec = new BehaviourClassNeedingAMock();
 
 		// execute
-		listener.criteriaVerificationStarting(behaviour, spec);
+		listener.responsibilityVerificationStarting(behaviour, spec);
 
 		// verify
 		Verify.that("needsMocker should have been invoked", spec.getMocker() != null);
@@ -150,13 +150,13 @@ public class JMockListenerSpec {
 
 	public void shouldAutomaticallyVerifyMocksCreatedWithMocker() throws Exception {
 		// setup
-		CriteriaVerifier behaviour = getSingleBehaviour(AJMockUsingSpec.class);
+		ResponsibilityVerifier behaviour = getSingleBehaviour(AJMockUsingSpec.class);
 		AJMockUsingSpec spec = new AJMockUsingSpec();
 
 		// execute
-	    listener.criteriaVerificationStarting(behaviour, spec);
+	    listener.responsibilityVerificationStarting(behaviour, spec);
 		spec.shouldUseAMock();
-		CriteriaVerification verification = listener.criteriaVerificationEnding(new CriteriaVerification("shouldUseAMock", "AJMockUsingSpec"), spec);
+		ResponsibilityVerification verification = listener.responsibilityVerificationEnding(new ResponsibilityVerification("shouldUseAMock", "AJMockUsingSpec"), spec);
 		// verify
 		Verify.that("should of failed JMock verification", verification.failed());
 	}

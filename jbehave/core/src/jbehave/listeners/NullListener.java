@@ -7,8 +7,8 @@
  */
 package jbehave.listeners;
 
-import jbehave.framework.CriteriaVerification;
-import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.Listener;
 
 /**
@@ -18,16 +18,16 @@ import jbehave.framework.Listener;
  */
 public class NullListener implements Listener {
 
-    public void specVerificationStarting(Class spec) {
+    public void behaviourClassVerificationStarting(Class behaviourClass) {
     }
 
-    public void specVerificationEnding(Class spec) {
+    public void behaviourClassVerificationEnding(Class behaviourClass) {
     }
 
-    public void criteriaVerificationStarting(CriteriaVerifier verifier, Object spec) {
+    public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClassInstance) {
     }
 
-    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
+    public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
 		return verification;
     }
     

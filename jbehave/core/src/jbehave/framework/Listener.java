@@ -28,8 +28,8 @@ import jbehave.listeners.NullListener;
 public interface Listener {
     public static final Listener NULL = new NullListener(); // null object
 
-    void specVerificationStarting(Class spec);
-    void criteriaVerificationStarting(CriteriaVerifier verifier, Object specInstance);
-    CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance);
-    void specVerificationEnding(Class spec);
+    void behaviourClassVerificationStarting(Class behaviourClass);
+    void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClassInstance);
+    ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance);
+    void behaviourClassVerificationEnding(Class behaviourClass);
 }

@@ -13,28 +13,28 @@ import java.util.List;
 import jbehave.listeners.NullListener;
 
 
-/** Listener that captures criteria verification results */
+/** Listener that captures verification results */
 class RecordingListener extends NullListener {
-    public Class startedSpec = null;
-    public Class endedSpec = null;
+    public Class startedBehaviourClass = null;
+    public Class endedBehaviourClass = null;
     public List verifications = new ArrayList(); // all verifications
-    public CriteriaVerification lastVerification = null; // latest one
+    public ResponsibilityVerification lastVerification = null; // latest one
     
-    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
+    public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
         verifications.add(verification);
         lastVerification = verification;
 		return verification;
     }
 
-    public void specVerificationStarting(Class spec) {
-        startedSpec = spec;
+    public void behaviourClassVerificationStarting(Class behaviourClass) {
+        startedBehaviourClass = behaviourClass;
     }
     
-    public void specVerificationEnding(Class spec) {
-        endedSpec = spec;
+    public void behaviourClassVerificationEnding(Class behaviourClass) {
+        endedBehaviourClass = behaviourClass;
     }
     
-    public CriteriaVerification verification(int i) {
-        return (CriteriaVerification) verifications.get(i);
+    public ResponsibilityVerification verification(int i) {
+        return (ResponsibilityVerification) verifications.get(i);
     }
 }

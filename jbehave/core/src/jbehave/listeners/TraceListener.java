@@ -7,8 +7,8 @@
  */
 package jbehave.listeners;
 
-import jbehave.framework.CriteriaVerification;
-import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.Listener;
 
 /**
@@ -22,20 +22,20 @@ public class TraceListener implements Listener {
     }
     Log log = new Log();
 
-    public void specVerificationStarting(Class spec) {
-        log.trace("specVerificationStarted: " + spec.getName());
+    public void behaviourClassVerificationStarting(Class behaviourClass) {
+        log.trace("behaviourClassVerificationStarted: " + behaviourClass.getName());
     }
 
-    public void specVerificationEnding(Class spec) {
-        log.trace("specVerificationEnded: " + spec.getName());
+    public void behaviourClassVerificationEnding(Class behaviourClass) {
+        log.trace("behaviourClassVerificationEnded: " + behaviourClass.getName());
     }
 
-    public void criteriaVerificationStarting(CriteriaVerifier verifier, Object specInstance) {
-        log.trace("beforeCriteriaVerificationStarts: " + verifier.getName());
+    public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClassInstance) {
+        log.trace("responsibilityVerificationStarting: " + verifier.getName());
     }
 
-    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification evaluation, Object specInstance) {
-        log.trace("afterCriteriaVerificationEnds: " + evaluation.toString());
+    public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification evaluation, Object behaviourClassInstance) {
+        log.trace("responsibilityVerificationEnding: " + evaluation.toString());
 		return evaluation;
     }
 }

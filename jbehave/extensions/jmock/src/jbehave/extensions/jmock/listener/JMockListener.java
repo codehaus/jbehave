@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-import jbehave.framework.CriteriaVerification;
-import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.exception.VerificationException;
 import jbehave.listeners.NullListener;
 import jbehave.extensions.jmock.Mocker;
@@ -30,10 +30,10 @@ public class JMockListener extends NullListener {
 
 	private Mocker mocker = new NULLMocker();
 
-	public void specVerificationStarting(Class spec) {
+	public void behaviourClassVerificationStarting(Class spec) {
 	}
 
-	public void criteriaVerificationStarting(CriteriaVerifier verifier, Object specInstance) {
+	public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object specInstance) {
 		try {
 			Method needsMocks = specInstance.getClass().getMethod("needsMocks", new Class [] {Mocker.class});
 			mocker = new JMocker();
@@ -43,7 +43,7 @@ public class JMockListener extends NullListener {
 		}
 	}
 
-	public CriteriaVerification criteriaVerificationEnding(CriteriaVerification behaviourResult, Object specInstance) {
+	public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification behaviourResult, Object specInstance) {
 		try {
 			mocker.verifyMocks();
 		} catch (VerificationException ve) {
@@ -53,7 +53,7 @@ public class JMockListener extends NullListener {
 		return verifyFields(specInstance, behaviourResult);
 	}
 
-	private CriteriaVerification verifyFields(Object specInstance, CriteriaVerification behaviourResult) {
+	private ResponsibilityVerification verifyFields(Object specInstance, ResponsibilityVerification behaviourResult) {
 		Field[] fields = specInstance.getClass().getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
@@ -68,8 +68,8 @@ public class JMockListener extends NullListener {
 		return behaviourResult;
 	}
 
-	private CriteriaVerification createCriteriaVerification(CriteriaVerification behaviourResult, VerificationException ve) {
-		return new CriteriaVerification(behaviourResult.getName(), behaviourResult.getSpecName(), ve);
+	private ResponsibilityVerification createCriteriaVerification(ResponsibilityVerification behaviourResult, VerificationException ve) {
+		return new ResponsibilityVerification(behaviourResult.getName(), behaviourResult.getBehaviourClassName(), ve);
 	}
 
 	private void verifyMock(Field field, Object executedInstance) {

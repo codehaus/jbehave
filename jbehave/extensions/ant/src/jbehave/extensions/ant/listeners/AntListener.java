@@ -8,7 +8,7 @@
 package jbehave.extensions.ant.listeners;
 
 import jbehave.listeners.NullListener;
-import jbehave.framework.CriteriaVerification;
+import jbehave.framework.ResponsibilityVerification;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -17,7 +17,7 @@ import jbehave.framework.CriteriaVerification;
 public class AntListener extends NullListener{
 	private boolean failBuild;
 
-	public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
+	public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object specInstance) {
 		if (!verification.succeeded()) {
 			failBuild = true;
 		}
