@@ -12,24 +12,23 @@ import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public abstract class CompositeVisitableBehaviour implements UsingJMock {
-    protected abstract CompositeVisitable getComposite();
+public class VisitableArrayListBehaviour implements UsingJMock {
     
-    public void shouldTellVisitablesToAcceptVisitor() throws Exception {
+    public void shouldTellEachElementToAcceptVisitor() throws Exception {
         // child...
         Mock child1 = new Mock(Visitable.class, "child1");
         Mock child2 = new Mock(Visitable.class, "child2");
         Visitor visitor = Visitor.NULL;
         
-        CompositeVisitable composite = getComposite();
-        composite.add((Visitable) child1.proxy());
-        composite.add((Visitable) child2.proxy());
+        VisitableArrayList list = new VisitableArrayList();
+        list.add(child1.proxy());
+        list.add(child2.proxy());
         
         child1.expectsOnce("accept", visitor);
         child2.expectsOnce("accept", visitor);
 
         // when...
-        composite.accept(visitor);
+        list.accept(visitor);
         
         // then... verified by pixies
     }

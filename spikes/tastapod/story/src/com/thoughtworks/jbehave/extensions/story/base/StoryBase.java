@@ -12,18 +12,19 @@ import java.util.List;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
-import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 import com.thoughtworks.jbehave.util.CaseConverter;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryBase extends CompositeVisitable implements Story {
+public class StoryBase implements Story {
 
     private final String role;
     private final String feature;
     private final String benefit;
+    private final VisitableArrayList criteria = new VisitableArrayList();
 
     public StoryBase(String role, String feature, String benefit) {
         this.role = role;
@@ -32,7 +33,7 @@ public class StoryBase extends CompositeVisitable implements Story {
     }
 
     public void addScenario(Scenario scenario) {
-        visitables.add(scenario);
+        criteria.add(scenario);
     }
     
     public String getName() {
@@ -40,7 +41,7 @@ public class StoryBase extends CompositeVisitable implements Story {
     }
     
     public Scenario getScenario(String name) {
-        for (Iterator i = visitables.iterator(); i.hasNext();) {
+        for (Iterator i = criteria.iterator(); i.hasNext();) {
             Scenario scenario = (Scenario) i.next();
             if (scenario.getDescription().equals(name)) {
                 return scenario;
@@ -50,7 +51,7 @@ public class StoryBase extends CompositeVisitable implements Story {
     }
     
     public List getScenarios() {
-        return visitables;
+        return criteria;
     }
     
     public String getRole() {
@@ -65,7 +66,8 @@ public class StoryBase extends CompositeVisitable implements Story {
         return benefit;
     }
     
-    protected void visitSelf(Visitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visitStory(this);
+        criteria.accept(visitor);
     }
 }

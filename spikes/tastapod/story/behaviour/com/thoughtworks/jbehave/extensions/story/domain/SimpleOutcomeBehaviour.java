@@ -7,9 +7,6 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
@@ -19,13 +16,9 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
  */
 public class SimpleOutcomeBehaviour implements UsingJMock {
 
-    protected Visitable getComposite(List visitables) {
-        return new SimpleOutcome(visitables);
-    }
-
     public void shouldPassItselfIntoVisitor() throws Exception {
-        // given...
-        Visitable outcome = new SimpleOutcome(Collections.EMPTY_LIST);
+        // expectation...
+        Visitable outcome = new SimpleOutcome(new Expectation[0]);
         Mock visitor = new Mock(Visitor.class);
         visitor.expectsOnce("visitOutcome", outcome);
 
@@ -33,5 +26,27 @@ public class SimpleOutcomeBehaviour implements UsingJMock {
         outcome.accept((Visitor)visitor.proxy());
         
         // then... verified by pixies
+    }
+    
+    public void shouldTellExpectationsToAcceptVisitor() throws Exception {
+        // expectation...
+        Mock expectation1 = new Mock(Expectation.class, "expectation1");
+        Mock expectation2 = new Mock(Expectation.class, "expectation2");
+        Visitor visitor = Visitor.NULL;
+        
+        SimpleOutcome outcome = new SimpleOutcome(
+                new Expectation[] {
+                        (Expectation) expectation1.proxy(),
+                        (Expectation) expectation2.proxy()
+                }
+        );
+        
+        expectation1.expectsOnce("accept", visitor);
+        expectation2.expectsOnce("accept", visitor);
+        
+        // when...
+        outcome.accept(visitor);
+        
+        // then... verified by framework
     }
 }

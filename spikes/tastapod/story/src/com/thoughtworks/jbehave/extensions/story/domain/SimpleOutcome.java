@@ -8,39 +8,41 @@
 package com.thoughtworks.jbehave.extensions.story.domain;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class SimpleOutcome extends CompositeVisitable implements Outcome {
+public class SimpleOutcome implements Outcome {
     
-    public SimpleOutcome(List expectations) {
-        visitables.addAll(expectations);
+    private final VisitableArrayList expectations;
+
+    public SimpleOutcome(Expectation[] expectations) {
+        this.expectations = new VisitableArrayList(Arrays.asList(expectations));
     }
     
     public SimpleOutcome(Expectation expectation) {
-        this(Collections.singletonList(expectation));
+        this(new Expectation[] {expectation});
     }
     
     public SimpleOutcome(Expectation expectation1, Expectation expectation2) {
-        this(Arrays.asList(new Expectation[] {expectation1, expectation2}));
+        this(new Expectation[] {expectation1, expectation2});
     }
     
     public SimpleOutcome(Expectation expectation1, Expectation expectation2, Expectation expectation3) {
-        this(Arrays.asList(new Expectation[] {expectation1, expectation2, expectation3}));
+        this(new Expectation[] {expectation1, expectation2, expectation3});
     }
     
     public List getExpectations() {
-        return visitables;
+        return expectations;
     }
 
-    protected void visitSelf(Visitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visitOutcome(this);
+        expectations.accept(visitor);
     }
 }

@@ -7,18 +7,21 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class SimpleContext extends CompositeVisitable implements Context {
+public class SimpleContext implements Context {
 
+    private final VisitableArrayList visitables = new VisitableArrayList();
+    
     /** A Scenario and a Given */
     public SimpleContext(Scenario scenario, List givens) {
         visitables.add(new GivenScenario(scenario));
@@ -27,12 +30,12 @@ public class SimpleContext extends CompositeVisitable implements Context {
 
     /** Just one given */
     public SimpleContext(Given given) {
-        super(Collections.singletonList(given));
+        visitables.add(given);
     }
 
     /** A bunch of givens */
-    public SimpleContext(List givens) {
-        super(givens);
+    public SimpleContext(Given[] givens) {
+        visitables.addAll(Arrays.asList(givens));
     }
 
     public SimpleContext(Scenario scenario, Given given) {
@@ -43,7 +46,8 @@ public class SimpleContext extends CompositeVisitable implements Context {
         return visitables;
     }
 
-    protected void visitSelf(Visitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visitContext(this);
+        visitables.accept(visitor);
     }
 }

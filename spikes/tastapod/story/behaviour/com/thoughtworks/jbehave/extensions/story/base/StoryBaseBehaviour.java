@@ -7,18 +7,14 @@
  */
 package com.thoughtworks.jbehave.extensions.story.base;
 
+import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
-import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehaviour;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryBaseBehaviour extends VisitableArrayListBehaviour {
-    protected CompositeVisitable getComposite() {
-        return new StoryBase("role", "feature", "benefit");
-    }
+public class StoryBaseBehaviour implements UsingJMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // setup
@@ -26,7 +22,7 @@ public class StoryBaseBehaviour extends VisitableArrayListBehaviour {
         Mock visitor = new Mock(Visitor.class);
         
         // expect
-        visitor.expects(Invoked.once()).method("visitStory").with(Is.equal(story));
+        visitor.expectsOnce("visitStory", story);
 
         // execute
         story.accept((Visitor) visitor.proxy());
@@ -34,7 +30,7 @@ public class StoryBaseBehaviour extends VisitableArrayListBehaviour {
         // verify - done by mock
     }
     
-    public void shouldTellVisitableScenariosToAcceptVisitor() throws Exception {
+    public void shouldTellScenariosToAcceptVisitor() throws Exception {
         // given...
         StoryBase story = new StoryBase("role", "feature", "benefit");
         Mock scenario1 = new Mock(Scenario.class, "scenario1");
