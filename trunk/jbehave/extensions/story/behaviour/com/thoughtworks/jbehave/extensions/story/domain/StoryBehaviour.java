@@ -5,12 +5,11 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.base;
+package com.thoughtworks.jbehave.extensions.story.domain;
 
 import org.jmock.core.stub.DefaultResultStub;
 
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
@@ -20,7 +19,7 @@ public class StoryBehaviour extends UsingJMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
-        Story story = new Story("role", "feature", "benefit");
+        Story story = new Story(new Narrative("role", "feature", "benefit"), new AcceptanceCriteria());
         Mock visitor = new Mock(Visitor.class);
         
         // expect...
@@ -31,20 +30,17 @@ public class StoryBehaviour extends UsingJMock {
         story.accept((Visitor) visitor.proxy());
     }
     
-    public void shouldTellScenariosToAcceptVisitor() throws Exception {
+    public void shouldTellComponentsToAcceptVisitorInCorrectOrder() throws Exception {
         // given...
-        Story story = new Story("role", "feature", "benefit");
-        Mock scenario1 = new Mock(MockableScenario.class, "scenario1");
-        Mock scenario2 = new Mock(MockableScenario.class, "scenario2");
-        Visitor visitor = (Visitor) stub(Visitor.class);
+        Mock acceptanceCriteria = new Mock(AcceptanceCriteria.class, "criteria");
+        Mock narrative = new Mock(MockableNarrative.class, "narrative");
+        Visitor visitor = (Visitor)stub(Visitor.class);
+        Story story = new Story((Narrative)narrative.proxy(), (AcceptanceCriteria)acceptanceCriteria.proxy());
 
         // expect...
-        scenario1.expects(once()).method("accept").with(same(visitor));
-        scenario2.expects(once()).method("accept").with(same(visitor));
+        narrative.expects(once()).method("accept").with(same(visitor));
+        acceptanceCriteria.expects(once()).method("accept").with(same(visitor)).after(narrative, "accept");
         
         // when...
-        story.addScenario((Scenario) scenario1.proxy());
-        story.addScenario((Scenario) scenario2.proxy());
         story.accept(visitor);
-    }
-}
+    }}

@@ -7,8 +7,8 @@
  */
 package example.events;
 
-import com.thoughtworks.jbehave.extensions.story.base.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.Event;
 
 
 public class UserRequestsCash extends Event {

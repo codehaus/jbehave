@@ -7,8 +7,8 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.Given;
 
 
 /** balance = -50, overdraft limit = 100 */

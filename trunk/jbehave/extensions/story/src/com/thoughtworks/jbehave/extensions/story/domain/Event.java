@@ -5,9 +5,8 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.base;
+package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
@@ -17,11 +16,6 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public abstract class Event implements Visitable {
-    public static Event NULL = new Event() {
-        public void occurIn(Environment environment) throws Exception {
-        }
-    };
-    
     public abstract void occurIn(Environment environment) throws Exception;
 
     public void accept(Visitor visitor) throws Exception {

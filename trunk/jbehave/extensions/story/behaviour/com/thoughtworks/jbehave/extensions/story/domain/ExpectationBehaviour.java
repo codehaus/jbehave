@@ -5,17 +5,19 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.base;
+package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class ExpectationBehaviour extends UsingJMock {
-    public void shouldDispatchItselfIntoCorrectVisitorMethodEachTimeAcceptIsCalled() throws Exception {
+    
+    public void shouldPassItselfIntoCorrectVisitorMethodEachTimeAcceptIsCalled() throws Exception {
         // given...
         Expectation expectation = new Expectation() {
             public void setExpectationIn(Environment environment) throws Exception {}

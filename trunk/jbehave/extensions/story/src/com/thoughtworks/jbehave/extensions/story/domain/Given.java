@@ -5,10 +5,9 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.base;
+package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 

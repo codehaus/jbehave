@@ -9,7 +9,6 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.verify.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 

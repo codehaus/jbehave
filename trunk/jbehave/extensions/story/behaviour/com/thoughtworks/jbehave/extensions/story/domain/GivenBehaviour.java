@@ -5,16 +5,16 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.base;
+package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.verify.Verify;
-import com.thoughtworks.jbehave.extensions.story.base.Given;
+import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class GivenBaseBehaviour {
+public class GivenBehaviour {
     public void shouldBeVisitable() throws Exception {
         Verify.that(Visitable.class.isAssignableFrom(Given.class));
     }

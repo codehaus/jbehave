@@ -1,5 +1,5 @@
 /*
- * Created on 25-Sep-2004
+ * Created on 28-Sep-2004
  * 
  * (c) 2003-2004 ThoughtWorks Ltd
  *
@@ -7,13 +7,11 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class MockableOutcome extends Outcome {
-
-    public MockableOutcome() {
-        super(new Expectation[0]);
+public class MockableNarrative extends Narrative {
+    public MockableNarrative() {
+        super(null, null, null);
     }
 }

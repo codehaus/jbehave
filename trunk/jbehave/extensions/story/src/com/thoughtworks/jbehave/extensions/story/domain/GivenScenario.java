@@ -7,9 +7,6 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.extensions.story.base.Event;
-import com.thoughtworks.jbehave.extensions.story.base.Given;
-import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 
 

@@ -17,9 +17,9 @@ Scenario: Happy story with overdraft
 Given Account has overdraft facility
 and Account is easily within overdraft limit
 When User requests cash
-Then Dispense cash
-and Return bank card
-and Reduce balance
+Then ATM should dispense cash
+and ATM should return bank card
+and account balance should be reduced
 
 Scenario: Overdrawn without permission
 

@@ -80,35 +80,35 @@ public class TextListenerBehaviour {
         verifyOutputContains("\nMethods: 2");
     }
 
-    public void shouldSummarizeMethodWithVerificationFailure() throws Exception {
+    public void shouldPrintSummaryWhenMethodFails() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
         listener.methodVerificationEnding(new Result("SomeClass", "shouldDoX", new VerificationException("oops")), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("\nMethods: 1. Failures: 1");
     }
 
-    public void shouldPrintStackTraceForCriteronWithVerificationFailure() throws Exception {
+    public void shouldPrintStackTraceWhenMethodFails() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
         listener.methodVerificationEnding(new Result("SomeClass", "shouldDoX", new VerificationException("oops")), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("Failures:");
-        verifyOutputContains("\n1) shouldDoX [SomeClass]:");
+        verifyOutputContains("\n1) SomeClass shouldDoX [SomeClass]:");
         verifyOutputContains("VerificationException");
     }
 
-    public void shouldSummarizeMethodWithExceptionThrown() throws Exception {
+    public void shouldPrintSummaryWhenMethodThrowsException() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
         listener.methodVerificationEnding(new Result("SomeClass", "shouldDoX", new Exception()), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("\nMethods: 1. Failures: 0, Exceptions: 1");
     }
 
-    public void shouldPrintStackTraceForException() throws Exception {
+    public void shouldPrintStackTraceWhenMethodThrowsException() throws Exception {
         listener.behaviourClassVerificationStarting(BehaviourClass.class);
         listener.methodVerificationEnding(new Result("SomeClass", "shouldDoX", new Exception()), new Object());
         listener.behaviourClassVerificationEnding(BehaviourClass.class);
         verifyOutputContains("Exceptions Thrown:");
-        verifyOutputContains("\n1) shouldDoX [SomeClass]:");
+        verifyOutputContains("\n1) SomeClass shouldDoX [SomeClass]:");
         verifyOutputContains("java.lang.Exception");
     }
 

@@ -5,15 +5,12 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.base;
+package com.thoughtworks.jbehave.extensions.story.domain;
 
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
-import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
@@ -21,20 +18,17 @@ import com.thoughtworks.jbehave.util.ConvertCase;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Story implements Visitable {
-
-    public static final Story NULL = new Story("", "", "");
-    
-    private final VisitableArrayList criteria = new VisitableArrayList();
     private final Narrative narrative;
+    private final AcceptanceCriteria criteria;
 
-    public Story(String role, String feature, String benefit) {
-        this.narrative = new Narrative(role, feature, benefit);
+    public Story(Narrative narrative, AcceptanceCriteria criteria) {
+        this.narrative = narrative;
+        this.criteria = criteria;
     }
 
     public void addScenario(Scenario scenario) {
-        criteria.add(scenario);
+        criteria.addScenario(scenario);
     }
-    
     
     public String getTitle() {
         return new ConvertCase(this).toSeparateWords();
@@ -51,7 +45,7 @@ public class Story implements Visitable {
     }
     
     public List getScenarios() {
-        return criteria;
+        return criteria.getScenarios();
     }
     
     public Narrative getNarrative() {

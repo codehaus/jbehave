@@ -7,8 +7,8 @@
  */
 package example.expectations;
 
-import com.thoughtworks.jbehave.extensions.story.base.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 

@@ -8,14 +8,16 @@
 package com.thoughtworks.jbehave.extensions.story;
 
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
-import com.thoughtworks.jbehave.extensions.story.base.EventBehaviour;
-import com.thoughtworks.jbehave.extensions.story.base.ExpectationBehaviour;
-import com.thoughtworks.jbehave.extensions.story.base.GivenBaseBehaviour;
-import com.thoughtworks.jbehave.extensions.story.base.StoryBehaviour;
 import com.thoughtworks.jbehave.extensions.story.codegen.StoryParserBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteriaBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.ContextBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.EventBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.ExpectationBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.GivenBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.NarrativeBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.OutcomeBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.ScenarioBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.StoryBehaviour;
 import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListenerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.runner.StoryRunnerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehaviour;
@@ -26,14 +28,16 @@ import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehav
 public class AllBehaviourClasses extends Object implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
+                StoryParserBehaviour.class,
+                AcceptanceCriteriaBehaviour.class,
+                ContextBehaviour.class,
                 EventBehaviour.class,
                 ExpectationBehaviour.class,
-                GivenBaseBehaviour.class,
-                StoryBehaviour.class,
-                StoryParserBehaviour.class,
-                ContextBehaviour.class,
+                GivenBehaviour.class,
+                NarrativeBehaviour.class,
                 OutcomeBehaviour.class,
                 ScenarioBehaviour.class,
+                StoryBehaviour.class,
                 TextScenarioListenerBehaviour.class,
                 StoryRunnerBehaviour.class,
                 VisitableArrayListBehaviour.class

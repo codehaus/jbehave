@@ -9,7 +9,6 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.verify.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.base.Expectation;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
@@ -30,7 +29,7 @@ public class OutcomeBehaviour extends UsingJMock {
         // then... verified by pixies
     }
     
-    public void shouldTellExpectationsToAcceptVisitorInOrder() throws Exception {
+    public void shouldTellExpectationsToAcceptVisitorInCorrectOrder() throws Exception {
         // expectation...
         Mock expectation1 = new Mock(Expectation.class, "expectation1");
         Mock expectation2 = new Mock(Expectation.class, "expectation2");

@@ -7,15 +7,15 @@
  */
 package com.thoughtworks.jbehave.extensions.story.runner;
 
-import com.thoughtworks.jbehave.extensions.story.base.Event;
-import com.thoughtworks.jbehave.extensions.story.base.Expectation;
-import com.thoughtworks.jbehave.extensions.story.base.Given;
-import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.Event;
+import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
+import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 

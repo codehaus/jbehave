@@ -91,9 +91,9 @@ public class TextListener implements BehaviourClassListener, MethodListener {
             out.println();
             int count = 1;
             for (Iterator i = errorList.iterator(); i.hasNext(); count++) {
-                Result verification = (Result)i.next();
-                out.println(count + ") " + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
-                verification.getCause().printStackTrace(out);
+                Result result = (Result)i.next();
+                printReason(count, result);
+                result.getCause().printStackTrace(out);
                 out.println();
             }
         }
@@ -105,11 +105,22 @@ public class TextListener implements BehaviourClassListener, MethodListener {
             out.println();
             int count = 1;
             for (Iterator i = pending.iterator(); i.hasNext(); count++) {
-                Result verification = (Result) i.next();
-                out.println(count + ")" + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
-                out.println("\t" + verification.getCause().getMessage());
+                Result result = (Result) i.next();
+                printReason(count, result);
+                out.println("\t" + result.getCause().getMessage());
             }
         }
+    }
+
+    private void printReason(int count, Result result) {
+        String className = result.getBehaviourClassName();
+        int lastDot = className.lastIndexOf('.');
+        className = className.substring(lastDot + 1);
+        int behaviourIndex = className.lastIndexOf("Behaviour");
+        if (behaviourIndex > 0) {
+            className = className.substring(0, behaviourIndex);
+        }
+        out.println(count + ") " + className + " " + result.getName() + " [" + result.getBehaviourClassName() + "]:");
     }
 
     public void methodVerificationStarting(Method method) {

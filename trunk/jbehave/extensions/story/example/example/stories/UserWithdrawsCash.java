@@ -7,10 +7,12 @@
  */
 package example.stories;
 
-import com.thoughtworks.jbehave.extensions.story.base.Story;
+import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteria;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
+import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.Story;
 
 import example.events.UserRequestsCash;
 import example.expectations.ATMShouldDispenseCash;
@@ -18,9 +20,9 @@ import example.expectations.ATMShouldRefuseCash;
 import example.expectations.ATMShouldRetainBankCard;
 import example.expectations.ATMShouldReturnBankCardToCustomer;
 import example.expectations.AccountBalanceShouldBeReduced;
+import example.givens.AccountHasEnoughCash;
 import example.givens.AccountHasNegativeBalanceWithoutPermission;
 import example.givens.AccountHasOverdraftPermission;
-import example.givens.AccountHasEnoughCash;
 import example.givens.AccountIsOverOverdraftLimit;
 
 /**
@@ -30,9 +32,12 @@ public class UserWithdrawsCash extends Story {
 
     public UserWithdrawsCash() {
         super(
-                "Bank card holder",
-                "to be able to withdraw cash from an ATM",
-                "I don't have to visit the bank"
+                new Narrative(
+                    "Bank card holder",
+                    "to be able to withdraw cash from an ATM",
+                    "I don't have to visit the bank"
+                ),
+                new AcceptanceCriteria()
         );
 
         addScenario(new Scenario(
@@ -50,7 +55,7 @@ public class UserWithdrawsCash extends Story {
         );
         
         addScenario(new Scenario(
-                "Happy story with overdraft", this,
+                "Happy scenario with overdraft", this,
                 new Context(
                     new AccountHasOverdraftPermission()
                 ),
@@ -66,7 +71,7 @@ public class UserWithdrawsCash extends Story {
         addScenario(new Scenario(
                 "Overdrawn without permission", this,
                 new Context(
-                        getScenario("Happy story with overdraft"),
+                        getScenario("Happy scenario with overdraft"),
                     new AccountHasNegativeBalanceWithoutPermission()
                 ),
                 new UserRequestsCash(),

@@ -9,7 +9,6 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 
 import java.util.Arrays;
 
-import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;

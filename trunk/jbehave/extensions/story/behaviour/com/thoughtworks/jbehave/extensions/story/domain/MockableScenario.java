@@ -7,10 +7,9 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-
-
-public class MockableContext extends Context {
-    public MockableContext() {
-        super(new Given[0]);
+public class MockableScenario extends Scenario {
+    public MockableScenario() {
+        super("", null, null, null);
     }
+    
 }

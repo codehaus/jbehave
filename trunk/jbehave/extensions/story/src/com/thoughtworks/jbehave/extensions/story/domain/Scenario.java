@@ -7,8 +7,6 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.extensions.story.base.Event;
-import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.NULLScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
@@ -25,8 +23,6 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Scenario implements Visitable {
-    public static final Scenario NULL = new Scenario("", Story.NULL, Context.NULL, Event.NULL, Outcome.NULL);
-    
     protected final Context context;
     protected final Event event;
     protected final Outcome outcome;

@@ -7,8 +7,8 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.Given;
 
 import example.domain.Account;
 
