@@ -18,7 +18,6 @@ import java.util.List;
 
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.minilog.Log;
-import com.thoughtworks.jbehave.core.minimock.MiniMockBase.Mock;
 
 
 /**

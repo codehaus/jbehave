@@ -8,7 +8,6 @@
 package com.thoughtworks.jbehave.core.util;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.core.util.Timer;
 
 
 /**

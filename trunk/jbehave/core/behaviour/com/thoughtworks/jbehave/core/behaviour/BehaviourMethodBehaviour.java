@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.behaviour;
 
-import com.thoughtworks.jbehave.core.behaviour.BehaviourMethod;
+import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 

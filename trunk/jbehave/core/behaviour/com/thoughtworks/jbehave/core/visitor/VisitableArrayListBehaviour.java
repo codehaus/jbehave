@@ -7,10 +7,8 @@
  */
 package com.thoughtworks.jbehave.core.visitor;
 
+import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.VisitableArrayList;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

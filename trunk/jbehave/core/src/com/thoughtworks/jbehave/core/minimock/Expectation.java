@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import com.thoughtworks.jbehave.core.Verify;
 
-public class Expectation extends MiniMockBase {
+public class Expectation extends MiniMockSugar {
     interface Finder {
         Expectation findExpectation(String id);
     }

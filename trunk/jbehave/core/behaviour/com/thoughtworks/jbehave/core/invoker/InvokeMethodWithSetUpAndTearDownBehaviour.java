@@ -14,8 +14,6 @@ import java.util.List;
 
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethod;
-import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
-import com.thoughtworks.jbehave.core.invoker.MethodInvoker;
 import com.thoughtworks.jbehave.core.result.Result;
 
 /**

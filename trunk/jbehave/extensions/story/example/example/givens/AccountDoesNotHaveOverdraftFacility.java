@@ -8,6 +8,7 @@
 package example.givens;
 
 
+import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.GivenUsingMiniMock;
 

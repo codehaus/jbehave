@@ -10,7 +10,6 @@ package com.thoughtworks.jbehave.core.result;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.result.Result;
 
 
 /**

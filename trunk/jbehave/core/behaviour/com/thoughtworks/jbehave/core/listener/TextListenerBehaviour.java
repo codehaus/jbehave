@@ -13,7 +13,6 @@ import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethod;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.listener.TextListener;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.result.BehaviourMethodResult;
 import com.thoughtworks.jbehave.core.result.Result;

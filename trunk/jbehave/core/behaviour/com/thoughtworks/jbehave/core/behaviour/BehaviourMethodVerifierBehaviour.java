@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.core.behaviour;
 
 import com.thoughtworks.jbehave.core.invoker.MethodInvoker;
+import com.thoughtworks.jbehave.core.minimock.Mock;
 
 
 /**

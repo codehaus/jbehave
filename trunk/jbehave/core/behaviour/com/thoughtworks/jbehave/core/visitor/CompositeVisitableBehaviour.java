@@ -8,11 +8,9 @@
 package com.thoughtworks.jbehave.core.visitor;
 
 import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.minimock.VisitableUsingMiniMock;
-import com.thoughtworks.jbehave.core.visitor.CompositeVisitable;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
 
 /**
  * This is a swiss army knife class - it extends {@link UsingMiniMock}, implements {@Visitable}

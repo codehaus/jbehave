@@ -10,7 +10,6 @@ package com.thoughtworks.jbehave.core.util;
 import java.text.SimpleDateFormat;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.core.util.ConvertCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -7,8 +7,6 @@
  */
 package com.thoughtworks.jbehave.core.minimock;
 
-import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.minimock.VisitableUsingMiniMock;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 

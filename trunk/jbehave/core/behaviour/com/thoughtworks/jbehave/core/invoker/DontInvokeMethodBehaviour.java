@@ -11,8 +11,6 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethod;
-import com.thoughtworks.jbehave.core.invoker.DontInvokeMethod;
-import com.thoughtworks.jbehave.core.invoker.MethodInvoker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
