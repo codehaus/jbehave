@@ -9,6 +9,7 @@ import junit.framework.AssertionFailedError;
 import org.jmock.builder.MatchBuilder;
 import org.jmock.core.Constraint;
 import org.jmock.core.DynamicMock;
+import org.jmock.core.stub.DefaultResultStub;
 
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 
@@ -20,7 +21,7 @@ public abstract class UsingJMock extends JMockSugar{
     
     private Set mocks = new HashSet();
      
-    // This needs a Behaviour class as this is a responsibility!
+    // TODO This needs a Behaviour class as this is a responsibility!
     public void verify() {
         for (Iterator i = mocks.iterator(); i.hasNext();) {
             Mock mock = null;
@@ -45,7 +46,7 @@ public abstract class UsingJMock extends JMockSugar{
      * add the new instance to a {@link Set} of <tt>Mock</tt> instances to be
      * verified later.
      */
-    public class Mock extends org.jmock.Mock {
+    protected class Mock extends org.jmock.Mock {
         private final Exception exceptionFromCreationPoint;
 
         public Mock(Class mockedType) {
@@ -88,7 +89,7 @@ public abstract class UsingJMock extends JMockSugar{
         }
 
         public MatchBuilder expectsOnce(String methodName, Object arg1) {
-            return expects(once()).method(methodName).with(equal(arg1));
+            return expects(once()).method(methodName).with(eq(arg1));
         }
         
         public MatchBuilder expectsOnce(String methodName, Constraint arg) {
@@ -116,4 +117,17 @@ public abstract class UsingJMock extends JMockSugar{
         }
     }
 
+    // Syntactic sugar methods that use our Mock class
+    
+    protected Object stub(Class type) {
+        Mock mock = new Mock(type);
+        mock.setDefaultStub(new DefaultResultStub());
+        return mock.proxy();
+    }
+    
+    protected Object stub(Class type, String name) {
+        Mock mock = new Mock(type, name);
+        mock.setDefaultStub(new DefaultResultStub());
+        return mock.proxy();
+    }
 }

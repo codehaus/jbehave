@@ -18,10 +18,9 @@ public class NotifyingResponsibilityVerifierBehaviour {
             this.result = result;
         }
         
-        public Result responsibilityVerificationEnding(Result result,
+        public Result responsibilityVerificationEnding(Result r,
                 Object behaviourClassInstance) {
             return this.result;
-           
         }
 }
     

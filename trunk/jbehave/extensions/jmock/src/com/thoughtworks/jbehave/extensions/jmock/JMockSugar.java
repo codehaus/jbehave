@@ -48,41 +48,20 @@ public abstract class JMockSugar {
         return new StubSequence(new Stub[]{stub1, stub2, stub3, stub4});
     }
 
-    
-    protected IsEqual equal( Object operand ) {
+    protected IsEqual eq( Object operand ) {
         return new IsEqual(operand);
     }
     
-    protected IsEqual equal( boolean operand ) {
-        return equal( new Boolean(operand) );
+    protected IsEqual eq( boolean operand ) {
+        return eq( new Boolean(operand) );
+    }
+
+    protected IsEqual eq( long operand ) {
+        return eq( new Long(operand) );
     }
     
-    protected IsEqual equal( byte operand ) {
-        return equal( new Byte(operand) );
-    }
-    
-    protected IsEqual equal( short operand ) {
-        return equal( new Short(operand) );
-    }
-    
-    protected IsEqual equal( char operand ) {
-        return equal( new Character(operand) );
-    }
-    
-    protected IsEqual equal( int operand ) {
-        return equal( new Integer(operand) );
-    }
-    
-    protected IsEqual equal( long operand ) {
-        return equal( new Long(operand) );
-    }
-    
-    protected IsEqual equal( float operand ) {
-        return equal( new Float(operand) );
-    }
-    
-    protected IsEqual equal( double operand ) {
-        return equal( new Double(operand) );
+    protected IsEqual eq( double operand ) {
+        return eq( new Double(operand) );
     }
     
     protected IsCloseTo closeTo( double operand, double error ) {
@@ -93,12 +72,12 @@ public abstract class JMockSugar {
         return new IsSame(operand);
     }
     
-    protected IsInstanceOf instanceOf( Class operandClass ) {
-        return new IsInstanceOf(operandClass);
+    protected IsInstanceOf instanceOf( Class type ) {
+        return new IsInstanceOf(type);
     }
     
-    protected IsInstanceOf a( Class operandClass ) {
-        return instanceOf(operandClass);
+    protected IsInstanceOf a( Class type ) {
+        return instanceOf(type);
     }
     
     protected StringContains substring( String substring ) {
@@ -129,28 +108,8 @@ public abstract class JMockSugar {
         return returnValue(new Boolean(result));
     }
     
-    protected Stub returnValue( byte result ) {
-        return returnValue(new Byte(result));
-    }
-    
-    protected Stub returnValue( char result ) {
-        return returnValue(new Character(result));
-    }
-    
-    protected Stub returnValue( short result ) {
-        return returnValue(new Short(result));
-    }
-    
-    protected Stub returnValue( int result ) {
-        return returnValue(new Integer(result));
-    }
-    
     protected Stub returnValue( long result ) {
         return returnValue(new Long(result));
-    }
-    
-    protected Stub returnValue( float result ) {
-        return returnValue(new Float(result));
     }
     
     protected Stub returnValue( double result ) {
@@ -160,5 +119,4 @@ public abstract class JMockSugar {
     protected Stub throwException( Throwable throwable ) {
         return new ThrowStub(throwable);
     }
-
 }
