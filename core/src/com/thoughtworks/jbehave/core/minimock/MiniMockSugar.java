@@ -166,6 +166,7 @@ public class MiniMockSugar {
     public InvocationHandler returnValue(int result) {
         return returnValue(new Integer(result));
     }
+    
     public InvocationHandler returnValue(long result) {
         return returnValue(new Long(result));
     }
