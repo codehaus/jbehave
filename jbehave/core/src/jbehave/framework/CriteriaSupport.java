@@ -24,7 +24,7 @@ public abstract class CriteriaSupport {
 
     /**
      * Find all criteria in a class and wrap each one in a
-     * {@link Criterion}
+     * {@link Criteria}
      * 
      * There is no particular constraint on the class. The criteria
      * are public void methods that take no parameters and start
@@ -57,7 +57,7 @@ public abstract class CriteriaSupport {
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
             if (method.getName().startsWith(CRITERION_PREFIX) && method.getParameterTypes().length == 0) {
-                result.add(new Criterion(method));
+                result.add(new Criteria(method));
             }
         }
         return result;

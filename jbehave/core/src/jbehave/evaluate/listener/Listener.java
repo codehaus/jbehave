@@ -8,8 +8,8 @@
 package jbehave.evaluate.listener;
 
 import jbehave.evaluate.Evaluator;
-import jbehave.framework.Criterion;
-import jbehave.framework.CriterionEvaluation;
+import jbehave.framework.Criteria;
+import jbehave.framework.CriteriaVerification;
 
 
 /**
@@ -30,6 +30,6 @@ public interface Listener {
     void runEnded(Evaluator runner);
     void behaviourEvaluationStarted(Class behaviourClass);
     void behaviourEvaluationEnded(Class behaviourClass);
-    void beforeCriterionEvaluationStarts(Criterion behaviour);
-    void afterCriterionEvaluationEnds(CriterionEvaluation behaviourResult);
+    void beforeCriterionEvaluationStarts(Criteria behaviour);
+    void afterCriterionEvaluationEnds(CriteriaVerification behaviourResult);
 }

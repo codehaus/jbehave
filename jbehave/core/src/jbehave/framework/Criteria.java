@@ -18,11 +18,11 @@ import jbehave.BehaviourFrameworkError;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class Criterion {
+public class Criteria {
     private final Object behaviourInstance;
     private final Method method;
 
-    public Criterion(Method method) {
+    public Criteria(Method method) {
         this.method = method;
         try {
             this.behaviourInstance = method.getDeclaringClass().newInstance();
@@ -49,15 +49,15 @@ public class Criterion {
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
      * in the appropriate places if either of them exist.
      */
-    public CriterionEvaluation evaluate() {
-        CriterionEvaluation result = null;
+    public CriteriaVerification verify() {
+        CriteriaVerification result = null;
         try {
             setUp();
             method.invoke(behaviourInstance, new Object[0]);
-            return getEvaluation(null);
+            return createVerification(null);
         } catch (InvocationTargetException e) {
             // method failed
-            return result = getEvaluation(e.getTargetException());
+            return result = createVerification(e.getTargetException());
         } catch (Exception e) {
             // anything else is bad news
             throw new BehaviourFrameworkError(e);
@@ -67,7 +67,7 @@ public class Criterion {
 				tearDown();
 			} catch (InvocationTargetException e) {
                 // method failed
-                return result != null ? result : getEvaluation(e.getTargetException());
+                return result != null ? result : createVerification(e.getTargetException());
             } catch (Exception e) {
                 // anything else is bad news
                 throw new BehaviourFrameworkError(e);
@@ -106,7 +106,7 @@ public class Criterion {
     }
 
     /**
-     * Build an {@link CriterionEvaluation} based on an error condition.
+     * Build an {@link CriteriaVerification} based on an error condition.
      * 
      * This will be one of the following cases:
      * <ul>
@@ -117,14 +117,14 @@ public class Criterion {
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
      */
-    private CriterionEvaluation getEvaluation(Throwable targetException) {
+    private CriteriaVerification createVerification(Throwable targetException) {
         
         // propagate thread death otherwise Bad Things happen (or rather Good Things don't)
         if (targetException instanceof ThreadDeath) {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new CriterionEvaluation(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
+            return new CriteriaVerification(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
         }
     }
 }

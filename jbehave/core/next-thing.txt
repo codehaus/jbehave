@@ -9,3 +9,6 @@ It should be easy to run from inside the IDE
 It should have an adapter to run in a junit test runner
 It should have an ant task like <junit>
 It should have an ant build to create the jar and then run the behaviours
+It should extract the criteria out into English (agiledox)
+It should extract the verification out into English for reporting ("Verify that something happened")
+It should have instance-level verifications for pico-muppets like Hammant :)
