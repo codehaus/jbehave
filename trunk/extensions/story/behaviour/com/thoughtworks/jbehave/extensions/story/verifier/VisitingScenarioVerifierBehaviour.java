@@ -46,7 +46,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
 
         // expect...
         scenario.expects("accept").with(verifier);
-        scenario.stubsEverythingElse();
         
         // when...
         verifier.verifyScenario((Scenario)scenario);
@@ -61,7 +60,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // expect...
         given.expects("setUp").with(environmentStub);
-        given.stubsEverythingElse();
         
         // when...
         verifier.visit((Given)given);
@@ -76,7 +74,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // expect...
         expectation.expects("setExpectationIn").with(environmentStub);
-        expectation.stubsEverythingElse();
         
         // when...
         verifier.visit((Expectation)expectation);
@@ -91,7 +88,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // expect...
         event.expects("occurIn").with(environmentStub);
-        event.stubsEverythingElse();
         
         // when...
         verifier.visit((Event)event);
@@ -107,7 +103,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
 
         // expect...
         expectation.expects("verify").with(same(environmentStub));
-        expectation.stubsEverythingElse();
         
         // when...
         verifier.visit(eventStub);
@@ -211,7 +206,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         verifier.addListener((ResultListener)listener1);
         verifier.addListener((ResultListener)listener2);
         scenario.stubs("accept").with(verifier);
-        scenario.stubsEverythingElse();
 
         // expect...
         listener1.expects("gotResult").with(successfulScenarioResult());
@@ -239,7 +233,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         verifier.addListener((ResultListener)listener2);
         Exception cause = new Exception("oops");
         scenario.stubs("accept").with(verifier).will(throwException(new NestedVerificationException(cause)));
-        scenario.stubsEverythingElse();
 
         // expect...
         listener1.expects("gotResult").with(exceptionScenarioResult(cause));
@@ -266,9 +259,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         verifier.addListener((ResultListener) listener1);
         Mock givenThatUsesMocks = mock(Given.class);
         givenThatUsesMocks.stubs("containsMocks").will(returnValue(true));
-        givenThatUsesMocks.stubsEverythingElse();
         verifier.visit((Given)givenThatUsesMocks);
-        scenario.stubsEverythingElse();
 
         // expect...
         listener1.expects("gotResult").with(scenarioResultUsingMocks());

@@ -36,7 +36,7 @@ public abstract class Log {
         error(message, null);
     }
     
-    private interface LogFactory {
+    public interface LogFactory {
         Log logFor(Class type);
     }
     
