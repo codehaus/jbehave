@@ -5,12 +5,12 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.runner;
+package jbehave.evaluate;
 
 import java.io.OutputStreamWriter;
 
-import jbehave.runner.listener.TextListener;
-import jbehave.runner.listener.TraceListener;
+import jbehave.evaluate.listener.TextListener;
+import jbehave.evaluate.listener.TraceListener;
 
 /**
  * Basic command-line behaviour runner

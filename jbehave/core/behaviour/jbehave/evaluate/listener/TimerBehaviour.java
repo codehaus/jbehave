@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.runner.listener;
+package jbehave.evaluate.listener;
 
 import jbehave.framework.Verify;
 
