@@ -9,9 +9,9 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 
 import org.jmock.core.stub.DefaultResultStub;
 
+import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -24,7 +24,7 @@ public class ScenarioBehaviour extends UsingJMock {
         Mock visitor = new Mock(Visitor.class);
         
         // expect...
-        visitor.expects(once()).method("visitScenario").with(same(scenario));
+        visitor.expects(once()).method("visit").with(same(scenario));
         visitor.setDefaultStub(new DefaultResultStub());
 
         // when...

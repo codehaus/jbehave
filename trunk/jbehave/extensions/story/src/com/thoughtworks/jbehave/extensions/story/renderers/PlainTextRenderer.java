@@ -9,6 +9,9 @@ package com.thoughtworks.jbehave.extensions.story.renderers;
 
 import java.io.PrintStream;
 
+import com.thoughtworks.jbehave.core.Result;
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
@@ -18,7 +21,6 @@ import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
 
@@ -29,11 +31,40 @@ public class PlainTextRenderer implements Visitor {
 
     private final PrintStream out;
     private String nextWord;
+    boolean visitedEvent;
 
     public PlainTextRenderer(PrintStream out) {
         this.out = out;
     }
-
+    
+    public void visit(Visitable visitable) {
+        if (visitable instanceof Story) {
+            visitStory((Story) visitable);
+        }
+        else if (visitable instanceof Narrative) {
+            visitNarrative((Narrative) visitable);
+        }
+        else if (visitable instanceof Scenario) {
+            visitScenario((Scenario) visitable);
+        }
+        else if (visitable instanceof Context) {
+            visitContext((Context) visitable);
+        }
+        else if (visitable instanceof Given) {
+            visitGiven((Given) visitable);
+        }
+        else if (visitable instanceof Event) {
+            visitEvent((Event) visitable);
+            visitedEvent = true;
+        }
+        else if (visitable instanceof Outcome) {
+            visitOutcome((Outcome) visitable);
+        }
+        else if (visitable instanceof Expectation && visitedEvent) {
+            visitExpectationAfterTheEvent((Expectation) visitable);
+        }
+    }
+    
     public void visitStory(Story story) {
         out.println("Story: " + story.getTitle());
         out.println();
@@ -77,12 +108,12 @@ public class PlainTextRenderer implements Visitor {
     public void visitOutcome(Outcome outcome) {
         nextWord = "Then ";
     }
-    
-    public void visitExpectationBeforeTheEvent(Expectation expectation) {
-    }
 
     public void visitExpectationAfterTheEvent(Expectation expectation) {
         out.println(nextWord + new ConvertCase(expectation).toSeparateWords());
         nextWord = "and ";
+    }
+
+    public void gotResult(Result result) {
     }
 }

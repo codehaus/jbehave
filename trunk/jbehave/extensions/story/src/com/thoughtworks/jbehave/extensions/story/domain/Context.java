@@ -9,9 +9,9 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 
 import java.util.Arrays;
 
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
-import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.util.VisitableArrayList;
 
 
 /**
@@ -43,7 +43,7 @@ public class Context implements Visitable {
     }
     
     public void accept(Visitor visitor) {
-        visitor.visitContext(this);
+        visitor.visit(this);
         visitables.accept(visitor);
     }
 }

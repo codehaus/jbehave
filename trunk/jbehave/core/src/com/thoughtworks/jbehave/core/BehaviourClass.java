@@ -14,50 +14,48 @@ import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class BehaviourClass implements Behaviour {
+public class BehaviourClass implements Visitable {
 
     private final Class classToVerify;
-    private final Verifier verifier;
 
-    public BehaviourClass(Class classToVerify, Verifier verifier) {
+    public BehaviourClass(Class classToVerify) {
         this.classToVerify = classToVerify;
-        this.verifier = verifier;
-    }
-
-    public Result verify(Verifier verifier) {
-        return verifier.verify(this);
     }
 
     public void accept(Visitor visitor) {
         try {
-            visitor.before(this);
+            visitor.visit(this);
+
             if (BehaviourClassContainer.class.isAssignableFrom(classToVerify)) {
                 visitBehaviourClasses(visitor);
             }
             else {
-                Method[] methods = classToVerify.getMethods();
-                for (int j = 0; j < methods.length; j++) {
-                    Method method = methods[j];
-                    if (method.getName().startsWith("should")
-                            && method.getParameterTypes().length == 0) {
-                        BehaviourMethod methodToVerify = new BehaviourMethod(
-                                classToVerify.newInstance(), method, verifier);
-                        methodToVerify.accept(visitor);
-                    }
-                }
+                visitBehaviourMethods(visitor);
             }
-            visitor.after(this);
         }
         catch (Exception e) {
-            throw new JBehaveFrameworkError("Failed to verify " + classToVerify.getName(), e);
+            throw new JBehaveFrameworkError(classToVerify.getName(), e);
         }
     }
     
+    private void visitBehaviourMethods(Visitor visitor) throws InstantiationException, IllegalAccessException {
+        Method[] methods = classToVerify.getMethods();
+        for (int j = 0; j < methods.length; j++) {
+            Method method = methods[j];
+            if (method.getName().startsWith("should")
+                    && method.getParameterTypes().length == 0) {
+                BehaviourMethod methodToVerify = new BehaviourMethod(
+                        classToVerify.newInstance(), method);
+                methodToVerify.accept(visitor);
+            }
+        }
+    }
+
     private void visitBehaviourClasses(Visitor visitor) {
         try {
             Class[] behaviourClasses = ((BehaviourClassContainer)classToVerify.newInstance()).getBehaviourClasses();
             for (int i = 0; i < behaviourClasses.length; i++) {
-                BehaviourClass visitableClass = new BehaviourClass(behaviourClasses[i], verifier);
+                BehaviourClass visitableClass = new BehaviourClass(behaviourClasses[i]);
                 visitableClass.accept(visitor);
             }
         }

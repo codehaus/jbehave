@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestSuite;
 
-import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourClass;
 import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.Result;
@@ -32,22 +31,19 @@ public class TestSuitePopulater implements Visitor {
         this.suiteRef = suiteRef;
     }
 
-    public void before(Visitable behaviour) {
-        if (behaviour instanceof BehaviourClass) {
-            beforeClass((BehaviourClass) behaviour);
+    public void visit(Visitable visitable) {
+        if (visitable instanceof BehaviourClass) {
+            visitClass((BehaviourClass) visitable);
         }
         else {
-            beforeMethod((BehaviourMethod) behaviour);
+            visitMethod((BehaviourMethod) visitable);
         }
-    }
-
-    public void after(Visitable behaviour) {
     }
 
     public void gotResult(Result result) {
     }
 
-    private void beforeClass(BehaviourClass visitableClass) {
+    private void visitClass(BehaviourClass visitableClass) {
         currentSuite = new TestSuite(visitableClass.classToVerify().getName());
         if (suiteRef[0] == null) {
             suiteRef[0] = currentSuite;
@@ -58,8 +54,8 @@ public class TestSuitePopulater implements Visitor {
         currentBehaviourClass = visitableClass.classToVerify();
     }
 
-    private void beforeMethod(BehaviourMethod behaviourMethod) {
-        Method method = behaviourMethod.methodToVerify();
+    private void visitMethod(BehaviourMethod behaviourMethod) {
+        Method method = behaviourMethod.method();
         try {
             Object instance = currentBehaviourClass.newInstance();
             currentSuite.addTest(new JUnitMethodAdapter(method, instance));

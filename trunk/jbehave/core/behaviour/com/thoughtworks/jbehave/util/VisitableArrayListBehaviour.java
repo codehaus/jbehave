@@ -5,14 +5,16 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.visitor;
+package com.thoughtworks.jbehave.util;
 
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class VisitableArrayListBehaviour extends UsingJMock {
+public class VisitableArrayListBehaviour extends UsingMiniMock {
     
     public void shouldTellEachElementToAcceptVisitor() throws Exception {
         // child...
@@ -24,8 +26,8 @@ public class VisitableArrayListBehaviour extends UsingJMock {
         list.add(child1.proxy());
         list.add(child2.proxy());
         
-        child1.expects(once()).method("accept").with(same(visitor));
-        child2.expects(once()).method("accept").with(same(visitor));
+        child1.expectsOnce("accept").with(visitor);
+        child2.expectsOnce("accept").with(visitor).after(child1, "accept");
 
         // when...
         list.accept(visitor);

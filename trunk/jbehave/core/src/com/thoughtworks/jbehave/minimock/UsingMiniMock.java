@@ -22,23 +22,19 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class UsingMiniMock {
+public class UsingMiniMock extends MiniMockBase {
     
+    private final List mocks = new ArrayList();
 
-    /** Represents a constraint on a method argument */
-    public interface Constraint {
-        boolean matches(Object arg);
-    }
-    
     /**
      * Minimal implementation of mock object, inspired by <a href="http://www.jmock.org>JMock</a>
      * 
      * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
      */
-    public class Mock {
+    protected class Mock {
         private final List expectations = new ArrayList();
-        
         private final Class type;
+        private final String name;
         
         /** Manages method invocations on the mock */
         private class Handler implements InvocationHandler {
@@ -56,13 +52,18 @@ public class UsingMiniMock {
                         return expectation;
                     }
                 }
-                throw new VerificationException("Unexpected: " + method.getName() + '(' + Arrays.asList(args) + ')');
+                throw new VerificationException("Unexpected invocation: " + name + "." + method.getName() + '(' + Arrays.asList(args) + ')');
             }
         }
         
         /** Constructor */
         public Mock(Class type) {
+            this(type, "Mock " + type.getName());
+        }
+        
+        public Mock(Class type, String name) {
             this.type = type;
+            this.name = name;
             mocks.add(this);
         }
         
@@ -70,21 +71,25 @@ public class UsingMiniMock {
         public Object proxy() {
             return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {type}, new Handler());
         }
-
-        /** expects method with no args */
-        public Expectation expects(String methodName) {
-            return expects(new Expectation(methodName));
+        
+        public Expectation expectsOnce(String methodName) {
+            return expects(new Expectation(this, methodName)).once();
+        }
+        
+        public Expectation expectsAtLeastOnce(String methodName) {
+            return expects(new Expectation(this, methodName)).atLeastOnce();
+        }
+        
+        public Expectation expectsNever(String methodName) {
+            return expects(new Expectation(this, methodName)).never();
         }
 
-        /** expects method with one arg */
-        public Expectation expects(String methodName, Object arg1) {
-            return expects(methodName, eq(arg1));
+        public Expectation ignores(String methodName) {
+            return expects(new Expectation(this, methodName)).zeroOrMoreTimes();
         }
-
-        /** expects method with one arg, using custom {@link Constraint} */
-        public Expectation expects(String methodName, Constraint constraint1) {
-            if (constraint1 == null) constraint1 = same(null); // for some reason, expects("method", null) matches this signature
-            return expects(new Expectation(methodName, constraint1));
+        
+        public Expectation stubs(String methodName) {
+            return ignores(methodName);
         }
 
         private Expectation expects(Expectation expectation) {
@@ -92,17 +97,6 @@ public class UsingMiniMock {
             return expectation;
         }
 
-        /** stubs method with no args */
-        public Expectation stubs(String methodName) {
-            verifyMethodExists(methodName);
-            return expects(new Expectation(methodName, new Constraint[0]));
-        }
-
-        /** stubs method with one arg, using custom {@link Constraint} */
-        public Expectation stubs(String methodName, Constraint constraint1) {
-            return expects(new Expectation(methodName, new Constraint[] {constraint1})).stubs();
-        }
-        
         /** verify all expectations on the mock */
         public void verify() {
             for (Iterator i = expectations.iterator(); i.hasNext();) {
@@ -110,19 +104,16 @@ public class UsingMiniMock {
             }
         }
 
-        /** sanity check for method name - not strictly necessary */
-        private void verifyMethodExists(String methodName) {
-            Method[] methods = type.getMethods();
-            for (int i = 0; i < methods.length; i++) {
-                if (methods[i].getName().equals(methodName)) {
-                    return;
+        public Expectation expectation(String id) {
+            for (Iterator i = expectations.iterator(); i.hasNext();) {
+                Expectation expectation = (Expectation) i.next();
+                if (expectation.id().equals(id)) {
+                    return expectation;
                 }
             }
-            throw new VerificationException("Unknown method: " + methodName + " in " + type.getName());
+            throw new VerificationException("Unknown expectation id '" + id + "' for " + this);
         }
     }
-    
-    private final List mocks = new ArrayList();
 
     /** Verify all registered mocks */
     public void verifyMocks() {
@@ -132,40 +123,6 @@ public class UsingMiniMock {
     }
 
     // Some common constraints
-    
-    public Constraint eq(final Object expectedArg) {
-        return new Constraint() {
-            public boolean matches(Object arg) {
-                return arg == null ? expectedArg == null : arg.equals(expectedArg);
-            }
-            public String toString() {
-                return "eq(" + expectedArg + ")";
-            }
-        };
-    }
-
-    public Constraint same(final Object expectedArg) {
-        return new Constraint() {
-            public boolean matches(Object arg) {
-                return expectedArg == arg;
-            }
-            public String toString() {
-                return "same(" + expectedArg + ")";
-            }
-        };
-    }
-
-    public Constraint anything() {
-        return new Constraint() {
-            public boolean matches(Object arg) {
-                return true;
-            }
-            public String toString() {
-                return "anything";
-            }
-        };
-    }
-    
     
     /** stub an interface */
     public Object stub(final Class type) {
@@ -209,6 +166,7 @@ public class UsingMiniMock {
                 return new Double(0.0);
             }
             else if (method.getDeclaringClass().equals(Object.class)) {
+                // TODO equals doesn't work for stubs
                 try {
                     // invoke Object methods on self
                     return method.invoke(this, args);

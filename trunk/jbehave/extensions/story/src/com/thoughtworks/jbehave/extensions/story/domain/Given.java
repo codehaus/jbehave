@@ -7,9 +7,9 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**
@@ -20,6 +20,6 @@ public abstract class Given extends UsingJMock implements Visitable {
     public abstract void setUp(Environment environment) throws Exception;
     
     public void accept(Visitor visitor) {
-        visitor.visitGiven(this);
+        visitor.visit(this);
     }
 }

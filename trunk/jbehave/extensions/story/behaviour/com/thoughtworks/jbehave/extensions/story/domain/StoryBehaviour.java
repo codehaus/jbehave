@@ -7,15 +7,13 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import org.jmock.core.stub.DefaultResultStub;
-
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
+import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryBehaviour extends UsingJMock {
+public class StoryBehaviour extends UsingMiniMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
@@ -23,31 +21,32 @@ public class StoryBehaviour extends UsingJMock {
         Mock visitor = new Mock(Visitor.class);
         
         // expect...
-        visitor.expects(once()).method("visitStory").with(same(story));
-        visitor.setDefaultStub(new DefaultResultStub());
+        visitor.expectsOnce("visitStory").with(story);
+        visitor.ignores("visitNarrative").with(instanceOf(Narrative.class));
         
         // when...
         story.accept((Visitor) visitor.proxy());
         
-        // then...
+        // verify...
         verifyMocks();
     }
     
-    public void shouldTellComponentsToAcceptVisitorInCorrectOrder() throws Exception {
+    public void shouldPassComponentsToVisitorInCorrectOrder() throws Exception {
+
         // given...
-        Mock acceptanceCriteria = new Mock(AcceptanceCriteria.class, "criteria");
-        Mock narrative = new Mock(MockableNarrative.class, "narrative");
-        Visitor visitor = (Visitor)stub(Visitor.class);
-        Story story = new Story((Narrative)narrative.proxy(), (AcceptanceCriteria)acceptanceCriteria.proxy());
+        AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+        Narrative narrative = new Narrative("role", "feature", "benefit");
+        Mock visitor = new Mock(Visitor.class);
+        Story story = new Story(narrative, acceptanceCriteria);
 
         // expect...
-        narrative.expects(once()).method("accept").with(same(visitor));
-        acceptanceCriteria.expects(once()).method("accept").with(same(visitor)).after(narrative, "accept");
+        visitor.expectsOnce("visitStory").with(story);
+        visitor.expectsOnce("visitNarrative").with(narrative);
         
         // when...
-        story.accept(visitor);
+        story.accept((Visitor) visitor.proxy());
         
-        // then...
+        // verifyd...
         verifyMocks();
     }
 }

@@ -20,7 +20,6 @@ import com.thoughtworks.jbehave.extensions.story.domain.ScenarioBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.StoryBehaviour;
 import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListenerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.runner.StoryRunnerBehaviour;
-import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehaviour;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -39,8 +38,7 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
                 ScenarioBehaviour.class,
                 StoryBehaviour.class,
                 TextScenarioListenerBehaviour.class,
-                StoryRunnerBehaviour.class,
-                VisitableArrayListBehaviour.class
+                StoryRunnerBehaviour.class
         };
     }
 }

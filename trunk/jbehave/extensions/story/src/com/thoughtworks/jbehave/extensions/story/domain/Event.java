@@ -7,10 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
-
-
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -19,6 +17,6 @@ public abstract class Event implements Visitable {
     public abstract void occurIn(Environment environment) throws Exception;
 
     public void accept(Visitor visitor) {
-        visitor.visitEvent(this);
+        visitor.visit(this);
     }
 }

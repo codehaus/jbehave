@@ -5,11 +5,15 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.visitor;
+package com.thoughtworks.jbehave.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
+
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

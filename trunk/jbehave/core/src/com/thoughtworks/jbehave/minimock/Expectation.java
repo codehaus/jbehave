@@ -10,37 +10,37 @@ package com.thoughtworks.jbehave.minimock;
 import java.util.Arrays;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.minimock.UsingMiniMock.Constraint;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock.Mock;
 
-public class Expectation {
-    private final String expectedMethodName;
-    private final Constraint[] constraints;
+public class Expectation extends MiniMockBase {
+    private final Mock mock;
+    private final String methodName;
 
+    private Constraint[] constraints;
     private Object returnValue;
     private int minCalls = 1;
     private int maxCalls = 1;
     private int calls;
+    private Expectation after;
+    private String id;
 
-    public Expectation(String methodName, Constraint[] constraints) {
-        this.expectedMethodName = methodName;
-        this.constraints = constraints;
-    }
 
-    public Expectation(String methodName, Constraint constraint) {
-        this(methodName, new Constraint[] { constraint });
-    }
-
-    public Expectation(String methodName) {
-        this(methodName, new Constraint[0]);
+    public Expectation(Mock mock, String methodName) {
+        this.mock = mock;
+        this.id = this.methodName = methodName;
+        once();
     }
 
     public void methodCalled() {
-        Verify.that("Unexpected call to " + expectedMethodName + " (Expected " + maxCalls + " calls)", calls < maxCalls);
+        if (after != null) {
+            after.verify();
+        }
+        Verify.that("Unexpected call to " + methodName + " (Expected " + maxCalls + " calls)", calls < maxCalls);
         calls++;
     }
 
-    public boolean matches(String methodName, Object[] args) {
-        if (!methodName.equals(expectedMethodName)) return false;
+    public boolean matches(String actualName, Object[] args) {
+        if (!methodName.equals(actualName)) return false;
         
         if (args == null) {
             args = new Object[0];
@@ -55,26 +55,25 @@ public class Expectation {
     }
     
     public void verify() {
-        Verify.that("Expected method not called: " + expectedMethodName + Arrays.asList(constraints), calls >= minCalls);
+        Verify.that("Expected method not called: " + methodName + Arrays.asList(constraints), calls >= minCalls);
     }
     
     // Return value
     
-    public void willReturn(Object value) {
+    public Expectation willReturn(Object value) {
         returnValue = value;
+        return this;
     }
 
     public final Object returnValue() {
         return returnValue;
     }
+    
+    public void willThrow(Throwable throwable) {
+        throw new UnsupportedOperationException("todo");
+    }
 
     // Counts
-    
-    public Expectation stubs() {
-        minCalls = 0;
-        maxCalls = Integer.MAX_VALUE;
-        return this;
-    }
     
     public Expectation once() {
         minCalls = maxCalls = 1;
@@ -91,8 +90,55 @@ public class Expectation {
         maxCalls = Integer.MAX_VALUE;
         return this;
     }
+    
+    public Expectation zeroOrMoreTimes() {
+        minCalls = 0;
+        maxCalls = Integer.MAX_VALUE;
+        return this;
+    }
+    
+    // with arguments
 
-    public void willThrow(Throwable throwable) {
-        throw new UnsupportedOperationException("todo");
+    public Expectation with(Object object) {
+        return with(same(object));
+    }
+
+    public Expectation with(Constraint constraint) {
+        return with(new Constraint[] {constraint});
+    }
+
+    public Expectation with(Constraint[] constraints) {
+        this.constraints = constraints;
+        return this;
+    }
+
+    // after
+    
+    public Expectation after(Mock otherMock, String otherId) {
+        after = otherMock.expectation(otherId);
+        return this;
+    }
+
+    public Expectation after(String otherId) {
+        return after(mock, otherId);
+    }
+    
+    // id
+    
+    public String id() {
+        return id;
+    }
+
+    public Expectation id(String id) {
+        this.id = id;
+        return this;
+    }
+    
+    public String toString() {
+        return methodName + Arrays.asList(constraints);
+    }
+
+    public String methodName() {
+        return methodName;
     }
 }

@@ -7,10 +7,10 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.extensions.story.listener.NULLScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**
@@ -62,7 +62,7 @@ public class Scenario implements Visitable {
     
     public void accept(Visitor visitor) {
         try {
-            visitor.visitScenario(this);
+            visitor.visit(this);
             context.accept(visitor);
             outcome.accept(visitor);
             event.accept(visitor);

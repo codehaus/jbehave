@@ -9,12 +9,11 @@ package example;
 import java.io.OutputStreamWriter;
 
 import com.adsl.stories.AOLMemberChecksBroadbandAvailabilityUsingTheAOLClient;
+import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListener;
-import com.thoughtworks.jbehave.extensions.story.renderers.PlainTextRenderer;
 import com.thoughtworks.jbehave.extensions.story.runner.StoryRunner;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**
@@ -39,7 +38,7 @@ public class Run {
                     new TextScenarioListener(new OutputStreamWriter(System.out))
             );
             
-            visitor = new PlainTextRenderer(System.out);
+            visitor = null; //new PlainTextRenderer(System.out);
             Story story = new AOLMemberChecksBroadbandAvailabilityUsingTheAOLClient();
             story.accept(visitor);
 

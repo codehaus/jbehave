@@ -20,9 +20,10 @@ import org.apache.tools.ant.types.CommandlineJava;
 import org.apache.tools.ant.types.Path;
 
 import com.thoughtworks.jbehave.core.BehaviourClass;
-import com.thoughtworks.jbehave.core.listeners.TextReporter;
-import com.thoughtworks.jbehave.core.verifiers.InvokeMethodWithSetUpAndTearDown;
-import com.thoughtworks.jbehave.extensions.ant.listeners.AntVisitor;
+import com.thoughtworks.jbehave.core.BehaviourMethodVerifier;
+import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
+import com.thoughtworks.jbehave.core.listeners.TextListener;
+import com.thoughtworks.jbehave.extensions.ant.listeners.AntListener;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -77,18 +78,22 @@ public class AntTask extends org.apache.tools.ant.Task {
 
 	private void verifyAll() {
 		createClassLoader();
-        TextReporter textReporter = new TextReporter(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
-        AntVisitor antVisitor = new AntVisitor(textReporter);
+        TextListener textListener = new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
+        AntListener antListener = new AntListener(textListener);
+        BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
+        verifier.add(antListener);
+        
 		for (Iterator iter = behaviourClassList.iterator(); iter.hasNext(); ) {
-			verifyBehaviourClass((BehaviourClassDetails) iter.next(), antVisitor);
+			final BehaviourClassDetails behaviourClassDetails = (BehaviourClassDetails) iter.next();
+            verifyBehaviourClass(behaviourClassDetails, verifier);
+            if (antListener.verificationFailed()) throw new BuildException(behaviourClassDetails.getBehaviourClassName() + "failed");
 		}
 	}
 
-	private void verifyBehaviourClass(BehaviourClassDetails behaviourClassDetails, AntVisitor antVisitor) {
+	private void verifyBehaviourClass(BehaviourClassDetails behaviourClassDetails, BehaviourMethodVerifier verifier) {
 		try {
-            BehaviourClass visitableClass = new BehaviourClass(classFor(behaviourClassDetails), new InvokeMethodWithSetUpAndTearDown());
-            visitableClass.accept(antVisitor);
-			if (antVisitor.verificationFailed()) throw new BuildException(behaviourClassDetails.getBehaviourClassName() + "failed");
+            BehaviourClass behaviourClass = new BehaviourClass(classFor(behaviourClassDetails));
+            behaviourClass.accept(verifier);
 		} catch (ClassNotFoundException e) {
         	throw new BuildException(e);
 		}

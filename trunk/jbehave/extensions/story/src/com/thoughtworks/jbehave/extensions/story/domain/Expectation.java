@@ -7,8 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
 
 
 /**
@@ -22,27 +22,10 @@ public abstract class Expectation implements Visitable {
     public abstract void setExpectationIn(Environment environment) throws Exception;
     public abstract void verify(Environment environment) throws Exception;
 
-    private boolean alreadyAcceptedVisitor = false;
-
     /**
      * Passes itself into a {@link Visitor}
-     * 
-     * The first time this method is called, the object passes itself into
-     * the {@link Visitor#visitExpectationBeforeTheEvent(Expectation)} method.<br/>
-     * <br/>
-     * The second and subsequent times, it passes itself into the
-     * {@link Visitor#visitExpectationAfterTheEvent(Expectation)} method.<br/>
-     * <br/>
-     * It is up to you to ensure that you visit the {@link Event} in the meantime!
      */
     public void accept(Visitor visitor) {
-        if (!alreadyAcceptedVisitor) {
-            visitor.visitExpectationBeforeTheEvent(this);
-            alreadyAcceptedVisitor = true;
-        }
-        else {
-            visitor.visitExpectationAfterTheEvent(this);
-        }
-        
+        visitor.visit(this);
     }
 }

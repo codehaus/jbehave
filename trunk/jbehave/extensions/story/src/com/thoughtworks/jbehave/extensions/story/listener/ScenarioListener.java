@@ -12,6 +12,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @deprecated
  */
 public interface ScenarioListener {
     void scenarioUnimplemented(Scenario scenario, UnimplementedException cause);

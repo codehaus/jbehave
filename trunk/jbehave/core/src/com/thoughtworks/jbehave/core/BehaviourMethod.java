@@ -13,25 +13,18 @@ import java.lang.reflect.Method;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class BehaviourMethod implements Behaviour {
+public class BehaviourMethod implements Visitable {
 
     private final Object instance;
-    private final Method methodToVerify;
-    private final Verifier verifier;
+    private final Method method;
 
-    public BehaviourMethod(Object instance, Method methodToVerify, Verifier verifier) {
+    public BehaviourMethod(Object instance, Method method) {
         this.instance = instance;
-        this.methodToVerify = methodToVerify;
-        this.verifier = verifier;
+        this.method = method;
     }
 
-    public Result verify(Verifier ignored) {
-        verifier.verify(this);
-        return null;
-    }
-
-    public Method methodToVerify() {
-        return methodToVerify;
+    public Method method() {
+        return method;
     }
 
     public Object instance() {
@@ -39,9 +32,6 @@ public class BehaviourMethod implements Behaviour {
     }
 
     public void accept(Visitor visitor) {
-        visitor.before(this);
-        Result result = verifier.verify(this);
-        visitor.gotResult(result);
-        visitor.after(this);
+        visitor.visit(this);
     }
 }

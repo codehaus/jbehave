@@ -8,8 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.extensions.story.domain.Given;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
+import com.thoughtworks.jbehave.core.Visitable;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -17,5 +16,14 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 public class GivenBehaviour {
     public void shouldBeVisitable() throws Exception {
         Verify.that(Visitable.class.isAssignableFrom(Given.class));
+    }
+    
+    public void shouldPassItselfToVisitor() throws Exception {
+        // given...
+        Verify.pending();
+
+        // expect...
+        // when...
+        // then...
     }
 }

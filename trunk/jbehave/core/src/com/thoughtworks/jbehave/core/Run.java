@@ -9,8 +9,8 @@ package com.thoughtworks.jbehave.core;
 
 import java.io.PrintWriter;
 
-import com.thoughtworks.jbehave.core.listeners.TextReporter;
-import com.thoughtworks.jbehave.core.verifiers.InvokeMethodWithSetUpAndTearDown;
+import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
+import com.thoughtworks.jbehave.core.listeners.TextListener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -19,16 +19,16 @@ public class Run {
     public static void main(String[] args) {
         try {
             Class classToVerify = Class.forName(args[0]);
-            TextReporter textReporter = new TextReporter(new PrintWriter(System.out));
-            BehaviourClass visitableClass = new BehaviourClass(classToVerify, new InvokeMethodWithSetUpAndTearDown());
-            visitableClass.accept(textReporter);
+            BehaviourClass visitableClass = new BehaviourClass(classToVerify);
+            
+//            TextReporter textReporter = new TextReporter(new PrintWriter(System.out));
+//            visitableClass.accept(textReporter);
 
-//            TextListener textListener = new TextListener(new PrintWriter(System.out));
-//            BehaviourVerifier verifier = new BehaviourVerifier();
-//            verifier.registerListener(textListener);
-//            BehaviourClass behaviourClass = new BehaviourClass(classToVerify, verifier, new InvokeMethodWithSetUpAndTearDown());
-//            verifier.verify(behaviourClass);
-//            textListener.printReport();
+            TextListener textListener = new TextListener(new PrintWriter(System.out));
+            BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
+            verifier.add(textListener);
+            visitableClass.accept(verifier);
+            textListener.printReport();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Problem verifying behaviour class " + args[0]);

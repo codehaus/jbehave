@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.verifiers;
+package com.thoughtworks.jbehave.core.invokers;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,16 +13,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.BehaviourMethod;
-import com.thoughtworks.jbehave.core.Verifier;
+import com.thoughtworks.jbehave.core.MethodInvoker;
 import com.thoughtworks.jbehave.core.Result;
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.core.verifiers.InvokeMethodWithSetUpAndTearDown;
+import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class InvokeMethodWithSetUpAndTearDownBehaviour {
-    private Verifier verifier;
+    private MethodInvoker verifier;
     
     public void setUp() {
         verifier = new InvokeMethodWithSetUpAndTearDown();
@@ -38,10 +38,10 @@ public class InvokeMethodWithSetUpAndTearDownBehaviour {
         // given
         StoresInvocation instance = new StoresInvocation();
         Method method = StoresInvocation.class.getMethod("shouldDoSomething", new Class[0]);
-        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method, null);
+        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method);
         
         // when
-        verifier.verify(verifiableMethod);
+        verifier.invoke(verifiableMethod);
         
         // then
         Verify.that(instance.methodWasInvoked);
@@ -65,7 +65,7 @@ public class InvokeMethodWithSetUpAndTearDownBehaviour {
         // given
         HasSetUpAndTearDown instance = new HasSetUpAndTearDown();
         Method method = HasSetUpAndTearDown.class.getMethod("shouldDoSomething", new Class[0]);
-        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method, null);
+        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method);
         
         // expect
         List expected = Arrays.asList(new String[] {
@@ -73,7 +73,7 @@ public class InvokeMethodWithSetUpAndTearDownBehaviour {
         });
         
         // when
-        verifier.verify(verifiableMethod);
+        verifier.invoke(verifiableMethod);
         
         // then
         Verify.equal(expected, instance.whatHappened);
@@ -91,10 +91,10 @@ public class InvokeMethodWithSetUpAndTearDownBehaviour {
         // given
         Object instance = new SetUpThrowsException();
         Method method = SetUpThrowsException.class.getMethod("shouldDoSomething", new Class[0]);
-        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method, null);
+        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method);
         
         // when
-        Result result = verifier.verify(verifiableMethod);
+        Result result = verifier.invoke(verifiableMethod);
         
         // then
         Verify.instanceOf(CheckedException.class, result.cause());
@@ -110,10 +110,10 @@ public class InvokeMethodWithSetUpAndTearDownBehaviour {
         // given
         Object instance = new MethodThrowsException();
         Method method = MethodThrowsException.class.getMethod("shouldDoSomething", new Class[0]);
-        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method, null);
+        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method);
         
         // when
-        Result result = verifier.verify(verifiableMethod);
+        Result result = verifier.invoke(verifiableMethod);
         
         // then
         Verify.instanceOf(CheckedException.class, result.cause());
@@ -129,10 +129,10 @@ public class InvokeMethodWithSetUpAndTearDownBehaviour {
         // given
         Object instance = new TearDownThrowsException();
         Method method = TearDownThrowsException.class.getMethod("shouldDoSomething", new Class[0]);
-        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method, null);
+        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method);
         
         // when
-        Result result = verifier.verify(verifiableMethod);
+        Result result = verifier.invoke(verifiableMethod);
         
         // then
         Verify.instanceOf(CheckedException.class, result.cause());
@@ -151,10 +151,10 @@ public class InvokeMethodWithSetUpAndTearDownBehaviour {
         // given
         Object instance = new MethodAndTearDownBothThrowException();
         Method method = MethodAndTearDownBothThrowException.class.getMethod("shouldDoSomething", new Class[0]);
-        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method, null);
+        BehaviourMethod verifiableMethod = new BehaviourMethod(instance, method);
         
         // when
-        Result result = verifier.verify(verifiableMethod);
+        Result result = verifier.invoke(verifiableMethod);
         
         // then
         Verify.equal("from method", result.cause().getMessage());

@@ -9,12 +9,10 @@ package com.thoughtworks.jbehave.core.listeners;
 
 import java.io.StringWriter;
 
-import com.thoughtworks.jbehave.core.Behaviour;
-import com.thoughtworks.jbehave.core.BehaviourClass;
+import com.thoughtworks.jbehave.core.BehaviourMethod;
+import com.thoughtworks.jbehave.core.BehaviourMethodResult;
 import com.thoughtworks.jbehave.core.Result;
-import com.thoughtworks.jbehave.core.Verifier;
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.core.Visitable;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.minimock.UsingMiniMock;
@@ -23,7 +21,7 @@ import com.thoughtworks.jbehave.util.Timer;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextReporterBehaviour extends UsingMiniMock {
+public class TextListenerBehaviour extends UsingMiniMock {
     private static class StatefulTimer extends Timer {
         public boolean isRunning = false;
         public void start() {
@@ -35,13 +33,19 @@ public class TextReporterBehaviour extends UsingMiniMock {
     }
     
     private StringWriter writer;
-    private TextReporter listener;
+    private TextListener listener;
     private StatefulTimer timer;
+    private BehaviourMethod behaviourMethod;
+    
+    public static class FooBehaviour {
+        public void shouldDoSomething() {}
+    }
 
     public void setUp() throws Exception {
         writer = new StringWriter();
         timer = new StatefulTimer();
-        listener = new TextReporter(writer, timer);
+        listener = new TextListener(writer, timer);
+        behaviourMethod = new BehaviourMethod(new FooBehaviour(), FooBehaviour.class.getMethod("shouldDoSomething", null));
     }
 
     public void shouldRenderSuccessSymbolForSuccess() throws Exception {
@@ -71,13 +75,11 @@ public class TextReporterBehaviour extends UsingMiniMock {
     
     public void shouldSummarizeSingleSuccessfulMethod() throws Exception {
         // given...
-        Visitable behaviour = (Visitable) stub(Behaviour.class);
-        Result succeeded = new Result("shouldDoX", Result.SUCCEEDED);
+        Result succeeded = new BehaviourMethodResult(behaviourMethod);
         
         // when...
-        listener.before(behaviour);
         listener.gotResult(succeeded);
-        listener.after(behaviour);
+        listener.printReport();
         
         // then...
         verifyOutputContains("\nMethods: 1");
@@ -85,30 +87,24 @@ public class TextReporterBehaviour extends UsingMiniMock {
 
     public void shouldSummarizeTwoSuccessfulMethods() throws Exception {
         // given...
-        Result succeeded = new Result("shouldDoX", Result.SUCCEEDED);
-        Visitable visitableClass = (Visitable) stub(Behaviour.class);
+        Result succeeded = new BehaviourMethodResult(behaviourMethod);
         
         // when...
-        listener.before(visitableClass);
         listener.gotResult(succeeded);
         listener.gotResult(succeeded);
-        listener.after(visitableClass);
+        listener.printReport();
         
         // then...
         verifyOutputContains("\nMethods: 2");
     }
     
-    public static class FooBehaviour {}
-
     public void shouldPrintSummaryWhenMethodFails() throws Exception {
         // given...
-        Visitable behaviour = new BehaviourClass(FooBehaviour.class, (Verifier)stub(Verifier.class));
-        Result failed = new Result("shouldDoX", new VerificationException("oops"));
+        Result failed = new BehaviourMethodResult(behaviourMethod, new VerificationException("oops"));
         
         // when...
-        listener.before(behaviour);
         listener.gotResult(failed);
-        listener.after(behaviour);
+        listener.printReport();
         
         // then...
         verifyOutputContains("\nMethods: 1. Failures: 1");
@@ -116,33 +112,29 @@ public class TextReporterBehaviour extends UsingMiniMock {
 
     public void shouldPrintStackTraceWhenMethodFails() throws Exception {
         // given...
-        Visitable behaviour = new BehaviourClass(FooBehaviour.class, (Verifier)stub(Verifier.class));
-        Result failed = new Result("shouldDoX", new VerificationException("oops"));
+        Result failed = new BehaviourMethodResult(behaviourMethod, new VerificationException("oops"));
         
         // expect...
         String expectedShortName = "Foo";
         String expectedFullName = FooBehaviour.class.getName();
         
         // when...
-        listener.before(behaviour);
         listener.gotResult(failed);
-        listener.after(behaviour);
+        listener.printReport();
         
         // then...
         verifyOutputContains("Failures:");
-        verifyOutputContains("\n1) " + expectedShortName + " shouldDoX [" + expectedFullName + "]:");
+        verifyOutputContains("\n1) " + expectedShortName + " shouldDoSomething [" + expectedFullName + "]:");
         verifyOutputContains("VerificationException");
     }
 
     public void shouldPrintSummaryWhenMethodThrowsException() throws Exception {
         // given...
-        Visitable behaviour = new BehaviourClass(FooBehaviour.class, (Verifier)stub(Verifier.class));
-        Result threwException = new Result("shouldDoX", new Exception());
+        Result threwException = new BehaviourMethodResult(behaviourMethod, new Exception());
         
         // when...
-        listener.before(behaviour);
         listener.gotResult(threwException);
-        listener.after(behaviour);
+        listener.printReport();
         
         // then...
         verifyOutputContains("\nMethods: 1. Failures: 0, Exceptions: 1");
@@ -150,104 +142,36 @@ public class TextReporterBehaviour extends UsingMiniMock {
 
     public void shouldPrintStackTraceWhenMethodThrowsException() throws Exception {
         // given...
-        Visitable behaviour = new BehaviourClass(FooBehaviour.class, (Verifier)stub(Verifier.class));
-        Result threwException = new Result("shouldDoX", new Exception());
+        Result threwException = new BehaviourMethodResult(behaviourMethod, new Exception());
         
         // expect...
         String expectedShortName = "Foo";
         String expectedFullName = FooBehaviour.class.getName();
         
         // when...
-        listener.before(behaviour);
         listener.gotResult(threwException);
-        listener.after(behaviour);
+        listener.printReport();
         
         // then...
         verifyOutputContains("Exceptions Thrown:");
-        verifyOutputContains("\n1) " + expectedShortName + " shouldDoX [" + expectedFullName + "]:");
+        verifyOutputContains("\n1) " + expectedShortName + " shouldDoSomething [" + expectedFullName + "]:");
         verifyOutputContains("java.lang.Exception");
     }
     
     public void shouldSummarizePendingMethod() throws Exception {
         // given...
-        Visitable behaviour = new BehaviourClass(FooBehaviour.class, (Verifier)stub(Verifier.class));
-        Result pending = new Result("shouldDoX", new PendingException());
+        Result pending = new BehaviourMethodResult(behaviourMethod, new PendingException());
         
         // when...
-        listener.before(behaviour);
         listener.gotResult(pending);
-        listener.after(behaviour);
+        listener.printReport();
         
         // then...
         verifyOutputContains("\nPending: 1");
     }
     
-    public void shouldEnsureTimerIsRunningWhenBehaviourClassVerificationStarts() throws Exception {
-        // given...
-        Visitable behaviour = (Visitable)stub(Behaviour.class);
-        
-        // when...
-        listener.before(behaviour);
-        
+    public void shouldStartTimerWhenConstructed() throws Exception {
         // verify...
         Verify.that(timer.isRunning);
-    }
-    
-    public void shouldStopTimerWhenBehaviourClassVerificationEnds() throws Exception {
-        // given...
-        Visitable behaviour = (Visitable)stub(Behaviour.class);
-        listener.before(behaviour);
-        
-        // when...
-        listener.after(behaviour);
-        
-        // verify...
-        Verify.not(timer.isRunning);
-    }
-    
-    public void shouldNotStartTimerAgainWhenNestedBehaviourClassVerificationStarts() throws Exception {
-        // given...
-        Visitable outer = (Visitable)stub(Behaviour.class);
-        Visitable inner = (Visitable)stub(Behaviour.class);
-        
-        listener.before(outer);
-        timer.isRunning = false; // reset timer
-        
-        // when...
-        listener.before(inner);
-        
-        // verify...
-        Verify.not(timer.isRunning);
-    }
-    
-    public void shouldNotStopTimerWhenNestedBehaviourClassVerificationEnds() throws Exception {
-        // given...
-        Visitable outer = (Visitable)stub(Behaviour.class);
-        Visitable inner = (Visitable)stub(Behaviour.class);
-        
-        listener.before(outer);
-        listener.before(inner);
-        
-        // when...
-        listener.after(inner);
-        
-        // verify...
-        Verify.that(timer.isRunning); // hasn't been stopped
-    }
-    
-    public void shouldStopTimerWhenOuterBehaviourClassVerificationEnds() throws Exception {
-        // given...
-        Visitable outer = (Visitable)stub(Behaviour.class);
-        Visitable inner = (Visitable)stub(Behaviour.class);
-        
-        listener.before(outer);
-        listener.before(inner);
-        listener.after(inner);
-        
-        // when...
-        listener.after(outer);
-        
-        // verify...
-        Verify.not(timer.isRunning); // hasn't been stopped
     }
 }

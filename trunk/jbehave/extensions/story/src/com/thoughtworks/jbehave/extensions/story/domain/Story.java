@@ -10,8 +10,8 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
 /**
@@ -53,7 +53,7 @@ public class Story implements Visitable {
     }
     
     public void accept(Visitor visitor) {
-        visitor.visitStory(this);
+        visitor.visit(this);
         narrative.accept(visitor);
         criteria.accept(visitor);
     }

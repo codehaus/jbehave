@@ -7,17 +7,14 @@
  */
 package com.thoughtworks.jbehave.extensions.story.runner;
 
-import com.thoughtworks.jbehave.extensions.story.domain.Context;
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
-import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
-import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -30,18 +27,21 @@ public class StoryRunner implements Visitor {
         this.environment = environment;
         this.listener = listener;
     }
-
-    public void visitStory(Story story) {
+    
+    public void visit(Visitable visitable) {
+        if (visitable instanceof Scenario) {
+            visitScenario((Scenario) visitable);
+        }
+        else if (visitable instanceof Given) {
+            visitGiven((Given) visitable);
+        }
+        else if (visitable instanceof Event) {
+            visitEvent((Event) visitable);
+        }
     }
     
-    public void visitNarrative(Narrative narrative) {
-    }
-
     public void visitScenario(Scenario scenario) {
         scenario.setListener(listener);
-    }
-
-    public void visitContext(Context context) {
     }
     
     public void visitGiven(Given given) {
@@ -55,9 +55,6 @@ public class StoryRunner implements Visitor {
             // TODO: handle exception
 //            e.printStackTrace();
         }
-    }
-
-    public void visitOutcome(Outcome Outcome) {
     }
 
     public void visitExpectationBeforeTheEvent(Expectation expectation) {

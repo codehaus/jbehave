@@ -11,6 +11,6 @@ package com.thoughtworks.jbehave.core;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface Verifier {
-    Result verify(Verifiable verifiable);
+public interface MethodInvoker {
+    Result invoke(BehaviourMethod behaviourMethod);
 }

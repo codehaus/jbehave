@@ -13,26 +13,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.BehaviourClass;
+import com.thoughtworks.jbehave.core.BehaviourMethodResult;
 import com.thoughtworks.jbehave.core.Result;
-import com.thoughtworks.jbehave.core.Visitable;
-import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.core.ResultListener;
 import com.thoughtworks.jbehave.util.Timer;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextReporter implements Visitor {
-    /** Stores something interesting to report */
-    private static class Note {
-        public final Result result;
-        public final BehaviourClass behaviourClass;
-        public Note(Result result, BehaviourClass behaviourClass) {
-            this.result = result;
-            this.behaviourClass = behaviourClass;
-        }
-    }
-    
+public class TextListener implements ResultListener {
     public static final String SUCCESS = ".";
     public static final String FAILURE = "F";
     public static final String EXCEPTION_THROWN = "E";
@@ -44,49 +33,31 @@ public class TextReporter implements Visitor {
     private final List exceptionsThrown = new ArrayList();
     private final List pending = new ArrayList();
     private final Timer timer;
-    private Visitable outermost = null;
-    private BehaviourClass currentClass = null;
 
-    public TextReporter(Writer writer, Timer timer) {
+    public TextListener(Writer writer, Timer timer) {
         out = new PrintWriter(writer);
         this.timer = timer;
         timer.start();
     }
-
-    public TextReporter(Writer writer) {
+    
+    public TextListener(Writer writer) {
         this(writer, new Timer());
     }
-
-    public void before(Visitable visitable) {
-        if (outermost == null) {
-            outermost = visitable;
-        }
-        
-        if (visitable instanceof BehaviourClass) {
-            currentClass = (BehaviourClass) visitable;
-        }
-    }
-
-    public void after(Visitable visitable) {
-        if (visitable == outermost) {
-            printReport();
-        }
-    }
-
+    
     public void gotResult(Result result) {
         methodsVerified++;
         if (result.failed()) {
-            failures.add(new Note(result, currentClass));
+            failures.add(result);
         }
         else if (result.threwException()) {
-            exceptionsThrown.add(new Note(result, currentClass));
+            exceptionsThrown.add(result);
         }
         else if (result.isPending()) {
-            pending.add(new Note(result, currentClass));
+            pending.add(result);
         }
         out.print(result.status().symbol());
     }
-
+    
     public void printReport() {
         timer.stop();
         out.println();
@@ -97,11 +68,11 @@ public class TextReporter implements Visitor {
         printSummaryCounts();
         out.flush();
     }
-
+    
     private void printElapsedTime() {
         out.println("Time: " + timer.elapsedTimeMillis()/1000.0 + "s\n");
     }
-
+    
     private void printSummaryCounts() {
         out.print("Methods: " + methodsVerified + ".");
         if (failures.size() + exceptionsThrown.size() > 0) {
@@ -124,9 +95,9 @@ public class TextReporter implements Visitor {
             out.println();
             int count = 1;
             for (Iterator i = errorList.iterator(); i.hasNext(); count++) {
-                Note note = (Note)i.next();
-                printNote(count, note);
-                note.result.cause().printStackTrace(out);
+                BehaviourMethodResult result = (BehaviourMethodResult) i.next();
+                printResult(count, result);
+                result.cause().printStackTrace(out);
                 out.println();
             }
         }
@@ -138,20 +109,20 @@ public class TextReporter implements Visitor {
             out.println();
             int count = 1;
             for (Iterator i = pending.iterator(); i.hasNext(); count++) {
-                Note note = (Note) i.next();
-                printNote(count, note);
-                out.println("\t" + note.result.cause().getMessage());
+                BehaviourMethodResult result =  (BehaviourMethodResult) i.next();
+                printResult(count, result);
+                out.println("\t" + result.cause().getMessage());
             }
         }
     }
     
-    private void printNote(int count, Note note) {
-        String fullName = note.behaviourClass.classToVerify().getName();
+    private void printResult(int count, BehaviourMethodResult result) {
+        String fullName = result.behaviourMethod().instance().getClass().getName();
         String shortName = fullName.substring(fullName.lastIndexOf('.') + 1);
         shortName = fullName.substring(fullName.lastIndexOf('$') + 1);
         if (shortName.endsWith("Behaviour")) {
             shortName = shortName.substring(0, shortName.length() - 9);
         }
-        out.println(count + ") " + shortName + " " + note.result.name() + " [" + fullName + "]:");
+        out.println(count + ") " + shortName + " " + result.name() + " [" + fullName + "]:");
     }
 }

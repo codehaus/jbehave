@@ -5,15 +5,15 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.verifiers;
+package com.thoughtworks.jbehave.core.invokers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.jbehave.core.BehaviourMethod;
+import com.thoughtworks.jbehave.core.BehaviourMethodResult;
+import com.thoughtworks.jbehave.core.MethodInvoker;
 import com.thoughtworks.jbehave.core.Result;
-import com.thoughtworks.jbehave.core.Verifiable;
-import com.thoughtworks.jbehave.core.Verifier;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 
 /**
@@ -22,21 +22,18 @@ import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class InvokeMethodWithSetUpAndTearDown implements Verifier {
+public class InvokeMethodWithSetUpAndTearDown implements MethodInvoker {
 
-    public Result verify(Verifiable behaviour) {
-        if (!(behaviour instanceof BehaviourMethod)) return null;
-        
-        BehaviourMethod verifiableMethod = (BehaviourMethod) behaviour;
+    public Result invoke(BehaviourMethod behaviour) {
         try {
-            invoke(verifiableMethod.instance(), verifiableMethod.methodToVerify());
-            return new Result(verifiableMethod.methodToVerify().getName(), Result.SUCCEEDED);
+            invoke(behaviour.instance(), behaviour.method());
+            return new BehaviourMethodResult(behaviour);
         }
         catch (InvocationTargetException e) {
-            return new Result(verifiableMethod.methodToVerify().getName(), e.getTargetException());
+            return new BehaviourMethodResult(behaviour, e.getTargetException());
         }
         catch (Throwable e) {
-            throw new JBehaveFrameworkError("Problem verifying method " + verifiableMethod.methodToVerify().getName());
+            throw new JBehaveFrameworkError("Problem verifying method " + behaviour.method().getName());
         }
     }
 
