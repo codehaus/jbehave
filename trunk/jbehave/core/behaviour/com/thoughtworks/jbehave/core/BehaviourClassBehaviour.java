@@ -16,15 +16,15 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
     public void shouldTellMethodsToAcceptVisitor() throws Exception {
         // given...
         BehaviourClass behaviourClass = new BehaviourClass(HasTwoMethods.class);
-        Mock visitor = new Mock(Visitor.class);
+        Mock visitor = mock(Visitor.class);
         
         // expect...
-        visitor.expectsOnce("visit").with(behaviourClass).willReturn("hello").id("1");
-        visitor.expectsOnce("visit").with(new MatchesBehaviourMethodName("shouldDoSomething")).id("2").after("1");
-        visitor.expectsOnce("visit").with(new MatchesBehaviourMethodName("shouldDoSomethingElse")).id("3").after("2");
+        visitor.expects("visit").with(behaviourClass).willReturn("hello").id("1");
+        visitor.expects("visit").with(new MatchesBehaviourMethodName("shouldDoSomething")).id("2").after("1");
+        visitor.expects("visit").with(new MatchesBehaviourMethodName("shouldDoSomethingElse")).id("3").after("2");
         
         // when...
-        behaviourClass.accept((Visitor) visitor.proxy());
+        behaviourClass.accept((Visitor) visitor);
         
         // verify...
         verifyMocks();
@@ -42,16 +42,16 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
     
     public void shouldPassClassesIntoVisitor() throws Exception {
         // given...
-        Mock visitor = new Mock(Visitor.class);
+        Mock visitor = mock(Visitor.class);
         BehaviourClass behaviourClass = new BehaviourClass(SomeBehaviourClasses.class);
         
         // expect...
-        visitor.expectsOnce("visit").with(new MatchesBehaviourClassName(SomeBehaviourClasses.class)).id("1");
-        visitor.expectsOnce("visit").with(new MatchesBehaviourClassName(OneBehaviourClass.class)).id("2").after("1");
-        visitor.expectsOnce("visit").with(new MatchesBehaviourClassName(AnotherBehaviourClass.class)).after("2");
+        visitor.expects("visit").with(new MatchesBehaviourClassName(SomeBehaviourClasses.class)).id("1");
+        visitor.expects("visit").with(new MatchesBehaviourClassName(OneBehaviourClass.class)).id("2").after("1");
+        visitor.expects("visit").with(new MatchesBehaviourClassName(AnotherBehaviourClass.class)).after("2");
         
         // when...
-        behaviourClass.accept((Visitor) visitor.proxy());
+        behaviourClass.accept((Visitor) visitor);
         
         // then...
         verifyMocks();

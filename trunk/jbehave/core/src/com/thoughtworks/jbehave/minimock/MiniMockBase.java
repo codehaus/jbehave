@@ -12,6 +12,20 @@ package com.thoughtworks.jbehave.minimock;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class MiniMockBase {
+    
+    protected interface Mock {
+        Expectation expects(String methodName);
+        Expectation stubs(String methodName);
+        Expectation expectation(String id);
+        void verify();
+        /** @deprecated you don't need this if you use {@link UsingMiniMock#mock(Class)} */
+        Object proxy();
+    }
+    
+    protected interface Constraint {
+        boolean matches(Object arg);
+    }
+
     public Constraint eq(final Object expectedArg) {
         return new Constraint() {
             public boolean matches(Object arg) {

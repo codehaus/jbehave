@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.jbehave.core;
 
-import com.thoughtworks.jbehave.minimock.Constraint;
 import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**

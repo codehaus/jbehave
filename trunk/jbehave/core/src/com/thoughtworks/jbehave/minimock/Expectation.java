@@ -10,20 +10,19 @@ package com.thoughtworks.jbehave.minimock;
 import java.util.Arrays;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.minimock.UsingMiniMock.Mock;
 
 public class Expectation extends MiniMockBase {
     private final Mock mock;
     private final String methodName;
 
     private Constraint[] constraints;
-    private Object returnValue;
-    private int minCalls = 1;
-    private int maxCalls = 1;
+    private int minCalls;
+    private int maxCalls;
     private int calls;
     private Expectation after;
     private String id;
-
+    private Throwable throwable;
+    private Object returnValue;
 
     public Expectation(Mock mock, String methodName) {
         this.mock = mock;
@@ -65,15 +64,16 @@ public class Expectation extends MiniMockBase {
         return this;
     }
 
-    public final Object returnValue() {
+    public final Object returnValue() throws Throwable {
+        if (throwable != null) throw throwable;
         return returnValue;
     }
     
     public void willThrow(Throwable throwable) {
-        throw new UnsupportedOperationException("todo");
+        this.throwable = throwable;
     }
 
-    // Counts
+    // Counts (only used by MockObject class)
     
     public Expectation once() {
         minCalls = maxCalls = 1;
@@ -94,6 +94,11 @@ public class Expectation extends MiniMockBase {
     public Expectation zeroOrMoreTimes() {
         minCalls = 0;
         maxCalls = Integer.MAX_VALUE;
+        return this;
+    }
+    
+    public Expectation times(int calls) {
+        minCalls = maxCalls = calls;
         return this;
     }
     

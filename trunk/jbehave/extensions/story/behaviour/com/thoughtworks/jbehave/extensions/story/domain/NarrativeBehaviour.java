@@ -8,23 +8,23 @@
 package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.Visitor;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class NarrativeBehaviour extends UsingJMock {
+public class NarrativeBehaviour extends UsingMiniMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
         Narrative narrative = new Narrative("role", "feature", "benefit");
-        Mock visitor = new Mock(Visitor.class);
+        Mock visitor = mock(Visitor.class);
         
         // expect...
-        visitor.expects(once()).method("visitNarrative").with(same(narrative));
+        visitor.expects("visit").with(same(narrative));
 
         // when...
-        narrative.accept((Visitor)visitor.proxy());
+        narrative.accept((Visitor)visitor);
         
         // then..
         verifyMocks();

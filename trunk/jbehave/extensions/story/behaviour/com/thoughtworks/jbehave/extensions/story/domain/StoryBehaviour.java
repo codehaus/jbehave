@@ -18,14 +18,15 @@ public class StoryBehaviour extends UsingMiniMock {
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
         Story story = new Story(new Narrative("role", "feature", "benefit"), new AcceptanceCriteria());
-        Mock visitor = new Mock(Visitor.class);
+        Mock visitor = mock(Visitor.class);
         
         // expect...
-        visitor.expectsOnce("visitStory").with(story);
-        visitor.ignores("visitNarrative").with(instanceOf(Narrative.class));
+        visitor.expects("visit").with(story);
+        visitor.stubs("visit").with(instanceOf(Narrative.class));
+        visitor.stubs("visit").with(instanceOf(AcceptanceCriteria.class));
         
         // when...
-        story.accept((Visitor) visitor.proxy());
+        story.accept((Visitor) visitor);
         
         // verify...
         verifyMocks();
@@ -36,15 +37,16 @@ public class StoryBehaviour extends UsingMiniMock {
         // given...
         AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
         Narrative narrative = new Narrative("role", "feature", "benefit");
-        Mock visitor = new Mock(Visitor.class);
+        Mock visitor = mock(Visitor.class);
         Story story = new Story(narrative, acceptanceCriteria);
 
         // expect...
-        visitor.expectsOnce("visitStory").with(story);
-        visitor.expectsOnce("visitNarrative").with(narrative);
+        visitor.expects("visit").with(story);
+        visitor.expects("visit").with(narrative);
+        visitor.expects("visit").with(acceptanceCriteria);
         
         // when...
-        story.accept((Visitor) visitor.proxy());
+        story.accept((Visitor) visitor);
         
         // verifyd...
         verifyMocks();

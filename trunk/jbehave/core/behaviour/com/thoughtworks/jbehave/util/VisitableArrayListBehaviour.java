@@ -17,17 +17,18 @@ import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 public class VisitableArrayListBehaviour extends UsingMiniMock {
     
     public void shouldTellEachElementToAcceptVisitor() throws Exception {
-        // child...
-        Mock child1 = new Mock(Visitable.class, "child1");
-        Mock child2 = new Mock(Visitable.class, "child2");
+        // setup...
+        Mock child1 = mock(Visitable.class, "child1");
+        Mock child2 = mock(Visitable.class, "child2");
         Visitor visitor = (Visitor) stub(Visitor.class);
         
         VisitableArrayList list = new VisitableArrayList();
-        list.add(child1.proxy());
-        list.add(child2.proxy());
+        list.add(child1);
+        list.add(child2);
         
-        child1.expectsOnce("accept").with(visitor);
-        child2.expectsOnce("accept").with(visitor).after(child1, "accept");
+        // expect...
+        child1.expects("accept").with(visitor);
+        child2.expects("accept").with(visitor).after(child1, "accept");
 
         // when...
         list.accept(visitor);

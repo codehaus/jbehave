@@ -8,12 +8,12 @@
 package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.Visitor;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class ExpectationBehaviour extends UsingJMock {
+public class ExpectationBehaviour extends UsingMiniMock {
     
     public void shouldPassItselfIntoCorrectVisitorMethodEachTimeAcceptIsCalled() throws Exception {
         // given...
@@ -22,13 +22,11 @@ public class ExpectationBehaviour extends UsingJMock {
             public void verify(Environment environment) throws Exception {}
         };
         
-        Mock visitor = new Mock(Visitor.class);
+        Mock visitor = mock(Visitor.class);
         
-        visitor.expects(once()).method("visitExpectationBeforeTheEvent").with(same(expectation));
-        visitor.expects(once()).method("visitExpectationAfterTheEvent").with(same(expectation)).after("visitExpectationBeforeTheEvent");
+        visitor.expects("visit").times(2).with(same(expectation));
 
         // when...
-        expectation.accept((Visitor)visitor.proxy());
-        expectation.accept((Visitor)visitor.proxy());
+        expectation.accept((Visitor)visitor);
     }
 }

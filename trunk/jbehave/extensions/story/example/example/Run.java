@@ -8,12 +8,13 @@
 package example;
 import java.io.OutputStreamWriter;
 
-import com.adsl.stories.AOLMemberChecksBroadbandAvailabilityUsingTheAOLClient;
 import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.runner.StoryRunner;
+
+import example.stories.UserWithdrawsCash;
 
 
 /**
@@ -39,7 +40,7 @@ public class Run {
             );
             
             visitor = null; //new PlainTextRenderer(System.out);
-            Story story = new AOLMemberChecksBroadbandAvailabilityUsingTheAOLClient();
+            Story story = new UserWithdrawsCash();
             story.accept(visitor);
 
         } catch (Exception e) {

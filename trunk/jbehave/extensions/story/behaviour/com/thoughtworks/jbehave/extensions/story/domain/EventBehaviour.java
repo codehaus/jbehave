@@ -8,12 +8,12 @@
 package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.Visitor;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class EventBehaviour extends UsingJMock {
+public class EventBehaviour extends UsingMiniMock {
 
     private static class SomeEvent extends Event {
         public void occurIn(Environment environment) throws Exception {
@@ -23,12 +23,12 @@ public class EventBehaviour extends UsingJMock {
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
         Event event = new SomeEvent();
-        Mock visitor = new Mock(Visitor.class);
+        Mock visitor = mock(Visitor.class);
         
         // expect...
-        visitor.expects(once()).method("visitEvent").with(same(event));
+        visitor.expects("visit").with(same(event));
 
         // when...
-        event.accept((Visitor)visitor.proxy());
+        event.accept((Visitor)visitor);
     }
 }

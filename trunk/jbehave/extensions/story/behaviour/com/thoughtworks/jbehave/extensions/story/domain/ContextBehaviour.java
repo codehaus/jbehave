@@ -21,7 +21,7 @@ public class ContextBehaviour extends UsingJMock {
         // given...
         Visitable context = new Context(new Given[0]);
         Mock visitor = new Mock(Visitor.class);
-        visitor.expects(once()).method("visitContext").with(same(context));
+        visitor.expects(once()).method("visit").with(same(context));
 
         // when...
         context.accept((Visitor)visitor.proxy());

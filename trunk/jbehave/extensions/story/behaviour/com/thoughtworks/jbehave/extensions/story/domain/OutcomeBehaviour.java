@@ -10,21 +10,21 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.Visitable;
 import com.thoughtworks.jbehave.core.Visitor;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class OutcomeBehaviour extends UsingJMock {
+public class OutcomeBehaviour extends UsingMiniMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // expectation...
         Visitable outcome = new Outcome(new Expectation[0]);
-        Mock visitor = new Mock(Visitor.class);
-        visitor.expects(once()).method("visitOutcome").with(same(outcome));
+        Mock visitor = mock(Visitor.class);
+        visitor.expects("visit").with(same(outcome));
 
         // when...
-        outcome.accept((Visitor)visitor.proxy());
+        outcome.accept((Visitor)visitor);
         
         // then...
         verifyMocks();
@@ -32,19 +32,19 @@ public class OutcomeBehaviour extends UsingJMock {
     
     public void shouldTellExpectationsToAcceptVisitorInCorrectOrder() throws Exception {
         // expectation...
-        Mock expectation1 = new Mock(Expectation.class, "expectation1");
-        Mock expectation2 = new Mock(Expectation.class, "expectation2");
+        Mock expectation1 = mock(Expectation.class, "expectation1");
+        Mock expectation2 = mock(Expectation.class, "expectation2");
         Visitor visitor = (Visitor) stub(Visitor.class);
         
         Outcome outcome = new Outcome(
                 new Expectation[] {
-                        (Expectation) expectation1.proxy(),
-                        (Expectation) expectation2.proxy()
+                        (Expectation) expectation1,
+                        (Expectation) expectation2
                 }
         );
         
-        expectation1.expects(once()).method("accept").with(same(visitor));
-        expectation2.expects(once()).method("accept").with(same(visitor)).after(expectation1, "accept");
+        expectation1.expects("accept").with(same(visitor));
+        expectation2.expects("accept").with(same(visitor)).after(expectation1, "accept");
         
         // when...
         outcome.accept(visitor);
@@ -59,11 +59,11 @@ public class OutcomeBehaviour extends UsingJMock {
     public void shouldPropagateExceptionFromCallToExpectationsAcceptMethod() throws Exception {
         // given...
         Visitor visitorStub = (Visitor)stub(Visitor.class);
-        Mock expectation = new Mock(Expectation.class);
-        Outcome outcome = new Outcome((Expectation)expectation.proxy());
+        Mock expectation = mock(Expectation.class);
+        Outcome outcome = new Outcome((Expectation)expectation);
 
         // expect...
-        expectation.expects(atLeastOnce()).method("accept").will(throwException(new SomeRuntimeException()));
+        expectation.expects("accept").atLeastOnce().willThrow(new SomeRuntimeException());
         
         // when...
         try {

@@ -7,8 +7,6 @@
  */
 package com.thoughtworks.jbehave.core;
 
-import com.thoughtworks.jbehave.minimock.Constraint;
-
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -17,13 +15,13 @@ public class BehaviourMethodVerifierBehaviour extends BehaviourSupport {
     
     public void shouldUseInvokerOnVisitableMethods() throws Exception {
         // given...
-        Mock invoker = new Mock(MethodInvoker.class);
+        Mock invoker = mock(MethodInvoker.class);
         BehaviourClass behaviourClass = new BehaviourClass(HasTwoMethods.class);
-        BehaviourMethodVerifier verifier = new BehaviourMethodVerifier((MethodInvoker) invoker.proxy());
+        BehaviourMethodVerifier verifier = new BehaviourMethodVerifier((MethodInvoker) invoker);
         
         // expect...
-        invoker.expectsOnce("invoke").with(new MatchesBehaviourMethodName("shouldDoSomething"));
-        invoker.expectsOnce("invoke").with(new MatchesBehaviourMethodName("shouldDoSomethingElse"));
+        invoker.expects("invoke").with(new MatchesBehaviourMethodName("shouldDoSomething"));
+        invoker.expects("invoke").with(new MatchesBehaviourMethodName("shouldDoSomethingElse"));
         
         // when...
         behaviourClass.accept(verifier);

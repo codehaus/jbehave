@@ -16,14 +16,14 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     
     public void shouldDispatchItselfToVisitor() throws Exception {
         // given...
-        Mock visitor = new Mock(Visitor.class);
+        Mock visitor = mock(Visitor.class);
         BehaviourMethod behaviourMethod = new BehaviourMethod(null, null);
         
         // expect...
-        visitor.expectsOnce("visit").with(behaviourMethod);
+        visitor.expects("visit").with(behaviourMethod);
         
         // when...
-        behaviourMethod.accept((Visitor) visitor.proxy());
+        behaviourMethod.accept((Visitor) visitor);
         
         // then...
         verifyMocks();
