@@ -5,24 +5,24 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.responsibility;
+package com.thoughtworks.jbehave.core.verify;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
+import com.thoughtworks.jbehave.core.MethodListener;
 
 
 /** Listener that captures verification results */
-class RecordingResponsibilityListener implements ResponsibilityListener {
+class RecordingMethodListener implements MethodListener {
     public List verifications = new ArrayList(); // all verifications
     public Result latestResult = null;
 
-    public void responsibilityVerificationStarting(Method responsibilityMethod) {
+    public void methodVerificationStarting(Method method) {
     }
     
-    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
+    public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
         verifications.add(result);
         latestResult = result;
 		return result;

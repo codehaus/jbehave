@@ -9,10 +9,10 @@ package com.thoughtworks.jbehave.extensions.jmock;
 
 import java.io.OutputStreamWriter;
 
-import com.thoughtworks.jbehave.core.listeners.ResponsibilityListeners;
+import com.thoughtworks.jbehave.core.listeners.MethodListeners;
 import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifier;
-import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifier;
+import com.thoughtworks.jbehave.core.verify.BehaviourClassVerifier;
+import com.thoughtworks.jbehave.core.verify.ExecutingMethodVerifier;
 import com.thoughtworks.jbehave.extensions.jmock.listener.JMockListener;
 
 /**
@@ -22,9 +22,9 @@ import com.thoughtworks.jbehave.extensions.jmock.listener.JMockListener;
 public class RunWithJMock {
 	public static void main(String [] args) throws Exception {
         TextListener textListener = new TextListener(new OutputStreamWriter(System.out));
-		ResponsibilityListeners listener = new ResponsibilityListeners();
+		MethodListeners listener = new MethodListeners();
 		listener.add(new JMockListener());
         listener.add(textListener);
-		new BehaviourClassVerifier(Class.forName(args[0]), new ExecutingResponsibilityVerifier()).verifyBehaviourClass(textListener, listener);
+		new BehaviourClassVerifier(Class.forName(args[0]), new ExecutingMethodVerifier()).verifyBehaviourClass(textListener, listener);
 	}
 }

@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.core;
 
-import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifier;
+import com.thoughtworks.jbehave.core.verify.BehaviourClassVerifier;
 
 
 /**

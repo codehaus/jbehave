@@ -5,7 +5,7 @@
  * 
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.responsibility;
+package com.thoughtworks.jbehave.core.verify;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,19 +15,19 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
 /**
- * Represents a verifier for a single responsibility, which can verify
+ * Represents a verifier for a single method, which can verify
  * itself and present the results of its verification.
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVerifier {
+public class ExecutingMethodVerifier extends NotifyingMethodVerifier {
     /**
-     * Invoke the responsibility method and capture the results.
+     * Invoke the method and capture the results.
      * 
      * We call the lifecycle methods <tt>setUp()</tt> and <tt>tearDown()</tt>
      * in the appropriate places if either of them exist.<br>
      */
-    protected Result doVerifyResponsibility(Method method, Object instance) {
+    protected Result doVerifyMethod(Method method, Object instance) {
         Result result = null;
         String behaviourClassName = instance.getClass().getName();
         try {

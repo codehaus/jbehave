@@ -9,20 +9,20 @@ package com.thoughtworks.jbehave.extensions.ant.listeners;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
-import com.thoughtworks.jbehave.core.responsibility.Result;
+import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.verify.Result;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
  */
-public class AntListener implements ResponsibilityListener {
+public class AntListener implements MethodListener {
 	private boolean failBuild;
 
-    public void responsibilityVerificationStarting(Method responsibilityMethod) {
+    public void methodVerificationStarting(Method responsibilityMethod) {
     }
 
-	public Result responsibilityVerificationEnding(Result result, Object specInstance) {
+	public Result methodVerificationEnding(Result result, Object specInstance) {
 		if (!result.succeeded()) {
 			failBuild = true;
 		}

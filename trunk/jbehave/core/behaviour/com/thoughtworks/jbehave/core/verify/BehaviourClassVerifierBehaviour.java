@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.responsibility;
+package com.thoughtworks.jbehave.core.verify;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
+import com.thoughtworks.jbehave.core.MethodListener;
 import com.thoughtworks.jbehave.core.listeners.NULLBehaviourClassListener;
-import com.thoughtworks.jbehave.core.listeners.NULLResponsibilityListener;
+import com.thoughtworks.jbehave.core.listeners.NULLMethodListener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -30,10 +30,10 @@ public class BehaviourClassVerifierBehaviour {
     public void shouldNotifyListenerWhenBehaviourClassVerificationStarts() throws Exception {
         // setup
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, new NULLResponsibilityVerifier());
+            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, new NULLMethodVerifier());
         RecordingBehaviourClassListener listener = new RecordingBehaviourClassListener();
         // execute
-        behaviourVerifier.verifyBehaviourClass(listener, new NULLResponsibilityListener());
+        behaviourVerifier.verifyBehaviourClass(listener, new NULLMethodListener());
         // verify
         Verify.equal(BehaviourClassWithOneMethod.class, listener.startedBehaviourClass);
     }
@@ -41,37 +41,37 @@ public class BehaviourClassVerifierBehaviour {
     public void shouldNotifyListenerWhenBehaviourClassVerificationEnds() throws Exception {
         // setup
         BehaviourClassVerifier verifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, new NULLResponsibilityVerifier());
+            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, new NULLMethodVerifier());
         RecordingBehaviourClassListener listener = new RecordingBehaviourClassListener();
-        verifier.verifyBehaviourClass(listener, new NULLResponsibilityListener());
+        verifier.verifyBehaviourClass(listener, new NULLMethodListener());
         // verify
         Verify.equal(BehaviourClassWithOneMethod.class, listener.endedBehaviourClass);
     }
     
-    private static class RecordingResponsibilityVerifier implements ResponsibilityVerifier {
+    private static class RecordingMethodVerifier implements MethodVerifier {
         public final List methods = new ArrayList();
         
-        public Result verifyResponsibility(ResponsibilityListener listener, Method method, Object instance) {
+        public Result verifyMethod(MethodListener listener, Method method, Object instance) {
             methods.add(method);
             return new Result(instance.getClass().getName(), method.getName());
         }
     }
     
-    public void shouldVerifyOneResponsibility() throws Exception {
+    public void shouldVerifyOneMethod() throws Exception {
         // setup
-        final RecordingResponsibilityVerifier responsibilityVerifier = new RecordingResponsibilityVerifier();
+        final RecordingMethodVerifier methodVerifier = new RecordingMethodVerifier();
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, responsibilityVerifier);
+            new BehaviourClassVerifier(BehaviourClassWithOneMethod.class, methodVerifier);
         
         // execute
-        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLResponsibilityListener());
+        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLMethodListener());
         
         // verify
         List expectedMethods = Arrays.asList(new Method[] {
                 BehaviourClassWithOneMethod.class.getMethod("shouldSucceed", null)
         });
         
-        Verify.equal(expectedMethods, responsibilityVerifier.methods);
+        Verify.equal(expectedMethods, methodVerifier.methods);
     }
 
     public static class BehaviourClassWithTwoMethods {
@@ -81,14 +81,14 @@ public class BehaviourClassVerifierBehaviour {
         }
     }
     
-    public void shouldVerifyTwoResponsibilities() throws Exception {
+    public void shouldVerifyTwoMethods() throws Exception {
         // setup
-        final RecordingResponsibilityVerifier responsibilityVerifier = new RecordingResponsibilityVerifier();
+        final RecordingMethodVerifier methodVerifier = new RecordingMethodVerifier();
         BehaviourClassVerifier behaviourVerifier =
-            new BehaviourClassVerifier(BehaviourClassWithTwoMethods.class, responsibilityVerifier);
+            new BehaviourClassVerifier(BehaviourClassWithTwoMethods.class, methodVerifier);
         
         // execute
-        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLResponsibilityListener());
+        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLMethodListener());
         
         // verify
         List expectedMethods = Arrays.asList(new Method[] {
@@ -96,7 +96,7 @@ public class BehaviourClassVerifierBehaviour {
                 BehaviourClassWithTwoMethods.class.getMethod("shouldAlsoSucceed", null)
         });
         
-        Verify.equal(expectedMethods, responsibilityVerifier.methods);
+        Verify.equal(expectedMethods, methodVerifier.methods);
     }
     
     public static class ContainerWithTwoBehaviours implements BehaviourClassContainer {
@@ -110,13 +110,13 @@ public class BehaviourClassVerifierBehaviour {
     
     public void shouldVerifyContainedBehaviours() throws Exception {
         // setup
-        RecordingResponsibilityVerifier recordingResponsibilityVerifier = new RecordingResponsibilityVerifier();
+        RecordingMethodVerifier methodVerifier = new RecordingMethodVerifier();
         BehaviourClassVerifier behaviourVerifier =
             new BehaviourClassVerifier(ContainerWithTwoBehaviours.class,
-                    recordingResponsibilityVerifier);
+                    methodVerifier);
         // execute
-        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLResponsibilityListener());
+        behaviourVerifier.verifyBehaviourClass(new NULLBehaviourClassListener(), new NULLMethodListener());
         // verify
-        Verify.equal(3, recordingResponsibilityVerifier.methods.size());
+        Verify.equal(3, methodVerifier.methods.size());
     }
 }

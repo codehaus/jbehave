@@ -14,10 +14,10 @@ import org.jmock.core.matcher.TestFailureMatcher;
 
 import junit.framework.AssertionFailedError;
 
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
+import com.thoughtworks.jbehave.core.MethodListener;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.responsibility.Result;
-import com.thoughtworks.jbehave.core.responsibility.Verify;
+import com.thoughtworks.jbehave.core.verify.Result;
+import com.thoughtworks.jbehave.core.verify.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 
 /**
@@ -25,14 +25,14 @@ import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
 public class JMockListenerBehaviour {
-	private ResponsibilityListener listener;
+	private MethodListener listener;
 
 	public void setUp() {
 		listener = new JMockListener();
 	}
 
-    /** pull out the first responsibility method in a spec */
-    private Method firstResponsibilityMethod(Class behaviourClass) throws Exception {
+    /** pull out the first behaviour method in a spec */
+    private Method firstMethod(Class behaviourClass) throws Exception {
         Method[] methods = behaviourClass.getMethods();
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
@@ -40,7 +40,7 @@ public class JMockListenerBehaviour {
                 return method;
             }
         }
-      throw new Error("No responsibility method found in " + behaviourClass.getName());
+      throw new Error("No behaviour method found in " + behaviourClass.getName());
     }
 
     public static class BehaviourClass1 extends UsingJMock {
@@ -63,7 +63,7 @@ public class JMockListenerBehaviour {
         Result result = new Result("shouldDoSomething", instance.getClass().getName());
 
         // execute
-        listener.responsibilityVerificationEnding(result, instance);
+        listener.methodVerificationEnding(result, instance);
         
         // verify
         Verify.that(instance.verifyWasCalled);
@@ -89,7 +89,7 @@ public class JMockListenerBehaviour {
         Result result = new Result("SomeBehaviourClass", "shouldDoSomething");
 
         // execute
-        Result verifyMockResult = listener.responsibilityVerificationEnding(result, instance);
+        Result verifyMockResult = listener.methodVerificationEnding(result, instance);
 
 		// verify
 		Verify.notNull(verifyMockResult);
@@ -111,14 +111,14 @@ public class JMockListenerBehaviour {
 
 	public void shouldVerifyMocks() throws Exception {
         // setup
-        final Method method = firstResponsibilityMethod(BehaviourClass3.class);
-        listener.responsibilityVerificationStarting(method);
+        final Method method = firstMethod(BehaviourClass3.class);
+        listener.methodVerificationStarting(method);
         final BehaviourClass3 instance = new BehaviourClass3();
         instance.shouldUseAMockWhoseExpectationWillFail();
         
 		// execute
 		Result result =
-            listener.responsibilityVerificationEnding(
+            listener.methodVerificationEnding(
                     new Result(BehaviourClass3.class.getName(), "shouldUseAMockWhoseExpectationWillFail"),
                     instance);
         
@@ -131,7 +131,7 @@ public class JMockListenerBehaviour {
         Result assertionFailed = new Result("SomeClass", "someMethod", new AssertionFailedError());
         
         // when...
-        Result result = listener.responsibilityVerificationEnding(assertionFailed, null);
+        Result result = listener.methodVerificationEnding(assertionFailed, null);
         
         // verify...
         Verify.instanceOf(VerificationException.class, result.getCause());
@@ -148,7 +148,7 @@ public class JMockListenerBehaviour {
         instance.expects(never).method("verify");
         
         // when...
-        listener.responsibilityVerificationEnding(methodFailed, instance.proxy());
+        listener.methodVerificationEnding(methodFailed, instance.proxy());
         
         // verify...
         instance.verify();
@@ -165,7 +165,7 @@ public class JMockListenerBehaviour {
         instance.expects(never).method("verify");
         
         // when...
-        listener.responsibilityVerificationEnding(methodFailed, instance.proxy());
+        listener.methodVerificationEnding(methodFailed, instance.proxy());
         
         // verify...
         instance.verify();

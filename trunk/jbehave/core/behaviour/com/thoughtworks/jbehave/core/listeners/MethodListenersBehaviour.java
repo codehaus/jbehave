@@ -11,22 +11,22 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
-import com.thoughtworks.jbehave.core.responsibility.Result;
-import com.thoughtworks.jbehave.core.responsibility.Verify;
+import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.verify.Result;
+import com.thoughtworks.jbehave.core.verify.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
-public class ResponsibilityListenersBehaviour {
-	private ResponsibilityListeners listeners;
+public class MethodListenersBehaviour {
+	private MethodListeners listeners;
 	private Map callMap1;
 	private Map callMap2;
 	private Result nextResult;
 
 	// Mocks would be great for this :(
-	public class StubListener implements ResponsibilityListener {
+	public class StubListener implements MethodListener {
 		private Map methodsCalled;
 		private Result decoratedResult;
 
@@ -35,18 +35,18 @@ public class ResponsibilityListenersBehaviour {
 			this.decoratedResult = decoratedResult;
 		}
 
-		public void responsibilityVerificationStarting(Method responsibilityMethod) {
-			methodsCalled.put("responsibilityVerificationStarting", responsibilityMethod);
+		public void methodVerificationStarting(Method method) {
+			methodsCalled.put("methodVerificationStarting", method);
 		}
 
-		public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
-			methodsCalled.put("responsibilityVerificationEnding", result);
+		public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
+			methodsCalled.put("methodVerificationEnding", result);
 			return decoratedResult;
 		}
 	}
 
 	public void setUp() {
-		listeners = new ResponsibilityListeners();
+		listeners = new MethodListeners();
 		callMap1 = new HashMap();
 		callMap2 = new HashMap();
 		nextResult = new Result("blah", "blah");
@@ -65,28 +65,28 @@ public class ResponsibilityListenersBehaviour {
         }
 	}
 	
-	public void shouldNotifyAllListenersWhenResponsibilityVerificationStarts() throws Exception {
+	public void shouldNotifyAllListenersWhenMethodVerificationStarts() throws Exception {
 		// setup
 		// execute
 		Method method = SomeBehaviourClass.class.getMethod("shouldDoSomething", new Class[0]);
-        listeners.responsibilityVerificationStarting(method);
+        listeners.methodVerificationStarting(method);
 
 		// verify
-		verifyMethodCalled("responsibilityVerificationStarting", callMap1, method);
-		verifyMethodCalled("responsibilityVerificationStarting", callMap2, method);
+		verifyMethodCalled("methodVerificationStarting", callMap1, method);
+		verifyMethodCalled("methodVerificationStarting", callMap2, method);
 
 	}
 
-	public void shouldNotifyAllListenersWhenResponsibilityVerificationEndingAndPassOnReturnedResponsibilityVerifierToNextListener() {
+	public void shouldNotifyAllListenersWhenMethodVerificationEndingAndPassOnReturnedResultToNextListener() {
 		// setup
-	    Result result = new Result("behaviourClass", "responsibility");
+	    Result result = new Result("SomeBehaviourClass", "someMethod");
 
 		// execute
-	    Result returnedResult = listeners.responsibilityVerificationEnding(result, new Object());
+	    Result returnedResult = listeners.methodVerificationEnding(result, new Object());
 
 		// verify
 		Verify.equal(nextResult, returnedResult);
-		verifyMethodCalled("responsibilityVerificationEnding", callMap1, result);
-		verifyMethodCalled("responsibilityVerificationEnding", callMap2, nextResult);
+		verifyMethodCalled("methodVerificationEnding", callMap1, result);
+		verifyMethodCalled("methodVerificationEnding", callMap2, nextResult);
 	}
 }

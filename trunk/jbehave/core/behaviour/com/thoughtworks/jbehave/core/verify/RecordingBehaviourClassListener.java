@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.responsibility;
+package com.thoughtworks.jbehave.core.verify;
 
 import com.thoughtworks.jbehave.core.BehaviourClassListener;
 

@@ -5,14 +5,14 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.responsibility;
+package com.thoughtworks.jbehave.core.verify;
 
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 
 
 /**
- * Represents the result of verifying an individual responsibility.
+ * Represents the result of verifying an individual method.
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
@@ -30,8 +30,8 @@ public class Result {
     /**
      * Constructor for result that contains an exception
      */
-    public Result(String behaviourClassName, String responsibilityMethodName, Throwable cause) {
-        this.name = responsibilityMethodName;
+    public Result(String behaviourClassName, String methodName, Throwable cause) {
+        this.name = methodName;
         this.behaviourClassName = behaviourClassName;
         this.cause = cause;
         if (cause == null) {

@@ -9,7 +9,7 @@ package com.thoughtworks.jbehave.util;
 
 import java.text.SimpleDateFormat;
 
-import com.thoughtworks.jbehave.core.responsibility.Verify;
+import com.thoughtworks.jbehave.core.verify.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

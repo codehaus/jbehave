@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
-import com.thoughtworks.jbehave.core.responsibility.Result;
+import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.verify.Result;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still
@@ -23,27 +23,27 @@ import com.thoughtworks.jbehave.core.responsibility.Result;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class ResponsibilityListeners implements ResponsibilityListener {
+public class MethodListeners implements MethodListener {
     private final List listeners = new ArrayList();
     
     /**
      * The composition method for the composite.
      */
-    public void add(ResponsibilityListener listener) {
+    public void add(MethodListener listener) {
         listeners.add(listener);
     }
     
     // Listener methods
 
-    public void responsibilityVerificationStarting(Method responsibilityMethod) {
+    public void methodVerificationStarting(Method method) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((ResponsibilityListener)i.next()).responsibilityVerificationStarting(responsibilityMethod);
+            ((MethodListener)i.next()).methodVerificationStarting(method);
         }
     }
 
-    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
+    public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
 		for (Iterator i = listeners.iterator(); i.hasNext();) {
-		    result = ((ResponsibilityListener)i.next()).responsibilityVerificationEnding(result, behaviourClassInstance);
+		    result = ((MethodListener)i.next()).methodVerificationEnding(result, behaviourClassInstance);
         }
 		return result;
     }

@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.base;
 
-import com.thoughtworks.jbehave.core.responsibility.Verify;
+import com.thoughtworks.jbehave.core.verify.Verify;
 import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 

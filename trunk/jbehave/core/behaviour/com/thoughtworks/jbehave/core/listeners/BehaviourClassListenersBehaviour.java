@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.thoughtworks.jbehave.core.BehaviourClassListener;
-import com.thoughtworks.jbehave.core.responsibility.Verify;
+import com.thoughtworks.jbehave.core.verify.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -10,8 +10,8 @@ package com.thoughtworks.jbehave.core;
 import java.io.PrintWriter;
 
 import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifier;
-import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifier;
+import com.thoughtworks.jbehave.core.verify.BehaviourClassVerifier;
+import com.thoughtworks.jbehave.core.verify.ExecutingMethodVerifier;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -21,7 +21,7 @@ public class Run {
         try {
             Class behaviourClass = Class.forName(args[0]);
             TextListener textListener = new TextListener(new PrintWriter(System.out));
-            new BehaviourClassVerifier(behaviourClass, new ExecutingResponsibilityVerifier())
+            new BehaviourClassVerifier(behaviourClass, new ExecutingMethodVerifier())
                     .verifyBehaviourClass(textListener, textListener);
         } catch (Exception e) {
             e.printStackTrace();

@@ -9,12 +9,12 @@ package com.thoughtworks.jbehave.core;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.responsibility.Result;
+import com.thoughtworks.jbehave.core.verify.Result;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface ResponsibilityListener {
-    void responsibilityVerificationStarting(Method responsibilityMethod);
-    Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance);
+public interface MethodListener {
+    void methodVerificationStarting(Method method);
+    Result methodVerificationEnding(Result result, Object behaviourClassInstance);
 }

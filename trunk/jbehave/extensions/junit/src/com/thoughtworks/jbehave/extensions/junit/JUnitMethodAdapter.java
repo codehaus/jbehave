@@ -15,9 +15,9 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 
-import com.thoughtworks.jbehave.core.listeners.NULLResponsibilityListener;
-import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifier;
-import com.thoughtworks.jbehave.core.responsibility.Result;
+import com.thoughtworks.jbehave.core.listeners.NULLMethodListener;
+import com.thoughtworks.jbehave.core.verify.ExecutingMethodVerifier;
+import com.thoughtworks.jbehave.core.verify.Result;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
 
@@ -43,7 +43,7 @@ public class JUnitMethodAdapter extends TestCase {
 
     private void verifyResponsibility(TestResult testResult) {
         final Result result =
-            new ExecutingResponsibilityVerifier().verifyResponsibility(new NULLResponsibilityListener(), method, instance);
+            new ExecutingMethodVerifier().verifyMethod(new NULLMethodListener(), method, instance);
         if (result.failed()) {
             testResult.addFailure(this, buildAssertionFailedError(result.getCause()));
         }

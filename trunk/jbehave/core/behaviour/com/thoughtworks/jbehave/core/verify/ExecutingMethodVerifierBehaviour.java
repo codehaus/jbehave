@@ -5,37 +5,37 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.core.responsibility;
+package com.thoughtworks.jbehave.core.verify;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
-import com.thoughtworks.jbehave.core.listeners.NULLResponsibilityListener;
+import com.thoughtworks.jbehave.core.MethodListener;
+import com.thoughtworks.jbehave.core.listeners.NULLMethodListener;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class ExecutingResponsibilityVerifierBehaviour {
+public class ExecutingMethodVerifierBehaviour {
     private final static List sequenceOfEvents = new ArrayList(); // poor man's mock
-    private ResponsibilityVerifier responsibilityVerifier;
-    private RecordingResponsibilityListener recordingListener;
+    private MethodVerifier methodVerifier;
+    private RecordingMethodListener recordingListener;
 
     public void setUp() {
         sequenceOfEvents.clear();
-        responsibilityVerifier = new ExecutingResponsibilityVerifier();
-        recordingListener = new RecordingResponsibilityListener();
+        methodVerifier = new ExecutingMethodVerifier();
+        recordingListener = new RecordingMethodListener();
     }
     
-    public static class BehaviourClassWithSucceedingResponsibility {
+    public static class HasSucceedingMethod {
         public void shouldSucceed() {
         }
     }
     
-    /** pull out the first responsibility in a behaviour class */
-    private Method firstResponsibility(Class behaviourClass) throws Exception {
+    /** pull out the first behaviour method in a behaviour class */
+    private Method firstMethod(Class behaviourClass) throws Exception {
         Method[] methods = behaviourClass.getMethods();
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
@@ -46,33 +46,33 @@ public class ExecutingResponsibilityVerifierBehaviour {
       throw new Error("No suitable method found in " + behaviourClass.getName());
     }
     
-    private void verifyFirstResponsibility(ResponsibilityListener listener, Class behaviourClass) throws Exception {
-        Method method = firstResponsibility(behaviourClass);
+    private void verifyFirstMethod(MethodListener listener, Class behaviourClass) throws Exception {
+        Method method = firstMethod(behaviourClass);
         Object instance = behaviourClass.newInstance();
-        responsibilityVerifier.verifyResponsibility(listener, method, instance);
+        methodVerifier.verifyMethod(listener, method, instance);
     }
 
-    public static class BehaviourClassWithLoggingResponsibility {
+    public static class LogsMethodCall {
         public void shouldSucceed() throws Exception {
             sequenceOfEvents.add("shouldSucceed() called");
         }
     }
     
-    public void shouldNotifyListenerBeforeResponsibilityVerificationStarts() throws Exception {
+    public void shouldNotifyListenerBeforeMethodVerificationStarts() throws Exception {
         // setup
-        ResponsibilityListener listener = new ResponsibilityListener() {
-            public void responsibilityVerificationStarting(Method method) {
+        MethodListener listener = new MethodListener() {
+            public void methodVerificationStarting(Method method) {
                 Verify.equal("shouldSucceed", method.getName());
                 sequenceOfEvents.add("listener called");
             }
 
-            public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
+            public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
                 return null;
             }
         };
         
         // execute
-        verifyFirstResponsibility(listener, BehaviourClassWithLoggingResponsibility.class);
+        verifyFirstMethod(listener, LogsMethodCall.class);
         
         // verify
         List expectedSequenceOfEvents = Arrays.asList(
@@ -81,37 +81,37 @@ public class ExecutingResponsibilityVerifierBehaviour {
         Verify.equal(expectedSequenceOfEvents, sequenceOfEvents);
     }
 
-    public void shouldNotifyListenerWhenResponsibilityVerificationSucceeds() throws Exception {
+    public void shouldNotifyListenerWhenMethodVerificationSucceeds() throws Exception {
         // execute
-        verifyFirstResponsibility(recordingListener, BehaviourClassWithSucceedingResponsibility.class);
+        verifyFirstMethod(recordingListener, HasSucceedingMethod.class);
         // verify
         Verify.that(recordingListener.latestResult.succeeded());
     }
 
-    public static class BehaviourClassWithFailingResponsibility {
+    public static class HasFailingMethod {
         public void shouldFail() {
             Verify.impossible("die die die");
         }
     }
 
-    public void shouldNotifyListenerWhenResponsibilityVerificationFails() throws Exception {
+    public void shouldNotifyListenerWhenMethodVerificationFails() throws Exception {
         // execute
-        verifyFirstResponsibility(recordingListener, BehaviourClassWithFailingResponsibility.class);
+        verifyFirstMethod(recordingListener, HasFailingMethod.class);
         // verify
         Verify.that(recordingListener.latestResult.failed());
     }
 
     public static class SomeCheckedException extends Exception {}
 
-    public static class BehaviourClassWithResponsibilityThatThrowsCheckedException {
+    public static class HasMethodThatThrowsCheckedException {
         public void shouldThrowCheckedException() throws Exception {
             throw new SomeCheckedException();
         }
     }
 
-    public void shouldNotifyListenerWhenResponsibilityVerificationThrowsCheckedException() throws Exception {
+    public void shouldNotifyListenerWhenMethodVerificationThrowsCheckedException() throws Exception {
         // execute
-        verifyFirstResponsibility(recordingListener, BehaviourClassWithResponsibilityThatThrowsCheckedException.class);
+        verifyFirstMethod(recordingListener, HasMethodThatThrowsCheckedException.class);
         // verify
         Verify.that(recordingListener.latestResult.threwException());
         Verify.instanceOf(SomeCheckedException.class, recordingListener.latestResult.getCause());
@@ -119,15 +119,15 @@ public class ExecutingResponsibilityVerifierBehaviour {
 
     public static class SomeRuntimeException extends RuntimeException {}
 
-    public static class BehaviourClassWithResponsibilityThatThrowsRuntimeException {
+    public static class HasMethodThatThrowsRuntimeException {
         public void shouldThrowRuntimeException() {
             throw new SomeRuntimeException();
         }
     }
 
-    public void shouldNotifyListenerWhenResponsibilityVerificationThrowsRuntimeException() throws Exception {
+    public void shouldNotifyListenerWhenMethodThrowsRuntimeException() throws Exception {
         // execute
-        verifyFirstResponsibility(recordingListener, BehaviourClassWithResponsibilityThatThrowsRuntimeException.class);
+        verifyFirstMethod(recordingListener, HasMethodThatThrowsRuntimeException.class);
         // verify
         Verify.that(recordingListener.latestResult.threwException());
         Verify.instanceOf(SomeRuntimeException.class, recordingListener.latestResult.getCause());
@@ -135,21 +135,21 @@ public class ExecutingResponsibilityVerifierBehaviour {
 
     private static class SomeError extends Error {}
 
-    public static class BehaviourClassWithResponsibilityThatThrowsError {
+    public static class HasMethodThatThrowsError {
         public void shouldThrowError() {
             throw new SomeError();
         }
     }
 
-    public void shouldNotifyListenerWhenResponsibilityVerificationThrowsError() throws Exception {
+    public void shouldNotifyListenerWhenMethodThrowsError() throws Exception {
         // execute
-        verifyFirstResponsibility(recordingListener, BehaviourClassWithResponsibilityThatThrowsError.class);
+        verifyFirstMethod(recordingListener, HasMethodThatThrowsError.class);
         // verify
         Verify.that(recordingListener.latestResult.threwException());
         Verify.instanceOf(SomeError.class, recordingListener.latestResult.getCause());
     }
 
-    public static class BehaviourClassWithResponsibilityThatThrowsThreadDeath {
+    public static class HasMethodThatThrowsThreadDeath {
         public void shouldThrowThreadDeath() {
             throw new ThreadDeath();
         }
@@ -165,9 +165,9 @@ public class ExecutingResponsibilityVerifierBehaviour {
         }
     }
 
-    public void shouldCallSetUpBeforeVerifyingResponsibility() throws Exception {
+    public void shouldCallSetUpBeforeVerifyingMethod() throws Exception {
         // execute
-        verifyFirstResponsibility(recordingListener, BehaviourClassWithSetUp.class);
+        verifyFirstMethod(recordingListener, BehaviourClassWithSetUp.class);
         
         // verify
 		Verify.that(recordingListener.latestResult.succeeded());
@@ -182,38 +182,38 @@ public class ExecutingResponsibilityVerifierBehaviour {
         }
     }
     
-    public void shouldCallTearDownAfterResponsibilityVerificationSucceeds() throws Exception {
+    public void shouldCallTearDownAfterMethodVerificationSucceeds() throws Exception {
         // setup
         // execute
-        verifyFirstResponsibility(new NULLResponsibilityListener(), BehaviourClassWithTearDown.class);
+        verifyFirstMethod(new NULLMethodListener(), BehaviourClassWithTearDown.class);
         // verify
         Verify.that(sequenceOfEvents.contains("tearDown"));
     }
     
-    public static class BehaviourClassWithTearDownAndFailingResponsibility extends BehaviourClassWithTearDown {
+    public static class HasTearDownAndFailingMethod extends BehaviourClassWithTearDown {
         public void shouldDoSomething() {
             Verify.impossible("Pigs flying");
         }
     }
     
-    public void shouldCallTearDownAfterResponsibilityVerificationFails() throws Exception {
+    public void shouldCallTearDownAfterMethodVerificationFails() throws Exception {
         // setup
         // execute
-        verifyFirstResponsibility(new NULLResponsibilityListener(), BehaviourClassWithTearDownAndFailingResponsibility.class);
+        verifyFirstMethod(new NULLMethodListener(), HasTearDownAndFailingMethod.class);
         // verify
         Verify.that(sequenceOfEvents.contains("tearDown"));
 	}
 
-    public static class BehaviourClassWithTearDownAndExceptionResponsibility extends BehaviourClassWithTearDown {
+    public static class HasTearDownAndMethodThatThrowsException extends BehaviourClassWithTearDown {
         public void shouldDoSomething() {
             throw new RuntimeException("oh bugger");
         }
     }
     
-    public void shouldCallTearDownAfterResponsibilityVerificationThrowsException() throws Exception {
+    public void shouldCallTearDownAfterMethodThrowsException() throws Exception {
         // setup
         // execute
-        verifyFirstResponsibility(new NULLResponsibilityListener(), BehaviourClassWithTearDownAndExceptionResponsibility.class);
+        verifyFirstMethod(new NULLMethodListener(), HasTearDownAndMethodThatThrowsException.class);
         // verify
         Verify.that(sequenceOfEvents.contains("tearDown"));
 	}
@@ -228,12 +228,12 @@ public class ExecutingResponsibilityVerifierBehaviour {
     
     public void shouldNotifyListenerWhenTearDownThrowsException() throws Exception {
         // execute
-        verifyFirstResponsibility(recordingListener, BehaviourClassWithExceptionTearDown.class);
+        verifyFirstMethod(recordingListener, BehaviourClassWithExceptionTearDown.class);
         // verify
         Verify.that(recordingListener.latestResult.threwException());
 	}
 
-    public static class BehaviourClassWithFailingResponsibilityAndExceptionTearDown {
+    public static class HasFailingMethodAndExceptionTearDown {
         public void tearDown() throws Exception {
             throw new Exception("Not running on an AS400");
         }
@@ -242,9 +242,9 @@ public class ExecutingResponsibilityVerifierBehaviour {
         }
     }
     
-    public void shouldReportResponsibilityExceptionIfResponsibilityAndTearDownBothThrowExceptions() throws Exception {
+    public void shouldReportMethodExceptionIfMethodAndTearDownBothThrowExceptions() throws Exception {
         // execute
-        verifyFirstResponsibility(recordingListener, BehaviourClassWithFailingResponsibilityAndExceptionTearDown.class);
+        verifyFirstMethod(recordingListener, HasFailingMethodAndExceptionTearDown.class);
         // verify
         Verify.that("exception was thrown", recordingListener.latestResult.threwException());
         Verify.equal("exception type", IllegalArgumentException.class, recordingListener.latestResult.getCause().getClass());
@@ -260,7 +260,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
     
     public void shouldExecuteResponsibiltyMethodInheritedFromAbstractSuperclass() throws Exception {
         // when...
-        verifyFirstResponsibility(recordingListener, Subclass.class);
+        verifyFirstMethod(recordingListener, Subclass.class);
         
         // then...
         Verify.equal(1, recordingListener.verifications.size());

@@ -15,21 +15,21 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.BehaviourClassListener;
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
+import com.thoughtworks.jbehave.core.MethodListener;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
-import com.thoughtworks.jbehave.core.responsibility.Result;
+import com.thoughtworks.jbehave.core.verify.Result;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextListener implements BehaviourClassListener, ResponsibilityListener {
+public class TextListener implements BehaviourClassListener, MethodListener {
     public static final String SUCCESS = ".";
     public static final String FAILURE = "F";
     public static final String EXCEPTION_THROWN = "E";
     public static final String PENDING = "P";
 
     private final PrintWriter out;
-    private int responsibilitiesVerified = 0;
+    private int methodsVerified = 0;
     private final List failures = new ArrayList();
     private final List exceptionsThrown = new ArrayList();
     private final List pending = new ArrayList();
@@ -70,7 +70,7 @@ public class TextListener implements BehaviourClassListener, ResponsibilityListe
     }
 
     private void printSummaryCounts() {
-        out.print("Responsibilities: " + responsibilitiesVerified + ".");
+        out.print("Methods: " + methodsVerified + ".");
         if (failures.size() + exceptionsThrown.size() > 0) {
             out.print(" Failures: " + failures.size() + ", Exceptions: " + exceptionsThrown.size() + ".");
         }
@@ -112,14 +112,14 @@ public class TextListener implements BehaviourClassListener, ResponsibilityListe
         }
     }
 
-    public void responsibilityVerificationStarting(Method responsibilityMethod) {
+    public void methodVerificationStarting(Method method) {
     }
     
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
-        responsibilitiesVerified++;
+    public Result methodVerificationEnding(Result result, Object behaviourClassInstance) {
+        methodsVerified++;
         if (result.failed()) {
             failures.add(result);
         }

@@ -9,22 +9,22 @@ package com.thoughtworks.jbehave.extensions.jmock.listener;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.ResponsibilityListener;
+import com.thoughtworks.jbehave.core.MethodListener;
 import com.thoughtworks.jbehave.core.exception.DelegatingVerificationException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.responsibility.Result;
+import com.thoughtworks.jbehave.core.verify.Result;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
-public class JMockListener implements ResponsibilityListener {
+public class JMockListener implements MethodListener {
 
-    public void responsibilityVerificationStarting(Method responsibilityMethod) {
+    public void methodVerificationStarting(Method method) {
     }
 
-	public Result responsibilityVerificationEnding(Result result, Object instance) {
+	public Result methodVerificationEnding(Result result, Object instance) {
         if (result.getCause() instanceof junit.framework.AssertionFailedError) {
             return new Result(
                     result.getBehaviourClassName(),

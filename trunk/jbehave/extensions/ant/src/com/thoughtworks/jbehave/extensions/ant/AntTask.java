@@ -19,10 +19,10 @@ import org.apache.tools.ant.taskdefs.LogOutputStream;
 import org.apache.tools.ant.types.CommandlineJava;
 import org.apache.tools.ant.types.Path;
 
-import com.thoughtworks.jbehave.core.listeners.ResponsibilityListeners;
+import com.thoughtworks.jbehave.core.listeners.MethodListeners;
 import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifier;
-import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifier;
+import com.thoughtworks.jbehave.core.verify.BehaviourClassVerifier;
+import com.thoughtworks.jbehave.core.verify.ExecutingMethodVerifier;
 import com.thoughtworks.jbehave.extensions.ant.listeners.AntListener;
 
 /**
@@ -87,10 +87,10 @@ public class AntTask extends org.apache.tools.ant.Task {
 	private void verifyBehaviourClass(BehaviourClass behaviourClass, AntListener antListener) {
 		try {
 			BehaviourClassVerifier verifier = new BehaviourClassVerifier(
-                    classFor(behaviourClass), new ExecutingResponsibilityVerifier());
+                    classFor(behaviourClass), new ExecutingMethodVerifier());
             
             TextListener textListener = new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
-            ResponsibilityListeners compositeListener = new ResponsibilityListeners();
+            MethodListeners compositeListener = new MethodListeners();
             compositeListener.add(antListener);
             compositeListener.add(textListener);
             

@@ -9,7 +9,7 @@ package com.thoughtworks.jbehave.extensions.jmock;
 
 import java.lang.reflect.Proxy;
 
-import com.thoughtworks.jbehave.core.responsibility.Verify;
+import com.thoughtworks.jbehave.core.verify.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
