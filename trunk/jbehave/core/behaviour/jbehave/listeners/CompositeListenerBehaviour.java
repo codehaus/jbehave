@@ -12,6 +12,7 @@ import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.Verify;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -39,8 +40,8 @@ public class CompositeListenerBehaviour {
 			methodsCalled.put("behaviourClassVerificationStarting", behaviourClass);
 		}
 
-		public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClassInstance) {
-			methodsCalled.put("responsibilityVerificationStarting", verifier);
+		public void responsibilityVerificationStarting(Method responsibilityMethod) {
+			methodsCalled.put("responsibilityVerificationStarting", responsibilityMethod);
 		}
 
 		public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
@@ -64,7 +65,7 @@ public class CompositeListenerBehaviour {
 
 	private void verifyMethodCalled(String methodName, Map callMap, Object arg) {
 		Verify.equal(1, callMap.size());
-		Verify.that("should of called:" + methodName, callMap.containsKey(methodName));
+		Verify.that("should have called:" + methodName, callMap.containsKey(methodName));
 		Verify.equal(arg, callMap.get(methodName));
 	}
 
@@ -86,16 +87,22 @@ public class CompositeListenerBehaviour {
 		verifyMethodCalled("behaviourClassVerificationEnding", callMap2, getClass());
 	}
 
-	public void shouldNotifyAllListenersWhenResponsibilityVerificationStarting() {
+	public static class SomeBehaviourClass {
+	    public void shouldDoSomething() throws Exception {
+        }
+	}
+	
+	public void shouldNotifyAllListenersWhenResponsibilityVerificationStarts() throws Exception {
 		// setup
-		ResponsibilityVerifier verifier = new ResponsibilityVerifier(getClass().getMethods()[0]);
+		ResponsibilityVerifier verifier = new ResponsibilityVerifier();
 
 		// execute
-		composite.responsibilityVerificationStarting(verifier, new Object());
+		Method method = SomeBehaviourClass.class.getMethod("shouldDoSomething", new Class[0]);
+        composite.responsibilityVerificationStarting(method);
 
 		// verify
-		verifyMethodCalled("responsibilityVerificationStarting", callMap1, verifier);
-		verifyMethodCalled("responsibilityVerificationStarting", callMap2, verifier);
+		verifyMethodCalled("responsibilityVerificationStarting", callMap1, method);
+		verifyMethodCalled("responsibilityVerificationStarting", callMap2, method);
 
 	}
 

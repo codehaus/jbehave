@@ -7,12 +7,12 @@
  */
 package jbehave.listeners;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import jbehave.framework.ResponsibilityVerification;
-import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.Listener;
 
 /**
@@ -47,9 +47,9 @@ public class CompositeListener implements Listener {
         }
     }
 
-    public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClass) {
+    public void responsibilityVerificationStarting(Method responsibilityMethod) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).responsibilityVerificationStarting(verifier, behaviourClass);
+            ((Listener)i.next()).responsibilityVerificationStarting(responsibilityMethod);
         }
     }
 

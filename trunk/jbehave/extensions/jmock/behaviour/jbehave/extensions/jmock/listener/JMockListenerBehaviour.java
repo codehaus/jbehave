@@ -55,7 +55,7 @@ public class JMockListenerBehaviour {
     }
 
     private ResponsibilityVerifier getSingleResponsibilityVerifier(Class behaviourClass) throws Exception {
-        return new ResponsibilityVerifier(firstResponsibilityMethod(behaviourClass));
+        return new ResponsibilityVerifier();
     }
     
 	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
@@ -117,7 +117,7 @@ public class JMockListenerBehaviour {
 		BehaviourClassThatUsesJMock behaviourClassInstance = new BehaviourClassThatUsesJMock();
 
 		// execute
-	    listener.responsibilityVerificationStarting(verifier, behaviourClassInstance);
+	    listener.responsibilityVerificationStarting(abc);
 		behaviourClassInstance.shouldUseAMockWhoseExpectationWillFail();
 		ResponsibilityVerification verification =
             listener.responsibilityVerificationEnding(

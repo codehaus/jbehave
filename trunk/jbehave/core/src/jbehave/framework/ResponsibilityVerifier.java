@@ -20,41 +20,6 @@ import jbehave.framework.exception.VerificationException;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class ResponsibilityVerifier {
-    private final Class behaviourClass;
-    private final Method method;
-    private final Object behaviourClassInstance;
-
-    public ResponsibilityVerifier(Method method) {
-        try {
-            this.method = method;
-            this.behaviourClass = method.getDeclaringClass();
-            this.behaviourClassInstance = behaviourClass.newInstance();
-        }
-        catch (Exception e) {
-            throw new BehaviourFrameworkError("Unable to instantiate " + method.getDeclaringClass().getName());
-        }
-    }
-
-    public ResponsibilityVerifier(Method method, Object behaviourClassInstance) {
-        this.method = method;
-        this.behaviourClass = method.getDeclaringClass();
-        this.behaviourClassInstance = behaviourClassInstance;
-    }
-
-    public String getName() {
-        return method.getName();
-    }
-    
-    public String getBehaviourClassName() {
-        String name = behaviourClass.getName();
-        int lastDot = name.lastIndexOf('.');
-        return name.substring(lastDot + 1);
-    }
-    
-    public Class getBehaviourClass() {
-        return behaviourClass;
-    }
-
     /**
      * Verify an individual responsibility.
      * 
@@ -62,45 +27,51 @@ public class ResponsibilityVerifier {
      * in the appropriate places if either of them exist.<br>
      * <br>
      * The {@link Listener} is alerted before and after the verification,
-     * with calls to {@link Listener#responsibilityVerificationStarting(ResponsibilityVerifier,Object)
+     * with calls to {@link Listener#responsibilityVerificationStarting(Method)
      * responsibilityVerificationStarting(this)} and
      * {@link Listener#responsibilityVerificationEnding(ResponsibilityVerification,Object)
      * responsibilityVerificationEnding(result)} respectively.
+     * @param method TODO
      */
-    public ResponsibilityVerification verifyResponsibility(Listener listener) {
+    public ResponsibilityVerification verifyResponsibility(Listener listener, Method method) {
         ResponsibilityVerification result = null;
+        String behaviourClassName = null;
+        Object instance = null;
         try {
-            listener.responsibilityVerificationStarting(this, behaviourClassInstance);
-            setUp();
-            method.invoke(behaviourClassInstance, new Object[0]);
-            result = createVerification(null);
+            listener.responsibilityVerificationStarting(method);
+            behaviourClassName = method.getDeclaringClass().getName();
+            instance = method.getDeclaringClass().newInstance();
+            
+            setUp(instance);
+            method.invoke(instance, new Object[0]);
+            result = createVerification(behaviourClassName, method.getName(), null);
         } catch (InvocationTargetException e) {
             // method failed
-            result = createVerification(e.getTargetException());
+            result = createVerification(behaviourClassName, method.getName(), e.getTargetException());
         } catch (Exception e) {
             throw new BehaviourFrameworkError(
-                    "Problem invoking " + behaviourClass.getName() + "#" + method.getName(), e);
+                    "Problem invoking " + method.getDeclaringClass().getName() + "#" + method.getName(), e);
         }
         finally {
             try {
-				tearDown();
+				tearDown(instance);
 			} catch (InvocationTargetException e) {
                 // tearDown failed - override if result would have succeeded
                 if (result != null && result.succeeded()) {
-                    result = createVerification(e.getTargetException());
+                    result = createVerification(behaviourClassName, method.getName(), e.getTargetException());
                 }
             } catch (Exception e) {
                 // anything else is bad news
                 throw new BehaviourFrameworkError(e);
             }
         }
-        listener.responsibilityVerificationEnding(result, behaviourClassInstance);
+        listener.responsibilityVerificationEnding(result, instance);
         return result;
     }
 
-	private void setUp() throws InvocationTargetException {
+	private void setUp(Object behaviourClassInstance) throws InvocationTargetException {
         try {
-            Method setUp = getBehaviourClass().getMethod("setUp", new Class[0]);
+            Method setUp = behaviourClassInstance.getClass().getMethod("setUp", new Class[0]);
             setUp.invoke(behaviourClassInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a setUp() method - never mind
@@ -113,9 +84,9 @@ public class ResponsibilityVerifier {
         }
     }
 
-    private void tearDown() throws InvocationTargetException {
+    private void tearDown(Object behaviourClassInstance) throws InvocationTargetException {
         try {
-            Method tearDown = getBehaviourClass().getMethod("tearDown", new Class[0]);
+            Method tearDown = behaviourClassInstance.getClass().getMethod("tearDown", new Class[0]);
             tearDown.invoke(behaviourClassInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a tearDown() method - never mind
@@ -140,18 +111,14 @@ public class ResponsibilityVerifier {
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
      */
-    private ResponsibilityVerification createVerification(Throwable targetException) {
+    private ResponsibilityVerification createVerification(String className, String methodName, Throwable targetException) {
         
         // propagate thread death otherwise Bad Things happen (or rather Good Things don't)
         if (targetException instanceof ThreadDeath) {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new ResponsibilityVerification(method.getName(), behaviourClass.getName(), targetException);
+            return new ResponsibilityVerification(methodName, className, targetException);
         }
-    }
-    
-    public String toString() {
-        return "[ResponsibilityVerifier: " + getBehaviourClassName() + "." + method.getName() + "]";
     }
 }

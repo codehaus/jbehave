@@ -31,8 +31,8 @@ public class BehaviourClassVerifier {
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
                 if (method.getName().startsWith("should") && method.getParameterTypes().length == 0) {
-                    ResponsibilityVerifier verifier = new ResponsibilityVerifier(method);
-                    verifier.verifyResponsibility(listener);
+                    ResponsibilityVerifier verifier = new ResponsibilityVerifier();
+                    verifier.verifyResponsibility(listener, method);
                 }
             }
             listener.behaviourClassVerificationEnding(behaviourClass);

@@ -7,9 +7,10 @@
  */
 package jbehave.listeners;
 
+import java.lang.reflect.Method;
+
 import jbehave.framework.Listener;
 import jbehave.framework.ResponsibilityVerification;
-import jbehave.framework.ResponsibilityVerifier;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
@@ -20,7 +21,7 @@ public class ListenerSupport implements Listener {
     }
 
     public void responsibilityVerificationStarting(
-            ResponsibilityVerifier verifier, Object behaviourClassInstance) {
+            Method responsibilityMethod) {
     }
 
     public ResponsibilityVerification responsibilityVerificationEnding(

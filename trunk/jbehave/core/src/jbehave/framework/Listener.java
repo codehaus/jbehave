@@ -7,6 +7,8 @@
  */
 package jbehave.framework;
 
+import java.lang.reflect.Method;
+
 import jbehave.listeners.NullListener;
 
 
@@ -29,7 +31,7 @@ public interface Listener {
     public static final Listener NULL = new NullListener(); // null object
 
     void behaviourClassVerificationStarting(Class behaviourClass);
-    void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClassInstance);
+    void responsibilityVerificationStarting(Method responsibilityMethod);
     ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance);
     void behaviourClassVerificationEnding(Class behaviourClass);
 }

@@ -8,10 +8,10 @@
 package jbehave.extensions.jmock.listener;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import jbehave.extensions.jmock.UsingJMock;
 import jbehave.framework.ResponsibilityVerification;
-import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.exception.VerificationException;
 import jbehave.listeners.ListenerSupport;
 import junit.framework.AssertionFailedError;
@@ -27,7 +27,7 @@ public class JMockListener extends ListenerSupport {
 	public void behaviourClassVerificationStarting(Class spec) {
 	}
 
-	public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClassInstance) {
+	public void responsibilityVerificationStarting(Method responsibilityMethod) {
         UsingJMock.Mocks.clear(); // whatever
 	}
 
