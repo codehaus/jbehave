@@ -7,13 +7,13 @@
  */
 package jbehave.extensions.jmock.listener;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
-import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerification;
-import jbehave.framework.CriteriaExtractor;
+import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.Verify;
-import jbehave.verify.listener.Listener;
+import jbehave.listener.Listener;
 
 import org.jmock.Mock;
 
@@ -34,19 +34,31 @@ public class JMockListenerSpec {
             someMock.stubs();
         }
     }
-    
-    private CriteriaVerifier getSingleBehaviour(Class behaviourClass) {
-        return (CriteriaVerifier)new CriteriaExtractor(behaviourClass).createCriteriaVerifiers().iterator().next();
+
+    /** pull out the first criteria method in a spec */
+    private Method firstCriteria(Class spec) throws Exception {
+        Method[] methods = spec.getMethods();
+        for (int i = 0; i < methods.length; i++) {
+            Method method = methods[i];
+            if (method.getName().startsWith("should")) {
+                return method;
+            }
+        }
+      throw new Error("No spec method found in " + spec.getName());
+    }
+
+    private CriteriaVerifier getSingleBehaviour(Class behaviourClass) throws Exception {
+        return new CriteriaVerifier(firstCriteria(behaviourClass));
     }
     
 	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
         // setup
         Listener listener = new JMockListener();
         CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
-        CriteriaVerification behaviourResult = behaviour.verifyCriteria();
+        CriteriaVerification behaviourResult = behaviour.verifyCriteria(Listener.NULL);
         
         // execute
-        listener.afterCriteriaVerificationEnds(behaviourResult);
+        listener.criteriaVerificationEnding(behaviourResult);
         
         // verify
         BehaviourClassWithPrivateMock instance = (BehaviourClassWithPrivateMock)behaviourResult.getSpecInstance();

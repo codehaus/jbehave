@@ -10,16 +10,16 @@ package jbehave.extensions.jmock.listener;
 import java.lang.reflect.Field;
 
 import jbehave.framework.CriteriaVerification;
-import jbehave.verify.listener.ListenerSupport;
+import jbehave.listener.NullListener;
 
 import org.jmock.Mock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class JMockListener extends ListenerSupport {
+public class JMockListener extends NullListener {
 
-	public void afterCriteriaVerificationEnds(CriteriaVerification behaviourResult) {
+	public void criteriaVerificationEnding(CriteriaVerification behaviourResult) {
         Object executedInstance = behaviourResult.getSpecInstance();
         
         // iterate looking for fields of type Mock
