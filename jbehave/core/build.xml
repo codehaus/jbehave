@@ -1,4 +1,4 @@
-<project name="jbehave" default="test">
+<project name="jbehave" default="verify">
 	<property name="version" value="0.1-SNAPSHOT" />
 
 	<property name="project" value="${ant.project.name}" />
@@ -52,6 +52,8 @@
 		</java>
 	</target>
 
+	<!--
+	Do we really need or want this?
 	<target name="test.compile" depends="jar">
 		<mkdir dir="${test.classes.dir}" />
 		<javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
@@ -70,7 +72,7 @@
 			</classpath>
 			<test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}" />
 		</junit>
-	</target>
+	</target>  -->
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
