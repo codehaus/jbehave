@@ -11,7 +11,7 @@ import jbehave.framework.Aggregate;
 import jbehave.framework.CriteriaSpec;
 import jbehave.framework.CriteriaSupportSpec;
 import jbehave.framework.CriteriaVerificationResultSpec;
-import jbehave.verify.EvaluatorSpec;
+import jbehave.verify.VerifierSpec;
 import jbehave.verify.listener.TextListenerSpec;
 import jbehave.verify.listener.TimerSpec;
 
@@ -24,7 +24,7 @@ public class AllSpecs implements Aggregate {
             CriteriaSpec.class,
             CriteriaVerificationResultSpec.class,
             CriteriaSupportSpec.class,
-            EvaluatorSpec.class,
+            VerifierSpec.class,
             TextListenerSpec.class,
             TimerSpec.class
         };

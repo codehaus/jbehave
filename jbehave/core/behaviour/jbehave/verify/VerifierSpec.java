@@ -14,20 +14,20 @@ import java.util.List;
 import jbehave.framework.CriteriaVerificationResult;
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.Verify;
-import jbehave.verify.VerifierSpec;
+import jbehave.verify.Verifier;
 import jbehave.verify.listener.ListenerSupport;
 
 /**
- * Test the {@link VerifierSpec} class
+ * Test the {@link Verifier} class
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class EvaluatorSpec {
+public class VerifierSpec {
     private final static List resultList = new ArrayList(); // handy place to store results
-    private VerifierSpec runner;
+    private Verifier runner;
     
     public void setUp() {
-        runner = new VerifierSpec();
+        runner = new Verifier();
         resultList.clear();
     }
 
@@ -63,15 +63,15 @@ public class EvaluatorSpec {
     }
 
     private static class RunStartedListener extends ListenerSupport {
-        private final VerifierSpec expectedRunner;
+        private final Verifier expectedRunner;
         private final String message;
         
-        public RunStartedListener(VerifierSpec expectedRunner, String message) {
+        public RunStartedListener(Verifier expectedRunner, String message) {
             this.expectedRunner = expectedRunner;
             this.message = message;
         }
 
-        public void verificationStarted(VerifierSpec runner) {
+        public void verificationStarted(Verifier runner) {
             Verify.sameInstance(expectedRunner, runner);
             resultList.add(message);
         }
@@ -93,15 +93,15 @@ public class EvaluatorSpec {
     }
 
     private static class RunEndedListener extends ListenerSupport {
-        private final VerifierSpec expectedRunner;
+        private final Verifier expectedRunner;
         private final String message;
         
-        public RunEndedListener(VerifierSpec expectedRunner, String message) {
+        public RunEndedListener(Verifier expectedRunner, String message) {
             this.expectedRunner = expectedRunner;
             this.message = message;
         }
         
-        public void verificationEnded(VerifierSpec runner) {
+        public void verificationEnded(Verifier runner) {
             Verify.sameInstance(expectedRunner, runner);
             resultList.add(message);
         }
