@@ -31,15 +31,15 @@ public class JUnitAdapter implements Test {
             this.result = result;
             this.adapter = adapter;
         }
-        public void runStarted(Evaluator runner) {
+        public void verificationStarted(Evaluator runner) {
         }
-        public void behaviourEvaluationStarted(Class behaviourClass) {
+        public void specVerificationStarted(Class behaviourClass) {
             setBehaviourClassName(behaviourClass.getName());
             result.startTest(adapter);
         }
-        public void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour) {
+        public void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour) {
         }
-        public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
+        public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
             if (behaviourResult.failed()) {
                 VerificationException e = (VerificationException)behaviourResult.getTargetException();
                 result.addError(adapter, e);
@@ -64,7 +64,7 @@ public class JUnitAdapter implements Test {
     }
 
     public int countTestCases() {
-        return CriteriaExtractor.getCriteria(behaviours).size();
+        return new CriteriaExtractor(behaviours).getCriteriaVerifiers().size();
     }
 
     private void setBehaviourClassName(String behaviourClassName) {
@@ -78,7 +78,7 @@ public class JUnitAdapter implements Test {
         currentRunner.registerListener(
                 new JUnitListener(result, this)
         );
-        currentRunner.evaluateCriteria();
+        currentRunner.verifyCriteria();
     }
 
     public String toString() {

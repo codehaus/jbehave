@@ -38,14 +38,14 @@ public class TextListener extends ListenerSupport {
         this(writer, new Timer());
     }
     
-    public void runStarted(Evaluator runner) {
+    public void verificationStarted(Evaluator runner) {
         timer.start();
     }
 
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
+    public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
         behavioursRun++;
         if (behaviourResult.failed()) {
             failures.add(behaviourResult);
@@ -66,7 +66,7 @@ public class TextListener extends ListenerSupport {
         }
     }
      
-    public void runEnded(Evaluator runner) {
+    public void verificationEnded(Evaluator runner) {
         timer.stop();
         out.println();
         printElapsedTime();

@@ -20,7 +20,7 @@ import org.jmock.Mock;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class JMockListenerBehaviour {
+public class JMockListenerSpec {
     public static class BehaviourClassWithPrivateMock {
         public boolean verifyWasCalled = false;
         
@@ -36,7 +36,7 @@ public class JMockListenerBehaviour {
     }
     
     private CriteriaVerifier getSingleBehaviour(Class behaviourClass) {
-        return (CriteriaVerifier)CriteriaExtractor.getCriteria(behaviourClass).iterator().next();
+        return (CriteriaVerifier)new CriteriaExtractor(behaviourClass).getCriteriaVerifiers().iterator().next();
     }
     
 	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
@@ -46,7 +46,7 @@ public class JMockListenerBehaviour {
         CriteriaVerificationResult behaviourResult = behaviour.verify();
         
         // execute
-        listener.afterCriterionEvaluationEnds(behaviourResult);
+        listener.afterCriteriaVerificationEnds(behaviourResult);
         
         // verify
         BehaviourClassWithPrivateMock instance = (BehaviourClassWithPrivateMock)behaviourResult.getBehaviourInstance();

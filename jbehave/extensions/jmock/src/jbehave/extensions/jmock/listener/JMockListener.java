@@ -19,7 +19,7 @@ import org.jmock.Mock;
  */
 public class JMockListener extends ListenerSupport {
 
-	public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
+	public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
         Object executedInstance = behaviourResult.getBehaviourInstance();
         
         // iterate looking for fields of type Mock
