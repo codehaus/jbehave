@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.runner;
+package com.thoughtworks.jbehave.extensions.story.verifier;
 
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
@@ -15,15 +15,16 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
+import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class ScenarioRunner implements Visitor {
+public class VisitingScenarioVerifier implements ScenarioVerifier, Visitor {
     private final Environment environment;
     private boolean beforeEvent = true;
 
-    public ScenarioRunner(Environment environment) {
+    public VisitingScenarioVerifier(Environment environment) {
         this.environment = environment;
     }
     
@@ -63,5 +64,8 @@ public class ScenarioRunner implements Visitor {
         else {
             expectation.verify(environment);
         }
+    }
+
+    public void verifyScenario(Scenario scenario) {
     }
 }

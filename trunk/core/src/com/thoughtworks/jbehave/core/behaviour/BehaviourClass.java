@@ -36,6 +36,7 @@ public class BehaviourClass implements Visitable {
             }
         }
         catch (Exception e) {
+            e.printStackTrace();
             throw new JBehaveFrameworkError(classToVerify.getName(), e);
         }
     }
