@@ -153,4 +153,21 @@ public class JMockListenerBehaviour {
         // verify...
         instance.verify();
     }
+    
+    public void shouldNotVerifyMocksIfMethodThrewException() throws Exception {
+        // given...
+        RuntimeException cause = new RuntimeException("oops");
+        Result methodFailed = new Result("SomeClass", "someMethod", cause);
+        org.jmock.cglib.Mock instance = new org.jmock.cglib.Mock(UsingJMock.class);
+
+        // expect...
+        TestFailureMatcher never = new TestFailureMatcher("expect not called");
+        instance.expects(never).method("verify");
+        
+        // when...
+        listener.responsibilityVerificationEnding(methodFailed, instance.proxy());
+        
+        // verify...
+        instance.verify();
+    }
 }
