@@ -93,7 +93,7 @@ public class TextListener implements BehaviourClassListener, ResponsibilityListe
             for (Iterator i = errorList.iterator(); i.hasNext(); count++) {
                 Result verification = (Result)i.next();
                 out.println(count + ") " + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
-                verification.getTargetException().printStackTrace(out);
+                verification.getCause().printStackTrace(out);
                 out.println();
             }
         }
@@ -107,7 +107,7 @@ public class TextListener implements BehaviourClassListener, ResponsibilityListe
             for (Iterator i = pending.iterator(); i.hasNext(); count++) {
                 Result verification = (Result) i.next();
                 out.println(count + ")" + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
-                out.println("\t" + verification.getTargetException().getMessage());
+                out.println("\t" + verification.getCause().getMessage());
             }
         }
     }

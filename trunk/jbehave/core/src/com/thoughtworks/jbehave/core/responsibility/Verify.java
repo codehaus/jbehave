@@ -128,4 +128,9 @@ public class Verify {
     public static void pending() {
         throw new PendingException();
     }
+
+    // instanceof
+    public static void instanceOf(Class type, Object instance) {
+        that("should be instance of " + type.getName(), type.isInstance(instance));
+    }
 }

@@ -10,9 +10,12 @@ package com.thoughtworks.jbehave.extensions.jmock.listener;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.jmock.core.matcher.TestFailureMatcher;
+
 import junit.framework.AssertionFailedError;
 
 import com.thoughtworks.jbehave.core.ResponsibilityListener;
+import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 import com.thoughtworks.jbehave.core.responsibility.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
@@ -71,7 +74,7 @@ public class JMockListenerBehaviour {
 
         private Mock someMock = new Mock(List.class) {
             public void verify() {
-                throw new AssertionFailedError("blah was not invoked");
+                throw new VerificationException("blah was not invoked");
             }
         };
 
@@ -106,7 +109,7 @@ public class JMockListenerBehaviour {
 		}
 	}
 
-	public void shouldAutomaticallyVerifyMocks() throws Exception {
+	public void shouldVerifyMocks() throws Exception {
         // setup
         final Method method = firstResponsibilityMethod(BehaviourClass3.class);
         listener.responsibilityVerificationStarting(method);
@@ -122,4 +125,32 @@ public class JMockListenerBehaviour {
 		// verify
 		Verify.that("should fail JMock verification", result.failed());
 	}
+    
+    public void shouldWrapAssertionFailedErrorWithVerificationException() throws Exception {
+        // given...
+        Result assertionFailed = new Result("SomeClass", "someMethod", new AssertionFailedError());
+        
+        // when...
+        Result result = listener.responsibilityVerificationEnding(assertionFailed, null);
+        
+        // verify...
+        Verify.instanceOf(VerificationException.class, result.getCause());
+    }
+    
+    public void shouldNotVerifyMocksIfMethodFailed() throws Exception {
+        // given...
+        RuntimeException cause = new VerificationException("oops");
+        Result methodFailed = new Result("SomeClass", "someMethod", cause);
+        org.jmock.cglib.Mock instance = new org.jmock.cglib.Mock(UsingJMock.class);
+
+        // expect...
+        TestFailureMatcher never = new TestFailureMatcher("expect not called");
+        instance.expects(never).method("verify");
+        
+        // when...
+        listener.responsibilityVerificationEnding(methodFailed, instance.proxy());
+        
+        // verify...
+        instance.verify();
+    }
 }

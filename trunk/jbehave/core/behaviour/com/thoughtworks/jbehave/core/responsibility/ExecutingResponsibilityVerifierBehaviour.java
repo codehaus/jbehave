@@ -114,7 +114,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         verifyFirstResponsibility(recordingListener, BehaviourClassWithResponsibilityThatThrowsCheckedException.class);
         // verify
         Verify.that(recordingListener.latestResult.threwException());
-        Verify.that(recordingListener.latestResult.getTargetException() instanceof SomeCheckedException);
+        Verify.instanceOf(SomeCheckedException.class, recordingListener.latestResult.getCause());
     }
 
     public static class SomeRuntimeException extends RuntimeException {}
@@ -130,7 +130,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         verifyFirstResponsibility(recordingListener, BehaviourClassWithResponsibilityThatThrowsRuntimeException.class);
         // verify
         Verify.that(recordingListener.latestResult.threwException());
-        Verify.that(recordingListener.latestResult.getTargetException() instanceof SomeRuntimeException);
+        Verify.instanceOf(SomeRuntimeException.class, recordingListener.latestResult.getCause());
     }
 
     private static class SomeError extends Error {}
@@ -146,7 +146,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         verifyFirstResponsibility(recordingListener, BehaviourClassWithResponsibilityThatThrowsError.class);
         // verify
         Verify.that(recordingListener.latestResult.threwException());
-        Verify.that(recordingListener.latestResult.getTargetException() instanceof SomeError);
+        Verify.instanceOf(SomeError.class, recordingListener.latestResult.getCause());
     }
 
     public static class BehaviourClassWithResponsibilityThatThrowsThreadDeath {
@@ -247,7 +247,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         verifyFirstResponsibility(recordingListener, BehaviourClassWithFailingResponsibilityAndExceptionTearDown.class);
         // verify
         Verify.that("exception was thrown", recordingListener.latestResult.threwException());
-        Verify.equal("exception type", IllegalArgumentException.class, recordingListener.latestResult.getTargetException().getClass());
+        Verify.equal("exception type", IllegalArgumentException.class, recordingListener.latestResult.getCause().getClass());
 	}
     
     public static abstract class AbstractSuperclass {

@@ -25,22 +25,22 @@ public class Result {
     private final String name;
     private final String behaviourClassName;
     private final int status;
-    private final Throwable targetException;
+    private final Throwable cause;
 
     /**
      * Constructor for result that contains an exception
      */
-    public Result(String behaviourClassName, String responsibilityMethodName, Throwable targetException) {
+    public Result(String behaviourClassName, String responsibilityMethodName, Throwable cause) {
         this.name = responsibilityMethodName;
         this.behaviourClassName = behaviourClassName;
-        this.targetException = targetException;
-        if (targetException == null) {
+        this.cause = cause;
+        if (cause == null) {
             status = SUCCESS;
         }
-        else if (targetException instanceof PendingException) {
+        else if (cause instanceof PendingException) {
             status = PENDING;
         }
-        else if (targetException instanceof VerificationException) {
+        else if (cause instanceof VerificationException) {
             status = FAILURE;
         }
         else {
@@ -67,8 +67,8 @@ public class Result {
         return status;
     }
 
-    public Throwable getTargetException() {
-        return targetException;
+    public Throwable getCause() {
+        return cause;
     }
 
     public boolean succeeded() {
@@ -88,7 +88,7 @@ public class Result {
     }
 
 	public String toString() {
-        return "Name: " + name + ", behaviour class:" + behaviourClassName + ", status: " + status + ", targetException: " + targetException;
+        return "Name: " + name + ", behaviour class:" + behaviourClassName + ", status: " + status + ", targetException: " + cause;
     }
 
     public boolean equals(Object o) {
@@ -105,7 +105,7 @@ public class Result {
         return ((name == null ? other.name == null : name.equals(other.name))
             && (behaviourClassName == null ? other.behaviourClassName == null : behaviourClassName.equals(other.behaviourClassName))
             && (status == other.status)
-            && (targetException == null ? other.targetException == null : targetException.equals(other.targetException)));
+            && (cause == null ? other.cause == null : cause.equals(other.cause)));
     }
 
     /**
@@ -116,7 +116,7 @@ public class Result {
         hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
         hashCode = 31 * hashCode + (behaviourClassName == null ? 0 : behaviourClassName.hashCode());
         hashCode = 31 * hashCode + status;
-        hashCode = 31 * hashCode + (targetException == null ? 0 : targetException.hashCode());
+        hashCode = 31 * hashCode + (cause == null ? 0 : cause.hashCode());
         return hashCode;
     }
 }

@@ -45,13 +45,13 @@ public class JUnitMethodAdapter extends TestCase {
         final Result result =
             new ExecutingResponsibilityVerifier().verifyResponsibility(new NULLResponsibilityListener(), method, instance);
         if (result.failed()) {
-            testResult.addFailure(this, buildAssertionFailedError(result.getTargetException()));
+            testResult.addFailure(this, buildAssertionFailedError(result.getCause()));
         }
         else if (result.threwException()) {
-            testResult.addError(this, result.getTargetException());
+            testResult.addError(this, result.getCause());
         }
         else if (result.isPending()) {
-            System.out.println(result.getName() + ": " + result.getTargetException().getMessage());
+            System.out.println(result.getName() + ": " + result.getCause().getMessage());
         }
     }
 

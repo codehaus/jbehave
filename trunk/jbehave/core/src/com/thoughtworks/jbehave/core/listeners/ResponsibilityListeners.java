@@ -43,7 +43,7 @@ public class ResponsibilityListeners implements ResponsibilityListener {
 
     public Result responsibilityVerificationEnding(Result result, Object behaviourClassInstance) {
 		for (Iterator i = listeners.iterator(); i.hasNext();) {
-           result = ((ResponsibilityListener)i.next()).responsibilityVerificationEnding(result, behaviourClassInstance);
+		    result = ((ResponsibilityListener)i.next()).responsibilityVerificationEnding(result, behaviourClassInstance);
         }
 		return result;
     }
