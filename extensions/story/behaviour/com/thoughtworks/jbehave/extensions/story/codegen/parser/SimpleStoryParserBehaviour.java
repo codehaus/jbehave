@@ -27,8 +27,14 @@ public class SimpleStoryParserBehaviour {
     					+ "I want to be able to withdraw cash from an ATM\n"
     					+ "So that I don't have to visit the bank\n";
     
-    private String scenarioText = "Scenario: Happy scenario\n" +
+    private String happyScenario = "Scenario: Happy scenario\n" +
 		"Given Account is in credit (set balance = 50)\n" +
+		"When User requests cash (user requests 20)\n" +
+		"Then ATM should dispense cash (ATM dispenses 20)\n";
+    
+    private String overdraftScenario = "Scenario: Happy story with overdraft\n" +
+		"Given Account has overdraft facility\n" +
+		"and Account is easily within overdraft limit\n" +
 		"When User requests cash (user requests 20)\n" +
 		"Then ATM should dispense cash (ATM dispenses 20)\n";
     
@@ -83,7 +89,7 @@ public class SimpleStoryParserBehaviour {
         Verify.equal(expectedDetails, storyDetails);
     }
     
-    private ScenarioDetails createScenarioDetails() {
+    private ScenarioDetails createHappyScenarioDetails() {
         OutcomeDetails outcome = new OutcomeDetails();
         outcome.addExpectation(new BasicDetails("ATM should dispense cash", "ATM dispenses 20"));
         ContextDetails context = new ContextDetails();
@@ -94,11 +100,11 @@ public class SimpleStoryParserBehaviour {
     
     public void shouldParseStoryWithSimpleScenario() throws Exception {
         // given...
-        String storyWithScenario = storyText + "\n" + scenarioText;
+        String storyWithScenario = storyText + "\n" + happyScenario;
         
         // expect...  
         StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
-        expectedDetails.addScenario(createScenarioDetails());
+        expectedDetails.addScenario(createHappyScenarioDetails());
         
         // when...
         StoryDetails storyDetails = storyParser.parseStory(new StringReader(storyWithScenario));
@@ -112,11 +118,11 @@ public class SimpleStoryParserBehaviour {
         String otherExpectations =  "and ATM should return bank card\n" +
         							"and account balance should be reduced (account balance = 30)\n";
         
-        String story = storyText + "\n" + scenarioText + otherExpectations;
+        String story = storyText + "\n" + happyScenario + otherExpectations;
         
         // expect ...
         StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
-        ScenarioDetails scenarioDetails = createScenarioDetails();
+        ScenarioDetails scenarioDetails = createHappyScenarioDetails();
         
         OutcomeDetails outcomeDetails = scenarioDetails.getOutcome();
         outcomeDetails.addExpectation(new BasicDetails("ATM should return bank card", ""));
@@ -130,26 +136,24 @@ public class SimpleStoryParserBehaviour {
         Verify.equal(expectedDetails, storyDetails);      
     }
     
-    public void shouldParseScenarioWithMultipeGivens() throws Exception {
-        // given
-        String scenario = "Scenario: Happy story with overdraft\n" +
-        		"Given Account has overdraft facility\n" +
-        		"and Account is easily within overdraft limit\n" +
-        		"When User requests cash (user requests 20)\n" +
-        		"Then ATM should dispense cash (ATM dispenses 20)\n";
-        
-        String story = storyText + "\n" + scenario;
-        
-        // expect
-        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
-        
+    private ScenarioDetails createOverdraftScenarioDetails() {
         OutcomeDetails outcome = new OutcomeDetails();
         outcome.addExpectation(new BasicDetails("ATM should dispense cash", "ATM dispenses 20"));
         ContextDetails context = new ContextDetails();
         context.addGiven(new BasicDetails("Account has overdraft facility", ""));
         context.addGiven(new BasicDetails("Account is easily within overdraft limit", ""));
         BasicDetails event = new BasicDetails("User requests cash", "user requests 20");
-        expectedDetails.addScenario(new ScenarioDetails("Happy story with overdraft", context, event, outcome));
+        return new ScenarioDetails("Happy story with overdraft", context, event, outcome);
+    }
+    
+    public void shouldParseScenarioWithMultipeGivens() throws Exception {
+        // given
+        
+        String story = storyText + "\n" + overdraftScenario;
+        
+        // expect
+        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
+        expectedDetails.addScenario(createOverdraftScenarioDetails());
         
         // when
         StoryDetails storyDetails = storyParser.parseStory(new StringReader(story));
@@ -170,19 +174,28 @@ public class SimpleStoryParserBehaviour {
         
         // expect
         StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
-        
-        OutcomeDetails outcome = new OutcomeDetails();
-        outcome.addExpectation(new BasicDetails("ATM should dispense cash", "ATM dispenses 20"));
-        ContextDetails context = new ContextDetails();
-        context.addGiven(new BasicDetails("Account has overdraft facility", ""));
-        context.addGiven(new BasicDetails("Account is easily within overdraft limit", ""));
-        BasicDetails event = new BasicDetails("User requests cash", "user requests 20");
-        expectedDetails.addScenario(new ScenarioDetails("Happy story with overdraft", context, event, outcome));
+        expectedDetails.addScenario(createOverdraftScenarioDetails());
         
         // when
         StoryDetails storyDetails = storyParser.parseStory(new StringReader(story));
         
         // verify
         Verify.equal(expectedDetails, storyDetails);
+    }
+    
+    public void shouldParseStoryWithMultipleScenarios() throws Exception {
+        // given
+        String story = storyText + "\n" + happyScenario + "\n" + overdraftScenario;
+        
+        // expect
+        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
+        expectedDetails.addScenario(createHappyScenarioDetails());
+        expectedDetails.addScenario(createOverdraftScenarioDetails());
+       
+        // when
+        StoryDetails storyDetails = storyParser.parseStory(new StringReader(story));
+        
+        // verify
+        Verify.equal(expectedDetails, storyDetails);        
     }
 }
