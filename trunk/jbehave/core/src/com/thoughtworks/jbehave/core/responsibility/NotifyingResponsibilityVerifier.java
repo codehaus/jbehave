@@ -30,7 +30,7 @@ public class NotifyingResponsibilityVerifier implements ResponsibilityVerifier {
         try {
             listener.responsibilityVerificationStarting(method);
             Result result = doVerifyResponsibility(method, instance);
-            listener.responsibilityVerificationEnding(result, instance);
+            result = listener.responsibilityVerificationEnding(result, instance);
             return result;
         } catch (Exception e) {
             System.out.println("Problem verifying " + method);
