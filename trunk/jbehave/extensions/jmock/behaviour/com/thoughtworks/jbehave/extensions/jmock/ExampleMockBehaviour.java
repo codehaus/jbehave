@@ -12,7 +12,7 @@ package com.thoughtworks.jbehave.extensions.jmock;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 16-Jul-2004
  */
-public class ExampleMockBehaviour implements UsingJMock {
+public class ExampleMockBehaviour extends UsingJMock2 {
 
 	private Mock aMock;
 
@@ -37,10 +37,10 @@ public class ExampleMockBehaviour implements UsingJMock {
 		Mock dependencyMock = new Mock(Dependency.class);
 		ClassWithDependency a = new ClassWithDependency((Dependency) aMock.proxy());
 		// expect
-		dependencyMock.expects(Invoked.once()).
+		dependencyMock.expects(once()).
 				method("invokeMe").
 				withNoArguments().
-				will(Return.value("hello"));
+				will(returnValue("hello"));
 		// execute
 		a.execute();
 		// verify  happens auto-magically

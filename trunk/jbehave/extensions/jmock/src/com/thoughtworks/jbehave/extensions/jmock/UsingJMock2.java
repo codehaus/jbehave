@@ -1,10 +1,3 @@
-/*
- * Created on 09-Aug-2004
- *
- * (c) 2003-2004 ThoughtWorks Ltd
- *
- * See license.txt for license details
- */
 package com.thoughtworks.jbehave.extensions.jmock;
 
 import java.util.HashSet;
@@ -14,76 +7,37 @@ import java.util.Set;
 import junit.framework.AssertionFailedError;
 
 import org.jmock.builder.MatchBuilder;
+import org.jmock.core.Constraint;
 import org.jmock.core.DynamicMock;
 
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 
 /**
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>
+ *
  */
-public interface UsingJMock extends JMockMixins {
-    /**
-     * Convenience methods for managing mocks
-     *
-     * The pixies will ensure that the <tt>Mock</tt> gets verified
-     * when the Responsibility method ends.
-     */
-    class Mocks {
-        private static final Set mocks = new HashSet();
-
-        public static void clear() {
-            mocks.clear();
-        }
-
-        private static void add(Mock mock) {
-            mocks.add(mock);
-        }
-
-        public static void verify() {
-            for (Iterator i = mocks.iterator(); i.hasNext();) {
-                Mock mock = null;
-                try {
-                    mock = (Mock) i.next();
-                    mock.verify();
-                } catch (AssertionFailedError e) {
-                    VerificationException fakedException = new VerificationException(e.getMessage());
-                    mock.fakeExceptionStackTrace(fakedException);
-                    throw fakedException;
-                }
+public abstract class UsingJMock2 extends JMockSugar{
+    
+    private Set mocks = new HashSet();
+     
+    // This needs a Behaviour class as this is a responsibility!
+    public void verify() {
+        for (Iterator i = mocks.iterator(); i.hasNext();) {
+            Mock mock = null;
+            try {
+                mock = (Mock) i.next();
+                mock.verify();
+            } catch (AssertionFailedError e) {
+                VerificationException fakedException = new VerificationException(e.getMessage());
+                mock.fakeExceptionStackTrace(fakedException);
+                throw fakedException;
             }
         }
     }
     
-//    class MatchBuilder extends org.jmock.builder.
-//    
-//    class MatchBuilder implements org.jmock.builder.MatchBuilder {
-//        public MatchBuilder match(InvocationMatcher customMatcher) {
-//            return null;
-//        }
-//
-//        public MatchBuilder after(String previousCallID) {
-//            return null;
-//        }
-//
-//        public MatchBuilder after(BuilderNamespace otherMock, String previousCallID) {
-//            return null;
-//        }
-//
-//        public IdentityBuilder will(Stub stubAction) {
-//            return null;
-//        }
-//
-//        public IdentityBuilder isVoid() {
-//            return null;
-//        }
-//
-//        public void id(String id) {
-//            // TODO Auto-generated method stub
-//            
-//        }
-//        
-//    }
-
+    private void addMock(Mock m) {
+        mocks.add(m);
+    }
     /**
      * Interceptor class for creating instances of {@link org.jmock.Mock}.
      *
@@ -91,25 +45,25 @@ public interface UsingJMock extends JMockMixins {
      * add the new instance to a {@link Set} of <tt>Mock</tt> instances to be
      * verified later.
      */
-    class Mock extends org.jmock.Mock {
+    public class Mock extends org.jmock.Mock {
         private final Exception exceptionFromCreationPoint;
 
         public Mock(Class mockedType) {
             super(mockedType);
             exceptionFromCreationPoint = new Exception();
-            Mocks.add(this);
+            addMock(this);
         }
 
         public Mock(Class mockedType, String name) {
             super(mockedType, name);
             exceptionFromCreationPoint = new Exception();
-            Mocks.add(this);
+            addMock(this);
         }
 
         public Mock(DynamicMock coreMock) {
             super(coreMock);
             exceptionFromCreationPoint = new Exception();
-            Mocks.add(this);
+            addMock(this);
         }
 
         /**
@@ -130,15 +84,36 @@ public interface UsingJMock extends JMockMixins {
         }
 
         public MatchBuilder expectsOnce(String methodName) {
-            return expects(Invoked.once()).method(methodName).withNoArguments();
+            return expects(once()).method(methodName).withNoArguments();
         }
 
         public MatchBuilder expectsOnce(String methodName, Object arg1) {
-            return expects(Invoked.once()).method(methodName).with(Is.equal(arg1));
+            return expects(once()).method(methodName).with(equal(arg1));
+        }
+        
+        public MatchBuilder expectsOnce(String methodName, Constraint arg) {
+            return expects(once()).method(methodName).with(arg);
+        }
+        
+        public MatchBuilder expectsOnce(String methodName, Constraint arg1, Constraint arg2) {
+            return expects(once()).method(methodName).with(arg1, arg2);
+        }
+        
+        public MatchBuilder expectsOnce(String methodName, Constraint arg1, Constraint arg2, Constraint arg3) {
+            return expects(once()).method(methodName).with(arg1, arg2, arg3);
+        }
+        
+        public MatchBuilder expectsOnce(String methodName, Constraint arg1, Constraint arg2, Constraint arg3, Constraint arg4) {
+            return expects(once()).method(methodName).with(arg1, arg2, arg3, arg4);
         }
 
+        public MatchBuilder expectsOnce(String methodName, Constraint[] argumentConstraints) {
+            return expects(once()).method(methodName).with(argumentConstraints);
+        }
+        
         public MatchBuilder stubs(String methodName) {
             return stubs().method(methodName).withAnyArguments();
         }
     }
+
 }

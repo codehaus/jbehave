@@ -17,7 +17,7 @@ import org.jmock.Mock;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 import com.thoughtworks.jbehave.core.responsibility.Result;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.extensions.jmock.UsingJMock2;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -29,12 +29,13 @@ public class JMockListener extends ListenerSupport {
 	}
 
 	public void responsibilityVerificationStarting(Method responsibilityMethod) {
-        UsingJMock.Mocks.clear(); // whatever
 	}
 
 	public Result responsibilityVerificationEnding(Result result, Object instance) {
 		try {
-			UsingJMock.Mocks.verify();
+		    if (instance instanceof UsingJMock2) {
+		        ((UsingJMock2)instance).verify();
+		    }
 		} catch (VerificationException e) {
 			return createResult(result, e);
 		}
