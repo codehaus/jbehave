@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.extensions.story.util.Visitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 
 
 

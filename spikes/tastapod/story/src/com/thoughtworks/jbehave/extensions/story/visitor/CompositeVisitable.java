@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.util;
+package com.thoughtworks.jbehave.extensions.story.visitor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,5 +39,9 @@ public abstract class CompositeVisitable implements Visitable {
         for (Iterator i = visitables.iterator(); i.hasNext();) {
             ((Visitable) i.next()).accept(visitor);
         }
+    }
+
+    public void add(Visitable visitable) {
+        visitables.add(visitable);
     }
 }

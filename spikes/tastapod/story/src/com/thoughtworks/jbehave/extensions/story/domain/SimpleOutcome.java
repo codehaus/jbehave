@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.thoughtworks.jbehave.extensions.story.util.CompositeVisitable;
-import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**

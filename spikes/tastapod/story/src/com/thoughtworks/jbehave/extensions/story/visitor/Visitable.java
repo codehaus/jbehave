@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.util;
+package com.thoughtworks.jbehave.extensions.story.visitor;
 
 
 

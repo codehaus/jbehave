@@ -7,43 +7,28 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehaviour;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class SimpleContextBehaviour implements UsingJMock {
+public class SimpleContextBehaviour extends VisitableArrayListBehaviour {
+
+    protected CompositeVisitable getComposite() {
+        return new SimpleContext(new ArrayList());
+    }
+
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
-        Context context = new SimpleContext(Collections.EMPTY_LIST);
+        Visitable context = new SimpleContext(Collections.EMPTY_LIST);
         Mock visitor = new Mock(Visitor.class);
-        visitor.expectsOnce("visit", context);
-
-        // when...
-        context.accept((Visitor)visitor.proxy());
-        
-        // then... verified by pixies
-    }
-    
-    public void shouldTellGivensToAcceptVisitor() throws Exception {
-        // given...
-        Mock given1 = new Mock(Given.class, "given1");
-        Mock given2 = new Mock(Given.class, "given2");
-        Mock visitor = new Mock(Visitor.class);
-        
-        Context context = new SimpleContext(
-                Arrays.asList(new Given[] {
-                        (Given) given1.proxy(),
-                        (Given) given2.proxy()}
-                ));
-        
-        visitor.stubs("visit");
-        given1.expectsOnce("accept", visitor.proxy());
-        given2.expectsOnce("accept", visitor.proxy());
+        visitor.expectsOnce("visitContext", context);
 
         // when...
         context.accept((Visitor)visitor.proxy());

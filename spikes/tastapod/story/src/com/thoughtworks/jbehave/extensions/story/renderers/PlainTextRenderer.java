@@ -17,7 +17,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
-import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 import com.thoughtworks.jbehave.util.CaseConverter;
 
 

@@ -10,8 +10,8 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 import java.util.Collections;
 import java.util.List;
 
-import com.thoughtworks.jbehave.extensions.story.util.CompositeVisitable;
-import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**
@@ -19,7 +19,7 @@ import com.thoughtworks.jbehave.extensions.story.util.Visitor;
  */
 public class SimpleContext extends CompositeVisitable implements Context {
 
-    /** Main constructor - all other constructors chain to here */
+    /** A Scenario and a Given */
     public SimpleContext(Scenario scenario, List givens) {
         visitables.add(new GivenScenario(scenario));
         visitables.addAll(givens);

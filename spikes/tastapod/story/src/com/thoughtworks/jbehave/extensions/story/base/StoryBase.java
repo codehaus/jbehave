@@ -7,27 +7,24 @@
  */
 package com.thoughtworks.jbehave.extensions.story.base;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
-import com.thoughtworks.jbehave.extensions.story.util.Visitable;
-import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 import com.thoughtworks.jbehave.util.CaseConverter;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryBase implements Story {
+public class StoryBase extends CompositeVisitable implements Story {
 
     private final String role;
     private final String feature;
     private final String benefit;
 
-    private final List scenarios = new ArrayList();
-    
     public StoryBase(String role, String feature, String benefit) {
         this.role = role;
         this.feature = feature;
@@ -35,7 +32,7 @@ public class StoryBase implements Story {
     }
 
     public void addScenario(Scenario scenario) {
-        scenarios.add(scenario);
+        visitables.add(scenario);
     }
     
     public String getName() {
@@ -43,7 +40,7 @@ public class StoryBase implements Story {
     }
     
     public Scenario getScenario(String name) {
-        for (Iterator i = scenarios.iterator(); i.hasNext();) {
+        for (Iterator i = visitables.iterator(); i.hasNext();) {
             Scenario scenario = (Scenario) i.next();
             if (scenario.getDescription().equals(name)) {
                 return scenario;
@@ -53,7 +50,7 @@ public class StoryBase implements Story {
     }
     
     public List getScenarios() {
-        return scenarios;
+        return visitables;
     }
     
     public String getRole() {
@@ -68,10 +65,7 @@ public class StoryBase implements Story {
         return benefit;
     }
     
-    public void accept(Visitor visitor) {
+    protected void visitSelf(Visitor visitor) {
         visitor.visitStory(this);
-        for (Iterator i = scenarios.iterator(); i.hasNext();) {
-            ((Visitable) i.next()).accept(visitor);
-        }
     }
 }

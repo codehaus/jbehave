@@ -7,21 +7,19 @@
  */
 package com.thoughtworks.jbehave.extensions.story.base;
 
-import com.thoughtworks.jbehave.core.responsibility.Verify;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
-import com.thoughtworks.jbehave.extensions.story.base.StoryBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.util.Visitable;
-import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+import com.thoughtworks.jbehave.extensions.story.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehaviour;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryBaseBehaviour implements UsingJMock {
-    public void shouldBeVisitable() throws Exception {
-        Verify.that(Visitable.class.isAssignableFrom(StoryBase.class));
+public class StoryBaseBehaviour extends VisitableArrayListBehaviour {
+    protected CompositeVisitable getComposite() {
+        return new StoryBase("role", "feature", "benefit");
     }
-    
+
     public void shouldPassItselfIntoVisitor() throws Exception {
         // setup
         StoryBase story = new StoryBase("role", "feature", "benefit");
@@ -41,16 +39,15 @@ public class StoryBaseBehaviour implements UsingJMock {
         StoryBase story = new StoryBase("role", "feature", "benefit");
         Mock scenario1 = new Mock(Scenario.class, "scenario1");
         Mock scenario2 = new Mock(Scenario.class, "scenario2");
-        Mock visitor = new Mock(Visitor.class);
+        Visitor visitor = Visitor.NULL;
 
-        scenario1.expectsOnce("accept", visitor.proxy());
-        scenario2.expectsOnce("accept", visitor.proxy());
-        visitor.stubs("visitScenario");
+        scenario1.expectsOnce("accept", visitor);
+        scenario2.expectsOnce("accept", visitor);
         
         // when...
         story.addScenario((Scenario) scenario1.proxy());
         story.addScenario((Scenario) scenario2.proxy());
-        story.accept((Visitor) visitor.proxy());
+        story.accept(visitor);
         
         // then... verified by framework
     }

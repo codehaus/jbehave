@@ -9,7 +9,7 @@ package com.thoughtworks.jbehave.extensions.story.base;
 
 import com.thoughtworks.jbehave.core.responsibility.Verify;
 import com.thoughtworks.jbehave.extensions.story.base.EventBase;
-import com.thoughtworks.jbehave.extensions.story.util.Visitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

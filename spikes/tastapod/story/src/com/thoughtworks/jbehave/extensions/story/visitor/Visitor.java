@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.util;
+package com.thoughtworks.jbehave.extensions.story.visitor;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
@@ -20,6 +20,8 @@ import com.thoughtworks.jbehave.extensions.story.domain.Story;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Visitor {
+    Visitor NULL = new VisitorSupport();
+    
     void visitContext(Context context);
     void visitEvent(Event event);
     void visitExpectation(Expectation expectation);

@@ -9,7 +9,7 @@ package com.thoughtworks.jbehave.extensions.story.base;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
-import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**

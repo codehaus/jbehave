@@ -10,8 +10,8 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 import java.util.Collections;
 import java.util.List;
 
-import com.thoughtworks.jbehave.extensions.story.util.Visitable;
-import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 
 /**
