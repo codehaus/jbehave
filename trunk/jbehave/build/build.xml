@@ -41,7 +41,7 @@
         <subant target="dist">
             <property name="version" value="${version}"/>
             <property name="dist.dir" location="${dist.dir}"/>
-            <dirset dir="${extensions.dir}" includes="*/build"/>
+            <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
     </target>
 
