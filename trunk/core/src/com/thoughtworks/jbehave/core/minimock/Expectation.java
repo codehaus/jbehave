@@ -76,13 +76,9 @@ public class Expectation extends MiniMockSugar {
     }
     
     // Return value
+    
     public Expectation will(InvocationHandler result) {
         this.invoker = result;
-        return this;
-    }
-
-    public Expectation isVoid() {
-        invoker = NULL_INVOKER;
         return this;
     }
     

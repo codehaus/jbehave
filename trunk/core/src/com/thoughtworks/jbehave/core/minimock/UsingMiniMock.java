@@ -26,7 +26,7 @@ public class UsingMiniMock extends MiniMockSugar implements UsingMocks {
     public Mock mock(Class type) {
         return mock(type, "mock " + type.getName());
     }
-
+    
     public Mock mock(Class type, String name) {
         Mock mock = MockObject.mock(type, name);
         mocks.add(mock);
@@ -49,5 +49,5 @@ public class UsingMiniMock extends MiniMockSugar implements UsingMocks {
     
     public Object stub(Class type, String name) {
         return Proxy.newProxyInstance(type.getClassLoader(), new Class[] {type}, new StubInvocationHandler(name));
-    }    
+    }
 }

@@ -17,11 +17,16 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class Result {
+    public static final Type SUCCEEDED = new Type("Succeeded", ".");
+    public static final Type FAILED = new Type("Failed", "F");
+    public static final Type THREW_EXCEPTION = new Type("Threw Exception", "E");
+    public static final Type PENDING = new Type("Pending", "P");
+
     public static class Type {
         private final String description;
         private final String symbol;
 
-        protected Type(String description, String symbol) {
+        private Type(String description, String symbol) {
             this.description = description;
             this.symbol = symbol;
         }
@@ -32,11 +37,20 @@ public class Result {
             return symbol;
         }
     }
-
-    public static final Type SUCCEEDED = new Type("Succeeded", ".");
-    public static final Type FAILED = new Type("Failed", "F");
-    public static final Type THREW_EXCEPTION = new Type("Threw Exception", "E");
-    public static final Type PENDING = new Type("Pending", "P");
+    
+    /**
+     * Use this if you subclass {@link Result} to create a new result class that requires additional {@link Type Types}.
+     * 
+     * Use like this:
+     * <pre>
+     * public class MyResult <b>extends Result</b> {
+     *     public static final Type MY_TYPE = <b>newType</b>("My Type", "T");
+     * }
+     * </pre>
+     */
+    protected static Type newType(String description, String symbol ) {
+        return new Type(description, symbol);
+    }
     
     private final String name;
     private final Type status;

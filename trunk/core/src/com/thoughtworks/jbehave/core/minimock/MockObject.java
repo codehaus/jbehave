@@ -30,6 +30,11 @@ class MockObject implements Mock, Expectation.Registry {
     private final List expectations = new ArrayList();
     private final Class type;
     private final String name;
+    private InvocationHandler fallbackBehaviour = new InvocationHandler() {
+        public Object invoke(Object proxy, Method method, Object[] args) {
+            throw new VerificationException("Unexpected invocation: " + method.getName() + Arrays.asList(args) + " on " + name);
+        }
+    };
     
     /** Manages method invocations on the mock */
     private class ExpectationHandler implements InvocationHandler {
@@ -44,7 +49,7 @@ class MockObject implements Mock, Expectation.Registry {
             }
             
             // if we get here we didn't match on any expectations
-            throw new VerificationException("Unexpected invocation: " + method.getName() + Arrays.asList(args) + " on " + name);
+            return fallbackBehaviour.invoke(proxy, method, args);
         }
     }
     
@@ -66,6 +71,10 @@ class MockObject implements Mock, Expectation.Registry {
         Expectation expects = new Expectation(this, methodName);
         expectations.add(expects);
         return expects.once();
+    }
+
+    public void stubsEverythingElse() {
+        fallbackBehaviour = new StubInvocationHandler(name);
     }
 
     /** verify all expectations on the mock */
