@@ -29,7 +29,7 @@ public class UsingMiniMockBehaviour {
         // exposing the internals!
         Verify.that(!miniMock.containsMocks());
         
-        Mock mock = miniMock.mock(BehaviourInterface2.class);
+        miniMock.mock(BehaviourInterface2.class);
         
         Verify.that(miniMock.containsMocks());
       

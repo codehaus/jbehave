@@ -11,33 +11,32 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.util.ConvertCase;
-import com.thoughtworks.jbehave.core.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.core.visitor.Visitable;
+import com.thoughtworks.jbehave.core.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Story extends CompositeVisitable {
+public class Story implements Visitable {
     private final Narrative narrative;
-    private final AcceptanceCriteria criteria;
+    private final AcceptanceCriteria acceptanceCriteria;
 
     public Story(Narrative narrative, AcceptanceCriteria criteria) {
         this.narrative = narrative;
-        this.criteria = criteria;
-        add(narrative);
-        add(criteria);
+        this.acceptanceCriteria = criteria;
     }
 
     public void addScenario(ScenarioUsingMiniMock scenario) {
-        criteria.add(scenario);
+        acceptanceCriteria.add(scenario);
     }
     
     public String getTitle() {
-        return new ConvertCase(this).toSeparateWords();
+        return new ConvertCase(getClass()).toSeparateWords();
     }
     
-    public ScenarioUsingMiniMock scenario(String name) {
-        for (Iterator i = criteria.iterator(); i.hasNext();) {
-            ScenarioUsingMiniMock scenario = (ScenarioUsingMiniMock) i.next();
+    public Scenario scenario(String name) {
+        for (Iterator i = acceptanceCriteria.iterator(); i.hasNext();) {
+            Scenario scenario = (Scenario) i.next();
             if (scenario.getDescription().equals(name)) {
                 return scenario;
             }
@@ -46,10 +45,20 @@ public class Story extends CompositeVisitable {
     }
     
     public List scenarios() {
-        return criteria.scenarios();
+        return acceptanceCriteria.scenarios();
     }
     
     public Narrative narrative() {
         return narrative;
+    }
+
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+        narrative.accept(visitor);
+        acceptanceCriteria.accept(visitor);
+    }
+    
+    public String toString() {
+        return "Story: narrative=" + narrative + ", acceptanceCriteria=" + acceptanceCriteria;
     }
 }

@@ -31,7 +31,7 @@ public class Run {
             for (Iterator i = story.scenarios().iterator(); i.hasNext();) {
                 Scenario scenario = (Scenario) i.next();
             }
-            story.accept(visitor);
+//            story.accept(visitor);
 
         } catch (Exception e) {
             e.printStackTrace();
