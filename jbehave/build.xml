@@ -23,7 +23,7 @@
 	<property name="dist.dir" location="${build.dir}/dist" />
 	<property name="jar.file" location="${dist.dir}/${project}-${version}.jar" />
 	
-	<property name="deploy.root.dir" value="/home/projects/jbehave"/>
+	<property name="deploy.root.dir" value="/home/projects/${project}"/>
 	<property name="deploy.website.dir" value="${deploy.root.dir}/public_html"/>
 	<property name="deploy.javadoc.dir" value="${deploy.website.dir}/docs/javadoc"/>
 	<property name="deploy.dist.dir" value="${deploy.root.dir}/dist"/>
@@ -67,27 +67,6 @@
 			</classpath>
 		</java>
 	</target>
-
-	<target name="test.compile" depends="jar">
-		<mkdir dir="${test.classes.dir}" />
-		<javac fork="true" srcdir="${core.test.dir}" destdir="${test.classes.dir}">
-			<classpath>
-				<pathelement location="${jar.file}" />
-			</classpath>
-		</javac>
-	</target>
-
-	<target name="test" depends="test.compile">
-		<junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
-			<formatter type="plain" />
-			<classpath>
-				<path location="${test.classes.dir}" />
-				<path location="${jar.file}" />
-			</classpath>
-			<test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}" />
-		</junit>
-	</target>
-	
 
 	<target name="website">
 		<exec executable="ruby" dir="${website.dir}">
