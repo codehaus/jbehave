@@ -6,13 +6,13 @@
  * See license.txt for licence details
  */
 package jbehave;
+import jbehave.evaluate.EvaluatorBehaviour;
+import jbehave.evaluate.listener.TextListenerBehaviour;
+import jbehave.evaluate.listener.TimerBehaviour;
 import jbehave.framework.Aggregate;
 import jbehave.framework.CriterionBehaviour;
 import jbehave.framework.CriterionEvaluationBehaviour;
 import jbehave.framework.CriteriaSupportBehaviour;
-import jbehave.runner.EvaluatorBehaviour;
-import jbehave.runner.listener.TextListenerBehaviour;
-import jbehave.runner.listener.TimerBehaviour;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

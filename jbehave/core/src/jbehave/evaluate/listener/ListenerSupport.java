@@ -5,11 +5,11 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.runner.listener;
+package jbehave.evaluate.listener;
 
+import jbehave.evaluate.Evaluator;
 import jbehave.framework.Criterion;
 import jbehave.framework.CriterionEvaluation;
-import jbehave.runner.Evaluator;
 
 /**
  * Stub implementations of the listener event methods.
