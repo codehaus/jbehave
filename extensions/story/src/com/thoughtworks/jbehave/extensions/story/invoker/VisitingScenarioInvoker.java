@@ -5,17 +5,15 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.extensions.story.verifier;
+package com.thoughtworks.jbehave.extensions.story.invoker;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.UsingMocks;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.core.minilog.Log;
-import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
@@ -23,7 +21,6 @@ import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.invoker.ScenarioInvoker;
 import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 
 /**
@@ -34,26 +31,24 @@ public class VisitingScenarioInvoker implements ScenarioInvoker, Visitor {
     private final List listeners = new ArrayList();
     private final Environment environment;
     private boolean beforeEvent = true;
-    private boolean usesMocks = false;
+    private boolean usedMocks = false;
 
     public VisitingScenarioInvoker(Environment environment) {
         this.environment = environment;
     }
     
-    public Result invoke(Scenario scenario) {
+    public ScenarioResult invoke(Scenario scenario) {
         Throwable cause = null;
         try {
-            System.err.println(1);
             scenario.accept(this);
-            System.err.println(2);
         }
         catch (NestedVerificationException e) {
             cause = e.getCause();
         }
         
-        final Result result;
-        if (cause == null && usesMocks) {
-            result = new ScenarioResult(scenario.getDescription(), ScenarioResult.USES_MOCKS);
+        final ScenarioResult result;
+        if (cause == null && usedMocks) {
+            result = new ScenarioResult(scenario.getDescription(), ScenarioResult.USED_MOCKS);
         }
         else {
             result = new ScenarioResult(scenario.getDescription(), cause);
@@ -103,7 +98,7 @@ public class VisitingScenarioInvoker implements ScenarioInvoker, Visitor {
     private void checkForMocks(UsingMocks component) {
         if (component.containsMocks()) {
             log.debug(component + " uses mocks!");
-            usesMocks = true;
+            usedMocks = true;
         }
     }
 

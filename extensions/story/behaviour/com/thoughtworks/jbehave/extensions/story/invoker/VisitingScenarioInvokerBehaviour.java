@@ -1,17 +1,22 @@
-package com.thoughtworks.jbehave.extensions.story.verifier;
+package com.thoughtworks.jbehave.extensions.story.invoker;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.result.Result;
+import com.thoughtworks.jbehave.core.visitor.Visitable;
+import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 
 /*
  * Created on 16-Sep-2004
@@ -28,16 +33,12 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     
     private VisitingScenarioInvoker invoker;
     private Mock scenario;
-    private Mock listener1;
-    private Mock listener2;
     private Environment environmentStub;
     
     public void setUp() {
         environmentStub = (Environment)stub(Environment.class);
         invoker = new VisitingScenarioInvoker(environmentStub);
         scenario = mock(Scenario.class);
-        listener1 = mock(ResultListener.class, "listener1");
-        listener2 = mock(ResultListener.class, "listener2");
     }
     
     public void shouldDispatchItselfAsVisitorToScenario() throws Exception {
@@ -212,5 +213,57 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // then...
         Verify.identical(cause, result.cause());
+    }
+    
+    /** Custom invocation handler so a Scenario can pass a component to the visitor */
+    private InvocationHandler visitComponent(final Visitable component) {
+        return new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) {
+                if (method.getName().equals("accept")) {
+                    Visitor visitor = (Visitor) args[0];
+                    visitor.visit(component);
+                }
+                return null;
+            }
+        };
+    }
+    
+    public void shouldReturnResultUsingMocksWhenScenarioSucceedsButGivenUsesMocks() throws Exception {
+        // expect...
+        Mock given = mock(Given.class);
+        given.expects("containsMocks").will(returnValue(true));
+        scenario.expects("accept").will(visitComponent((Visitable) given));
+        
+        // when...
+        ScenarioResult result = invoker.invoke((Scenario)scenario);
+        
+        // then...
+        Verify.that("should have used mocks", result.usedMocks());
+    }
+    
+    public void shouldReturnResultUsingMocksWhenScenarioSucceedsButEventUsesMocks() throws Exception {
+        // expect...
+        Mock event = mock(Event.class);
+        event.expects("containsMocks").will(returnValue(true));
+        scenario.expects("accept").will(visitComponent((Visitable) event));
+        
+        // when...
+        ScenarioResult result = invoker.invoke((Scenario)scenario);
+        
+        // then...
+        Verify.that("should have used mocks", result.usedMocks());
+    }
+    
+    public void shouldReturnResultUsingMocksWhenScenarioSucceedsButExpectationUsesMocks() throws Exception {
+        // expect...
+        Mock expectation = mock(Expectation.class);
+        expectation.expects("containsMocks").will(returnValue(true));
+        scenario.expects("accept").will(visitComponent((Visitable) expectation));
+        
+        // when...
+        ScenarioResult result = invoker.invoke((Scenario)scenario);
+        
+        // then...
+        Verify.that("should have used mocks", result.usedMocks());
     }
 }
