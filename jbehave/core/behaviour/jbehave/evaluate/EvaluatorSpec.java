@@ -21,7 +21,7 @@ import jbehave.framework.Verify;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class EvaluatorBehaviour {
+public class EvaluatorSpec {
     private final static List resultList = new ArrayList(); // handy place to store results
     private Evaluator runner;
     

@@ -69,7 +69,7 @@ public abstract class CriteriaExtractor {
         try {
             final Collection result = new HashSet();
             Aggregate aggregate = (Aggregate)behaviourClass.newInstance();
-            Class[] behaviourClasses = aggregate.getBehaviourClasses();
+            Class[] behaviourClasses = aggregate.getSpecs();
             for (int i = 0; i < behaviourClasses.length; i++) {
                 result.addAll(getCriteria(behaviourClasses[i]));
             }
