@@ -14,24 +14,24 @@ import java.util.List;
 import jbehave.framework.Verify;
 import jbehave.framework.Criterion;
 import jbehave.framework.Evaluation;
-import jbehave.framework.BehavioursSupport;
+import jbehave.framework.CriteriaSupport;
 import jbehave.runner.listener.ListenerSupport;
 
 /**
- * Test the {@link BehaviourRunner} class
+ * Test the {@link SpecificationRunner} class
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class BehaviourRunnerBehaviours {
+public class RunnerSpecification {
     private final static List results = new ArrayList(); // handy place to store results
-    private BehaviourRunner runner;
+    private SpecificationRunner runner;
     
     public void setUp() {
-        runner = new BehaviourRunner();
+        runner = new SpecificationRunner();
         results.clear();
     }
 
-    public static class BehaviourClassWithOneBehaviour extends BehavioursSupport {
+    public static class BehaviourClassWithOneBehaviour extends CriteriaSupport {
         public void shouldDoSomething() {
         }
     }
@@ -63,21 +63,21 @@ public class BehaviourRunnerBehaviours {
     }
 
     private static class RunStartedListener extends ListenerSupport {
-        private final BehaviourRunner expectedRunner;
+        private final SpecificationRunner expectedRunner;
         private final String message;
         
-        public RunStartedListener(BehaviourRunner expectedRunner, String message) {
+        public RunStartedListener(SpecificationRunner expectedRunner, String message) {
             this.expectedRunner = expectedRunner;
             this.message = message;
         }
 
-        public void runStarted(BehaviourRunner runner) {
+        public void runStarted(SpecificationRunner runner) {
             Verify.sameInstance(expectedRunner, runner);
             results.add(message);
         }
     }
     
-    public static class BehaviourClassThatSaysHello extends BehavioursSupport {
+    public static class BehaviourClassThatSaysHello extends CriteriaSupport {
         public void shouldSayHello() {
             results.add("hello");
         }
@@ -93,15 +93,15 @@ public class BehaviourRunnerBehaviours {
     }
 
     private static class RunEndedListener extends ListenerSupport {
-        private final BehaviourRunner expectedRunner;
+        private final SpecificationRunner expectedRunner;
         private final String message;
         
-        public RunEndedListener(BehaviourRunner expectedRunner, String message) {
+        public RunEndedListener(SpecificationRunner expectedRunner, String message) {
             this.expectedRunner = expectedRunner;
             this.message = message;
         }
         
-        public void runEnded(BehaviourRunner runner) {
+        public void runEnded(SpecificationRunner runner) {
             Verify.sameInstance(expectedRunner, runner);
             results.add(message);
         }

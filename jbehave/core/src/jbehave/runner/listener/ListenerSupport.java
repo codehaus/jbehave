@@ -9,7 +9,7 @@ package jbehave.runner.listener;
 
 import jbehave.framework.Criterion;
 import jbehave.framework.Evaluation;
-import jbehave.runner.BehaviourRunner;
+import jbehave.runner.SpecificationRunner;
 
 /**
  * Stub implementations of the listener event methods.
@@ -18,10 +18,10 @@ import jbehave.runner.BehaviourRunner;
  */
 public class ListenerSupport implements Listener {
 
-    public void runStarted(BehaviourRunner runner) {
+    public void runStarted(SpecificationRunner runner) {
     }
 
-    public void runEnded(BehaviourRunner runner) {
+    public void runEnded(SpecificationRunner runner) {
     }
 
     public void behaviourEvaluationStarted(Class behaviourClass) {

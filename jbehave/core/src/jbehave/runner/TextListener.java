@@ -56,7 +56,7 @@ public class TextListener extends ListenerSupport {
         }
     }
     
-    public void runEnded(BehaviourRunner runner) {
+    public void runEnded(SpecificationRunner runner) {
         out.println(); out.println();
         printFailures();
         printExceptionsThrown();

@@ -8,11 +8,11 @@
 package jbehave;
 import jbehave.framework.Aggregate;
 import jbehave.framework.CriterionBehaviour;
-import jbehave.framework.BehaviourResultBehaviours;
-import jbehave.framework.BehavioursSupportBehaviours;
-import jbehave.runner.BehaviourRunnerBehaviours;
-import jbehave.runner.listener.TextListenerBehaviours;
-import jbehave.runner.listener.TimerBehaviours;
+import jbehave.framework.EvaluationBehaviour;
+import jbehave.framework.CriteriaSupportBehaviour;
+import jbehave.runner.RunnerBehaviour;
+import jbehave.runner.listener.TextListenerBehaviour;
+import jbehave.runner.listener.TimerBehaviour;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
@@ -21,11 +21,11 @@ public class AllBehaviours implements Aggregate {
     public Class[] getBehaviourClasses() {
         return new Class[] {
             CriterionBehaviour.class,
-            BehaviourResultBehaviours.class,
-            BehavioursSupportBehaviours.class,
-            BehaviourRunnerBehaviours.class,
-            TextListenerBehaviours.class,
-            TimerBehaviours.class
+            EvaluationBehaviour.class,
+            CriteriaSupportBehaviour.class,
+            RunnerBehaviour.class,
+            TextListenerBehaviour.class,
+            TimerBehaviour.class
         };
     }
 }
