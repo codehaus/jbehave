@@ -198,4 +198,36 @@ public class SimpleStoryParserBehaviour {
         // verify
         Verify.equal(expectedDetails, storyDetails);        
     }
+    
+    public void shouldParseStoriesWithRandomNewLines() throws Exception {
+        // given
+        String storyText = "Story: Do Stuff\n" +
+        	"As a person\n\n\n" +
+        	"I want to be able to do stuff\n\n" +
+        	"So that stuff can be done\n" +
+        	"Scenario: Does stuff properly\n\n\n" +
+        	"Given stuff that works (stuff works)\n\n" +
+        	"When i ask you to do stuff (asks to do stuff)\n\n" +
+        	"Then you should do stuff (does stuff)\n\n\n";
+        
+        // expect
+        StoryDetails expectedDetails = new StoryDetails("Do Stuff", 
+                "person", 
+                "be able to do stuff", 
+                "stuff can be done");
+        
+        OutcomeDetails outcome = new OutcomeDetails();
+        outcome.addExpectation(new BasicDetails("you should do stuff", "does stuff"));
+        ContextDetails context = new ContextDetails();
+        context.addGiven(new BasicDetails("stuff that works", "stuff works"));
+        BasicDetails event = new BasicDetails("i ask you to do stuff", "asks to do stuff");
+        expectedDetails.addScenario(new ScenarioDetails("Does stuff properly", context, event, outcome));  
+        
+        // when
+        StoryDetails storyDetails = storyParser.parseStory(new StringReader(storyText));
+        
+        // verify
+        Verify.equal(expectedDetails, storyDetails);
+        
+    }
 }

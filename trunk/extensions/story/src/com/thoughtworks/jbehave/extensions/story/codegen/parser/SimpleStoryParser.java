@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.codegen.parser;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Reader;
 
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.BasicDetails;
@@ -126,9 +127,9 @@ public class SimpleStoryParser implements StoryParser {
         String description = "";
         String name;
         
-        reader.mark(60);
-        String line = reader.readLine();
-        
+        reader.mark(80);
+        String line = gobbleUpNewLines(reader);
+               
         if (line == null || !matcher.matches(line)){
             reader.reset();
             return null;
@@ -146,13 +147,24 @@ public class SimpleStoryParser implements StoryParser {
     }
 
     private StoryDetails parseStoryText(BufferedReader reader) throws Exception {
-        String storyTitle = reader.readLine().substring(7);
-        reader.readLine();
-        String role = reader.readLine().substring(5);
-        String feature = reader.readLine().substring(10);
-        String benefit = reader.readLine().substring(8);
+        String storyTitle = gobbleUpNewLines(reader).substring(7);       
+        String role = gobbleUpNewLines(reader).substring(5);
+        String feature = gobbleUpNewLines(reader).substring(10);
+        String benefit = gobbleUpNewLines(reader).substring(8);
         return new StoryDetails(storyTitle,
                 role, feature,
                 benefit);
+    }
+
+    /**
+     * @param reader
+     * @return
+     */
+    private String gobbleUpNewLines(BufferedReader reader) throws IOException {
+        String line = null;
+        do {
+            line = reader.readLine();
+        }while("".equals(line));
+        return line;
     }
 }
