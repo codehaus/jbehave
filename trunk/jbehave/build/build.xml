@@ -40,10 +40,13 @@
     </target>
 
     <target name="extensions" depends="core">
-        <subant target="-copy.core.jar,dist">
+        <subant target="-copy.core.jar">
+            <property name="core.jar" value="${dist.dir}/${project}-core-${version}.jar"/>
+            <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
+        </subant>
+        <subant target="dist">
             <property name="version" value="${version}"/>
             <property name="dist.dir" location="${dist.dir}"/>
-            <property name="core.jar" value="${dist.dir}/${project}-core-${version}.jar"/>
             <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
     </target>
