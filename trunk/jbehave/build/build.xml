@@ -2,7 +2,7 @@
 
     <!-- PROPERTIES -->
     <property name="project" value="${ant.project.name}"/>
-    <property name="version" value="0.0.1-SNAPSHOT"/>
+    <property file="version.properties"/>
 
     <!-- working area stuff -->
     <property name="working.dir" location="delete_me" />
@@ -44,7 +44,7 @@
             <property name="core.jar" value="${dist.dir}/${project}-core-${version}.jar"/>
             <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
-        <subant target="dist" failonerror="true">
+        <subant target="dist" failonerror="true" genericantfile="component-build/build.xml">
             <property name="version" value="${version}"/>
             <property name="dist.dir" location="${dist.dir}"/>
             <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>

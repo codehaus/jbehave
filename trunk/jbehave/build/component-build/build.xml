@@ -1,6 +1,6 @@
 <project name="jbehave" default="verify">
     <property name="project" value="${ant.project.name}"/>
-    <property name="version" value="0.0.1-SNAPSHOT"/>
+    <property name="version" value="0.1.0"/>
 
     <!-- optional local settings -->
     <property file="../build.properties"/>
@@ -13,7 +13,7 @@
     <property name="behaviour.classes.dir" location="${working.dir}/behaviours" />
 
     <property name="dist.dir" location="dist"/>
-    <property name="dist.jar.file" location="${dist.dir}/${project}-${component.name}-${version}.jar" />
+    <property name="dist.jar.file" location="${dist.dir}/${project}-${component.name}.jar" />
 
     <target name="-init">
         <!-- sanity checks -->
@@ -41,7 +41,9 @@
         <copy todir="${classes.dir}">
             <fileset dir="${src.dir}" excludes="**/*.java" />
         </copy>
-        <jar basedir="${classes.dir}" destfile="${dist.jar.file}" />
+        <mkdir dir="${classes.dir}/${version}"/>
+        <touch file="${classes.dir}/${version}/empty.txt"/>
+        <jar basedir="${classes.dir}" destfile="${dist.jar.file}"/>
     </target>
 
     <target name="behaviour.compile" depends="jar">
