@@ -1,0 +1,143 @@
+<project name="jbehave" default="test">
+	<property name="version" value="0.1-SNAPSHOT" />
+
+	<property name="project" value="${ant.project.name}" />
+	
+	<property name="extensions.dir" value="extensions"/>
+    	<property name="website.dir" value="website"/>
+	
+	<property name="build.dir" location="build" />
+	<property name="build.javadoc.dir" location="${build.dir}/javadoc" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="spec.classes.dir" location="${build.dir}/specs" />
+	<property name="test.classes.dir" location="${build.dir}/test-classes" />
+	
+	<property name="core.dir" value="core"/>
+    	<property name="core.src.dir" value="${core.dir}/src"/>
+	<property name="core.spec.dir" location="${core.dir}/behaviour" />
+	<property name="core.test.dir" location="${core.dir}/test" />
+	<property name="core.build.dir" location="${build.dir}/core" />
+
+	
+	
+	<property name="dist.dir" location="${build.dir}/dist" />
+	<property name="jar.file" location="${dist.dir}/${project}-${version}.jar" />
+	
+	<property name="deploy.root.dir" value="/home/projects/jbehave"/>
+	<property name="deploy.website.dir" value="${deploy.root.dir}/public_html"/>
+	<property name="deploy.javadoc.dir" value="${deploy.website.dir}/docs/javadoc"/>
+	<property name="deploy.dist.dir" value="${deploy.root.dir}/dist"/>
+	<property name="deploy.dist.bin.dir" value="${deploy.dist.dir}/jars"/>
+        <property name="deploy.dist.src.dir" value="${deploy.dist.dir}/distributions"/>
+
+
+
+	<target name="-init">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="-init">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${core.src.dir}" destdir="${classes.dir}" debug="yes" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${dist.dir}" />
+		<copy todir="${classes.dir}">
+			<fileset dir="${core.src.dir}" excludes="**/*.java" />
+		</copy>
+		<jar basedir="${classes.dir}" destfile="${jar.file}" />
+	</target>
+
+	<target name="spec.compile" depends="jar">
+		<mkdir dir="${spec.classes.dir}" />
+		<javac fork="true" srcdir="${core.spec.dir}" destdir="${spec.classes.dir}">
+			<classpath>
+				<pathelement location="${jar.file}" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="verify" depends="spec.compile">
+		<java classname="jbehave.framework.SpecVerifier" fork="true" failonerror="true">
+			<arg value="jbehave.AllSpecs"/>
+			<classpath>
+				<pathelement location="${jar.file}"/>
+				<pathelement location="${spec.classes.dir}"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="test.compile" depends="jar">
+		<mkdir dir="${test.classes.dir}" />
+		<javac fork="true" srcdir="${core.test.dir}" destdir="${test.classes.dir}">
+			<classpath>
+				<pathelement location="${jar.file}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="test" depends="test.compile">
+		<junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
+			<formatter type="plain" />
+			<classpath>
+				<path location="${test.classes.dir}" />
+				<path location="${jar.file}" />
+			</classpath>
+			<test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}" />
+		</junit>
+	</target>
+	
+
+	<target name="website">
+		<exec executable="ruby" dir="${website.dir}">
+			<arg value="skinner.rb"/>
+		</exec>
+	</target>
+	
+	<target name="javadoc">
+	        <mkdir dir="${build.javadoc.dir}"/>
+	        <javadoc destdir="${build.javadoc.dir}"
+	            windowtitle="jBehave API Documentation"
+	            useexternalfile="true">
+	
+	       		<packageset dir="${core.src.dir}">
+	                
+            		</packageset>
+            		<sourcepath>
+                		<path path="${core.src.dir}"/>
+                	</sourcepath>
+                </javadoc>
+        </target>
+	
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="clobber" depends="clean">
+		<delete dir="${dist.dir}" />
+	</target>
+	
+	<target name="dist" depends="jar, website, javadoc">
+		<copy todir="${deploy.website.dir}">
+			<fileset dir="${website.dir}/output" />
+		</copy>
+		<copy todir="${deploy.javadoc.dir}">
+			<fileset dir="${build.javadoc.dir}" />
+		</copy>
+		<!-- <copy todir="${dist.dir}/dist" file="${snapshot.jar.file}" /> -->
+	</target>           
+
+	<target name="rebuild" depends="clobber, dist" />
+
+	<target name="jar-dist" depends="jar">
+		<copy file="${jar.file}" todir="${jar.dist.dir}" />
+	</target>
+
+	<target name="jar-dist-plink" depends="jar">
+		<exec dir="." executable="pscp">
+			<arg value="${jar.file}" />
+			<arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
+		</exec>
+	</target>
+</project>
