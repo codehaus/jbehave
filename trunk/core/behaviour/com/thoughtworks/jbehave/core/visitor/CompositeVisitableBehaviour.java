@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.visitor;
 
+import com.thoughtworks.jbehave.core.Block;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
@@ -46,21 +47,20 @@ public class CompositeVisitableBehaviour extends UsingMiniMock {
     
     public void shouldPropagateRuntimeExceptionFromVisitingComponent() throws Exception {
         // given...
-        CompositeVisitable composite = new CompositeVisitable();
+        final CompositeVisitable composite = new CompositeVisitable();
         Mock component = mock(Visitable.class);
         composite.add((Visitable) component);
-        Visitor visitor = (Visitor)stub(Visitor.class);
+        final Visitor visitor = (Visitor)stub(Visitor.class);
 
         // expect...
         component.expects("accept").with(anything()).willThrow(new SomeRuntimeException());
         
         // when...
-        try {
-            composite.accept(visitor);
-            Verify.impossible("should have thrown exception");
-        }
-        catch (SomeRuntimeException expected) {
-        }
+        Verify.throwsException(SomeRuntimeException.class, new Block() {
+            public void execute() {
+                composite.accept(visitor);
+            }
+        });
         
         // then...
         verifyMocks();

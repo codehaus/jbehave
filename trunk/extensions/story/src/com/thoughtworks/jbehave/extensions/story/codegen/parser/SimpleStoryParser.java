@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
+import com.thoughtworks.jbehave.extensions.story.codegen.CodeGenerator;
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.BasicDetails;
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.ContextDetails;
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.OutcomeDetails;
@@ -46,11 +47,17 @@ public class SimpleStoryParser implements StoryParser {
     private KeywordMatcher givenMatcher = new KeywordMatcher("given ");
     private KeywordMatcher whenMatcher = new KeywordMatcher("when ");
     private KeywordMatcher scenarioMatcher = new KeywordMatcher("scenario: ");
+    private final CodeGenerator codeGenerator;
   
+    public SimpleStoryParser(CodeGenerator codeGenerator) {
+        this.codeGenerator = codeGenerator;
+    }
+
     public StoryDetails parseStory(Reader reader) {
         BufferedReader buffered = new BufferedReader(reader);
         try {
             StoryDetails storyDetails = parseStoryText(buffered);
+            codeGenerator.generateStory(storyDetails);
             parseScenarios(storyDetails, buffered);
             return storyDetails;
         }catch(Exception exception) {
@@ -70,13 +77,6 @@ public class SimpleStoryParser implements StoryParser {
         }
     }
 
-    
-    /**
-     * @param storyDetails
-     * @param reader
-     * @param input
-     * @throws Exception
-     */
     private void parseScenario(StoryDetails storyDetails, BufferedReader reader, String input) throws Exception {
         String scenarioTitle = input.substring(scenarioMatcher.keywordLength());
         
@@ -88,10 +88,6 @@ public class SimpleStoryParser implements StoryParser {
         storyDetails.addScenario(scenario);
     }
 
-    /**
-     * @param reader
-     * @return
-     */
     private ContextDetails parseContext(BufferedReader reader) throws Exception {
         ContextDetails contextDetails = new ContextDetails();
         
@@ -103,12 +99,6 @@ public class SimpleStoryParser implements StoryParser {
         return contextDetails;
     }
     
-    
-
-    /**
-     * @param reader
-     * @return
-     */
     private OutcomeDetails parseExpectations(BufferedReader reader) throws Exception {
         OutcomeDetails outcomeDetails = new OutcomeDetails();
         outcomeDetails.addExpectation(parse(thenMatcher, reader));
@@ -119,10 +109,6 @@ public class SimpleStoryParser implements StoryParser {
         return outcomeDetails;
     }
 
-    /**
-     * @param reader
-     * @return
-     */
     private BasicDetails parse(KeywordMatcher matcher, BufferedReader reader) throws Exception {
         String description = "";
         String name;

@@ -23,7 +23,7 @@ import example.expectations.ATMShouldReturnBankCardToCustomer;
 import example.expectations.AccountBalanceShouldBeReduced;
 import example.givens.AccountHasNegativeBalanceWithoutPermission;
 import example.givens.AccountHasOverdraftPermission;
-import example.givens.AccountHasPositiveBalance;
+import example.givens.AccountIsInCredit;
 import example.givens.AccountIsOverOverdraftLimit;
 
 /**
@@ -44,7 +44,7 @@ public class UserWithdrawsCash extends Story {
         addScenario(new ScenarioUsingMiniMock(
                 "Happy scenario", this,
                 new Context(
-                    new AccountHasPositiveBalance()
+                    new AccountIsInCredit()
                 ),
                 new UserRequestsCash(),
                 new Outcome(

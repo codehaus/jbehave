@@ -10,6 +10,9 @@ package com.thoughtworks.jbehave.extensions.story.codegen.parser;
 import java.io.StringReader;
 
 import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.minimock.Mock;
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
+import com.thoughtworks.jbehave.extensions.story.codegen.CodeGenerator;
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.BasicDetails;
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.ContextDetails;
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.OutcomeDetails;
@@ -20,12 +23,12 @@ import com.thoughtworks.jbehave.extensions.story.codegen.domain.StoryDetails;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
-public class SimpleStoryParserBehaviour {
+public class SimpleStoryParserBehaviour extends UsingMiniMock {
     
     private String storyText = "Story: User withdraws cash\n" + "\n"
-    					+ "As a Bank card holder\n"
-    					+ "I want to be able to withdraw cash from an ATM\n"
-    					+ "So that I don't have to visit the bank\n";
+            + "As a Bank card holder\n"
+            + "I want to be able to withdraw cash from an ATM\n"
+            + "So that I don't have to visit the bank\n";
     
     private String happyScenario = "Scenario: Happy scenario\n" +
 		"Given Account is in credit (set balance = 50)\n" +
@@ -39,34 +42,29 @@ public class SimpleStoryParserBehaviour {
 		"Then ATM should dispense cash (ATM dispenses 20)\n";
     
     private SimpleStoryParser storyParser;
+    private Mock codeGenerator;
     
     public void setUp() {
-        storyParser = new SimpleStoryParser();
-    }
-    
-    public void shouldParseStoryTitle() throws Exception {
-        // given...
-        storyParser = new SimpleStoryParser();
-
-        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
-
-        // when...
-        StoryDetails storyDetails = storyParser.parseStory(new StringReader(
-                storyText));
-
-        // verify...
-        Verify.equal(expectedDetails, storyDetails);
+        codeGenerator = mock(CodeGenerator.class);
+        storyParser = new SimpleStoryParser((CodeGenerator) codeGenerator);
     }
 
-    /**
-     * @return
-     */
-    private StoryDetails createStoryDetailsForDefaultStory() {
-        // expect...
+    private StoryDetails someStoryDetails() {
         StoryDetails expectedDetails = new StoryDetails("User withdraws cash",
                 "Bank card holder", "be able to withdraw cash from an ATM",
                 "I don't have to visit the bank");
         return expectedDetails;
+    }
+    
+    public void shouldTellGeneratorToGenerateStoryWithNoScenarios() throws Exception {
+        // expect...
+        codeGenerator.expects("generateStory").with(eq(someStoryDetails()));
+
+        // when...
+        storyParser.parseStory(new StringReader(storyText));
+
+        // verify...
+        verifyMocks();
     }
 
     public void shouldParseOtherStories() throws Exception {
@@ -103,7 +101,7 @@ public class SimpleStoryParserBehaviour {
         String storyWithScenario = storyText + "\n" + happyScenario;
         
         // expect...  
-        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
+        StoryDetails expectedDetails = someStoryDetails();
         expectedDetails.addScenario(createHappyScenarioDetails());
         
         // when...
@@ -121,7 +119,7 @@ public class SimpleStoryParserBehaviour {
         String story = storyText + "\n" + happyScenario + otherExpectations;
         
         // expect ...
-        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
+        StoryDetails expectedDetails = someStoryDetails();
         ScenarioDetails scenarioDetails = createHappyScenarioDetails();
         
         OutcomeDetails outcomeDetails = scenarioDetails.getOutcome();
@@ -152,7 +150,7 @@ public class SimpleStoryParserBehaviour {
         String story = storyText + "\n" + overdraftScenario;
         
         // expect
-        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
+        StoryDetails expectedDetails = someStoryDetails();
         expectedDetails.addScenario(createOverdraftScenarioDetails());
         
         // when
@@ -173,7 +171,7 @@ public class SimpleStoryParserBehaviour {
         String story = storyText + "\n" + scenario;
         
         // expect
-        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
+        StoryDetails expectedDetails = someStoryDetails();
         expectedDetails.addScenario(createOverdraftScenarioDetails());
         
         // when
@@ -188,7 +186,7 @@ public class SimpleStoryParserBehaviour {
         String story = storyText + "\n" + happyScenario + "\n" + overdraftScenario;
         
         // expect
-        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
+        StoryDetails expectedDetails = someStoryDetails();
         expectedDetails.addScenario(createHappyScenarioDetails());
         expectedDetails.addScenario(createOverdraftScenarioDetails());
        

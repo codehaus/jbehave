@@ -9,7 +9,6 @@ package com.thoughtworks.jbehave.extensions.story.renderers;
 
 import java.io.PrintStream;
 
-import com.thoughtworks.jbehave.core.minilog.Log;
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
@@ -32,7 +31,6 @@ import com.thoughtworks.jbehave.extensions.story.domain.Story;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class PlainTextRenderer implements Visitor {
-    final Log log = Log.getLog(this);
     
     private final PrintStream out;
     private String nextWord;
@@ -60,16 +58,13 @@ public class PlainTextRenderer implements Visitor {
             visitGiven((Given) visitable);
         }
         else if (visitable instanceof EventUsingMiniMock) {
-            log.debug("Visiting event");
             visitEvent((Event) visitable);
             visitedEvent = true;
         }
         else if (visitable instanceof Outcome) {
-            log.debug("Visiting outcome");
             visitOutcome((Outcome) visitable);
         }
         else if (visitable instanceof ExpectationUsingMiniMock) {
-            log.debug("Visiting expectation");
             visitExpectation((Expectation) visitable);
         }
     }

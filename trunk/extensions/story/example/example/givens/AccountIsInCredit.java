@@ -15,7 +15,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.GivenUsingMiniMock;
 import example.domain.Account;
 
 /** set balance = 50 */
-public class AccountHasPositiveBalance extends GivenUsingMiniMock {
+public class AccountIsInCredit extends GivenUsingMiniMock {
     
     public void setUp(Environment environment) throws Exception {
         Mock account = (Mock) environment.get("account", mock(Account.class));

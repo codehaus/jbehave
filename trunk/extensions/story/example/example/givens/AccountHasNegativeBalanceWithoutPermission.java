@@ -15,7 +15,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.GivenUsingMiniMock;
 public class AccountHasNegativeBalanceWithoutPermission extends GivenUsingMiniMock {
     public void setUp(Environment environment) throws Exception {
         new AccountIsOverdrawn().setUp(environment);
-        new AccountDoesNotHaveOverdraftFacility().setUp(environment);
+        new AccountDoesNotHaveOverdraftPermission().setUp(environment);
     }
 
     public String getDescription() {

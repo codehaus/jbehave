@@ -141,4 +141,17 @@ public class Verify {
     public static void instanceOf(Class type, Object instance) {
         that("should be instance of " + type.getName(), type.isInstance(instance));
     }
+    
+    // throws exception
+    public static void throwsException(Class exceptionType, Block block) throws Exception {
+        try {
+            block.execute();
+            fail("should have thrown " + exceptionType.getName());
+        }
+        catch (Exception e) {
+            if (!exceptionType.isAssignableFrom(e.getClass())) {
+                throw e;
+            }
+        }
+    }
 }
