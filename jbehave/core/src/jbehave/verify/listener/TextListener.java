@@ -15,7 +15,7 @@ import java.util.List;
 
 import jbehave.BehaviourFrameworkError;
 import jbehave.framework.CriteriaVerificationResult;
-import jbehave.verify.VerifierSpec;
+import jbehave.verify.Verifier;
 
 
 /**
@@ -38,7 +38,7 @@ public class TextListener extends ListenerSupport {
         this(writer, new Timer());
     }
     
-    public void verificationStarted(VerifierSpec runner) {
+    public void verificationStarted(Verifier runner) {
         timer.start();
     }
 
@@ -66,7 +66,7 @@ public class TextListener extends ListenerSupport {
         }
     }
      
-    public void verificationEnded(VerifierSpec runner) {
+    public void verificationEnded(Verifier runner) {
         timer.stop();
         out.println();
         printElapsedTime();

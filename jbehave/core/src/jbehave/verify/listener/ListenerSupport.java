@@ -9,7 +9,7 @@ package jbehave.verify.listener;
 
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
-import jbehave.verify.VerifierSpec;
+import jbehave.verify.Verifier;
 
 /**
  * Stub implementations of the listener event methods.
@@ -18,10 +18,10 @@ import jbehave.verify.VerifierSpec;
  */
 public class ListenerSupport implements Listener {
 
-    public void verificationStarted(VerifierSpec runner) {
+    public void verificationStarted(Verifier runner) {
     }
 
-    public void verificationEnded(VerifierSpec runner) {
+    public void verificationEnded(Verifier runner) {
     }
 
     public void specVerificationStarted(Class behaviourClass) {

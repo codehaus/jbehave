@@ -13,7 +13,7 @@ import java.util.List;
 
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
-import jbehave.verify.VerifierSpec;
+import jbehave.verify.Verifier;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still
@@ -35,13 +35,13 @@ public class CompositeListener implements Listener {
     
     // Listener methods
     
-    public void verificationStarted(VerifierSpec runner) {
+    public void verificationStarted(Verifier runner) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
             ((Listener)i.next()).verificationStarted(runner);
         }
     }
 
-    public void verificationEnded(VerifierSpec runner) {
+    public void verificationEnded(Verifier runner) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
             ((Listener)i.next()).verificationEnded(runner);
         }

@@ -9,7 +9,7 @@ package jbehave.verify.listener;
 
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
-import jbehave.verify.VerifierSpec;
+import jbehave.verify.Verifier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,11 +20,11 @@ import org.apache.commons.logging.LogFactory;
 public class TraceListener implements Listener {
     Log log = LogFactory.getLog(TraceListener.class);
 
-    public void verificationStarted(VerifierSpec runner) {
+    public void verificationStarted(Verifier runner) {
         log.trace("runStarted");
     }
 
-    public void verificationEnded(VerifierSpec runner) {
+    public void verificationEnded(Verifier runner) {
         log.trace("runEnded");
     }
 
