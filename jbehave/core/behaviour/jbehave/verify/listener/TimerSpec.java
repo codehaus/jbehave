@@ -20,6 +20,7 @@ public class TimerSpec {
         long startTime = System.currentTimeMillis();
         timer.start();
         
+        // TODO make this not time-dependent - could possibly fail
         // Wait a bit
         Thread.sleep(5);
         

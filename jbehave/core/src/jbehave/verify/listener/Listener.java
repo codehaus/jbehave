@@ -8,14 +8,14 @@
 package jbehave.verify.listener;
 
 import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerification;
 import jbehave.verify.Verifier;
 
 
 /**
  * As we were driving through a mountain pass in the middle of the Karoo,
- * it occurred to me that the <tt>BehaviourRunner</tt> shouldn't really
- * have its own <tt>Writer</tt>. Then I thought about modelling the
+ * it occurred to me that the {@link Verifier} shouldn't really
+ * have its own <tt>java.io.Writer</tt>. Then I thought about modelling the
  * run in terms of events, and suddenly everything fell into place.<br>
  * <br>
  * Of course, I could have worked it out much easier by looking at the JUnit
@@ -26,10 +26,10 @@ import jbehave.verify.Verifier;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public interface Listener {
-    void verificationStarted(Verifier runner);
-    void verificationEnded(Verifier runner);
-    void specVerificationStarted(Class behaviourClass);
-    void specVerificationEnded(Class behaviourClass);
-    void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour);
-    void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult);
+    void verificationStarted(Verifier verifier);
+    void verificationEnded(Verifier verifier);
+    void specVerificationStarted(Class spec);
+    void specVerificationEnded(Class spec);
+    void beforeCriteriaVerificationStarts(CriteriaVerifier verifier);
+    void afterCriteriaVerificationEnds(CriteriaVerification verification);
 }

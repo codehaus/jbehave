@@ -20,17 +20,17 @@ import jbehave.verify.listener.TraceListener;
 public class TextVerifier {
 
     public static void main(String[] args) {
-        Verifier runner = new Verifier();
-        runner.registerListener(new TextListener(new OutputStreamWriter(System.out)));
-        runner.registerListener(new TraceListener());
+        Verifier verifier = new Verifier();
+        verifier.registerListener(new TextListener(new OutputStreamWriter(System.out)));
+        verifier.registerListener(new TraceListener());
         for (int i = 0; i < args.length; i++) {
             try {
-                runner.addSpec(Class.forName(args[i]));
+                verifier.addSpec(Class.forName(args[i]));
             }
             catch (ClassNotFoundException e) {
-                System.err.println("Unknown class: " + args[i]);
+                System.err.println("Unknown spec class: " + args[i]);
             }
         }
-        runner.verifyCriteria();
+        verifier.verifyCriteria();
     }
 }

@@ -15,7 +15,7 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class CriteriaSupportSpec {
+public class CriteriaExtractorSpec {
 
     public static class SpecWithSingleCriteria {
         public void shouldBehaveInSomeWay() {
@@ -28,6 +28,10 @@ public class CriteriaSupportSpec {
             if (verifier.getName().equals(name)) return;
         }
         Verify.impossible(name + " not found in criteria");
+    }
+
+    private Collection getCriteriaVerifiers(Class spec) {
+        return new CriteriaExtractor(spec).createCriteriaVerifiers();
     }
 
     public void shouldRecogniseSingleCriteria() throws Exception {
@@ -82,10 +86,6 @@ public class CriteriaSupportSpec {
         verifyContainsCriteriaName("shouldBehaveInSomeWay", verifiers);
     }
 
-    private Collection getCriteriaVerifiers(Class spec) {
-        return new CriteriaExtractor(spec).extractCriteria();
-    }
-
     public static class SpecSuperclassWithCriteria {
         public void shouldDoSomething() {
         }
@@ -100,21 +100,21 @@ public class CriteriaSupportSpec {
         verifyContainsCriteriaName("shouldDoSomething", verifiers);
     }
 
-    public static class AggregateSpec implements Aggregate {
+    public static class SomeSpecs implements AggregateSpec {
         public Class[] getSpecs() {
             return new Class[] { SpecWithSingleCriteria.class };
         }
     }
 
     public void shouldFindCriteriasInAggregatedSpec() throws Exception {
-        Collection verifiers = getCriteriaVerifiers(AggregateSpec.class);
+        Collection verifiers = getCriteriaVerifiers(SomeSpecs.class);
         Verify.equal(1, verifiers.size());
         verifyContainsCriteriaName("shouldBehaveInSomeWay", verifiers);
     }
 
-    public static class NestedAggregateSpec implements Aggregate {
+    public static class NestedAggregateSpec implements AggregateSpec {
         public Class[] getSpecs() {
-            return new Class[] { AggregateSpec.class };
+            return new Class[] { SomeSpecs.class };
         }
     }
 
