@@ -28,11 +28,11 @@ public class CompositeListenerSpec {
 	// Mocks would be great for this :(
 	public class StubListener implements Listener {
 		private Map methodsCalled;
-		private CriteriaVerification nextVerification;
+		private CriteriaVerification decoratedVerification;
 
-		public StubListener(Map methodsCalled, CriteriaVerification nextVerification) {
+		public StubListener(Map methodsCalled, CriteriaVerification decoratedVerification) {
 			this.methodsCalled = methodsCalled;
-			this.nextVerification = nextVerification;
+			this.decoratedVerification = decoratedVerification;
 		}
 
 		public void specVerificationStarting(Class spec) {
@@ -45,7 +45,7 @@ public class CompositeListenerSpec {
 
 		public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
 			methodsCalled.put("criteriaVerificationEnding", verification);
-			return nextVerification;
+			return decoratedVerification;
 		}
 
 		public void specVerificationEnding(Class spec) {
@@ -68,7 +68,7 @@ public class CompositeListenerSpec {
 		Verify.equal(arg, callMap.get(methodName));
 	}
 
-	public void shouldNotifyAllListenerWhenSpecVerificationStarting() {
+	public void shouldNotifyAllListenersWhenSpecVerificationStarting() {
 		// execute
 		composite.specVerificationStarting(getClass());
 
