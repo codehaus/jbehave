@@ -7,8 +7,13 @@
  */
 package jbehave.framework;
 
+import jbehave.framework.exception.PendingException;
+import jbehave.framework.exception.VerificationException;
+
 
 /**
+ * Represents the result of verifying an individual criteria.
+ * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class CriteriaVerification {
@@ -18,15 +23,13 @@ public class CriteriaVerification {
     public static final int PENDING = 3;
 
     private final String name;
-    private final String spec;
+    private final String specName;
     private final int status;
-    private final Object specInstance;
     private final Throwable targetException;
 
-    public CriteriaVerification(String name, String spec, Object specInstance, Throwable targetException) {
+    public CriteriaVerification(String name, String specName, Throwable targetException) {
         this.name = name;
-        this.spec = spec;
-		this.specInstance = specInstance;
+        this.specName = specName;
         this.targetException = targetException;
         if (targetException == null) {
             status = SUCCESS;
@@ -45,16 +48,16 @@ public class CriteriaVerification {
     /**
      * Convenience constructor for successful verification
      */
-    public CriteriaVerification(String name, String className, Object specInstance) {
-        this(name, className, specInstance, null);
+    public CriteriaVerification(String name, String specName) {
+        this(name, specName, null);
     }
 
     public String getName() {
         return name;
     }
 
-    public String getSpec() {
-        return spec;
+    public String getSpecName() {
+        return specName;
     }
 
     public int getStatus() {
@@ -81,11 +84,41 @@ public class CriteriaVerification {
         return status == PENDING;
     }
 
+    /** @deprecated remove me */
+	public Object getSpecInstance() {
+		return null;
+	}
+
     public String toString() {
-        return "Name: " + name + ", spec:" + spec + ", status: " + status + ", targetException: " + targetException;
+        return "Name: " + name + ", spec:" + specName + ", status: " + status + ", targetException: " + targetException;
     }
 
-	public Object getSpecInstance() {
-		return specInstance;
-	}
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (o.getClass() != getClass()) {
+            return false;
+        }
+        CriteriaVerification other = (CriteriaVerification) o;
+        return ((name == null ? other.name == null : name.equals(other.name))
+            && (specName == null ? other.specName == null : specName.equals(other.specName))
+            && (status == other.status)
+            && (targetException == null ? other.targetException == null : targetException.equals(other.targetException)));
+    }
+
+    /**
+     * Override hashCode because we implemented {@link #equals(Object)}
+     */
+    public int hashCode() {
+        int hashCode = 1;
+        hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
+        hashCode = 31 * hashCode + (specName == null ? 0 : specName.hashCode());
+        hashCode = 31 * hashCode + status;
+        hashCode = 31 * hashCode + (targetException == null ? 0 : targetException.hashCode());
+        return hashCode;
+    }
 }

@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package jbehave.framework;
+package jbehave.framework.exception;
 
 
 /**

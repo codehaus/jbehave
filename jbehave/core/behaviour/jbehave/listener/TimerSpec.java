@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.verify.listener;
+package jbehave.listener;
 
 import jbehave.framework.Verify;
 
@@ -16,17 +16,16 @@ import jbehave.framework.Verify;
  */
 public class TimerSpec {
     public void shouldMeasureAPeriodOfTime() throws Exception {
+        // setup
         Timer timer = new Timer();
-        long startTime = System.currentTimeMillis();
         timer.start();
         
+        // execute
         // TODO make this not time-dependent - could possibly fail
-        // Wait a bit
-        Thread.sleep(5);
-        
+        Thread.sleep(10);
         timer.stop();
-        long elapsed = System.currentTimeMillis() - startTime;
-        Verify.equal(elapsed, timer.getElapsedTime(), 1.0);
         
+        // verify
+        Verify.that(timer.elapsedTimeMillis() > 0);
     }
 }

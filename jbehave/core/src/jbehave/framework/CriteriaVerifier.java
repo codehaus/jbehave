@@ -10,7 +10,9 @@ package jbehave.framework;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import jbehave.BehaviourFrameworkError;
+import jbehave.framework.exception.BehaviourFrameworkError;
+import jbehave.framework.exception.VerificationException;
+import jbehave.listener.Listener;
 
 /**
  * Represents a verifier for a single criteria, which can verify
@@ -19,18 +21,25 @@ import jbehave.BehaviourFrameworkError;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class CriteriaVerifier {
-    private final Object specInstance;
+    private final Class spec;
     private final Method method;
+    private final Object specInstance;
 
     public CriteriaVerifier(Method method) {
-        this.method = method;
         try {
-            this.specInstance = method.getDeclaringClass().newInstance();
+            this.method = method;
+            this.spec = method.getDeclaringClass();
+            this.specInstance = spec.newInstance();
         }
         catch (Exception e) {
-            e.printStackTrace();
-            throw new BehaviourFrameworkError("Error instantiating " + method.getDeclaringClass().getName());
+            throw new BehaviourFrameworkError("Unable to instantiate instance of " + method.getDeclaringClass().getName());
         }
+    }
+
+    public CriteriaVerifier(Method method, Object specInstance) {
+        this.method = method;
+        this.spec = method.getDeclaringClass();
+        this.specInstance = specInstance;
     }
 
     public String getName() {
@@ -38,50 +47,61 @@ public class CriteriaVerifier {
     }
     
     public String getSpecName() {
-        String className = specInstance.getClass().getName();
+        String className = spec.getName();
         int lastDot = className.lastIndexOf('.');
         return className.substring(lastDot + 1);
     }
     
-    public Object getSpecInstance() {
-        return specInstance;
+    public Class getSpec() {
+        return spec;
     }
 
     /**
      * Verify an individual criteria.<br>
      * <br>
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
-     * in the appropriate places if either of them exist.
+     * in the appropriate places if either of them exist.<br>
+     * <br>
+     * The {@link Listener} is alerted before and after the verification,
+     * with calls to {@link Listener#criteriaVerificationStarting(CriteriaVerifier)
+     * beforeCriteriaVerificationStarts(this)} and
+     * {@link Listener#criteriaVerificationEnding(CriteriaVerification)
+     * afterCriteriaVerificationEnds(result)} respectively.
      */
-    public CriteriaVerification verifyCriteria() {
+    public CriteriaVerification verifyCriteria(Listener listener) {
         CriteriaVerification result = null;
         try {
+            listener.criteriaVerificationStarting(this);
             setUp();
             method.invoke(specInstance, new Object[0]);
-            return createVerification(null);
+            result = createVerification(null);
         } catch (InvocationTargetException e) {
             // method failed
-            return result = createVerification(e.getTargetException());
+            result = createVerification(e.getTargetException());
         } catch (Exception e) {
-            // anything else is bad news
-            throw new BehaviourFrameworkError(e);
+            throw new BehaviourFrameworkError(
+                    "Problem invoking " + spec.getName() + "#" + method.getName(), e);
         }
         finally {
             try {
 				tearDown();
 			} catch (InvocationTargetException e) {
-                // method failed
-                return result != null ? result : createVerification(e.getTargetException());
+                // tearDown failed - override if result would have succeeded
+                if (result != null && result.succeeded()) {
+                    result = createVerification(e.getTargetException());
+                }
             } catch (Exception e) {
                 // anything else is bad news
                 throw new BehaviourFrameworkError(e);
             }
         }
+        listener.criteriaVerificationEnding(result);
+        return result;
     }
 
 	private void setUp() throws InvocationTargetException {
         try {
-            Method setUp = specInstance.getClass().getMethod("setUp", new Class[0]);
+            Method setUp = getSpec().getMethod("setUp", new Class[0]);
             setUp.invoke(specInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a setUp() method - never mind
@@ -96,7 +116,7 @@ public class CriteriaVerifier {
 
     private void tearDown() throws InvocationTargetException {
         try {
-            Method tearDown = specInstance.getClass().getMethod("tearDown", new Class[0]);
+            Method tearDown = getSpec().getMethod("tearDown", new Class[0]);
             tearDown.invoke(specInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a tearDown() method - never mind
@@ -128,11 +148,11 @@ public class CriteriaVerifier {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new CriteriaVerification(method.getName(), method.getDeclaringClass().getName(), specInstance, targetException);
+            return new CriteriaVerification(method.getName(), spec.getName(), targetException);
         }
     }
     
     public String toString() {
-        return "\n==" + getSpecName() + "." + method.getName() + "==";
+        return "[CriteriaVerifier: " + getSpecName() + "." + method.getName() + "]";
     }
 }

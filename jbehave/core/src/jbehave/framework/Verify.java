@@ -7,6 +7,8 @@
  */
 package jbehave.framework;
 
+import jbehave.framework.exception.VerificationException;
+
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  * @author <a href="mailto:damian@jbehave.org">Damian Guy</a>
@@ -73,7 +75,9 @@ public class Verify {
 
     // Verify.that(...)
     public static void that(String message, boolean condition) {
-        equal(message, Boolean.TRUE, toBoolean(condition));
+        if (!condition) {
+            fail(message != null ? message : "Expected condition was not met");
+        }
     }
 
     public static void that(boolean condition) {
@@ -105,6 +109,10 @@ public class Verify {
     
     private static Boolean toBoolean(boolean value) {
         return value ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    private static void fail(String message) {
+        throw new VerificationException(message);
     }
 
     private static void fail(String message, Object expected, Object actual) {

@@ -7,24 +7,22 @@
  */
 package jbehave;
 
-import jbehave.framework.AggregateSpec;
-import jbehave.framework.CriteriaSpec;
-import jbehave.framework.CriteriaExtractorSpec;
 import jbehave.framework.CriteriaVerificationSpec;
-import jbehave.verify.VerifierSpec;
-import jbehave.verify.listener.TextListenerSpec;
-import jbehave.verify.listener.TimerSpec;
+import jbehave.framework.CriteriaVerifierSpec;
+import jbehave.framework.SpecContainer;
+import jbehave.framework.SpecVerifierSpec;
+import jbehave.listener.TextListenerSpec;
+import jbehave.listener.TimerSpec;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class AllSpecs implements AggregateSpec {
+public class AllSpecs implements SpecContainer {
     public Class[] getSpecs() {
         return new Class[] {
-            CriteriaSpec.class,
+            CriteriaVerifierSpec.class,
+            SpecVerifierSpec.class,
             CriteriaVerificationSpec.class,
-            CriteriaExtractorSpec.class,
-            VerifierSpec.class,
             TextListenerSpec.class,
             TimerSpec.class
         };

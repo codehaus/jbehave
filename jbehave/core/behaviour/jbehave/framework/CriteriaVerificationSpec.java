@@ -7,6 +7,9 @@
  */
 package jbehave.framework;
 
+import jbehave.framework.exception.PendingException;
+import jbehave.framework.exception.VerificationException;
+
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
@@ -28,19 +31,19 @@ public class CriteriaVerificationSpec {
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
         CriteriaVerification verification =
-            new CriteriaVerification("shouldFail", "SomeClass", null, new VerificationException("oops"));
+            new CriteriaVerification("shouldFail", "SomeClass", new VerificationException("oops"));
         verifyEvaluationState(verification, CriteriaVerification.FAILURE, false, true, false, false);
     }
 
     public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
         CriteriaVerification verification =
-            new CriteriaVerification("shouldThrowException", "SomeClass", null, new Exception());
+            new CriteriaVerification("shouldThrowException", "SomeClass", new Exception());
         verifyEvaluationState(verification, CriteriaVerification.EXCEPTION_THROWN, false, false, true, false);
     }
     
     public void shouldHaveConsistentStateForPending() throws Exception {
         CriteriaVerification verification =
-            new CriteriaVerification("shouldBeImplemented", "SomeClass", null, new PendingException("todo"));
+            new CriteriaVerification("shouldBeImplemented", "SomeClass", new PendingException("todo"));
         verifyEvaluationState(verification, CriteriaVerification.PENDING, false, false, false, true);
     }
 }

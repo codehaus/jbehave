@@ -1,74 +1,95 @@
 <project name="jbehave" default="test">
-  <property name="version" value="0.1-SNAPSHOT"/>
+	<property name="version" value="0.1-SNAPSHOT" />
 
-  <property name="project" value="${ant.project.name}"/>
-  
-  <property name="src.dir" location="src"/>
-  <property name="test.dir" location="test"/>
-  <property name="behaviour.dir" location="behaviour"/>
-  
-  <property name="build.dir" location="build"/>
-  <property name="classes.dir" location="${build.dir}/classes"/>
-  <property name="test.classes.dir" location="${build.dir}/test-classes"/>
-  <property name="dist.dir" location="${build.dir}/dist"/>
-  <property name="jar.file" location="${dist.dir}/${project}-${version}.jar"/>
+	<property name="project" value="${ant.project.name}" />
 
-  
-  <target name="-init">
-    <mkdir dir="${build.dir}"/>
-  </target>
-  
-  <target name="compile" depends="-init">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes"/>
-  </target>
+	<property name="src.dir" location="src" />
+	<property name="spec.dir" location="behaviour" />
+	<property name="test.dir" location="test" />
+	<property name="behaviour.dir" location="behaviour" />
 
-  <target name="jar" depends="compile">
-    <mkdir dir="${dist.dir}"/>
-    <copy todir="${classes.dir}">
-      <fileset dir="${src.dir}" excludes="**/*.java"/>
-    </copy>
-    <jar basedir="${classes.dir}" destfile="${jar.file}"/>
-  </target>
+	<property name="build.dir" location="build" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="spec.classes.dir" location="${build.dir}/specs" />
+	<property name="test.classes.dir" location="${build.dir}/test-classes" />
+	<property name="dist.dir" location="${build.dir}/dist" />
+	<property name="jar.file" location="${dist.dir}/${project}-${version}.jar" />
 
-  <target name="test.compile" depends="jar">
-    <mkdir dir="${test.classes.dir}"/>
-    <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
-      <classpath>
-        <pathelement location="${jar.file}"/>
-      </classpath>
-    </javac>
-  </target>
-  
-  <target name="test" depends="test.compile">
-    <junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
-      <formatter type="plain"/>
-      <classpath>
-        <path location="${test.classes.dir}"/>
-        <path location="${jar.file}"/>
-      </classpath>
-      <test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}"/>
-    </junit>
-  </target>
-  
-  <target name="clean">
-    <delete dir="${build.dir}"/>
-  </target>
-  
-  <target name="clobber" depends="clean">
-    <delete dir="${dist.dir}"/>
-  </target>
-  
-  <target name="rebuild" depends="clobber, jar"/>
-  
-  <target name="jar-dist" depends="jar">
-    <copy file="${jar.file}" todir="${jar.dist.dir}"/>
-  </target>
 
-  <target name="jar-dist-plink" depends="jar">
-    <exec dir="." executable="pscp">
-      <arg value="${jar.file}"/>
-      <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars"/>
-    </exec>
-  </target>
+	<target name="-init">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="-init">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${dist.dir}" />
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java" />
+		</copy>
+		<jar basedir="${classes.dir}" destfile="${jar.file}" />
+	</target>
+
+	<target name="spec.compile" depends="jar">
+		<mkdir dir="${spec.classes.dir}" />
+		<javac fork="true" srcdir="${spec.dir}" destdir="${spec.classes.dir}">
+			<classpath>
+				<pathelement location="${jar.file}" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="verify" depends="spec.compile">
+		<java classname="jbehave.framework.SpecVerifier" fork="true" failonerror="true">
+			<arg value="jbehave.AllSpecs"/>
+			<classpath>
+				<pathelement location="${jar.file}"/>
+				<pathelement location="${spec.classes.dir}"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="test.compile" depends="jar">
+		<mkdir dir="${test.classes.dir}" />
+		<javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
+			<classpath>
+				<pathelement location="${jar.file}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="test" depends="test.compile">
+		<junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
+			<formatter type="plain" />
+			<classpath>
+				<path location="${test.classes.dir}" />
+				<path location="${jar.file}" />
+			</classpath>
+			<test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}" />
+		</junit>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="clobber" depends="clean">
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="rebuild" depends="clobber, jar" />
+
+	<target name="jar-dist" depends="jar">
+		<copy file="${jar.file}" todir="${jar.dist.dir}" />
+	</target>
+
+	<target name="jar-dist-plink" depends="jar">
+		<exec dir="." executable="pscp">
+			<arg value="${jar.file}" />
+			<arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
+		</exec>
+	</target>
 </project>
