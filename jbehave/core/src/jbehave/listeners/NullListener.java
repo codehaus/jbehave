@@ -27,7 +27,8 @@ public class NullListener implements Listener {
     public void criteriaVerificationStarting(CriteriaVerifier verifier) {
     }
 
-    public void criteriaVerificationEnding(CriteriaVerification verification) {
+    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification) {
+		return verification;
     }
     
     public String toString() {

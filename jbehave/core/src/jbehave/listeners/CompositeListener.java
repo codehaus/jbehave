@@ -53,10 +53,11 @@ public class CompositeListener implements Listener {
         }
     }
 
-    public void criteriaVerificationEnding(CriteriaVerification verification) {
-        for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).criteriaVerificationEnding(verification);
+    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification) {
+		for (Iterator i = listeners.iterator(); i.hasNext();) {
+           verification = ((Listener)i.next()).criteriaVerificationEnding(verification);
         }
+		return verification;
     }
     
     public String toString() {

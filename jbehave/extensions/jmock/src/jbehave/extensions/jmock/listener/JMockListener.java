@@ -19,7 +19,13 @@ import org.jmock.Mock;
  */
 public class JMockListener extends NullListener {
 
-	public void criteriaVerificationEnding(CriteriaVerification behaviourResult) {
+	private Class specBeingVerified = null;
+
+	public void specVerificationStarting(Class spec) {
+		specBeingVerified = spec;
+	}
+
+	public CriteriaVerification criteriaVerificationEnding(CriteriaVerification behaviourResult) {
         Object executedInstance = behaviourResult.getSpecInstance();
         
         // iterate looking for fields of type Mock
@@ -30,6 +36,7 @@ public class JMockListener extends NullListener {
                 verifyMock(field, executedInstance);
             }
 		}
+		return null; // bodge this for now
 	}
 
     private void verifyMock(Field field, Object executedInstance) {

@@ -47,7 +47,7 @@ public class TextListener extends NullListener {
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public void criteriaVerificationEnding(CriteriaVerification verification) {
+    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification) {
         criteriaVerified++;
         if (verification.failed()) {
             failures.add(verification);
@@ -57,6 +57,7 @@ public class TextListener extends NullListener {
         }
         out.print(getSymbol(verification.getStatus()));
         out.flush();
+		return verification;
     }
 
     private char getSymbol(int status) {

@@ -34,7 +34,8 @@ public class TraceListener implements Listener {
         log.trace("beforeCriteriaVerificationStarts: " + verifier.getName());
     }
 
-    public void criteriaVerificationEnding(CriteriaVerification evaluation) {
+    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification evaluation) {
         log.trace("afterCriteriaVerificationEnds: " + evaluation.toString());
+		return evaluation;
     }
 }

@@ -23,13 +23,16 @@ public class CompositeListenerSpec {
 	private CompositeListener composite;
 	private Map callMap1;
 	private Map callMap2;
+	private CriteriaVerification nextVerification;
 
 	// Mocks would be great for this :(
 	public class StubListener implements Listener {
 		private Map methodsCalled;
+		private CriteriaVerification nextVerification;
 
-		public StubListener(Map methodsCalled) {
+		public StubListener(Map methodsCalled, CriteriaVerification nextVerification) {
 			this.methodsCalled = methodsCalled;
+			this.nextVerification = nextVerification;
 		}
 
 		public void specVerificationStarting(Class spec) {
@@ -40,8 +43,9 @@ public class CompositeListenerSpec {
 			methodsCalled.put("criteriaVerificationStarting", verifier);
 		}
 
-		public void criteriaVerificationEnding(CriteriaVerification verification) {
+		public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification) {
 			methodsCalled.put("criteriaVerificationEnding", verification);
+			return nextVerification;
 		}
 
 		public void specVerificationEnding(Class spec) {
@@ -53,8 +57,9 @@ public class CompositeListenerSpec {
 		composite = new CompositeListener();
 		callMap1 = new HashMap();
 		callMap2 = new HashMap();
-		composite.add(new StubListener(callMap1));
-		composite.add(new StubListener(callMap2));
+		nextVerification = new CriteriaVerification("blah", "blah");
+		composite.add(new StubListener(callMap1, nextVerification));
+		composite.add(new StubListener(callMap2, nextVerification));
 	}
 
 	private void verifyMethodCalled(String methodName, Map callMap, Object arg) {
@@ -94,16 +99,17 @@ public class CompositeListenerSpec {
 
 	}
 
-	public void shouldNotifyAllListenersWhenCriteriaVerificationEnding() {
+	public void shouldNotifyAllListenersWhenCriteriaVerificationEndingAndPassOnReturnedCriteriaVerifierToNextListener() {
 		// setup
 	    CriteriaVerification verification = new CriteriaVerification("criteria", "spec");
 
 		// execute
-	    composite.criteriaVerificationEnding(verification);
+	    CriteriaVerification returnedVerification = composite.criteriaVerificationEnding(verification);
 
 		// verify
+		Verify.equal(nextVerification, returnedVerification);
 		verifyMethodCalled("criteriaVerificationEnding", callMap1, verification);
-		verifyMethodCalled("criteriaVerificationEnding", callMap2, verification);
+		verifyMethodCalled("criteriaVerificationEnding", callMap2, nextVerification);
 	}
 
 
