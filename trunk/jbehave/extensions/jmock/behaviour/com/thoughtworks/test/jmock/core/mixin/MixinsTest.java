@@ -10,7 +10,9 @@ import com.thoughtworks.test.jmock.core.testsupport.AlwaysFalse;
 import com.thoughtworks.test.jmock.core.testsupport.AlwaysTrue;
 
 /**
- * @deprecated use {@link jbehave.extensions.jmock.JMockMixins} instead
+ * TODO port these to behaviours on </tt>JMockMixins</tt>.
+ * 
+ * @deprecated use {@link com.thoughtworks.jbehave.extensions.jmock.JMockMixins} instead
  */
 public class MixinsTest extends TestCase {
     Constraint trueConstraint = AlwaysTrue.INSTANCE;
