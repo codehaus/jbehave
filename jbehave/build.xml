@@ -104,7 +104,7 @@
 		<copy todir="${deploy.javadoc.dir}">
 			<fileset dir="${build.javadoc.dir}" />
 		</copy>
-		<!-- <copy todir="${dist.dir}/dist" file="${snapshot.jar.file}" /> -->
+		<!--<copy todir="${$deploy.dist.dir}" file="${snapshot.jar.file}" />-->
 	</target>           
 
 	<target name="rebuild" depends="clobber, dist" />

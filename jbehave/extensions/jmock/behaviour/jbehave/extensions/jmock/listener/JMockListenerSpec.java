@@ -13,7 +13,7 @@ import java.util.List;
 import jbehave.framework.CriteriaVerification;
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.Verify;
-import jbehave.listener.Listener;
+import jbehave.framework.Listener;
 
 import org.jmock.Mock;
 

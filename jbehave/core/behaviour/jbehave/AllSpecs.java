@@ -13,6 +13,7 @@ import jbehave.framework.SpecContainer;
 import jbehave.framework.SpecVerifierSpec;
 import jbehave.listeners.TextListenerSpec;
 import jbehave.listeners.TimerSpec;
+import jbehave.listeners.CompositeListenerSpec;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
@@ -24,7 +25,8 @@ public class AllSpecs implements SpecContainer {
             SpecVerifierSpec.class,
             CriteriaVerificationSpec.class,
             TextListenerSpec.class,
-            TimerSpec.class
+            TimerSpec.class,
+			CompositeListenerSpec.class
         };
     }
 }

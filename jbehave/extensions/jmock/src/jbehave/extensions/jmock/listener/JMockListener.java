@@ -10,7 +10,7 @@ package jbehave.extensions.jmock.listener;
 import java.lang.reflect.Field;
 
 import jbehave.framework.CriteriaVerification;
-import jbehave.listener.NullListener;
+import jbehave.listeners.NullListener;
 
 import org.jmock.Mock;
 
