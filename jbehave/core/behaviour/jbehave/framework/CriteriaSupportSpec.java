@@ -15,7 +15,7 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class CriteriaSupportSpecification {
+public class CriteriaSupportBehaviour {
 
     public static class BehaviourClassWithSingleBehaviour {
         public void shouldBehaveInSomeWay() {
