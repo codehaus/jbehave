@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import jbehave.framework.ExecutingResponsibilityVerifier;
 import jbehave.framework.Listener;
 import jbehave.framework.ResponsibilityVerification;
+import jbehave.util.StringUtils;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
@@ -23,7 +24,7 @@ public class JUnitMethodAdapter extends TestCase {
     private final Method method;
 
     public JUnitMethodAdapter(Method method) {
-        super(method.getName());
+        super(StringUtils.unCamelCase(method.getName()));
         this.method = method;
     }
 
