@@ -16,10 +16,10 @@ import example.domain.Account;
 
 
 /** set overdraft limit = 0 */
-public class AccountDoesNotHaveOverdraftFacility extends GivenUsingMiniMock {
+public class AccountDoesNotHaveOverdraftPermission extends GivenUsingMiniMock {
 
-    public void setUp(Environment context) throws Exception {
-        Mock account = (Mock) context.get("account", mock(Account.class));
+    public void setUp(Environment environment) throws Exception {
+        Mock account = (Mock) environment.get("account", mock(Account.class));
         account.stubs("getOverdraftLimit").withNoArguments().will(returnValue(0));
     }
 

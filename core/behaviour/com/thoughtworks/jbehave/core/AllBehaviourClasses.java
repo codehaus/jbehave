@@ -14,8 +14,8 @@ import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifierBehaviour;
 import com.thoughtworks.jbehave.core.invoker.DontInvokeMethodBehaviour;
 import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDownBehaviour;
 import com.thoughtworks.jbehave.core.listener.PlainTextMethodListenerBehaviour;
-import com.thoughtworks.jbehave.core.minilog.LogBehaviour;
 import com.thoughtworks.jbehave.core.minimock.ExpectationBehaviour;
+import com.thoughtworks.jbehave.core.minimock.MockObjectBehaviour;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.core.util.ConvertCaseBehaviour;
 import com.thoughtworks.jbehave.core.util.TimerBehaviour;
@@ -34,13 +34,13 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
                 DontInvokeMethodBehaviour.class,
                 InvokeMethodWithSetUpAndTearDownBehaviour.class,
                 PlainTextMethodListenerBehaviour.class,
-                LogBehaviour.class,
-                CompositeVisitableBehaviour.class,
+                ExpectationBehaviour.class,
+                MockObjectBehaviour.class,
+                UsingMiniMockBehaviour.class,
                 ConvertCaseBehaviour.class,
                 TimerBehaviour.class,
-                VisitableArrayListBehaviour.class,
-                UsingMiniMockBehaviour.class,
-                ExpectationBehaviour.class
+                CompositeVisitableBehaviour.class,
+                VisitableArrayListBehaviour.class
         };
     }
 }

@@ -5,6 +5,7 @@ import java.lang.reflect.Proxy;
 import org.jmock.Mock;
 import org.jmock.core.Verifiable;
 
+import com.thoughtworks.jbehave.core.Block;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 
@@ -96,15 +97,14 @@ public class UsingJMockBehaviour extends JMockSugar {
     
     public void shouldWrapJMockVerificationFailureAsVerificationException() throws Exception {
         // given...
-        UsingJMock instance = new HasMockThatFailsVerify();
+        final UsingJMock instance = new HasMockThatFailsVerify();
 
         // when...
-        try {
-            instance.verifyMocks();
-            Verify.impossible("should have thrown VerificationException");
-        }
-        catch (VerificationException expected) {
-        }
+        Verify.throwsException(VerificationException.class, new Block() {
+            public void execute() throws Exception {
+                instance.verifyMocks();
+            }
+        });
     }
     
     public static interface AnInterface {}

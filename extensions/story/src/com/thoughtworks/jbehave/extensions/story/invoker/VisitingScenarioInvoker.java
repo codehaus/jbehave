@@ -13,7 +13,6 @@ import java.util.List;
 import com.thoughtworks.jbehave.core.UsingMocks;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
-import com.thoughtworks.jbehave.core.minilog.Log;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
@@ -27,7 +26,6 @@ import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class VisitingScenarioInvoker implements ScenarioInvoker, Visitor {
-    protected final Log log = Log.getLog(this);
     private final List listeners = new ArrayList();
     private final Environment environment;
     private boolean beforeEvent = true;
@@ -99,7 +97,6 @@ public class VisitingScenarioInvoker implements ScenarioInvoker, Visitor {
     
     private void checkForMocks(UsingMocks component) {
         if (component.containsMocks()) {
-            log.debug(component + " uses mocks!");
             usedMocks = true;
         }
     }

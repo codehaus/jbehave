@@ -11,6 +11,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
 
+import com.thoughtworks.jbehave.core.Block;
 import com.thoughtworks.jbehave.core.Verify;
 
 /**
@@ -74,12 +75,11 @@ public class AntTaskBehaviour {
 		final String behaviourClassName = FailingBehaviourClass.class.getName();
         task.createBehaviourClass().setBehaviourClassName(behaviourClassName);
 		// execute
-		try {
-			task.execute();
-			Verify.impossible("Should have failed the build");
-		} catch (BuildException e) {
-			Verify.that(e.getMessage().indexOf(behaviourClassName) >= 0);
-		}
+        Verify.throwsException(BuildException.class, new Block() {
+            public void execute() throws Exception {
+                task.execute();
+            }
+        });
 	}
 
 	public void shouldFailTheBuildWhenFirstSpecFails() throws Exception {
@@ -89,12 +89,11 @@ public class AntTaskBehaviour {
 		BehaviourClassOne.wasCalled = false; // i hate this!
 
 		// execute
-		try {
-			task.execute();
-			Verify.impossible("Failing Spec should of failed the build");
-		} catch (BuildException be) {
-			Verify.that(be.getMessage().indexOf("jbehave.extensions.ant.FailingSpec") >= 0);
-		}
+        Verify.throwsException(BuildException.class, new Block() {
+            public void execute() {
+                task.execute();
+            }
+        });
 
 		// verify
 		Verify.that("SpecOne should not have been run", !BehaviourClassOne.wasCalled);

@@ -16,6 +16,7 @@ import java.util.Map;
  * We look for log4j and then 1.4 logging. If neither are present, we probably don't care about logging.
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @deprecated the world doesn't need another loggng abstraction
  */
 public abstract class Log {
     private final String name;

@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.example.currency;
 
+import com.thoughtworks.jbehave.core.Block;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.example.currency.Currency;
 import com.thoughtworks.jbehave.core.example.currency.CurrencyConverter;
@@ -61,13 +62,12 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 	public void shouldNotConvertFromNegativeSterlingAmounts() throws Exception {
 		// expects
 		exchangeRateServiceMock.stubs("retrieveRate").will(returnValue(new ExchangeRate(1.85, 0.54)));
-		try {
-			sterlingConverter.convertFromSterling(-1, Currency.USD);
-			Verify.impossible("cannot convert negative values");
-		} catch (InvalidAmountException iae) {
+			Verify.throwsException(InvalidAmountException.class, new Block() {
+                public void execute() throws Exception {
+                    sterlingConverter.convertFromSterling(-1, Currency.USD);
+                }
+            });
 			verifyMocks();
-			// success!
-		}
 	}
 
 	public void shouldConvertFromEUR() throws Exception {
@@ -86,13 +86,12 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 	public void shouldNotConvertFromNegativeAmounts() throws Exception {
 		//expects
 		exchangeRateServiceMock.stubs("retrieveRate").will(returnValue(new ExchangeRate(1.85, 0.54)));
-		try {
-			sterlingConverter.convertToSterling(-3, Currency.EUR);
-			Verify.impossible("cannot convert negative values");
-		} catch (InvalidAmountException iae) {
-			verifyMocks();
-			// success!
-		}
+        Verify.throwsException(InvalidAmountException.class, new Block() {
+            public void execute() throws Exception {
+                sterlingConverter.convertToSterling(-3, Currency.EUR);
+            }
+        });
+		verifyMocks();
 	}
 
 	public void shouldConvertFromUSD() throws Exception {

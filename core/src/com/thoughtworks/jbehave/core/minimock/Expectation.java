@@ -32,7 +32,7 @@ public class Expectation extends MiniMockSugar {
     private final String methodName;
     private Constraint[] constraints = null; // initially we don't care about args
     private int minInvocations = 1;
-    private int maxInvocations;
+    private int maxInvocations = 1;
     private int invocations;
     private Expectation after;
     private String id;
@@ -59,9 +59,7 @@ public class Expectation extends MiniMockSugar {
         // avoid NPEs
         if (args == null) args = new Object[0];
         
-        // TODO: Not sure this is valid, i.e, shouldn't this
-        // be done in invoke?
-//        if (invocations >= maxInvocations)  return false; // no calls left
+        if (invocations >= maxInvocations)  return false; // no calls left
 
         if (!methodName.equals(actualName)) return false;
         

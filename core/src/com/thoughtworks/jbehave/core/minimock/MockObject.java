@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.core.minilog.Log;
 
 
 /**
@@ -25,11 +24,20 @@ import com.thoughtworks.jbehave.core.minilog.Log;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 class MockObject implements Mock, Expectation.Registry {
-    protected final Log log = Log.getLog(this);
     private final List expectations = new ArrayList();
+    private final List unexpectedInvocations = new ArrayList();
     private final Class type;
     private final String name;
     private InvocationHandler fallbackBehaviour;
+    
+    private static class Invocation {
+        public final String methodName;
+        public  final Object[] args;
+        public Invocation(String methodName, Object[] args) {
+            this.methodName = methodName;
+            this.args = args;
+        }
+    }
     
     /** Manages method invocations on the mock */
     private class ExpectationHandler implements InvocationHandler {
@@ -44,6 +52,7 @@ class MockObject implements Mock, Expectation.Registry {
             }
             
             // if we get here we didn't match on any expectations
+            unexpectedInvocations.add(new Invocation(method.getName(), args));
             return fallbackBehaviour.invoke(proxy, method, args);
         }
     }
@@ -71,15 +80,19 @@ class MockObject implements Mock, Expectation.Registry {
 
     /** verify all expectations on the mock */
     public void verify() {
-        for (Iterator i = expectations.iterator(); i.hasNext();) {
-            ((Expectation) i.next()).verify();
+        try {
+            for (Iterator i = expectations.iterator(); i.hasNext();) {
+                ((Expectation) i.next()).verify();
+            }
+        }
+        catch (VerificationException e) {
+            throw new MockVerificationException(e, unexpectedInvocations);
         }
     }
 
     public Expectation lookup(String id) {
         for (Iterator i = expectations.iterator(); i.hasNext();) {
             Expectation expectation = (Expectation) i.next();
-            Log.getLog(this).debug("Comparing expectation " + expectation.id() + " with " + id);
             if (expectation.id().equals(id)) {
                 return expectation;
             }

@@ -10,62 +10,51 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  */
 public class ExpectationBehaviour {
 
-    public void shouldThrowVerificationExceptionOnInvokeIfExpectingNever()
-            throws Throwable {
+    public void shouldThrowVerificationExceptionOnInvokeIfExpectingNever() throws Throwable {
         Expectation expectation = new Expectation(null, "test").never();
         try {
             expectation.invoke(null, null, null);
             Verify.impossible("Invoke should have throw VerificationException");
-        } catch (VerificationException ex) {
+        }
+        catch (VerificationException ex) {
             // ok;
         }
-
     }
 
-    public void shouldVerifyOKIfExpectingNeverWithoutInvoking()
-            throws Throwable {
+    public void shouldVerifyOKIfExpectingNeverWithoutInvoking() throws Throwable {
         Expectation expectation = new Expectation(null, "test").never();
         expectation.verify();
     }
 
     public void shouldMatchSimpleExpectationCorrectly() {
         Expectation expectation = new Expectation(null, "method");
-        boolean result = expectation.matches("method", null);
-        Verify.that(result);
+        Verify.that(expectation.matches("method", null));
     }
 
     public void shouldMatchExpectationWithArguments() {
         Expectation expectation = new Expectation(null, "method").with("hello");
-        boolean result = expectation
-                .matches("method", new Object[] { "hello" });
-        Verify.that(result);
+        Verify.that(expectation.matches("method", new Object[] { "hello" }));
     }
 
     public void shouldMatchAnyArgsWhenNoneSpecified() throws Exception {
         Expectation expectation = new Expectation(null, "method");
-        boolean result = expectation.matches("method", new Object[] { "blah" });
-        Verify.that(result);
+        Verify.that(expectation.matches("method", new Object[] { "blah" }));
     }
 
-    public void shouldNotMatchWhenCallingWithArgsWhenNoArgsSet()
-            throws Exception {
-        Expectation expectation = new Expectation(null, "method")
-                .withNoArguments();
-        boolean result = expectation.matches("method", new Object[] { "blah" });
-        Verify.not(result);
+    public void shouldNotMatchWhenCallingWithArgsWhenNoArgsSet() throws Exception {
+        Expectation expectation = new Expectation(null, "method").withNoArguments();
+        Verify.not(expectation.matches("method", new Object[] { "blah" }));
     }
 
-    public void shouldThrowVerificationExceptionOnSecondInvokeIfExpectingOnce()
-            throws Throwable {
+    public void shouldThrowVerificationExceptionOnSecondInvokeIfExpectingOnce() throws Throwable {
         Expectation expectation = new Expectation(null, "test").once();
         expectation.invoke(null, null, null);
         try {
             expectation.invoke(null, null, null);
             Verify.impossible("Invoke should have throw VerificationException");
-        } catch (VerificationException ex) {
-            // ok;
         }
-
+        catch (VerificationException expected) {
+        }
     }
 
     public void shouldFailVerifyIfExpectingOnceWithoutInvoking() {
@@ -73,21 +62,17 @@ public class ExpectationBehaviour {
         try {
             expectation.verify();
             Verify.impossible("Verify should have throw VerificationException");
-        } catch (VerificationException ex) {
-            // ok
-        }
+        } catch (VerificationException expected) {}
 
     }
 
-    public void shouldVerifyOKIfExpectingOnceAfterInvokingOnce()
-            throws Throwable {
+    public void shouldVerifyOKIfExpectingOnceAfterInvokingOnce() throws Throwable {
         Expectation expectation = new Expectation(null, "test").once();
         expectation.invoke(null, null, null);
         expectation.verify();
     }
 
-    public void shouldVerifyOkWhenNumberOfInvocationsMatchesTimes()
-            throws Throwable {
+    public void shouldVerifyOkWhenNumberOfInvocationsMatchesExpectedNumberOfTimes() throws Throwable {
         Expectation expecation = new Expectation(null, "method").times(3);
         expecation.invoke(null, null, null);
         expecation.invoke(null, null, null);
@@ -96,29 +81,23 @@ public class ExpectationBehaviour {
         expecation.verify();
     }
 
-    public void shouldFailWhenNumberOfInvocationsGreaterThanTimes()
-            throws Throwable {
+    public void shouldFailWhenNumberOfInvocationsGreaterThanExpectedNumberOfTimes() throws Throwable {
         Expectation expecation = new Expectation(null, "method").times(2);
         expecation.invoke(null, null, null);
         expecation.invoke(null, null, null);
         try {
             expecation.invoke(null, null, null);
-            Verify.impossible("Should of failed verification");
-        } catch (VerificationException e) { //ok
-
-        }
+            Verify.impossible("Should have failed verification");
+        } catch (VerificationException expected) {}
     }
 
-    public void shouldNotVerifyWhenNumberOfInvocationsLessThanTimes()
+    public void shouldFailWhenNumberOfInvocationsLessThanExpectedNumberOfTimes()
             throws Throwable {
         Expectation expecation = new Expectation(null, "method").times(2);
         expecation.invoke(null, null, null);
         try {
             expecation.verify();
-            Verify.impossible("Should of failed verification");
-        } catch (VerificationException e) { //ok
-
-        }
+            Verify.impossible("Should have failed verification");
+        } catch (VerificationException expected) {}
     }
-
 }
