@@ -125,4 +125,11 @@ public class TextListener implements ResultListener {
         }
         out.println(count + ") " + shortName + " " + result.name() + " [" + fullName + "]:");
     }
+
+    /**
+     * @return
+     */
+    public boolean hasBehaviourFailures() {
+        return failures.size() + exceptionsThrown.size() > 0;
+    }
 }

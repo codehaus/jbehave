@@ -28,6 +28,9 @@ public class Run {
             verifier.addListener(textListener);
             visitableClass.accept(verifier);
             textListener.printReport();
+            if (textListener.hasBehaviourFailures()) {
+                System.exit(1);
+            }
         } catch (Exception e) {
             System.err.println("Problem verifying behaviour class " + args[0]);
             e.printStackTrace();
