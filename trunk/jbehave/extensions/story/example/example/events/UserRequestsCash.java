@@ -7,11 +7,11 @@
  */
 package example.events;
 
-import com.thoughtworks.jbehave.extensions.story.base.EventBase;
+import com.thoughtworks.jbehave.extensions.story.base.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
-public class UserRequestsCash extends EventBase {
+public class UserRequestsCash extends Event {
     
     public void occurIn(Environment environment) {
     }

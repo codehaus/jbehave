@@ -10,6 +10,7 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 import java.util.Arrays;
 import java.util.List;
 
+import com.thoughtworks.jbehave.extensions.story.base.Expectation;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
@@ -18,25 +19,25 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class SimpleOutcome implements Visitable {
+public class Outcome implements Visitable {
     
-    public static final SimpleOutcome NULL = new SimpleOutcome(new Expectation[0]);
+    public static final Outcome NULL = new Outcome(new Expectation[0]);
     
     private final VisitableArrayList expectations;
 
-    public SimpleOutcome(Expectation[] expectations) {
+    public Outcome(Expectation[] expectations) {
         this.expectations = new VisitableArrayList(Arrays.asList(expectations));
     }
     
-    public SimpleOutcome(Expectation expectation) {
+    public Outcome(Expectation expectation) {
         this(new Expectation[] {expectation});
     }
     
-    public SimpleOutcome(Expectation expectation1, Expectation expectation2) {
+    public Outcome(Expectation expectation1, Expectation expectation2) {
         this(new Expectation[] {expectation1, expectation2});
     }
     
-    public SimpleOutcome(Expectation expectation1, Expectation expectation2, Expectation expectation3) {
+    public Outcome(Expectation expectation1, Expectation expectation2, Expectation expectation3) {
         this(new Expectation[] {expectation1, expectation2, expectation3});
     }
     

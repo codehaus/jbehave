@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.extensions.story.base.Event;
 import com.thoughtworks.jbehave.extensions.story.base.Given;
 import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
@@ -43,7 +44,7 @@ public class GivenScenario extends Given {
     public String getDescription() {
         return scenario.getDescription();
     }
-    public SimpleOutcome getOutcome() {
+    public Outcome getOutcome() {
         return scenario.getOutcome();
     }
     public Story getStory() {

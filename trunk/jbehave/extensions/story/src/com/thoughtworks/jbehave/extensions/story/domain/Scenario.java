@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
+import com.thoughtworks.jbehave.extensions.story.base.Event;
 import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.listener.NULLScenarioListener;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioListener;
@@ -24,16 +25,16 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Scenario implements Visitable {
-    public static final Scenario NULL = new Scenario("", Story.NULL, Context.NULL, Event.NULL, SimpleOutcome.NULL);
+    public static final Scenario NULL = new Scenario("", Story.NULL, Context.NULL, Event.NULL, Outcome.NULL);
     
     protected final Context context;
     protected final Event event;
-    protected final SimpleOutcome outcome;
+    protected final Outcome outcome;
     protected final String name;
     protected final Story story;
     private ScenarioListener listener = new NULLScenarioListener();
     
-    public Scenario(String name, Story story, Context context, Event event, SimpleOutcome outcome) {
+    public Scenario(String name, Story story, Context context, Event event, Outcome outcome) {
         this.name = name;
         this.story = story;
         this.context = context;
@@ -42,7 +43,7 @@ public class Scenario implements Visitable {
     }
     
     /** Scenario with expected outcome in any context */
-    public Scenario(String name, Story story, Event event, SimpleOutcome outcome) {
+    public Scenario(String name, Story story, Event event, Outcome outcome) {
         this(name, story, Context.NULL, event, outcome);
     }
     
@@ -59,7 +60,7 @@ public class Scenario implements Visitable {
     public Event getEvent() {
         return event;
     }
-    public SimpleOutcome getOutcome() {
+    public Outcome getOutcome() {
         return outcome;
     }
     

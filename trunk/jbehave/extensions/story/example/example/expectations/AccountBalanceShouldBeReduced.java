@@ -7,13 +7,13 @@
  */
 package example.expectations;
 
-import com.thoughtworks.jbehave.extensions.story.base.ExpectationBase;
+import com.thoughtworks.jbehave.extensions.story.base.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 
 /** balance = balance - 20 */
-public class AccountBalanceShouldBeReduced extends ExpectationBase {
+public class AccountBalanceShouldBeReduced extends Expectation {
 
     public void setExpectationIn(Environment environment) throws Exception {
     }

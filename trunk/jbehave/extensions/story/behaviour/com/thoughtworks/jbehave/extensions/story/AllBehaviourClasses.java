@@ -8,13 +8,13 @@
 package com.thoughtworks.jbehave.extensions.story;
 
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
-import com.thoughtworks.jbehave.extensions.story.base.EventBaseBehaviour;
-import com.thoughtworks.jbehave.extensions.story.base.ExpectationBaseBehaviour;
+import com.thoughtworks.jbehave.extensions.story.base.EventBehaviour;
+import com.thoughtworks.jbehave.extensions.story.base.ExpectationBehaviour;
 import com.thoughtworks.jbehave.extensions.story.base.GivenBaseBehaviour;
 import com.thoughtworks.jbehave.extensions.story.base.StoryBehaviour;
 import com.thoughtworks.jbehave.extensions.story.codegen.StoryParserBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.SimpleContextBehaviour;
-import com.thoughtworks.jbehave.extensions.story.domain.SimpleOutcomeBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.ContextBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.OutcomeBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.ScenarioBehaviour;
 import com.thoughtworks.jbehave.extensions.story.listener.TextScenarioListenerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.runner.StoryRunnerBehaviour;
@@ -26,13 +26,13 @@ import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehav
 public class AllBehaviourClasses extends Object implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
-                EventBaseBehaviour.class,
-                ExpectationBaseBehaviour.class,
+                EventBehaviour.class,
+                ExpectationBehaviour.class,
                 GivenBaseBehaviour.class,
                 StoryBehaviour.class,
                 StoryParserBehaviour.class,
-                SimpleContextBehaviour.class,
-                SimpleOutcomeBehaviour.class,
+                ContextBehaviour.class,
+                OutcomeBehaviour.class,
                 ScenarioBehaviour.class,
                 TextScenarioListenerBehaviour.class,
                 StoryRunnerBehaviour.class,

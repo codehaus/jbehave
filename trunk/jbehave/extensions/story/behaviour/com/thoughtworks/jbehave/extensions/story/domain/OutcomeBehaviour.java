@@ -9,17 +9,18 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 
 import com.thoughtworks.jbehave.core.verify.Verify;
 import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.extensions.story.base.Expectation;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class SimpleOutcomeBehaviour extends UsingJMock {
+public class OutcomeBehaviour extends UsingJMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // expectation...
-        Visitable outcome = new SimpleOutcome(new Expectation[0]);
+        Visitable outcome = new Outcome(new Expectation[0]);
         Mock visitor = new Mock(Visitor.class);
         visitor.expects(once()).method("visitOutcome").with(same(outcome));
 
@@ -35,7 +36,7 @@ public class SimpleOutcomeBehaviour extends UsingJMock {
         Mock expectation2 = new Mock(Expectation.class, "expectation2");
         Visitor visitor = (Visitor) stub(Visitor.class);
         
-        SimpleOutcome outcome = new SimpleOutcome(
+        Outcome outcome = new Outcome(
                 new Expectation[] {
                         (Expectation) expectation1.proxy(),
                         (Expectation) expectation2.proxy()
@@ -58,7 +59,7 @@ public class SimpleOutcomeBehaviour extends UsingJMock {
         // given...
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Mock expectation = new Mock(Expectation.class);
-        SimpleOutcome outcome = new SimpleOutcome((Expectation)expectation.proxy());
+        Outcome outcome = new Outcome((Expectation)expectation.proxy());
 
         // expect...
         expectation.expects(atLeastOnce()).method("accept").will(throwException(new SomeCheckedException()));

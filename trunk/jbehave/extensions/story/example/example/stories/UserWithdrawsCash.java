@@ -9,7 +9,7 @@ package example.stories;
 
 import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
-import com.thoughtworks.jbehave.extensions.story.domain.SimpleOutcome;
+import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 
 import example.events.UserRequestsCash;
@@ -41,7 +41,7 @@ public class UserWithdrawsCash extends Story {
                     new AccountHasEnoughCash()
                 ),
                 new UserRequestsCash(),
-                new SimpleOutcome(
+                new Outcome(
                     new ATMShouldDispenseCash(),
                     new ATMShouldReturnBankCardToCustomer(),
                     new AccountBalanceShouldBeReduced()
@@ -55,7 +55,7 @@ public class UserWithdrawsCash extends Story {
                     new AccountHasOverdraftPermission()
                 ),
                 new UserRequestsCash(),
-                new SimpleOutcome(
+                new Outcome(
                     new ATMShouldDispenseCash(),
                     new ATMShouldReturnBankCardToCustomer(),
                     new AccountBalanceShouldBeReduced()
@@ -70,7 +70,7 @@ public class UserWithdrawsCash extends Story {
                     new AccountHasNegativeBalanceWithoutPermission()
                 ),
                 new UserRequestsCash(),
-                new SimpleOutcome(
+                new Outcome(
                     new ATMShouldRefuseCash(),
                     new ATMShouldReturnBankCardToCustomer()
                 )
@@ -83,7 +83,7 @@ public class UserWithdrawsCash extends Story {
                     new AccountIsOverOverdraftLimit()
                 ),
                 new UserRequestsCash(),
-                new SimpleOutcome(
+                new Outcome(
                     new ATMShouldRefuseCash(),
                     new ATMShouldRetainBankCard()
                 )

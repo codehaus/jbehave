@@ -7,12 +7,12 @@
  */
 package example.expectations;
 
-import com.thoughtworks.jbehave.extensions.story.base.ExpectationBase;
+import com.thoughtworks.jbehave.extensions.story.base.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
 
-public class ATMShouldRefuseCash extends ExpectationBase {
+public class ATMShouldRefuseCash extends Expectation {
 
     public void setExpectationIn(Environment environment) throws Exception {
     }
