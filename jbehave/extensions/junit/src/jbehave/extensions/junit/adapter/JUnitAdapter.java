@@ -11,7 +11,7 @@ import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
 import jbehave.framework.CriteriaExtractor;
 import jbehave.framework.VerificationException;
-import jbehave.verify.Evaluator;
+import jbehave.verify.VerifierSpec;
 import jbehave.verify.listener.ListenerSupport;
 import junit.framework.Test;
 import junit.framework.TestResult;
@@ -31,7 +31,7 @@ public class JUnitAdapter implements Test {
             this.result = result;
             this.adapter = adapter;
         }
-        public void verificationStarted(Evaluator runner) {
+        public void verificationStarted(VerifierSpec runner) {
         }
         public void specVerificationStarted(Class behaviourClass) {
             setBehaviourClassName(behaviourClass.getName());
@@ -64,7 +64,7 @@ public class JUnitAdapter implements Test {
     }
 
     public int countTestCases() {
-        return new CriteriaExtractor(behaviours).getCriteriaVerifiers().size();
+        return new CriteriaExtractor(behaviours).extractCriteria().size();
     }
 
     private void setBehaviourClassName(String behaviourClassName) {
@@ -72,7 +72,7 @@ public class JUnitAdapter implements Test {
     }
 
     public void run(final TestResult result) {        
-        Evaluator currentRunner = new Evaluator();
+        VerifierSpec currentRunner = new VerifierSpec();
         currentRunner.addBehaviourClass(behaviours);
         
         currentRunner.registerListener(

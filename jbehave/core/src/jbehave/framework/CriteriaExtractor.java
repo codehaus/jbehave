@@ -23,6 +23,9 @@ public class CriteriaExtractor {
     private static final String CRITERIA_PREFIX = "should";
     private final Class spec;
 
+    /**
+     * @param spec the class to examine for criteria.
+     */
     public CriteriaExtractor(Class spec) {
         this.spec = spec;
     }
@@ -44,19 +47,18 @@ public class CriteriaExtractor {
      * It would be much nicer if the methods could be run in the order they
      * were written, since there will usually be a narrative thread to them.
      * 
-     * @param spec the class to examine for criteria.
      * @return an unordered set of {@link CriteriaVerifier}s.
      * @throws BehaviourFrameworkError if there are any problems constructing an Aggregate.
      */
-    public Collection getCriteriaVerifiers() {
+    public Collection extractCriteria() {
         final Collection result = new HashSet();
         
-        result.addAll(collectCriteria());
-        result.addAll(collectSpecsFromAggregate());
+        result.addAll(extractCriteriaFromSpec());
+        result.addAll(extractCriteriaFromAggregatedSpecs());
         return result;
     }
 
-    private Collection collectCriteria() {
+    private Collection extractCriteriaFromSpec() {
         final Collection result = new HashSet();
         Method[] methods = spec.getMethods(); // only interested in public methods
         for (int i = 0; i < methods.length; i++) {
@@ -68,7 +70,7 @@ public class CriteriaExtractor {
         return result;
     }
 
-    private Collection collectSpecsFromAggregate() {
+    private Collection extractCriteriaFromAggregatedSpecs() {
         if (!Aggregate.class.isAssignableFrom(spec)) return Collections.EMPTY_SET;
         
         try {
@@ -76,7 +78,7 @@ public class CriteriaExtractor {
             Aggregate aggregateInstance = (Aggregate)spec.newInstance();
             Class[] specs = aggregateInstance.getSpecs();
             for (int i = 0; i < specs.length; i++) {
-                result.addAll(new CriteriaExtractor(specs[i]).getCriteriaVerifiers());
+                result.addAll(new CriteriaExtractor(specs[i]).extractCriteria());
             }
             return result;
         }

@@ -17,10 +17,10 @@ import jbehave.verify.listener.TraceListener;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TextEvaluator {
+public class TextVerifier {
 
     public static void main(String[] args) {
-        Evaluator runner = new Evaluator();
+        VerifierSpec runner = new VerifierSpec();
         runner.registerListener(new TextListener(new OutputStreamWriter(System.out)));
         runner.registerListener(new TraceListener());
         for (int i = 0; i < args.length; i++) {
