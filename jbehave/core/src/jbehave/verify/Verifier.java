@@ -29,7 +29,7 @@ public class Verifier {
     private final CompositeListener listeners = new CompositeListener();
     private int criteriaCount = 0;
 
-    public void addBehaviourClass(Class spec) {
+    public void addSpec(Class spec) {
         Collection criteriaVerifiers = new CriteriaExtractor(spec).extractCriteria();
         specs.add(spec);
         criteriaMap.put(spec, criteriaVerifiers);
@@ -62,7 +62,7 @@ public class Verifier {
             for (Iterator j = criteria.iterator(); j.hasNext();) {
                 final CriteriaVerifier verifier = (CriteriaVerifier)j.next();
                 listeners.beforeCriteriaVerificationStarts(verifier);
-                CriteriaVerificationResult result = verifier.verify();
+                CriteriaVerificationResult result = verifier.verifyCriteria();
                 listeners.afterCriteriaVerificationEnds(result);
             }
             listeners.specVerificationEnded(spec);

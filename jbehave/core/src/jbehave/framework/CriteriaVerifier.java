@@ -49,7 +49,7 @@ public class CriteriaVerifier {
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
      * in the appropriate places if either of them exist.
      */
-    public CriteriaVerificationResult verify() {
+    public CriteriaVerificationResult verifyCriteria() {
         CriteriaVerificationResult result = null;
         try {
             setUp();

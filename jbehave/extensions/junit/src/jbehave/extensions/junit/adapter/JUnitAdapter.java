@@ -73,7 +73,7 @@ public class JUnitAdapter implements Test {
 
     public void run(final TestResult result) {        
         Verifier currentRunner = new Verifier();
-        currentRunner.addBehaviourClass(behaviours);
+        currentRunner.addSpec(behaviours);
         
         currentRunner.registerListener(
                 new JUnitListener(result, this)

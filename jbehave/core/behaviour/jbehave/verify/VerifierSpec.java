@@ -24,10 +24,10 @@ import jbehave.verify.listener.ListenerSupport;
  */
 public class VerifierSpec {
     private final static List resultList = new ArrayList(); // handy place to store results
-    private Verifier runner;
+    private Verifier verifier;
     
     public void setUp() {
-        runner = new Verifier();
+        verifier = new Verifier();
         resultList.clear();
     }
 
@@ -44,22 +44,22 @@ public class VerifierSpec {
     }
 
     public void shouldAddBehaviourClass() throws Exception {
-        Verify.equal(0, runner.countSpecs());
-        Verify.equal(0, runner.countCriteria());
+        Verify.equal(0, verifier.countSpecs());
+        Verify.equal(0, verifier.countCriteria());
         
-        runner.addBehaviourClass(BehaviourClassWithOneBehaviour.class);
-        Verify.equal(1, runner.countSpecs());
-        Verify.equal(1, runner.countCriteria());
-        Verify.equal(BehaviourClassWithOneBehaviour.class, runner.getSpec(0));
+        verifier.addSpec(BehaviourClassWithOneBehaviour.class);
+        Verify.equal(1, verifier.countSpecs());
+        Verify.equal(1, verifier.countCriteria());
+        Verify.equal(BehaviourClassWithOneBehaviour.class, verifier.getSpec(0));
         
-        runner.addBehaviourClass(BehaviourClassWithTwoBehaviours.class);
-        Verify.equal(2, runner.countSpecs());
-        Verify.equal(3, runner.countCriteria());
-        Verify.equal(BehaviourClassWithTwoBehaviours.class, runner.getSpec(1));
+        verifier.addSpec(BehaviourClassWithTwoBehaviours.class);
+        Verify.equal(2, verifier.countSpecs());
+        Verify.equal(3, verifier.countCriteria());
+        Verify.equal(BehaviourClassWithTwoBehaviours.class, verifier.getSpec(1));
     }
     
     public void shouldCountBehaviours() throws Exception {
-        runner.addBehaviourClass(BehaviourClassWithOneBehaviour.class);
+        verifier.addSpec(BehaviourClassWithOneBehaviour.class);
     }
 
     private static class RunStartedListener extends ListenerSupport {
@@ -77,17 +77,17 @@ public class VerifierSpec {
         }
     }
     
-    public static class BehaviourClassThatSaysHello {
+    public static class SpecThatSaysHello {
         public void shouldSayHello() {
             resultList.add("hello");
         }
     }
     
     public void shouldNotifyListenersInOrderWhenRunStarts() throws Exception {
-        runner.registerListener(new RunStartedListener(runner, "one"));
-        runner.registerListener(new RunStartedListener(runner, "two"));
-        runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.verifyCriteria();
+        verifier.registerListener(new RunStartedListener(verifier, "one"));
+        verifier.registerListener(new RunStartedListener(verifier, "two"));
+        verifier.addSpec(SpecThatSaysHello.class);
+        verifier.verifyCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"one", "two", "hello"}), resultList);
     }
@@ -108,10 +108,10 @@ public class VerifierSpec {
     }
     
     public void shouldNotifyListenersInOrderWhenRunEnds() throws Exception {
-        runner.registerListener(new RunEndedListener(runner, "one"));
-        runner.registerListener(new RunEndedListener(runner, "two"));
-        runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.verifyCriteria();
+        verifier.registerListener(new RunEndedListener(verifier, "one"));
+        verifier.registerListener(new RunEndedListener(verifier, "two"));
+        verifier.addSpec(SpecThatSaysHello.class);
+        verifier.verifyCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"hello", "one", "two"}), resultList);
     }
@@ -129,12 +129,12 @@ public class VerifierSpec {
     }
     
     public void shouldNotifyListenersInOrderWhenBehaviourClassStarts() throws Exception {
-        runner.registerListener(new BehaviourClassStartedListener("one"));
-        runner.registerListener(new BehaviourClassStartedListener("two"));
-        runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.verifyCriteria();
+        verifier.registerListener(new BehaviourClassStartedListener("one"));
+        verifier.registerListener(new BehaviourClassStartedListener("two"));
+        verifier.addSpec(SpecThatSaysHello.class);
+        verifier.verifyCriteria();
         
-        String expectedName = BehaviourClassThatSaysHello.class.getName();
+        String expectedName = SpecThatSaysHello.class.getName();
         String[] expected = {"one:" + expectedName, "two:" + expectedName, "hello"};
         Verify.equal(Arrays.asList(expected), resultList);
     }
@@ -152,12 +152,12 @@ public class VerifierSpec {
     }
     
     public void shouldNotifyListenersInOrderWhenBehaviourClassEnds() throws Exception {
-        runner.registerListener(new BehaviourClassEndedListener("one"));
-        runner.registerListener(new BehaviourClassEndedListener("two"));
-        runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.verifyCriteria();
+        verifier.registerListener(new BehaviourClassEndedListener("one"));
+        verifier.registerListener(new BehaviourClassEndedListener("two"));
+        verifier.addSpec(SpecThatSaysHello.class);
+        verifier.verifyCriteria();
         
-        String expectedName = BehaviourClassThatSaysHello.class.getName();
+        String expectedName = SpecThatSaysHello.class.getName();
         Verify.equal(Arrays.asList(
 		new String[]{
 		    "hello",
@@ -179,10 +179,10 @@ public class VerifierSpec {
     }
     
     public void shouldNotifyListenersInOrderWhenBehaviourStarts() throws Exception {
-        runner.registerListener(new BehaviourStartedListener("one"));
-        runner.registerListener(new BehaviourStartedListener("two"));
-        runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.verifyCriteria();
+        verifier.registerListener(new BehaviourStartedListener("one"));
+        verifier.registerListener(new BehaviourStartedListener("two"));
+        verifier.addSpec(SpecThatSaysHello.class);
+        verifier.verifyCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"one:shouldSayHello", "two:shouldSayHello", "hello"}), resultList);
     }
@@ -200,19 +200,19 @@ public class VerifierSpec {
     }
     
     public void shouldNotifyListenersInOrderWhenBehaviourEnds() throws Exception {
-        runner.registerListener(new BehaviourEndedListener("one"));
-        runner.registerListener(new BehaviourEndedListener("two"));
-        runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.verifyCriteria();
+        verifier.registerListener(new BehaviourEndedListener("one"));
+        verifier.registerListener(new BehaviourEndedListener("two"));
+        verifier.addSpec(SpecThatSaysHello.class);
+        verifier.verifyCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"hello", "one:shouldSayHello", "two:shouldSayHello"}), resultList);
     }
     
     public void shouldNotifyBehaviourListenersForEveryBehaviour() throws Exception {
-        runner.registerListener(new BehaviourStartedListener("started"));
-        runner.registerListener(new BehaviourEndedListener("ended"));
-        runner.addBehaviourClass(BehaviourClassWithTwoBehaviours.class);
-        runner.verifyCriteria();
+        verifier.registerListener(new BehaviourStartedListener("started"));
+        verifier.registerListener(new BehaviourEndedListener("ended"));
+        verifier.addSpec(BehaviourClassWithTwoBehaviours.class);
+        verifier.verifyCriteria();
         
         Verify.equal(4, resultList.size());
         
