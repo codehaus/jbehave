@@ -59,7 +59,9 @@ public class Expectation extends MiniMockSugar {
         // avoid NPEs
         if (args == null) args = new Object[0];
         
-        if (invocations >= maxInvocations)  return false; // no calls left
+        // TODO: Not sure this is valid, i.e, shouldn't this
+        // be done in invoke?
+//        if (invocations >= maxInvocations)  return false; // no calls left
 
         if (!methodName.equals(actualName)) return false;
         
