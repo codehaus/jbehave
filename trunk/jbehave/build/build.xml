@@ -1,21 +1,21 @@
 <project name="jbehave" basedir="." default="dist">
 
     <!-- PROPERTIES -->
-
+    <property name="project" value="${ant.project.name}"/>
     <property name="version" value="0.0.1-SNAPSHOT"/>
 
     <!-- working area stuff -->
     <property name="working.dir" location="delete_me" />
     <property name="working.javadoc.dir" location="${working.dir}/javadoc" />
-    <property name="working.src.jar" location="${working.dir}/jbehave-${version}-src.jar"/>
-    <property name="working.snapshot.name" value="jbehave-snapshot"/>
-    <property name="working.src.dir" location="${working.dir}/${working.snapshot.name}" />
+    <property name="working.src.jar" location="${working.dir}/${project}-src.jar"/>
+    <!-- property name="working.snapshot.name" value="${project}-snapshot"/ -->
+    <!-- property name="working.src.dir" location="${working.dir}/${working.snapshot.name}" /-->
 
     <!-- dist stuff -->
     <property name="dist.dir" location="dist"/>
     <property name="dist.website.dir" location="${dist.dir}/website"/>
     <property name="dist.javadoc.dir" location="${dist.website.dir}/docs/javadoc"/>
-    <property name="dist.src.jar.dir" location="${dist.website.dir}/dist"/>
+    <property name="dist.website.dist.dir" location="${dist.website.dir}/dist"/>
 
     <!-- core -->
     <property name="core.dir" location="../core"/>
@@ -61,42 +61,46 @@
         <mkdir dir="${working.javadoc.dir}"/>
         <javadoc destdir="${working.javadoc.dir}"
                 windowtitle="JBehave API Documentation"
-                useexternalfile="true">
-            <package name="*"/>
+                useexternalfile="true"
+                verbose="true">
 
-			<fileset dir="${extensions.dir}">
-				<include name="*/src/**/*.java"/>
-			</fileset>
+            <classpath>
+                <fileset dir="${extensions.dir}">
+                    <include name="*/lib/*.jar"/>
+                </fileset>
+            </classpath>
 
-			<fileset dir="${core.src.dir}"/>
+            <fileset dir="${extensions.dir}">
+                <include name="*/src/**/*.java"/>
+            </fileset>
+            <fileset dir="${core.src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
 
-			<group title="Core API">
-                <package name="jbehave"/>
-            </group>
-
-			<group title="Optional Extensions">
-                <package name="jbehave.extensions"/>
-            </group>
+            <group title="Core API" packages="jbehave*"/>
+            <group title="Optional Extensions" packages="jbehave.extensions*"/>
         </javadoc>
     </target>
-    
+
     <target name="srcjar">
-            <mkdir dir="${working.src.dir}" />
-            <copy todir="${working.src.dir}">
-                <fileset dir="..">
-                    <exclude name="**/*.class" />
-                    <exclude name="**/dist/*" />
-                    <exclude name="**/delete_me/*"/>
-                    <include name="core/**"/>
-                    <include name="extensions/**"/>
-                    <include name="build/build.xml" />
-                    <include name="website/**"/>
-                </fileset>
-            </copy>
-    
-            <jar destfile="${working.src.jar}" basedir="${working.dir}" includes="${working.snapshot.name}/**" />
-    
-           <delete dir="${working.src.dir}"/>
+        <jar destfile="${working.src.jar}">
+            <zipfileset dir=".." prefix="jbehave-${version}">
+                <exclude name="**/*.class" />
+                <exclude name="**/bin/**" />
+                <exclude name="**/classes/**" />
+                <exclude name="**/dist/**" />
+                <exclude name="**/delete_me/**"/>
+                <exclude name="**/jbehave-core*.jar"/>
+                <exclude name="website/output/**"/>
+
+                <!--
+                <include name="core/**"/>
+                <include name="extensions/**"/>
+                <include name="build/build.xml" />
+                <include name="website/**"/>
+                -->
+            </zipfileset>
+        </jar>
     </target>
 
     <target name="dist" depends="core, extensions, website, javadoc, srcjar">
@@ -106,8 +110,8 @@
         <copy todir="${dist.javadoc.dir}">
             <fileset dir="${working.javadoc.dir}" />
         </copy>
-        <copy todir="${dist.src.jar.dir}" file="${working.src.jar}"/>
-         
+        <copy todir="${dist.website.dist.dir}" file="${working.src.jar}"/>
+
     </target>
 
     <!-- HOUSEKEEPING TARGETS -->
@@ -120,7 +124,7 @@
         <delete dir="${dist.dir}" />
         <subant target="clobber">
             <property name="version" value="${version}"/>
-	    <property name="dist.dir" location="${dist.dir}"/>
+        <property name="dist.dir" location="${dist.dir}"/>
             <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
     </target>
