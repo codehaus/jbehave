@@ -32,6 +32,30 @@ public class MiniMockSugar {
         return eq(new Double(expectedArg));
     }
     
+    public Constraint eq(int expectedArg) {
+        return eq(new Integer(expectedArg));
+    }
+    
+    public Constraint eq(long expectedArg) {
+        return eq(new Long(expectedArg));
+    }
+    
+    public Constraint eq(char expectedArg) {
+        return eq(new Character(expectedArg));
+    }
+    
+    public Constraint eq(short expectedArg) {
+        return eq(new Short(expectedArg));
+    }
+    
+    public Constraint eq(byte expectedArg) {
+        return eq(new Byte(expectedArg));
+    }
+    
+    public Constraint eq(boolean expectedArg) {
+        return eq(expectedArg ? Boolean.TRUE : Boolean.FALSE);
+    }
+    
     // some useful constraints
 
     public Constraint same(final Object expectedArg) {

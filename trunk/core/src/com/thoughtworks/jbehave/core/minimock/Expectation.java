@@ -92,6 +92,30 @@ public class Expectation extends MiniMockSugar {
         return willReturn(new Double(value));
     }
     
+    public Expectation willReturn(int value) {
+        return willReturn(new Integer(value));
+    }
+    
+    public Expectation willReturn(long value) {
+        return willReturn(new Long(value));
+    }
+    
+    public Expectation willReturn(byte value) {
+        return willReturn(new Byte(value));
+    }
+    
+    public Expectation willReturn(char value) {
+        return willReturn(new Character(value));
+    }
+    
+    public Expectation willReturn(short value) {
+        return willReturn(new Short(value));
+    }
+    
+    public Expectation willReturn(boolean value) {
+        return willReturn(value? Boolean.TRUE : Boolean.FALSE);
+    }
+    
     public void willThrow(Throwable cause) {
         invoker = throwException(cause);
     }
