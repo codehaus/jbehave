@@ -36,11 +36,11 @@ public class CriteriaSpec {
         CriteriaVerifier behaviour = getSingleCriterion(BehaviourWithCriterionThatShouldSucceed.class);
         
         // execute
-        Result result = behaviour.verify();
+        CriteriaVerificationResult result = behaviour.verify();
 
         // verify
         Verify.equal("shouldSucceed", result.getName());
-        Verify.equal(Result.SUCCESS, result.getStatus());
+        Verify.equal(CriteriaVerificationResult.SUCCESS, result.getStatus());
         Verify.equal(Arrays.asList(new String[] {"success"}), results);
     }
 
@@ -52,9 +52,9 @@ public class CriteriaSpec {
 
     public void shouldRecogniseWhenBehaviourMethodFails() throws Exception {
         CriteriaVerifier behaviour = getSingleCriterion(BehaviourClassWithFailingBehaviour.class);
-        Result result = behaviour.verify();
+        CriteriaVerificationResult result = behaviour.verify();
         Verify.equal("shouldFail", result.getName());
-        Verify.equal(Result.FAILURE, result.getStatus());
+        Verify.equal(CriteriaVerificationResult.FAILURE, result.getStatus());
         Verify.equal(VerificationException.class, result.getTargetException().getClass());
     }
 
@@ -68,10 +68,10 @@ public class CriteriaSpec {
 
     public void shouldRecogniseWhenBehaviourMethodThrowsCheckedException() throws Exception {
         CriteriaVerifier behaviour = getSingleCriterion(BehaviourClassWithBehaviourThatThrowsCheckedException.class);
-        Result result = behaviour.verify();
+        CriteriaVerificationResult result = behaviour.verify();
         
         Verify.equal("shouldThrowCheckedException", result.getName());
-        Verify.equal(Result.EXCEPTION_THROWN, result.getStatus());
+        Verify.equal(CriteriaVerificationResult.EXCEPTION_THROWN, result.getStatus());
         Verify.equal(SomeCheckedException.class, result.getTargetException().getClass());
     }
 
@@ -85,9 +85,9 @@ public class CriteriaSpec {
 
     public void shouldRecogniseWhenBehaviourMethodThrowsRuntimeException() throws Exception {
         CriteriaVerifier behaviour = getSingleCriterion(BehaviourClassWithBehaviourThatThrowsRuntimeException.class);
-        Result result = behaviour.verify();
+        CriteriaVerificationResult result = behaviour.verify();
         Verify.equal("shouldThrowRuntimeException", result.getName());
-        Verify.equal(Result.EXCEPTION_THROWN, result.getStatus());
+        Verify.equal(CriteriaVerificationResult.EXCEPTION_THROWN, result.getStatus());
         Verify.equal(SomeRuntimeException.class, result.getTargetException().getClass());
     }
 
@@ -101,9 +101,9 @@ public class CriteriaSpec {
 
     public void shouldRecogniseWhenBehaviourMethodThrowsError() throws Exception {
         CriteriaVerifier behaviour = getSingleCriterion(BehaviourClassWithBehaviourThatThrowsError.class);
-        Result result = behaviour.verify();
+        CriteriaVerificationResult result = behaviour.verify();
         Verify.equal("shouldThrowError", result.getName());
-        Verify.equal(Result.EXCEPTION_THROWN, result.getStatus());
+        Verify.equal(CriteriaVerificationResult.EXCEPTION_THROWN, result.getStatus());
         Verify.equal(SomeError.class, result.getTargetException().getClass());
     }
 
@@ -142,7 +142,7 @@ public class CriteriaSpec {
         CriteriaVerifier behaviour = getSingleCriterion(BehaviourClassWithSetUp.class);
         
         // execute
-        Result run = behaviour.verify();
+        CriteriaVerificationResult run = behaviour.verify();
         
         // verify
 		Verify.that(run.succeeded());
@@ -211,7 +211,7 @@ public class CriteriaSpec {
 		// setup
         CriteriaVerifier behaviour = getSingleCriterion(BehaviourClassWithExceptionTearDown.class);
         // execute
-        Result result = behaviour.verify();
+        CriteriaVerificationResult result = behaviour.verify();
         // verify
         Verify.that(result.exceptionThrown());
 	}
@@ -229,7 +229,7 @@ public class CriteriaSpec {
 		// setup
         CriteriaVerifier behaviour = getSingleCriterion(BehaviourClassWithFailingBehaviourAndExceptionTearDown.class);
         // execute
-        Result result = behaviour.verify();
+        CriteriaVerificationResult result = behaviour.verify();
         // verify
         Verify.that("exception was thrown", result.exceptionThrown());
         Verify.equal("exception type", IllegalArgumentException.class, result.getTargetException().getClass());
