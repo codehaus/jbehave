@@ -30,9 +30,10 @@ public class JUnitMethodAdapterBehaviour {
     public void shouldWrapMethodAsTestCase() throws Exception {
         // setup
         Method method = SomeBehaviourClass.class.getMethod("shouldDoSomething", null);
+        Object instance = SomeBehaviourClass.class.newInstance();
 
         // execute
-        TestCase testCase = new JUnitMethodAdapter(method);
+        TestCase testCase = new JUnitMethodAdapter(method, instance);
         
         // verify
         Verify.notNull(testCase);

@@ -13,24 +13,24 @@ package com.thoughtworks.jbehave.core.exception;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class BehaviourFrameworkError extends Error {
+public class JBehaveFrameworkError extends Error {
 
     private Exception nestedException;
 
-    public BehaviourFrameworkError(String message, Exception nestedException) {
+    public JBehaveFrameworkError(String message, Exception nestedException) {
         super(message);
         this.nestedException = nestedException;
     }
 
-    public BehaviourFrameworkError() {
+    public JBehaveFrameworkError() {
         this(null, null);
     }
 
-    public BehaviourFrameworkError(String message) {
+    public JBehaveFrameworkError(String message) {
         this(message, null);
     }
 
-    public BehaviourFrameworkError(Exception nestedException) {
+    public JBehaveFrameworkError(Exception nestedException) {
         this(null, nestedException);
         nestedException.printStackTrace();
     }

@@ -43,9 +43,11 @@ public class ExecutingResponsibilityVerifierBehaviour {
         }
       throw new Error("No suitable method found in " + behaviourClass.getName());
     }
-
-    private ResponsibilityVerifier verifierForFirstResponsibility(Class behaviourClass) throws Exception {
-        return new ExecutingResponsibilityVerifier();
+    
+    private void verifyFirstResponsibility(Listener listener, Class behaviourClass) throws Exception {
+        Method method = firstResponsibility(behaviourClass);
+        Object instance = behaviourClass.newInstance();
+        responsibilityVerifier.verifyResponsibility(listener, method, instance);
     }
 
     public static class BehaviourClassWithLoggingResponsibility {
@@ -56,7 +58,6 @@ public class ExecutingResponsibilityVerifierBehaviour {
     
     public void shouldNotifyListenerBeforeResponsibilityVerificationStarts() throws Exception {
         // setup
-        Method responsibilityMethod = firstResponsibility(BehaviourClassWithLoggingResponsibility.class);
         Listener listener = new ListenerSupport() {
             public void responsibilityVerificationStarting(Method method) {
                 Verify.equal("shouldSucceed", method.getName());
@@ -65,7 +66,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         };
         
         // execute
-        responsibilityVerifier.verifyResponsibility(listener, responsibilityMethod);
+        verifyFirstResponsibility(listener, BehaviourClassWithLoggingResponsibility.class);
         
         // verify
         List expectedSequenceOfEvents = Arrays.asList(
@@ -73,12 +74,12 @@ public class ExecutingResponsibilityVerifierBehaviour {
         );
         Verify.equal(expectedSequenceOfEvents, sequenceOfEvents);
     }
-    
+
     public void shouldNotifyListenerWhenResponsibilityVerificationSucceeds() throws Exception {
         // setup
         RecordingListener listener = new RecordingListener();
         // execute
-        responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithSucceedingResponsibility.class));
+        verifyFirstResponsibility(listener, BehaviourClassWithSucceedingResponsibility.class);
         // verify
         Verify.that(listener.latestResult.succeeded());
     }
@@ -93,7 +94,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // setup
         RecordingListener listener = new RecordingListener();
         // execute
-        responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithFailingResponsibility.class));
+        verifyFirstResponsibility(listener, BehaviourClassWithFailingResponsibility.class);
         // verify
         Verify.that(listener.latestResult.failed());
     }
@@ -110,7 +111,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // setup
         RecordingListener listener = new RecordingListener();
         // execute
-        responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsCheckedException.class));
+        verifyFirstResponsibility(listener, BehaviourClassWithResponsibilityThatThrowsCheckedException.class);
         // verify
         Verify.that(listener.latestResult.threwException());
         Verify.that(listener.latestResult.getTargetException() instanceof SomeCheckedException);
@@ -128,7 +129,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // setup
         RecordingListener listener = new RecordingListener();
         // execute
-        responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsRuntimeException.class));
+        verifyFirstResponsibility(listener, BehaviourClassWithResponsibilityThatThrowsRuntimeException.class);
         // verify
         Verify.that(listener.latestResult.threwException());
         Verify.that(listener.latestResult.getTargetException() instanceof SomeRuntimeException);
@@ -146,7 +147,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
         // setup
         RecordingListener listener = new RecordingListener();
         // execute
-        responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsError.class));
+        verifyFirstResponsibility(listener, BehaviourClassWithResponsibilityThatThrowsError.class);
         // verify
         Verify.that(listener.latestResult.threwException());
         Verify.that(listener.latestResult.getTargetException() instanceof SomeError);
@@ -159,9 +160,8 @@ public class ExecutingResponsibilityVerifierBehaviour {
     }
 
     public void shouldPropagateThreadDeath() throws Exception {
-        ResponsibilityVerifier verifier = verifierForFirstResponsibility(BehaviourClassWithResponsibilityThatThrowsThreadDeath.class);
         try {
-            verifier.verifyResponsibility(Listener.NULL, firstResponsibility(BehaviourClassWithResponsibilityThatThrowsThreadDeath.class));
+            verifyFirstResponsibility(Listener.NULL, BehaviourClassWithResponsibilityThatThrowsThreadDeath.class);
             Verify.impossible("Should have thrown a ThreadDeath");
         }
         catch (ThreadDeath expected) { // you should never, ever do this :)
@@ -181,11 +181,10 @@ public class ExecutingResponsibilityVerifierBehaviour {
 
     public void shouldCallSetUpBeforeVerifyingResponsibility() throws Exception {
         // setup
-        ResponsibilityVerifier verifier = verifierForFirstResponsibility(BehaviourClassWithSetUp.class);
         RecordingListener listener = new RecordingListener();
         
         // execute
-        verifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithSetUp.class));
+        verifyFirstResponsibility(listener, BehaviourClassWithSetUp.class);
         
         // verify
 		Verify.that(listener.latestResult.succeeded());
@@ -203,7 +202,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
     public void shouldCallTearDownAfterResponsibilityVerificationSucceeds() throws Exception {
         // setup
         // execute
-        responsibilityVerifier.verifyResponsibility(Listener.NULL, firstResponsibility(BehaviourClassWithTearDown.class));
+        verifyFirstResponsibility(Listener.NULL, BehaviourClassWithTearDown.class);
         // verify
         Verify.that(sequenceOfEvents.contains("tearDown"));
     }
@@ -217,7 +216,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
     public void shouldCallTearDownAfterResponsibilityVerificationFails() throws Exception {
         // setup
         // execute
-        responsibilityVerifier.verifyResponsibility(Listener.NULL, firstResponsibility(BehaviourClassWithTearDownAndFailingResponsibility.class));
+        verifyFirstResponsibility(Listener.NULL, BehaviourClassWithTearDownAndFailingResponsibility.class);
         // verify
         Verify.that(sequenceOfEvents.contains("tearDown"));
 	}
@@ -231,7 +230,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
     public void shouldCallTearDownAfterResponsibilityVerificationThrowsException() throws Exception {
         // setup
         // execute
-        responsibilityVerifier.verifyResponsibility(Listener.NULL, firstResponsibility(BehaviourClassWithTearDownAndExceptionResponsibility.class));
+        verifyFirstResponsibility(Listener.NULL, BehaviourClassWithTearDownAndExceptionResponsibility.class);
         // verify
         Verify.that(sequenceOfEvents.contains("tearDown"));
 	}
@@ -248,7 +247,7 @@ public class ExecutingResponsibilityVerifierBehaviour {
 		// setup
         RecordingListener listener = new RecordingListener();
         // execute
-        responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithExceptionTearDown.class));
+        verifyFirstResponsibility(listener, BehaviourClassWithExceptionTearDown.class);
         // verify
         Verify.that(listener.latestResult.threwException());
 	}
@@ -266,9 +265,16 @@ public class ExecutingResponsibilityVerifierBehaviour {
 		// setup
         RecordingListener listener = new RecordingListener();
         // execute
-        responsibilityVerifier.verifyResponsibility(listener, firstResponsibility(BehaviourClassWithFailingResponsibilityAndExceptionTearDown.class));
+        verifyFirstResponsibility(listener, BehaviourClassWithFailingResponsibilityAndExceptionTearDown.class);
         // verify
         Verify.that("exception was thrown", listener.latestResult.threwException());
         Verify.equal("exception type", IllegalArgumentException.class, listener.latestResult.getTargetException().getClass());
 	}
+    
+    public void shouldExecuteResponsibiltyMethodInheritedFromAbstractSuperclass() throws Exception {
+        // given...
+        // when...
+        // then...
+        Verify.pending("This works but needs a method to prove it");
+    }
 }

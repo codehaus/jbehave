@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.exception.BehaviourFrameworkError;
+import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 
 /**
@@ -74,7 +74,7 @@ public class TextListener extends ListenerSupport {
             case Result.FAILURE:          return FAILURE;
             case Result.EXCEPTION_THROWN: return EXCEPTION_THROWN;
             case Result.PENDING:          return PENDING;
-            default: throw new BehaviourFrameworkError("Unknown verification status: " + status);
+            default: throw new JBehaveFrameworkError("Unknown verification status: " + status);
         }
     }
     

@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
 import com.thoughtworks.jbehave.core.Listener;
-import com.thoughtworks.jbehave.core.exception.BehaviourFrameworkError;
+import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -34,13 +34,14 @@ public class BehaviourClassVerifier {
             Method methods[] = behaviourClass.getMethods();
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
+                Object instance = behaviourClass.newInstance();
                 if (method.getName().startsWith("should") && method.getParameterTypes().length == 0) {
-                    responsibilityVerifier.verifyResponsibility(listener, method);
+                    responsibilityVerifier.verifyResponsibility(listener, method, instance);
                 }
             }
             listener.behaviourClassVerificationEnding(behaviourClass);
         } catch (Exception e) {
-            throw new BehaviourFrameworkError("Problem verifying behaviour class", e);
+            throw new JBehaveFrameworkError("Problem verifying behaviour class", e);
         }
     }
     

@@ -10,7 +10,7 @@ package com.thoughtworks.jbehave.core.responsibility;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.exception.BehaviourFrameworkError;
+import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.util.CaseConverter;
 
@@ -29,7 +29,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
      */
     protected Result doVerifyResponsibility(Method method, Object instance) {
         Result result = null;
-        String behaviourClassName = null;
+        String behaviourClassName = instance.getClass().getName();
         try {
             setUp(instance);
             method.invoke(instance, new Object[0]);
@@ -38,7 +38,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
             // method failed
             result = createResult(behaviourClassName, method.getName(), e.getTargetException());
         } catch (Exception e) {
-            throw new BehaviourFrameworkError(
+            throw new JBehaveFrameworkError(
                     "Problem invoking " + method.getDeclaringClass().getName() + "#" + method.getName(), e);
         }
         finally {
@@ -51,7 +51,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
                 }
             } catch (Exception e) {
                 // anything else is bad news
-                throw new BehaviourFrameworkError(e);
+                throw new JBehaveFrameworkError(e);
             }
         }
         return result;
@@ -68,7 +68,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
             throw e;
         } catch (Exception e) {
             // anything else is bad news
-            throw new BehaviourFrameworkError(e);
+            throw new JBehaveFrameworkError(e);
         }
     }
 
@@ -83,7 +83,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
             throw e;
         } catch (Exception e) {
             // anything else is bad news
-            throw new BehaviourFrameworkError(e);
+            throw new JBehaveFrameworkError(e);
         }
     }
 

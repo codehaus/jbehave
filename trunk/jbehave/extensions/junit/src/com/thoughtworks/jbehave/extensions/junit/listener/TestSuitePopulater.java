@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestSuite;
 
+import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.listeners.ListenerSupport;
 import com.thoughtworks.jbehave.extensions.junit.JUnitMethodAdapter;
 
@@ -20,6 +21,7 @@ import com.thoughtworks.jbehave.extensions.junit.JUnitMethodAdapter;
 public class TestSuitePopulater extends ListenerSupport {
     private final TestSuite[] suiteRef;
     private TestSuite currentSuite = null;
+    private Class currentBehaviourClass;
 
     public TestSuitePopulater(TestSuite[] suiteRef) {
         this.suiteRef = suiteRef;
@@ -33,9 +35,18 @@ public class TestSuitePopulater extends ListenerSupport {
         else {
             suiteRef[0].addTest(currentSuite);
         }
+        currentBehaviourClass = behaviourClass;
     }
     
     public void responsibilityVerificationStarting(Method responsibilityMethod) {
-        currentSuite.addTest(new JUnitMethodAdapter(responsibilityMethod));
+        try {
+            Object instance = currentBehaviourClass.newInstance();
+            currentSuite.addTest(new JUnitMethodAdapter(responsibilityMethod,
+                    instance));
+        } catch (Exception e) {
+            String message = "Problem adding test for "
+                + currentBehaviourClass.getName() + "." + responsibilityMethod.getName();
+            throw new JBehaveFrameworkError(message, e);
+        }
     }
 }

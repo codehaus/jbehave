@@ -14,7 +14,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import com.thoughtworks.jbehave.core.Listener;
-import com.thoughtworks.jbehave.core.exception.BehaviourFrameworkError;
+import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifier;
 import com.thoughtworks.jbehave.core.responsibility.NotifyingResponsibilityVerifier;
 import com.thoughtworks.jbehave.extensions.junit.listener.TestSuitePopulater;
@@ -65,7 +65,7 @@ public class JUnitAdapter {
             System.out.println("Verifying " + behaviourClassName);
             return behaviourClassForName(behaviourClassName);
         } catch (Exception e) {
-            throw new BehaviourFrameworkError("No behaviour class found for " + behaviourClassName);
+            throw new JBehaveFrameworkError("No behaviour class found for " + behaviourClassName);
         }
     }
 

@@ -23,10 +23,12 @@ import com.thoughtworks.jbehave.util.CaseConverter;
 
 public class JUnitMethodAdapter extends TestCase {
     private final Method method;
+    private final Object instance;
 
-    public JUnitMethodAdapter(Method method) {
+    public JUnitMethodAdapter(Method method, Object instance) {
         super(new CaseConverter().toSeparateWords(method.getName()));
         this.method = method;
+        this.instance = instance;
     }
 
     public int countTestCases() {
@@ -41,7 +43,7 @@ public class JUnitMethodAdapter extends TestCase {
 
     private void verifyResponsibility(TestResult testResult) {
         final Result result =
-            new ExecutingResponsibilityVerifier().verifyResponsibility(Listener.NULL, method);
+            new ExecutingResponsibilityVerifier().verifyResponsibility(Listener.NULL, method, instance);
         if (result.failed()) {
             testResult.addFailure(this, buildAssertionFailedError(result.getTargetException()));
         }
