@@ -8,7 +8,16 @@ import jbehave.framework.exception.VerificationException;
  *         Date: 17-Jul-2004
  */
 public interface Mocker {
-	Mock mock(Class mockedType);
+    /** Null Object for Mocker */
+	Mocker NULL = new Mocker() {
+        public Mock mock(Class mockedType) {
+            return null;
+        }
+        public void verifyMocks() throws VerificationException {
+        }
+    };
+
+    Mock mock(Class mockedType);
 
 	void verifyMocks() throws VerificationException;
 }

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.framework.CriteriaVerification;
-import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.ResponsibilityVerification;
+import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.Listener;
 
 /**
@@ -35,27 +35,27 @@ public class CompositeListener implements Listener {
     
     // Listener methods
     
-    public void specVerificationStarting(Class spec) {
+    public void behaviourClassVerificationStarting(Class behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).specVerificationStarting(spec);
+            ((Listener)i.next()).behaviourClassVerificationStarting(behaviourClass);
         }
     }
 
-    public void specVerificationEnding(Class spec) {
+    public void behaviourClassVerificationEnding(Class behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).specVerificationEnding(spec);
+            ((Listener)i.next()).behaviourClassVerificationEnding(behaviourClass);
         }
     }
 
-    public void criteriaVerificationStarting(CriteriaVerifier verifier, Object spec) {
+    public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).criteriaVerificationStarting(verifier, spec);
+            ((Listener)i.next()).responsibilityVerificationStarting(verifier, behaviourClass);
         }
     }
 
-    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
+    public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
 		for (Iterator i = listeners.iterator(); i.hasNext();) {
-           verification = ((Listener)i.next()).criteriaVerificationEnding(verification, specInstance);
+           verification = ((Listener)i.next()).responsibilityVerificationEnding(verification, behaviourClassInstance);
         }
 		return verification;
     }

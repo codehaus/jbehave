@@ -13,20 +13,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.framework.CriteriaVerification;
+import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.exception.BehaviourFrameworkError;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextListener extends NullListener {
+public class TextListener extends ListenerSupport {
 
     private final PrintWriter out;
-    private int criteriaVerified = 0;
+    private int responsibilitiesVerified = 0;
     private final List failures = new ArrayList();
     private final List exceptionsThrown = new ArrayList();
     private final Timer timer;
-    private Class outermostSpec = null;
+    private Class outermostBehaviourClass = null;
 
     public TextListener(Writer writer, Timer timer) {
         out = new PrintWriter(writer);
@@ -37,9 +37,9 @@ public class TextListener extends NullListener {
         this(writer, new Timer());
     }
     
-    public void specVerificationStarting(Class spec) {
-        if (outermostSpec == null) {
-            outermostSpec = spec;
+    public void behaviourClassVerificationStarting(Class behaviourClass) {
+        if (outermostBehaviourClass == null) {
+            outermostBehaviourClass = behaviourClass;
             timer.start();
         }
     }
@@ -47,8 +47,8 @@ public class TextListener extends NullListener {
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public CriteriaVerification criteriaVerificationEnding(CriteriaVerification verification, Object specInstance) {
-        criteriaVerified++;
+    public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification verification, Object behaviourClassInstance) {
+        responsibilitiesVerified++;
         if (verification.failed()) {
             failures.add(verification);
         }
@@ -62,15 +62,15 @@ public class TextListener extends NullListener {
 
     private char getSymbol(int status) {
         switch (status) {
-            case CriteriaVerification.SUCCESS:          return '.';
-            case CriteriaVerification.FAILURE:          return 'F';
-            case CriteriaVerification.EXCEPTION_THROWN: return 'E';
+            case ResponsibilityVerification.SUCCESS:          return '.';
+            case ResponsibilityVerification.FAILURE:          return 'F';
+            case ResponsibilityVerification.EXCEPTION_THROWN: return 'E';
             default: throw new BehaviourFrameworkError("Unknown verification status: " + status);
         }
     }
     
-    public void specVerificationEnding(Class spec) {
-        if (spec.equals(outermostSpec)) {
+    public void behaviourClassVerificationEnding(Class behaviourClass) {
+        if (behaviourClass.equals(outermostBehaviourClass)) {
             timer.stop();
             out.println();
             printElapsedTime();
@@ -86,7 +86,7 @@ public class TextListener extends NullListener {
     }
 
     private void printSummaryCounts() {
-        out.print("Criteria: " + criteriaVerified + ".");
+        out.print("Responsibilities: " + responsibilitiesVerified + ".");
         if (failures.size() + exceptionsThrown.size() > 0) {
             out.print(" Failures: " + failures.size() + ", Exceptions: " + exceptionsThrown.size() + ".");
         }
@@ -107,8 +107,8 @@ public class TextListener extends NullListener {
         out.println();
         int count = 1;
         for (Iterator i = errorList.iterator(); i.hasNext();) {
-            CriteriaVerification verification = (CriteriaVerification)i.next();
-            out.println(count + ") " + verification.getName() + " [" + verification.getSpecName() + "]:");
+            ResponsibilityVerification verification = (ResponsibilityVerification)i.next();
+            out.println(count + ") " + verification.getName() + " [" + verification.getBehaviourClassName() + "]:");
             verification.getTargetException().printStackTrace(out);
             out.println();
         }

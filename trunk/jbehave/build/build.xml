@@ -1,0 +1,84 @@
+<project name="jbehave" basedir="." default="dist">
+
+    <!-- PROPERTIES -->
+
+    <property name="version" value="0.0.1-SNAPSHOT"/>
+
+    <!-- working area stuff -->
+    <property name="working.dir" location="delete_me" />
+    <property name="working.javadoc.dir" location="${working.dir}/javadoc" />
+
+    <!-- dist stuff -->
+    <property name="dist.dir" location="dist"/>
+    <property name="dist.website.dir" location="${dist.dir}/website"/>
+    <property name="dist.javadoc.dir" location="${deploy.website.dir}/docs/javadoc"/>
+
+    <!-- core -->
+    <property name="core.dir" location="../core"/>
+    <property name="core.build.dir" location="${core.dir}/build"/>
+    <property name="core.src.dir" location="${core.dir}/src"/>
+
+    <!-- extensions -->
+    <property name="extensions.dir" location="../extensions"/>
+
+    <!-- website -->
+    <property name="website.dir" location="../website"/>
+
+    <target name="-init">
+        <fail message="Version not defined" unless="version"/>
+    </target>
+
+    <!-- BUILD AND ASSEMBLY TARGETS -->
+
+    <target name="core" depends="-init">
+        <ant dir="${core.build.dir}" target="dist">
+            <property name="version" value="${version}"/>
+            <property name="dist.dir" location="${dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="extensions" depends="core">
+        <subant target="dist">
+            <property name="version" value="${version}"/>
+            <property name="dist.dir" location="${dist.dir}"/>
+            <dirset dir="${extensions.dir}" includes="*/build"/>
+        </subant>
+    </target>
+
+    <!-- WEBSITE TARGETS -->
+
+    <target name="website">
+        <exec executable="ruby" dir="${website.dir}">
+            <arg value="skinner.rb"/>
+        </exec>
+    </target>
+
+    <target name="javadoc">
+        <mkdir dir="${working.javadoc.dir}"/>
+        <javadoc destdir="${working.javadoc.dir}"
+                windowtitle="JBehave API Documentation"
+                useexternalfile="true">
+            <packageset dir="${core.src.dir}"/>
+            <sourcepath path="${core.src.dir}"/>
+        </javadoc>
+    </target>
+
+    <target name="dist" depends="core, extensions, website, javadoc">
+        <copy todir="${dist.website.dir}">
+            <fileset dir="${website.dir}/output" />
+        </copy>
+        <copy todir="${dist.javadoc.dir}">
+            <fileset dir="${working.javadoc.dir}" />
+        </copy>
+    </target>
+
+    <!-- HOUSEKEEPING TARGETS -->
+
+    <target name="clean" >
+        <delete dir="${working.dir}" />
+    </target>
+
+    <target name="clobber" depends="clean">
+        <delete dir="${dist.dir}" />
+    </target>
+</project>
