@@ -17,10 +17,10 @@ import jbehave.runner.listener.TraceListener;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TextRunner {
+public class TextEvaluator {
 
     public static void main(String[] args) {
-        SpecificationRunner runner = new SpecificationRunner();
+        Evaluator runner = new Evaluator();
         runner.registerListener(new TextListener(new OutputStreamWriter(System.out)));
         runner.registerListener(new TraceListener());
         for (int i = 0; i < args.length; i++) {
@@ -31,6 +31,6 @@ public class TextRunner {
                 System.err.println("Unknown class: " + args[i]);
             }
         }
-        runner.runBehaviours();
+        runner.evaluateCriteria();
     }
 }

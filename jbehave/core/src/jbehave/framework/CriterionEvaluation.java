@@ -11,7 +11,7 @@ package jbehave.framework;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class Evaluation {
+public class CriterionEvaluation {
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
     public static final int EXCEPTION_THROWN = 2;
@@ -22,7 +22,7 @@ public class Evaluation {
     private final Object evaluatedInstance;
     private final Throwable targetException;
 
-    public Evaluation(String name, String className, Object evaluatedInstance, Throwable targetException) {
+    public CriterionEvaluation(String name, String className, Object evaluatedInstance, Throwable targetException) {
         this.name = name;
         this.className = className;
 		this.evaluatedInstance = evaluatedInstance;
@@ -41,7 +41,7 @@ public class Evaluation {
     /**
      * Convenience constructor for successful behaviours
      */
-    public Evaluation(String name, String className, Object executedInstance) {
+    public CriterionEvaluation(String name, String className, Object executedInstance) {
         this(name, className, executedInstance, null);
     }
 

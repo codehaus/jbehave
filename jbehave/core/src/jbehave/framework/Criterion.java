@@ -49,8 +49,8 @@ public class Criterion {
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
      * in the appropriate places if either of them exist.
      */
-    public Evaluation evaluate() {
-        Evaluation result = null;
+    public CriterionEvaluation evaluate() {
+        CriterionEvaluation result = null;
         try {
             setUp();
             method.invoke(behaviourInstance, new Object[0]);
@@ -106,7 +106,7 @@ public class Criterion {
     }
 
     /**
-     * Build an {@link Evaluation} based on an error condition.
+     * Build an {@link CriterionEvaluation} based on an error condition.
      * 
      * This will be one of the following cases:
      * <ul>
@@ -117,14 +117,14 @@ public class Criterion {
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
      */
-    private Evaluation getEvaluation(Throwable targetException) {
+    private CriterionEvaluation getEvaluation(Throwable targetException) {
         
         // propagate thread death otherwise Bad Things happen (or rather Good Things don't)
         if (targetException instanceof ThreadDeath) {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new Evaluation(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
+            return new CriterionEvaluation(method.getName(), method.getDeclaringClass().getName(), behaviourInstance, targetException);
         }
     }
 }

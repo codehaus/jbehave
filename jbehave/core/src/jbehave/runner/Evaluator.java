@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import jbehave.framework.Criterion;
-import jbehave.framework.Evaluation;
+import jbehave.framework.CriterionEvaluation;
 import jbehave.framework.CriteriaSupport;
 import jbehave.runner.listener.CompositeListener;
 import jbehave.runner.listener.Listener;
@@ -23,7 +23,7 @@ import jbehave.runner.listener.Listener;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class SpecificationRunner {
+public class Evaluator {
     private final List behaviourClasses = new ArrayList();
     private final Map behaviourMap = new HashMap();
     private final CompositeListener listeners = new CompositeListener();
@@ -52,17 +52,17 @@ public class SpecificationRunner {
         listeners.add(listener);
     }
 
-    public void runBehaviours() {
+    public void evaluateCriteria() {
         listeners.runStarted(this);
         for (Iterator i = behaviourClasses.iterator(); i.hasNext();) {
             final Class behaviourClass = (Class)i.next();
             listeners.behaviourEvaluationStarted(behaviourClass);
             
-            final Collection behaviours = (Collection)behaviourMap.get(behaviourClass);
-            for (Iterator j = behaviours.iterator(); j.hasNext();) {
+            final Collection criteria = (Collection)behaviourMap.get(behaviourClass);
+            for (Iterator j = criteria.iterator(); j.hasNext();) {
                 final Criterion behaviour = (Criterion)j.next();
                 listeners.beforeCriterionEvaluationStarts(behaviour);
-                Evaluation behaviourResult = behaviour.evaluate();
+                CriterionEvaluation behaviourResult = behaviour.evaluate();
                 listeners.afterCriterionEvaluationEnds(behaviourResult);
             }
             listeners.behaviourEvaluationEnded(behaviourClass);

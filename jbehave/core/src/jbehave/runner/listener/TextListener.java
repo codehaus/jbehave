@@ -14,8 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.BehaviourFrameworkError;
-import jbehave.framework.Evaluation;
-import jbehave.runner.SpecificationRunner;
+import jbehave.framework.CriterionEvaluation;
+import jbehave.runner.Evaluator;
 
 
 /**
@@ -38,14 +38,14 @@ public class TextListener extends ListenerSupport {
         this(writer, new Timer());
     }
     
-    public void runStarted(SpecificationRunner runner) {
+    public void runStarted(Evaluator runner) {
         timer.start();
     }
 
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
+    public void afterCriterionEvaluationEnds(CriterionEvaluation behaviourResult) {
         behavioursRun++;
         if (behaviourResult.failed()) {
             failures.add(behaviourResult);
@@ -59,14 +59,14 @@ public class TextListener extends ListenerSupport {
 
     private char getSymbol(int status) {
         switch (status) {
-            case Evaluation.SUCCESS:          return '.';
-            case Evaluation.FAILURE: return 'F';
-            case Evaluation.EXCEPTION_THROWN: return 'E';
+            case CriterionEvaluation.SUCCESS:          return '.';
+            case CriterionEvaluation.FAILURE: return 'F';
+            case CriterionEvaluation.EXCEPTION_THROWN: return 'E';
             default: throw new BehaviourFrameworkError("Unknown behaviour status: " + status);
         }
     }
      
-    public void runEnded(SpecificationRunner runner) {
+    public void runEnded(Evaluator runner) {
         timer.stop();
         out.println();
         printElapsedTime();
@@ -102,7 +102,7 @@ public class TextListener extends ListenerSupport {
         out.println();
         int count = 1;
         for (Iterator i = errorList.iterator(); i.hasNext();) {
-            Evaluation result = (Evaluation)i.next();
+            CriterionEvaluation result = (CriterionEvaluation)i.next();
             out.println(count + ") " + result.getName() + " [" + result.getClassName() + "]:");
             result.getTargetException().printStackTrace(out);
             out.println();
