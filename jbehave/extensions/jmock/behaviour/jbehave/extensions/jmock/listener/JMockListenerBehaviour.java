@@ -21,7 +21,7 @@ import org.jmock.Mock;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class JMockListenerBehaviour {
-    public static class BehaviourClassWithMocks {
+    public static class BehaviourClassWithPrivateMock {
         public boolean verifyWasCalled = false;
         
         private Mock someMock = new Mock(List.class) {
@@ -42,14 +42,14 @@ public class JMockListenerBehaviour {
 	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
         // setup
         Listener listener = new JMockListener();
-        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithMocks.class);
+        Behaviour behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
         BehaviourResult behaviourResult = behaviour.run();
         
         // execute
         listener.behaviourEnded(behaviourResult);
         
         // verify
-        BehaviourClassWithMocks instance = (BehaviourClassWithMocks)behaviourResult.getExecutedInstance();
+        BehaviourClassWithPrivateMock instance = (BehaviourClassWithPrivateMock)behaviourResult.getExecutedInstance();
         Verify.that(instance.verifyWasCalled);
 	}
 }

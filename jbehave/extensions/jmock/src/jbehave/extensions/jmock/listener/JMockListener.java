@@ -23,17 +23,20 @@ public class JMockListener extends ListenerSupport {
     private static final Log log = LogFactory.getLog(JMockListener.class);
 
 	public void behaviourEnded(BehaviourResult behaviourResult) {
-        System.err.println("behaviourEnded");
+        log.trace("behaviourEnded");
         Object executedInstance = behaviourResult.getExecutedInstance();
         
         // iterate looking for fields of type Mock
-        Field[] fields = executedInstance.getClass().getFields();
+        Field[] fields = executedInstance.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
+            log.trace("Field = " + field + ", " + " type = " + field.getType(), null);
             if (Mock.class.equals(field.getType())) {
                 try {
-                    System.err.println("Testing field " + field);
                     log.trace("Testing field " + field);
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                    }
 					Mock mock = (Mock) field.get(executedInstance);
                     mock.verify();
 				} catch (IllegalArgumentException ignored) {
