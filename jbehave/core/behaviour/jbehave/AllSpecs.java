@@ -11,7 +11,7 @@ import jbehave.evaluate.listener.TextListenerSpec;
 import jbehave.evaluate.listener.TimerSpec;
 import jbehave.framework.Aggregate;
 import jbehave.framework.CriteriaSpec;
-import jbehave.framework.CriteriaValidationResultSpec;
+import jbehave.framework.ResultSpec;
 import jbehave.framework.CriteriaSupportSpec;
 
 /**
@@ -21,7 +21,7 @@ public class AllSpecs implements Aggregate {
     public Class[] getSpecs() {
         return new Class[] {
             CriteriaSpec.class,
-            CriteriaValidationResultSpec.class,
+            ResultSpec.class,
             CriteriaSupportSpec.class,
             EvaluatorSpec.class,
             TextListenerSpec.class,
