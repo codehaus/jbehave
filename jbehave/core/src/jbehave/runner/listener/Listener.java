@@ -7,8 +7,8 @@
  */
 package jbehave.runner.listener;
 
-import jbehave.framework.Behaviour;
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Criterion;
+import jbehave.framework.Evaluation;
 import jbehave.runner.BehaviourRunner;
 
 
@@ -28,8 +28,8 @@ import jbehave.runner.BehaviourRunner;
 public interface Listener {
     void runStarted(BehaviourRunner runner);
     void runEnded(BehaviourRunner runner);
-    void behaviourClassStarted(Class behaviourClass);
-    void behaviourClassEnded(Class behaviourClass);
-    void behaviourStarted(Behaviour behaviour);
-    void behaviourEnded(BehaviourResult behaviourResult);
+    void behaviourEvaluationStarted(Class behaviourClass);
+    void behaviourEvaluationEnded(Class behaviourClass);
+    void beforeCriterionEvaluationStarts(Criterion behaviour);
+    void afterCriterionEvaluationEnds(Evaluation behaviourResult);
 }

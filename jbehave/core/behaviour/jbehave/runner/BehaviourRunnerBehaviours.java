@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import jbehave.framework.Verify;
-import jbehave.framework.Behaviour;
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Criterion;
+import jbehave.framework.Evaluation;
 import jbehave.framework.BehavioursSupport;
 import jbehave.runner.listener.ListenerSupport;
 
@@ -123,7 +123,7 @@ public class BehaviourRunnerBehaviours {
             this.message = message;
         }
         
-        public void behaviourClassStarted(Class behaviourClass) {
+        public void behaviourEvaluationStarted(Class behaviourClass) {
             results.add(message + ":" + behaviourClass.getName());
         }
     }
@@ -146,7 +146,7 @@ public class BehaviourRunnerBehaviours {
             this.message = message;
         }
         
-        public void behaviourClassEnded(Class behaviourClass) {
+        public void behaviourEvaluationEnded(Class behaviourClass) {
             results.add(message + ":" + behaviourClass.getName());
         }
     }
@@ -173,7 +173,7 @@ public class BehaviourRunnerBehaviours {
             this.message = message;
         }
         
-        public void behaviourStarted(Behaviour behaviour) {
+        public void beforeCriterionEvaluationStarts(Criterion behaviour) {
             results.add(message + ":" + behaviour.getName());
         }
     }
@@ -194,7 +194,7 @@ public class BehaviourRunnerBehaviours {
             this.message = message;
         }
         
-        public void behaviourEnded(BehaviourResult behaviourResult) {
+        public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
             results.add(message + ":" + behaviourResult.getName());
         }
     }

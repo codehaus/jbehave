@@ -14,8 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import jbehave.framework.Behaviour;
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Criterion;
+import jbehave.framework.Evaluation;
 import jbehave.framework.BehavioursSupport;
 import jbehave.runner.listener.CompositeListener;
 import jbehave.runner.listener.Listener;
@@ -30,7 +30,7 @@ public class BehaviourRunner {
     private int behaviourCount = 0;
 
     public void addBehaviourClass(Class behaviourClass) {
-        Collection behaviours = BehavioursSupport.getBehaviours(behaviourClass);
+        Collection behaviours = BehavioursSupport.getCriteria(behaviourClass);
         behaviourClasses.add(behaviourClass);
         behaviourMap.put(behaviourClass, behaviours);
         behaviourCount += behaviours.size();
@@ -56,16 +56,16 @@ public class BehaviourRunner {
         listeners.runStarted(this);
         for (Iterator i = behaviourClasses.iterator(); i.hasNext();) {
             final Class behaviourClass = (Class)i.next();
-            listeners.behaviourClassStarted(behaviourClass);
+            listeners.behaviourEvaluationStarted(behaviourClass);
             
             final Collection behaviours = (Collection)behaviourMap.get(behaviourClass);
             for (Iterator j = behaviours.iterator(); j.hasNext();) {
-                final Behaviour behaviour = (Behaviour)j.next();
-                listeners.behaviourStarted(behaviour);
-                BehaviourResult behaviourResult = behaviour.run();
-                listeners.behaviourEnded(behaviourResult);
+                final Criterion behaviour = (Criterion)j.next();
+                listeners.beforeCriterionEvaluationStarts(behaviour);
+                Evaluation behaviourResult = behaviour.evaluate();
+                listeners.afterCriterionEvaluationEnds(behaviourResult);
             }
-            listeners.behaviourClassEnded(behaviourClass);
+            listeners.behaviourEvaluationEnded(behaviourClass);
         }
         listeners.runEnded(this);
     }
