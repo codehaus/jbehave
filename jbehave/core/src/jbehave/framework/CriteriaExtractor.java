@@ -19,41 +19,46 @@ import jbehave.BehaviourFrameworkError;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public abstract class CriteriaExtractor {
+public class CriteriaExtractor {
     private static final String CRITERIA_PREFIX = "should";
+    private final Class spec;
+
+    public CriteriaExtractor(Class spec) {
+        this.spec = spec;
+    }
 
     /**
      * Find all criteria in a class and wrap each one in a
      * {@link CriteriaVerifier}
      * 
-     * There is no particular constraint on the class. The criteria
+     * There is no particular constraint on the spec class. The criteria
      * are public void methods that take no parameters and start
      * with <tt>"<i>should</i>"</tt>.<br>
      * <br>
      * If the class implements the {@link Aggregate} interface, it is
-     * recursively examined for any nested behaviour classes.<br>
+     * recursively examined for any nested specs.<br>
      * <br>
      * Annoyingly, {@link Class#getMethods()} returns the methods in an
-     * indeterminate order so we return an unordered <tt>Collection</tt>.<br>
+     * indeterminate order so we return an unordered {@link Collection}.<br>
      * <br>
      * It would be much nicer if the methods could be run in the order they
      * were written, since there will usually be a narrative thread to them.
      * 
-     * @param behaviour the class to examine for criteria.
-     * @return an unordered set of <tt>Criterion</tt>.
+     * @param spec the class to examine for criteria.
+     * @return an unordered set of {@link CriteriaVerifier}s.
      * @throws BehaviourFrameworkError if there are any problems constructing an Aggregate.
      */
-    public static Collection getCriteria(Class behaviour) {
+    public Collection getCriteriaVerifiers() {
         final Collection result = new HashSet();
         
-        result.addAll(collectBehaviours(behaviour));
-        result.addAll(collectBehavioursFromAggregate(behaviour));
+        result.addAll(collectCriteria());
+        result.addAll(collectSpecsFromAggregate());
         return result;
     }
 
-    private static Collection collectBehaviours(Class behaviourClass) {
+    private Collection collectCriteria() {
         final Collection result = new HashSet();
-        Method[] methods = behaviourClass.getMethods(); // only interested in public methods
+        Method[] methods = spec.getMethods(); // only interested in public methods
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
             if (method.getName().startsWith(CRITERIA_PREFIX) && method.getParameterTypes().length == 0) {
@@ -63,21 +68,21 @@ public abstract class CriteriaExtractor {
         return result;
     }
 
-    private static Collection collectBehavioursFromAggregate(Class behaviourClass) {
-        if (!Aggregate.class.isAssignableFrom(behaviourClass)) return Collections.EMPTY_SET;
+    private Collection collectSpecsFromAggregate() {
+        if (!Aggregate.class.isAssignableFrom(spec)) return Collections.EMPTY_SET;
         
         try {
             final Collection result = new HashSet();
-            Aggregate aggregate = (Aggregate)behaviourClass.newInstance();
-            Class[] behaviourClasses = aggregate.getSpecs();
-            for (int i = 0; i < behaviourClasses.length; i++) {
-                result.addAll(getCriteria(behaviourClasses[i]));
+            Aggregate aggregateInstance = (Aggregate)spec.newInstance();
+            Class[] specs = aggregateInstance.getSpecs();
+            for (int i = 0; i < specs.length; i++) {
+                result.addAll(new CriteriaExtractor(specs[i]).getCriteriaVerifiers());
             }
             return result;
         }
         catch (Exception e) {
             // Something bad happened constructing the Aggregate instance
-            throw new BehaviourFrameworkError("Problem getting behaviours from Aggregate " + behaviourClass.getName(), e);
+            throw new BehaviourFrameworkError("Problem getting specs from Aggregate " + spec.getName(), e);
         }
     }
 }

@@ -35,39 +35,39 @@ public class CompositeListener implements Listener {
     
     // Listener methods
     
-    public void runStarted(Evaluator runner) {
+    public void verificationStarted(Evaluator runner) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).runStarted(runner);
+            ((Listener)i.next()).verificationStarted(runner);
         }
     }
 
-    public void runEnded(Evaluator runner) {
+    public void verificationEnded(Evaluator runner) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).runEnded(runner);
+            ((Listener)i.next()).verificationEnded(runner);
         }
     }
 
-    public void behaviourEvaluationStarted(Class behaviourClass) {
+    public void specVerificationStarted(Class behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).behaviourEvaluationStarted(behaviourClass);
+            ((Listener)i.next()).specVerificationStarted(behaviourClass);
         }
     }
 
-    public void behaviourEvaluationEnded(Class behaviourClass) {
+    public void specVerificationEnded(Class behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).behaviourEvaluationEnded(behaviourClass);
+            ((Listener)i.next()).specVerificationEnded(behaviourClass);
         }
     }
 
-    public void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour) {
+    public void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).beforeCriterionEvaluationStarts(behaviour);
+            ((Listener)i.next()).beforeCriteriaVerificationStarts(behaviour);
         }
     }
 
-    public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
+    public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).afterCriterionEvaluationEnds(behaviourResult);
+            ((Listener)i.next()).afterCriteriaVerificationEnds(behaviourResult);
         }
     }
 }

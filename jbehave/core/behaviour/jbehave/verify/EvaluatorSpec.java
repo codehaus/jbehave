@@ -44,18 +44,18 @@ public class EvaluatorSpec {
     }
 
     public void shouldAddBehaviourClass() throws Exception {
-        Verify.equal(0, runner.countBehaviourClasses());
-        Verify.equal(0, runner.countBehaviours());
+        Verify.equal(0, runner.countSpecs());
+        Verify.equal(0, runner.countCriteria());
         
         runner.addBehaviourClass(BehaviourClassWithOneBehaviour.class);
-        Verify.equal(1, runner.countBehaviourClasses());
-        Verify.equal(1, runner.countBehaviours());
-        Verify.equal(BehaviourClassWithOneBehaviour.class, runner.getBehaviourClass(0));
+        Verify.equal(1, runner.countSpecs());
+        Verify.equal(1, runner.countCriteria());
+        Verify.equal(BehaviourClassWithOneBehaviour.class, runner.getSpec(0));
         
         runner.addBehaviourClass(BehaviourClassWithTwoBehaviours.class);
-        Verify.equal(2, runner.countBehaviourClasses());
-        Verify.equal(3, runner.countBehaviours());
-        Verify.equal(BehaviourClassWithTwoBehaviours.class, runner.getBehaviourClass(1));
+        Verify.equal(2, runner.countSpecs());
+        Verify.equal(3, runner.countCriteria());
+        Verify.equal(BehaviourClassWithTwoBehaviours.class, runner.getSpec(1));
     }
     
     public void shouldCountBehaviours() throws Exception {
@@ -71,7 +71,7 @@ public class EvaluatorSpec {
             this.message = message;
         }
 
-        public void runStarted(Evaluator runner) {
+        public void verificationStarted(Evaluator runner) {
             Verify.sameInstance(expectedRunner, runner);
             resultList.add(message);
         }
@@ -87,7 +87,7 @@ public class EvaluatorSpec {
         runner.registerListener(new RunStartedListener(runner, "one"));
         runner.registerListener(new RunStartedListener(runner, "two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.evaluateCriteria();
+        runner.verifyCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"one", "two", "hello"}), resultList);
     }
@@ -101,7 +101,7 @@ public class EvaluatorSpec {
             this.message = message;
         }
         
-        public void runEnded(Evaluator runner) {
+        public void verificationEnded(Evaluator runner) {
             Verify.sameInstance(expectedRunner, runner);
             resultList.add(message);
         }
@@ -111,7 +111,7 @@ public class EvaluatorSpec {
         runner.registerListener(new RunEndedListener(runner, "one"));
         runner.registerListener(new RunEndedListener(runner, "two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.evaluateCriteria();
+        runner.verifyCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"hello", "one", "two"}), resultList);
     }
@@ -123,7 +123,7 @@ public class EvaluatorSpec {
             this.message = message;
         }
         
-        public void behaviourEvaluationStarted(Class behaviourClass) {
+        public void specVerificationStarted(Class behaviourClass) {
             resultList.add(message + ":" + behaviourClass.getName());
         }
     }
@@ -132,7 +132,7 @@ public class EvaluatorSpec {
         runner.registerListener(new BehaviourClassStartedListener("one"));
         runner.registerListener(new BehaviourClassStartedListener("two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.evaluateCriteria();
+        runner.verifyCriteria();
         
         String expectedName = BehaviourClassThatSaysHello.class.getName();
         String[] expected = {"one:" + expectedName, "two:" + expectedName, "hello"};
@@ -146,7 +146,7 @@ public class EvaluatorSpec {
             this.message = message;
         }
         
-        public void behaviourEvaluationEnded(Class behaviourClass) {
+        public void specVerificationEnded(Class behaviourClass) {
             resultList.add(message + ":" + behaviourClass.getName());
         }
     }
@@ -155,7 +155,7 @@ public class EvaluatorSpec {
         runner.registerListener(new BehaviourClassEndedListener("one"));
         runner.registerListener(new BehaviourClassEndedListener("two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.evaluateCriteria();
+        runner.verifyCriteria();
         
         String expectedName = BehaviourClassThatSaysHello.class.getName();
         Verify.equal(Arrays.asList(
@@ -173,7 +173,7 @@ public class EvaluatorSpec {
             this.message = message;
         }
         
-        public void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour) {
+        public void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour) {
             resultList.add(message + ":" + behaviour.getName());
         }
     }
@@ -182,7 +182,7 @@ public class EvaluatorSpec {
         runner.registerListener(new BehaviourStartedListener("one"));
         runner.registerListener(new BehaviourStartedListener("two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.evaluateCriteria();
+        runner.verifyCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"one:shouldSayHello", "two:shouldSayHello", "hello"}), resultList);
     }
@@ -194,7 +194,7 @@ public class EvaluatorSpec {
             this.message = message;
         }
         
-        public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
+        public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
             resultList.add(message + ":" + behaviourResult.getName());
         }
     }
@@ -203,7 +203,7 @@ public class EvaluatorSpec {
         runner.registerListener(new BehaviourEndedListener("one"));
         runner.registerListener(new BehaviourEndedListener("two"));
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
-        runner.evaluateCriteria();
+        runner.verifyCriteria();
         Verify.equal(Arrays.asList(
 		new String[]{"hello", "one:shouldSayHello", "two:shouldSayHello"}), resultList);
     }
@@ -212,7 +212,7 @@ public class EvaluatorSpec {
         runner.registerListener(new BehaviourStartedListener("started"));
         runner.registerListener(new BehaviourEndedListener("ended"));
         runner.addBehaviourClass(BehaviourClassWithTwoBehaviours.class);
-        runner.evaluateCriteria();
+        runner.verifyCriteria();
         
         Verify.equal(4, resultList.size());
         
