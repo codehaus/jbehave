@@ -7,40 +7,53 @@
  */
 package com.thoughtworks.jbehave.extensions.story.verifier;
 
+import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
+import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.invoker.ScenarioInvoker;
+import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class StoryVerifierBehaviour extends UsingMiniMock {
-    
-    public void shouldVerifyAllScenariosInAStory() throws Exception {
+    public void shouldPassItselfIntoStoryAsVisitor() throws Exception {
         // given...
-        Mock scenario1 = mock(Scenario.class, "scenario1");
-        Mock scenario2 = mock(Scenario.class, "scenario2");
-        AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
-        acceptanceCriteria.add((Scenario) scenario1);
-        acceptanceCriteria.add((Scenario) scenario2);
-        Story story = new Story(new Narrative("","",""), acceptanceCriteria);
+        final Object[] arg = new Object[1];
         
-        Mock scenarioInvoker = mock(ScenarioInvoker.class);
-        StoryVerifier verifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker);
+        Story storyMock = new Story(null, null) {
+            public void accept(Visitor visitor) {
+                arg[0] = visitor;
+            }
+        };
         
-        // expect...
-        scenarioInvoker.expects("invoke").with(scenario1).id("1");
-        scenarioInvoker.expects("invoke").with(scenario2).after("1");
-        
+        ScenarioInvoker scenarioInvoker = (ScenarioInvoker) stub(ScenarioInvoker.class);
+        StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker);
+
         // when...
-        verifier.verify(story);
+        storyVerifier.verify(storyMock);
         
         // verify...
-        verifyMocks();
+        Verify.sameInstance(storyVerifier, arg[0]);
+    }
+    
+    public void shouldPassScenarioToScenarioInvoker() throws Exception {
+        // given...
+        Mock scenarioInvoker = mock(ScenarioInvoker.class);
+        StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker);
+        Scenario scenario = (Scenario)stub(Scenario.class);
+        ScenarioResult result = new ScenarioResult("", ScenarioResult.SUCCEEDED);
+
+        // expect...
+        scenarioInvoker.expects("invoke").with(scenario).will(returnValue(result));
+        
+        // when...
+//        storyVerifier.visit(scenario);
+        
+        // verify...
     }
 }
