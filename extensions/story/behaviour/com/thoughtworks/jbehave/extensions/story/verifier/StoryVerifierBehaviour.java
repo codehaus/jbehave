@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.verifier;
 
 import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
@@ -46,14 +47,39 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         Mock scenarioInvoker = mock(ScenarioInvoker.class);
         StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker);
         Scenario scenario = (Scenario)stub(Scenario.class);
-        ScenarioResult result = new ScenarioResult("", ScenarioResult.SUCCEEDED);
 
         // expect...
-        scenarioInvoker.expects("invoke").with(scenario).will(returnValue(result));
+        scenarioInvoker.expects("invoke").with(scenario);
         
         // when...
-//        storyVerifier.visit(scenario);
+        storyVerifier.visit(scenario);
         
         // verify...
+        verifyMocks();
+    }
+    
+    public void shouldPassResultToListeners() throws Exception {
+        // given...
+        Mock listener1 = mock(ResultListener.class, "listener1");
+        Mock listener2 = mock(ResultListener.class, "listener2");
+        Scenario scenarioStub = (Scenario) stub(Scenario.class);
+        
+        ScenarioResult result = new ScenarioResult("result", ScenarioResult.SUCCEEDED);
+        Mock scenarioInvoker = mock(ScenarioInvoker.class);
+        scenarioInvoker.stubs("invoke").will(returnValue(result));
+        
+        StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker);
+        storyVerifier.addListener((ResultListener)listener1);
+        storyVerifier.addListener((ResultListener)listener2);
+
+        // expect...
+        listener1.expects("gotResult").with(result);
+        listener2.expects("gotResult").with(result).after(listener1, "gotResult");
+        
+        // when...
+        storyVerifier.visit(scenarioStub);
+        
+        // verify...
+        verifyMocks();
     }
 }
