@@ -17,5 +17,5 @@ import com.thoughtworks.jbehave.extensions.story.codegen.domain.StoryDetails;
 public interface StoryParser {
 
     StoryDetails parseStory(Reader reader);
-
+    
 }
