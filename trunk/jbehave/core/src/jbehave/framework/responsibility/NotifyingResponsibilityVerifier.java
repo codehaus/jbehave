@@ -23,7 +23,7 @@ public class NotifyingResponsibilityVerifier implements ResponsibilityVerifier {
      * The {@link Listener} is alerted before and after the verification,
      * with calls to {@link Listener#responsibilityVerificationStarting(Method)
      * responsibilityVerificationStarting(this)} and
-     * {@link Listener#responsibilityVerificationEnding(ResponsibilityVerification,Object)
+     * {@link Listener#responsibilityVerificationEnding(Result, Object)
      * responsibilityVerificationEnding(result)} respectively.
      */
     public Result verifyResponsibility(Listener listener, Method method) {
