@@ -84,12 +84,7 @@ public class CriteriaVerification {
         return status == PENDING;
     }
 
-    /** @deprecated remove me */
-	public Object getSpecInstance() {
-		return null;
-	}
-
-    public String toString() {
+	public String toString() {
         return "Name: " + name + ", spec:" + specName + ", status: " + status + ", targetException: " + targetException;
     }
 

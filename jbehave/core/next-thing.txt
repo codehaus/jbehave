@@ -4,12 +4,12 @@ so I guess my holiday-mush-brain is starting to revert to it's work-brain state.
 I should have done this all along really...
 
 IT SHOULD HAVE A WEBSITE!
-Listener.afterCriteriaVerificationEnds(CriteriaVerefication) should return
+DONE. Listener.afterCriteriaVerificationEnds(CriteriaVerefication) should return
   a CriteriaVerification, which the CriteriaVerifier should pass on to the next listener.
   This way the listener could decorate the verification, so that, for instance,
   a JMockListener could fail a verification that had previously succeeded, before it gets
   recorded by a TextListener.
-The method should also take the spec instance as a second parameter (again for JMock) so that
+DONE. The method should also take the spec instance as a second parameter (again for JMock) so that
   we can move the spec instance out of the CriteriaVerification (the getSpecInstance()
   method is already deprecated - this would mean we could remove it altogether).
 It should have todo-level failure (Verify.todo()) that records but doesn't break the build
