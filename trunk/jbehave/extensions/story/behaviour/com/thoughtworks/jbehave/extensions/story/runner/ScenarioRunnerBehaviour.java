@@ -3,11 +3,11 @@ package com.thoughtworks.jbehave.extensions.story.runner;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
-import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /*
  * Created on 16-Sep-2004

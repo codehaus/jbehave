@@ -8,7 +8,7 @@
 package example;
 import java.util.Iterator;
 
-import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
 import com.thoughtworks.jbehave.extensions.story.renderers.PlainTextRenderer;

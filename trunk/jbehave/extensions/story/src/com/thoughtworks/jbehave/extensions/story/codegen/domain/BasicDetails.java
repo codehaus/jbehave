@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.codegen.domain;
 
-import com.thoughtworks.jbehave.util.ConvertCase;
+import com.thoughtworks.jbehave.core.util.ConvertCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.jmock;
 
-import com.thoughtworks.jbehave.core.BehaviourClassContainer;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

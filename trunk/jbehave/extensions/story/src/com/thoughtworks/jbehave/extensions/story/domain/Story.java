@@ -10,8 +10,8 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.util.CompositeVisitable;
-import com.thoughtworks.jbehave.util.ConvertCase;
+import com.thoughtworks.jbehave.core.util.ConvertCase;
+import com.thoughtworks.jbehave.core.visitor.CompositeVisitable;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

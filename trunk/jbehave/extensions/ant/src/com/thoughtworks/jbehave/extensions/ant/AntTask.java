@@ -19,11 +19,11 @@ import org.apache.tools.ant.taskdefs.LogOutputStream;
 import org.apache.tools.ant.types.CommandlineJava;
 import org.apache.tools.ant.types.Path;
 
-import com.thoughtworks.jbehave.core.BehaviourClass;
-import com.thoughtworks.jbehave.core.BehaviourMethodVerifier;
-import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
-import com.thoughtworks.jbehave.core.listeners.TextListener;
-import com.thoughtworks.jbehave.extensions.ant.listeners.AntListener;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifier;
+import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
+import com.thoughtworks.jbehave.core.listener.TextListener;
+import com.thoughtworks.jbehave.extensions.ant.listener.AntListener;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

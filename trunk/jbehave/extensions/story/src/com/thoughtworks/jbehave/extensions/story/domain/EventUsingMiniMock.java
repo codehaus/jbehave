@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.util.VisitableUsingMiniMock;
+import com.thoughtworks.jbehave.core.minimock.VisitableUsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

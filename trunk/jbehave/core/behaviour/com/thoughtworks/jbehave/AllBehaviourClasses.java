@@ -7,18 +7,18 @@
  */
 package com.thoughtworks.jbehave;
 
-import com.thoughtworks.jbehave.core.BehaviourClassBehaviour;
-import com.thoughtworks.jbehave.core.BehaviourClassContainer;
-import com.thoughtworks.jbehave.core.BehaviourMethodBehaviour;
-import com.thoughtworks.jbehave.core.BehaviourMethodVerifierBehaviour;
-import com.thoughtworks.jbehave.core.invokers.DontInvokeMethodBehaviour;
-import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDownBehaviour;
-import com.thoughtworks.jbehave.core.listeners.TextListenerBehaviour;
-import com.thoughtworks.jbehave.util.CompositeVisitableBehaviour;
-import com.thoughtworks.jbehave.util.ConvertCaseBehaviour;
-import com.thoughtworks.jbehave.util.TimerBehaviour;
-import com.thoughtworks.jbehave.util.VisitableArrayListBehaviour;
-import com.thoughtworks.jbehave.util.VisitableUsingMiniMockBehaviour;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClassBehaviour;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodBehaviour;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifierBehaviour;
+import com.thoughtworks.jbehave.core.invoker.DontInvokeMethodBehaviour;
+import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDownBehaviour;
+import com.thoughtworks.jbehave.core.listener.TextListenerBehaviour;
+import com.thoughtworks.jbehave.core.minimock.VisitableUsingMiniMockBehaviour;
+import com.thoughtworks.jbehave.core.util.ConvertCaseBehaviour;
+import com.thoughtworks.jbehave.core.util.TimerBehaviour;
+import com.thoughtworks.jbehave.core.visitor.CompositeVisitableBehaviour;
+import com.thoughtworks.jbehave.core.visitor.VisitableArrayListBehaviour;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

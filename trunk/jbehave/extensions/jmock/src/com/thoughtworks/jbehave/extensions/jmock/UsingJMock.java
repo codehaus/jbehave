@@ -13,8 +13,8 @@ import org.jmock.core.DynamicMock;
 import org.jmock.core.Verifiable;
 import org.jmock.core.stub.DefaultResultStub;
 
+import com.thoughtworks.jbehave.core.UsingMocks;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
-import com.thoughtworks.jbehave.minimock.UsingMocks;
 
 /**
  * @author <a href="mailto:dnorth@thoughtworks.com">Dan North</a>

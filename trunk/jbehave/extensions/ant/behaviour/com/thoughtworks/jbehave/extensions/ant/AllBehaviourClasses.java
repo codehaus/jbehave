@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.ant;
 
-import com.thoughtworks.jbehave.core.BehaviourClassContainer;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -83,6 +83,7 @@
             <group title="JMock Extension" packages="com.thoughtworks.jbehave.extensions.jmock*"/>
             <group title="Ant Task Extension" packages="com.thoughtworks.jbehave.extensions.ant*"/>
             <group title="JUnit Adapter" packages="com.thoughtworks.jbehave.extensions.junit*"/>
+            <group title="Story Runner" packages="com.thoughtworks.jbehave.extensions.story*"/>
         </javadoc>
     </target>
 

@@ -11,12 +11,12 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestSuite;
 
-import com.thoughtworks.jbehave.core.BehaviourClass;
-import com.thoughtworks.jbehave.core.BehaviourMethod;
-import com.thoughtworks.jbehave.core.Result;
-import com.thoughtworks.jbehave.core.Visitable;
-import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourMethod;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
+import com.thoughtworks.jbehave.core.result.Result;
+import com.thoughtworks.jbehave.core.visitor.Visitable;
+import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.extensions.junit.JUnitMethodAdapter;
 
 /**

@@ -13,7 +13,7 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.thoughtworks.jbehave.core.BehaviourClass;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.extensions.junit.listener.TestSuitePopulater;
 

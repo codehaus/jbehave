@@ -10,7 +10,7 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 import java.util.Arrays;
 import java.util.List;
 
-import com.thoughtworks.jbehave.util.CompositeVisitable;
+import com.thoughtworks.jbehave.core.visitor.CompositeVisitable;
 
 
 /**

@@ -8,7 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story.codegen;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.minimock.UsingMiniMock;
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 
 
 /**

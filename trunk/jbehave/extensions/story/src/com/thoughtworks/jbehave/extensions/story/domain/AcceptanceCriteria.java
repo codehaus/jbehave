@@ -9,7 +9,7 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 
 import java.util.List;
 
-import com.thoughtworks.jbehave.util.CompositeVisitable;
+import com.thoughtworks.jbehave.core.visitor.CompositeVisitable;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

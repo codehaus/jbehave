@@ -15,10 +15,10 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 
-import com.thoughtworks.jbehave.core.BehaviourMethod;
-import com.thoughtworks.jbehave.core.Result;
-import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
-import com.thoughtworks.jbehave.util.ConvertCase;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourMethod;
+import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
+import com.thoughtworks.jbehave.core.result.Result;
+import com.thoughtworks.jbehave.core.util.ConvertCase;
 
 public class JUnitMethodAdapter extends TestCase {
     private final Method method;

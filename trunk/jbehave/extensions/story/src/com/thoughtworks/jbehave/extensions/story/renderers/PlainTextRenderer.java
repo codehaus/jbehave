@@ -9,9 +9,11 @@ package com.thoughtworks.jbehave.extensions.story.renderers;
 
 import java.io.PrintStream;
 
-import com.thoughtworks.jbehave.core.Result;
-import com.thoughtworks.jbehave.core.Visitable;
-import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.core.minilog.Log;
+import com.thoughtworks.jbehave.core.result.Result;
+import com.thoughtworks.jbehave.core.util.ConvertCase;
+import com.thoughtworks.jbehave.core.visitor.Visitable;
+import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.EventUsingMiniMock;
@@ -24,8 +26,6 @@ import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
 import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Story;
-import com.thoughtworks.jbehave.minilog.Log;
-import com.thoughtworks.jbehave.util.ConvertCase;
 
 
 /**

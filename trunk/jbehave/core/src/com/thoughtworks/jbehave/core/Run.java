@@ -9,8 +9,10 @@ package com.thoughtworks.jbehave.core;
 
 import java.io.PrintWriter;
 
-import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
-import com.thoughtworks.jbehave.core.listeners.TextListener;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifier;
+import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
+import com.thoughtworks.jbehave.core.listener.TextListener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -10,9 +10,9 @@ package com.thoughtworks.jbehave.extensions.story.listener;
 import java.io.StringWriter;
 
 import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
-import com.thoughtworks.jbehave.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

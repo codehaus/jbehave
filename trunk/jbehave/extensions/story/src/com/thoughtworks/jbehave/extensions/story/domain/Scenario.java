@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.visitor.Visitable;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

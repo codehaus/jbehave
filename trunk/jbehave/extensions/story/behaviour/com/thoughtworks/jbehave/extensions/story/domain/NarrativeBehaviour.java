@@ -7,8 +7,8 @@
  */
 package com.thoughtworks.jbehave.extensions.story.domain;
 
-import com.thoughtworks.jbehave.core.Visitor;
-import com.thoughtworks.jbehave.minimock.UsingMiniMock;
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
+import com.thoughtworks.jbehave.core.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

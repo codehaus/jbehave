@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.extensions.junit;
 
-import com.thoughtworks.jbehave.core.BehaviourClassContainer;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
 
 
 /**
