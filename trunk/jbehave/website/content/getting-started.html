@@ -1,0 +1,60 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Getting Started</title>
+  </head>
+  <body>
+    <h1>Two minute tutorial</h1>
+
+    <p>You create a Spec, which is a plain Java file which by convention
+    has the name of the class whose behaviour we are specifying followed
+    by the word "Spec", so <tt>Foo</tt> has <tt>FooSpec</tt>.<br/></p>
+
+	<p>Inside the Spec are a bunch of criteria that specify the behaviour we expect.
+    These are just public void methods that start with "should" and which describe
+    the specific behaviour (e.g. <tt>CustomerServiceSpec</tt> might have
+    <tt>shouldFindCustomerBySurname())</tt>.</p>
+	
+	<p>These will typically set up a known environment, execute some behaviour and
+	then verify that stuff happened. There are some static methods in
+	<tt>jbehave.framework.Verify</tt> that help with this, for instance
+	<tt>Verify.that(somethingHappened)</tt> and <tt>Verify.equal(expectedValue, actualValue)</tt>.</p>
+
+	<p>Our template criteria looks like this:</p>
+	<div class="Shaded"><pre>
+public void should[DoSomething]() {
+	// setup
+	
+	// execute
+	
+	// verify
+}
+	</pre></div>
+	<p>The <tt>DoSomething</tt> is highlighted so we know we have to change it to actually
+	describe some criteria. Templates are nice like that.</p>
+	
+	<p>Specs can be contained in, wait for it, a spec container. This is a plain
+	Java class that implements the <tt>jbehave.framework.SpecContainer</tt> interface.
+	This has a single method: <tt>getSpecs()</tt>, which returns an array of <tt>Class</tt>
+	objects representing the specs to run. Naturally spec containers can contain other
+	spec containers.</p>
+
+	<p>Specs and criteria are verified by reflecting into the spec classes and invoking
+	the criteria methods. A Listener is notified whenever something interesting happens.</p>
+
+	<p>A single criteria (yes I know, it should be criterion, I'm over it) is verified by a
+	<tt>CriteriaVerifier</tt>, a spec is verified by a <tt>SpecVerifier</tt></p>
+
+	<p>So how do we tie this all together? There is a small (2 line) main method inside
+	<tt>SpecVerifier</tt> that takes a spec class name as its argument and invokes a
+	<tt>SpecVerifier</tt> on it passing in a <tt>TextListener</tt>. Run that with
+	<tt>jbehave.jar</tt> on your classpath. And, um, that's it. So:</p>
+
+	<div class="Shaded">
+		<pre>java -cp jbehave.jar;your_classpath jbehave.framework.SpecVerifier your.ApplicationSpec</pre>
+	</div>
+
+  </body>
+</html>

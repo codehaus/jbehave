@@ -1,0 +1,47 @@
+<project name="jbehave-core" basedir="." default="all">
+	<property name="core-src.dir" value="${core.dir}/src"/>
+	<property name="core-spec.dir" location="${core.dir}/behaviour" />
+	<property name="core-build.dir" value="${core.dir}/build"/>
+	<property name="core-dist.dir" value="${core.dir}/dist"/>
+	<property name="core-jar.file" location="${core-dist.dir}/jbehave-${version}.jar" />
+	<property name="core-classes.dir" location="${core-build.dir}/classes" />
+	<property name="core-spec.classes.dir" location="${core-build.dir}/specs" />
+
+	<target name="core-all" depends="core-verify" />
+
+	<target name="core-clean">
+		<delete dir="${core-build.dir}" />
+	</target>
+
+	<target name="core-clobber" depends="core-clean">
+		<delete dir="${core-dist.dir}" />
+	</target>
+
+
+	<target name="-init">
+		<mkdir dir="${core-build.dir}" />
+	</target>
+
+	<target name="core-src.compile" depends="-init">
+ 		<compile classesdir="${core-classes.dir}"
+				 srcdir="${core-src.dir}"/>
+	</target>
+
+
+	<target name="core-jar" depends="core-src.compile">
+		<jar-dist distdir="${core-dist.dir}"
+				  classesdir="${core-classes.dir}"
+				  srcdir="${core-src.dir}"
+				  jarfile="${core-jar.file}"/>
+	</target>
+
+	<target name="core-spec.compile" depends="core-jar">
+		<compile classesdir="${core-spec.classes.dir}"
+				 srcdir="${core-spec.dir}"
+				 classpath="${core-jar.file}"/>
+	</target>
+
+	<target name="core-verify" depends="core-spec.compile">
+		<jbehave spec="jbehave.AllSpecs" classpath="${core-jar.file}:${core-spec.classes.dir}"/>
+	</target>
+</project>
