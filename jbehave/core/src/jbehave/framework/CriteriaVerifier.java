@@ -56,8 +56,8 @@ public class CriteriaVerifier {
     }
 
     /**
-     * Verify an individual criteria.<br>
-     * <br>
+     * Verify an individual criteria.
+     * 
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
      * in the appropriate places if either of them exist.<br>
      * <br>
