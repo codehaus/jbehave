@@ -7,12 +7,12 @@
  */
 package jbehave.extensions.junit.adapter;
 
+import jbehave.evaluate.Evaluator;
+import jbehave.evaluate.listener.ListenerSupport;
 import jbehave.framework.Criterion;
 import jbehave.framework.CriterionEvaluation;
 import jbehave.framework.CriteriaSupport;
 import jbehave.framework.VerificationException;
-import jbehave.runner.Evaluator;
-import jbehave.runner.listener.ListenerSupport;
 import junit.framework.Test;
 import junit.framework.TestResult;
 

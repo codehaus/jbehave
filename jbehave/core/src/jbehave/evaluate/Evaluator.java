@@ -5,7 +5,7 @@
  * 
  * See license.txt for license details
  */
-package jbehave.runner;
+package jbehave.evaluate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,11 +14,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import jbehave.evaluate.listener.CompositeListener;
+import jbehave.evaluate.listener.Listener;
 import jbehave.framework.Criterion;
 import jbehave.framework.CriterionEvaluation;
 import jbehave.framework.CriteriaSupport;
-import jbehave.runner.listener.CompositeListener;
-import jbehave.runner.listener.Listener;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

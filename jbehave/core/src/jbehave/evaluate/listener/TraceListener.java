@@ -5,11 +5,11 @@
  *
  * See license.txt for license details
  */
-package jbehave.runner.listener;
+package jbehave.evaluate.listener;
 
+import jbehave.evaluate.Evaluator;
 import jbehave.framework.Criterion;
 import jbehave.framework.CriterionEvaluation;
-import jbehave.runner.Evaluator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
