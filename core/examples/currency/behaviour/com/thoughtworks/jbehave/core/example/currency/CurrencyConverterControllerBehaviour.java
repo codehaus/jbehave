@@ -5,8 +5,13 @@
  *
  * See license.txt for licence details
  */
-package org.xpday.currency;
+package com.thoughtworks.jbehave.core.example.currency;
 
+import com.thoughtworks.jbehave.core.example.currency.Currency;
+import com.thoughtworks.jbehave.core.example.currency.CurrencyConverter;
+import com.thoughtworks.jbehave.core.example.currency.CurrencyConverterController;
+import com.thoughtworks.jbehave.core.example.currency.CurrencyConverterView;
+import com.thoughtworks.jbehave.core.example.currency.InvalidAmountException;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 

@@ -1,4 +1,4 @@
-package org.xpday.currency;
+package com.thoughtworks.jbehave.core.example.currency;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
