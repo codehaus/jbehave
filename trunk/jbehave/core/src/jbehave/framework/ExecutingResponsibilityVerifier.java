@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 
 import jbehave.framework.exception.BehaviourFrameworkError;
 import jbehave.framework.exception.VerificationException;
+import jbehave.util.StringUtils;
 
 /**
  * Represents a verifier for a single responsibility, which can verify
@@ -103,7 +104,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
             throw (ThreadDeath)targetException;
         }
         else {
-            return new ResponsibilityVerification(className, methodName, targetException);
+            return new ResponsibilityVerification(className, StringUtils.unCamelCase(methodName), targetException);
         }
     }
 }
