@@ -28,7 +28,6 @@
         <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes">
             <classpath id="external_jars_only">
                 <fileset dir="${lib.dir}" includes="*.jar"/>
-                <path location="${dist.dir}/${project}-core-${version}.jar"/>
             </classpath>
         </javac>
     </target>
