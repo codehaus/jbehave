@@ -22,6 +22,19 @@
 	<tt>jbehave.framework.Verify</tt> that help with this, for instance
 	<tt>Verify.that(somethingHappened)</tt> and <tt>Verify.equal(expectedValue, actualValue)</tt>.</p>
 
+	<p>Our template criteria looks like this:</p>
+	<div class="Shaded"><pre>
+public void should[DoSomething]() {
+	// setup
+	
+	// execute
+	
+	// verify
+}
+	</pre></div>
+	<p>The <tt>DoSomething</tt> is highlighted so we know we have to change it to actually
+	describe some criteria. Templates are nice like that.</p>
+	
 	<p>Specs can be contained in, wait for it, a spec container. This is a plain
 	Java class that implements the SpecContainer interface. This has a single method:
 	<tt>getSpecs()</tt>, which returns an array of Classes representing the specs to run.
