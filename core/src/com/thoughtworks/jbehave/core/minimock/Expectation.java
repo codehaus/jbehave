@@ -88,6 +88,10 @@ public class Expectation extends MiniMockSugar {
         return will(returnValue(value));
     }
     
+    public Expectation willReturn(double value) {
+        return willReturn(new Double(value));
+    }
+    
     public void willThrow(Throwable cause) {
         invoker = throwException(cause);
     }
