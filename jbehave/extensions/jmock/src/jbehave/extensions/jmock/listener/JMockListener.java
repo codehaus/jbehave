@@ -27,16 +27,20 @@ public class JMockListener extends ListenerSupport {
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             if (Mock.class.equals(field.getType())) {
-                try {
-                    if (!field.isAccessible()) {
-                        field.setAccessible(true);
-                    }
-					Mock mock = (Mock) field.get(executedInstance);
-                    mock.verify();
-				} catch (IllegalArgumentException ignored) {
-				} catch (IllegalAccessException ignored) {
-				}
+                verifyMock(field, executedInstance);
             }
 		}
 	}
+
+    private void verifyMock(Field field, Object executedInstance) {
+        try {
+            if (!field.isAccessible()) {
+                field.setAccessible(true);
+            }
+        	Mock mock = (Mock) field.get(executedInstance);
+            mock.verify();
+        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalAccessException ignored) {
+        }
+    }
 }
