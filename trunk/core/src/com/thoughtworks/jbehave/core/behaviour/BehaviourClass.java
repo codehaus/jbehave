@@ -10,6 +10,7 @@ package com.thoughtworks.jbehave.core.behaviour;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
+import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 
@@ -25,38 +26,39 @@ public class BehaviourClass implements Visitable {
     }
 
     public void accept(Visitor visitor) {
-        try {
-            visitor.visit(this);
+        visitor.visit(this);
 
-            if (BehaviourClassContainer.class.isAssignableFrom(classToVerify)) {
-                visitBehaviourClasses(visitor);
-            }
-            else {
-                visitBehaviourMethods(visitor);
-            }
+        if (BehaviourClassContainer.class.isAssignableFrom(classToVerify)) {
+            visitBehaviourClasses(visitor);
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            throw new JBehaveFrameworkError(classToVerify.getName(), e);
+        else {
+            visitBehaviourMethods(visitor);
         }
     }
     
-    private void visitBehaviourMethods(Visitor visitor) throws InstantiationException, IllegalAccessException {
+    private void visitBehaviourMethods(Visitor visitor) {
         Method[] methods = classToVerify.getMethods();
         for (int j = 0; j < methods.length; j++) {
             Method method = methods[j];
-            if (method.getName().startsWith("should")
-                    && method.getParameterTypes().length == 0) {
-                BehaviourMethod methodToVerify = new BehaviourMethod(
-                        classToVerify.newInstance(), method);
+            if (method.getName().startsWith("should") && method.getParameterTypes().length == 0) {
+                BehaviourMethod methodToVerify = new BehaviourMethod(createInstance(), method);
                 methodToVerify.accept(visitor);
             }
         }
     }
 
+    private Object createInstance() {
+        try {
+            return classToVerify.newInstance();
+        }
+        catch (Exception e) {
+            throw new NestedVerificationException("Unable to create instance of " + classToVerify.getName(), e);
+        }
+    }
+
     private void visitBehaviourClasses(Visitor visitor) {
         try {
-            Class[] behaviourClasses = ((BehaviourClassContainer)classToVerify.newInstance()).getBehaviourClasses();
+            Class[] behaviourClasses = ((BehaviourClassContainer)createInstance()).getBehaviourClasses();
             for (int i = 0; i < behaviourClasses.length; i++) {
                 BehaviourClass visitableClass = new BehaviourClass(behaviourClasses[i]);
                 visitableClass.accept(visitor);

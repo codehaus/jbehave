@@ -18,8 +18,8 @@ import com.thoughtworks.jbehave.core.Verify;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Expectation extends MiniMockSugar {
-    interface Finder {
-        Expectation findExpectation(String id);
+    interface Registry {
+        Expectation lookup(String id);
     }
     
     private static final InvocationHandler NULL_INVOKER = new InvocationHandler() {
@@ -28,7 +28,7 @@ public class Expectation extends MiniMockSugar {
         }
     };
     
-    private final Finder finder;
+    private final Registry registry;
     private final String methodName;
     private Constraint[] constraints = new Constraint[0];
     private int minInvocations = 1;
@@ -43,8 +43,8 @@ public class Expectation extends MiniMockSugar {
      * 
      * It initially expects to be called exactly once and will use a null invoker.
      */
-    public Expectation(Finder finder, String methodName) {
-        this.finder = finder;
+    public Expectation(Registry registry, String methodName) {
+        this.registry = registry;
         this.id = this.methodName = methodName;
     }
 
@@ -125,12 +125,20 @@ public class Expectation extends MiniMockSugar {
     
     // with arguments
 
-    public Expectation with(Object object) {
-        return with(same(object));
+    public Expectation with(Object arg) {
+        return with(same(arg));
+    }
+
+    public Expectation with(Object arg1, Object arg2) {
+        return with(same(arg1), same(arg2));
     }
 
     public Expectation with(Constraint constraint) {
         return with(new Constraint[] {constraint});
+    }
+
+    public Expectation with(Constraint constraint1, Constraint constraint2) {
+        return with(new Constraint[] {constraint1, constraint2});
     }
 
     public Expectation with(Constraint[] constraints) {
@@ -146,12 +154,12 @@ public class Expectation extends MiniMockSugar {
     // after
     
     public Expectation after(Mock otherMock, String otherId) {
-        after = ((Finder)otherMock).findExpectation(otherId);
+        after = ((Registry)otherMock).lookup(otherId);
         return this;
     }
 
     public Expectation after(String otherId) {
-        after = finder.findExpectation(otherId);
+        after = registry.lookup(otherId);
         return this;
     }
     

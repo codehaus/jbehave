@@ -81,7 +81,7 @@ public class AntTask extends org.apache.tools.ant.Task {
         TextListener textListener = new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
         AntListener antListener = new AntListener(textListener);
         BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
-        verifier.add(antListener);
+        verifier.addListener(antListener);
         
 		for (Iterator iter = behaviourClassList.iterator(); iter.hasNext(); ) {
 			final BehaviourClassDetails behaviourClassDetails = (BehaviourClassDetails) iter.next();

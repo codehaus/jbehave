@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifier;
+import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.core.listener.TextListener;
 
@@ -24,12 +25,16 @@ public class Run {
             BehaviourClass visitableClass = new BehaviourClass(classToVerify);
             TextListener textListener = new TextListener(new PrintWriter(System.out));
             BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
-            verifier.add(textListener);
+            verifier.addListener(textListener);
             visitableClass.accept(verifier);
             textListener.printReport();
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println("Problem verifying behaviour class " + args[0]);
+            e.printStackTrace();
+            System.exit(1);
+        } catch (JBehaveFrameworkError e) {
+            System.err.println("Problem verifying behaviour class " + args[0]);
+            e.printStackTrace();
             System.exit(1);
         }
     }
