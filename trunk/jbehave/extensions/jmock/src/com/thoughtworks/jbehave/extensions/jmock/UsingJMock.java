@@ -14,6 +14,7 @@ import org.jmock.core.stub.DefaultResultStub;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 
 /**
+ * @author <a href="mailto:dnorth@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>
  *
  */
@@ -84,8 +85,19 @@ public abstract class UsingJMock extends JMockSugar{
             }
         }
 
-        public MatchBuilder expectsOnce(String methodName) {
-            return expects(once()).method(methodName).withNoArguments();
+        /**
+         * DAN: Do we want to do this with all such methods. i.e, do we want to
+         * throw VerificationExceptions rather than having AssertionFailedError
+         * propogating out of jBehave?
+         */
+        public MatchBuilder expectsOnce(String methodName) throws VerificationException {
+            try {
+                return expects(once()).method(methodName).withNoArguments();
+            } catch (AssertionFailedError e) {
+                VerificationException ve = new VerificationException(e.getMessage());
+                ve.setStackTrace(e.getStackTrace());
+                throw ve;
+            }
         }
 
         public MatchBuilder expectsOnce(String methodName, Object arg1) {
