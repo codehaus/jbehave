@@ -37,7 +37,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     
     public void setUp() {
         environmentStub = (Environment)stub(Environment.class);
-        invoker = new VisitingScenarioInvoker(environmentStub);
+        invoker = new VisitingScenarioInvoker("story", environmentStub);
         scenario = mock(Scenario.class);
     }
     

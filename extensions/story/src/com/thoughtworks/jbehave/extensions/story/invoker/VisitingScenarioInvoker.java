@@ -32,8 +32,10 @@ public class VisitingScenarioInvoker implements ScenarioInvoker, Visitor {
     private final Environment environment;
     private boolean beforeEvent = true;
     private boolean usedMocks = false;
+    private final String storyName;
 
-    public VisitingScenarioInvoker(Environment environment) {
+    public VisitingScenarioInvoker(String storyName, Environment environment) {
+        this.storyName = storyName;
         this.environment = environment;
     }
     
@@ -48,10 +50,10 @@ public class VisitingScenarioInvoker implements ScenarioInvoker, Visitor {
         
         final ScenarioResult result;
         if (cause == null && usedMocks) {
-            result = new ScenarioResult(scenario.getDescription(), ScenarioResult.USED_MOCKS);
+            result = new ScenarioResult(scenario.getDescription(), storyName, ScenarioResult.USED_MOCKS);
         }
         else {
-            result = new ScenarioResult(scenario.getDescription(), cause);
+            result = new ScenarioResult(scenario.getDescription(), storyName, cause);
         }
         return result;
     }

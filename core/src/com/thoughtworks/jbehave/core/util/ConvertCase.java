@@ -17,15 +17,14 @@ public class ConvertCase {
     private final char[] chars;
     int pos = 0;
 
-    public ConvertCase(String string) {
-        this.chars = string.toCharArray();
+    public ConvertCase(String words) {
+        words = words.substring(words.lastIndexOf('.') + 1);
+        words = words.substring(words.lastIndexOf('$') + 1);
+        chars = words.toCharArray();
     }
 
     public ConvertCase(Class type) {
-        String name = type.getName();
-        name = name.substring(name.lastIndexOf('.') + 1);
-        name = name.substring(name.lastIndexOf('$') + 1);
-        chars = name.toCharArray();
+        this(type.getName());
     }
 
     public ConvertCase(Object obj) {

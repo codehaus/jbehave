@@ -26,22 +26,22 @@ public class ResultBehaviour {
     }
 
     public void shouldHaveConsistentStateForSuccess() throws Exception {
-        Result result = new Result("shouldSucceed", Result.SUCCEEDED);
+        Result result = new Result("shouldSucceed", "Container", Result.SUCCEEDED);
         verifyEvaluationState(result, Result.SUCCEEDED, true, false, false, false);
     }
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
-        Result result = new Result("shouldFail", new VerificationException("oops"));
+        Result result = new Result("shouldFail", "Container", new VerificationException("oops"));
         verifyEvaluationState(result, Result.FAILED, false, true, false, false);
     }
 
     public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
-        Result result = new Result("shouldThrowException", new Exception());
+        Result result = new Result("shouldThrowException", "Container", new Exception());
         verifyEvaluationState(result, Result.THREW_EXCEPTION, false, false, true, false);
     }
     
     public void shouldHaveConsistentStateForPending() throws Exception {
-        Result result = new Result("shouldBeImplemented", new PendingException("todo"));
+        Result result = new Result("shouldBeImplemented", "Container", new PendingException("todo"));
         verifyEvaluationState(result, Result.PENDING, false, false, false, true);
     }
 }

@@ -22,7 +22,7 @@ import org.apache.tools.ant.types.Path;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifier;
 import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
-import com.thoughtworks.jbehave.core.listener.TextListener;
+import com.thoughtworks.jbehave.core.listener.PlainTextMethodListener;
 import com.thoughtworks.jbehave.extensions.ant.listener.AntListener;
 
 /**
@@ -78,7 +78,7 @@ public class AntTask extends org.apache.tools.ant.Task {
 
 	private void verifyAll() {
 		createClassLoader();
-        TextListener textListener = new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
+        PlainTextMethodListener textListener = new PlainTextMethodListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
         AntListener antListener = new AntListener(textListener);
         BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
         verifier.addListener(antListener);

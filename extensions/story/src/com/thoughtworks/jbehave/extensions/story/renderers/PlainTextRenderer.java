@@ -75,7 +75,7 @@ public class PlainTextRenderer implements Visitor {
     }
     
     public void visitStory(Story story) {
-        out.println("Story: " + story.getTitle());
+        out.println("Story: " + story.title());
         out.println();
     }
     

@@ -13,7 +13,7 @@ import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifier;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
-import com.thoughtworks.jbehave.core.listener.TextListener;
+import com.thoughtworks.jbehave.core.listener.PlainTextMethodListener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -23,7 +23,7 @@ public class Run {
         try {
             Class classToVerify = Class.forName(args[0]);
             BehaviourClass visitableClass = new BehaviourClass(classToVerify);
-            TextListener textListener = new TextListener(new PrintWriter(System.out));
+            PlainTextMethodListener textListener = new PlainTextMethodListener(new PrintWriter(System.out));
             BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
             verifier.addListener(textListener);
             visitableClass.accept(verifier);

@@ -7,9 +7,9 @@
  */
 package example.expectations;
 
+import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.ExpectationUsingMiniMock;
-import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 
 /** balance = balance - 20 */
@@ -19,6 +19,6 @@ public class AccountBalanceShouldBeReduced extends ExpectationUsingMiniMock {
     }
     
     public void verify(Environment context) {
-        throw new UnimplementedException();
+        Verify.pending();
     }
 }
