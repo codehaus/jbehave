@@ -7,11 +7,15 @@
     <!-- working area stuff -->
     <property name="working.dir" location="delete_me" />
     <property name="working.javadoc.dir" location="${working.dir}/javadoc" />
+    <property name="working.src.jar" location="${working.dir}/jbehave-${version}-src.jar"/>
+    <property name="working.snapshot.name" value="jbehave-snapshot"/>
+    <property name="working.src.dir" location="${working.dir}/${working.snapshot.name}" />
 
     <!-- dist stuff -->
     <property name="dist.dir" location="dist"/>
     <property name="dist.website.dir" location="${dist.dir}/website"/>
     <property name="dist.javadoc.dir" location="${dist.website.dir}/docs/javadoc"/>
+    <property name="dist.src.jar.dir" location="${dist.website.dir}/dist"/>
 
     <!-- core -->
     <property name="core.dir" location="../core"/>
@@ -75,14 +79,35 @@
             </group>
         </javadoc>
     </target>
+    
+    <target name="srcjar">
+            <mkdir dir="${working.src.dir}" />
+            <copy todir="${working.src.dir}">
+                <fileset dir="..">
+                    <exclude name="**/*.class" />
+                    <exclude name="**/dist/*" />
+                    <exclude name="**/delete_me/*"/>
+                    <include name="core/**"/>
+                    <include name="extensions/**"/>
+                    <include name="build/build.xml" />
+                    <include name="website/**"/>
+                </fileset>
+            </copy>
+    
+            <jar destfile="${working.src.jar}" basedir="${working.dir}" includes="${working.snapshot.name}/**" />
+    
+           <delete dir="${working.src.dir}"/>
+    </target>
 
-    <target name="dist" depends="core, extensions, website, javadoc">
+    <target name="dist" depends="core, extensions, website, javadoc, srcjar">
         <copy todir="${dist.website.dir}">
             <fileset dir="${website.dir}/output" />
         </copy>
         <copy todir="${dist.javadoc.dir}">
             <fileset dir="${working.javadoc.dir}" />
         </copy>
+        <copy todir="${dist.src.jar.dir}" file="${working.src.jar}"/>
+         
     </target>
 
     <!-- HOUSEKEEPING TARGETS -->

@@ -74,7 +74,6 @@ public interface UsingJMock extends JMockMixins {
                     new StackTraceElement[creationStackTrace.length - 1];
                 System.arraycopy(creationStackTrace, 1, fakedStackTrace, 0, fakedStackTrace.length);
                 exceptionToFake.setStackTrace(fakedStackTrace);
-                exceptionToFake.printStackTrace();
             } catch (NoSuchMethodError e) {
                 // shame - not running in a 1.4 VM
             }
