@@ -21,7 +21,31 @@ import com.thoughtworks.jbehave.extensions.story.codegen.domain.StoryDetails;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
 public class SimpleStoryParser implements StoryParser {
+    
+    class KeywordMatcher {
+        
+        private final String matchingToken;
 
+        public KeywordMatcher(String matchingToken) {
+            this.matchingToken = matchingToken;          
+        }
+        
+        boolean matches(String line) {
+           if (line == null) return false;
+           return line.toUpperCase().startsWith(matchingToken.toUpperCase());
+        }
+        
+        int keywordLength() {
+            return matchingToken.length();
+        }
+    }
+    
+    private KeywordMatcher thenMatcher = new KeywordMatcher("then ");
+    private KeywordMatcher andMatcher = new KeywordMatcher("and ");
+    private KeywordMatcher givenMatcher = new KeywordMatcher("given ");
+    private KeywordMatcher whenMatcher = new KeywordMatcher("when ");
+    private KeywordMatcher scenarioMatcher = new KeywordMatcher("scenario: ");
+  
     public StoryDetails parseStory(Reader reader) {
         BufferedReader buffered = new BufferedReader(reader);
         try {
@@ -40,14 +64,14 @@ public class SimpleStoryParser implements StoryParser {
         String input = null;
         do {
             input = reader.readLine();
-        } while (input != null && !input.startsWith("Scenario:"));
+        } while (input != null && !scenarioMatcher.matches(input));
         
         if (input == null) return;
         
-        String scenarioTitle = input.substring("Scenario: ".length());
+        String scenarioTitle = input.substring(scenarioMatcher.keywordLength());
         
         ContextDetails contextDetails = parseContext(reader);
-        BasicDetails eventDetails = parse("When ", reader);   
+        BasicDetails eventDetails = parse(whenMatcher, reader);   
         OutcomeDetails outcomeDetails = parseExpectations(reader);
         
         ScenarioDetails scenario = new ScenarioDetails(scenarioTitle, contextDetails, eventDetails, outcomeDetails);
@@ -62,13 +86,15 @@ public class SimpleStoryParser implements StoryParser {
     private ContextDetails parseContext(BufferedReader reader) throws Exception {
         ContextDetails contextDetails = new ContextDetails();
         
-        contextDetails.addGiven(parse("Given ", reader));
+        contextDetails.addGiven(parse(givenMatcher, reader));
         BasicDetails given = null;
-        while((given = parse("and ", reader)) != null) {
+        while((given = parse(andMatcher, reader)) != null) {
             contextDetails.addGiven(given);
         }
         return contextDetails;
     }
+    
+    
 
     /**
      * @param reader
@@ -76,9 +102,9 @@ public class SimpleStoryParser implements StoryParser {
      */
     private OutcomeDetails parseExpectations(BufferedReader reader) throws Exception {
         OutcomeDetails outcomeDetails = new OutcomeDetails();
-        outcomeDetails.addExpectation(parse("Then ", reader));
+        outcomeDetails.addExpectation(parse(thenMatcher, reader));
         BasicDetails expectation = null;
-        while ((expectation = parse("and ", reader)) != null) {
+        while ((expectation = parse(andMatcher, reader)) != null) {
             outcomeDetails.addExpectation(expectation);
         }    
         return outcomeDetails;
@@ -88,25 +114,25 @@ public class SimpleStoryParser implements StoryParser {
      * @param reader
      * @return
      */
-    private BasicDetails parse(String startsWith, BufferedReader reader) throws Exception {
+    private BasicDetails parse(KeywordMatcher matcher, BufferedReader reader) throws Exception {
         String description = "";
         String name;
         
         reader.mark(60);
-        String context = reader.readLine();
+        String line = reader.readLine();
         
-        if (context == null || !context.startsWith(startsWith)){
+        if (line == null || !matcher.matches(line)){
             reader.reset();
             return null;
         }
         
-        context = context.substring(startsWith.length());
+        line = line.substring(matcher.keywordLength());
         
-        if (context.indexOf("(") > 0) {
-            description = context.substring(context.indexOf("(") + 1, context.indexOf(")")); 
-            name = context.substring(0, context.indexOf("(") -1);
+        if (line.indexOf("(") > 0) {
+            description = line.substring(line.indexOf("(") + 1, line.indexOf(")")); 
+            name = line.substring(0, line.indexOf("(") -1);
         } else {
-            name = context;
+            name = line;
         }
         return new BasicDetails(name, description);
     }

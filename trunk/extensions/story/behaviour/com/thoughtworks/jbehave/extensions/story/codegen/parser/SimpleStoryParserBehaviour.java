@@ -130,7 +130,7 @@ public class SimpleStoryParserBehaviour {
         Verify.equal(expectedDetails, storyDetails);      
     }
     
-    public void shouldParseStoryWithMultipeGivens() throws Exception {
+    public void shouldParseScenarioWithMultipeGivens() throws Exception {
         // given
         String scenario = "Scenario: Happy story with overdraft\n" +
         		"Given Account has overdraft facility\n" +
@@ -155,7 +155,34 @@ public class SimpleStoryParserBehaviour {
         StoryDetails storyDetails = storyParser.parseStory(new StringReader(story));
         
         // verify
-        Verify.equal(expectedDetails, storyDetails);
+        Verify.equal(expectedDetails, storyDetails);        
+    }
+    
+    public void shouldParseScenariosWithMixedCaseKeywords() {
+        //      given
+        String scenario = "scenario: Happy story with overdraft\n" +
+        		"gIvEn Account has overdraft facility\n" +
+        		"And Account is easily within overdraft limit\n" +
+        		"when User requests cash (user requests 20)\n" +
+        		"theN ATM should dispense cash (ATM dispenses 20)\n";
         
+        String story = storyText + "\n" + scenario;
+        
+        // expect
+        StoryDetails expectedDetails = createStoryDetailsForDefaultStory();
+        
+        OutcomeDetails outcome = new OutcomeDetails();
+        outcome.addExpectation(new BasicDetails("ATM should dispense cash", "ATM dispenses 20"));
+        ContextDetails context = new ContextDetails();
+        context.addGiven(new BasicDetails("Account has overdraft facility", ""));
+        context.addGiven(new BasicDetails("Account is easily within overdraft limit", ""));
+        BasicDetails event = new BasicDetails("User requests cash", "user requests 20");
+        expectedDetails.addScenario(new ScenarioDetails("Happy story with overdraft", context, event, outcome));
+        
+        // when
+        StoryDetails storyDetails = storyParser.parseStory(new StringReader(story));
+        
+        // verify
+        Verify.equal(expectedDetails, storyDetails);
     }
 }
