@@ -105,8 +105,9 @@
         <copy todir="${dist.javadoc.dir}">
             <fileset dir="${working.javadoc.dir}" />
         </copy>
-        <copy todir="${dist.website.dist.dir}" file="${working.src.jar}"/>
-
+        <copy todir="${dist.website.dist.dir}">
+            <fileset dir="${dist.dir}" includes="jbehave-*.jar"/>
+        </copy>
     </target>
 
     <!-- HOUSEKEEPING TARGETS -->
