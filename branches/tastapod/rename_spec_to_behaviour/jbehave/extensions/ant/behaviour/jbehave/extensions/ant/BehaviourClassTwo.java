@@ -11,16 +11,16 @@ package jbehave.extensions.ant;
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
- * This is purely for using from JBehaveAntTaskSpec
+ *
+ * For Use from JBehaveAntTaskSpec
  */
-public class SpecOne {
+public class BehaviourClassTwo {
 	public static boolean wasCalled;
 
-	public SpecOne() {
+	public BehaviourClassTwo() {
 		wasCalled = false;
 	}
-
-	public void shouldDoBlah() throws Exception {
-		wasCalled = true;	
+	public void shouldDoBoo() {
+		wasCalled = true;
 	}
 }

@@ -8,24 +8,24 @@
 package jbehave.extensions.jmock;
 
 import org.jmock.Mock;
-import org.jmock.core.matcher.InvokeOnceMatcher;
+import org.jmock.core.mixin.Invoked;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 16-Jul-2004
  */
-public class ExampleMockSpec {
+public class ExampleMockBehaviour {
 	private Mock aMock;
 	private Mocker mocker;
 
-	interface ADependency {
+	interface Dependency {
 		void invokeMe();
 	}
 
-	public class AclassWithADependency {
-		private ADependency dep;
+	public class ClassWithDependency {
+		private Dependency dep;
 
-		public AclassWithADependency(ADependency dep) {
+		public ClassWithDependency(Dependency dep) {
 			this.dep = dep;
 		}
 
@@ -42,12 +42,12 @@ public class ExampleMockSpec {
 
 	public void shouldUseAMock() {
 		// setup
-		aMock = mocker.mock(ADependency.class);
+		aMock = mocker.mock(Dependency.class);
 
-		AclassWithADependency a = new AclassWithADependency((ADependency) aMock.proxy());
+		ClassWithDependency a = new ClassWithDependency((Dependency) aMock.proxy());
 
 		// expect
-		aMock.expects(new InvokeOnceMatcher()).method("invokeMe");
+		aMock.expects(Invoked.once()).method("invokeMe");
 
 		// execute
 		a.execute();

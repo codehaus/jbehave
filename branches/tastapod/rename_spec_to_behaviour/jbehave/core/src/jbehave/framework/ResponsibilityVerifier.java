@@ -14,72 +14,72 @@ import jbehave.framework.exception.BehaviourFrameworkError;
 import jbehave.framework.exception.VerificationException;
 
 /**
- * Represents a verifier for a single criteria, which can verify
+ * Represents a verifier for a single responsibility, which can verify
  * itself and present the results of its verification.
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class CriteriaVerifier {
-    private final Class spec;
+public class ResponsibilityVerifier {
+    private final Class behaviourClass;
     private final Method method;
-    private final Object specInstance;
+    private final Object behaviourClassInstance;
 
-    public CriteriaVerifier(Method method) {
+    public ResponsibilityVerifier(Method method) {
         try {
             this.method = method;
-            this.spec = method.getDeclaringClass();
-            this.specInstance = spec.newInstance();
+            this.behaviourClass = method.getDeclaringClass();
+            this.behaviourClassInstance = behaviourClass.newInstance();
         }
         catch (Exception e) {
-            throw new BehaviourFrameworkError("Unable to instantiate instance of " + method.getDeclaringClass().getName());
+            throw new BehaviourFrameworkError("Unable to instantiate " + method.getDeclaringClass().getName());
         }
     }
 
-    public CriteriaVerifier(Method method, Object specInstance) {
+    public ResponsibilityVerifier(Method method, Object behaviourClassInstance) {
         this.method = method;
-        this.spec = method.getDeclaringClass();
-        this.specInstance = specInstance;
+        this.behaviourClass = method.getDeclaringClass();
+        this.behaviourClassInstance = behaviourClassInstance;
     }
 
     public String getName() {
         return method.getName();
     }
     
-    public String getSpecName() {
-        String className = spec.getName();
-        int lastDot = className.lastIndexOf('.');
-        return className.substring(lastDot + 1);
+    public String getBehaviourClassName() {
+        String name = behaviourClass.getName();
+        int lastDot = name.lastIndexOf('.');
+        return name.substring(lastDot + 1);
     }
     
-    public Class getSpec() {
-        return spec;
+    public Class getBehaviourClass() {
+        return behaviourClass;
     }
 
     /**
-     * Verify an individual criteria.
+     * Verify an individual responsibility.
      * 
      * We call the lifecycle methods <tt>setUp</tt> and <tt>tearDown</tt>
      * in the appropriate places if either of them exist.<br>
      * <br>
      * The {@link Listener} is alerted before and after the verification,
-     * with calls to {@link Listener#criteriaVerificationStarting(CriteriaVerifier,Object)
-     * beforeCriteriaVerificationStarts(this)} and
-     * {@link Listener#criteriaVerificationEnding(CriteriaVerification,Object)
-     * afterCriteriaVerificationEnds(result)} respectively.
+     * with calls to {@link Listener#responsibilityVerificationStarting(ResponsibilityVerifier,Object)
+     * responsibilityVerificationStarting(this)} and
+     * {@link Listener#responsibilityVerificationEnding(ResponsibilityVerification,Object)
+     * responsibilityVerificationEnding(result)} respectively.
      */
-    public CriteriaVerification verifyCriteria(Listener listener) {
-        CriteriaVerification result = null;
+    public ResponsibilityVerification verifyResponsibility(Listener listener) {
+        ResponsibilityVerification result = null;
         try {
-            listener.criteriaVerificationStarting(this, specInstance);
+            listener.responsibilityVerificationStarting(this, behaviourClassInstance);
             setUp();
-            method.invoke(specInstance, new Object[0]);
+            method.invoke(behaviourClassInstance, new Object[0]);
             result = createVerification(null);
         } catch (InvocationTargetException e) {
             // method failed
             result = createVerification(e.getTargetException());
         } catch (Exception e) {
             throw new BehaviourFrameworkError(
-                    "Problem invoking " + spec.getName() + "#" + method.getName(), e);
+                    "Problem invoking " + behaviourClass.getName() + "#" + method.getName(), e);
         }
         finally {
             try {
@@ -94,14 +94,14 @@ public class CriteriaVerifier {
                 throw new BehaviourFrameworkError(e);
             }
         }
-        listener.criteriaVerificationEnding(result, specInstance);
+        listener.responsibilityVerificationEnding(result, behaviourClassInstance);
         return result;
     }
 
 	private void setUp() throws InvocationTargetException {
         try {
-            Method setUp = getSpec().getMethod("setUp", new Class[0]);
-            setUp.invoke(specInstance, new Object[0]);
+            Method setUp = getBehaviourClass().getMethod("setUp", new Class[0]);
+            setUp.invoke(behaviourClassInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a setUp() method - never mind
         } catch (InvocationTargetException e) {
@@ -115,8 +115,8 @@ public class CriteriaVerifier {
 
     private void tearDown() throws InvocationTargetException {
         try {
-            Method tearDown = getSpec().getMethod("tearDown", new Class[0]);
-            tearDown.invoke(specInstance, new Object[0]);
+            Method tearDown = getBehaviourClass().getMethod("tearDown", new Class[0]);
+            tearDown.invoke(behaviourClassInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a tearDown() method - never mind
         } catch (InvocationTargetException e) {
@@ -129,7 +129,7 @@ public class CriteriaVerifier {
     }
 
     /**
-     * Create a {@link CriteriaVerification}, possibly based on an error condition.
+     * Create a {@link ResponsibilityVerification}, possibly based on an error condition.
      * 
      * This will be one of the following cases:
      * <ul>
@@ -140,18 +140,18 @@ public class CriteriaVerifier {
      * 
      * @throws ThreadDeath if the target exception itself is a <tt>ThreadDeath</tt>.
      */
-    private CriteriaVerification createVerification(Throwable targetException) {
+    private ResponsibilityVerification createVerification(Throwable targetException) {
         
         // propagate thread death otherwise Bad Things happen (or rather Good Things don't)
         if (targetException instanceof ThreadDeath) {
             throw (ThreadDeath)targetException;
         }
         else {
-            return new CriteriaVerification(method.getName(), spec.getName(), targetException);
+            return new ResponsibilityVerification(method.getName(), behaviourClass.getName(), targetException);
         }
     }
     
     public String toString() {
-        return "[CriteriaVerifier: " + getSpecName() + "." + method.getName() + "]";
+        return "[ResponsibilityVerifier: " + getBehaviourClassName() + "." + method.getName() + "]";
     }
 }

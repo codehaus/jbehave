@@ -4,17 +4,16 @@
 	<property name="project" value="${ant.project.name}" />
 
 	<property name="src.dir" location="src" />
-	<property name="spec.dir" location="behaviour" />
+	<property name="behaviour.dir" location="behaviour" />
 	<property name="test.dir" location="test" />
 	<property name="behaviour.dir" location="behaviour" />
 
 	<property name="build.dir" location="build" />
 	<property name="classes.dir" location="${build.dir}/classes" />
-	<property name="spec.classes.dir" location="${build.dir}/specs" />
+	<property name="behaviour.classes.dir" location="${build.dir}/behaviour" />
 	<property name="test.classes.dir" location="${build.dir}/test-classes" />
 	<property name="dist.dir" location="${build.dir}/dist" />
 	<property name="jar.file" location="${dist.dir}/${project}-${version}.jar" />
-
 
 	<target name="-init">
 		<mkdir dir="${build.dir}" />
@@ -34,8 +33,8 @@
 	</target>
 
 	<target name="spec.compile" depends="jar">
-		<mkdir dir="${spec.classes.dir}" />
-		<javac fork="true" srcdir="${spec.dir}" destdir="${spec.classes.dir}">
+		<mkdir dir="${behaviour.classes.dir}" />
+		<javac fork="true" srcdir="${behaviour.dir}" destdir="${behaviour.classes.dir}">
 			<classpath>
 				<pathelement location="${jar.file}" />
 			</classpath>
@@ -47,32 +46,10 @@
 			<arg value="jbehave.AllSpecs"/>
 			<classpath>
 				<pathelement location="${jar.file}"/>
-				<pathelement location="${spec.classes.dir}"/>
+				<pathelement location="${behaviour.classes.dir}"/>
 			</classpath>
 		</java>
 	</target>
-
-	<!--
-	Do we really need or want this?
-	<target name="test.compile" depends="jar">
-		<mkdir dir="${test.classes.dir}" />
-		<javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
-			<classpath>
-				<pathelement location="${jar.file}" />
-			</classpath>
-		</javac>
-	</target>
-
-	<target name="test" depends="test.compile">
-		<junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
-			<formatter type="plain" />
-			<classpath>
-				<path location="${test.classes.dir}" />
-				<path location="${jar.file}" />
-			</classpath>
-			<test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}" />
-		</junit>
-	</target>  -->
 
 	<taskdef name="jbehave"
                  classname="jbehave.extensions.ant.JBehaveAntTask"
@@ -83,7 +60,7 @@
 			<spec specname="jbehave.AllSpecs"/>
 			<classpath>
 				<pathelement location="${classes.dir}"/>
-				<pathelement location="${spec.classes.dir}"/>
+				<pathelement location="${behaviour.classes.dir}"/>
 			</classpath>
 		</jbehave>
 	</target>

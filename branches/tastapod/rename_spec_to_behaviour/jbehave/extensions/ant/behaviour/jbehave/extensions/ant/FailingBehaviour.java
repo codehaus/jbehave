@@ -7,20 +7,16 @@
  */
 package jbehave.extensions.ant;
 
+import jbehave.framework.Verify;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
  *
- * For Use from JBehaveAntTaskSpec
+ * For use from {@link JBehaveAntTaskBehaviour}
  */
-public class SpecTwo {
-	public static boolean wasCalled;
-
-	public SpecTwo() {
-		wasCalled = false;
-	}
-	public void shouldDoBoo() {
-		wasCalled = true;
+public class FailingBehaviour {
+	public void shouldFail() throws Exception {
+		Verify.that(false);
 	}
 }

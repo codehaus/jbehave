@@ -9,22 +9,22 @@ package jbehave.framework;
 
 
 /**
- * Implemented by classes that contain specs. It should probably
+ * Implemented by classes that contain behaviour classes. It should probably
  * be called <tt>Composite</tt> but then I'd get strung up by the patterns
  * police because it isn't really an implementation of the Composite
- * pattern - more a way of grouping specs together.<br>
+ * pattern - more a way of grouping behaviour classes together.<br>
  * <br>
  * Any implementing class must also have a default constructor so that it
- * can be interrogated by a {@link SpecVerifier}.
+ * can be interrogated by a {@link BehaviourClassVerifier}.
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public interface SpecContainer {
+public interface BehaviourClassContainer {
     /**
-     * Return an array of all the contained specs.
+     * Return an array of all the contained behaviour classes.
      * 
      * This is processed recursively, so the array could contain other
-     * <tt>SpecContainer</tt> classes.
+     * <tt>BehaviourClassContainer</tt> classes.
      */
-    Class[] getSpecs();
+    Class[] getBehaviourClasses();
 }

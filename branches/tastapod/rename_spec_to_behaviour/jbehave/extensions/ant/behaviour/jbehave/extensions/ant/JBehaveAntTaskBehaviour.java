@@ -16,43 +16,43 @@ import org.apache.tools.ant.types.Path;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
  */
-public class JBehaveAntTaskSpec {
-	private JBehaveAntTask task;
+public class JBehaveAntTaskBehaviour {
+	private AntTask task;
 	private Project project;
 
 	public void setUp() {
-		task = new JBehaveAntTask();
+		task = new AntTask();
 		project = new Project();
 		project.setCoreLoader(getClass().getClassLoader());
 		task.setProject(project);
 	}
 
-	public void shouldRunASingleSpec() throws Exception {
+	public void shouldRunASingleBehaviourClass() throws Exception {
 		// setup
-		Spec spec = task.createSpec();
-		spec.setSpecName("jbehave.extensions.ant.SpecOne");
+		BehaviourClass spec = task.createBehaviourClass();
+		spec.setBehaviourClassName("jbehave.extensions.ant.BehaviourClassOne");
 
 		// execute
 		task.execute();
 
 		// verify
-		Verify.that(SpecOne.wasCalled);
+		Verify.that(BehaviourClassOne.wasCalled);
 	}
 
 
-	public void shouldRunMulipleSpecs() throws Exception {
+	public void shouldRunMultipleBehaviourClasses() throws Exception {
 		// setup
-		Spec spec = task.createSpec();
-		spec.setSpecName("jbehave.extensions.ant.SpecOne");
-		Spec spec2 = task.createSpec();
-		spec2.setSpecName("jbehave.extensions.ant.SpecTwo");
+		BehaviourClass spec = task.createBehaviourClass();
+		spec.setBehaviourClassName("jbehave.extensions.ant.BehaviourClassOne");
+		BehaviourClass spec2 = task.createBehaviourClass();
+		spec2.setBehaviourClassName("jbehave.extensions.ant.BehaviourClassTwo");
 
 		// execute
 		task.execute();
 
 		// verify
-		Verify.that(SpecOne.wasCalled);
-		Verify.that(SpecTwo.wasCalled);
+		Verify.that(BehaviourClassOne.wasCalled);
+		Verify.that(BehaviourClassTwo.wasCalled);
 	}
 
 
@@ -61,18 +61,18 @@ public class JBehaveAntTaskSpec {
 		Path path = task.createClasspath();
 		Path.PathElement element = path.createPathElement();
 		element.setPath(".\\classes");
-		task.createSpec().setSpecName("jbehave.extensions.ant.SpecOne");
+		task.createBehaviourClass().setBehaviourClassName("jbehave.extensions.ant.SpecOne");
 
 		//execute
 		task.execute();
 
 		// verify
-		Verify.that(SpecOne.wasCalled);
+		Verify.that(BehaviourClassOne.wasCalled);
 	}
 
 	public void shouldFailTheBuildWhenCriteriaFails() throws Exception {
 		// setup
-		task.createSpec().setSpecName("jbehave.extensions.ant.FailingSpec");
+		task.createBehaviourClass().setBehaviourClassName("jbehave.extensions.ant.FailingSpec");
 		// execute
 		try {
 			task.execute();
@@ -84,9 +84,9 @@ public class JBehaveAntTaskSpec {
 
 	public void shouldFailTheBuildWhenFirstSpecFails() throws Exception {
 		// setup
-		task.createSpec().setSpecName("jbehave.extensions.ant.FailingSpec");
-		task.createSpec().setSpecName("jbehave.extensions.ant.SpecOne");
-		SpecOne.wasCalled = false; // i hate this!
+		task.createBehaviourClass().setBehaviourClassName("jbehave.extensions.ant.FailingSpec");
+		task.createBehaviourClass().setBehaviourClassName("jbehave.extensions.ant.SpecOne");
+		BehaviourClassOne.wasCalled = false; // i hate this!
 
 		// execute
 		try {
@@ -97,7 +97,7 @@ public class JBehaveAntTaskSpec {
 		}
 
 		// verify
-		Verify.that("SpecOne should not have been run", !SpecOne.wasCalled);
+		Verify.that("SpecOne should not have been run", !BehaviourClassOne.wasCalled);
 	}
 	
 

@@ -7,16 +7,20 @@
  */
 package jbehave.extensions.ant;
 
-import jbehave.framework.Verify;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
- *
- * For use from JBehaveAntTaskSpec
  */
-public class FailingSpec {
-	public void shouldFail() throws Exception {
-		Verify.that(false);
+public class BehaviourClass {
+	private String behaviourClassName;
+
+	public void setBehaviourClassName(String behaviourClassName) {
+		this.behaviourClassName = behaviourClassName;
+
+	}
+
+	public String getBehaviourClassName() {
+		return behaviourClassName;
 	}
 }

@@ -22,7 +22,7 @@ import java.io.OutputStreamWriter;
 import jbehave.extensions.ant.listeners.AntListener;
 import jbehave.listeners.CompositeListener;
 import jbehave.listeners.TextListener;
-import jbehave.framework.SpecVerifier;
+import jbehave.framework.BehaviourClassVerifier;
 import jbehave.framework.Listener;
 
 /**
@@ -49,19 +49,19 @@ import jbehave.framework.Listener;
  *		&lt;/jbehave&gt;
  *	&lt;/target&gt;
  */
-public class JBehaveAntTask extends org.apache.tools.ant.Task {
-	private List specList;
+public class AntTask extends org.apache.tools.ant.Task {
+	private List behaviourClassList;
 	private CommandlineJava commandLine = new CommandlineJava();
 	private AntClassLoader loader;
 
-	public JBehaveAntTask() {
-		specList = new LinkedList();
+	public AntTask() {
+		behaviourClassList = new LinkedList();
 	}
 
-	public Spec createSpec() {
-		Spec spec = new Spec();
-		specList.add(spec);
-		return spec;
+	public BehaviourClass createBehaviourClass() {
+		BehaviourClass behaviourClass = new BehaviourClass();
+		behaviourClassList.add(behaviourClass);
+		return behaviourClass;
 	}
 
 	public Path createClasspath() {
@@ -79,16 +79,16 @@ public class JBehaveAntTask extends org.apache.tools.ant.Task {
 	private void verifyAll() {
 		createClassLoader();
 		AntListener listener = new AntListener();
-		for (Iterator iter = specList.iterator(); iter.hasNext(); ) {
-			verifySpec((Spec) iter.next(), listener);
+		for (Iterator iter = behaviourClassList.iterator(); iter.hasNext(); ) {
+			verifySpec((BehaviourClass) iter.next(), listener);
 		}
 	}
 
-	private void verifySpec(Spec spec, AntListener listener) {
+	private void verifySpec(BehaviourClass spec, AntListener listener) {
 		try {
-			SpecVerifier verifier = new SpecVerifier(getSpec(spec.getSpecName()));
-			verifier.verifySpec(createCompositeListener(listener));
-			if (listener.failBuild()) throw new BuildException(spec.getSpecName() + "failed");
+			BehaviourClassVerifier verifier = new BehaviourClassVerifier(getSpec(spec.getBehaviourClassName()));
+			verifier.verifyBehaviourClass(createCompositeListener(listener));
+			if (listener.failBuild()) throw new BuildException(spec.getBehaviourClassName() + "failed");
 		} catch (ClassNotFoundException e) {
         	throw new BuildException(e);
 		}
