@@ -30,6 +30,7 @@ public class VisitableArrayListBehaviour extends UsingJMock {
         // when...
         list.accept(visitor);
         
-        // then... verified by pixies
+        // then...
+        verifyMocks();
     }
 }

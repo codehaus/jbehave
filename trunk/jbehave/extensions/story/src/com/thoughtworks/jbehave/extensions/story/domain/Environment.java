@@ -11,14 +11,6 @@ package com.thoughtworks.jbehave.extensions.story.domain;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Environment {
-    Environment NULL = new Environment() {
-        public Object get(String key, Object defaultValue) {
-            return null;
-        }
-        public void put(String key, Object value) {
-        }
-    };
-    
     /**
      * Get something out of the environment.
      * 

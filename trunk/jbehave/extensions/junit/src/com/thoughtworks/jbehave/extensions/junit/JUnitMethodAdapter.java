@@ -17,7 +17,7 @@ import junit.framework.TestResult;
 
 import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.Result;
-import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDown;
+import com.thoughtworks.jbehave.core.verifiers.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
 public class JUnitMethodAdapter extends TestCase {
@@ -42,15 +42,15 @@ public class JUnitMethodAdapter extends TestCase {
 
     private void verifyMethod(TestResult testResult) {
         final Result result =
-            new BehaviourMethod(new InvokeMethodWithSetUpAndTearDown(), method, instance).verify();
+            new InvokeMethodWithSetUpAndTearDown().verify(new BehaviourMethod(instance, method, null));
         if (result.failed()) {
-            testResult.addFailure(this, buildAssertionFailedError(result.getCause()));
+            testResult.addFailure(this, buildAssertionFailedError(result.cause()));
         }
         else if (result.threwException()) {
-            testResult.addError(this, result.getCause());
+            testResult.addError(this, result.cause());
         }
         else if (result.isPending()) {
-            System.out.println(result.getName() + ": " + result.getCause().getMessage());
+            System.out.println(result.name() + ": " + result.cause().getMessage());
         }
     }
 

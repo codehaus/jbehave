@@ -26,7 +26,8 @@ public class OutcomeBehaviour extends UsingJMock {
         // when...
         outcome.accept((Visitor)visitor.proxy());
         
-        // then... verified by pixies
+        // then...
+        verifyMocks();
     }
     
     public void shouldTellExpectationsToAcceptVisitorInCorrectOrder() throws Exception {
@@ -48,7 +49,8 @@ public class OutcomeBehaviour extends UsingJMock {
         // when...
         outcome.accept(visitor);
         
-        // then... verified by framework
+        // then...
+        verifyMocks();
     }
     
     private static class SomeRuntimeException extends RuntimeException {
@@ -69,5 +71,8 @@ public class OutcomeBehaviour extends UsingJMock {
             Verify.impossible("Should have propagated SomeRuntimeException");
         } catch (SomeRuntimeException expected) {
         }
+        
+        // then...
+        verifyMocks();
     }
 }

@@ -17,29 +17,29 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class Result {
-    public static class ResultType {
+    public static class Type {
         private final String description;
-        private final char symbol;
+        private final String symbol;
 
-        protected ResultType(String description, char symbol) {
+        protected Type(String description, String symbol) {
             this.description = description;
             this.symbol = symbol;
         }
         public String toString() {
             return description;
         }
-        public char getSymbol() {
+        public String symbol() {
             return symbol;
         }
     }
 
-    public static final ResultType SUCCEEDED = new ResultType("Succeeded", '.');
-    public static final ResultType FAILED = new ResultType("Failed", 'F');
-    public static final ResultType THREW_EXCEPTION = new ResultType("Threw Exception", 'E');
-    public static final ResultType PENDING = new ResultType("Pending", 'P');
-
+    public static final Type SUCCEEDED = new Type("Succeeded", ".");
+    public static final Type FAILED = new Type("Failed", "F");
+    public static final Type THREW_EXCEPTION = new Type("Threw Exception", "E");
+    public static final Type PENDING = new Type("Pending", "P");
+    
     private final String name;
-    private final ResultType status;
+    private final Type status;
     private final Throwable cause;
 
     /**
@@ -51,7 +51,7 @@ public class Result {
         this.status = getStatusFromCause(cause);
     }
 
-    private static ResultType getStatusFromCause(Throwable cause) {
+    private static Type getStatusFromCause(Throwable cause) {
         if (cause == null) {
             return SUCCEEDED;
         }
@@ -69,21 +69,21 @@ public class Result {
     /**
      * Constructor that sets status independently of cause
      */
-    public Result(String name, ResultType status) {
+    public Result(String name, Type status) {
         this.name = name;
         this.cause = null;
         this.status = status;
     }
 
-    public String getName() {
+    public String name() {
         return name;
     }
 
-    public ResultType getStatus() {
+    public Type status() {
         return status;
     }
 
-    public Throwable getCause() {
+    public Throwable cause() {
         return cause;
     }
 

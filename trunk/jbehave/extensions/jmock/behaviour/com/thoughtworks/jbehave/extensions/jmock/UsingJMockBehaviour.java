@@ -52,13 +52,12 @@ public class UsingJMockBehaviour extends JMockSugar {
         instance.shouldDoSomething();
         
         // then...
-        Verify.equal(0, instance.getMocks().size());
+        Verify.that(instance.getMocks().isEmpty());
         Verify.not(instance.containsMocks());
     }
     
     /**
-     * Ok, you'll need to concentrate here. This class is used to verify the behaviour of {@link UsingJMock#verify()}.
-     * To do this we have to mock the {@link Verifiable} interface, to ensure that its <tt>verify()</tt> method is called.
+     * Ok, you'll need to concentrate here. This class is used to verify the behaviour of {@link UsingJMock#verifyMocks()}.
      * 
      * Got that? We're going to mock a Mock. I hope it doesn't get any more self-referential than this because my
      * brain might implode. God alone knows how they wrote JMock without going insane.
@@ -82,7 +81,7 @@ public class UsingJMockBehaviour extends JMockSugar {
         mock2.expects(once()).method("verify").withNoArguments();
         
         // when...
-        instance.verify();
+        instance.verifyMocks();
         
         // verify...
         mock1.verify();
@@ -101,7 +100,7 @@ public class UsingJMockBehaviour extends JMockSugar {
 
         // when...
         try {
-            instance.verify();
+            instance.verifyMocks();
             Verify.impossible("should have thrown VerificationException");
         }
         catch (VerificationException expected) {
@@ -139,6 +138,5 @@ public class UsingJMockBehaviour extends JMockSugar {
         Verify.that(isDynamicProxy(instance.anInterface.proxy()));
         Verify.not(isDynamicProxy(instance.anAbstractClass.proxy()));
         Verify.not(isDynamicProxy(instance.aConcreteClass.proxy()));
-        
     }
 }

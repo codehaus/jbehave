@@ -7,16 +7,14 @@
  */
 package com.thoughtworks.jbehave;
 
-import com.thoughtworks.jbehave.core.BehaviourClassBehaviour;
 import com.thoughtworks.jbehave.core.BehaviourClassContainer;
+import com.thoughtworks.jbehave.core.BehaviourClassBehaviour;
 import com.thoughtworks.jbehave.core.BehaviourMethodBehaviour;
-import com.thoughtworks.jbehave.core.BehaviourVerifierBehaviour;
-import com.thoughtworks.jbehave.core.ResultBehaviour;
-import com.thoughtworks.jbehave.core.invokers.DontInvokeMethodBehaviour;
-import com.thoughtworks.jbehave.core.invokers.InvokeMethodWithSetUpAndTearDownBehaviour;
-import com.thoughtworks.jbehave.core.listeners.TextListenerBehaviour;
-import com.thoughtworks.jbehave.core.listeners.TimerBehaviour;
+import com.thoughtworks.jbehave.core.listeners.TextReporterBehaviour;
+import com.thoughtworks.jbehave.core.verifiers.DontInvokeMethodBehaviour;
+import com.thoughtworks.jbehave.core.verifiers.InvokeMethodWithSetUpAndTearDownBehaviour;
 import com.thoughtworks.jbehave.util.ConvertCaseBehaviour;
+import com.thoughtworks.jbehave.util.TimerBehaviour;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
@@ -24,15 +22,13 @@ import com.thoughtworks.jbehave.util.ConvertCaseBehaviour;
 public class AllBehaviourClasses implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
-            BehaviourClassBehaviour.class,
-            BehaviourMethodBehaviour.class,
-            BehaviourVerifierBehaviour.class,
-            ResultBehaviour.class,
-            DontInvokeMethodBehaviour.class,
-            InvokeMethodWithSetUpAndTearDownBehaviour.class,
-            TextListenerBehaviour.class,
-            TimerBehaviour.class,
-            ConvertCaseBehaviour.class
+                DontInvokeMethodBehaviour.class,
+                InvokeMethodWithSetUpAndTearDownBehaviour.class,
+                TextReporterBehaviour.class,
+                BehaviourClassBehaviour.class,
+                BehaviourMethodBehaviour.class,
+                ConvertCaseBehaviour.class,
+                TimerBehaviour.class
         };
     }
 }

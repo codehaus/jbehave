@@ -49,7 +49,6 @@ public class JUnitAdapterBehaviour {
         
         public void shouldDoSomethingElse() throws Exception {
         }
-        
     }
     
     public void shouldCountMultipleBehaviourMethodsAsTests() throws Exception {
@@ -63,11 +62,9 @@ public class JUnitAdapterBehaviour {
         Verify.equal(2, testCaseCount);
     }
     
-    private static boolean wasCalled = false;
-    
     public static class HasFailingMethod {
         public void shouldDoSomething() throws Exception {
-            wasCalled = true;
+            Verify.impossible("should not be invoked");
         }
     }
     
@@ -78,12 +75,9 @@ public class JUnitAdapterBehaviour {
         
         // execute
         suite.countTestCases();
-        
-        // verify
-        Verify.not(wasCalled);
     }
     
-    public static class BehaviourClass2 {
+    public static class SomeBehaviourClass {
         public void shouldDoSomething() throws Exception {
             sequenceOfEvents.add("shouldDoSomething");
         }
@@ -94,7 +88,7 @@ public class JUnitAdapterBehaviour {
     
     public void shouldExecuteBehaviourMethods() throws Exception {
         // setup
-        JUnitAdapter.setBehaviourClass(BehaviourClass2.class);
+        JUnitAdapter.setBehaviourClass(SomeBehaviourClass.class);
         Test suite = JUnitAdapter.suite();
         
         TestResult testResult = new TestResult() {

@@ -1,5 +1,5 @@
 /*
- * Created on 29-Sep-2004
+ * Created on 07-Oct-2004
  * 
  * (c) 2003-2004 ThoughtWorks Ltd
  *
@@ -11,8 +11,10 @@ package com.thoughtworks.jbehave.core;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface Behaviour {
+public interface Visitor {
+    void before(Visitable visitable);
 
-    Result verify() throws Exception;
+    void after(Visitable visitable);
 
+    void gotResult(Result result);
 }

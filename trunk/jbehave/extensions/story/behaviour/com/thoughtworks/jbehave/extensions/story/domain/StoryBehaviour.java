@@ -28,6 +28,9 @@ public class StoryBehaviour extends UsingJMock {
         
         // when...
         story.accept((Visitor) visitor.proxy());
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldTellComponentsToAcceptVisitorInCorrectOrder() throws Exception {
@@ -43,4 +46,8 @@ public class StoryBehaviour extends UsingJMock {
         
         // when...
         story.accept(visitor);
-    }}
+        
+        // then...
+        verifyMocks();
+    }
+}

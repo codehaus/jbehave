@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave.core.listeners;
+package com.thoughtworks.jbehave.util;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>

@@ -5,9 +5,10 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave.core.listeners;
+package com.thoughtworks.jbehave.util;
 
 import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.util.Timer;
 
 
 /**

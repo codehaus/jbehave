@@ -73,6 +73,14 @@ public class Verify {
 	public static void sameInstance(Object expected, Object actual) {
         sameInstance(null, expected, actual);
 	}
+    
+	public static void identical(String message, Object expected, Object actual) {
+        sameInstance(message, expected, actual);
+	}
+    
+	public static void identical(Object expected, Object actual) {
+        sameInstance(null, expected, actual);
+	}
 
     // Verify.that(...)
     public static void that(String message, boolean condition) {

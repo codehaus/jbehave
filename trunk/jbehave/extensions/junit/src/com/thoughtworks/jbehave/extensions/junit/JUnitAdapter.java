@@ -13,11 +13,9 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourClass;
-import com.thoughtworks.jbehave.core.BehaviourVerifier;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
-import com.thoughtworks.jbehave.core.invokers.DontInvokeMethod;
+import com.thoughtworks.jbehave.core.verifiers.DontInvokeMethod;
 import com.thoughtworks.jbehave.extensions.junit.listener.TestSuitePopulater;
 
 /**
@@ -47,12 +45,9 @@ public class JUnitAdapter {
         final TestSuite[] suiteRef = new TestSuite[1]; // Collecting Parameter
         
         final TestSuitePopulater populater = new TestSuitePopulater(suiteRef);
+        BehaviourClass visitableClass = new BehaviourClass(classToVerify, new DontInvokeMethod());
+        visitableClass.accept(populater);
         
-        BehaviourVerifier verifier = new BehaviourVerifier();
-        verifier.registerListener(populater);
-        Behaviour behaviour = new BehaviourClass(classToVerify, verifier, new DontInvokeMethod());
-        verifier.verify(behaviour);
-
         return suiteRef[0];
     }
 

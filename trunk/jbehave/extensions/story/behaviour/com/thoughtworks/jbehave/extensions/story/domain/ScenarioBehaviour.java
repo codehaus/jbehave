@@ -29,6 +29,9 @@ public class ScenarioBehaviour extends UsingJMock {
 
         // when...
         scenario.accept((Visitor)visitor.proxy());
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldTellComponentsToAcceptVisitorInCorrectOrder() throws Exception {
@@ -186,5 +189,8 @@ public class ScenarioBehaviour extends UsingJMock {
 
         // when...
         scenario.accept(visitorStub);
+        
+        // then...
+        verifyMocks();
     }
 }

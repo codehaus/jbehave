@@ -36,6 +36,9 @@ public class StoryRunnerBehaviour extends UsingJMock {
         
         // when...
         runner.visitGiven((Given)given.proxy());
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldSetExpectationInEnvironmentBeforeEventOccurs() throws Exception {
@@ -44,10 +47,14 @@ public class StoryRunnerBehaviour extends UsingJMock {
         StoryRunner runner = new StoryRunner(environment, listenerStub);
         Mock expectation = new Mock(Expectation.class);
         
+        // expect...
         expectation.expects(once()).method("setExpectationIn").with(same(environment));
         
         // when...
         runner.visitExpectationBeforeTheEvent((Expectation)expectation.proxy());
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldMakeEventOccurInEnvironment() throws Exception {
@@ -56,10 +63,14 @@ public class StoryRunnerBehaviour extends UsingJMock {
         StoryRunner runner = new StoryRunner(environment, listenerStub);
         Mock event = new Mock(Event.class);
         
+        // expect...
         event.expects(once()).method("occurIn").with(same(environment));
         
         // when...
         runner.visitEvent((Event)event.proxy());
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldVerifyExpectationInEnvironmentAfterEventOccurs() throws Exception {
@@ -93,5 +104,8 @@ public class StoryRunnerBehaviour extends UsingJMock {
         // when...
         runner.visitGiven((Given) givenWithMocks.proxy());
         runner.visitGiven((Given) givenWithoutMocks.proxy());
+        
+        // then...
+        verifyMocks();
     }
 }

@@ -13,28 +13,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourClass;
-import com.thoughtworks.jbehave.core.BehaviourListener;
-import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.Result;
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
+import com.thoughtworks.jbehave.util.Timer;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextListener implements BehaviourListener {
+public class TextReporter implements Visitor {
     /** Stores something interesting to report */
     private static class Note {
         public final Result result;
-        public final Class behaviourClass;
-        public Note(Result result, Class behaviourClass) {
+        public final BehaviourClass behaviourClass;
+        public Note(Result result, BehaviourClass behaviourClass) {
             this.result = result;
             this.behaviourClass = behaviourClass;
         }
-    }
-
-    public boolean caresAbout(Behaviour behaviour) {
-        return behaviour instanceof BehaviourClass || behaviour instanceof BehaviourMethod;
     }
     
     public static final String SUCCESS = ".";
@@ -48,28 +44,47 @@ public class TextListener implements BehaviourListener {
     private final List exceptionsThrown = new ArrayList();
     private final List pending = new ArrayList();
     private final Timer timer;
-    private Class outermostBehaviourClass = null;
+    private Visitable outermost = null;
+    private BehaviourClass currentClass = null;
 
-    public TextListener(Writer writer, Timer timer) {
+    public TextReporter(Writer writer, Timer timer) {
         out = new PrintWriter(writer);
         this.timer = timer;
         timer.start();
     }
 
-    public TextListener(Writer writer) {
+    public TextReporter(Writer writer) {
         this(writer, new Timer());
     }
-    
-    public void behaviourClassVerificationStarting(Class behaviourClass) {
-        if (outermostBehaviourClass == null) {
-            outermostBehaviourClass = behaviourClass;
+
+    public void before(Visitable visitable) {
+        if (outermost == null) {
+            outermost = visitable;
+        }
+        
+        if (visitable instanceof BehaviourClass) {
+            currentClass = (BehaviourClass) visitable;
         }
     }
-    
-    public void behaviourClassVerificationEnding(Class behaviourClass) {
-        if (behaviourClass.equals(outermostBehaviourClass)) {
+
+    public void after(Visitable visitable) {
+        if (visitable == outermost) {
             printReport();
         }
+    }
+
+    public void gotResult(Result result) {
+        methodsVerified++;
+        if (result.failed()) {
+            failures.add(new Note(result, currentClass));
+        }
+        else if (result.threwException()) {
+            exceptionsThrown.add(new Note(result, currentClass));
+        }
+        else if (result.isPending()) {
+            pending.add(new Note(result, currentClass));
+        }
+        out.print(result.status().symbol());
     }
 
     public void printReport() {
@@ -111,7 +126,7 @@ public class TextListener implements BehaviourListener {
             for (Iterator i = errorList.iterator(); i.hasNext(); count++) {
                 Note note = (Note)i.next();
                 printNote(count, note);
-                note.result.getCause().printStackTrace(out);
+                note.result.cause().printStackTrace(out);
                 out.println();
             }
         }
@@ -125,51 +140,18 @@ public class TextListener implements BehaviourListener {
             for (Iterator i = pending.iterator(); i.hasNext(); count++) {
                 Note note = (Note) i.next();
                 printNote(count, note);
-                out.println("\t" + note.result.getCause().getMessage());
+                out.println("\t" + note.result.cause().getMessage());
             }
         }
     }
     
     private void printNote(int count, Note note) {
-        String behaviourClassName = note.behaviourClass.getName();
-        int lastDot = behaviourClassName.lastIndexOf('.');
-        String className = behaviourClassName.substring(lastDot + 1);
-        int behaviourIndex = className.lastIndexOf("Behaviour");
-        if (behaviourIndex > 0) {
-            className = className.substring(0, behaviourIndex);
+        String fullName = note.behaviourClass.classToVerify().getName();
+        String shortName = fullName.substring(fullName.lastIndexOf('.') + 1);
+        shortName = fullName.substring(fullName.lastIndexOf('$') + 1);
+        if (shortName.endsWith("Behaviour")) {
+            shortName = shortName.substring(0, shortName.length() - 9);
         }
-        out.println(count + ") " + className + " " + note.result.getName() + " [" + behaviourClassName + "]:");
-    }
-
-    public void behaviourVerificationStarting(Behaviour behaviour) {
-    }
-    
-    public Result behaviourVerificationEnding(Result result, Behaviour behaviour) {
-        if (behaviour instanceof BehaviourClass) {
-            behaviourClassVerificationEnding(((BehaviourClass)behaviour).getClassToVerify());
-        }
-        else if (behaviour instanceof BehaviourMethod) {
-            methodVerificationEnding(result, ((BehaviourMethod)behaviour).getInstance().getClass());
-        }
-        return result;
-    }
-    
-    /**
-     * Write out the traditional dot, E or F as each behaviour runs.
-     */
-    private Result methodVerificationEnding(Result result, Class currentBehaviourClass) {
-        methodsVerified++;
-        if (result.failed()) {
-            failures.add(new Note(result, currentBehaviourClass));
-        }
-        else if (result.threwException()) {
-            exceptionsThrown.add(new Note(result, currentBehaviourClass));
-        }
-        else if (result.isPending()) {
-            pending.add(new Note(result, currentBehaviourClass));
-        }
-        out.print(result.getStatus().getSymbol());
-//        out.flush();
-		return result;
+        out.println(count + ") " + shortName + " " + note.result.name() + " [" + fullName + "]:");
     }
 }

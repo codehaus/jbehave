@@ -7,7 +7,9 @@ So that I don't have to visit the bank
 Scenario: Happy scenario
 
 Given Account is in credit (set balance = 50)
+
 When User requests cash (user requests 20)
+
 Then ATM should dispense cash (ATM dispenses 20)
 and ATM should return bank card
 and account balance should be reduced (account balance = 30)

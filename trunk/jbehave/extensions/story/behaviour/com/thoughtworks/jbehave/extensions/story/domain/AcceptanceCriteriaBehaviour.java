@@ -30,6 +30,9 @@ public class AcceptanceCriteriaBehaviour extends UsingJMock {
         criteria.addScenario((Scenario) scenario1.proxy());
         criteria.addScenario((Scenario) scenario2.proxy());
         criteria.accept(visitor);
+        
+        // then...
+        verifyMocks();
     }
 
 }

@@ -25,5 +25,8 @@ public class NarrativeBehaviour extends UsingJMock {
 
         // when...
         narrative.accept((Visitor)visitor.proxy());
+        
+        // then..
+        verifyMocks();
     }
 }

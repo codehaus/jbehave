@@ -13,16 +13,17 @@ import junit.framework.TestSuite;
 
 import com.thoughtworks.jbehave.core.Behaviour;
 import com.thoughtworks.jbehave.core.BehaviourClass;
-import com.thoughtworks.jbehave.core.BehaviourListener;
 import com.thoughtworks.jbehave.core.BehaviourMethod;
 import com.thoughtworks.jbehave.core.Result;
+import com.thoughtworks.jbehave.core.Visitable;
+import com.thoughtworks.jbehave.core.Visitor;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.extensions.junit.JUnitMethodAdapter;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TestSuitePopulater implements BehaviourListener {
+public class TestSuitePopulater implements Visitor {
     private final TestSuite[] suiteRef;
     private TestSuite currentSuite = null;
     private Class currentBehaviourClass;
@@ -31,44 +32,40 @@ public class TestSuitePopulater implements BehaviourListener {
         this.suiteRef = suiteRef;
     }
 
-    private void behaviourClassVerificationStarting(BehaviourClass behaviourClass) {
-        currentSuite = new TestSuite(behaviourClass.getClassToVerify().getName());
+    public void before(Visitable behaviour) {
+        if (behaviour instanceof BehaviourClass) {
+            beforeClass((BehaviourClass) behaviour);
+        }
+        else {
+            beforeMethod((BehaviourMethod) behaviour);
+        }
+    }
+
+    public void after(Visitable behaviour) {
+    }
+
+    public void gotResult(Result result) {
+    }
+
+    private void beforeClass(BehaviourClass visitableClass) {
+        currentSuite = new TestSuite(visitableClass.classToVerify().getName());
         if (suiteRef[0] == null) {
             suiteRef[0] = currentSuite;
         }
         else {
             suiteRef[0].addTest(currentSuite);
         }
-        currentBehaviourClass = behaviourClass.getClassToVerify();
+        currentBehaviourClass = visitableClass.classToVerify();
     }
 
-    private void behaviourMethodVerificationStarting(BehaviourMethod behaviourMethod) {
-        Method method = behaviourMethod.getMethodToVerify();
+    private void beforeMethod(BehaviourMethod behaviourMethod) {
+        Method method = behaviourMethod.methodToVerify();
         try {
             Object instance = currentBehaviourClass.newInstance();
-            currentSuite.addTest(new JUnitMethodAdapter(method,
-                    instance));
+            currentSuite.addTest(new JUnitMethodAdapter(method, instance));
         } catch (Exception e) {
-            String message = "Problem adding test for "
-                + currentBehaviourClass.getName() + "." + method.getName();
+            String message = "Problem adding test for " + currentBehaviourClass.getName() + "." + method.getName();
             throw new JBehaveFrameworkError(message, e);
         }
-    }
-
-    public void behaviourVerificationStarting(Behaviour behaviour) {
-        if (behaviour instanceof BehaviourClass) {
-            behaviourClassVerificationStarting((BehaviourClass) behaviour);
-        }
-        else {
-            behaviourMethodVerificationStarting((BehaviourMethod) behaviour);
-        }
-    }
-
-    public Result behaviourVerificationEnding(Result result, Behaviour behaviour) {
-        return result;
-    }
-
-    public boolean caresAbout(Behaviour behaviour) {
-        return behaviour instanceof BehaviourClass || behaviour instanceof BehaviourMethod;
     }
 }

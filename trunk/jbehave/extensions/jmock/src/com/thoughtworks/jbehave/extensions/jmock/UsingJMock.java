@@ -23,7 +23,7 @@ public abstract class UsingJMock extends JMockSugar {
 
     protected final List mocks = new ArrayList();
     
-    public void verify() {
+    public void verifyMocks() {
         for (Iterator i = mocks.iterator(); i.hasNext();) {
             try {
                 ((Verifiable) i.next()).verify();
@@ -62,7 +62,6 @@ public abstract class UsingJMock extends JMockSugar {
             exceptionFromCreationPoint = new Exception();
             addMock(this);
         }
-
         
         public Mock(Class mockedType, String name) {
             this(dynamicMockFor(mockedType, name));

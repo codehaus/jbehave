@@ -1,5 +1,5 @@
 /*
- * Created on 29-Sep-2004
+ * Created on 05-Oct-2004
  * 
  * (c) 2003-2004 ThoughtWorks Ltd
  *
@@ -7,11 +7,10 @@
  */
 package com.thoughtworks.jbehave.core;
 
-import java.lang.reflect.Method;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface MethodInvoker {
-    void invoke(Object instance, Method method) throws Throwable;
+public interface Verifier {
+    Result verify(Verifiable verifiable);
 }

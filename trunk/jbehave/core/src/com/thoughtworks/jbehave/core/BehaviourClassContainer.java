@@ -16,7 +16,7 @@ package com.thoughtworks.jbehave.core;
  * pattern - more a way of grouping behaviour classes together.<br/>
  * <br/>
  * Any implementing class must also have a default constructor so that it
- * can be interrogated by a {@link BehaviourVerifier}.
+ * can be instantiated and interrogated.
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */

@@ -7,6 +7,9 @@
  */
 package com.thoughtworks.jbehave.core.exception;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 
 /**
  * Signifies that something has gone wrong in the mechanics of executing
@@ -39,4 +42,20 @@ public class JBehaveFrameworkError extends Error {
 	public Throwable getNestedException() {
 		return nestedException;
 	}
+    
+    public void printStackTrace(PrintStream s) {
+        super.printStackTrace(s);
+        if (nestedException != null) {
+            s.println("Caused by:");
+            nestedException.printStackTrace(s);
+        }
+    }
+
+    public void printStackTrace(PrintWriter s) {
+        super.printStackTrace(s);
+        if (nestedException != null) {
+            s.println("Caused by:");
+            nestedException.printStackTrace(s);
+        }
+    }
 }

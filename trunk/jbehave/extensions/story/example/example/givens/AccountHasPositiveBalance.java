@@ -14,7 +14,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import example.domain.Account;
 
 /** set balance = 50 */
-public class AccountHasEnoughCash extends Given {
+public class AccountHasPositiveBalance extends Given {
     
     public void setUp(Environment environment) {
         Mock account = (Mock) environment.get("accountMock", new Mock(Account.class));

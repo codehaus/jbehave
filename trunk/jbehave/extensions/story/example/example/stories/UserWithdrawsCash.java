@@ -20,7 +20,7 @@ import example.expectations.ATMShouldRefuseCash;
 import example.expectations.ATMShouldRetainBankCard;
 import example.expectations.ATMShouldReturnBankCardToCustomer;
 import example.expectations.AccountBalanceShouldBeReduced;
-import example.givens.AccountHasEnoughCash;
+import example.givens.AccountHasPositiveBalance;
 import example.givens.AccountHasNegativeBalanceWithoutPermission;
 import example.givens.AccountHasOverdraftPermission;
 import example.givens.AccountIsOverOverdraftLimit;
@@ -43,7 +43,7 @@ public class UserWithdrawsCash extends Story {
         addScenario(new Scenario(
                 "Happy scenario", this,
                 new Context(
-                    new AccountHasEnoughCash()
+                    new AccountHasPositiveBalance()
                 ),
                 new UserRequestsCash(),
                 new Outcome(
