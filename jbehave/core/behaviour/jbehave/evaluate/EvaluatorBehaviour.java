@@ -14,8 +14,8 @@ import java.util.List;
 import jbehave.evaluate.Evaluator;
 import jbehave.evaluate.listener.ListenerSupport;
 import jbehave.framework.Verify;
-import jbehave.framework.Criterion;
-import jbehave.framework.CriterionEvaluation;
+import jbehave.framework.Criteria;
+import jbehave.framework.CriteriaVerification;
 import jbehave.framework.CriteriaSupport;
 
 /**
@@ -24,12 +24,12 @@ import jbehave.framework.CriteriaSupport;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class EvaluatorBehaviour {
-    private final static List results = new ArrayList(); // handy place to store results
+    private final static List resultList = new ArrayList(); // handy place to store results
     private Evaluator runner;
     
     public void setUp() {
         runner = new Evaluator();
-        results.clear();
+        resultList.clear();
     }
 
     public static class BehaviourClassWithOneBehaviour extends CriteriaSupport {
@@ -74,13 +74,13 @@ public class EvaluatorBehaviour {
 
         public void runStarted(Evaluator runner) {
             Verify.sameInstance(expectedRunner, runner);
-            results.add(message);
+            resultList.add(message);
         }
     }
     
     public static class BehaviourClassThatSaysHello extends CriteriaSupport {
         public void shouldSayHello() {
-            results.add("hello");
+            resultList.add("hello");
         }
     }
     
@@ -90,7 +90,7 @@ public class EvaluatorBehaviour {
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
         runner.evaluateCriteria();
         Verify.equal(Arrays.asList(
-		new String[]{"one", "two", "hello"}), results);
+		new String[]{"one", "two", "hello"}), resultList);
     }
 
     private static class RunEndedListener extends ListenerSupport {
@@ -104,7 +104,7 @@ public class EvaluatorBehaviour {
         
         public void runEnded(Evaluator runner) {
             Verify.sameInstance(expectedRunner, runner);
-            results.add(message);
+            resultList.add(message);
         }
     }
     
@@ -114,7 +114,7 @@ public class EvaluatorBehaviour {
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
         runner.evaluateCriteria();
         Verify.equal(Arrays.asList(
-		new String[]{"hello", "one", "two"}), results);
+		new String[]{"hello", "one", "two"}), resultList);
     }
 
     private static class BehaviourClassStartedListener extends ListenerSupport {
@@ -125,7 +125,7 @@ public class EvaluatorBehaviour {
         }
         
         public void behaviourEvaluationStarted(Class behaviourClass) {
-            results.add(message + ":" + behaviourClass.getName());
+            resultList.add(message + ":" + behaviourClass.getName());
         }
     }
     
@@ -137,7 +137,7 @@ public class EvaluatorBehaviour {
         
         String expectedName = BehaviourClassThatSaysHello.class.getName();
         String[] expected = {"one:" + expectedName, "two:" + expectedName, "hello"};
-        Verify.equal(Arrays.asList(expected), results);
+        Verify.equal(Arrays.asList(expected), resultList);
     }
 
     private static class BehaviourClassEndedListener extends ListenerSupport {
@@ -148,7 +148,7 @@ public class EvaluatorBehaviour {
         }
         
         public void behaviourEvaluationEnded(Class behaviourClass) {
-            results.add(message + ":" + behaviourClass.getName());
+            resultList.add(message + ":" + behaviourClass.getName());
         }
     }
     
@@ -164,7 +164,7 @@ public class EvaluatorBehaviour {
 		    "hello",
 		    "one:" + expectedName,
 		    "two:" + expectedName
-		    }), results);
+		    }), resultList);
     }
     
     private static class BehaviourStartedListener extends ListenerSupport {
@@ -174,8 +174,8 @@ public class EvaluatorBehaviour {
             this.message = message;
         }
         
-        public void beforeCriterionEvaluationStarts(Criterion behaviour) {
-            results.add(message + ":" + behaviour.getName());
+        public void beforeCriterionEvaluationStarts(Criteria behaviour) {
+            resultList.add(message + ":" + behaviour.getName());
         }
     }
     
@@ -185,7 +185,7 @@ public class EvaluatorBehaviour {
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
         runner.evaluateCriteria();
         Verify.equal(Arrays.asList(
-		new String[]{"one:shouldSayHello", "two:shouldSayHello", "hello"}), results);
+		new String[]{"one:shouldSayHello", "two:shouldSayHello", "hello"}), resultList);
     }
     
     private static class BehaviourEndedListener extends ListenerSupport {
@@ -195,8 +195,8 @@ public class EvaluatorBehaviour {
             this.message = message;
         }
         
-        public void afterCriterionEvaluationEnds(CriterionEvaluation behaviourResult) {
-            results.add(message + ":" + behaviourResult.getName());
+        public void afterCriterionEvaluationEnds(CriteriaVerification behaviourResult) {
+            resultList.add(message + ":" + behaviourResult.getName());
         }
     }
     
@@ -206,7 +206,7 @@ public class EvaluatorBehaviour {
         runner.addBehaviourClass(BehaviourClassThatSaysHello.class);
         runner.evaluateCriteria();
         Verify.equal(Arrays.asList(
-		new String[]{"hello", "one:shouldSayHello", "two:shouldSayHello"}), results);
+		new String[]{"hello", "one:shouldSayHello", "two:shouldSayHello"}), resultList);
     }
     
     public void shouldNotifyBehaviourListenersForEveryBehaviour() throws Exception {
@@ -215,12 +215,12 @@ public class EvaluatorBehaviour {
         runner.addBehaviourClass(BehaviourClassWithTwoBehaviours.class);
         runner.evaluateCriteria();
         
-        Verify.equal(4, results.size());
+        Verify.equal(4, resultList.size());
         
-        Verify.that(results.contains("started:shouldDoOneThing"));
-        Verify.that(results.contains("ended:shouldDoOneThing"));
+        Verify.that(resultList.contains("started:shouldDoOneThing"));
+        Verify.that(resultList.contains("ended:shouldDoOneThing"));
         
-        Verify.that(results.contains("started:shouldDoAnotherThing"));
-        Verify.that(results.contains("ended:shouldDoAnotherThing"));
+        Verify.that(resultList.contains("started:shouldDoAnotherThing"));
+        Verify.that(resultList.contains("ended:shouldDoAnotherThing"));
     }
 }

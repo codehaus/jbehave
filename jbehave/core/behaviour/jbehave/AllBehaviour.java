@@ -10,8 +10,8 @@ import jbehave.evaluate.EvaluatorBehaviour;
 import jbehave.evaluate.listener.TextListenerBehaviour;
 import jbehave.evaluate.listener.TimerBehaviour;
 import jbehave.framework.Aggregate;
-import jbehave.framework.CriterionBehaviour;
-import jbehave.framework.CriterionEvaluationBehaviour;
+import jbehave.framework.CriteriaBehaviour;
+import jbehave.framework.CriteriaEvaluationBehaviour;
 import jbehave.framework.CriteriaSupportBehaviour;
 
 /**
@@ -20,8 +20,8 @@ import jbehave.framework.CriteriaSupportBehaviour;
 public class AllBehaviour implements Aggregate {
     public Class[] getBehaviourClasses() {
         return new Class[] {
-            CriterionBehaviour.class,
-            CriterionEvaluationBehaviour.class,
+            CriteriaBehaviour.class,
+            CriteriaEvaluationBehaviour.class,
             CriteriaSupportBehaviour.class,
             EvaluatorBehaviour.class,
             TextListenerBehaviour.class,

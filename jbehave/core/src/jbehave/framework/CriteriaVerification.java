@@ -11,7 +11,7 @@ package jbehave.framework;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class CriterionEvaluation {
+public class CriteriaVerification {
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
     public static final int EXCEPTION_THROWN = 2;
@@ -19,13 +19,13 @@ public class CriterionEvaluation {
     private final String name;
     private final String className;
     private final int status;
-    private final Object evaluatedInstance;
+    private final Object behaviourInstance;
     private final Throwable targetException;
 
-    public CriterionEvaluation(String name, String className, Object evaluatedInstance, Throwable targetException) {
+    public CriteriaVerification(String name, String className, Object behaviourInstance, Throwable targetException) {
         this.name = name;
         this.className = className;
-		this.evaluatedInstance = evaluatedInstance;
+		this.behaviourInstance = behaviourInstance;
         this.targetException = targetException;
         if (targetException == null) {
             status = SUCCESS;
@@ -41,8 +41,8 @@ public class CriterionEvaluation {
     /**
      * Convenience constructor for successful behaviours
      */
-    public CriterionEvaluation(String name, String className, Object executedInstance) {
-        this(name, className, executedInstance, null);
+    public CriteriaVerification(String name, String className, Object behaviourInstance) {
+        this(name, className, behaviourInstance, null);
     }
 
     public String getName() {
@@ -77,7 +77,7 @@ public class CriterionEvaluation {
         return "Name: " + name + ", class:" + className + ", status: " + status + ", targetException: " + targetException;
     }
 
-	public Object getEvaluatedInstance() {
-		return evaluatedInstance;
+	public Object getBehaviourInstance() {
+		return behaviourInstance;
 	}
 }
