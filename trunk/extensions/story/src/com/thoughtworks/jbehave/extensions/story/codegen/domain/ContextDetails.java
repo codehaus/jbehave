@@ -17,7 +17,7 @@ public class ContextDetails {
     private ScenarioDetails scenario;
     private List givens = new ArrayList();
     
-    public ScenarioDetails getScenario() {
+    public ScenarioDetails scenario() {
         return scenario;
     }
     

@@ -20,13 +20,13 @@ public class BasicDetails {
         this.name = name;
         this.description = description;
     }
-    public String getDescription() {
+    public String description() {
         return description;
     }
-    public String getName() {
+    public String name() {
         return name;
     }
-    public String getClassName() {
+    public String className() {
         return new ConvertCase(name).toCamelCase();
     }
     
