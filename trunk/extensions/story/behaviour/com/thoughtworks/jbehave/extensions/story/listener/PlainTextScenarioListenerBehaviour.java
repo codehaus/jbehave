@@ -11,7 +11,6 @@ import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.listener.PlainTextListener;
-import com.thoughtworks.jbehave.core.listener.PlainTextListenerBehaviour;
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 
