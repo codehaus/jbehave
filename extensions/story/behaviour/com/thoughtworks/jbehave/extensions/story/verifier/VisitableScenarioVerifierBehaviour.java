@@ -1,4 +1,4 @@
-package com.thoughtworks.jbehave.extensions.story.runner;
+package com.thoughtworks.jbehave.extensions.story.verifier;
 
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
@@ -9,6 +9,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
+import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 
 /*
  * Created on 16-Sep-2004
@@ -21,35 +22,51 @@ import com.thoughtworks.jbehave.extensions.story.domain.Given;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class ScenarioRunnerBehaviour extends UsingMiniMock {
+public abstract class VisitableScenarioVerifierBehaviour extends UsingMiniMock {
+    
+    public void shouldDispatchItselfAsVisitorToScenario() throws Exception {
+        // given...
+        Environment environmentStub = (Environment)stub(Environment.class);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environmentStub);
+        Mock scenario = mock(Scenario.class);
+
+        // expect...
+        scenario.expects("accept").with(verifier);
+        
+        // when...
+        verifier.verifyScenario((Scenario)scenario);
+        
+        // then...
+        verifyMocks();
+    }
     
     public void shouldTellGivenToSetUpEnvironment() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        ScenarioRunner runner = new ScenarioRunner(environment);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environment);
         Mock given = mock(Given.class);
         
         given.expects("setUp").with(environment);
         given.stubs("containsMocks").will(returnValue(false));
         
         // when...
-        runner.visit((Given)given);
+        verifier.visit((Given)given);
         
         // then...
         verifyMocks();
     }
-    
+
     public void shouldSetExpectationInEnvironmentBeforeEventOccurs() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        ScenarioRunner runner = new ScenarioRunner(environment);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environment);
         Mock expectation = mock(Expectation.class);
         
         // expect...
         expectation.expects("setExpectationIn").with(environment);
         
         // when...
-        runner.visit((Expectation)expectation);
+        verifier.visit((Expectation)expectation);
         
         // then...
         verifyMocks();
@@ -58,14 +75,14 @@ public class ScenarioRunnerBehaviour extends UsingMiniMock {
     public void shouldMakeEventOccurInEnvironment() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        ScenarioRunner runner = new ScenarioRunner(environment);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environment);
         Mock event = mock(Event.class);
         
         // expect...
         event.expects("occurIn").with(environment);
         
         // when...
-        runner.visit((Event)event);
+        verifier.visit((Event)event);
         
         // then...
         verifyMocks();
@@ -74,7 +91,7 @@ public class ScenarioRunnerBehaviour extends UsingMiniMock {
     public void shouldVerifyExpectationInEnvironmentAfterEventOccurs() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        ScenarioRunner runner = new ScenarioRunner(environment);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environment);
         Mock expectation = mock(Expectation.class);
         Event eventStub = (Event) stub(Event.class);
 
@@ -82,8 +99,8 @@ public class ScenarioRunnerBehaviour extends UsingMiniMock {
         expectation.expects("verify").with(same(environment));
         
         // when...
-        runner.visit(eventStub);
-        runner.visit((Expectation)expectation);
+        verifier.visit(eventStub);
+        verifier.visit((Expectation)expectation);
         
         // then...
         verifyMocks();
@@ -92,13 +109,13 @@ public class ScenarioRunnerBehaviour extends UsingMiniMock {
     public void shouldWrapAndRethrowExceptionIfGivenThrowsException() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        ScenarioRunner runner = new ScenarioRunner(environment);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environment);
         Mock given = mock(Given.class);
         given.expects("setUp").with(environment).will(throwException(new Exception("oops")));
         
         // when...
         try {
-            runner.visit((Given) given);
+            verifier.visit((Given) given);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -111,13 +128,13 @@ public class ScenarioRunnerBehaviour extends UsingMiniMock {
     public void shouldThrowVerxficationExceptionIfEventThrowsException() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        ScenarioRunner runner = new ScenarioRunner(environment);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environment);
         Mock event = mock(Event.class);
         event.expects("occurIn").with(environment).will(throwException(new Exception("oops")));
         
         // when...
         try {
-            runner.visit((Event) event);
+            verifier.visit((Event) event);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -130,13 +147,13 @@ public class ScenarioRunnerBehaviour extends UsingMiniMock {
     public void shouldThrowVerificationExceptionIfExpectationThrowsExceptionBeforeEvent() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        ScenarioRunner runner = new ScenarioRunner(environment);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environment);
         Mock expectation = mock(Expectation.class);
         expectation.expects("setExpectationIn").with(environment).will(throwException(new RuntimeException("oops")));
         
         // when...
         try {
-            runner.visit((Expectation) expectation);
+            verifier.visit((Expectation) expectation);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -149,18 +166,18 @@ public class ScenarioRunnerBehaviour extends UsingMiniMock {
     public void shouldPropagateVerificationExceptionIfExpectationFailsAfterTheEvent() throws Exception {
         // given...
         Environment environment = (Environment) stub(Environment.class);
-        ScenarioRunner runner = new ScenarioRunner(environment);
+        VisitingScenarioVerifier verifier = new VisitingScenarioVerifier(environment);
         Mock expectation = mock(Expectation.class);
         Event eventStub = (Event)stub(Event.class);
         VerificationException fromExpectation = new VerificationException("oops");
-        runner.visit(eventStub);
+        verifier.visit(eventStub);
         
         // expect...
         expectation.expects("verify").with(environment).will(throwException(fromExpectation));
         
         // when...
         try {
-            runner.visit((Expectation) expectation);
+            verifier.visit((Expectation) expectation);
             Verify.impossible("should have thrown exception");
         }
         catch (VerificationException expected) {
