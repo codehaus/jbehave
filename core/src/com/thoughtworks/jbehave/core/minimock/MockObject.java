@@ -25,7 +25,7 @@ import com.thoughtworks.jbehave.core.minilog.Log;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-class MockObject implements Mock, Expectation.Finder {
+class MockObject implements Mock, Expectation.Registry {
     protected final Log log = Log.getLog(this);
     private final List expectations = new ArrayList();
     private final Class type;
@@ -44,7 +44,7 @@ class MockObject implements Mock, Expectation.Finder {
             }
             
             // if we get here we didn't match on any expectations
-            throw new VerificationException("Unexpected invocation: " + name + "." + method.getName() + "(" + Arrays.asList(args) + ")");
+            throw new VerificationException("Unexpected invocation: " + method.getName() + Arrays.asList(args) + " on " + name);
         }
     }
     
@@ -75,7 +75,7 @@ class MockObject implements Mock, Expectation.Finder {
         }
     }
 
-    public Expectation findExpectation(String id) {
+    public Expectation lookup(String id) {
         for (Iterator i = expectations.iterator(); i.hasNext();) {
             Expectation expectation = (Expectation) i.next();
             Log.getLog(this).debug("Comparing expectation " + expectation.id() + " with " + id);
@@ -92,7 +92,7 @@ class MockObject implements Mock, Expectation.Finder {
 
     static Mock mock(final Class type, final String name) {
         Mock result = (Mock) Proxy.newProxyInstance(type.getClassLoader(),
-                new Class[] { type, Mock.class, Expectation.Finder.class },
+                new Class[] { type, Mock.class, Expectation.Registry.class },
                 new InvocationHandler() {
                     private final MockObject mock = new MockObject(type, name);
                     

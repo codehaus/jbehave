@@ -29,7 +29,7 @@ public class BehaviourMethodVerifier implements Visitor {
         this.invoker = invoker;
     }
     
-    public void add(ResultListener listener) {
+    public void addListener(ResultListener listener) {
         listeners.add(listener);
     }
     

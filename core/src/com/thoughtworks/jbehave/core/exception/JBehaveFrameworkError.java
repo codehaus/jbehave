@@ -43,6 +43,10 @@ public class JBehaveFrameworkError extends Error {
 		return nestedException;
 	}
     
+    public void printStackTrace() {
+        printStackTrace(System.err);
+    }
+    
     public void printStackTrace(PrintStream s) {
         super.printStackTrace(s);
         if (nestedException != null) {

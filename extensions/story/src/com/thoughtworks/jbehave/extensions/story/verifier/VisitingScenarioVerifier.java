@@ -7,8 +7,14 @@
  */
 package com.thoughtworks.jbehave.extensions.story.verifier;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
+import com.thoughtworks.jbehave.core.listener.ResultListener;
+import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
@@ -21,6 +27,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class VisitingScenarioVerifier implements ScenarioVerifier, Visitor {
+    private final List listeners = new ArrayList();
     private final Environment environment;
     private boolean beforeEvent = true;
 
@@ -67,5 +74,15 @@ public class VisitingScenarioVerifier implements ScenarioVerifier, Visitor {
     }
 
     public void verifyScenario(Scenario scenario) {
+        scenario.accept(this);
+        Result result = new Result(scenario.getDescription(), Result.SUCCEEDED);
+        for (Iterator i = listeners.iterator(); i.hasNext();) {
+            ResultListener listener = (ResultListener) i.next();
+            listener.gotResult(result);
+        }
+    }
+
+    public void addListener(ResultListener listener) {
+        listeners.add(listener);
     }
 }
