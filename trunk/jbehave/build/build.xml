@@ -79,8 +79,8 @@
                 <include name="**/*.java"/>
             </fileset>
 
-            <group title="Core API" packages="jbehave*"/>
-            <group title="Optional Extensions" packages="jbehave.extensions*"/>
+            <group title="Core API" packages="*jbehave*"/>
+            <group title="Optional Extensions" packages="*jbehave.extensions*"/>
         </javadoc>
     </target>
 
