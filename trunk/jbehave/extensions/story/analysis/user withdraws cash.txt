@@ -1,0 +1,37 @@
+Story: User withdraws cash
+
+As a Bank card holder
+I want to be able to withdraw cash from an ATM
+So that I don't have to visit the bank
+
+Scenario: Happy scenario
+
+Given Account is in credit (set balance = 50)
+When User requests cash (user requests 20)
+Then ATM should dispense cash (ATM dispenses 20)
+and ATM should return bank card
+and account balance should be reduced (account balance = 30)
+
+Scenario: Happy story with overdraft
+
+Given Account has overdraft facility
+and Account is easily within overdraft limit
+When User requests cash
+Then Dispense cash
+and Return bank card
+and Reduce balance
+
+Scenario: Overdrawn without permission
+
+Given Scenario "Happy story with overdraft" in story "User withdraws cash"
+and Account is overdrawn without permission
+When User requests cash
+Then Refuse cash
+and Return bank card
+
+Scenario: In lots of trouble
+
+Given Account is over overdraft limit
+When User requests cash
+Then Refuse cash
+and Keep bank card
