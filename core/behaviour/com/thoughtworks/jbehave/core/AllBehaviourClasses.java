@@ -15,6 +15,7 @@ import com.thoughtworks.jbehave.core.invoker.DontInvokeMethodBehaviour;
 import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDownBehaviour;
 import com.thoughtworks.jbehave.core.listener.TextListenerBehaviour;
 import com.thoughtworks.jbehave.core.minilog.LogBehaviour;
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.core.util.ConvertCaseBehaviour;
 import com.thoughtworks.jbehave.core.util.TimerBehaviour;
 import com.thoughtworks.jbehave.core.visitor.CompositeVisitableBehaviour;
@@ -36,7 +37,8 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
                 CompositeVisitableBehaviour.class,
                 ConvertCaseBehaviour.class,
                 TimerBehaviour.class,
-                VisitableArrayListBehaviour.class
+                VisitableArrayListBehaviour.class,
+                UsingMiniMockBehaviour.class
         };
     }
 }

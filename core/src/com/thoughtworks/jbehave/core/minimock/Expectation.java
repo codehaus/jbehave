@@ -82,9 +82,8 @@ public class Expectation extends MiniMockSugar {
     public Expectation will(InvocationHandler result) {
         this.invoker = result;
         return this;
-    }
+    } 
     
-      
     public void willThrow(Throwable cause) {
         invoker = throwException(cause);
     }
