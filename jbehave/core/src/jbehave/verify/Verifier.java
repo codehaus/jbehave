@@ -23,7 +23,7 @@ import jbehave.verify.listener.Listener;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class VerifierSpec {
+public class Verifier {
     private final List specs = new ArrayList();
     private final Map criteriaMap = new HashMap();
     private final CompositeListener listeners = new CompositeListener();

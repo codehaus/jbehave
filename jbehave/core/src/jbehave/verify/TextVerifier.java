@@ -20,7 +20,7 @@ import jbehave.verify.listener.TraceListener;
 public class TextVerifier {
 
     public static void main(String[] args) {
-        VerifierSpec runner = new VerifierSpec();
+        Verifier runner = new Verifier();
         runner.registerListener(new TextListener(new OutputStreamWriter(System.out)));
         runner.registerListener(new TraceListener());
         for (int i = 0; i < args.length; i++) {
