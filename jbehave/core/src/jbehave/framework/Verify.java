@@ -14,7 +14,7 @@ package jbehave.framework;
  * @author <a href="mailto:steve@m3p.co.uk">Steve Freeman</a>
  */
 public class Verify {
-    /** should not be subclassed for behaviour classes */
+    /** should not be subclassed for behaviour classes but can be extended to add methods to namespace */
     private Verify() {}
 
     // boolean

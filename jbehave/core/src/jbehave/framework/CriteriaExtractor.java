@@ -31,14 +31,14 @@ public class CriteriaExtractor {
     }
 
     /**
-     * Find all criteria in a class and wrap each one in a
+     * Find all criteria in a spec and wrap each one in a
      * {@link CriteriaVerifier}
      * 
      * There is no particular constraint on the spec class. The criteria
      * are public void methods that take no parameters and start
      * with <tt>"<i>should</i>"</tt>.<br>
      * <br>
-     * If the class implements the {@link Aggregate} interface, it is
+     * If the class implements the {@link AggregateSpec} interface, it is
      * recursively examined for any nested specs.<br>
      * <br>
      * Annoyingly, {@link Class#getMethods()} returns the methods in an
@@ -50,7 +50,7 @@ public class CriteriaExtractor {
      * @return an unordered set of {@link CriteriaVerifier}s.
      * @throws BehaviourFrameworkError if there are any problems constructing an Aggregate.
      */
-    public Collection extractCriteria() {
+    public Collection createCriteriaVerifiers() {
         final Collection result = new HashSet();
         
         result.addAll(extractCriteriaFromSpec());
@@ -71,14 +71,14 @@ public class CriteriaExtractor {
     }
 
     private Collection extractCriteriaFromAggregatedSpecs() {
-        if (!Aggregate.class.isAssignableFrom(spec)) return Collections.EMPTY_SET;
+        if (!AggregateSpec.class.isAssignableFrom(spec)) return Collections.EMPTY_SET;
         
         try {
             final Collection result = new HashSet();
-            Aggregate aggregateInstance = (Aggregate)spec.newInstance();
+            AggregateSpec aggregateInstance = (AggregateSpec)spec.newInstance();
             Class[] specs = aggregateInstance.getSpecs();
             for (int i = 0; i < specs.length; i++) {
-                result.addAll(new CriteriaExtractor(specs[i]).extractCriteria());
+                result.addAll(new CriteriaExtractor(specs[i]).createCriteriaVerifiers());
             }
             return result;
         }

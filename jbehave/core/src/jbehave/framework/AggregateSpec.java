@@ -19,7 +19,7 @@ package jbehave.framework;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public interface Aggregate {
+public interface AggregateSpec {
     /**
      * Return an array of all the behaviour classes.
      * 
