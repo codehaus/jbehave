@@ -11,6 +11,7 @@ import com.thoughtworks.jbehave.core.Verify;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
 public class UsingMiniMockBehaviour {
     

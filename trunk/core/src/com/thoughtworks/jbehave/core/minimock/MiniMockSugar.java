@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
  * Syntactic sugar for MiniMock
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
 public class MiniMockSugar {
     public Constraint eq(final Object expectedArg) {
