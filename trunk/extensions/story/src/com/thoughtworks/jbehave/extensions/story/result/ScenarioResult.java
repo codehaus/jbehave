@@ -15,12 +15,12 @@ import com.thoughtworks.jbehave.core.result.Result;
 public class ScenarioResult extends Result {
     public static final Type USED_MOCKS = newType("Used Mocks", "M");
     
-    public ScenarioResult(String name, Throwable cause) {
-        super(name, cause);
+    public ScenarioResult(String name, String containerName, Throwable cause) {
+        super(name, containerName, cause);
     }
     
-    public ScenarioResult(String name, Type status) {
-        super(name, status);
+    public ScenarioResult(String name, String containerName, Type status) {
+        super(name, containerName, status);
     }
 
     public boolean usedMocks() {

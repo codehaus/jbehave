@@ -55,12 +55,14 @@ public class Result {
     private final String name;
     private final Type status;
     private final Throwable cause;
+    private final String containerName;
 
     /**
      * Constructor for result that contains an exception
      */
-    public Result(String name, Throwable cause) {
+    public Result(String name, String containerName, Throwable cause) {
         this.name = name;
+        this.containerName = containerName;
         this.cause = cause;
         this.status = getStatusFromCause(cause);
     }
@@ -83,14 +85,19 @@ public class Result {
     /**
      * Constructor that sets status independently of cause
      */
-    public Result(String name, Type status) {
+    public Result(String name, String containerName, Type status) {
         this.name = name;
+        this.containerName = containerName;
         this.cause = null;
         this.status = status;
     }
 
     public String name() {
         return name;
+    }
+    
+    public String containerName() {
+        return containerName;
     }
 
     public Type status() {

@@ -64,7 +64,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         Mock listener2 = mock(ResultListener.class, "listener2");
         Scenario scenarioStub = (Scenario) stub(Scenario.class);
         
-        ScenarioResult result = new ScenarioResult("result", ScenarioResult.SUCCEEDED);
+        ScenarioResult result = new ScenarioResult("result", "Container", ScenarioResult.SUCCEEDED);
         Mock scenarioInvoker = mock(ScenarioInvoker.class);
         scenarioInvoker.stubs("invoke").will(returnValue(result));
         

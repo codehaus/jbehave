@@ -13,7 +13,7 @@ import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodBehaviour;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifierBehaviour;
 import com.thoughtworks.jbehave.core.invoker.DontInvokeMethodBehaviour;
 import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDownBehaviour;
-import com.thoughtworks.jbehave.core.listener.TextListenerBehaviour;
+import com.thoughtworks.jbehave.core.listener.PlainTextMethodListenerBehaviour;
 import com.thoughtworks.jbehave.core.minilog.LogBehaviour;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.core.util.ConvertCaseBehaviour;
@@ -32,7 +32,7 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
                 BehaviourMethodVerifierBehaviour.class,
                 DontInvokeMethodBehaviour.class,
                 InvokeMethodWithSetUpAndTearDownBehaviour.class,
-                TextListenerBehaviour.class,
+                PlainTextMethodListenerBehaviour.class,
                 LogBehaviour.class,
                 CompositeVisitableBehaviour.class,
                 ConvertCaseBehaviour.class,

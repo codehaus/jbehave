@@ -30,7 +30,7 @@ public class Story implements Visitable {
         acceptanceCriteria.add(scenario);
     }
     
-    public String getTitle() {
+    public String title() {
         return new ConvertCase(getClass()).toSeparateWords();
     }
     

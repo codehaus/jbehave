@@ -18,7 +18,7 @@ public class BehaviourMethodResult extends Result {
     private final BehaviourMethod behaviourMethod;
     
     public BehaviourMethodResult(BehaviourMethod behaviourMethod, Throwable cause) {
-        super(behaviourMethod.method().getName(), cause);
+        super(behaviourMethod.method().getName(), behaviourMethod.instance().getClass().getName(), cause);
         this.behaviourMethod = behaviourMethod;
     }
     
