@@ -28,7 +28,7 @@ public class CriteriaSpec {
     }
 
     private CriteriaVerifier getSingleCriterion(Class behaviour) {
-        return (CriteriaVerifier)CriteriaExtractor.getCriteria(behaviour).iterator().next();
+        return (CriteriaVerifier)new CriteriaExtractor(behaviour).getCriteriaVerifiers().iterator().next();
     }
 
     public void shouldRecogniseWhenBehaviourMethodSucceeds() throws Exception {

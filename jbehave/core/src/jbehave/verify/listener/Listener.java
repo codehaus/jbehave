@@ -26,10 +26,10 @@ import jbehave.verify.Evaluator;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public interface Listener {
-    void runStarted(Evaluator runner);
-    void runEnded(Evaluator runner);
-    void behaviourEvaluationStarted(Class behaviourClass);
-    void behaviourEvaluationEnded(Class behaviourClass);
-    void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour);
-    void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult);
+    void verificationStarted(Evaluator runner);
+    void verificationEnded(Evaluator runner);
+    void specVerificationStarted(Class behaviourClass);
+    void specVerificationEnded(Class behaviourClass);
+    void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour);
+    void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult);
 }

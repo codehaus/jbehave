@@ -31,6 +31,6 @@ public class TextEvaluator {
                 System.err.println("Unknown class: " + args[i]);
             }
         }
-        runner.evaluateCriteria();
+        runner.verifyCriteria();
     }
 }

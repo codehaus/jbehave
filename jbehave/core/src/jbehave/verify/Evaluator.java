@@ -14,9 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import jbehave.framework.CriteriaVerifier;
-import jbehave.framework.CriteriaVerificationResult;
 import jbehave.framework.CriteriaExtractor;
+import jbehave.framework.CriteriaVerificationResult;
+import jbehave.framework.CriteriaVerifier;
 import jbehave.verify.listener.CompositeListener;
 import jbehave.verify.listener.Listener;
 
@@ -24,49 +24,49 @@ import jbehave.verify.listener.Listener;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class Evaluator {
-    private final List behaviourClasses = new ArrayList();
-    private final Map behaviourMap = new HashMap();
+    private final List specs = new ArrayList();
+    private final Map criteriaMap = new HashMap();
     private final CompositeListener listeners = new CompositeListener();
-    private int behaviourCount = 0;
+    private int criteriaCount = 0;
 
-    public void addBehaviourClass(Class behaviourClass) {
-        Collection behaviours = CriteriaExtractor.getCriteria(behaviourClass);
-        behaviourClasses.add(behaviourClass);
-        behaviourMap.put(behaviourClass, behaviours);
-        behaviourCount += behaviours.size();
+    public void addBehaviourClass(Class spec) {
+        Collection criteriaVerifiers = new CriteriaExtractor(spec).getCriteriaVerifiers();
+        specs.add(spec);
+        criteriaMap.put(spec, criteriaVerifiers);
+        criteriaCount += criteriaVerifiers.size();
     }
     
-    public int countBehaviourClasses() {
-        return behaviourClasses.size();
+    public int countSpecs() {
+        return specs.size();
     }
     
-    public int countBehaviours() {
-        return behaviourCount;
+    public int countCriteria() {
+        return criteriaCount;
     }
 
-    public Class getBehaviourClass(int i) {
-        return (Class)behaviourClasses.get(i);
+    public Class getSpec(int i) {
+        return (Class)specs.get(i);
     }
     
     public void registerListener(Listener listener) {
         listeners.add(listener);
     }
 
-    public void evaluateCriteria() {
-        listeners.runStarted(this);
-        for (Iterator i = behaviourClasses.iterator(); i.hasNext();) {
-            final Class behaviourClass = (Class)i.next();
-            listeners.behaviourEvaluationStarted(behaviourClass);
+    public void verifyCriteria() {
+        listeners.verificationStarted(this);
+        for (Iterator i = specs.iterator(); i.hasNext();) {
+            final Class spec = (Class)i.next();
+            listeners.specVerificationStarted(spec);
             
-            final Collection criteria = (Collection)behaviourMap.get(behaviourClass);
+            final Collection criteria = (Collection)criteriaMap.get(spec);
             for (Iterator j = criteria.iterator(); j.hasNext();) {
-                final CriteriaVerifier behaviour = (CriteriaVerifier)j.next();
-                listeners.beforeCriterionEvaluationStarts(behaviour);
-                CriteriaVerificationResult behaviourResult = behaviour.verify();
-                listeners.afterCriterionEvaluationEnds(behaviourResult);
+                final CriteriaVerifier verifier = (CriteriaVerifier)j.next();
+                listeners.beforeCriteriaVerificationStarts(verifier);
+                CriteriaVerificationResult result = verifier.verify();
+                listeners.afterCriteriaVerificationEnds(result);
             }
-            listeners.behaviourEvaluationEnded(behaviourClass);
+            listeners.specVerificationEnded(spec);
         }
-        listeners.runEnded(this);
+        listeners.verificationEnded(this);
     }
 }

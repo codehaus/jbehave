@@ -18,21 +18,21 @@ import jbehave.verify.Evaluator;
  */
 public class ListenerSupport implements Listener {
 
-    public void runStarted(Evaluator runner) {
+    public void verificationStarted(Evaluator runner) {
     }
 
-    public void runEnded(Evaluator runner) {
+    public void verificationEnded(Evaluator runner) {
     }
 
-    public void behaviourEvaluationStarted(Class behaviourClass) {
+    public void specVerificationStarted(Class behaviourClass) {
     }
 
-    public void behaviourEvaluationEnded(Class behaviourClass) {
+    public void specVerificationEnded(Class behaviourClass) {
     }
 
-    public void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour) {
+    public void beforeCriteriaVerificationStarts(CriteriaVerifier behaviour) {
     }
 
-    public void afterCriterionEvaluationEnds(CriteriaVerificationResult behaviourResult) {
+    public void afterCriteriaVerificationEnds(CriteriaVerificationResult behaviourResult) {
     }
 }

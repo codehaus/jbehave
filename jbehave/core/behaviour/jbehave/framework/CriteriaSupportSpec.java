@@ -31,7 +31,7 @@ public class CriteriaSupportSpec {
     }
 
     public void shouldRecogniseSingleCriteria() throws Exception {
-        Collection verifiers = CriteriaExtractor.getCriteria(SpecWithSingleCriteria.class);
+        Collection verifiers = getCriteriaVerifiers(SpecWithSingleCriteria.class);
         Verify.equal(1, verifiers.size());
         verifyContainsCriteriaName("shouldBehaveInSomeWay", verifiers);
     }
@@ -45,7 +45,7 @@ public class CriteriaSupportSpec {
     }
 
     public void shouldRecogniseTwoCriteria() throws Exception {
-        Collection verifiers = CriteriaExtractor.getCriteria(SpecWithTwoCriteria.class);
+        Collection verifiers = getCriteriaVerifiers(SpecWithTwoCriteria.class);
 
         Verify.equal(2, verifiers.size());
         verifyContainsCriteriaName("shouldDoOneThing", verifiers);
@@ -61,7 +61,7 @@ public class CriteriaSupportSpec {
     }
 
     public void shouldIgnoreNonPublicCriteria() throws Exception {
-        Collection behaviours = CriteriaExtractor.getCriteria(SpecWithNonPublicCriteria.class);
+        Collection behaviours = getCriteriaVerifiers(SpecWithNonPublicCriteria.class);
         Verify.equal(0, behaviours.size());
     }
 
@@ -77,9 +77,13 @@ public class CriteriaSupportSpec {
     }
 
     public void shouldIgnoreNonPublicCriteriaMixedWithPublicCriteria() throws Exception {
-        Collection verifiers = CriteriaExtractor.getCriteria(BehaviourClassWithPublicAndNonPublicCriteria.class);
+        Collection verifiers = getCriteriaVerifiers(BehaviourClassWithPublicAndNonPublicCriteria.class);
         Verify.equal(1, verifiers.size());
         verifyContainsCriteriaName("shouldBehaveInSomeWay", verifiers);
+    }
+
+    private Collection getCriteriaVerifiers(Class spec) {
+        return new CriteriaExtractor(spec).getCriteriaVerifiers();
     }
 
     public static class SpecSuperclassWithCriteria {
@@ -91,7 +95,7 @@ public class CriteriaSupportSpec {
     }
 
     public void shouldRecogniseCriteriaInheritedFromSuperclass() throws Exception {
-        Collection verifiers = CriteriaExtractor.getCriteria(SpecSubclassInheritingCriteria.class);
+        Collection verifiers = getCriteriaVerifiers(SpecSubclassInheritingCriteria.class);
         Verify.equal(1, verifiers.size());
         verifyContainsCriteriaName("shouldDoSomething", verifiers);
     }
@@ -103,7 +107,7 @@ public class CriteriaSupportSpec {
     }
 
     public void shouldFindCriteriasInAggregatedSpec() throws Exception {
-        Collection verifiers = CriteriaExtractor.getCriteria(AggregateSpec.class);
+        Collection verifiers = getCriteriaVerifiers(AggregateSpec.class);
         Verify.equal(1, verifiers.size());
         verifyContainsCriteriaName("shouldBehaveInSomeWay", verifiers);
     }
@@ -115,7 +119,7 @@ public class CriteriaSupportSpec {
     }
 
     public void shouldFindCriteriaInNestedAggregatedSpec() throws Exception {
-        Collection verifiers = CriteriaExtractor.getCriteria(NestedAggregateSpec.class);
+        Collection verifiers = getCriteriaVerifiers(NestedAggregateSpec.class);
         Verify.equal(1, verifiers.size());
         verifyContainsCriteriaName("shouldBehaveInSomeWay", verifiers);
     }
