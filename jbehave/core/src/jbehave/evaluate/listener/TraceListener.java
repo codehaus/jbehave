@@ -8,8 +8,8 @@
 package jbehave.evaluate.listener;
 
 import jbehave.evaluate.Evaluator;
-import jbehave.framework.Criteria;
-import jbehave.framework.CriteriaVerification;
+import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.Result;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,11 +36,11 @@ public class TraceListener implements Listener {
         log.trace("behaviourEvaluationEnded: " + behaviour.getName());
     }
 
-    public void beforeCriterionEvaluationStarts(Criteria criterion) {
+    public void beforeCriterionEvaluationStarts(CriteriaVerifier criterion) {
         log.trace("beforeCriterionEvaluationStarts: " + criterion.getName());
     }
 
-    public void afterCriterionEvaluationEnds(CriteriaVerification evaluation) {
+    public void afterCriterionEvaluationEnds(Result evaluation) {
         log.trace("afterCriterionEvaluationEnds: " + evaluation.toString());
     }
 }

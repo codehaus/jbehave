@@ -11,12 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jbehave.evaluate.Evaluator;
 import jbehave.evaluate.listener.ListenerSupport;
+import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.Result;
 import jbehave.framework.Verify;
-import jbehave.framework.Criteria;
-import jbehave.framework.CriteriaVerification;
-import jbehave.framework.CriteriaSupport;
 
 /**
  * Test the {@link Evaluator} class
@@ -32,7 +30,7 @@ public class EvaluatorBehaviour {
         resultList.clear();
     }
 
-    public static class BehaviourClassWithOneBehaviour extends CriteriaSupport {
+    public static class BehaviourClassWithOneBehaviour {
         public void shouldDoSomething() {
         }
     }
@@ -78,7 +76,7 @@ public class EvaluatorBehaviour {
         }
     }
     
-    public static class BehaviourClassThatSaysHello extends CriteriaSupport {
+    public static class BehaviourClassThatSaysHello {
         public void shouldSayHello() {
             resultList.add("hello");
         }
@@ -174,7 +172,7 @@ public class EvaluatorBehaviour {
             this.message = message;
         }
         
-        public void beforeCriterionEvaluationStarts(Criteria behaviour) {
+        public void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour) {
             resultList.add(message + ":" + behaviour.getName());
         }
     }
@@ -195,7 +193,7 @@ public class EvaluatorBehaviour {
             this.message = message;
         }
         
-        public void afterCriterionEvaluationEnds(CriteriaVerification behaviourResult) {
+        public void afterCriterionEvaluationEnds(Result behaviourResult) {
             resultList.add(message + ":" + behaviourResult.getName());
         }
     }

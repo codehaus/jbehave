@@ -10,9 +10,9 @@ package jbehave.extensions.jmock.listener;
 import java.util.List;
 
 import jbehave.evaluate.listener.Listener;
-import jbehave.framework.Criteria;
-import jbehave.framework.CriteriaVerification;
-import jbehave.framework.CriteriaSupport;
+import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.Result;
+import jbehave.framework.CriteriaExtractor;
 import jbehave.framework.Verify;
 
 import org.jmock.Mock;
@@ -35,15 +35,15 @@ public class JMockListenerBehaviour {
         }
     }
     
-    private Criteria getSingleBehaviour(Class behaviourClass) {
-        return (Criteria)CriteriaSupport.getCriteria(behaviourClass).iterator().next();
+    private CriteriaVerifier getSingleBehaviour(Class behaviourClass) {
+        return (CriteriaVerifier)CriteriaExtractor.getCriteria(behaviourClass).iterator().next();
     }
     
 	public void shouldVerifyPublicMockFieldsWhenBehaviourMethodSucceeds() throws Exception {
         // setup
         Listener listener = new JMockListener();
-        Criteria behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
-        CriteriaVerification behaviourResult = behaviour.verify();
+        CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
+        Result behaviourResult = behaviour.verify();
         
         // execute
         listener.afterCriterionEvaluationEnds(behaviourResult);

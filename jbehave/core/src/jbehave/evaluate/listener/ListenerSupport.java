@@ -8,8 +8,8 @@
 package jbehave.evaluate.listener;
 
 import jbehave.evaluate.Evaluator;
-import jbehave.framework.Criteria;
-import jbehave.framework.CriteriaVerification;
+import jbehave.framework.CriteriaVerifier;
+import jbehave.framework.Result;
 
 /**
  * Stub implementations of the listener event methods.
@@ -30,9 +30,9 @@ public class ListenerSupport implements Listener {
     public void behaviourEvaluationEnded(Class behaviourClass) {
     }
 
-    public void beforeCriterionEvaluationStarts(Criteria behaviour) {
+    public void beforeCriterionEvaluationStarts(CriteriaVerifier behaviour) {
     }
 
-    public void afterCriterionEvaluationEnds(CriteriaVerification behaviourResult) {
+    public void afterCriterionEvaluationEnds(Result behaviourResult) {
     }
 }
