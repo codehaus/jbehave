@@ -1,15 +1,17 @@
 package test.jmock.core.mixin;
 
+import jbehave.extensions.jmock.JMockMixins.Is;
 import junit.framework.TestCase;
 
 import org.jmock.core.Constraint;
-import org.jmock.core.mixin.Is;
 import org.jmock.util.Dummy;
 
 import test.jmock.core.testsupport.AlwaysFalse;
 import test.jmock.core.testsupport.AlwaysTrue;
 
-
+/**
+ * @deprecated use {@link jbehave.extensions.jmock.JMockMixins} instead
+ */
 public class MixinsTest extends TestCase {
     Constraint trueConstraint = AlwaysTrue.INSTANCE;
     Constraint falseConstraint = AlwaysFalse.INSTANCE;

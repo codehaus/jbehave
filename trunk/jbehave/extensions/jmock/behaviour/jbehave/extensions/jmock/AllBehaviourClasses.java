@@ -5,11 +5,10 @@
  * 
  * See license.txt for licence details
  */
-package jbehave;
+package jbehave.extensions.jmock;
 
-import jbehave.framework.BehaviourClassContainer;
-import jbehave.extensions.jmock.JMockerBehaviour;
 import jbehave.extensions.jmock.listener.JMockListenerBehaviour;
+import jbehave.framework.BehaviourClassContainer;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -17,7 +16,6 @@ import jbehave.extensions.jmock.listener.JMockListenerBehaviour;
  */
 public class AllBehaviourClasses implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
-        return new Class[] {JMockerBehaviour.class,
-							JMockListenerBehaviour.class};
+        return new Class[] {JMockListenerBehaviour.class};
 	}
 }

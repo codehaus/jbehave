@@ -10,15 +10,14 @@ package jbehave.extensions.jmock.listener;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import jbehave.extensions.jmock.JMockable;
+import jbehave.framework.Listener;
 import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.Verify;
-import jbehave.framework.Listener;
-import jbehave.extensions.jmock.Mocker;
+import junit.framework.AssertionFailedError;
 
 import org.jmock.Mock;
-import org.jmock.core.matcher.InvokeOnceMatcher;
-import junit.framework.AssertionFailedError;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -26,7 +25,6 @@ import junit.framework.AssertionFailedError;
  */
 public class JMockListenerBehaviour {
 	private Listener listener;
-
 
 	public void setUp() {
 		listener = new JMockListener();
@@ -102,53 +100,20 @@ public class JMockListenerBehaviour {
 		Verify.not(verifyMockResult == verification);
 	}
 
-	public static class BehaviourClassNeedingAMock {
-		private Mocker mocker = null;
-
-		public void needsMocks(Mocker mocker) {
-			this.mocker = mocker;
-		}
-
-		public Mocker getMocker() {
-			return mocker;
-		}
-
-		public void shouldNeedAMock() throws Exception {
-			//
-		}
-	}
-
-	public void shouldInjectMockerWhenNeedsMockMethodIsPresentOnABehaviourClass() throws Exception {
-		// setup
-		ResponsibilityVerifier verifier = getSingleResponsibilityVerifier(BehaviourClassNeedingAMock.class);
-		BehaviourClassNeedingAMock behaviourClassInstance = new BehaviourClassNeedingAMock();
-
-		// execute
-		listener.responsibilityVerificationStarting(verifier, behaviourClassInstance);
-
-		// verify
-		Verify.that("needsMocker should have been invoked", behaviourClassInstance.getMocker() != null);
-	}
-
-
 	interface AnIntf {
-		void someMethod();
+		String someMethod();
 	}
 
-	public static class BehaviourClassThatUsesJMock {
-		Mocker mocker;
-
-		public void needsMocks(Mocker mocker) {
-			this.mocker = mocker;
-		}
+	public static class BehaviourClassThatUsesJMock implements JMockable {
 
 		public void shouldUseAMock() throws Exception {
-	        Mock m = mocker.mock(AnIntf.class);
-			m.expects(new InvokeOnceMatcher()).method("someMethod");
+	        Mock m = new Mock(AnIntf.class);
+			m.expects(Invoked.once()).method("someMethod").withNoArguments()
+                .will(Return.value("hello"));
 		}
 	}
 
-	public void shouldAutomaticallyVerifyMocksCreatedWithMocker() throws Exception {
+	public void shouldAutomaticallyVerifyMocks() throws Exception {
 		// setup
 		ResponsibilityVerifier verifier = getSingleResponsibilityVerifier(BehaviourClassThatUsesJMock.class);
 		BehaviourClassThatUsesJMock behaviourClassInstance = new BehaviourClassThatUsesJMock();

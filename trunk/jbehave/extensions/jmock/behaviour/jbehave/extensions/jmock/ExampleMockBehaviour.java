@@ -7,16 +7,13 @@
  */
 package jbehave.extensions.jmock;
 
-import org.jmock.Mock;
-import org.jmock.core.mixin.Invoked;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 16-Jul-2004
  */
-public class ExampleMockBehaviour {
+public class ExampleMockBehaviour implements JMockable {
 	private Mock aMock;
-	private Mocker mocker;
 
 	interface Dependency {
 		void invokeMe();
@@ -34,15 +31,9 @@ public class ExampleMockBehaviour {
 		}
 	}
 
-
-
-	public void needsMocks(Mocker mocker) {
-		this.mocker = mocker;
-	}
-
 	public void shouldUseAMock() {
 		// setup
-		aMock = mocker.mock(Dependency.class);
+		aMock = new Mock(Dependency.class);
 
 		ClassWithDependency a = new ClassWithDependency((Dependency) aMock.proxy());
 

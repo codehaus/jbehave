@@ -11,7 +11,7 @@
     <!-- dist stuff -->
     <property name="dist.dir" location="dist"/>
     <property name="dist.website.dir" location="${dist.dir}/website"/>
-    <property name="dist.javadoc.dir" location="${deploy.website.dir}/docs/javadoc"/>
+    <property name="dist.javadoc.dir" location="${dist.website.dir}/docs/javadoc"/>
 
     <!-- core -->
     <property name="core.dir" location="../core"/>

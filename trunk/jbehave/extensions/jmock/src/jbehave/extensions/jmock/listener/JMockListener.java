@@ -8,10 +8,8 @@
 package jbehave.extensions.jmock.listener;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
-import jbehave.extensions.jmock.JMocker;
-import jbehave.extensions.jmock.Mocker;
+import jbehave.extensions.jmock.JMockable;
 import jbehave.framework.ResponsibilityVerification;
 import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.exception.VerificationException;
@@ -26,26 +24,18 @@ import org.jmock.Mock;
  */
 public class JMockListener extends ListenerSupport {
 
-	private Mocker mocker = Mocker.NULL;
-
 	public void behaviourClassVerificationStarting(Class spec) {
 	}
 
-	public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object specInstance) {
-		try {
-			Method needsMocks = specInstance.getClass().getMethod("needsMocks", new Class [] {Mocker.class});
-			mocker = new JMocker();
-			needsMocks.invoke(specInstance, new Object [] {mocker});
-		} catch (Exception e) {
-            mocker = Mocker.NULL;
-		}
+	public void responsibilityVerificationStarting(ResponsibilityVerifier verifier, Object behaviourClassInstance) {
+        JMockable.Mocks.clear(); // whatever
 	}
 
 	public ResponsibilityVerification responsibilityVerificationEnding(ResponsibilityVerification behaviourResult, Object specInstance) {
 		try {
-			mocker.verifyMocks();
-		} catch (VerificationException ve) {
-			return createCriteriaVerification(behaviourResult, ve);
+			JMockable.Mocks.verify();
+		} catch (VerificationException e) {
+			return createCriteriaVerification(behaviourResult, e);
 		}
 
 		return verifyFields(specInstance, behaviourResult);
