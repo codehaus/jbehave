@@ -7,8 +7,8 @@
  */
 package jbehave;
 import jbehave.evaluate.EvaluatorBehaviour;
-import jbehave.evaluate.listener.TextListenerBehaviour;
-import jbehave.evaluate.listener.TimerBehaviour;
+import jbehave.evaluate.listener.TextListenerSpec;
+import jbehave.evaluate.listener.TimerSpec;
 import jbehave.framework.Aggregate;
 import jbehave.framework.CriteriaBehaviour;
 import jbehave.framework.CriteriaEvaluationBehaviour;
@@ -24,8 +24,8 @@ public class AllBehaviour implements Aggregate {
             CriteriaEvaluationBehaviour.class,
             CriteriaSupportBehaviour.class,
             EvaluatorBehaviour.class,
-            TextListenerBehaviour.class,
-            TimerBehaviour.class
+            TextListenerSpec.class,
+            TimerSpec.class
         };
     }
 }

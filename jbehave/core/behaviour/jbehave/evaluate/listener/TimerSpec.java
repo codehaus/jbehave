@@ -14,7 +14,7 @@ import jbehave.framework.Verify;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  * @author <a href="mailto:geoff@jbehave.org">Geoff Oliphant</a>
  */
-public class TimerBehaviour {
+public class TimerSpec {
     public void shouldMeasureAPeriodOfTime() throws Exception {
         Timer timer = new Timer();
         long startTime = System.currentTimeMillis();

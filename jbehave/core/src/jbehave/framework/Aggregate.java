@@ -15,7 +15,7 @@ package jbehave.framework;
  * pattern - more a way of grouping behaviour classes together.<br>
  * <br>
  * Any implementing class must also have a default constructor so that it
- * can be interrogated by {@link CriteriaSupport}.
+ * can be interrogated by {@link CriteriaExtractor}.
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
