@@ -5,11 +5,11 @@
  * 
  * See license.txt for license details
  */
-package jbehave.evaluate.listener;
+package jbehave.verify.listener;
 
-import jbehave.evaluate.Evaluator;
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
+import jbehave.verify.Evaluator;
 
 
 /**
