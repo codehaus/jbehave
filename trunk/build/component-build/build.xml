@@ -7,7 +7,7 @@
 
     <property name="src.dir" location="src"/>
     <property name="behaviour.dir" location="behaviour" />
-    <property name="lib.dir" location="../../lib"/>
+    <property name="lib.dir" location="../lib"/>
     <property name="build.dir" location="build"/>
     <property name="working.dir" location="${build.dir}/delete_me"/>
     <property name="classes.dir" location="${working.dir}/classes" />
