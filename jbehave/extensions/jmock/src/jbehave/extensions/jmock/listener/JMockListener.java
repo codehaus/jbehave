@@ -9,8 +9,8 @@ package jbehave.extensions.jmock.listener;
 
 import java.lang.reflect.Field;
 
-import jbehave.evaluate.listener.ListenerSupport;
 import jbehave.framework.CriteriaVerificationResult;
+import jbehave.verify.listener.ListenerSupport;
 
 import org.jmock.Mock;
 

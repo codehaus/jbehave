@@ -5,15 +5,15 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.evaluate.listener;
+package jbehave.verify.listener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.evaluate.Evaluator;
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
+import jbehave.verify.Evaluator;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still

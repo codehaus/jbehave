@@ -5,7 +5,7 @@
  *
  * See license.txt for licence details
  */
-package jbehave.evaluate.listener;
+package jbehave.verify.listener;
 
 import java.io.StringWriter;
 

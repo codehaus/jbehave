@@ -9,11 +9,11 @@ package jbehave.extensions.jmock.listener;
 
 import java.util.List;
 
-import jbehave.evaluate.listener.Listener;
 import jbehave.framework.CriteriaVerifier;
 import jbehave.framework.CriteriaVerificationResult;
 import jbehave.framework.CriteriaExtractor;
 import jbehave.framework.Verify;
+import jbehave.verify.listener.Listener;
 
 import org.jmock.Mock;
 
