@@ -9,7 +9,7 @@ package jbehave.extensions.jmock.listener;
 
 import java.lang.reflect.Field;
 
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Evaluation;
 import jbehave.runner.listener.ListenerSupport;
 
 import org.jmock.Mock;
@@ -19,8 +19,8 @@ import org.jmock.Mock;
  */
 public class JMockListener extends ListenerSupport {
 
-	public void behaviourEnded(BehaviourResult behaviourResult) {
-        Object executedInstance = behaviourResult.getExecutedInstance();
+	public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
+        Object executedInstance = behaviourResult.getEvaluatedInstance();
         
         // iterate looking for fields of type Mock
         Field[] fields = executedInstance.getClass().getDeclaredFields();

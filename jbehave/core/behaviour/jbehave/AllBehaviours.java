@@ -7,7 +7,7 @@
  */
 package jbehave;
 import jbehave.framework.Aggregate;
-import jbehave.framework.BehaviourBehaviours;
+import jbehave.framework.CriterionBehaviour;
 import jbehave.framework.BehaviourResultBehaviours;
 import jbehave.framework.BehavioursSupportBehaviours;
 import jbehave.runner.BehaviourRunnerBehaviours;
@@ -20,7 +20,7 @@ import jbehave.runner.listener.TimerBehaviours;
 public class AllBehaviours implements Aggregate {
     public Class[] getBehaviourClasses() {
         return new Class[] {
-            BehaviourBehaviours.class,
+            CriterionBehaviour.class,
             BehaviourResultBehaviours.class,
             BehavioursSupportBehaviours.class,
             BehaviourRunnerBehaviours.class,

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.BehaviourFrameworkError;
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Evaluation;
 import jbehave.runner.listener.ListenerSupport;
 
 
@@ -25,9 +25,7 @@ public class TextListener extends ListenerSupport {
     
     private final PrintWriter out;
     private int behavioursRun = 0;
-//    private int assertionsFailed = 0;
-//    private int exceptionsThrown = 0;
-    private final List assertionsFailed = new ArrayList();
+    private final List failures = new ArrayList();
     private final List exceptionsThrown = new ArrayList();
 
     public TextListener(Writer writer) {
@@ -37,45 +35,45 @@ public class TextListener extends ListenerSupport {
     /**
      * Write out the traditional dot, E or F as each behaviour runs.
      */
-    public void behaviourEnded(BehaviourResult behaviourResult) {
+    public void afterCriterionEvaluationEnds(Evaluation evaluation) {
         behavioursRun++;
-        if (behaviourResult.failed()) {
-            assertionsFailed.add(behaviourResult);
+        if (evaluation.failed()) {
+            failures.add(evaluation);
         }
-        else if (behaviourResult.exceptionThrown()) {
-            exceptionsThrown.add(behaviourResult);
+        else if (evaluation.exceptionThrown()) {
+            exceptionsThrown.add(evaluation);
         }
-        out.print(getSymbol(behaviourResult.getStatus()));
+        out.print(getSymbol(evaluation.getStatus()));
         out.flush();
     }
 
     private char getSymbol(int status) {
         switch (status) {
-            case BehaviourResult.SUCCESS:          return '.';
-            case BehaviourResult.FAILURE:          return 'F';
-            case BehaviourResult.EXCEPTION_THROWN: return 'E';
+            case Evaluation.SUCCESS:          return '.';
+            case Evaluation.FAILURE:          return 'F';
+            case Evaluation.EXCEPTION_THROWN: return 'E';
             default: throw new BehaviourFrameworkError("Unknown behaviour status: " + status);
         }
     }
     
     public void runEnded(BehaviourRunner runner) {
         out.println(); out.println();
-        printAssertionsFailed();
+        printFailures();
         printExceptionsThrown();
         printSummaryCounts();
         out.flush();
     }
     
     private void printSummaryCounts() {
-        out.print("Behaviours run: " + behavioursRun);
-        if (assertionsFailed.size() + exceptionsThrown.size() > 0) {
-            out.print(", Assertion Failures: " + assertionsFailed.size() + ", Exceptions Thrown: " + exceptionsThrown.size());
+        out.print("Criteria evaluated: " + behavioursRun);
+        if (failures.size() + exceptionsThrown.size() > 0) {
+            out.print(", Failures: " + failures.size() + ", Exceptions Thrown: " + exceptionsThrown.size());
         }
         out.println();
     }
     
-    private void printAssertionsFailed() {
-        printErrorList("Assertions Failed:", assertionsFailed);
+    private void printFailures() {
+        printErrorList("Failures:", failures);
     }
     
     private void printExceptionsThrown() {
@@ -88,7 +86,7 @@ public class TextListener extends ListenerSupport {
         out.println();
         int count = 1;
         for (Iterator i = errorList.iterator(); i.hasNext();) {
-            BehaviourResult result = (BehaviourResult)i.next();
+            Evaluation result = (Evaluation)i.next();
             out.println(count + ") " + result.getName() + " [" + result.getClassName() + "]:");
             result.getTargetException().printStackTrace(out);
             out.println();

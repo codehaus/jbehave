@@ -24,14 +24,14 @@ public class BehavioursSupportBehaviours {
 
     private void verifyContainsBehaviourName(String name, Collection behaviours) {
         for (Iterator i = behaviours.iterator(); i.hasNext();) {
-            Behaviour behaviour = (Behaviour)i.next();
+            Criterion behaviour = (Criterion)i.next();
             if (behaviour.getName().equals(name)) return;
         }
         Verify.impossible(name + " not found in behaviours");
     }
 
     public void shouldRecogniseSingleBehaviour() throws Exception {
-        Collection behaviours = BehavioursSupport.getBehaviours(BehaviourClassWithSingleBehaviour.class);
+        Collection behaviours = BehavioursSupport.getCriteria(BehaviourClassWithSingleBehaviour.class);
         Verify.equal(1, behaviours.size());
         verifyContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
     }
@@ -45,7 +45,7 @@ public class BehavioursSupportBehaviours {
     }
 
     public void shouldRecogniseTwoBehaviours() throws Exception {
-        Collection behaviours = BehavioursSupport.getBehaviours(BehaviourClassWithTwoBehaviours.class);
+        Collection behaviours = BehavioursSupport.getCriteria(BehaviourClassWithTwoBehaviours.class);
 
         Verify.equal(2, behaviours.size());
         verifyContainsBehaviourName("shouldDoOneThing", behaviours);
@@ -61,7 +61,7 @@ public class BehavioursSupportBehaviours {
     }
 
     public void shouldIgnoreNonPublicBehaviourMethods() throws Exception {
-        Collection behaviours = BehavioursSupport.getBehaviours(BehaviourClassWithNonPublicMethods.class);
+        Collection behaviours = BehavioursSupport.getCriteria(BehaviourClassWithNonPublicMethods.class);
         Verify.equal(0, behaviours.size());
     }
 
@@ -77,7 +77,7 @@ public class BehavioursSupportBehaviours {
     }
 
     public void shouldIgnoreNonPublicBehaviourMethodsMixedWithBehaviours() throws Exception {
-        Collection behaviours = BehavioursSupport.getBehaviours(BehaviourClassWithBehaviourAndNonPublicMethods.class);
+        Collection behaviours = BehavioursSupport.getCriteria(BehaviourClassWithBehaviourAndNonPublicMethods.class);
         Verify.equal(1, behaviours.size());
         verifyContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
     }
@@ -91,7 +91,7 @@ public class BehavioursSupportBehaviours {
     }
 
     public void shouldRecogniseBehaviourInheritedFromSuperclass() throws Exception {
-        Collection behaviours = BehavioursSupport.getBehaviours(BehaviourSubclassInheritingBehaviourMethod.class);
+        Collection behaviours = BehavioursSupport.getCriteria(BehaviourSubclassInheritingBehaviourMethod.class);
         Verify.equal(1, behaviours.size());
         verifyContainsBehaviourName("shouldDoSomething", behaviours);
     }
@@ -103,7 +103,7 @@ public class BehavioursSupportBehaviours {
     }
 
     public void shouldFindMethodsInAggregatedBehaviourClass() throws Exception {
-        Collection behaviours = BehavioursSupport.getBehaviours(AggregateBehaviourClass.class);
+        Collection behaviours = BehavioursSupport.getCriteria(AggregateBehaviourClass.class);
         Verify.equal(1, behaviours.size());
         verifyContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
     }
@@ -115,7 +115,7 @@ public class BehavioursSupportBehaviours {
     }
 
     public void shouldFindMethodsInNestedAggregatedBehaviourClass() throws Exception {
-        Collection behaviours = BehavioursSupport.getBehaviours(NestedAggregateBehaviourClass.class);
+        Collection behaviours = BehavioursSupport.getCriteria(NestedAggregateBehaviourClass.class);
         Verify.equal(1, behaviours.size());
         verifyContainsBehaviourName("shouldBehaveInSomeWay", behaviours);
     }

@@ -12,7 +12,7 @@ package jbehave.framework;
  */
 public class BehaviourResultBehaviours {
 
-    private void verifyState(BehaviourResult result, int status, boolean succeeded, boolean failed, boolean exceptionThrown) {
+    private void verifyState(Evaluation result, int status, boolean succeeded, boolean failed, boolean exceptionThrown) {
         Verify.equal("status", status, result.getStatus());
         Verify.equal("succeeded", succeeded, result.succeeded());
         Verify.equal("failed", failed, result.failed());
@@ -20,17 +20,17 @@ public class BehaviourResultBehaviours {
     }
 
     public void shouldHaveConsistentStateForSuccessfulBehaviour() throws Exception {
-        BehaviourResult result = new BehaviourResult("shouldSucceed", "SomeClass", null);
-        verifyState(result, BehaviourResult.SUCCESS, true, false, false);
+        Evaluation result = new Evaluation("shouldSucceed", "SomeClass", null);
+        verifyState(result, Evaluation.SUCCESS, true, false, false);
     }
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
-        BehaviourResult result = new BehaviourResult("shouldFail", "SomeClass", null, new VerificationException("oops"));
-        verifyState(result, BehaviourResult.FAILURE, false, true, false);
+        Evaluation result = new Evaluation("shouldFail", "SomeClass", null, new VerificationException("oops"));
+        verifyState(result, Evaluation.FAILURE, false, true, false);
     }
 
     public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
-        BehaviourResult result = new BehaviourResult("shouldThrowException", "SomeClass", null, new Exception());
-        verifyState(result, BehaviourResult.EXCEPTION_THROWN, false, false, true);
+        Evaluation result = new Evaluation("shouldThrowException", "SomeClass", null, new Exception());
+        verifyState(result, Evaluation.EXCEPTION_THROWN, false, false, true);
     }
 }

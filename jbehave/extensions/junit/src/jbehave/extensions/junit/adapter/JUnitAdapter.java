@@ -7,8 +7,8 @@
  */
 package jbehave.extensions.junit.adapter;
 
-import jbehave.framework.Behaviour;
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Criterion;
+import jbehave.framework.Evaluation;
 import jbehave.framework.BehavioursSupport;
 import jbehave.framework.VerificationException;
 import jbehave.runner.BehaviourRunner;
@@ -33,13 +33,13 @@ public class JUnitAdapter implements Test {
         }
         public void runStarted(BehaviourRunner runner) {
         }
-        public void behaviourClassStarted(Class behaviourClass) {
+        public void behaviourEvaluationStarted(Class behaviourClass) {
             setBehaviourClassName(behaviourClass.getName());
             result.startTest(adapter);
         }
-        public void behaviourStarted(Behaviour behaviour) {
+        public void beforeCriterionEvaluationStarts(Criterion behaviour) {
         }
-        public void behaviourEnded(BehaviourResult behaviourResult) {
+        public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
             if (behaviourResult.failed()) {
                 VerificationException e = (VerificationException)behaviourResult.getTargetException();
                 result.addError(adapter, e);
@@ -64,7 +64,7 @@ public class JUnitAdapter implements Test {
     }
 
     public int countTestCases() {
-        return BehavioursSupport.getBehaviours(behaviours).size();
+        return BehavioursSupport.getCriteria(behaviours).size();
     }
 
     private void setBehaviourClassName(String behaviourClassName) {

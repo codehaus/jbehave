@@ -24,7 +24,7 @@ public abstract class BehaviourGroupSupport {
 
     /**
      * Find all behaviour methods in a class and wrap each one in a
-     * {@link Behaviour}
+     * {@link Criterion}
      * 
      * There is no particular constraint on the class. The behaviours
      * are public void methods that take no parameters and start
@@ -57,7 +57,7 @@ public abstract class BehaviourGroupSupport {
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
             if (method.getName().startsWith(BEHAVIOUR_METHOD_PREFIX) && method.getParameterTypes().length == 0) {
-                result.add(new Behaviour(method));
+                result.add(new Criterion(method));
             }
         }
         return result;

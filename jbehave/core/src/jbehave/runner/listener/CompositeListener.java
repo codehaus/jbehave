@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.framework.Behaviour;
-import jbehave.framework.BehaviourResult;
+import jbehave.framework.Criterion;
+import jbehave.framework.Evaluation;
 import jbehave.runner.BehaviourRunner;
 
 /**
@@ -47,27 +47,27 @@ public class CompositeListener implements Listener {
         }
     }
 
-    public void behaviourClassStarted(Class behaviourClass) {
+    public void behaviourEvaluationStarted(Class behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).behaviourClassStarted(behaviourClass);
+            ((Listener)i.next()).behaviourEvaluationStarted(behaviourClass);
         }
     }
 
-    public void behaviourClassEnded(Class behaviourClass) {
+    public void behaviourEvaluationEnded(Class behaviourClass) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).behaviourClassEnded(behaviourClass);
+            ((Listener)i.next()).behaviourEvaluationEnded(behaviourClass);
         }
     }
 
-    public void behaviourStarted(Behaviour behaviour) {
+    public void beforeCriterionEvaluationStarts(Criterion behaviour) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).behaviourStarted(behaviour);
+            ((Listener)i.next()).beforeCriterionEvaluationStarts(behaviour);
         }
     }
 
-    public void behaviourEnded(BehaviourResult behaviourResult) {
+    public void afterCriterionEvaluationEnds(Evaluation behaviourResult) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((Listener)i.next()).behaviourEnded(behaviourResult);
+            ((Listener)i.next()).afterCriterionEvaluationEnds(behaviourResult);
         }
     }
 }

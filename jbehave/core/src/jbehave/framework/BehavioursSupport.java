@@ -24,7 +24,7 @@ public abstract class BehavioursSupport {
 
     /**
      * Find all behaviour methods in a class and wrap each one in a
-     * {@link Behaviour}
+     * {@link Criterion}
      * 
      * There is no particular constraint on the class. The behaviours
      * are public void methods that take no parameters and start
@@ -43,7 +43,7 @@ public abstract class BehavioursSupport {
      * @return an unordered set of <tt>Behaviour</tt>s.
      * @throws BehaviourFrameworkError if there are any problems constructing an Aggregate.
      */
-    public static Collection getBehaviours(Class behaviourClass) {
+    public static Collection getCriteria(Class behaviourClass) {
         final Collection result = new HashSet();
         
         result.addAll(collectBehaviours(behaviourClass));
@@ -57,7 +57,7 @@ public abstract class BehavioursSupport {
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
             if (method.getName().startsWith(BEHAVIOUR_METHOD_PREFIX) && method.getParameterTypes().length == 0) {
-                result.add(new Behaviour(method));
+                result.add(new Criterion(method));
             }
         }
         return result;
@@ -71,7 +71,7 @@ public abstract class BehavioursSupport {
             Aggregate aggregate = (Aggregate)behaviourClass.newInstance();
             Class[] behaviourClasses = aggregate.getBehaviourClasses();
             for (int i = 0; i < behaviourClasses.length; i++) {
-                result.addAll(getBehaviours(behaviourClasses[i]));
+                result.addAll(getCriteria(behaviourClasses[i]));
             }
             return result;
         }
