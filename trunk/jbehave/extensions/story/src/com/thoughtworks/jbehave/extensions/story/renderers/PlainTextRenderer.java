@@ -15,9 +15,9 @@ import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.GivenScenario;
-import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
-import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
+import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.SimpleOutcome;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 import com.thoughtworks.jbehave.util.ConvertCase;
 
@@ -74,7 +74,7 @@ public class PlainTextRenderer implements Visitor {
         out.println("When " + new ConvertCase(event).toSeparateWords());
     }
 
-    public void visitOutcome(Outcome outcome) {
+    public void visitOutcome(SimpleOutcome outcome) {
         nextWord = "Then ";
     }
     

@@ -36,7 +36,7 @@ public class ScenarioBehaviour extends UsingJMock {
         Visitor visitor = (Visitor) stub(Visitor.class);
         
         Mock context = new Mock(MockableContext.class);
-        Mock outcome = new Mock(Outcome.class);
+        Mock outcome = new Mock(SimpleOutcome.class);
         Mock event = new Mock(Event.class);
 
         context.expects(once()).method("accept").with(eq(visitor));
@@ -44,7 +44,7 @@ public class ScenarioBehaviour extends UsingJMock {
         event.expects(once()).method("accept").with(same(visitor)).after(outcome, "acceptBeforeEvent");
         outcome.expects(once()).method("accept").with(same(visitor)).after(event, "accept");
         
-        Scenario scenario = new Scenario("", null, (Context)context.proxy(), (Event)event.proxy(), (Outcome) outcome.proxy());
+        Scenario scenario = new Scenario("", null, (Context)context.proxy(), (Event)event.proxy(), (SimpleOutcome) outcome.proxy());
         
         // when...
         scenario.accept(visitor);
@@ -53,7 +53,7 @@ public class ScenarioBehaviour extends UsingJMock {
     public void shouldInformScenarioListenerAfterSuccessfulVisit() throws Exception {
         // given...
         Event eventStub = (Event) stub(Event.class);
-        Outcome outcomeStub = (Outcome) stub(Outcome.class);
+        SimpleOutcome outcomeStub = SimpleOutcome.NULL;
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         
         Mock listener = new Mock(ScenarioListener.class);
@@ -69,7 +69,7 @@ public class ScenarioBehaviour extends UsingJMock {
     public void shouldInformScenarioListenerWhenContextContainsUnimplementedGiven() throws Exception {
         // given...
         Event eventStub = (Event) stub(Event.class);
-        Outcome outcomeStub = (Outcome)stub(Outcome.class);
+        SimpleOutcome outcomeStub = SimpleOutcome.NULL;
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Exception cause = new UnimplementedException();
         
@@ -93,10 +93,10 @@ public class ScenarioBehaviour extends UsingJMock {
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Exception cause = new UnimplementedException();
         
-        Mock outcome = new Mock(Outcome.class);
+        Mock outcome = new Mock(SimpleOutcome.class);
         Mock listener = new Mock(ScenarioListener.class);
 
-        Scenario scenario = new Scenario("", null, eventStub, (Outcome) outcome.proxy());
+        Scenario scenario = new Scenario("", null, eventStub, (SimpleOutcome) outcome.proxy());
         scenario.setListener((ScenarioListener)listener.proxy());
         
         // expect...
@@ -109,7 +109,7 @@ public class ScenarioBehaviour extends UsingJMock {
     
     public void shouldInformScenarioListenerWhenEventIsUnimplemented() throws Exception {
         // given...
-        Outcome outcomeStub = (Outcome)stub(Outcome.class);
+        SimpleOutcome outcomeStub = SimpleOutcome.NULL;
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Exception cause = new UnimplementedException();
         
@@ -130,7 +130,7 @@ public class ScenarioBehaviour extends UsingJMock {
     public void shouldInformScenarioListenerWhenContextPropagatesAnException() throws Exception {
         // given...
         Event eventStub = (Event) stub(Event.class);
-        Outcome outcomeStub = (Outcome)stub(Outcome.class);
+        SimpleOutcome outcomeStub = SimpleOutcome.NULL;
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Exception cause = new Exception();
         
@@ -154,10 +154,10 @@ public class ScenarioBehaviour extends UsingJMock {
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Exception cause = new Exception();
         
-        Mock outcome = new Mock(Outcome.class);
+        Mock outcome = new Mock(SimpleOutcome.class);
         Mock listener = new Mock(ScenarioListener.class);
 
-        Scenario scenario = new Scenario("", null, eventStub, (Outcome) outcome.proxy());
+        Scenario scenario = new Scenario("", null, eventStub, (SimpleOutcome) outcome.proxy());
         scenario.setListener((ScenarioListener)listener.proxy());
         
         // expect...
@@ -170,7 +170,7 @@ public class ScenarioBehaviour extends UsingJMock {
     
     public void shouldInformScenarioListenerWhenEventThrowsAnExpectation() throws Exception {
         // given...
-        Outcome outcomeStub = (Outcome)stub(Outcome.class);
+        SimpleOutcome outcomeStub = SimpleOutcome.NULL;
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Exception cause = new Exception();
         

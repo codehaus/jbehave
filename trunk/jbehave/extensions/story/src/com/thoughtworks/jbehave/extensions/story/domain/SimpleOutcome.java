@@ -10,6 +10,7 @@ package com.thoughtworks.jbehave.extensions.story.domain;
 import java.util.Arrays;
 import java.util.List;
 
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
@@ -17,7 +18,9 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class SimpleOutcome implements Outcome {
+public class SimpleOutcome implements Visitable {
+    
+    public static final SimpleOutcome NULL = new SimpleOutcome(new Expectation[0]);
     
     private final VisitableArrayList expectations;
 

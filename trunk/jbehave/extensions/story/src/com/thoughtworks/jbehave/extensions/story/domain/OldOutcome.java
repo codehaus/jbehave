@@ -14,15 +14,8 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @deprecated use Story instead
+ * @deprecated use <tt>Outcome</tt> instead
  */
-public interface OldStory extends Visitable {
-    
-    void addScenario(OldScenario scenario);
-
-    String getTitle();
-
-    OldScenario getScenario(String name);
-
-    List getScenarios();
+public interface OldOutcome extends Visitable {
+    List getExpectations();
 }

@@ -58,7 +58,7 @@ public class SimpleOutcomeBehaviour extends UsingJMock {
         // given...
         Visitor visitorStub = (Visitor)stub(Visitor.class);
         Mock expectation = new Mock(Expectation.class);
-        Outcome outcome = new SimpleOutcome((Expectation)expectation.proxy());
+        SimpleOutcome outcome = new SimpleOutcome((Expectation)expectation.proxy());
 
         // expect...
         expectation.expects(atLeastOnce()).method("accept").will(throwException(new SomeCheckedException()));

@@ -12,9 +12,9 @@ import com.thoughtworks.jbehave.extensions.story.base.Story;
 import com.thoughtworks.jbehave.extensions.story.domain.Context;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
-import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
-import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
 import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
+import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.SimpleOutcome;
 
 
 /**
@@ -27,7 +27,7 @@ public interface Visitor {
     void visitExpectationAfterTheEvent(Expectation expectation);
     void visitGiven(Given given);
     void visitNarrative(Narrative narrative);
-    void visitOutcome(Outcome Outcome);
+    void visitOutcome(SimpleOutcome Outcome);
     void visitScenario(Scenario scenario);
     void visitStory(Story story);
 }

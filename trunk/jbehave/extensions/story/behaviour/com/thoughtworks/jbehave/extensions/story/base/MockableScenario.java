@@ -8,14 +8,14 @@
 package com.thoughtworks.jbehave.extensions.story.base;
 
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
-import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
+import com.thoughtworks.jbehave.extensions.story.domain.SimpleOutcome;
 
 
 public class MockableScenario extends Scenario {
 
     public MockableScenario() {
-        super("", Story.NULL, Event.NULL, Outcome.NULL);
+        super("", Story.NULL, Event.NULL, SimpleOutcome.NULL);
     }
     
 }

@@ -43,7 +43,7 @@ public class GivenScenario extends Given {
     public String getDescription() {
         return scenario.getDescription();
     }
-    public Outcome getOutcome() {
+    public SimpleOutcome getOutcome() {
         return scenario.getOutcome();
     }
     public Story getStory() {

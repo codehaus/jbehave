@@ -24,16 +24,16 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Scenario implements Visitable {
-    public static final Scenario NULL = new Scenario("", Story.NULL, Context.NULL, Event.NULL, Outcome.NULL);
+    public static final Scenario NULL = new Scenario("", Story.NULL, Context.NULL, Event.NULL, SimpleOutcome.NULL);
     
     protected final Context context;
     protected final Event event;
-    protected final Outcome outcome;
+    protected final SimpleOutcome outcome;
     protected final String name;
     protected final Story story;
     private ScenarioListener listener = new NULLScenarioListener();
     
-    public Scenario(String name, Story story, Context context, Event event, Outcome outcome) {
+    public Scenario(String name, Story story, Context context, Event event, SimpleOutcome outcome) {
         this.name = name;
         this.story = story;
         this.context = context;
@@ -42,7 +42,7 @@ public class Scenario implements Visitable {
     }
     
     /** Scenario with expected outcome in any context */
-    public Scenario(String name, Story story, Event event, Outcome outcome) {
+    public Scenario(String name, Story story, Event event, SimpleOutcome outcome) {
         this(name, story, Context.NULL, event, outcome);
     }
     
@@ -59,7 +59,7 @@ public class Scenario implements Visitable {
     public Event getEvent() {
         return event;
     }
-    public Outcome getOutcome() {
+    public SimpleOutcome getOutcome() {
         return outcome;
     }
     
