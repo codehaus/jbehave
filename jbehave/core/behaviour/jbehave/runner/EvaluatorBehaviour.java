@@ -22,7 +22,7 @@ import jbehave.runner.listener.ListenerSupport;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class RunnerBehaviour {
+public class EvaluatorBehaviour {
     private final static List results = new ArrayList(); // handy place to store results
     private Evaluator runner;
     
