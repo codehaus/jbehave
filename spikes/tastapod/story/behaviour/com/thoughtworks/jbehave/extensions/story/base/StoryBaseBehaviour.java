@@ -14,7 +14,7 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryBaseBehaviour implements UsingJMock {
+public class StoryBaseBehaviour extends UsingJMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // setup
@@ -22,7 +22,7 @@ public class StoryBaseBehaviour implements UsingJMock {
         Mock visitor = new Mock(Visitor.class);
         
         // expect
-        visitor.expectsOnce("visitStory", story);
+        visitor.expects(once()).method("visitStory").with(same(story));
 
         // execute
         story.accept((Visitor) visitor.proxy());
@@ -37,8 +37,8 @@ public class StoryBaseBehaviour implements UsingJMock {
         Mock scenario2 = new Mock(Scenario.class, "scenario2");
         Visitor visitor = Visitor.NULL;
 
-        scenario1.expectsOnce("accept", visitor);
-        scenario2.expectsOnce("accept", visitor);
+        scenario1.expects(once()).method("accept").with(same(visitor));
+        scenario2.expects(once()).method("accept").with(same(visitor));
         
         // when...
         story.addScenario((Scenario) scenario1.proxy());

@@ -15,7 +15,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 public class AccountIsOverdrawnWithPermission extends GivenBase {
     public void setUp(Environment context) {
         new AccountIsOverdrawn().setUp(context);
-        new AccountHasOverdraftFacility().setUp(context);
+        new AccountHasOverdraftPermission().setUp(context);
     }
 
     public String getDescription() {

@@ -29,4 +29,12 @@ public class BasicDetails {
     public String getClassName() {
         return new CaseConverter().toCamelCase(name);
     }
+    
+    public boolean equals(Object obj)  {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof BasicDetails)) return false;
+        BasicDetails that = (BasicDetails) obj;
+        return this.name.equals(that.name) && this.description.equals(that.description);
+    }
 }

@@ -8,8 +8,6 @@
 package com.thoughtworks.jbehave.extensions.story.domain;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
@@ -23,9 +21,9 @@ public class SimpleContext implements Context {
     private final VisitableArrayList visitables = new VisitableArrayList();
     
     /** A Scenario and a Given */
-    public SimpleContext(Scenario scenario, List givens) {
+    public SimpleContext(Scenario scenario, Given[] givens) {
         visitables.add(new GivenScenario(scenario));
-        visitables.addAll(givens);
+        visitables.addAll(Arrays.asList(givens));
     }
 
     /** Just one given */
@@ -39,13 +37,9 @@ public class SimpleContext implements Context {
     }
 
     public SimpleContext(Scenario scenario, Given given) {
-        this(scenario, Collections.singletonList(given));
+        this(scenario, new Given[] {given});
     }
-
-    public List getGivens() {
-        return visitables;
-    }
-
+    
     public void accept(Visitor visitor) {
         visitor.visitContext(this);
         visitables.accept(visitor);

@@ -13,6 +13,9 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
 public class ATMShouldRetainBankCard extends ExpectationBase {
+    public void setExpectation(Environment environment) throws Exception {
+    }
+
     public void verify(Environment context) {
         // keep bank card
     }

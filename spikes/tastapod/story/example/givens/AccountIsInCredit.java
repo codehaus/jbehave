@@ -7,15 +7,17 @@
  */
 package givens;
 
+import banking.Account;
+
 import com.thoughtworks.jbehave.extensions.story.base.GivenBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 /** set balance = 50 */
 public class AccountIsInCredit extends GivenBase {
+    
     public void setUp(Environment environment) {
-    }
-
-    public String getDescription() {
-        return "set balance = 50";
+        Mock account = (Mock) environment.get("accountMock", new Mock(Account.class));
+        environment.put("account", account.proxy());
+        account.stubs().method("getBalance").withNoArguments().will(returnValue(50));
     }
 }

@@ -14,6 +14,10 @@ import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 /** balance = balance - 20 */
 public class AccountBalanceShouldBeReduced extends ExpectationBase {
+
+    public void setExpectation(Environment environment) throws Exception {
+    }
+    
     public void verify(Environment context) {
         throw new UnimplementedException();
     }

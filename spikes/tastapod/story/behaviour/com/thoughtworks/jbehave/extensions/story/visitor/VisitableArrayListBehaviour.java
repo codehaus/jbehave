@@ -12,7 +12,7 @@ import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class VisitableArrayListBehaviour implements UsingJMock {
+public class VisitableArrayListBehaviour extends UsingJMock {
     
     public void shouldTellEachElementToAcceptVisitor() throws Exception {
         // child...
@@ -24,8 +24,8 @@ public class VisitableArrayListBehaviour implements UsingJMock {
         list.add(child1.proxy());
         list.add(child2.proxy());
         
-        child1.expectsOnce("accept", visitor);
-        child2.expectsOnce("accept", visitor);
+        child1.expects(once()).method("accept").with(same(visitor));
+        child2.expects(once()).method("accept").with(same(visitor));
 
         // when...
         list.accept(visitor);

@@ -45,4 +45,14 @@ public class StoryDetails extends BasicDetails {
     public List getScenarios() {
         return scenarios;
     }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) return false;
+        if (!(obj instanceof StoryDetails)) return false;
+        StoryDetails that = (StoryDetails) obj;
+        return this.role.equals(that.role)
+                && this.feature.equals(that.feature)
+                && this.benefit.equals(that.benefit)
+                && this.scenarios.equals(that.scenarios);
+    }
 }

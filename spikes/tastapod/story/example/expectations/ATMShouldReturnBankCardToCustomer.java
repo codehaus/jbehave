@@ -12,7 +12,10 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
 
-public class ATMShouldReturnBankCard extends ExpectationBase {
+public class ATMShouldReturnBankCardToCustomer extends ExpectationBase {
+    public void setExpectation(Environment environment) throws Exception {
+    }
+
     public void verify(Environment context) {
         // return bank card
     }

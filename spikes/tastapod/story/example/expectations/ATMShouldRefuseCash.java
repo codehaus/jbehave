@@ -13,6 +13,10 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
 public class ATMShouldRefuseCash extends ExpectationBase {
+
+    public void setExpectation(Environment environment) throws Exception {
+    }
+    
     public void verify(Environment context) {
         // refuse cash
     }

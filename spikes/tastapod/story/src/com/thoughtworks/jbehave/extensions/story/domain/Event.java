@@ -14,6 +14,5 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Event extends Visitable {
-    String getDescription();
     void occurIn(Environment environment) throws Exception;
 }

@@ -24,7 +24,8 @@ public interface Visitor {
     
     void visitContext(Context context);
     void visitEvent(Event event);
-    void visitExpectation(Expectation expectation);
+    void visitExpectationBeforeEvent(Expectation expectation);
+    void visitExpectationAfterEvent(Expectation expectation);
     void visitGiven(Given given);
     void visitOutcome(Outcome Outcome);
     void visitScenario(Scenario scenario);

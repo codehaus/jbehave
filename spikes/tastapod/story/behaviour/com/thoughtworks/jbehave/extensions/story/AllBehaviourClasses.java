@@ -14,12 +14,14 @@ import com.thoughtworks.jbehave.extensions.story.base.GivenBaseBehaviour;
 import com.thoughtworks.jbehave.extensions.story.base.StoryBaseBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.SimpleContextBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.SimpleOutcomeBehaviour;
+import com.thoughtworks.jbehave.extensions.story.domain.SimpleScenarioBehaviour;
+import com.thoughtworks.jbehave.extensions.story.runner.StoryRunnerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableArrayListBehaviour;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class AllBehaviours extends Object implements BehaviourClassContainer {
+public class AllBehaviourClasses extends Object implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
                 ExpectationBaseBehaviour.class,
@@ -28,7 +30,9 @@ public class AllBehaviours extends Object implements BehaviourClassContainer {
                 EventBaseBehaviour.class,
                 SimpleContextBehaviour.class,
                 SimpleOutcomeBehaviour.class,
-                VisitableArrayListBehaviour.class
+                SimpleScenarioBehaviour.class,
+                VisitableArrayListBehaviour.class,
+                StoryRunnerBehaviour.class
         };
     }
 }

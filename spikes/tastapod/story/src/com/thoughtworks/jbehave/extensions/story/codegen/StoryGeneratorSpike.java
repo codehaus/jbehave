@@ -24,8 +24,8 @@ import com.thoughtworks.jbehave.extensions.story.codegen.domain.StoryDetails;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryGenerator {
-    public StoryGenerator(Writer out) {
+public class StoryGeneratorSpike {
+    public StoryGeneratorSpike(Writer out) {
     }
     
     public static void main(String[] args) {

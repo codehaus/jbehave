@@ -14,7 +14,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 /** set balance = -150 */
 public class AccountIsOverOverdraftLimit extends GivenBase {
     public void setUp(Environment context) {
-        new AccountHasOverdraftFacility().setUp(context);
+        new AccountHasOverdraftPermission().setUp(context);
     }
 
     public String getDescription() {

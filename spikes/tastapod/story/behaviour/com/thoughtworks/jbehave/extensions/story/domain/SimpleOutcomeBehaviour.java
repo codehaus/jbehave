@@ -14,13 +14,13 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class SimpleOutcomeBehaviour implements UsingJMock {
+public class SimpleOutcomeBehaviour extends UsingJMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // expectation...
         Visitable outcome = new SimpleOutcome(new Expectation[0]);
         Mock visitor = new Mock(Visitor.class);
-        visitor.expectsOnce("visitOutcome", outcome);
+        visitor.expects(once()).method("visitOutcome").with(same(outcome));
 
         // when...
         outcome.accept((Visitor)visitor.proxy());
@@ -41,8 +41,8 @@ public class SimpleOutcomeBehaviour implements UsingJMock {
                 }
         );
         
-        expectation1.expectsOnce("accept", visitor);
-        expectation2.expectsOnce("accept", visitor);
+        expectation1.expects(once()).method("accept").with(same(visitor));
+        expectation2.expects(once()).method("accept").with(same(visitor));
         
         // when...
         outcome.accept(visitor);

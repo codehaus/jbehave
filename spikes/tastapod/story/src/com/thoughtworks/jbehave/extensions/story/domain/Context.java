@@ -24,6 +24,4 @@ public interface Context extends Visitable {
         public void accept(Visitor visitor) {
         }
     };
-
-    List getGivens();
 }

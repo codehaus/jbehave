@@ -61,6 +61,7 @@ public class SimpleScenario implements Scenario, Visitable {
     public void accept(Visitor visitor) {
         visitor.visitScenario(this);
         context.accept(visitor);
+        outcome.accept(visitor);
         event.accept(visitor);
         outcome.accept(visitor);
     }

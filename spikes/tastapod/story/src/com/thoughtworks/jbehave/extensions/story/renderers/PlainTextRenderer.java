@@ -73,7 +73,10 @@ public class PlainTextRenderer implements Visitor {
         nextWord = "Then ";
     }
     
-    public void visitExpectation(Expectation expectation) {
+    public void visitExpectationBeforeEvent(Expectation expectation) {
+    }
+
+    public void visitExpectationAfterEvent(Expectation expectation) {
         out.println(nextWord + new CaseConverter().toSeparateWords(expectation));
         nextWord = "and ";
     }

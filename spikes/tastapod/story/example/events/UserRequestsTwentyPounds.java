@@ -9,14 +9,17 @@ package events;
 
 import com.thoughtworks.jbehave.extensions.story.base.EventBase;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.UnimplementedException;
 
 
 
-public class UserRequestsCash extends EventBase {
-    public String getDescription() {
-        return "user asks for 20 pounds";
-    }
+public class UserRequestsTwentyPounds extends EventBase {
     
     public void occurIn(Environment environment) {
+        throw new UnimplementedException();
+    }
+
+    public String toString() {
+        return "user asks for 20 pounds";
     }
 }

@@ -7,15 +7,27 @@
  */
 package com.thoughtworks.jbehave.extensions.story.base;
 
-import com.thoughtworks.jbehave.core.responsibility.Verify;
-import com.thoughtworks.jbehave.extensions.story.base.EventBase;
-import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
+import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
+import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.Event;
+import com.thoughtworks.jbehave.extensions.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class EventBaseBehaviour {
-    public void shouldBeVisitable() throws Exception {
-        Verify.that(Visitable.class.isAssignableFrom(EventBase.class));
+public class EventBaseBehaviour extends UsingJMock {
+    public void shouldPassItselfIntoVisitor() throws Exception {
+        // given...
+        Event event = new EventBase() {
+            public void occurIn(Environment environment) throws Exception {
+            }
+        };
+        Mock visitor = new Mock(Visitor.class);
+        visitor.expects(once()).method("visitEvent").with(same(event));
+
+        // when...
+        event.accept((Visitor)visitor.proxy());
+        
+        // then... pixies will verify
     }
 }

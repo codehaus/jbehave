@@ -26,7 +26,10 @@ public class VisitorSupport implements Visitor {
     public void visitEvent(Event event) {
     }
 
-    public void visitExpectation(Expectation expectation) {
+    public void visitExpectationBeforeEvent(Expectation expectation) {
+    }
+
+    public void visitExpectationAfterEvent(Expectation expectation) {
     }
 
     public void visitGiven(Given given) {

@@ -12,7 +12,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 
 
 /** @given overdraft limit = 100 */
-public class AccountHasOverdraftFacility extends GivenBase {
+public class AccountHasOverdraftPermission extends GivenBase {
     public void setUp(Environment context) {
     }
 

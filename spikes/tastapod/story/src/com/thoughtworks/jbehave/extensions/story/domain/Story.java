@@ -16,6 +16,8 @@ import com.thoughtworks.jbehave.extensions.story.visitor.Visitable;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Story extends Visitable {
+    
+
     void addScenario(Scenario scenario);
 
     String getName();
