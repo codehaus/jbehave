@@ -19,14 +19,14 @@ import jbehave.BehaviourFrameworkError;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public abstract class BehavioursSupport {
-    private static final String BEHAVIOUR_METHOD_PREFIX = "should";
+public abstract class CriteriaSupport {
+    private static final String CRITERION_PREFIX = "should";
 
     /**
-     * Find all behaviour methods in a class and wrap each one in a
+     * Find all criteria in a class and wrap each one in a
      * {@link Criterion}
      * 
-     * There is no particular constraint on the class. The behaviours
+     * There is no particular constraint on the class. The criteria
      * are public void methods that take no parameters and start
      * with <tt>"<i>should</i>"</tt>.<br>
      * <br>
@@ -39,15 +39,15 @@ public abstract class BehavioursSupport {
      * It would be much nicer if the methods could be run in the order they
      * were written, since there will usually be a narrative thread to them.
      * 
-     * @param behaviourClass the class to examine for behaviours.
-     * @return an unordered set of <tt>Behaviour</tt>s.
+     * @param behaviour the class to examine for criteria.
+     * @return an unordered set of <tt>Criterion</tt>.
      * @throws BehaviourFrameworkError if there are any problems constructing an Aggregate.
      */
-    public static Collection getCriteria(Class behaviourClass) {
+    public static Collection getCriteria(Class behaviour) {
         final Collection result = new HashSet();
         
-        result.addAll(collectBehaviours(behaviourClass));
-        result.addAll(collectBehavioursFromAggregate(behaviourClass));
+        result.addAll(collectBehaviours(behaviour));
+        result.addAll(collectBehavioursFromAggregate(behaviour));
         return result;
     }
 
@@ -56,7 +56,7 @@ public abstract class BehavioursSupport {
         Method[] methods = behaviourClass.getMethods(); // only interested in public methods
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
-            if (method.getName().startsWith(BEHAVIOUR_METHOD_PREFIX) && method.getParameterTypes().length == 0) {
+            if (method.getName().startsWith(CRITERION_PREFIX) && method.getParameterTypes().length == 0) {
                 result.add(new Criterion(method));
             }
         }

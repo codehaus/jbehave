@@ -10,7 +10,7 @@ package jbehave.runner;
 import java.io.OutputStreamWriter;
 
 import jbehave.runner.listener.TextListener;
-import jbehave.runner.listener.trace.TraceListener;
+import jbehave.runner.listener.TraceListener;
 
 /**
  * Basic command-line behaviour runner
@@ -20,7 +20,7 @@ import jbehave.runner.listener.trace.TraceListener;
 public class TextRunner {
 
     public static void main(String[] args) {
-        BehaviourRunner runner = new BehaviourRunner();
+        SpecificationRunner runner = new SpecificationRunner();
         runner.registerListener(new TextListener(new OutputStreamWriter(System.out)));
         runner.registerListener(new TraceListener());
         for (int i = 0; i < args.length; i++) {

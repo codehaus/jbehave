@@ -13,7 +13,7 @@ import java.util.List;
 
 import jbehave.framework.Criterion;
 import jbehave.framework.Evaluation;
-import jbehave.runner.BehaviourRunner;
+import jbehave.runner.SpecificationRunner;
 
 /**
  * Good old Composite pattern. No framework is complete without one. I still
@@ -35,13 +35,13 @@ public class CompositeListener implements Listener {
     
     // Listener methods
     
-    public void runStarted(BehaviourRunner runner) {
+    public void runStarted(SpecificationRunner runner) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
             ((Listener)i.next()).runStarted(runner);
         }
     }
 
-    public void runEnded(BehaviourRunner runner) {
+    public void runEnded(SpecificationRunner runner) {
         for (Iterator i = listeners.iterator(); i.hasNext();) {
             ((Listener)i.next()).runEnded(runner);
         }

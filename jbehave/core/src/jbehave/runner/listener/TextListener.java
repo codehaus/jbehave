@@ -15,7 +15,7 @@ import java.util.List;
 
 import jbehave.BehaviourFrameworkError;
 import jbehave.framework.Evaluation;
-import jbehave.runner.BehaviourRunner;
+import jbehave.runner.SpecificationRunner;
 
 
 /**
@@ -38,7 +38,7 @@ public class TextListener extends ListenerSupport {
         this(writer, new Timer());
     }
     
-    public void runStarted(BehaviourRunner runner) {
+    public void runStarted(SpecificationRunner runner) {
         timer.start();
     }
 
@@ -66,7 +66,7 @@ public class TextListener extends ListenerSupport {
         }
     }
      
-    public void runEnded(BehaviourRunner runner) {
+    public void runEnded(SpecificationRunner runner) {
         timer.stop();
         out.println();
         printElapsedTime();
