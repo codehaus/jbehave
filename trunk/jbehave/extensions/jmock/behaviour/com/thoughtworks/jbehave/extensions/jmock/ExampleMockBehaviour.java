@@ -12,7 +12,7 @@ package com.thoughtworks.jbehave.extensions.jmock;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 16-Jul-2004
  */
-public class ExampleMockBehaviour extends UsingJMock2 {
+public class ExampleMockBehaviour extends UsingJMock {
 
 	private Mock aMock;
 

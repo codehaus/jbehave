@@ -16,7 +16,7 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>
  *
  */
-public abstract class UsingJMock2 extends JMockSugar{
+public abstract class UsingJMock extends JMockSugar{
     
     private Set mocks = new HashSet();
      

@@ -15,7 +15,7 @@ import junit.framework.AssertionFailedError;
 import com.thoughtworks.jbehave.core.Listener;
 import com.thoughtworks.jbehave.core.responsibility.Result;
 import com.thoughtworks.jbehave.core.responsibility.Verify;
-import com.thoughtworks.jbehave.extensions.jmock.UsingJMock2;
+import com.thoughtworks.jbehave.extensions.jmock.UsingJMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -40,7 +40,7 @@ public class JMockListenerBehaviour {
       throw new Error("No responsibility method found in " + behaviourClass.getName());
     }
 
-    public static class BehaviourClass1 extends UsingJMock2 {
+    public static class BehaviourClass1 extends UsingJMock {
         public boolean verifyWasCalled = false;
         
         private Mock someMock = new Mock(List.class) {
@@ -66,7 +66,7 @@ public class JMockListenerBehaviour {
         Verify.that(instance.verifyWasCalled);
 	}
 
-    public static class BehaviourClass2 extends UsingJMock2 {
+    public static class BehaviourClass2 extends UsingJMock {
         public boolean verifyWasCalled = false;
 
         private Mock someMock = new Mock(List.class) {
@@ -97,7 +97,7 @@ public class JMockListenerBehaviour {
 		String someMethod();
 	}
 
-	public static class BehaviourClass3 extends UsingJMock2 {
+	public static class BehaviourClass3 extends UsingJMock {
 
 		public void shouldUseAMockWhoseExpectationWillFail() throws Exception {
 	        Mock foo = new Mock(Foo.class);
