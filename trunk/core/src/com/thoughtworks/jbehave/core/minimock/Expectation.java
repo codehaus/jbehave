@@ -30,7 +30,7 @@ public class Expectation extends MiniMockSugar {
     
     private final Registry registry;
     private final String methodName;
-    private Constraint[] constraints = new Constraint[0];
+    private Constraint[] constraints = null; // initially we don't care about args
     private int minInvocations = 1;
     private int maxInvocations;
     private int invocations;
@@ -63,10 +63,12 @@ public class Expectation extends MiniMockSugar {
 
         if (!methodName.equals(actualName)) return false;
         
-        if (constraints.length != args.length) return false;
+        if (constraints != null) {
+            if (constraints.length != args.length) return false;
 
-        for (int i = 0; i < args.length; i++) {
-            if (!constraints[i].matches(args[i])) return false;
+            for (int i = 0; i < args.length; i++) {
+                if (!constraints[i].matches(args[i])) return false;
+            }
         }
         return true;
     }

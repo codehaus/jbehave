@@ -12,7 +12,7 @@ import com.thoughtworks.jbehave.extensions.story.codegen.StoryParserBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.NarrativeBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.extensions.story.listener.ScenarioTextListenerBehaviour;
-import com.thoughtworks.jbehave.extensions.story.verifier.VisitingScenarioVerifierBehaviour;
+import com.thoughtworks.jbehave.extensions.story.verifier.VisitingScenarioInvokerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.visitor.VisitableUsingMiniMockBehaviour;
 
 /**
@@ -25,7 +25,7 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
                 NarrativeBehaviour.class,
                 ScenarioUsingMiniMockBehaviour.class,
                 ScenarioTextListenerBehaviour.class,
-                VisitingScenarioVerifierBehaviour.class,
+                VisitingScenarioInvokerBehaviour.class,
                 VisitableUsingMiniMockBehaviour.class
         };
     }

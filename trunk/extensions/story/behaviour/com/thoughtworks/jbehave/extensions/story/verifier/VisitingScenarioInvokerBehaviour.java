@@ -4,16 +4,14 @@ import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
-import com.thoughtworks.jbehave.core.minimock.Constraint;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
+import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.extensions.story.domain.Environment;
 import com.thoughtworks.jbehave.extensions.story.domain.Event;
 import com.thoughtworks.jbehave.extensions.story.domain.Expectation;
 import com.thoughtworks.jbehave.extensions.story.domain.Given;
 import com.thoughtworks.jbehave.extensions.story.domain.Scenario;
-import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 
 /*
  * Created on 16-Sep-2004
@@ -26,9 +24,9 @@ import com.thoughtworks.jbehave.extensions.story.result.ScenarioResult;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
+public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     
-    private VisitingScenarioVerifier verifier;
+    private VisitingScenarioInvoker invoker;
     private Mock scenario;
     private Mock listener1;
     private Mock listener2;
@@ -36,7 +34,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
     
     public void setUp() {
         environmentStub = (Environment)stub(Environment.class);
-        verifier = new VisitingScenarioVerifier(environmentStub);
+        invoker = new VisitingScenarioInvoker(environmentStub);
         scenario = mock(Scenario.class);
         listener1 = mock(ResultListener.class, "listener1");
         listener2 = mock(ResultListener.class, "listener2");
@@ -46,10 +44,10 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         // given...
 
         // expect...
-        scenario.expects("accept").with(verifier);
+        scenario.expects("accept").with(invoker);
         
         // when...
-        verifier.verifyScenario((Scenario)scenario);
+        invoker.invoke((Scenario)scenario);
         
         // then...
         verifyMocks();
@@ -63,7 +61,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         given.expects("setUp").with(environmentStub);
         
         // when...
-        verifier.visit((Given)given);
+        invoker.visit((Given)given);
         
         // then...
         verifyMocks();
@@ -77,7 +75,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         expectation.expects("setExpectationIn").with(environmentStub);
         
         // when...
-        verifier.visit((Expectation)expectation);
+        invoker.visit((Expectation)expectation);
         
         // then...
         verifyMocks();
@@ -91,7 +89,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         event.expects("occurIn").with(environmentStub);
         
         // when...
-        verifier.visit((Event)event);
+        invoker.visit((Event)event);
         
         // then...
         verifyMocks();
@@ -106,14 +104,14 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         expectation.expects("verify").with(same(environmentStub));
         
         // when...
-        verifier.visit(eventStub);
-        verifier.visit((Expectation)expectation);
+        invoker.visit(eventStub);
+        invoker.visit((Expectation)expectation);
         
         // then...
         verifyMocks();
     }
 
-    public void shouldThrowNestedVerificationExceptionFromVisitIfGivenThrowsException() throws Exception {
+    public void shouldThrowNestedVerificationExceptionFromVisitWhenGivenThrowsException() throws Exception {
         // given...
         Mock given = mock(Given.class);
         Exception cause = new Exception("oops");
@@ -121,7 +119,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // when...
         try {
-            verifier.visit((Given) given);
+            invoker.visit((Given) given);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -132,7 +130,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
-    public void shouldThrowNestedVerificationExceptionFromVisitIfEventThrowsException() throws Exception {
+    public void shouldThrowNestedVerificationExceptionFromVisitWhenEventThrowsException() throws Exception {
         // given...
         Mock event = mock(Event.class);
         Exception cause = new Exception("oops");
@@ -140,7 +138,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // when...
         try {
-            verifier.visit((Event) event);
+            invoker.visit((Event) event);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -151,7 +149,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
-    public void shouldThrowNestedVerificationExceptionIfExpectationThrowsExceptionBeforeEvent() throws Exception {
+    public void shouldThrowNestedVerificationExceptionWhenExpectationThrowsExceptionBeforeEvent() throws Exception {
         // given...
         Mock expectation = mock(Expectation.class);
         RuntimeException cause = new RuntimeException("oops");
@@ -159,7 +157,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // when...
         try {
-            verifier.visit((Expectation) expectation);
+            invoker.visit((Expectation) expectation);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -175,14 +173,14 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         Mock expectation = mock(Expectation.class);
         Event eventStub = (Event)stub(Event.class);
         Exception cause = new VerificationException("oops");
-        verifier.visit(eventStub); // we are visiting the verifier after the event
+        invoker.visit(eventStub); // we are visiting the verifier after the event
         
         // expect...
         expectation.expects("verify").with(environmentStub).will(throwException(cause));
         
         // when...
         try {
-            verifier.visit((Expectation) expectation);
+            invoker.visit((Expectation) expectation);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -193,94 +191,26 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
-    /** parameter should represent a succesful ScenarioResult */
-    private Constraint successfulScenarioResult() {
-        return new Constraint() {
-            public boolean matches(Object arg) {
-                return (arg instanceof ScenarioResult && ((ScenarioResult)arg).succeeded());
-            }
-        };
-    }
-    
-    public void shouldNotifyListenersWhenScenarioSucceeds() throws Exception {
-        // given...
-        verifier.addListener((ResultListener)listener1);
-        verifier.addListener((ResultListener)listener2);
-        scenario.stubs("accept").with(verifier);
-
+    public void shouldReturnSuccessfulResultWhenScenarioSucceeds() throws Exception {
         // expect...
-        listener1.expects("gotResult").with(successfulScenarioResult());
-        listener2.expects("gotResult").with(successfulScenarioResult());
+        scenario.expects("accept");
         
         // when...
-        verifier.verifyScenario((Scenario) scenario);
+        Result result = invoker.invoke((Scenario)scenario);
         
-        // verify...
-        verifyMocks();
+        // then...
+        Verify.that(result.succeeded());
     }
     
-    /** parameter should represent a ScenarioResult with a given Exception */
-    private Constraint exceptionScenarioResult(final Exception cause) {
-        return new Constraint() {
-            public boolean matches(Object arg) {
-                return (arg instanceof ScenarioResult && ((ScenarioResult)arg).cause() == cause);
-            }
-        };
-    }
-    
-    public void shouldNotifyListenersWithCauseWhenScenarioThrowsException() throws Exception {
-        // given...
-        verifier.addListener((ResultListener)listener1);
-        verifier.addListener((ResultListener)listener2);
+    public void shouldReturnFailureResultWhenScenarioFails() throws Exception {
+        // expect...
         Exception cause = new Exception("oops");
-        scenario.stubs("accept").with(verifier).will(throwException(new NestedVerificationException(cause)));
-
-        // expect...
-        listener1.expects("gotResult").with(exceptionScenarioResult(cause));
-        listener2.expects("gotResult").with(exceptionScenarioResult(cause));
+        scenario.expects("accept").will(throwException(new NestedVerificationException(cause)));
         
         // when...
-        verifier.verifyScenario((Scenario)scenario);
+        Result result = invoker.invoke((Scenario)scenario);
         
         // then...
-        verifyMocks();
-    }
-    
-    /** parameter should represent a ScenarioResult with a given Exception */
-    private Constraint scenarioResultUsingMocks() {
-        return new Constraint() {
-            public boolean matches(Object arg) {
-                return (arg instanceof ScenarioResult && ((ScenarioResult)arg).succeededUsingMocks());
-            }
-        };
-    }
-    
-    /** visit a component that contains mocks and then verify the scenario */
-    private void verifyResultTypeWhenScenarioSucceedsButComponentUsesMocks(Mock component) {
-        // given...
-        verifier.addListener((ResultListener) listener1);
-        component.stubs("containsMocks").will(returnValue(true));
-        verifier.visit((Visitable)component);
-        
-        // expect...
-        listener1.expects("gotResult").with(scenarioResultUsingMocks());
-        
-        // when...
-        verifier.verifyScenario((Scenario) scenario);
-        
-        // then...
-        verifyMocks();
-    }
-    
-    public void shouldSetResultTypeWhenScenarioSucceedsButGivenUsesMocks() throws Exception {
-        verifyResultTypeWhenScenarioSucceedsButComponentUsesMocks(mock(Given.class));
-    }
-    
-    public void shouldSetResultTypeWhenScenarioSucceedsButEventUsesMocks() throws Exception {
-        verifyResultTypeWhenScenarioSucceedsButComponentUsesMocks(mock(Event.class));
-    }
-    
-    public void shouldSetResultTypeWhenScenarioSucceedsButExpectationUsesMocks() throws Exception {
-        verifyResultTypeWhenScenarioSucceedsButComponentUsesMocks(mock(Expectation.class));
+        Verify.identical(cause, result.cause());
     }
 }
