@@ -11,7 +11,7 @@
 
 
 
-	<target name="all" depends="jbehave-core.all, jmock-verify">
+	<target name="jmock-all" depends="core-all, jmock-verify">
  		<echo>JBehave jmock Done</echo>
 	</target>
 

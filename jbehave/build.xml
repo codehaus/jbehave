@@ -7,6 +7,7 @@
 	<property name="ant.dir" value="${extensions.dir}/ant"/>
 	<property name="website.dir" value="website"/>
 	<property name="build.dir" location="build" />
+	<property name="dist.dir" location="${build.dir}/dist" />
 	<property name="build.javadoc.dir" location="${build.dir}/javadoc" />
 	<property name="deploy.root.dir" value="/home/projects/${project}"/>
 	<property name="deploy.website.dir" value="${deploy.root.dir}/public_html"/>
@@ -19,7 +20,7 @@
 	<import file="${jmock.dir}/ant.xml"/>
 	<import file="${ant.dir}/ant.xml" />
 
-	<target name="all" depends="jbehave-core.all, jbehave-jmock.all, jbehave-ant.all"/>
+	<target name="all" depends="core-all, jmock-all, ant-all"/>
 
 	<target name="clean" depends="core-clean, jmock-clean, ant-clean">
 		<delete dir="${build.dir}" />

@@ -11,7 +11,7 @@
 
 
 
-	<target name="all" depends="jbehave-core.all, ant-verify">
+	<target name="ant-all" depends="core-all, ant-verify">
  		<echo>JBehave Ant Done</echo>
 	</target>
 
