@@ -24,7 +24,7 @@ public class CriteriaSupportBehaviour {
 
     private void verifyContainsBehaviourName(String name, Collection behaviours) {
         for (Iterator i = behaviours.iterator(); i.hasNext();) {
-            Criterion behaviour = (Criterion)i.next();
+            Criteria behaviour = (Criteria)i.next();
             if (behaviour.getName().equals(name)) return;
         }
         Verify.impossible(name + " not found in behaviours");
