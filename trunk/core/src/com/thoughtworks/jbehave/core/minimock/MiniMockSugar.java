@@ -28,6 +28,10 @@ public class MiniMockSugar {
         };
     }
     
+    public Constraint eq(float expectedArg) {
+        return eq(new Float(expectedArg));
+    }
+    
     public Constraint eq(double expectedArg) {
         return eq(new Double(expectedArg));
     }
