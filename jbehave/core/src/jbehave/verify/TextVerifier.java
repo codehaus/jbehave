@@ -25,7 +25,7 @@ public class TextVerifier {
         runner.registerListener(new TraceListener());
         for (int i = 0; i < args.length; i++) {
             try {
-                runner.addBehaviourClass(Class.forName(args[i]));
+                runner.addSpec(Class.forName(args[i]));
             }
             catch (ClassNotFoundException e) {
                 System.err.println("Unknown class: " + args[i]);

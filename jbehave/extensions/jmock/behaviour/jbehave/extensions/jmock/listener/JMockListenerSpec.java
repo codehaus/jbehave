@@ -43,7 +43,7 @@ public class JMockListenerSpec {
         // setup
         Listener listener = new JMockListener();
         CriteriaVerifier behaviour = getSingleBehaviour(BehaviourClassWithPrivateMock.class);
-        CriteriaVerificationResult behaviourResult = behaviour.verify();
+        CriteriaVerificationResult behaviourResult = behaviour.verifyCriteria();
         
         // execute
         listener.afterCriteriaVerificationEnds(behaviourResult);
