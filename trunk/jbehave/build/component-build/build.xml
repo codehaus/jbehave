@@ -20,7 +20,6 @@
         <fail message="Property 'component.name' not found" unless="component.name"/>
         <fail message="Property 'behaviours.class' not found" unless="behaviours.class"/>
         <fail message="Property 'version' not found" unless="version"/>
-
         <mkdir dir="${working.dir}" />
     </target>
 
@@ -57,7 +56,7 @@
                 <path location="${behaviour.classes.dir}"/>
                 <path refid="dist_jar_with_external_jars"/>
             </classpath>
-            <arg value="${behaviour.class}"/>
+            <arg value="${behaviours.class}"/>
         </java>
     </target>
 
