@@ -250,10 +250,19 @@ public class ExecutingResponsibilityVerifierBehaviour {
         Verify.equal("exception type", IllegalArgumentException.class, recordingListener.latestResult.getTargetException().getClass());
 	}
     
+    public static abstract class AbstractSuperclass {
+        public void shouldDoSomething() {
+        }
+    }
+    
+    public static class Subclass extends AbstractSuperclass {
+    }
+    
     public void shouldExecuteResponsibiltyMethodInheritedFromAbstractSuperclass() throws Exception {
-        // given...
         // when...
+        verifyFirstResponsibility(recordingListener, Subclass.class);
+        
         // then...
-        Verify.pending("This works but needs a method to prove it");
+        Verify.equal(1, recordingListener.verifications.size());
     }
 }

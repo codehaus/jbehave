@@ -9,8 +9,19 @@ import com.thoughtworks.jbehave.core.responsibility.Verify;
  */
 public class UsingJMockBehaviour {
     
+    public interface Interface {}
+    
+    public static class BehaviourClassUsingJMock extends UsingJMock {
+        public void shouldDoSomething() {
+            new Mock(Interface.class);
+        }
+    }
+    
     public void shouldStoreEachMockAsItIsConstructed() throws Exception {
-        Verify.pending();
+        BehaviourClassUsingJMock instance = new BehaviourClassUsingJMock();
+        instance.shouldDoSomething();
+        Verify.equal(1, instance.getMocks().size());
+        Verify.that(instance.getMocks().get(0) instanceof org.jmock.Mock);
     }
     
     interface BehaviourInterface1 {

@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.util.CaseConverter;
+import com.thoughtworks.jbehave.util.ConvertCase;
 
 /**
  * Represents a verifier for a single responsibility, which can verify
@@ -106,7 +106,7 @@ public class ExecutingResponsibilityVerifier extends NotifyingResponsibilityVeri
             throw (ThreadDeath)targetException;
         }
         else {
-            return new Result(className, new CaseConverter().toSeparateWords(methodName), targetException);
+            return new Result(className, new ConvertCase(methodName).toSeparateWords(), targetException);
         }
     }
 }

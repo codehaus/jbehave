@@ -35,8 +35,8 @@ public class BehaviourClassVerifier {
             Method methods[] = behaviourClass.getMethods();
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
-                Object instance = behaviourClass.newInstance();
                 if (method.getName().startsWith("should") && method.getParameterTypes().length == 0) {
+                    Object instance = behaviourClass.newInstance();
                     responsibilityVerifier.verifyResponsibility(responsibilityMethodListener, method, instance);
                 }
             }

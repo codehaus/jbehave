@@ -29,8 +29,6 @@ public class AntTaskBehaviour {
 	}
 
 	public void shouldRunASingleBehaviourClass() throws Exception {
-        Verify.pending("This should be working - check Ant classloader issues");
-
         // setup
 		BehaviourClass behaviourClass = task.createBehaviourClass();
 		behaviourClass.setBehaviourClassName(BehaviourClassOne.class.getName());
@@ -43,8 +41,6 @@ public class AntTaskBehaviour {
 	}
 
 	public void shouldRunMultipleBehaviourClasses() throws Exception {
-        Verify.pending("This should be working - check Ant classloader issues");
-
 		// setup
 		BehaviourClass spec = task.createBehaviourClass();
 		spec.setBehaviourClassName(BehaviourClassOne.class.getName());
@@ -60,8 +56,6 @@ public class AntTaskBehaviour {
 	}
 
 	public void shouldUseClasspathFromClasspathElement() throws Exception {
-        Verify.pending("This should be working - check Ant classloader issues");
-
 		// setup
 		Path path = task.createClasspath();
 		Path.PathElement element = path.createPathElement();

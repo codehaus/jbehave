@@ -87,7 +87,7 @@ public class AntTask extends org.apache.tools.ant.Task {
 	private void verifyBehaviourClass(BehaviourClass behaviourClass, AntListener antListener) {
 		try {
 			BehaviourClassVerifier verifier = new BehaviourClassVerifier(
-                    newInstance(behaviourClass), new ExecutingResponsibilityVerifier());
+                    classFor(behaviourClass), new ExecutingResponsibilityVerifier());
             
             TextListener textListener = new TextListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
             ResponsibilityListeners compositeListener = new ResponsibilityListeners();
@@ -102,7 +102,7 @@ public class AntTask extends org.apache.tools.ant.Task {
 		}
 	}
 
-	private Class newInstance(BehaviourClass behaviourClass) throws ClassNotFoundException {
+	private Class classFor(BehaviourClass behaviourClass) throws ClassNotFoundException {
 		return Class.forName(behaviourClass.getBehaviourClassName());
 	}
 

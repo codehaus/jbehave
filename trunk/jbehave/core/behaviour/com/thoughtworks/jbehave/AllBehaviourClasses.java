@@ -15,7 +15,7 @@ import com.thoughtworks.jbehave.core.listeners.TimerBehaviour;
 import com.thoughtworks.jbehave.core.responsibility.BehaviourClassVerifierBehaviour;
 import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifierBehaviour;
 import com.thoughtworks.jbehave.core.responsibility.ResultBehaviour;
-import com.thoughtworks.jbehave.util.CaseConverterBehaviour;
+import com.thoughtworks.jbehave.util.ConvertCaseBehaviour;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
@@ -30,7 +30,7 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
             TimerBehaviour.class,
 			BehaviourClassListenersBehaviour.class,
 			ResponsibilityListenersBehaviour.class,
-            CaseConverterBehaviour.class
+            ConvertCaseBehaviour.class
         };
     }
 }

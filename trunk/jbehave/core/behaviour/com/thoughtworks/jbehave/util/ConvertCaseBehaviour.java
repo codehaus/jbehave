@@ -14,19 +14,13 @@ import com.thoughtworks.jbehave.core.responsibility.Verify;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class CaseConverterBehaviour {
-    
-    private CaseConverter caseConverter;
-
-    public void setUp() {
-        caseConverter = new CaseConverter();
-    }
+public class ConvertCaseBehaviour {
     
     public void shouldConvertStringToSeparateWords() throws Exception {
         // given
         String string = "StringInCamelCase";
 
-        String result = caseConverter.toSeparateWords(string);
+        String result = new ConvertCase(string).toSeparateWords();
         
         // then
         Verify.equal("string in camel case", result);
@@ -34,13 +28,13 @@ public class CaseConverterBehaviour {
     
     public void shouldLeaveUppercaseWordsWhenConvertingToSeparateWords() throws Exception {
         // given...
-        String string = "UPPERCASEAndSomeOtherStuff";
+        String string = "UPPERCASEAndASingleLetter";
 
         // when...
-        String result = caseConverter.toSeparateWords(string);
+        String result = new ConvertCase(string).toSeparateWords();
         
         // then...
-        Verify.equal("UPPERCASE and some other stuff", result);
+        Verify.equal("UPPERCASE and a single letter", result);
     }
     
     public void shouldConvertRegularClassNameToSeparateWords() throws Exception {
@@ -48,7 +42,7 @@ public class CaseConverterBehaviour {
         Class type = SimpleDateFormat.class;
 
         // when...
-        String result = caseConverter.toSeparateWords(type);
+        String result = new ConvertCase(type).toSeparateWords();
         
         // then...
         Verify.equal("simple date format", result);
@@ -61,7 +55,7 @@ public class CaseConverterBehaviour {
         Class type = InnerClass.class;
 
         // when...
-        String result = caseConverter.toSeparateWords(type);
+        String result = new ConvertCase(type).toSeparateWords();
         
         // then...
         Verify.equal("inner class", result);
@@ -72,7 +66,7 @@ public class CaseConverterBehaviour {
         Object object = new InnerClass();
 
         // when...
-        String result = caseConverter.toSeparateWords(object);
+        String result = new ConvertCase(object).toSeparateWords();
         
         // then...
         Verify.equal("inner class", result);
@@ -83,7 +77,7 @@ public class CaseConverterBehaviour {
         String string = "the cat sat on the mat";
 
         // when...
-        String result = caseConverter.toCamelCase(string);
+        String result = new ConvertCase(string).toCamelCase();
         
         // then...
         Verify.equal("TheCatSatOnTheMat", result);

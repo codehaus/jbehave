@@ -1,7 +1,6 @@
 package com.thoughtworks.jbehave.extensions.jmock;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -21,9 +20,8 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  *
  */
 public abstract class UsingJMock extends JMockSugar{
-    
+
     private final List mocks = new ArrayList();
-    
     
     public void verify() {
         for (Iterator i = mocks.iterator(); i.hasNext();) {
@@ -43,7 +41,7 @@ public abstract class UsingJMock extends JMockSugar{
         mocks.add(m);
     }
     
-    public Collection getMocks() {
+    public List getMocks() {
         return mocks;
     }
     

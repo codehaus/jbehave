@@ -18,7 +18,7 @@ import junit.framework.TestResult;
 import com.thoughtworks.jbehave.core.listeners.NULLResponsibilityListener;
 import com.thoughtworks.jbehave.core.responsibility.ExecutingResponsibilityVerifier;
 import com.thoughtworks.jbehave.core.responsibility.Result;
-import com.thoughtworks.jbehave.util.CaseConverter;
+import com.thoughtworks.jbehave.util.ConvertCase;
 
 
 public class JUnitMethodAdapter extends TestCase {
@@ -26,7 +26,7 @@ public class JUnitMethodAdapter extends TestCase {
     private final Object instance;
 
     public JUnitMethodAdapter(Method method, Object instance) {
-        super(new CaseConverter().toSeparateWords(method.getName()));
+        super(new ConvertCase(method.getName()).toSeparateWords());
         this.method = method;
         this.instance = instance;
     }
