@@ -13,10 +13,11 @@ package jbehave.extensions.jmock;
  *         Date: 16-Jul-2004
  */
 public class ExampleMockBehaviour implements JMockable {
+
 	private Mock aMock;
 
 	interface Dependency {
-		void invokeMe();
+		String invokeMe();
 	}
 
 	public class ClassWithDependency {
@@ -33,16 +34,15 @@ public class ExampleMockBehaviour implements JMockable {
 
 	public void shouldUseAMock() {
 		// setup
-		aMock = new Mock(Dependency.class);
-
+		Mock dependencyMock = new Mock(Dependency.class);
 		ClassWithDependency a = new ClassWithDependency((Dependency) aMock.proxy());
-
 		// expect
-		aMock.expects(Invoked.once()).method("invokeMe");
-
+		dependencyMock.expects(Invoked.once()).
+				method("invokeMe").
+				withNoArguments().
+				will(Return.value("hello"));
 		// execute
 		a.execute();
-
-		// verify
+		// verify  happens auto-magically
 	}
 }

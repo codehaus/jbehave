@@ -58,8 +58,21 @@
         <javadoc destdir="${working.javadoc.dir}"
                 windowtitle="JBehave API Documentation"
                 useexternalfile="true">
-            <packageset dir="${core.src.dir}"/>
-            <sourcepath path="${core.src.dir}"/>
+            <package name="*"/>
+
+			<fileset dir="${extensions.dir}">
+				<include name="*/src/**/*.java"/>
+			</fileset>
+
+			<fileset dir="${core.src.dir}"/>
+
+			<group title="Core API">
+                <package name="jbehave"/>
+            </group>
+
+			<group title="Optional Extensions">
+                <package name="jbehave.extensions"/>
+            </group>
         </javadoc>
     </target>
 

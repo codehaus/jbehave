@@ -56,7 +56,7 @@
                 <path location="${behaviour.classes.dir}"/>
                 <path refid="dist_jar_with_external_jars"/>
             </classpath>
-            <arg value="jbehave.AllBehaviourClasses"/>
+            <arg value="jbehave.extensions.ant.AllBehaviourClasses"/>
         </java>
     </target>
 

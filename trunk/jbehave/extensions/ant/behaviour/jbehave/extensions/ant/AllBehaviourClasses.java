@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package jbehave;
+package jbehave.extensions.ant;
 
 import jbehave.extensions.ant.AntTaskBehaviour;
 import jbehave.framework.BehaviourClassContainer;
