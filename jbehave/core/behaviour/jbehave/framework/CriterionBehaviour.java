@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class CriterionSpecification {
+public class CriterionBehaviour {
     private final static List results = new ArrayList();
 
     public void setUp() throws Exception {

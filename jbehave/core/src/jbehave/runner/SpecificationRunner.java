@@ -16,21 +16,21 @@ import java.util.Map;
 
 import jbehave.framework.Criterion;
 import jbehave.framework.Evaluation;
-import jbehave.framework.BehavioursSupport;
+import jbehave.framework.CriteriaSupport;
 import jbehave.runner.listener.CompositeListener;
 import jbehave.runner.listener.Listener;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class BehaviourRunner {
+public class SpecificationRunner {
     private final List behaviourClasses = new ArrayList();
     private final Map behaviourMap = new HashMap();
     private final CompositeListener listeners = new CompositeListener();
     private int behaviourCount = 0;
 
     public void addBehaviourClass(Class behaviourClass) {
-        Collection behaviours = BehavioursSupport.getCriteria(behaviourClass);
+        Collection behaviours = CriteriaSupport.getCriteria(behaviourClass);
         behaviourClasses.add(behaviourClass);
         behaviourMap.put(behaviourClass, behaviours);
         behaviourCount += behaviours.size();

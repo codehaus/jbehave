@@ -16,7 +16,7 @@ import jbehave.framework.Verify;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class TextListenerBehaviours {
+public class TextListenerBehaviour {
     private static final String SUCCESS = ".";
     private static final String FAILURE = "F";
     private static final String EXCEPTION_THROWN = "E";

@@ -5,12 +5,11 @@
  *
  * See license.txt for license details
  */
-package jbehave.runner.listener.trace;
+package jbehave.runner.listener;
 
 import jbehave.framework.Criterion;
 import jbehave.framework.Evaluation;
-import jbehave.runner.BehaviourRunner;
-import jbehave.runner.listener.Listener;
+import jbehave.runner.SpecificationRunner;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,11 +20,11 @@ import org.apache.commons.logging.LogFactory;
 public class TraceListener implements Listener {
     Log log = LogFactory.getLog(TraceListener.class);
 
-    public void runStarted(BehaviourRunner runner) {
+    public void runStarted(SpecificationRunner runner) {
         log.trace("runStarted");
     }
 
-    public void runEnded(BehaviourRunner runner) {
+    public void runEnded(SpecificationRunner runner) {
         log.trace("runEnded");
     }
 
