@@ -7,7 +7,6 @@
  */
 package jbehave.extensions.ant;
 
-import org.apache.tools.ant.types.Path;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

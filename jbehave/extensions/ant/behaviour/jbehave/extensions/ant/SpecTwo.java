@@ -7,7 +7,6 @@
  */
 package jbehave.extensions.ant;
 
-import java.util.List;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
