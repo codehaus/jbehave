@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package jbehave.framework.listeners;
+package jbehave.listeners;
 
 import java.io.PrintWriter;
 import java.io.Writer;

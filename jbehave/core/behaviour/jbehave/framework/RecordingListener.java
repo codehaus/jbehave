@@ -10,7 +10,7 @@ package jbehave.framework;
 import java.util.ArrayList;
 import java.util.List;
 
-import jbehave.framework.listeners.NullListener;
+import jbehave.listeners.NullListener;
 
 
 /** Listener that captures criteria verification results */

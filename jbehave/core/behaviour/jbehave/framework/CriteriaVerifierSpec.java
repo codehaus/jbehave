@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jbehave.framework.listeners.NullListener;
+import jbehave.listeners.NullListener;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
@@ -183,11 +183,11 @@ public class CriteriaVerifierSpec {
 
     public void shouldCallSetUpBeforeVerifyingCriteria() throws Exception {
         // setup
-        CriteriaVerifier criteria = verifierForFirstCriteria(SpecWithSetUp.class);
+        CriteriaVerifier verifier = verifierForFirstCriteria(SpecWithSetUp.class);
         RecordingListener listener = new RecordingListener();
         
         // execute
-        criteria.verifyCriteria(listener);
+        verifier.verifyCriteria(listener);
         
         // verify
 		Verify.that(listener.lastVerification.succeeded());
@@ -258,9 +258,9 @@ public class CriteriaVerifierSpec {
     public void shouldNotifyListenerWhenTearDownThrowsException() throws Exception {
 		// setup
         RecordingListener listener = new RecordingListener();
-        CriteriaVerifier behaviour = verifierForFirstCriteria(SpecWithExceptionTearDown.class);
+        CriteriaVerifier criteriaVerifier = verifierForFirstCriteria(SpecWithExceptionTearDown.class);
         // execute
-        behaviour.verifyCriteria(listener);
+        criteriaVerifier.verifyCriteria(listener);
         // verify
         Verify.that(listener.lastVerification.threwException());
 	}
@@ -277,9 +277,9 @@ public class CriteriaVerifierSpec {
     public void shouldReportCriteriaExceptionIfCriteriaAndTearDownBothThrowExceptions() throws Exception {
 		// setup
         RecordingListener listener = new RecordingListener();
-        CriteriaVerifier verifier = verifierForFirstCriteria(SpecWithFailingCriteriaAndExceptionTearDown.class);
+        CriteriaVerifier criteriaVerifier = verifierForFirstCriteria(SpecWithFailingCriteriaAndExceptionTearDown.class);
         // execute
-        verifier.verifyCriteria(listener);
+        criteriaVerifier.verifyCriteria(listener);
         // verify
         Verify.that("exception was thrown", listener.lastVerification.threwException());
         Verify.equal("exception type", IllegalArgumentException.class, listener.lastVerification.getTargetException().getClass());

@@ -11,7 +11,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 
 import jbehave.framework.exception.BehaviourFrameworkError;
-import jbehave.framework.listeners.TextListener;
+import jbehave.listeners.TextListener;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
