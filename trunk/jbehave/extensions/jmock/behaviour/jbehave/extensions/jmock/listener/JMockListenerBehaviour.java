@@ -17,8 +17,6 @@ import jbehave.framework.ResponsibilityVerifier;
 import jbehave.framework.Verify;
 import junit.framework.AssertionFailedError;
 
-import org.jmock.Mock;
-
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -30,7 +28,7 @@ public class JMockListenerBehaviour {
 		listener = new JMockListener();
 	}
 
-    public static class BehaviourClassWithPrivateMock {
+    public static class BehaviourClassWithPrivateMock implements JMockable {
         public boolean verifyWasCalled = false;
         
         private Mock someMock = new Mock(List.class) {
@@ -73,7 +71,7 @@ public class JMockListenerBehaviour {
         Verify.that(behaviourClassInstance.verifyWasCalled);
 	}
 
-	public static class BehaviourClassWithFailingMock {
+	public static class BehaviourClassWithFailingMock implements JMockable {
         public boolean verifyWasCalled = false;
 
         private Mock someMock = new Mock(List.class) {

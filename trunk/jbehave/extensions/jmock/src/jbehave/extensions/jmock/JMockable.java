@@ -100,8 +100,7 @@ public interface JMockable extends JMockMixins {
             try {
                 StackTraceElement[] stack = new Exception().getStackTrace();
                 StackTraceElement[] editedStackTrace = new StackTraceElement[stack.length - 2];
-                System.arraycopy(stack, 2, creationStackTrace, 0,
-                        stack.length - 2);
+                System.arraycopy(stack, 2, editedStackTrace, 0, stack.length - 2);
                 creationStackTrace = editedStackTrace;
             } catch (NoSuchMethodError e) {
                 // shame - not running in a 1.4 VM
