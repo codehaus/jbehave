@@ -10,7 +10,7 @@ package jbehave.extensions.junit;
 import java.io.InputStream;
 import java.util.Properties;
 
-import jbehave.extensions.junit.listener.TestSuitePopulaterListener;
+import jbehave.extensions.junit.listener.TestSuitePopulater;
 import jbehave.framework.BehaviourClassVerifier;
 import jbehave.framework.Listener;
 import jbehave.framework.NotifyingResponsibilityVerifier;
@@ -46,7 +46,7 @@ public class JUnitAdapter {
         final TestSuite[] suiteRef = new TestSuite[1]; // Collecting Parameter
         BehaviourClassVerifier behaviourClassVerifier =
             new BehaviourClassVerifier(behaviourClass, new NotifyingResponsibilityVerifier());
-        final Listener listener = new TestSuitePopulaterListener(suiteRef);
+        final Listener listener = new TestSuitePopulater(suiteRef);
         behaviourClassVerifier.verifyBehaviourClass(listener);
         return suiteRef[0];
     }

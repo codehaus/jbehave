@@ -16,11 +16,11 @@ import junit.framework.TestSuite;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TestSuitePopulaterListener extends ListenerSupport {
+public class TestSuitePopulater extends ListenerSupport {
     private final TestSuite[] suiteRef;
     private TestSuite currentSuite = null;
 
-    public TestSuitePopulaterListener(TestSuite[] suiteRef) {
+    public TestSuitePopulater(TestSuite[] suiteRef) {
         this.suiteRef = suiteRef;
     }
 
