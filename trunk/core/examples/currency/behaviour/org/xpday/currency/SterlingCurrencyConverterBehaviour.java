@@ -41,7 +41,7 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 	public void shouldConvertToEUR() throws Exception {
 		// expect
 		exchangeRateServiceMock.stubs("retrieveRate").
-			willReturn(new ExchangeRate(1.52, 0.66));
+			will(returnValue(new ExchangeRate(1.52, 0.66)));
 		// execute
 		double convertedAmount = sterlingConverter.convertFromSterling(10.0, Currency.EUR);
 		double otherAmount = sterlingConverter.convertFromSterling(5, Currency.EUR);
@@ -54,7 +54,7 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 
 	public void shouldNotConvertFromNegativeSterlingAmounts() throws Exception {
 		// expects
-		exchangeRateServiceMock.stubs("retrieveRate").willReturn(new ExchangeRate(1.85, 0.54));
+		exchangeRateServiceMock.stubs("retrieveRate").will(returnValue(new ExchangeRate(1.85, 0.54)));
 		try {
 			sterlingConverter.convertFromSterling(-1, Currency.USD);
 			Verify.impossible("cannot convert negative values");
@@ -68,7 +68,7 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
         // expects
 		exchangeRateServiceMock.expects("retrieveRate").
 				with(eq(Currency.EUR)).
-				willReturn(new ExchangeRate(1.52,0.66));
+				will(returnValue(new ExchangeRate(1.52,0.66)));
 		// execute
 	    double pounds1 = sterlingConverter.convertToSterling(10.0, Currency.EUR);
 
@@ -79,7 +79,7 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 
 	public void shouldNotConvertFromNegativeAmounts() throws Exception {
 		//expects
-		exchangeRateServiceMock.stubs("retrieveRate").willReturn(new ExchangeRate(1.85, 0.54));
+		exchangeRateServiceMock.stubs("retrieveRate").will(returnValue(new ExchangeRate(1.85, 0.54)));
 		try {
 			sterlingConverter.convertToSterling(-3, Currency.EUR);
 			Verify.impossible("cannot convert negative values");
@@ -91,7 +91,7 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 
 	public void shouldConvertFromUSD() throws Exception {
 		// expects
-		exchangeRateServiceMock.stubs("retrieveRate").willReturn(new ExchangeRate(1.85, 0.54));
+		exchangeRateServiceMock.stubs("retrieveRate").will(returnValue(new ExchangeRate(1.85, 0.54)));
 		// execute
 	    double pounds1 = sterlingConverter.convertToSterling(10.0, Currency.USD);
 	    double pounds2 = sterlingConverter.convertToSterling(5, Currency.USD);

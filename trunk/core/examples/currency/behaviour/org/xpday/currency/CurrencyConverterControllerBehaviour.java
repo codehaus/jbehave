@@ -45,7 +45,7 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 		// setup
 
 		// expects
-		currencyConverterMock.expects("convertFromSterling").willReturn(3.4);
+		currencyConverterMock.expects("convertFromSterling").will(returnValue(3.4));
 		viewMock.expects("conversionResult").with(eq(3.4));
 
 		// execute
@@ -59,8 +59,8 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 		// setup
 
 		// expects
-		currencyConverterMock.expects("convertToSterling").willReturn(2);
-		viewMock.expects("conversionResult").with(eq(2));
+		currencyConverterMock.expects("convertToSterling").will(returnValue(2.0));
+		viewMock.expects("conversionResult").with(eq(2.0));
 
 		// execute
 		controller.handleConvertToSterling(Currency.EUR, "3");
