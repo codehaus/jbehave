@@ -1,0 +1,29 @@
+/*
+ * Created on 01-Sep-2004
+ * 
+ * (c) 2003-2004 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
+package com.thoughtworks.jbehave.extensions.story.domain;
+
+import java.util.Collections;
+import java.util.List;
+
+import com.thoughtworks.jbehave.extensions.story.util.Visitable;
+import com.thoughtworks.jbehave.extensions.story.util.Visitor;
+
+/**
+ * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ */
+public interface Context extends Visitable {
+    Context NULL = new Context() {
+        public List getGivens() {
+            return Collections.EMPTY_LIST;
+        }
+        public void accept(Visitor visitor) {
+        }
+    };
+
+    List getGivens();
+}
