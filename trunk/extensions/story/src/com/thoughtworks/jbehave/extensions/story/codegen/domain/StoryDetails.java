@@ -31,15 +31,15 @@ public class StoryDetails extends BasicDetails {
         scenarios.add(scenario);
     }
 
-    public String benefit() {
+    public String getBenefit() {
         return benefit;
     }
 
-    public String feature() {
+    public String getFeature() {
         return feature;
     }
 
-    public String role() {
+    public String getRole() {
         return role;
     }
 

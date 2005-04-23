@@ -35,9 +35,9 @@ public class StoryTreeWalkerBehaviour {
         StoryDetails details = walker.storyDetail(parser.getAST());
         Verify.notNull(details);
         Verify.equal("this is some text",details.getName());
-        Verify.equal("user",details.role());
-        Verify.equal("some food",details.feature());
-        Verify.equal("I can do stuff",details.benefit());
+        Verify.equal("user",details.getRole());
+        Verify.equal("some food",details.getFeature());
+        Verify.equal("I can do stuff",details.getBenefit());
         Verify.equal(1, details.getScenarios().size());
         ScenarioDetails scenario = (ScenarioDetails) details.getScenarios().get(0);
         Verify.equal("Happy Scenario", scenario.getName());

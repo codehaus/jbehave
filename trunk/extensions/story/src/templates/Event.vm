@@ -1,0 +1,12 @@
+package ${basePackage};
+
+
+import com.thoughtworks.jbehave.extensions.story.domain.EventUsingMiniMock;
+import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+
+public class ${event} extends EventUsingMiniMock {
+
+        public void occurIn(Environment environment) throws Exception {
+            // add your code here
+        }
+}
