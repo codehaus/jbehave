@@ -1,6 +1,6 @@
-package com.thoughtworks.jbehave.extensions.story.codegen.parser;
+// $ANTLR 2.7.3: "story.g" -> "StoryLexer.java"$
 
-// $ANTLR 2.7.3: "story.g" -> "com.thoughtworks.jbehave.extensions.story.codegen.parser.StoryLexer.java"$
+package com.thoughtworks.jbehave.extensions.story.codegen.parser;
 
 import java.io.InputStream;
 import antlr.TokenStreamException;
@@ -127,7 +127,7 @@ tryAgain:
 
 	public final void mTEXT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
-		_ttype = StoryLexerTokenTypes.TEXT;
+		_ttype = TEXT;
 		int _saveIndex;
 		
 		{
@@ -220,7 +220,7 @@ tryAgain:
 	
 	public final void mNEWLINE(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
-		_ttype = StoryLexerTokenTypes.NEWLINE;
+		_ttype = NEWLINE;
 		int _saveIndex;
 		
 		{
@@ -248,7 +248,7 @@ tryAgain:
 	
 	public final void mDOT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
-		_ttype = StoryLexerTokenTypes.DOT;
+		_ttype = DOT;
 		int _saveIndex;
 		
 		match('.');
@@ -261,7 +261,7 @@ tryAgain:
 	
 	public final void mWS(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
-		_ttype = StoryLexerTokenTypes.WS;
+		_ttype = WS;
 		int _saveIndex;
 		
 		{

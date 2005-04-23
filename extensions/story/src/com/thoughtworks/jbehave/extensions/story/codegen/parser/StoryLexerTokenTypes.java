@@ -1,6 +1,6 @@
-package com.thoughtworks.jbehave.extensions.story.codegen.parser;
+// $ANTLR 2.7.3: "story.g" -> "StoryLexer.java"$
 
-// $ANTLR 2.7.3: "story.g" -> "com.thoughtworks.jbehave.extensions.story.codegen.parser.StoryLexer.java"$
+package com.thoughtworks.jbehave.extensions.story.codegen.parser;
 
 public interface StoryLexerTokenTypes {
 	int EOF = 1;
