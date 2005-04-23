@@ -1,0 +1,15 @@
+// $ANTLR 2.7.3: story.g -> com.thoughtworks.jbehave.extensions.story.codegen.parser.StoryLexerTokenTypes.txt$
+com.thoughtworks.jbehave.extensions.story.codegen.parser.StoryLexer    // output token vocab name
+TEXT=4
+NEWLINE=5
+DOT=6
+WS=7
+"Story:"=8
+LITERAL_As_a="As_a"=9
+LITERAL_I_want="I_want"=10
+LITERAL_So_that="So_that"=11
+"Scenario:"=12
+LITERAL_Given="Given"=13
+LITERAL_When="When"=14
+LITERAL_Then="Then"=15
+LITERAL_and="and"=16

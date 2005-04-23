@@ -23,10 +23,10 @@ public class BasicDetails {
     public String description() {
         return description;
     }
-    public String name() {
+    public String getName() {
         return name;
     }
-    public String className() {
+    public String getClassName() {
         return new ConvertCase(name).toCamelCase();
     }
     
