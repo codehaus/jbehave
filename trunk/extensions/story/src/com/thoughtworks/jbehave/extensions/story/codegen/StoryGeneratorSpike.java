@@ -117,20 +117,21 @@ public class StoryGeneratorSpike {
 
     private static StoryDetails buildStory() throws TokenStreamException, RecognitionException {
         Reader r = new StringReader(
-                "Story: this is some text\n" +
-                "As_a user\n" +
-                "I_want some food\n" +
-                "So_that I can do stuff\n" +
-                "Scenario: Happy Scenario\n" +
-                "Given a sentence\n" +
-                "and another sentence\n" +
-                "When something happens\n" +
-                "Then do something interesting\n" +
-                "and do something else\n" +
-                "Scenario: UnHappy Path\n" +
-                "Given some other sentence\n" +
-                "When some other thing happens\n" +
-                "Then do something good\n");
+               "Story: this is some text.\n" +
+                "As_a user.\n" +
+                "I_want some food.\n" +
+                "So_that I can do stuff.\n" +
+                "Scenario: Happy Scenario.\n" +
+                "Given a sentence.\n" +
+                "and another sentence.\n" +
+                "When something happens.\n" +
+                "Then do something interesting.\n" +
+                "and do something else.\n" +
+                "Scenario: UnHappy Path.\n" +
+                "Given some other sentence.\n" +
+                "When some other thing happens.\n" +
+                "Then do something good.\n" +
+                "endStory");
 
         StoryLexer lexer = new StoryLexer(r);
         AntlrStoryParser parser = new AntlrStoryParser(lexer);
