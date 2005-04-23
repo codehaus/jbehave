@@ -126,7 +126,11 @@ public class StoryGeneratorSpike {
                 "and another sentence\n" +
                 "When something happens\n" +
                 "Then do something interesting\n" +
-                "and do something else\n");
+                "and do something else\n" +
+                "Scenario: UnHappy Path\n" +
+                "Given some other sentence\n" +
+                "When some other thing happens\n" +
+                "Then do something good\n");
 
         StoryLexer lexer = new StoryLexer(r);
         AntlrStoryParser parser = new AntlrStoryParser(lexer);
