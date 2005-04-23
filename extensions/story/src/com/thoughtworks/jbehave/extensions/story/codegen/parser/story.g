@@ -16,7 +16,8 @@ NEWLINE
       | '\n'    // Unix
       )
       // increment the line count in the scanner
-      { newline(); };
+      { newline(); 
+        $setType(Token.SKIP);};
 
 DOT : '.';
 
@@ -29,19 +30,19 @@ WS : (
 class AntlrStoryParser extends Parser;
 options {buildAST=true;}
 
-story       : titleDecl narrative (scenario)+;
+story       : titleDecl narrative (scenario)+ "endStory";
 titleDecl   : "Story:" sentence;
 narrative   : as_a i_want so_that;
 as_a        : "As_a" sentence;
 i_want      : "I_want" sentence;
 so_that     : "So_that" sentence;
-scenario    :  scenario_title context event outcome (NEWLINE)*;
+scenario    :  scenario_title context event outcome;
 scenario_title : "Scenario:" sentence;
 context     : "Given" sentence (and)*;
 event       : "When" sentence;
 outcome     : "Then" sentence (and)*;
 and         : "and" sentence;
-sentence    : (TEXT)+ NEWLINE;
+sentence    : (TEXT)+ DOT;
 
 {
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.StoryDetails;
@@ -135,8 +136,9 @@ storyDetail:
                 }
         }
     	storyDetail
-    	
-    | NEWLINE {};
+    | "endStory" {};
+    
+   
 
 sentence [StringBuffer buf]:
     txt:TEXT 
@@ -144,5 +146,5 @@ sentence [StringBuffer buf]:
                         buf.append(" ");
         } 
         sentence[buf]
-    | nwl:NEWLINE {};
+    | dot:DOT {};
 

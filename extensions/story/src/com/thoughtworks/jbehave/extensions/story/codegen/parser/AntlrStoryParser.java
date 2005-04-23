@@ -68,7 +68,7 @@ public AntlrStoryParser(ParserSharedInputState state) {
 			int _cnt12=0;
 			_loop12:
 			do {
-				if ((LA(1)==12)) {
+				if ((LA(1)==13)) {
 					scenario();
 					astFactory.addASTChild(currentAST, returnAST);
 				}
@@ -79,6 +79,10 @@ public AntlrStoryParser(ParserSharedInputState state) {
 				_cnt12++;
 			} while (true);
 			}
+			AST tmp11_AST = null;
+			tmp11_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp11_AST);
+			match(LITERAL_endStory);
 			story_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -96,10 +100,10 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST titleDecl_AST = null;
 		
 		try {      // for error handling
-			AST tmp11_AST = null;
-			tmp11_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp11_AST);
-			match(8);
+			AST tmp12_AST = null;
+			tmp12_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp12_AST);
+			match(9);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
 			titleDecl_AST = (AST)currentAST.root;
@@ -150,21 +154,6 @@ public AntlrStoryParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, returnAST);
 			outcome();
 			astFactory.addASTChild(currentAST, returnAST);
-			{
-			_loop20:
-			do {
-				if ((LA(1)==NEWLINE)) {
-					AST tmp12_AST = null;
-					tmp12_AST = astFactory.create(LT(1));
-					astFactory.addASTChild(currentAST, tmp12_AST);
-					match(NEWLINE);
-				}
-				else {
-					break _loop20;
-				}
-				
-			} while (true);
-			}
 			scenario_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -183,8 +172,8 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			{
-			int _cnt32=0;
-			_loop32:
+			int _cnt30=0;
+			_loop30:
 			do {
 				if ((LA(1)==TEXT)) {
 					AST tmp13_AST = null;
@@ -193,16 +182,16 @@ public AntlrStoryParser(ParserSharedInputState state) {
 					match(TEXT);
 				}
 				else {
-					if ( _cnt32>=1 ) { break _loop32; } else {throw new NoViableAltException(LT(1), getFilename());}
+					if ( _cnt30>=1 ) { break _loop30; } else {throw new NoViableAltException(LT(1), getFilename());}
 				}
 				
-				_cnt32++;
+				_cnt30++;
 			} while (true);
 			}
 			AST tmp14_AST = null;
 			tmp14_AST = astFactory.create(LT(1));
 			astFactory.addASTChild(currentAST, tmp14_AST);
-			match(NEWLINE);
+			match(DOT);
 			sentence_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -292,7 +281,7 @@ public AntlrStoryParser(ParserSharedInputState state) {
 			AST tmp18_AST = null;
 			tmp18_AST = astFactory.create(LT(1));
 			astFactory.addASTChild(currentAST, tmp18_AST);
-			match(12);
+			match(13);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
 			scenario_title_AST = (AST)currentAST.root;
@@ -319,14 +308,14 @@ public AntlrStoryParser(ParserSharedInputState state) {
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
-			_loop24:
+			_loop22:
 			do {
 				if ((LA(1)==LITERAL_and)) {
 					and();
 					astFactory.addASTChild(currentAST, returnAST);
 				}
 				else {
-					break _loop24;
+					break _loop22;
 				}
 				
 			} while (true);
@@ -378,14 +367,14 @@ public AntlrStoryParser(ParserSharedInputState state) {
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
-			_loop28:
+			_loop26:
 			do {
 				if ((LA(1)==LITERAL_and)) {
 					and();
 					astFactory.addASTChild(currentAST, returnAST);
 				}
 				else {
-					break _loop28;
+					break _loop26;
 				}
 				
 			} while (true);
@@ -395,7 +384,7 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		catch (RecognitionException ex) {
 			reportError(ex);
 			consume();
-			consumeUntil(_tokenSet_10);
+			consumeUntil(_tokenSet_3);
 		}
 		returnAST = outcome_AST;
 	}
@@ -418,7 +407,7 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		catch (RecognitionException ex) {
 			reportError(ex);
 			consume();
-			consumeUntil(_tokenSet_11);
+			consumeUntil(_tokenSet_10);
 		}
 		returnAST = and_AST;
 	}
@@ -433,6 +422,7 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		"NEWLINE",
 		"DOT",
 		"WS",
+		"\"endStory\"",
 		"\"Story:\"",
 		"\"As_a\"",
 		"\"I_want\"",
@@ -454,59 +444,54 @@ public AntlrStoryParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	private static final long[] mk_tokenSet_1() {
-		long[] data = { 512L, 0L};
+		long[] data = { 1024L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 	private static final long[] mk_tokenSet_2() {
-		long[] data = { 4096L, 0L};
+		long[] data = { 8192L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 	private static final long[] mk_tokenSet_3() {
-		long[] data = { 4098L, 0L};
+		long[] data = { 8448L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 	private static final long[] mk_tokenSet_4() {
-		long[] data = { 130594L, 0L};
+		long[] data = { 261376L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 	private static final long[] mk_tokenSet_5() {
-		long[] data = { 1024L, 0L};
+		long[] data = { 2048L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 2048L, 0L};
+		long[] data = { 4096L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	private static final long[] mk_tokenSet_7() {
-		long[] data = { 8192L, 0L};
+		long[] data = { 16384L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 	private static final long[] mk_tokenSet_8() {
-		long[] data = { 16384L, 0L};
+		long[] data = { 32768L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 	private static final long[] mk_tokenSet_9() {
-		long[] data = { 32768L, 0L};
+		long[] data = { 65536L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 	private static final long[] mk_tokenSet_10() {
-		long[] data = { 4130L, 0L};
+		long[] data = { 172288L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
-	private static final long[] mk_tokenSet_11() {
-		long[] data = { 86050L, 0L};
-		return data;
-	}
-	public static final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
 	
 	}

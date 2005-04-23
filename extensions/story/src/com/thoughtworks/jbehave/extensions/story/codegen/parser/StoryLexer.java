@@ -42,15 +42,16 @@ public StoryLexer(LexerSharedInputState state) {
 	caseSensitiveLiterals = true;
 	setCaseSensitive(true);
 	literals = new Hashtable();
-	literals.put(new ANTLRHashString("So_that", this), new Integer(11));
-	literals.put(new ANTLRHashString("Then", this), new Integer(15));
-	literals.put(new ANTLRHashString("As_a", this), new Integer(9));
-	literals.put(new ANTLRHashString("I_want", this), new Integer(10));
-	literals.put(new ANTLRHashString("and", this), new Integer(16));
-	literals.put(new ANTLRHashString("Scenario:", this), new Integer(12));
-	literals.put(new ANTLRHashString("Given", this), new Integer(13));
-	literals.put(new ANTLRHashString("Story:", this), new Integer(8));
-	literals.put(new ANTLRHashString("When", this), new Integer(14));
+	literals.put(new ANTLRHashString("So_that", this), new Integer(12));
+	literals.put(new ANTLRHashString("Then", this), new Integer(16));
+	literals.put(new ANTLRHashString("As_a", this), new Integer(10));
+	literals.put(new ANTLRHashString("I_want", this), new Integer(11));
+	literals.put(new ANTLRHashString("and", this), new Integer(17));
+	literals.put(new ANTLRHashString("Scenario:", this), new Integer(13));
+	literals.put(new ANTLRHashString("Given", this), new Integer(14));
+	literals.put(new ANTLRHashString("endStory", this), new Integer(8));
+	literals.put(new ANTLRHashString("Story:", this), new Integer(9));
+	literals.put(new ANTLRHashString("When", this), new Integer(15));
 }
 
 public Token nextToken() throws TokenStreamException {
@@ -238,7 +239,8 @@ tryAgain:
 		}
 		
 		}
-		newline();
+		newline(); 
+		_ttype = Token.SKIP;
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
