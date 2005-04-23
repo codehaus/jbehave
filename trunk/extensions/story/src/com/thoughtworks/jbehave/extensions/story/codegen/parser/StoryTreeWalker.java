@@ -45,10 +45,10 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 		try {      // for error handling
 			if (_t==null) _t=ASTNULL;
 			switch ( _t.getType()) {
-			case 8:
+			case 9:
 			{
 				AST tmp1_AST_in = (AST)_t;
-				match(_t,8);
+				match(_t,9);
 				_t = _t.getNextSibling();
 				StringBuffer buf = new StringBuffer();
 				sentence(_t,buf);
@@ -99,10 +99,10 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 				_t = _retTree;
 				break;
 			}
-			case 12:
+			case 13:
 			{
 				AST tmp5_AST_in = (AST)_t;
-				match(_t,12);
+				match(_t,13);
 				_t = _t.getNextSibling();
 				StringBuffer buf = new StringBuffer();
 				sentence(_t,buf);
@@ -179,10 +179,10 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 				_t = _retTree;
 				break;
 			}
-			case NEWLINE:
+			case LITERAL_endStory:
 			{
 				AST tmp10_AST_in = (AST)_t;
-				match(_t,NEWLINE);
+				match(_t,LITERAL_endStory);
 				_t = _t.getNextSibling();
 				break;
 			}
@@ -206,7 +206,7 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 		
 		AST sentence_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		AST txt = null;
-		AST nwl = null;
+		AST dot = null;
 		
 		try {      // for error handling
 			if (_t==null) _t=ASTNULL;
@@ -223,10 +223,10 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 				_t = _retTree;
 				break;
 			}
-			case NEWLINE:
+			case DOT:
 			{
-				nwl = (AST)_t;
-				match(_t,NEWLINE);
+				dot = (AST)_t;
+				match(_t,DOT);
 				_t = _t.getNextSibling();
 				break;
 			}
@@ -253,6 +253,7 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 		"NEWLINE",
 		"DOT",
 		"WS",
+		"\"endStory\"",
 		"\"Story:\"",
 		"\"As_a\"",
 		"\"I_want\"",
