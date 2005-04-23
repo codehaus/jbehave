@@ -43,7 +43,7 @@ public class StoryDetails extends BasicDetails {
         return role;
     }
 
-    public List scenarios() {
+    public List getScenarios() {
         return scenarios;
     }
     
@@ -67,7 +67,7 @@ public class StoryDetails extends BasicDetails {
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(name());
+        buffer.append(getName());
         buffer.append("\n");
         buffer.append(role);
         buffer.append("\n");
