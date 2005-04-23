@@ -11,6 +11,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.List;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -47,9 +48,9 @@ public class StoryGeneratorSpike {
             // read template
             StoryDetails story = buildStory();
             VelocityContext context = new VelocityContext();
+            context.put("basePackage", "com.thoughtworks.example.story");
             context.put("story", story);
             Template storyTemplate = ve.getTemplate("templates/Story.vm");
-            
             Writer out = new StringWriter();
             storyTemplate.merge(context, out);
             System.out.println(out.toString());

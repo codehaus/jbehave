@@ -41,3 +41,34 @@ public class $story.className extends StoryBase {
 #end
     }
 }
+
+#foreach ($scenario in $story.scenarios)
+    #foreach ( $given in $scenario.context.givens )
+public class ${given.className} extends GivenUsingMiniMock {
+        public void setUp(Environment context) throws Exception {
+         // add your code here
+        }
+    }
+
+    #end
+public class ${scenario.event.className} extends EventUsingMiniMock {
+
+        public void occurIn(Environment environment) throws Exception {
+            // add your code here
+        }
+}
+
+    #foreach ( $expectation in $scenario.outcome.expectations )
+public class ${expectation.className} extends ExpectationUsingMiniMock {
+        public void setExpectationIn(Environment environment) {
+
+        }
+
+        public void verify(Environment environment) {
+            
+        }
+}
+    #end
+
+#end
+
