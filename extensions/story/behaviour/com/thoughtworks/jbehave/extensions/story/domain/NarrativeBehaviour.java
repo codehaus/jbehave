@@ -18,7 +18,7 @@ public class NarrativeBehaviour extends UsingMiniMock {
 
     public void shouldPassItselfIntoVisitor() throws Exception {
         // given...
-        Narrative narrative = new Narrative("role", "feature", "benefit");
+        Narrative narrative = new Narrative("getRole", "getFeature", "getBenefit");
         Mock visitor = mock(Visitor.class);
         
         // expect...

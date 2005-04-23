@@ -1,34 +1,37 @@
 /*
  * Created on 23-Aug-2004
  */
-package stories;
+package ${basePackage};
 
-import ${basePackage}.events.*;
-import ${basePackage}.expectations.*;
-import ${basePackage}.givens.*;
-import com.thoughtworks.jbehave.story.core.domain.*;
-import com.thoughtworks.jbehave.story.core.domain.base.StoryBase;
+import com.thoughtworks.jbehave.extensions.story.domain.Story;
+import com.thoughtworks.jbehave.extensions.story.domain.Context;
+import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
+import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
+import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteria;
+import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMock;
+import com.thoughtworks.jbehave.extensions.story.domain.Given;
 
-public class $story.className extends StoryBase {
+public class $story.className extends Story {
 
+
+    public ${story.className}() {
+
+        super(new Narrative("$story.role", "$story.feature", "$story.benefit"), new AcceptanceCriteria());
 #foreach ( $scenario in $story.scenarios )
 
-        addScenario(new Scenario(
+        addScenario(new ScenarioUsingMiniMock(
                 "$scenario.name", this,
-                new SimpleContext(
+                new Context(
     #set ( $comma = "" )
-    #if ( $scenario.context.scenario )
-                    // TODO make this work for scenarios from other stories
-                    getScenario("$scenario.context.scenario.name")
-        #set ( $comma = "," )
-    #end
+        new Given [] {
     #foreach ( $given in $scenario.context.givens )
                     $comma new ${given.className}()
         #set ( $comma = "," )
     #end
+    }
                 ),
                 new ${scenario.event.className}(),
-                new SimpleOutcome(
+                new Outcome(
     #set ( $comma = "" )
     #foreach ( $expectation in $scenario.outcome.expectations )
                     $comma new ${expectation.className}()
@@ -41,34 +44,4 @@ public class $story.className extends StoryBase {
 #end
     }
 }
-
-#foreach ($scenario in $story.scenarios)
-    #foreach ( $given in $scenario.context.givens )
-public class ${given.className} extends GivenUsingMiniMock {
-        public void setUp(Environment context) throws Exception {
-         // add your code here
-        }
-    }
-
-    #end
-public class ${scenario.event.className} extends EventUsingMiniMock {
-
-        public void occurIn(Environment environment) throws Exception {
-            // add your code here
-        }
-}
-
-    #foreach ( $expectation in $scenario.outcome.expectations )
-public class ${expectation.className} extends ExpectationUsingMiniMock {
-        public void setExpectationIn(Environment environment) {
-
-        }
-
-        public void verify(Environment environment) {
-            
-        }
-}
-    #end
-
-#end
 

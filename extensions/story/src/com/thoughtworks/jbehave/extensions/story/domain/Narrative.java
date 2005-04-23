@@ -40,6 +40,6 @@ public class Narrative implements Visitable {
     }
     
     public String toString() {
-        return "[role=" + role + ", feature=" + feature + ", benefit=" + benefit + "]";
+        return "[getRole=" + role + ", getFeature=" + feature + ", getBenefit=" + benefit + "]";
     }
 }
