@@ -1,5 +1,5 @@
-// $ANTLR 2.7.3: story.g -> com.thoughtworks.jbehave.extensions.story.codegen.parser.StoryLexerTokenTypes.txt$
-com.thoughtworks.jbehave.extensions.story.codegen.parser.StoryLexer    // output token vocab name
+// $ANTLR 2.7.3: story.g -> StoryLexerTokenTypes.txt$
+StoryLexer    // output token vocab name
 TEXT=4
 NEWLINE=5
 DOT=6

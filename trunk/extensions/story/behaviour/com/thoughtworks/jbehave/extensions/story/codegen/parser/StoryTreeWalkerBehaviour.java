@@ -65,4 +65,5 @@ public class StoryTreeWalkerBehaviour {
         OutcomeDetails s2Outcome = scenario2.getOutcome();
         Verify.equal("do something good", ((BasicDetails)s2Outcome.getExpectations().get(0)).getName());
     }
+
 }

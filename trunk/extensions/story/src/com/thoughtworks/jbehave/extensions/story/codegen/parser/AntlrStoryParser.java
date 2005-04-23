@@ -1,6 +1,6 @@
-package com.thoughtworks.jbehave.extensions.story.codegen.parser;
+// $ANTLR 2.7.3: "story.g" -> "AntlrStoryParser.java"$
 
-// $ANTLR 2.7.3: "story.g" -> "com.thoughtworks.jbehave.extensions.story.codegen.parser.AntlrStoryParser.java"$
+package com.thoughtworks.jbehave.extensions.story.codegen.parser;
 
 import antlr.TokenBuffer;
 import antlr.TokenStreamException;
@@ -96,9 +96,9 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST titleDecl_AST = null;
 		
 		try {      // for error handling
-			AST tmp10_AST = null;
-			tmp10_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp10_AST);
+			AST tmp11_AST = null;
+			tmp11_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp11_AST);
 			match(8);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -150,6 +150,21 @@ public AntlrStoryParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, returnAST);
 			outcome();
 			astFactory.addASTChild(currentAST, returnAST);
+			{
+			_loop20:
+			do {
+				if ((LA(1)==NEWLINE)) {
+					AST tmp12_AST = null;
+					tmp12_AST = astFactory.create(LT(1));
+					astFactory.addASTChild(currentAST, tmp12_AST);
+					match(NEWLINE);
+				}
+				else {
+					break _loop20;
+				}
+				
+			} while (true);
+			}
 			scenario_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -168,25 +183,25 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			{
-			int _cnt30=0;
-			_loop30:
+			int _cnt32=0;
+			_loop32:
 			do {
 				if ((LA(1)==TEXT)) {
-					AST tmp11_AST = null;
-					tmp11_AST = astFactory.create(LT(1));
-					astFactory.addASTChild(currentAST, tmp11_AST);
+					AST tmp13_AST = null;
+					tmp13_AST = astFactory.create(LT(1));
+					astFactory.addASTChild(currentAST, tmp13_AST);
 					match(TEXT);
 				}
 				else {
-					if ( _cnt30>=1 ) { break _loop30; } else {throw new NoViableAltException(LT(1), getFilename());}
+					if ( _cnt32>=1 ) { break _loop32; } else {throw new NoViableAltException(LT(1), getFilename());}
 				}
 				
-				_cnt30++;
+				_cnt32++;
 			} while (true);
 			}
-			AST tmp12_AST = null;
-			tmp12_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp12_AST);
+			AST tmp14_AST = null;
+			tmp14_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp14_AST);
 			match(NEWLINE);
 			sentence_AST = (AST)currentAST.root;
 		}
@@ -205,9 +220,9 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST as_a_AST = null;
 		
 		try {      // for error handling
-			AST tmp13_AST = null;
-			tmp13_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp13_AST);
+			AST tmp15_AST = null;
+			tmp15_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp15_AST);
 			match(LITERAL_As_a);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -228,9 +243,9 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST i_want_AST = null;
 		
 		try {      // for error handling
-			AST tmp14_AST = null;
-			tmp14_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp14_AST);
+			AST tmp16_AST = null;
+			tmp16_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp16_AST);
 			match(LITERAL_I_want);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -251,9 +266,9 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST so_that_AST = null;
 		
 		try {      // for error handling
-			AST tmp15_AST = null;
-			tmp15_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp15_AST);
+			AST tmp17_AST = null;
+			tmp17_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp17_AST);
 			match(LITERAL_So_that);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -274,9 +289,9 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST scenario_title_AST = null;
 		
 		try {      // for error handling
-			AST tmp16_AST = null;
-			tmp16_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp16_AST);
+			AST tmp18_AST = null;
+			tmp18_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp18_AST);
 			match(12);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -297,21 +312,21 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST context_AST = null;
 		
 		try {      // for error handling
-			AST tmp17_AST = null;
-			tmp17_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp17_AST);
+			AST tmp19_AST = null;
+			tmp19_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp19_AST);
 			match(LITERAL_Given);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
-			_loop22:
+			_loop24:
 			do {
 				if ((LA(1)==LITERAL_and)) {
 					and();
 					astFactory.addASTChild(currentAST, returnAST);
 				}
 				else {
-					break _loop22;
+					break _loop24;
 				}
 				
 			} while (true);
@@ -333,9 +348,9 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST event_AST = null;
 		
 		try {      // for error handling
-			AST tmp18_AST = null;
-			tmp18_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp18_AST);
+			AST tmp20_AST = null;
+			tmp20_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp20_AST);
 			match(LITERAL_When);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -356,21 +371,21 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST outcome_AST = null;
 		
 		try {      // for error handling
-			AST tmp19_AST = null;
-			tmp19_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp19_AST);
+			AST tmp21_AST = null;
+			tmp21_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp21_AST);
 			match(LITERAL_Then);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
-			_loop26:
+			_loop28:
 			do {
 				if ((LA(1)==LITERAL_and)) {
 					and();
 					astFactory.addASTChild(currentAST, returnAST);
 				}
 				else {
-					break _loop26;
+					break _loop28;
 				}
 				
 			} while (true);
@@ -380,7 +395,7 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		catch (RecognitionException ex) {
 			reportError(ex);
 			consume();
-			consumeUntil(_tokenSet_3);
+			consumeUntil(_tokenSet_10);
 		}
 		returnAST = outcome_AST;
 	}
@@ -392,9 +407,9 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		AST and_AST = null;
 		
 		try {      // for error handling
-			AST tmp20_AST = null;
-			tmp20_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp20_AST);
+			AST tmp22_AST = null;
+			tmp22_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp22_AST);
 			match(LITERAL_and);
 			sentence();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -403,7 +418,7 @@ public AntlrStoryParser(ParserSharedInputState state) {
 		catch (RecognitionException ex) {
 			reportError(ex);
 			consume();
-			consumeUntil(_tokenSet_10);
+			consumeUntil(_tokenSet_11);
 		}
 		returnAST = and_AST;
 	}
@@ -454,7 +469,7 @@ public AntlrStoryParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 	private static final long[] mk_tokenSet_4() {
-		long[] data = { 130562L, 0L};
+		long[] data = { 130594L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
@@ -484,9 +499,14 @@ public AntlrStoryParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 	private static final long[] mk_tokenSet_10() {
-		long[] data = { 86018L, 0L};
+		long[] data = { 4130L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
+	private static final long[] mk_tokenSet_11() {
+		long[] data = { 86050L, 0L};
+		return data;
+	}
+	public static final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
 	
 	}
