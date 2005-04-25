@@ -18,20 +18,20 @@ public class StoryTreeWalkerBehaviour {
     // for now.
     public void shouldParseTheStory() throws TokenStreamException, RecognitionException {
         Reader r = new StringReader(
-                "Story: this is some text.\n" +
-                "As_a user.\n" +
-                "I_want some food.\n" +
-                "So_that I can do stuff.\n" +
-                "Scenario: Happy Scenario.\n" +
-                "Given a sentence.\n" +
-                "and another sentence.\n" +
-                "When something happens.\n" +
-                "Then do something interesting.\n" +
-                "and do something else.\n" +
-                "Scenario: UnHappy Path.\n" +
-                "Given some other sentence.\n" +
-                "When some other thing happens.\n" +
-                "Then do something good.\n" +
+                "Story: this is some text\n" +
+                "As_a user\n" +
+                "I_want some food\n" +
+                "So_that I can do stuff\n" +
+                "Scenario: Happy Scenario\n" +
+                "Given a sentence\n" +
+                "and another sentence\n" +
+                "When something happens\n" +
+                "Then do something interesting\n" +
+                "and do something else\n" +
+                "Scenario: UnHappy Path\n" +
+                "Given some other sentence\n" +
+                "When some other thing happens\n" +
+                "Then do something good\n" +
                 "endStory");
 
         StoryLexer lexer = new StoryLexer(r);
@@ -69,20 +69,20 @@ public class StoryTreeWalkerBehaviour {
 
     public void shouldParseTheStoryWithMultipleNewLines() throws TokenStreamException, RecognitionException {
             Reader r = new StringReader(
-                    "Story: this is some text.\n\n" +
-                    "As_a user.\n" +
-                    "I_want some food.\n\n\n\n" +
-                    "So_that I can do stuff.\n\n\n\n" +
-                    "Scenario: Happy Scenario.\n\n" +
-                    "Given a sentence.\n" +
-                    "and another sentence.\n" +
-                    "When something happens.\n\n\n\n" +
-                    "Then do something interesting.\n\n\n\n" +
-                    "and do something else.\n\n\n" +
-                    "Scenario: UnHappy Path.\n" +
-                    "Given some other sentence.\n" +
-                    "When some other thing happens.\n" +
-                    "Then do something good.\n" +
+                    "Story: this is some text\n\n" +
+                    "As_a user\n" +
+                    "I_want some food\n\n\n\n" +
+                    "So_that I can do stuff\n\n\n\n" +
+                    "Scenario: Happy Scenario\n\n" +
+                    "Given a sentence\n" +
+                    "and another sentence\n" +
+                    "When something happens\n\n\n\n" +
+                    "Then do something interesting\n\n\n\n" +
+                    "and do something else\n\n\n" +
+                    "Scenario: UnHappy Path\n" +
+                    "Given some other sentence\n" +
+                    "When some other thing happens\n" +
+                    "Then do something good\n" +
                     "endStory\n");
 
             StoryLexer lexer = new StoryLexer(r);

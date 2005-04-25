@@ -14,6 +14,7 @@ import com.thoughtworks.jbehave.extensions.story.domain.EventUsingMiniMock;
 public class UserRequestsCash extends EventUsingMiniMock {
     
     public void occurIn(Environment environment) throws Exception {
+
     }
 
     public String toString() {
