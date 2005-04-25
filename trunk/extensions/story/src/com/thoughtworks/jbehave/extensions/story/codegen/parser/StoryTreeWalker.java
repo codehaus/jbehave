@@ -179,9 +179,18 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 				_t = _retTree;
 				break;
 			}
-			case LITERAL_endStory:
+			case NEWLINE:
 			{
 				AST tmp10_AST_in = (AST)_t;
+				match(_t,NEWLINE);
+				_t = _t.getNextSibling();
+				storyDetail(_t);
+				_t = _retTree;
+				break;
+			}
+			case LITERAL_endStory:
+			{
+				AST tmp11_AST_in = (AST)_t;
 				match(_t,LITERAL_endStory);
 				_t = _t.getNextSibling();
 				break;
@@ -206,7 +215,6 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 		
 		AST sentence_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		AST txt = null;
-		AST dot = null;
 		
 		try {      // for error handling
 			if (_t==null) _t=ASTNULL;
@@ -223,10 +231,10 @@ public class StoryTreeWalker extends antlr.TreeParser       implements StoryLexe
 				_t = _retTree;
 				break;
 			}
-			case DOT:
+			case NEWLINE:
 			{
-				dot = (AST)_t;
-				match(_t,DOT);
+				AST tmp12_AST_in = (AST)_t;
+				match(_t,NEWLINE);
 				_t = _t.getNextSibling();
 				break;
 			}

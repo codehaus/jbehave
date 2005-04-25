@@ -7,17 +7,17 @@ options {k=2; testLiterals=false;}
 
 TEXT
   options {testLiterals=true;}
-  : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9' | '_' | ':')*
+  : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9' | '_' | ':' | '\'' | '.')*
   ;
 
 NEWLINE
     : ( "\r\n"  // DOS/Windows
       | '\r'    // Macintosh
       | '\n'    // Unix
-      )
+      );
       // increment the line count in the scanner
-      { newline(); 
-        $setType(Token.SKIP);};
+      //{ newline();
+        //$setType(Token.SKIP);};
 
 DOT : '.';
 
@@ -38,11 +38,12 @@ i_want      : "I_want" sentence;
 so_that     : "So_that" sentence;
 scenario    :  scenario_title context event outcome;
 scenario_title : "Scenario:" sentence;
-context     : "Given" sentence (and)*;
+context     : given sentence (and)*;
+given       : "Given"
 event       : "When" sentence;
 outcome     : "Then" sentence (and)*;
 and         : "and" sentence;
-sentence    : (TEXT)+ DOT;
+sentence    : (TEXT)+ (NEWLINE)+;
 
 {
 import com.thoughtworks.jbehave.extensions.story.codegen.domain.StoryDetails;
@@ -136,6 +137,9 @@ storyDetail:
                 }
         }
     	storyDetail
+
+    | NEWLINE storyDetail
+
     | "endStory" {};
     
    
@@ -146,5 +150,5 @@ sentence [StringBuffer buf]:
                         buf.append(" ");
         } 
         sentence[buf]
-    | dot:DOT {};
+    | NEWLINE {};
 

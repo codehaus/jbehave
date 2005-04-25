@@ -13,6 +13,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.FileWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.apache.velocity.Template;
@@ -51,6 +53,7 @@ public class StoryGeneratorSpike {
             ve.setProperty("class.resource.loader.class", ClasspathResourceLoader.class.getName());
 
             ve.init();
+            new File("build/generated").delete();
             new File("build/generated/com/thoughtworks/example/stories").mkdirs();
             // read template
             StoryDetails story = buildStory();
@@ -115,24 +118,25 @@ public class StoryGeneratorSpike {
         merge(storyTemplate, context, new FileWriter(genDir + story.getClassName() + ".java"));
     }
 
-    private static StoryDetails buildStory() throws TokenStreamException, RecognitionException {
-        Reader r = new StringReader(
-               "Story: this is some text.\n" +
-                "As_a user.\n" +
-                "I_want some food.\n" +
-                "So_that I can do stuff.\n" +
-                "Scenario: Happy Scenario.\n" +
-                "Given a sentence.\n" +
-                "and another sentence.\n" +
-                "When something happens.\n" +
-                "Then do something interesting.\n" +
-                "and do something else.\n" +
-                "Scenario: UnHappy Path.\n" +
-                "Given some other sentence.\n" +
-                "When some other thing happens.\n" +
-                "Then do something good.\n" +
-                "endStory");
+    private static StoryDetails buildStory() throws TokenStreamException, RecognitionException, FileNotFoundException {
+//        Reader r = new StringReader(
+//               "Story: this is some text.\n" +
+//                "As_a user.\n" +
+//                "I_want some food.\n" +
+//                "So_that I can do stuff.\n" +
+//                "Scenario: Happy Scenario.\n" +
+//                "Given a sentence.\n" +
+//                "and another sentence.\n" +
+//                "When something happens.\n" +
+//                "Then do something interesting.\n" +
+//                "and do something else.\n" +
+//                "Scenario: UnHappy Path.\n" +
+//                "Given some other sentence.\n" +
+//                "When some other thing happens.\n" +
+//                "Then do something good.\n" +
+//                "endStory");
 
+        Reader r  = new FileReader("analysis/user withdraws cash.txt");
         StoryLexer lexer = new StoryLexer(r);
         AntlrStoryParser parser = new AntlrStoryParser(lexer);
 
