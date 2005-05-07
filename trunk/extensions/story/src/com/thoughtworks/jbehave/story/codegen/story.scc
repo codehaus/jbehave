@@ -1,4 +1,4 @@
-Package com.thoughtworks.jbehave.extensions.story.codegen.sablecc.generated;
+Package com.thoughtworks.jbehave.story.codegen.sablecc;
 
 /*
 
