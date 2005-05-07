@@ -8,12 +8,12 @@
 
 package example.stories;
 
-import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.extensions.story.domain.Context;
-import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
-import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
-import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMock;
-import com.thoughtworks.jbehave.extensions.story.domain.Story;
+import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
+import com.thoughtworks.jbehave.story.domain.Context;
+import com.thoughtworks.jbehave.story.domain.Narrative;
+import com.thoughtworks.jbehave.story.domain.Outcome;
+import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.Story;
 
 import example.events.UserRequestsCash;
 import example.expectations.ATMShouldDispenseCash;
