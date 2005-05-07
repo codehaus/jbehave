@@ -8,9 +8,9 @@
 package com.thoughtworks.jbehave.story;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
-import com.thoughtworks.jbehave.story.codegen.TextStoryParserBehaviour;
 import com.thoughtworks.jbehave.story.codegen.parser.SimpleStoryParserBehaviour;
 import com.thoughtworks.jbehave.story.codegen.parser.StoryTreeWalkerBehaviour;
+import com.thoughtworks.jbehave.story.codegen.parser.TextStoryParserBehaviour;
 import com.thoughtworks.jbehave.story.domain.GivenScenarioBehaviour;
 import com.thoughtworks.jbehave.story.domain.NarrativeBehaviour;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMockBehaviour;

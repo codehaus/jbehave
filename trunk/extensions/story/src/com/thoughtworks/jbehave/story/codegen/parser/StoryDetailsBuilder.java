@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.thoughtworks.jbehave.story.codegen;
+package com.thoughtworks.jbehave.story.codegen.parser;
 
 import com.thoughtworks.jbehave.story.codegen.domain.StoryDetails;
 import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.DepthFirstAdapter;
