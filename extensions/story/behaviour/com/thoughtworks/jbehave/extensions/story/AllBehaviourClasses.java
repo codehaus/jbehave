@@ -8,6 +8,7 @@
 package com.thoughtworks.jbehave.extensions.story;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
+import com.thoughtworks.jbehave.extensions.story.codegen.TextStoryParserBehaviour;
 import com.thoughtworks.jbehave.extensions.story.codegen.parser.SimpleStoryParserBehaviour;
 import com.thoughtworks.jbehave.extensions.story.codegen.parser.StoryTreeWalkerBehaviour;
 import com.thoughtworks.jbehave.extensions.story.domain.GivenScenarioBehaviour;
@@ -37,8 +38,9 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
                 StoryVerifierBehaviour.class,
                 VisitableUsingMiniMockBehaviour.class,
 				GivenScenarioBehaviour.class,
-				PlainTextRendererBehaviour.class,
-                StoryTreeWalkerBehaviour.class
+				PlainTextRendererBehaviour.class, // TODO remove me
+                StoryTreeWalkerBehaviour.class, // TODO remove me
+                TextStoryParserBehaviour.class
         };
     }
 }

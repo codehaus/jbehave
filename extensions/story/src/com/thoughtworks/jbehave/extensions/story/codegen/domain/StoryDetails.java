@@ -19,7 +19,7 @@ public class StoryDetails extends BasicDetails {
     private final String feature;
     private final String benefit;
     private final List scenarios = new ArrayList();
-
+	
     public StoryDetails(String name, String role, String feature, String benefit) {
         super(name, "");
         this.role = role;
