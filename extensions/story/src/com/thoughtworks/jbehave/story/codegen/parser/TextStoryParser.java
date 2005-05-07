@@ -1,4 +1,4 @@
-package com.thoughtworks.jbehave.story.codegen;
+package com.thoughtworks.jbehave.story.codegen.parser;
 
 import java.io.IOException;
 import java.io.PushbackReader;
@@ -11,8 +11,8 @@ import com.thoughtworks.jbehave.story.codegen.sablecc.node.Start;
 import com.thoughtworks.jbehave.story.codegen.sablecc.parser.Parser;
 import com.thoughtworks.jbehave.story.codegen.sablecc.parser.ParserException;
 
-public class TextStoryParser {
-	public StoryDetails parse(Reader in) {
+public class TextStoryParser implements StoryParser {
+	public StoryDetails parseStory(Reader in) {
 		try {
 			Lexer lexer = new Lexer(new PushbackReader(in, 1024));
 			Parser parser = new Parser(lexer);

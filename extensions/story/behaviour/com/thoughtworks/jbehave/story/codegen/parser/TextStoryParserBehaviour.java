@@ -1,9 +1,8 @@
-package com.thoughtworks.jbehave.story.codegen;
+package com.thoughtworks.jbehave.story.codegen.parser;
 
 import java.io.StringReader;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.story.codegen.TextStoryParser;
 import com.thoughtworks.jbehave.story.codegen.domain.StoryDetails;
 
 public class TextStoryParserBehaviour {
@@ -13,7 +12,7 @@ public class TextStoryParserBehaviour {
 		String text = "Title: Joe drinks vodka\n";
 		StoryDetails expectedStory = new StoryDetails("Joe drinks vodka", "", "", "");
 		// when
-		StoryDetails result = new TextStoryParser().parse(new StringReader(text));
+		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
 		Verify.equal(expectedStory, result);
 	}
@@ -27,7 +26,7 @@ public class TextStoryParserBehaviour {
 				"Joe drinks vodka",
 				"drinker", "", "");
 		// when
-		StoryDetails result = new TextStoryParser().parse(new StringReader(text));
+		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
 		Verify.equal(expectedStory, result);
 	}
@@ -42,7 +41,7 @@ public class TextStoryParserBehaviour {
 				"Joe drinks vodka",
 				"drinker", "a glass of vodka", "");
 		// when
-		StoryDetails result = new TextStoryParser().parse(new StringReader(text));
+		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
 		Verify.equal(expectedStory, result);
 	}
@@ -58,7 +57,7 @@ public class TextStoryParserBehaviour {
 				"Joe drinks vodka",
 				"drinker", "a glass of vodka", "I feel tipsy");
 		// when
-		StoryDetails result = new TextStoryParser().parse(new StringReader(text));
+		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
 		Verify.equal(expectedStory, result);
 	}
