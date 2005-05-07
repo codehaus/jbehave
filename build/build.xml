@@ -66,12 +66,6 @@
                 useexternalfile="true"
                 verbose="true">
 
-            <classpath>
-                <fileset dir="${extensions.dir}">
-                    <include name="*/lib/*.jar"/>
-                </fileset>
-            </classpath>
-
             <fileset dir="${extensions.dir}">
                 <include name="*/src/**/*.java"/>
             </fileset>

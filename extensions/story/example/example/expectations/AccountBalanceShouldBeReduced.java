@@ -8,8 +8,8 @@
 package example.expectations;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.extensions.story.domain.Environment;
-import com.thoughtworks.jbehave.extensions.story.domain.ExpectationUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.ExpectationUsingMiniMock;
 
 
 /** balance = balance - 20 */
