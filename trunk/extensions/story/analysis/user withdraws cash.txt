@@ -1,15 +1,13 @@
 Story: User withdraws cash
 
-As_a Bank card holder
-I_want to be able to withdraw cash from an ATM
-So_that I dont have to visit the bank
+As a Bank card holder
+I want to be able to withdraw cash from an ATM
+So that I dont have to visit the bank
 
 Scenario: Happy scenario
 
 Given Account is in credit
-
 When User requests cash
-
 Then ATM should dispense cash
 and ATM should return bank card
 and account balance should be reduced
@@ -29,5 +27,3 @@ Given Account is over overdraft limit
 When User requests cash
 Then Refuse cash
 and Keep bank card
-
-endStory

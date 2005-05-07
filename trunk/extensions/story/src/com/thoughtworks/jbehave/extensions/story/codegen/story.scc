@@ -1,7 +1,11 @@
 Package com.thoughtworks.jbehave.extensions.story.codegen.sablecc.generated;
 
 /*
-Story: Joe drinks vodka
+
+Title: Joe drinks vodka
+As a drinker
+I want a glass of vodka
+So that I feel tipsy
 
 */
 
@@ -11,8 +15,10 @@ Helpers
 	lf = 10;
 	
 Tokens
-	story_keyword = 'Story:';
-	as_a_keyword = 'As a';
+	title_keyword = 'Title:';
+	as_a = 'As a';
+	i_want = 'I want';
+	so_that = 'So that';
 	space = ' ';
 	word = letter+;
 	endl = cr | lf | cr lf;
@@ -20,13 +26,19 @@ Tokens
 Productions
 
 	story =
-		title role?;
+		title role? feature? benefit?;
 		
 	title = 
-		story_keyword space phrase endl;
+		title_keyword space phrase endl;
 		
 	role =
-		as_a_keyword space phrase endl;
+		as_a space phrase endl;
+		
+	feature =
+		i_want space phrase endl;
+		
+	benefit =
+		so_that space phrase endl;
 
 	phrase = 
 		word_or_space+;
@@ -34,4 +46,3 @@ Productions
 	word_or_space = 
 		{word} word |
 		{space} space;
-	

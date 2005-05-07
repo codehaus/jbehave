@@ -7,13 +7,18 @@ end.new
 
 Helpers
 	
+	cr = 13;
+	lf = 10;
+	space = 32;
+	eol = cr lf | cr | lf;
 	and = 'And' | 'and';
 	given = 'Given' | 'given';
 	when = 'When' | 'when';
 	then = 'Then' | 'then';
-	cr = 13;
-	lf = 10;
-	eol = cr lf | cr | lf;
+	as_a = 'As' space 'a';
+	i_want = 'I' space 'want';
+	so_that = 'So' space 'that';
+	
 Productions
 	story =
 		story_title

@@ -87,7 +87,6 @@ public class StoryGeneratorSpike {
             merge(outcomeTemplate, vcontext, new FileWriter(genDir + expectation.getClassName() + ".java"));
 
         }
-
     }
 
     private static void event(BasicDetails event, VelocityEngine ve, VelocityContext vcontext) throws Exception {

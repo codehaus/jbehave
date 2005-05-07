@@ -2,6 +2,10 @@ header {
 package com.thoughtworks.jbehave.extensions.story.codegen.parser;
 }
 
+// **************************************************************************
+// ******************************** The Lexer *******************************
+// **************************************************************************
+
 class StoryLexer extends Lexer;
 options {k=2; testLiterals=false;}
 
@@ -20,12 +24,14 @@ NEWLINE
         //$setType(Token.SKIP);};
 
 DOT : '.';
+SPACE : ' ';
+TAB : '\t';
+WS : ( SPACE | TAB ) { $setType(Token.SKIP); };
 
-WS : (
-    ' '
-    | '\t'
-    | '\f'){ $setType(Token.SKIP); };
 
+// **************************************************************************
+// ******************************** The Parser ******************************
+// **************************************************************************
 
 class AntlrStoryParser extends Parser;
 options {buildAST=true;}
