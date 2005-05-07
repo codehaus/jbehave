@@ -1,0 +1,37 @@
+Package com.thoughtworks.jbehave.extensions.story.codegen.sablecc.generated;
+
+/*
+Story: Joe drinks vodka
+
+*/
+
+Helpers
+	letter = [['a'..'z'] + ['A'..'Z']];
+	cr = 13;
+	lf = 10;
+	
+Tokens
+	story_keyword = 'Story:';
+	as_a_keyword = 'As a';
+	space = ' ';
+	word = letter+;
+	endl = cr | lf | cr lf;
+	
+Productions
+
+	story =
+		title role?;
+		
+	title = 
+		story_keyword space phrase endl;
+		
+	role =
+		as_a_keyword space phrase endl;
+
+	phrase = 
+		word_or_space+;
+	
+	word_or_space = 
+		{word} word |
+		{space} space;
+	
