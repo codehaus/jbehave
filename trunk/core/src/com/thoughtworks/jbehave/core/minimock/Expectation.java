@@ -74,7 +74,13 @@ public class Expectation extends MiniMockSugar {
     }
     
     public void verify() {
-        Verify.that("Expected method not called: " + methodName + ( constraints != null ? Arrays.asList(constraints).toString() : "anything"), invocations >= minInvocations);
+        String message = "Expected method not called: " + methodName
+				+ ( constraints != null ? Arrays.asList(constraints).toString() : "[anything]");
+		if (!id.equals(message)) {
+			message += " id=" + id;
+		}
+		Verify.that(message,
+				invocations >= minInvocations);
     }
     
     // Return value
