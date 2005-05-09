@@ -12,9 +12,11 @@ import com.thoughtworks.jbehave.story.codegen.sablecc.parser.Parser;
 import com.thoughtworks.jbehave.story.codegen.sablecc.parser.ParserException;
 
 public class TextStoryParser implements StoryParser {
+	private static final int PUSHBACK_BUFFER_SIZE = 1024;
+
 	public StoryDetails parseStory(Reader in) {
 		try {
-			Lexer lexer = new Lexer(new PushbackReader(in, 1024));
+			Lexer lexer = new Lexer(new PushbackReader(in, PUSHBACK_BUFFER_SIZE));
 			Parser parser = new Parser(lexer);
 			Start root = parser.parse();
 			StoryDetailsBuilder builder = new StoryDetailsBuilder();

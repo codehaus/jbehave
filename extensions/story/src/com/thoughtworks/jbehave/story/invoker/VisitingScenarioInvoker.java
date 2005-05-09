@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.jbehave.story.invoker;
 
+import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.story.domain.Environment;
 import com.thoughtworks.jbehave.story.domain.Event;
 import com.thoughtworks.jbehave.story.domain.Expectation;
@@ -28,18 +29,30 @@ public class VisitingScenarioInvoker extends AbstractScenarioVisitor implements 
         return giveSelfToScenario(scenario);
     }
     
-    protected void visitGiven(Given given) throws Exception {
-        given.setUp(environment);
-        checkForMocks(given);
+    public void visitGiven(Given given) {
+        try {
+			given.setUp(environment);
+	        checkForMocks(given);
+		} catch (Exception e) {
+			throw new NestedVerificationException(e);
+		}
     }
     
-    protected void visitEvent(Event event) throws Exception {
-        event.occurIn(environment);
-        checkForMocks(event);
+    public void visitEvent(Event event) {
+        try {
+			event.occurIn(environment);
+			checkForMocks(event);
+		} catch (Exception e) {
+			throw new NestedVerificationException(e);
+		}
     }
     
-    protected void visitExpectation(Expectation expectation) {
-        expectation.setExpectationIn(environment);
-        checkForMocks(expectation);
+    public void visitExpectation(Expectation expectation) {
+        try {
+			expectation.setExpectationIn(environment);
+			checkForMocks(expectation);
+		} catch (Exception e) {
+			throw new NestedVerificationException(e);
+		}
     }
 }

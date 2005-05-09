@@ -9,10 +9,7 @@ package com.thoughtworks.jbehave.story.domain;
 
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
-import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Story;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -26,9 +23,9 @@ public class StoryBehaviour extends UsingMiniMock {
         Mock visitorMock = mock(Visitor.class);
 
         // expect...
-        visitorMock.expects("visit").with(story).id("1");
-        visitorMock.expects("visit").with(narrative).after("1").id("2");
-        visitorMock.expects("visit").with(acceptanceCriteria).after("2");
+        visitorMock.expects("visitStory").with(story);
+        visitorMock.expects("visitNarrative").with(narrative).after("visitStory");
+        visitorMock.expects("visitAcceptanceCriteria").with(acceptanceCriteria).after("visitNarrative");
         
         // when...
         story.accept((Visitor)visitorMock);

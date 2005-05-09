@@ -9,20 +9,14 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.result.Result;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
-import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Context;
 import com.thoughtworks.jbehave.story.domain.Environment;
 import com.thoughtworks.jbehave.story.domain.Event;
 import com.thoughtworks.jbehave.story.domain.Expectation;
 import com.thoughtworks.jbehave.story.domain.Given;
-import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Scenario;
-import com.thoughtworks.jbehave.story.domain.Story;
-import com.thoughtworks.jbehave.story.invoker.VisitingScenarioInvoker;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
+import com.thoughtworks.jbehave.story.visitor.Visitable;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 /*
  * Created on 16-Sep-2004
@@ -38,17 +32,16 @@ import com.thoughtworks.jbehave.story.result.ScenarioResult;
 public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     
     private VisitingScenarioInvoker invoker;
-    private Mock scenario;
     private Environment environmentStub;
     
     public void setUp() {
         environmentStub = (Environment)stub(Environment.class);
         invoker = new VisitingScenarioInvoker("story", environmentStub);
-        scenario = mock(Scenario.class);
     }
     
     public void shouldDispatchItselfAsVisitorToScenario() throws Exception {
         // given...
+		Mock scenario = mock(Scenario.class);
 
         // expect...
         scenario.expects("accept").with(invoker);
@@ -68,7 +61,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         given.expects("setUp").with(environmentStub);
         
         // when...
-        invoker.visit((Given)given);
+        invoker.visitGiven((Given)given);
         
         // verify...
         verifyMocks();
@@ -82,7 +75,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         expectation.expects("setExpectationIn").with(environmentStub);
         
         // when...
-        invoker.visit((Expectation)expectation);
+        invoker.visitExpectation((Expectation)expectation);
         
         // verify...
         verifyMocks();
@@ -96,7 +89,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         event.expects("occurIn").with(environmentStub);
         
         // when...
-        invoker.visit((Event)event);
+        invoker.visitEvent((Event)event);
         
         // verify...
         verifyMocks();
@@ -110,7 +103,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         try {
-            invoker.visit((Given) given);
+            invoker.visitGiven((Given) given);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -129,7 +122,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         try {
-            invoker.visit((Event) event);
+            invoker.visitEvent((Event) event);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -150,7 +143,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         try {
-            invoker.visit((Expectation) expectation);
+            invoker.visitExpectation((Expectation) expectation);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -162,6 +155,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     }
     
     public void shouldReturnSuccessfulResultWhenScenarioSucceeds() throws Exception {
+		// given...
+		Mock scenario = mock(Scenario.class);
+		
         // expect...
         scenario.expects("accept");
         
@@ -173,6 +169,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     }
     
     public void shouldReturnFailureResultWhenScenarioFails() throws Exception {
+		// given...
+		Mock scenario = mock(Scenario.class);
+		
         // expect...
         Exception cause = new Exception("oops");
         scenario.expects("accept").will(throwException(new NestedVerificationException(cause)));
@@ -185,21 +184,29 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     }
     
     /** Custom invocation handler so a Scenario can pass a component to the visitor */
-    private InvocationHandler visitComponent(final Visitable component) {
+    private InvocationHandler visitComponent(final Object component) {
         return new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) {
-                if (method.getName().equals("accept")) {
-                    Visitor visitor = (Visitor) args[0];
-                    visitor.visit(component);
-                }
+                Visitor visitor = (Visitor) args[0];
+                ((Visitable)component).accept(visitor);
                 return null;
             }
         };
     }
     
     public void shouldReturnResultUsingMocksWhenScenarioSucceedsButGivenUsesMocks() throws Exception {
-        // expect...
+		// given...
+		Mock scenario = mock(Scenario.class);
         Mock given = mock(Given.class);
+		InvocationHandler dispatchItself = new InvocationHandler() {
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+				((Visitor)args[0]).visitGiven((Given) proxy);
+				return null;
+			}
+		};
+		
+        // expect...
+		given.expects("accept").will(dispatchItself);
         given.expects("containsMocks").will(returnValue(true));
         scenario.expects("accept").will(visitComponent((Visitable) given));
         
@@ -209,10 +216,20 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         // verify...
         Verify.that("should have used mocks", result.usedMocks());
     }
-    
-    public void shouldReturnResultUsingMocksWhenScenarioSucceedsButEventUsesMocks() throws Exception {
-        // expect...
+
+	public void shouldReturnResultUsingMocksWhenScenarioSucceedsButEventUsesMocks() throws Exception {
+		// given...
+		Mock scenario = mock(Scenario.class);
         Mock event = mock(Event.class);
+		InvocationHandler dispatchItself = new InvocationHandler() {
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+				((Visitor)args[0]).visitEvent((Event) proxy);
+				return null;
+			}
+		};
+		
+        // expect...
+		event.expects("accept").will(dispatchItself);
         event.expects("containsMocks").will(returnValue(true));
         scenario.expects("accept").will(visitComponent((Visitable) event));
         
@@ -224,8 +241,18 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     }
     
     public void shouldReturnResultUsingMocksWhenScenarioSucceedsButExpectationUsesMocks() throws Exception {
+		// given...
+		Mock scenario = mock(Scenario.class);
+		InvocationHandler dispatchItself = new InvocationHandler() {
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+				((Visitor)args[0]).visitExpectation((Expectation) proxy);
+				return null;
+			}
+		};
+		
         // expect...
         Mock expectation = mock(Expectation.class);
+		expectation.expects("accept").will(dispatchItself);
         expectation.expects("containsMocks").will(returnValue(true));
         scenario.expects("accept").will(visitComponent((Visitable) expectation));
         
@@ -245,54 +272,25 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     	
     	invoker = new VisitingScenarioInvoker("story", environment);
     	invoker.invoke(scenario);
-    	invoker.invoke(scenario);
     	
     	environmentMock.verify();
     }
     
     public void shouldSetExpectationsOnEachInvocationOfAScenario() {
-    	Mock expectationMock = mock(Expectation.class);
-    	final Expectation expectation = (Expectation)expectationMock;
-    	expectationMock.expects("accept").will(
-    			visitComponent((Visitable) expectation));
-    	
-    	Scenario scenario = new Scenario() {
-			public Story getStory() {
-				return new Story(new Narrative("","",""), 
-						new AcceptanceCriteria());
+		Mock scenario = mock(Scenario.class);
+    	Mock expectation = mock(Expectation.class);
+		InvocationHandler dispatchItself = new InvocationHandler() {
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+				((Visitor)args[0]).visitExpectation((Expectation) proxy);
+				return null;
 			}
-
-			public String getDescription() { return ""; }
-			public Context getContext() { return new Context(new Given[0]); }
-			public Event getEvent() { return (Event)stub(Event.class); }
-
-			public Outcome getOutcome() {
-				 return new Outcome(expectation);
-			}
-
-			public void accept(Visitor visitor) {
-				visitor.visit(this);
-				getContext().accept(visitor);
-				getOutcome().accept(visitor);
-				getEvent().accept(visitor);
-			}
-    	};
+		};
+    	expectation.expects("accept").will(dispatchItself);
+    	expectation.expects("setExpectationIn");
+        scenario.expects("accept").will(visitComponent((Visitable) expectation));
     	
-    	expectationMock.expects("setExpectationIn");
-    	expectationMock.expects("verify").zeroOrMoreTimes(); // not worried
+    	invoker.invoke((Scenario) scenario);
     	
-    	invoker.invoke(scenario);
-    	invoker.invoke(scenario);
-    	
-    	expectationMock.verify();
-    }
-    
-    public void shouldDoSomething() throws Exception {
-        // given...
-        
-
-        // expect...
-        // when...
-        // verify...
+    	expectation.verify();
     }
 }

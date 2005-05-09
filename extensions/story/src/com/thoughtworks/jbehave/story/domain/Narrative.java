@@ -7,10 +7,8 @@
  */
 package com.thoughtworks.jbehave.story.domain;
 
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
-
-
+import com.thoughtworks.jbehave.story.visitor.Visitable;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -36,7 +34,7 @@ public class Narrative implements Visitable {
         return role;
     }
     public void accept(Visitor visitor) {
-        visitor.visit(this);
+        visitor.visitNarrative(this);
     }
     
     public String toString() {

@@ -9,7 +9,6 @@ package com.thoughtworks.jbehave.story.domain;
 
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.story.domain.Context;
 import com.thoughtworks.jbehave.story.domain.Environment;
 import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
@@ -18,6 +17,7 @@ import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Story;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -36,10 +36,10 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
         Mock visitor = mock(Visitor.class);
 
         // expect...
-        visitor.expects("visit").with(scenario).id("1");
-        visitor.expects("visit").with(contextStub).after("1").id("2");
-        visitor.expects("visit").with(outcomeStub).after("2").id("3");
-        visitor.expects("visit").with(eventStub).after("3").id("4");
+        visitor.expects("visitScenario").with(scenario);
+        visitor.expects("visitContext").with(contextStub).after("visitScenario");
+        visitor.expects("visitOutcome").with(outcomeStub).after("visitContext");
+        visitor.expects("visitEvent").with(eventStub).after("visitOutcome");
         
         // when...
         scenario.accept((Visitor)visitor);

@@ -9,20 +9,8 @@ package com.thoughtworks.jbehave.story.domain;
 
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
-import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Context;
-import com.thoughtworks.jbehave.story.domain.Environment;
-import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.Expectation;
-import com.thoughtworks.jbehave.story.domain.Given;
-import com.thoughtworks.jbehave.story.domain.GivenScenario;
-import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Outcome;
-import com.thoughtworks.jbehave.story.domain.Scenario;
-import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.Story;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
+import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 
 /**
  * @author <a href="mailto:ekeogh@thoughtworks.com">Elizabeth Keogh</a>
@@ -69,8 +57,7 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		Expectation expectation = (Expectation)stub(Expectation.class);
 		Mock environmentMock = mock(Environment.class);
 		Environment environment = (Environment)environmentMock;
-		Story story = new Story(new Narrative("", "", ""),
-				new AcceptanceCriteria());
+		Story story = new Story(new Narrative("", "", ""), new AcceptanceCriteria());
 	    Context context = new Context(given);
 	    Outcome outcome = new Outcome(expectation);
 		
@@ -84,9 +71,7 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		
 		Given givenScenario = new GivenScenario(scenario);
 		
-		givenScenario.accept(new Visitor() {
-			public void visit(Visitable visitable) {}
-		});
+		givenScenario.accept(new VisitorSupport() {});
 		
 		verifyMocks();
 	}

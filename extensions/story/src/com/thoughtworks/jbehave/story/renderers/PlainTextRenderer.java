@@ -11,26 +11,22 @@ import java.io.PrintStream;
 
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.story.domain.Context;
 import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Expectation;
-import com.thoughtworks.jbehave.story.domain.ExpectationUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.GivenScenario;
-import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Narrative;
 import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.domain.Story;
+import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class PlainTextRenderer implements Visitor {
+public class PlainTextRenderer extends VisitorSupport {
     
     private final PrintStream out;
     private String nextWord;
@@ -39,34 +35,7 @@ public class PlainTextRenderer implements Visitor {
     public PlainTextRenderer(PrintStream out) {
         this.out = out;
     }
-    
-    public void visit(Visitable visitable) {
-        if (visitable instanceof Story) {
-            visitStory((Story) visitable);
-        }
-        else if (visitable instanceof Narrative) {
-            visitNarrative((Narrative) visitable);
-        }
-        else if (visitable instanceof Scenario) {
-            visitScenario((Scenario) visitable);
-        }
-        else if (visitable instanceof Context) {
-            visitContext((Context) visitable);
-        }
-        else if (visitable instanceof GivenUsingMiniMock) {
-            visitGiven((Given) visitable);
-        }
-        else if (visitable instanceof EventUsingMiniMock) {
-            visitEvent((Event) visitable);
-        }
-        else if (visitable instanceof Outcome) {
-            visitOutcome((Outcome) visitable);
-        }
-        else if (visitable instanceof ExpectationUsingMiniMock) {
-            visitExpectation((Expectation) visitable);
-        }
-    }
-    
+        
     public void visitStory(Story story) {
         out.println("Story: " + story.title());
         out.println();

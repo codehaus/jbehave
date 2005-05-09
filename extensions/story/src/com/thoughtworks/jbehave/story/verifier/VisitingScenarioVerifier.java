@@ -8,9 +8,7 @@
 package com.thoughtworks.jbehave.story.verifier;
 
 import com.thoughtworks.jbehave.story.domain.Environment;
-import com.thoughtworks.jbehave.story.domain.Event;
 import com.thoughtworks.jbehave.story.domain.Expectation;
-import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
 import com.thoughtworks.jbehave.story.visitor.AbstractScenarioVisitor;
@@ -28,11 +26,8 @@ public class VisitingScenarioVerifier extends AbstractScenarioVisitor implements
 		return giveSelfToScenario(scenario);
 	}
 
-	protected void visitExpectation(Expectation expectation) {
+	public void visitExpectation(Expectation expectation) {
 		expectation.verify(environment);
         checkForMocks(expectation);
 	}
-	
-	protected void visitGiven(Given given) throws Exception {}
-	protected void visitEvent(Event event) throws Exception {}
 }
