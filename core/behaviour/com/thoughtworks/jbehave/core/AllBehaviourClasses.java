@@ -19,7 +19,6 @@ import com.thoughtworks.jbehave.core.minimock.MockObjectBehaviour;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.core.util.ConvertCaseBehaviour;
 import com.thoughtworks.jbehave.core.util.TimerBehaviour;
-import com.thoughtworks.jbehave.core.visitor.CompositeVisitableBehaviour;
 import com.thoughtworks.jbehave.core.visitor.VisitableArrayListBehaviour;
 
 /**
@@ -39,7 +38,6 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
                 UsingMiniMockBehaviour.class,
                 ConvertCaseBehaviour.class,
                 TimerBehaviour.class,
-                CompositeVisitableBehaviour.class,
                 VisitableArrayListBehaviour.class
         };
     }
