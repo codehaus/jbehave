@@ -7,6 +7,8 @@
  */
 package com.thoughtworks.jbehave.core.visitor;
 
+import com.thoughtworks.jbehave.core.Block;
+import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 
@@ -31,6 +33,29 @@ public class VisitableArrayListBehaviour extends UsingMiniMock {
 
         // when...
         list.accept(visitor);
+        
+        // then...
+        verifyMocks();
+    }
+
+    private static class SomeRuntimeException extends RuntimeException {}
+    
+    public void shouldPropagateRuntimeExceptionFromVisitingComponent() throws Exception {
+        // given...
+        final VisitableArrayList composite = new VisitableArrayList();
+        Mock component = mock(Visitable.class);
+        composite.add((Visitable) component);
+        final Visitor visitor = (Visitor)stub(Visitor.class);
+
+        // expect...
+        component.expects("accept").with(anything()).willThrow(new SomeRuntimeException());
+        
+        // when...
+        Verify.throwsException(SomeRuntimeException.class, new Block() {
+            public void execute() {
+                composite.accept(visitor);
+            }
+        });
         
         // then...
         verifyMocks();
