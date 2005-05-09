@@ -7,8 +7,8 @@
  */
 package com.thoughtworks.jbehave.story.domain;
 
-import com.thoughtworks.jbehave.core.visitor.Visitor;
-import com.thoughtworks.jbehave.story.visitor.VisitableUsingMiniMock;
+import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 
 /**
@@ -20,7 +20,7 @@ import com.thoughtworks.jbehave.story.visitor.VisitableUsingMiniMock;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class ScenarioUsingMiniMock extends VisitableUsingMiniMock implements Scenario {
+public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     protected final Context context;
     protected final Event event;
     protected final Outcome outcome;
@@ -57,7 +57,7 @@ public class ScenarioUsingMiniMock extends VisitableUsingMiniMock implements Sce
     }
     
     public void accept(Visitor visitor) {
-        super.accept(visitor);
+		visitor.visitScenario(this);
         context.accept(visitor);
         outcome.accept(visitor);
         event.accept(visitor);

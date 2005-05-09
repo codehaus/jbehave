@@ -10,16 +10,19 @@ package com.thoughtworks.jbehave.story.domain;
 import java.util.Arrays;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.story.visitor.Visitable;
+import com.thoughtworks.jbehave.story.visitor.VisitableArrayList;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Outcome extends CompositeVisitable {
+public class Outcome implements Visitable {
+	private final VisitableArrayList expectations = new VisitableArrayList();
 
     public Outcome(Expectation[] expectations) {
-        addAll(Arrays.asList(expectations));
+        this.expectations.addAll(Arrays.asList(expectations));
     }
     
     public Outcome(Expectation expectation) {
@@ -35,6 +38,11 @@ public class Outcome extends CompositeVisitable {
     }
     
     public List expectations() {
-        return components();
+        return expectations;
     }
+
+	public void accept(Visitor visitor) {
+		visitor.visitOutcome(this);
+		expectations.accept(visitor);
+	}
 }

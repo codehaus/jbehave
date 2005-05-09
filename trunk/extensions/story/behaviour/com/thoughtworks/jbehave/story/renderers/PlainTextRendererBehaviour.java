@@ -61,7 +61,7 @@ public class PlainTextRendererBehaviour {
 		expectedResult.append("Then ").append(new ConvertCase(new PlainTextRendererShouldStillWork()).toSeparateWords()).append(NL);
 		expectedResult.append("and ").append(new ConvertCase(new BehaviourClassShouldNotFail()).toSeparateWords()).append(NL);
 		
-		Verify.that(expectedResult.toString().equals(result));
+		Verify.equal(expectedResult.toString(), result);
 	}
 
 	private static class SimpleStory extends Story {

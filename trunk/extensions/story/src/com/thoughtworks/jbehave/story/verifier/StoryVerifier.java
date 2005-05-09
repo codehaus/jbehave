@@ -12,17 +12,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.listener.ResultListener;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.domain.Story;
 import com.thoughtworks.jbehave.story.invoker.ScenarioInvoker;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
+import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryVerifier implements Visitor {
+public class StoryVerifier extends VisitorSupport {
     private final List listeners = new ArrayList();
     private final ScenarioInvoker scenarioInvoker;
     private final ScenarioVerifier scenarioVerifier;
@@ -36,13 +35,10 @@ public class StoryVerifier implements Visitor {
         story.accept(this);
     }
 
-    public void visit(Visitable visitable) {
-        if (visitable instanceof Scenario) {
-            ScenarioResult result = verify((Scenario)visitable, 
-            		invoke((Scenario)visitable));
-            for (Iterator i = listeners.iterator(); i.hasNext();) {
-                ((ResultListener)i.next()).gotResult(result);
-            }
+    public void visitScenario(Scenario scenario) {
+        ScenarioResult result = verify(scenario, invoke(scenario));
+        for (Iterator i = listeners.iterator(); i.hasNext();) {
+            ((ResultListener)i.next()).gotResult(result);
         }
     }
 

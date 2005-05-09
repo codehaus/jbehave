@@ -11,8 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.util.ConvertCase;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
+import com.thoughtworks.jbehave.story.visitor.Visitable;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -27,7 +27,7 @@ public class Story implements Visitable {
     }
 
     public void addScenario(ScenarioUsingMiniMock scenario) {
-        acceptanceCriteria.add(scenario);
+        acceptanceCriteria.addScenario(scenario);
     }
     
     public String title() {
@@ -35,7 +35,7 @@ public class Story implements Visitable {
     }
     
     public Scenario scenario(String name) {
-        for (Iterator i = acceptanceCriteria.iterator(); i.hasNext();) {
+        for (Iterator i = acceptanceCriteria.scenarios().iterator(); i.hasNext();) {
             Scenario scenario = (Scenario) i.next();
             if (scenario.getDescription().equals(name)) {
                 return scenario;
@@ -53,7 +53,7 @@ public class Story implements Visitable {
     }
 
     public void accept(Visitor visitor) {
-        visitor.visit(this);
+        visitor.visitStory(this);
         narrative.accept(visitor);
         acceptanceCriteria.accept(visitor);
     }

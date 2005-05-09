@@ -11,13 +11,13 @@ import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
+import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
+import com.thoughtworks.jbehave.story.domain.Narrative;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.domain.Story;
 import com.thoughtworks.jbehave.story.invoker.ScenarioInvoker;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
-import com.thoughtworks.jbehave.story.verifier.ScenarioVerifier;
-import com.thoughtworks.jbehave.story.verifier.StoryVerifier;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 
 /**
@@ -28,7 +28,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         // given...
         final Object[] arg = new Object[1];
         
-        Story storyMock = new Story(null, null) {
+        Story storyMock = new Story(new Narrative("", "", ""), new AcceptanceCriteria()) {
             public void accept(Visitor visitor) {
                 arg[0] = visitor;
             }
@@ -61,7 +61,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioVerifier.expects("verify").with(scenario);
         
         // when...
-        storyVerifier.visit(scenario);
+        storyVerifier.visitScenario(scenario);
         
         // verify...
         verifyMocks();
@@ -83,7 +83,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioVerifier.expects("verify");
         
         // when...
-        storyVerifier.visit(scenario);
+        storyVerifier.visitScenario(scenario);
         
         // verify...
         verifyMocks();
@@ -105,7 +105,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioVerifier.expects("verify");
         
         // when...
-        storyVerifier.visit(scenario);
+        storyVerifier.visitScenario(scenario);
         
         // verify...
         verifyMocks();
@@ -126,7 +126,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioInvoker.expects("invoke").with(scenario).will(returnValue(result));
         
         // when...
-        storyVerifier.visit(scenario);
+        storyVerifier.visitScenario(scenario);
         
         // verify...
         verifyMocks();
@@ -153,7 +153,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         listener2.expects("gotResult").with(result).after(listener1, "gotResult");
         
         // when...
-        storyVerifier.visit(scenarioStub);
+        storyVerifier.visitScenario(scenarioStub);
         
         // verify...
         verifyMocks();

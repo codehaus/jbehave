@@ -13,19 +13,14 @@ import java.util.List;
 import com.thoughtworks.jbehave.core.UsingMocks;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.story.domain.Environment;
-import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.Expectation;
-import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
 
 /**
  * @author <a href="mailto:ekeogh@thoughtworks.com">Elizabeth Keogh</a>
  */
-public abstract class AbstractScenarioVisitor implements Visitor {
+public abstract class AbstractScenarioVisitor extends VisitorSupport {
 	protected final String storyName;
 	protected final Environment environment;
 	protected boolean usedMocks = false;
@@ -55,28 +50,6 @@ public abstract class AbstractScenarioVisitor implements Visitor {
         }
         return result;
 	}
-	
-    public void visit(Visitable visitable) {
-        try {
-            // accept the visitor
-            if (visitable instanceof Given) {
-                visitGiven((Given) visitable);
-            }
-            else if (visitable instanceof Event) {
-                visitEvent((Event) visitable);
-            }
-            else if (visitable instanceof Expectation) {
-                visitExpectation((Expectation) visitable);
-            }
-        }
-        catch (Exception e) {
-            throw new NestedVerificationException("Execution failed for " + visitable, e);
-        }
-    }
-    
-    protected abstract void visitGiven(Given given) throws Exception ;
-    protected abstract void visitEvent(Event event) throws Exception ;
-    protected abstract void visitExpectation(Expectation expectation);
 
     protected void checkForMocks(UsingMocks component) {
         if (component.containsMocks()) {
@@ -85,7 +58,6 @@ public abstract class AbstractScenarioVisitor implements Visitor {
     }
 
     public void addListener(ResultListener listener) {
-    	// TODO - nothing currently done with listeners, and not in behaviour...
-        listeners.add(listener);
+		throw new UnsupportedOperationException("currently unused");
     }
 }

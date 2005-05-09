@@ -13,13 +13,11 @@ import java.lang.reflect.Method;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
 import com.thoughtworks.jbehave.story.domain.Environment;
 import com.thoughtworks.jbehave.story.domain.Expectation;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
-import com.thoughtworks.jbehave.story.verifier.VisitingScenarioVerifier;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 /**
  * @author <a href="mailto:ekeogh@thoughtworks.com">Elizabeth Keogh</a>
@@ -55,7 +53,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         expectation.expects("verify").with(same(environmentStub));
         
         // when...
-        verifier.visit((Expectation)expectation);
+        verifier.visitExpectation((Expectation)expectation);
         
         // verify...
         verifyMocks();
@@ -65,7 +63,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         // expect...
         Mock expectation = mock(Expectation.class);
         expectation.expects("containsMocks").will(returnValue(true));
-        scenario.expects("accept").will(visitComponent((Visitable) expectation));
+        scenario.expects("accept").will(visitExpectation((Expectation) expectation));
         
         // when...
         ScenarioResult result = verifier.verify((Scenario)scenario);
@@ -75,12 +73,12 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
     }
     
     /** Custom invocation handler so a Scenario can pass a component to the visitor */
-    private InvocationHandler visitComponent(final Visitable component) {
+    private InvocationHandler visitExpectation(final Expectation expectation) {
         return new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) {
                 if (method.getName().equals("accept")) {
                     Visitor visitor = (Visitor) args[0];
-                    visitor.visit(component);
+                    visitor.visitExpectation(expectation);
                 }
                 return null;
             }

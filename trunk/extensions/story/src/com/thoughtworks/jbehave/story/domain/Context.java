@@ -9,33 +9,42 @@ package com.thoughtworks.jbehave.story.domain;
 
 import java.util.Arrays;
 
-import com.thoughtworks.jbehave.core.visitor.CompositeVisitable;
+import com.thoughtworks.jbehave.story.visitor.Visitable;
+import com.thoughtworks.jbehave.story.visitor.VisitableArrayList;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Context extends CompositeVisitable {
+public class Context implements Visitable {
     public static final Context NULL = new Context(new Given[0]);
     
+	private final VisitableArrayList givens = new VisitableArrayList();
+	
     /** A Scenario and a bunch of givens */
     public Context(Scenario scenario, Given[] givens) {
-        add(new GivenScenario(scenario));
-        addAll(Arrays.asList(givens));
+        this.givens.add(new GivenScenario(scenario));
+        this.givens.addAll(Arrays.asList(givens));
     }
 
     /** Just one given */
     public Context(Given given) {
-        add(given);
+        this.givens.add(given);
     }
 
     /** A bunch of givens */
     public Context(Given[] givens) {
-        addAll(Arrays.asList(givens));
+        this.givens.addAll(Arrays.asList(givens));
     }
 
     /** One scenario and one given */
     public Context(Scenario scenario, Given given) {
         this(scenario, new Given[] {given});
     }
+
+	public void accept(Visitor visitor) {
+		visitor.visitContext(this);
+		givens.accept(visitor);
+	}
 }
