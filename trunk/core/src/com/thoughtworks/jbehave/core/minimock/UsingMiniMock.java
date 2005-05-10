@@ -57,14 +57,14 @@ public class UsingMiniMock extends MiniMockSugar implements UsingMocks {
 	 * Made final to ensure mocks are verified even if you roll your own verify method,
 	 * in which case you simply override {@link #doVerify()}.
 	 */
-	public final void verify() {
+	public final void verify() throws Exception {
 		doVerify();
 		verifyMocks();
 	}
 
 	/**
-	 * Hook method to use per-method verify functionality.
+	 * Hook method to use per-method verify functionality, called from {@link #verify()}.
 	 */
-	protected void doVerify() {
+	protected void doVerify() throws Exception {
 	}
 }
