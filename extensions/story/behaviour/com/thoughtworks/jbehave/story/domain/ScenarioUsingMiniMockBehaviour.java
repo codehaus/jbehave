@@ -43,8 +43,5 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
         
         // when...
         scenario.accept((Visitor)visitor);
-        
-        // then...
-        verifyMocks();
     }
 }

@@ -63,9 +63,6 @@ public class SimpleStoryParserBehaviour extends UsingMiniMock {
 
         // when...
         storyParser.parseStory(new StringReader(storyText));
-
-        // verify...
-        verifyMocks();
     }
 
     public void shouldParseOtherStories() throws Exception {

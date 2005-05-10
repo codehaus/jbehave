@@ -7,6 +7,10 @@
  */
 package com.thoughtworks.jbehave.core.minimock;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.thoughtworks.jbehave.core.Verify;
 
 /**
@@ -159,7 +163,52 @@ public class UsingMiniMockBehaviour {
         boolean i = ((BehaviourInterface1)mock).getBoolean();
         Verify.equal(b, i);
      }
-    
-    
- 
+	
+	public static class ChecksMocksAreVerified extends UsingMiniMock {
+		public final List results = new ArrayList();
+		public void shouldDoSomething() {
+		}
+		public void shouldDoSomethingElse() {}
+		public void verifyMocks() {
+			results.add("verified");
+		}
+	}
+	
+	public void shouldVerifyMocksAfterEachMethod() throws Exception {
+		// given
+		final Object[] results = new Object[1];
+		UsingMiniMock instance = new UsingMiniMock() {
+			public void verifyMocks() {
+				results[0] = "verifyMocks";
+			}
+		};
+
+		// when
+		instance.verify();
+		
+		// then
+		Verify.equal("verifyMocks", results[0]);
+	}
+	
+	public void shouldCallTemplateMethodAfterVerifyingMocks() throws Exception {
+		// given
+		final List results = new ArrayList();
+		UsingMiniMock instance = new UsingMiniMock() {
+			public void verifyMocks() {
+				results.add("verifyMocks");
+			}
+			public void doVerify() {
+				results.add("doVerify");
+			}
+		};
+		List expected = Arrays.asList(new String[] {
+				"doVerify", "verifyMocks"
+		});
+
+		// when
+		instance.verify();
+		
+		// then
+		Verify.equal(expected, results);
+	}
 }

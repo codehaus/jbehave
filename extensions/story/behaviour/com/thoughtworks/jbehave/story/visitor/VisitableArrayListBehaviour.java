@@ -33,9 +33,6 @@ public class VisitableArrayListBehaviour extends UsingMiniMock {
 
         // when...
         list.accept(visitor);
-        
-        // then...
-        verifyMocks();
     }
 
     private static class SomeRuntimeException extends RuntimeException {}
@@ -56,8 +53,5 @@ public class VisitableArrayListBehaviour extends UsingMiniMock {
                 composite.accept(visitor);
             }
         });
-        
-        // then...
-        verifyMocks();
     }
 }

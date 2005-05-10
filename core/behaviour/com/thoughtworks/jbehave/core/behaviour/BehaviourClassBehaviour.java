@@ -28,9 +28,6 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
         
         // when...
         behaviourClass.accept((Visitor) visitor);
-        
-        // verify...
-        verifyMocks();
     }
     
     public static class OneBehaviourClass {
@@ -55,9 +52,6 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
         
         // when...
         behaviourClass.accept((Visitor) visitor);
-        
-        // then...
-        verifyMocks();
     }
     
     public static class HasOneMethod {

@@ -50,4 +50,21 @@ public class UsingMiniMock extends MiniMockSugar implements UsingMocks {
     public Object stub(Class type, String name) {
         return Proxy.newProxyInstance(type.getClassLoader(), new Class[] {type}, new StubInvocationHandler(name));
     }
+
+	/**
+	 * Template method to verify mocks after every behaviour method.
+	 * 
+	 * Made final to ensure mocks are verified even if you roll your own verify method,
+	 * in which case you simply override {@link #doVerify()}.
+	 */
+	public final void verify() {
+		doVerify();
+		verifyMocks();
+	}
+
+	/**
+	 * Hook method to use per-method verify functionality.
+	 */
+	protected void doVerify() {
+	}
 }

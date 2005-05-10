@@ -42,7 +42,6 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 
 		// verify
 		Verify.equal(18.50, convertedAmount, 0);
-		verifyMocks();
 	}
 
 	public void shouldConvertToEUR() throws Exception {
@@ -56,18 +55,16 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 		// verify
 		Verify.equal(15.2, convertedAmount, 0);
 		Verify.equal(7.6, otherAmount, 0);
-		verifyMocks();
 	}
 
 	public void shouldNotConvertFromNegativeSterlingAmounts() throws Exception {
 		// expects
 		exchangeRateServiceMock.stubs("retrieveRate").will(returnValue(new ExchangeRate(1.85, 0.54)));
-			Verify.throwsException(InvalidAmountException.class, new Block() {
-                public void execute() throws Exception {
-                    sterlingConverter.convertFromSterling(-1, Currency.USD);
-                }
-            });
-			verifyMocks();
+		Verify.throwsException(InvalidAmountException.class, new Block() {
+            public void execute() throws Exception {
+                sterlingConverter.convertFromSterling(-1, Currency.USD);
+            }
+        });
 	}
 
 	public void shouldConvertFromEUR() throws Exception {
@@ -80,7 +77,6 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 
 		// verify
 		Verify.equal(6.6, pounds1, 0.001);
-		verifyMocks();
 	}
 
 	public void shouldNotConvertFromNegativeAmounts() throws Exception {
@@ -91,7 +87,6 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
                 sterlingConverter.convertToSterling(-3, Currency.EUR);
             }
         });
-		verifyMocks();
 	}
 
 	public void shouldConvertFromUSD() throws Exception {
@@ -104,7 +99,6 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 		// verify
 		Verify.equal(5.4, pounds1, 0);
 		Verify.equal(2.7, pounds2, 0);
-		verifyMocks();
 	}
 
 }

@@ -33,9 +33,6 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         
         // when...
         behaviourMethod.accept((Visitor) visitor);
-        
-        // then...
-        verifyMocks();
     }
 
 	private Method method(String methodName, Object instance) throws NoSuchMethodException {
@@ -76,6 +73,9 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         public void setUp() throws Exception {
             whatHappened.add("setUp");
         }
+        public void verify() throws Exception {
+            whatHappened.add("verify");
+        }
         public void tearDown() throws Exception {
             whatHappened.add("tearDown");
         }
@@ -84,14 +84,14 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         }
     }
     
-    public void shouldInvokeSetUpAndTearDownInTheCorrectSequence() throws Throwable {
+    public void shouldInvokeSetUpVerifyAndTearDownInTheCorrectSequence() throws Throwable {
         // given
         HasSetUpAndTearDown instance = new HasSetUpAndTearDown();
         BehaviourMethod behaviourMethod = new BehaviourMethod(instance, "shouldDoSomething");
         
         // expect
         List expected = Arrays.asList(new String[] {
-                "setUp", "shouldDoSomething", "tearDown"
+                "setUp", "shouldDoSomething", "verify", "tearDown"
         });
         
         // when
@@ -139,6 +139,24 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         Verify.instanceOf(CheckedException.class, result.cause());
     }
     
+    public static class VerifyThrowsException extends HasSetUpAndTearDown {
+        public void verify() throws Exception {
+            throw new CheckedException();
+        }
+    }
+    
+    public void shouldReportExceptionFromVerify() throws Throwable {
+        // given
+        BehaviourMethod behaviourMethod =
+			new BehaviourMethod(new VerifyThrowsException(), "shouldDoSomething");
+        
+        // when
+        Result result = behaviourMethod.invoke();
+        
+        // then
+        Verify.instanceOf(CheckedException.class, result.cause());
+    }
+    
     public static class TearDownThrowsException extends HasSetUpAndTearDown {
         public void tearDown() throws Exception {
             throw new CheckedException();
@@ -155,6 +173,27 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         
         // then
         Verify.instanceOf(CheckedException.class, result.cause());
+    }
+    
+    public static class MethodAndVerifyBothThrowException extends HasSetUpAndTearDown {
+        public void verify() throws Exception {
+            throw new Exception("from verify");
+        }
+        public void shouldDoSomething() throws Exception {
+            throw new Exception("from method");
+        }
+    }
+    
+    public void shouldReportExceptionFromMethodIfMethodAndVerifyBothThrowException() throws Throwable {
+        // given
+        BehaviourMethod behaviourMethod =
+			new BehaviourMethod(new MethodAndVerifyBothThrowException(), "shouldDoSomething");
+        
+        // when
+        Result result = behaviourMethod.invoke();
+        
+        // then
+        Verify.equal("from method", result.cause().getMessage());
     }
     
     public static class MethodAndTearDownBothThrowException extends HasSetUpAndTearDown {
@@ -176,5 +215,28 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         
         // then
         Verify.equal("from method", result.cause().getMessage());
+    }
+    
+    public static class VerifyAndTearDownBothThrowException extends HasSetUpAndTearDown {
+        public void verify() throws Exception {
+            throw new Exception("from verify");
+        }
+        public void tearDown() throws Exception {
+            throw new Exception("from tearDown");
+        }
+        public void shouldDoSomething() throws Exception {
+        }
+    }
+    
+    public void shouldReportExceptionFromVerifyIfVerifyAndTearDownBothThrowException() throws Throwable {
+        // given
+        BehaviourMethod behaviourMethod =
+			new BehaviourMethod(new VerifyAndTearDownBothThrowException(), "shouldDoSomething");
+        
+        // when
+        Result result = behaviourMethod.invoke();
+        
+        // then
+        Verify.equal("from verify", result.cause().getMessage());
     }
 }

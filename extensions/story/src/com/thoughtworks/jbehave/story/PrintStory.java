@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.story;
 import com.thoughtworks.jbehave.story.domain.Story;
-import com.thoughtworks.jbehave.story.renderers.PlainTextRenderer;
+import com.thoughtworks.jbehave.story.renderer.PlainTextRenderer;
 
 
 /**

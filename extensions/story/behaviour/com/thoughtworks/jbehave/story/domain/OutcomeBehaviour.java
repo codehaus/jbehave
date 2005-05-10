@@ -16,8 +16,5 @@ public class OutcomeBehaviour extends UsingMiniMock {
 		
 		// when...
 		outcome.accept((Visitor)visitor);
-		
-		// then...
-		verifyMocks();
 	}
 }

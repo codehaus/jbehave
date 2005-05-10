@@ -48,9 +48,6 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         invoker.invoke((Scenario)scenario);
-        
-        // verify...
-        verifyMocks();
     }
     
     public void shouldTellGivenToSetUpEnvironment() throws Exception {
@@ -62,9 +59,6 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         invoker.visitGiven((Given)given);
-        
-        // verify...
-        verifyMocks();
     }
 
     public void shouldSetExpectationInEnvironment() throws Exception {
@@ -76,9 +70,6 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         invoker.visitExpectation((Expectation)expectation);
-        
-        // verify...
-        verifyMocks();
     }
     
     public void shouldMakeEventOccurInEnvironment() throws Exception {
@@ -87,12 +78,8 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // expect...
         event.expects("occurIn").with(environmentStub);
-        
         // when...
         invoker.visitEvent((Event)event);
-        
-        // verify...
-        verifyMocks();
     }
 
     public void shouldThrowNestedVerificationExceptionFromVisitWhenGivenThrowsException() throws Exception {
@@ -109,9 +96,6 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         catch (NestedVerificationException expected) {
             Verify.identical(cause, expected.getCause());
         }
-        
-        // then
-        verifyMocks();
     }
     
     public void shouldThrowNestedVerificationExceptionFromVisitWhenEventThrowsException() throws Exception {
@@ -128,9 +112,6 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         catch (NestedVerificationException expected) {
             Verify.identical(cause, expected.getCause());
         }
-        
-        // then
-        verifyMocks();
     }
     
     public void shouldThrowNestedVerificationExceptionWhenExpectationThrowsException() throws Exception {
@@ -149,9 +130,6 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         catch (NestedVerificationException expected) {
             Verify.identical(cause, expected.getCause());
         }
-        
-        // then
-        verifyMocks();
     }
     
     public void shouldReturnSuccessfulResultWhenScenarioSucceeds() throws Exception {

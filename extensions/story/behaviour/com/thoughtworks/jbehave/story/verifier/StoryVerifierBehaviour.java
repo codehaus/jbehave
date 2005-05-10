@@ -62,9 +62,6 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenario);
-        
-        // verify...
-        verifyMocks();
     }
     
     public void shouldPassScenarioToScenarioVerifierIfInvokerResultSuccessful() throws Exception {
@@ -84,9 +81,6 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenario);
-        
-        // verify...
-        verifyMocks();
     }
     
     public void shouldPassScenarioToScenarioVerifierIfInvokerResultUsedMocks() throws Exception {
@@ -106,9 +100,6 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenario);
-        
-        // verify...
-        verifyMocks();
     }
     
     public void shouldNotPassScenarioToScenarioVerifierIfInvokerResultFailed() throws Exception {
@@ -127,9 +118,6 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenario);
-        
-        // verify...
-        verifyMocks();
     }    
     
     public void shouldPassResultToListeners() throws Exception {
@@ -154,8 +142,5 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenarioStub);
-        
-        // verify...
-        verifyMocks();
     }
 }

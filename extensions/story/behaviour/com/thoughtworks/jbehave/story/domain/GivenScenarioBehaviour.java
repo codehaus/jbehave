@@ -47,8 +47,6 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 	    Given givenScenario = new GivenScenario(scenario);
 	    
 	    givenScenario.setUp(environment);
-	    
-	    verifyMocks();
 	}
 	
 	public void shouldNotClearEnvironmentWhenVisited() {
@@ -72,7 +70,5 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		Given givenScenario = new GivenScenario(scenario);
 		
 		givenScenario.accept(new VisitorSupport() {});
-		
-		verifyMocks();
 	}
 }
