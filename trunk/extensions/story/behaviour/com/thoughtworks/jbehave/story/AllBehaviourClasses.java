@@ -18,7 +18,7 @@ import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.story.domain.StoryBehaviour;
 import com.thoughtworks.jbehave.story.invoker.VisitingScenarioInvokerBehaviour;
 import com.thoughtworks.jbehave.story.listener.PlainTextScenarioListenerBehaviour;
-import com.thoughtworks.jbehave.story.renderers.PlainTextRendererBehaviour;
+import com.thoughtworks.jbehave.story.renderer.PlainTextRendererBehaviour;
 import com.thoughtworks.jbehave.story.verifier.StoryVerifierBehaviour;
 import com.thoughtworks.jbehave.story.verifier.VisitingScenarioVerifierBehaviour;
 import com.thoughtworks.jbehave.story.visitor.VisitableArrayListBehaviour;

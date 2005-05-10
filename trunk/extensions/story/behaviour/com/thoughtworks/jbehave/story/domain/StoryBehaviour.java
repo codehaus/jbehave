@@ -29,8 +29,5 @@ public class StoryBehaviour extends UsingMiniMock {
         
         // when...
         story.accept((Visitor)visitorMock);
-        
-        // verify...
-        verifyMocks();
     }
 }

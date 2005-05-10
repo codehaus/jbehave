@@ -40,9 +40,6 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 
 		// execute
 		controller.launch();
-
-		// verify
-		verifyMocks();
 	}
 
 
@@ -55,9 +52,6 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 
 		// execute
 		controller.handleConvertFromSterling(Currency.USD, "1");
-
-		// verify
-		verifyMocks();
 	}
 
 	public void shouldConvertFromOtherCurrencyToSterling() throws Exception {
@@ -69,8 +63,6 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 
 		// execute
 		controller.handleConvertToSterling(Currency.EUR, "3");
-		// verify
-		verifyMocks();
 	}
 
 	public void shouldRaiseErrorsToUserOnNegativeSterlingAmounts() throws Exception {
@@ -84,9 +76,6 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 		// execute
 
 		controller.handleConvertFromSterling(Currency.EUR, "-1");
-
-		// verify
-		verifyMocks();
 	}
 
 	public void shouldRaiseErrorsOnNegativeOtherCurrencyAmounts() throws Exception {
@@ -100,9 +89,6 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 		// execute
 
 		controller.handleConvertToSterling(Currency.USD, "-1");
-
-		// verify
-		verifyMocks();
 	}
 
 	public void shouldRaiseErrorOnNonNumericValuesWhenConvertingToSterling() throws Exception {
@@ -113,9 +99,6 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 
 		// execute
 		controller.handleConvertToSterling(Currency.USD, "b");
-
-		// verify
-		verifyMocks();
 	}
 	public void shouldRaiseErrorOnNonNumericValuesWhenConvertingFromSterling() throws Exception {
 		// setup
@@ -125,9 +108,6 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 
 		// execute
 		controller.handleConvertFromSterling(Currency.EUR, "e");
-
-		// verify
-		verifyMocks();
 	}
 
 	public void shouldDisposeOfViewOnClose() throws Exception {
@@ -138,8 +118,5 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 
 		// execute
 		controller.handleClose();
-
-		// verify
-		verifyMocks();
 	}
 }

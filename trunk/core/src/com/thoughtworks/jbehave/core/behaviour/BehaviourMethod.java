@@ -69,6 +69,7 @@ public class BehaviourMethod implements Visitable {
         try {
             invokeMethod("setUp", instance);
             method.invoke(instance, new Object[0]);
+            invokeMethod("verify", instance);
         }
         catch (Exception e) {
             throw thrownException = e;

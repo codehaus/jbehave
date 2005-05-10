@@ -26,8 +26,5 @@ public class NarrativeBehaviour extends UsingMiniMock {
 
         // when...
         narrative.accept((Visitor)visitor);
-        
-        // then..
-        verifyMocks();
     }
 }

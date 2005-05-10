@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.jbehave.story.renderers;
+package com.thoughtworks.jbehave.story.renderer;
 
 import java.io.PrintStream;
 

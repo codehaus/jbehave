@@ -40,9 +40,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // when...
         verifier.verify((Scenario)scenario);
-        
-        // verify...
-        verifyMocks();
     }
     
     public void shouldVerifyExpectationInEnvironment() throws Exception {
@@ -54,9 +51,6 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         
         // when...
         verifier.visitExpectation((Expectation)expectation);
-        
-        // verify...
-        verifyMocks();
     }
         
     public void shouldReturnResultUsingMocksWhenScenarioSucceedsButExpectationUsesMocks() throws Exception {
