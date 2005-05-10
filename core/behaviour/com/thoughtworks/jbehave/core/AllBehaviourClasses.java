@@ -11,8 +11,6 @@ import com.thoughtworks.jbehave.core.behaviour.BehaviourClassBehaviour;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodBehaviour;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifierBehaviour;
-import com.thoughtworks.jbehave.core.invoker.DontInvokeMethodBehaviour;
-import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDownBehaviour;
 import com.thoughtworks.jbehave.core.listener.PlainTextMethodListenerBehaviour;
 import com.thoughtworks.jbehave.core.minimock.ExpectationBehaviour;
 import com.thoughtworks.jbehave.core.minimock.MockObjectBehaviour;
@@ -30,8 +28,6 @@ public class AllBehaviourClasses implements BehaviourClassContainer {
                 BehaviourClassBehaviour.class,
                 BehaviourMethodBehaviour.class,
                 BehaviourMethodVerifierBehaviour.class,
-                DontInvokeMethodBehaviour.class,
-                InvokeMethodWithSetUpAndTearDownBehaviour.class,
                 PlainTextMethodListenerBehaviour.class,
                 ExpectationBehaviour.class,
                 MockObjectBehaviour.class,

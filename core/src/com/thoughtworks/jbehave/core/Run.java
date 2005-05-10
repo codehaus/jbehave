@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifier;
 import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
-import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.core.listener.PlainTextMethodListener;
 
 /**
@@ -24,7 +23,7 @@ public class Run {
             Class classToVerify = Class.forName(args[0]);
             BehaviourClass visitableClass = new BehaviourClass(classToVerify);
             PlainTextMethodListener textListener = new PlainTextMethodListener(new PrintWriter(System.out));
-            BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
+            BehaviourMethodVerifier verifier = new BehaviourMethodVerifier();
             verifier.addListener(textListener);
             visitableClass.accept(verifier);
             textListener.printReport();

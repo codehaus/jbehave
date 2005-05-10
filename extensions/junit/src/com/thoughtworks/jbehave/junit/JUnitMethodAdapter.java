@@ -16,7 +16,6 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethod;
-import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
 
@@ -41,8 +40,7 @@ public class JUnitMethodAdapter extends TestCase {
     }
 
     private void verifyMethod(TestResult testResult) {
-        final Result result =
-            new InvokeMethodWithSetUpAndTearDown().invoke(new BehaviourMethod(instance, method));
+        final Result result = new BehaviourMethod(instance, method).invoke();
         if (result.failed()) {
             testResult.addFailure(this, buildAssertionFailedError(result.cause()));
         }

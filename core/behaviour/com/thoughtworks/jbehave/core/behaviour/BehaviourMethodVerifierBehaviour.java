@@ -7,8 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.behaviour;
 
-import com.thoughtworks.jbehave.core.invoker.MethodInvoker;
-import com.thoughtworks.jbehave.core.minimock.Mock;
+import com.thoughtworks.jbehave.core.Verify;
 
 
 /**
@@ -16,20 +15,23 @@ import com.thoughtworks.jbehave.core.minimock.Mock;
  */
 public class BehaviourMethodVerifierBehaviour extends BehaviourSupport {
     
-    public void shouldUseInvokerOnBehaviourMethods() throws Exception {
+	public static class StoresInvocation {
+		public boolean wasInvoked = false;
+		public void shouldDoSomething() {
+			wasInvoked = true;
+		}
+	}
+	
+    public void shouldInvokeBehaviourMethod() throws Exception {
         // given...
-        Mock invoker = mock(MethodInvoker.class);
-        BehaviourMethodVerifier verifier = new BehaviourMethodVerifier((MethodInvoker) invoker);
-        BehaviourClass behaviourClass = new BehaviourClass(HasTwoMethods.class);
-            
-        // expect...
-        invoker.expects("invoke").with(methodName("shouldDoSomething"));
-        invoker.expects("invoke").with(methodName("shouldDoSomethingElse"));
+        BehaviourMethodVerifier verifier = new BehaviourMethodVerifier();
+		StoresInvocation instance = new StoresInvocation();
+		BehaviourMethod behaviourMethod = new BehaviourMethod(instance, "shouldDoSomething");
         
         // when...
-        behaviourClass.accept(verifier);
+        behaviourMethod.accept(verifier);
         
         // verify...
-        verifyMocks();
+		Verify.equal(true, instance.wasInvoked);
     }
 }
