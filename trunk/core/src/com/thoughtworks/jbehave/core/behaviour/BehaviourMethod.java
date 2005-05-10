@@ -7,8 +7,12 @@
  */
 package com.thoughtworks.jbehave.core.behaviour;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.thoughtworks.jbehave.core.exception.JBehaveFrameworkError;
+import com.thoughtworks.jbehave.core.result.BehaviourMethodResult;
+import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.visitor.Visitable;
 import com.thoughtworks.jbehave.core.visitor.Visitor;
 
@@ -25,6 +29,15 @@ public class BehaviourMethod implements Visitable {
         this.instance = instance;
         this.method = method;
     }
+	
+	public BehaviourMethod(Object instance, String methodName) {
+		try {
+			this.instance = instance;
+			this.method = instance.getClass().getMethod(methodName, new Class[0]);
+		} catch (NoSuchMethodException e) {
+			throw new JBehaveFrameworkError(e);
+		}
+	}
 
     public Method method() {
         return method;
@@ -36,5 +49,46 @@ public class BehaviourMethod implements Visitable {
 
     public void accept(Visitor visitor) {
         visitor.visitBehaviourMethod(this);
+    }
+
+    public Result invoke() {
+        try {
+            invoke(instance, method);
+            return new BehaviourMethodResult(this);
+        }
+        catch (InvocationTargetException e) {
+            return new BehaviourMethodResult(this, e.getTargetException());
+        }
+        catch (Throwable e) {
+            throw new JBehaveFrameworkError("Problem verifying method " + method.getName(), e);
+        }
+    }
+
+    private void invoke(Object instance, Method method) throws Throwable {
+        Exception thrownException = null;
+        try {
+            invokeMethod("setUp", instance);
+            method.invoke(instance, new Object[0]);
+        }
+        catch (Exception e) {
+            throw thrownException = e;
+        }
+        finally {
+            try {
+                invokeMethod("tearDown", instance);
+            }
+            catch (Exception problemWithTearDown) {
+                throw (thrownException != null ? thrownException : problemWithTearDown);
+            }
+        }
+    }
+
+    private void invokeMethod(String methodName, Object behaviourClassInstance) throws IllegalAccessException, InvocationTargetException {
+        try {
+            Method target = behaviourClassInstance.getClass().getMethod(methodName, new Class[0]);
+            target.invoke(behaviourClassInstance, new Object[0]);
+        } catch (NoSuchMethodException e) {
+            // there wasn't a method - never mind
+        }
     }
 }

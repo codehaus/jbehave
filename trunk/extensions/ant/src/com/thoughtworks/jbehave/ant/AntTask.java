@@ -22,7 +22,6 @@ import org.apache.tools.ant.types.Path;
 import com.thoughtworks.jbehave.ant.listener.AntListener;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifier;
-import com.thoughtworks.jbehave.core.invoker.InvokeMethodWithSetUpAndTearDown;
 import com.thoughtworks.jbehave.core.listener.PlainTextMethodListener;
 
 /**
@@ -80,7 +79,7 @@ public class AntTask extends org.apache.tools.ant.Task {
 		createClassLoader();
         PlainTextMethodListener textListener = new PlainTextMethodListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
         AntListener antListener = new AntListener(textListener);
-        BehaviourMethodVerifier verifier = new BehaviourMethodVerifier(new InvokeMethodWithSetUpAndTearDown());
+        BehaviourMethodVerifier verifier = new BehaviourMethodVerifier();
         verifier.addListener(antListener);
         
 		for (Iterator iter = behaviourClassList.iterator(); iter.hasNext(); ) {

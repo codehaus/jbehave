@@ -6,17 +6,18 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 public class OutcomeBehaviour extends UsingMiniMock {
 	public void shouldPassItselfAndComponentsToVisitorInCorrectOrder() throws Exception {
-		// given
+		// given...
 		Visitor visitor = (Visitor) mock(Visitor.class);
 		Mock expectation = mock(Expectation.class);
 		Outcome outcome = new Outcome((Expectation)expectation);
 
+		// expect...
 		expectation.expects("accept").with(visitor);
 		
-		// when
+		// when...
 		outcome.accept((Visitor)visitor);
 		
-		// then
+		// then...
 		verifyMocks();
 	}
 }

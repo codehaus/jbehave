@@ -139,7 +139,9 @@ public class Verify {
 
     // instanceof
     public static void instanceOf(Class type, Object instance) {
-        that("should be instance of " + type.getName(), type.isInstance(instance));
+        String message = "should be instance of " + type.getName()
+        	+ " but it is " + (instance == null ? "null" : instance.getClass().getName());
+		that(message, type.isInstance(instance));
     }
     
     // throws exception
