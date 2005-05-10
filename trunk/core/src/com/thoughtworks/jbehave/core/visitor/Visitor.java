@@ -7,9 +7,13 @@
  */
 package com.thoughtworks.jbehave.core.visitor;
 
+import com.thoughtworks.jbehave.core.behaviour.BehaviourClass;
+import com.thoughtworks.jbehave.core.behaviour.BehaviourMethod;
+
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Visitor {
-    void visit(Visitable visitable);
+	void visitBehaviourMethod(BehaviourMethod behaviourMethod);
+	void visitBehaviourClass(BehaviourClass behaviourClass);
 }

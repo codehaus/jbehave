@@ -22,9 +22,9 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
         Mock visitor = mock(Visitor.class);
         
         // expect...
-        visitor.expects("visit").with(behaviourClass).will(returnValue("hello")).id("1");
-        visitor.expects("visit").with(matchesBehaviourMethodName("shouldDoSomething")).id("2").after("1");
-        visitor.expects("visit").with(matchesBehaviourMethodName("shouldDoSomethingElse")).id("3").after("2");
+        visitor.expects("visitBehaviourClass").with(behaviourClass).will(returnValue("hello")).id("1");
+        visitor.expects("visitBehaviourMethod").with(methodName("shouldDoSomething")).id("2").after("1");
+        visitor.expects("visitBehaviourMethod").with(methodName("shouldDoSomethingElse")).id("3").after("2");
         
         // when...
         behaviourClass.accept((Visitor) visitor);
@@ -49,9 +49,9 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
         BehaviourClass behaviourClass = new BehaviourClass(SomeBehaviourClasses.class);
         
         // expect...
-        visitor.expects("visit").with(matchesBehaviourClassName(SomeBehaviourClasses.class)).id("1");
-        visitor.expects("visit").with(matchesBehaviourClassName(OneBehaviourClass.class)).id("2").after("1");
-        visitor.expects("visit").with(matchesBehaviourClassName(AnotherBehaviourClass.class)).after("2");
+        visitor.expects("visitBehaviourClass").with(className(SomeBehaviourClasses.class)).id("1");
+        visitor.expects("visitBehaviourClass").with(className(OneBehaviourClass.class)).id("2").after("1");
+        visitor.expects("visitBehaviourClass").with(className(AnotherBehaviourClass.class)).after("2");
         
         // when...
         behaviourClass.accept((Visitor) visitor);

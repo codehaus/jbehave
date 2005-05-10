@@ -14,13 +14,12 @@ import java.util.List;
 import com.thoughtworks.jbehave.core.invoker.MethodInvoker;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.core.result.Result;
-import com.thoughtworks.jbehave.core.visitor.Visitable;
-import com.thoughtworks.jbehave.core.visitor.Visitor;
+import com.thoughtworks.jbehave.core.visitor.VisitorSupport;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class BehaviourMethodVerifier implements Visitor {
+public class BehaviourMethodVerifier extends VisitorSupport {
     
     private final MethodInvoker invoker;
     private final List listeners = new ArrayList();
@@ -33,12 +32,10 @@ public class BehaviourMethodVerifier implements Visitor {
         listeners.add(listener);
     }
     
-    public void visit(Visitable visitable) {
-        if (visitable instanceof BehaviourMethod) {
-            Result result = invoker.invoke((BehaviourMethod) visitable);
-            for (Iterator i = listeners.iterator(); i.hasNext();) {
-                ((ResultListener) i.next()).gotResult(result);
-            }
+    public void visitBehaviourMethod(BehaviourMethod behaviourMethod) {
+        Result result = invoker.invoke(behaviourMethod);
+        for (Iterator i = listeners.iterator(); i.hasNext();) {
+            ((ResultListener) i.next()).gotResult(result);
         }
     }
 }

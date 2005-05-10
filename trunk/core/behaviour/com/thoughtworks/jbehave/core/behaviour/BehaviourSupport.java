@@ -21,7 +21,7 @@ class BehaviourSupport extends UsingMiniMock {
         }
     }
     
-    protected Constraint matchesBehaviourClassName(final Class classToMatch) {
+    protected Constraint className(final Class classToMatch) {
         return new Constraint() {
             public boolean matches(Object arg) {
                 return arg instanceof BehaviourClass && classToMatch == ((BehaviourClass)arg).classToVerify();
@@ -33,7 +33,7 @@ class BehaviourSupport extends UsingMiniMock {
         };
     }
     
-    protected Constraint matchesBehaviourMethodName(final String methodName) {
+    protected Constraint methodName(final String methodName) {
         return new Constraint() {
             public boolean matches(Object arg) {
                 return arg instanceof BehaviourMethod && ((BehaviourMethod)arg).method().getName().equals(methodName);

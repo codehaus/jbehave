@@ -22,7 +22,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         BehaviourMethod behaviourMethod = new BehaviourMethod(null, null);
         
         // expect...
-        visitor.expects("visit").with(behaviourMethod);
+        visitor.expects("visitBehaviourMethod").with(behaviourMethod);
         
         // when...
         behaviourMethod.accept((Visitor) visitor);

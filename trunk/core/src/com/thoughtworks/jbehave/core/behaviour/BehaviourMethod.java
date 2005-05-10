@@ -35,6 +35,6 @@ public class BehaviourMethod implements Visitable {
     }
 
     public void accept(Visitor visitor) {
-        visitor.visit(this);
+        visitor.visitBehaviourMethod(this);
     }
 }
