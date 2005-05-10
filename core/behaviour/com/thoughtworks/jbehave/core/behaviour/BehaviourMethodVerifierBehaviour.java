@@ -23,8 +23,8 @@ public class BehaviourMethodVerifierBehaviour extends BehaviourSupport {
         BehaviourClass behaviourClass = new BehaviourClass(HasTwoMethods.class);
             
         // expect...
-        invoker.expects("invoke").with(matchesBehaviourMethodName("shouldDoSomething"));
-        invoker.expects("invoke").with(matchesBehaviourMethodName("shouldDoSomethingElse"));
+        invoker.expects("invoke").with(methodName("shouldDoSomething"));
+        invoker.expects("invoke").with(methodName("shouldDoSomethingElse"));
         
         // when...
         behaviourClass.accept(verifier);

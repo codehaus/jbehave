@@ -26,7 +26,7 @@ public class BehaviourClass implements Visitable {
     }
 
     public void accept(Visitor visitor) {
-        visitor.visit(this);
+        visitor.visitBehaviourClass(this);
 
         if (BehaviourClassContainer.class.isAssignableFrom(classToVerify)) {
             visitBehaviourClasses(visitor);

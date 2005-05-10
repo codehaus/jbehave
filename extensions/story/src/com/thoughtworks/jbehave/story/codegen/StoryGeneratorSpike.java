@@ -7,21 +7,21 @@
  */
 package com.thoughtworks.jbehave.story.codegen;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.FileWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.List;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 import com.thoughtworks.jbehave.story.codegen.domain.BasicDetails;
 import com.thoughtworks.jbehave.story.codegen.domain.ContextDetails;
@@ -31,11 +31,6 @@ import com.thoughtworks.jbehave.story.codegen.domain.StoryDetails;
 import com.thoughtworks.jbehave.story.codegen.parser.AntlrStoryParser;
 import com.thoughtworks.jbehave.story.codegen.parser.StoryLexer;
 import com.thoughtworks.jbehave.story.codegen.parser.StoryTreeWalker;
-import com.thoughtworks.jbehave.story.domain.Context;
-import com.thoughtworks.jbehave.story.domain.Scenario;
-
-import antlr.TokenStreamException;
-import antlr.RecognitionException;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
