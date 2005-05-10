@@ -1,6 +1,9 @@
 package com.thoughtworks.jbehave.jmock;
 
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.jmock.Mock;
 import org.jmock.core.Verifiable;
@@ -8,8 +11,6 @@ import org.jmock.core.Verifiable;
 import com.thoughtworks.jbehave.core.Block;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
-import com.thoughtworks.jbehave.jmock.JMockSugar;
-import com.thoughtworks.jbehave.jmock.UsingJMock;
 
 /**
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>
@@ -141,4 +142,42 @@ public class UsingJMockBehaviour extends JMockSugar {
         Verify.not(isDynamicProxy(instance.anAbstractClass.proxy()));
         Verify.not(isDynamicProxy(instance.aConcreteClass.proxy()));
     }
+	
+	public void shouldVerifyMocksAfterEachMethod() throws Exception {
+		// given
+		final Object[] results = new Object[1];
+		UsingJMock instance = new UsingJMock() {
+			public void verifyMocks() {
+				results[0] = "verifyMocks";
+			}
+		};
+
+		// when
+		instance.verify();
+		
+		// then
+		Verify.equal("verifyMocks", results[0]);
+	}
+	
+	public void shouldCallTemplateMethodAfterVerifyingMocks() throws Exception {
+		// given
+		final List results = new ArrayList();
+		UsingJMock instance = new UsingJMock() {
+			public void verifyMocks() {
+				results.add("verifyMocks");
+			}
+			public void doVerify() {
+				results.add("doVerify");
+			}
+		};
+		List expected = Arrays.asList(new String[] {
+				"doVerify", "verifyMocks"
+		});
+
+		// when
+		instance.verify();
+		
+		// then
+		Verify.equal(expected, results);
+	}
 }

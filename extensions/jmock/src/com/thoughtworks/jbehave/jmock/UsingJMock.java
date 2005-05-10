@@ -113,4 +113,21 @@ public abstract class UsingJMock extends JMockSugar implements UsingMocks {
         mock.setDefaultStub(new DefaultResultStub());
         return mock.proxy();
     }
+
+	/**
+	 * Template method to verify mocks after every behaviour method.
+	 * 
+	 * Made final to ensure mocks are verified even if you roll your own verify method,
+	 * in which case you simply override {@link #doVerify()}.
+	 */
+	public final void verify() throws Exception {
+		doVerify();
+		verifyMocks();
+	}
+
+	/**
+	 * Hook method to use per-method verify functionality, called from {@link #verify()}.
+	 */
+	protected void doVerify() throws Exception {
+	}
 }
