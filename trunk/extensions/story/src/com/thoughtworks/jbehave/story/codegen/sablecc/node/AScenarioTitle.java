@@ -5,24 +5,24 @@ package com.thoughtworks.jbehave.story.codegen.sablecc.node;
 import java.util.*;
 import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
 
-public final class AFeature extends PFeature
+public final class AScenarioTitle extends PScenarioTitle
 {
-    private TIWant _iWant_;
+    private TScenarioKeyword _scenarioKeyword_;
     private TSpace _space_;
     private PPhrase _phrase_;
     private TEndl _endl_;
 
-    public AFeature()
+    public AScenarioTitle()
     {
     }
 
-    public AFeature(
-        TIWant _iWant_,
+    public AScenarioTitle(
+        TScenarioKeyword _scenarioKeyword_,
         TSpace _space_,
         PPhrase _phrase_,
         TEndl _endl_)
     {
-        setIWant(_iWant_);
+        setScenarioKeyword(_scenarioKeyword_);
 
         setSpace(_space_);
 
@@ -33,8 +33,8 @@ public final class AFeature extends PFeature
     }
     public Object clone()
     {
-        return new AFeature(
-            (TIWant) cloneNode(_iWant_),
+        return new AScenarioTitle(
+            (TScenarioKeyword) cloneNode(_scenarioKeyword_),
             (TSpace) cloneNode(_space_),
             (PPhrase) cloneNode(_phrase_),
             (TEndl) cloneNode(_endl_));
@@ -42,19 +42,19 @@ public final class AFeature extends PFeature
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAFeature(this);
+        ((Analysis) sw).caseAScenarioTitle(this);
     }
 
-    public TIWant getIWant()
+    public TScenarioKeyword getScenarioKeyword()
     {
-        return _iWant_;
+        return _scenarioKeyword_;
     }
 
-    public void setIWant(TIWant node)
+    public void setScenarioKeyword(TScenarioKeyword node)
     {
-        if(_iWant_ != null)
+        if(_scenarioKeyword_ != null)
         {
-            _iWant_.parent(null);
+            _scenarioKeyword_.parent(null);
         }
 
         if(node != null)
@@ -67,7 +67,7 @@ public final class AFeature extends PFeature
             node.parent(this);
         }
 
-        _iWant_ = node;
+        _scenarioKeyword_ = node;
     }
 
     public TSpace getSpace()
@@ -148,7 +148,7 @@ public final class AFeature extends PFeature
     public String toString()
     {
         return ""
-            + toString(_iWant_)
+            + toString(_scenarioKeyword_)
             + toString(_space_)
             + toString(_phrase_)
             + toString(_endl_);
@@ -156,9 +156,9 @@ public final class AFeature extends PFeature
 
     void removeChild(Node child)
     {
-        if(_iWant_ == child)
+        if(_scenarioKeyword_ == child)
         {
-            _iWant_ = null;
+            _scenarioKeyword_ = null;
             return;
         }
 
@@ -184,9 +184,9 @@ public final class AFeature extends PFeature
 
     void replaceChild(Node oldChild, Node newChild)
     {
-        if(_iWant_ == oldChild)
+        if(_scenarioKeyword_ == oldChild)
         {
-            setIWant((TIWant) newChild);
+            setScenarioKeyword((TScenarioKeyword) newChild);
             return;
         }
 

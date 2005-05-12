@@ -2,8 +2,8 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.parser;
 
-import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
 import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
+import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
 
 class TokenIndex extends AnalysisAdapter
 {
@@ -14,38 +14,43 @@ class TokenIndex extends AnalysisAdapter
         index = 0;
     }
 
-    public void caseTAsA(TAsA node)
+    public void caseTScenarioKeyword(TScenarioKeyword node)
     {
         index = 1;
     }
 
-    public void caseTIWant(TIWant node)
+    public void caseTAsA(TAsA node)
     {
         index = 2;
     }
 
-    public void caseTSoThat(TSoThat node)
+    public void caseTIWant(TIWant node)
     {
         index = 3;
     }
 
-    public void caseTSpace(TSpace node)
+    public void caseTSoThat(TSoThat node)
     {
         index = 4;
     }
 
-    public void caseTWord(TWord node)
+    public void caseTSpace(TSpace node)
     {
         index = 5;
     }
 
-    public void caseTEndl(TEndl node)
+    public void caseTWord(TWord node)
     {
         index = 6;
     }
 
-    public void caseEOF(EOF node)
+    public void caseTEndl(TEndl node)
     {
         index = 7;
+    }
+
+    public void caseEOF(EOF node)
+    {
+        index = 8;
     }
 }

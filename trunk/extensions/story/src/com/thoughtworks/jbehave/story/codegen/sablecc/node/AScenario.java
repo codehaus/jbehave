@@ -5,41 +5,41 @@ package com.thoughtworks.jbehave.story.codegen.sablecc.node;
 import java.util.*;
 import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
 
-public final class AWordWordOrSpace extends PWordOrSpace
+public final class AScenario extends PScenario
 {
-    private TWord _word_;
+    private PScenarioTitle _scenarioTitle_;
 
-    public AWordWordOrSpace()
+    public AScenario()
     {
     }
 
-    public AWordWordOrSpace(
-        TWord _word_)
+    public AScenario(
+        PScenarioTitle _scenarioTitle_)
     {
-        setWord(_word_);
+        setScenarioTitle(_scenarioTitle_);
 
     }
     public Object clone()
     {
-        return new AWordWordOrSpace(
-            (TWord) cloneNode(_word_));
+        return new AScenario(
+            (PScenarioTitle) cloneNode(_scenarioTitle_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAWordWordOrSpace(this);
+        ((Analysis) sw).caseAScenario(this);
     }
 
-    public TWord getWord()
+    public PScenarioTitle getScenarioTitle()
     {
-        return _word_;
+        return _scenarioTitle_;
     }
 
-    public void setWord(TWord node)
+    public void setScenarioTitle(PScenarioTitle node)
     {
-        if(_word_ != null)
+        if(_scenarioTitle_ != null)
         {
-            _word_.parent(null);
+            _scenarioTitle_.parent(null);
         }
 
         if(node != null)
@@ -52,20 +52,20 @@ public final class AWordWordOrSpace extends PWordOrSpace
             node.parent(this);
         }
 
-        _word_ = node;
+        _scenarioTitle_ = node;
     }
 
     public String toString()
     {
         return ""
-            + toString(_word_);
+            + toString(_scenarioTitle_);
     }
 
     void removeChild(Node child)
     {
-        if(_word_ == child)
+        if(_scenarioTitle_ == child)
         {
-            _word_ = null;
+            _scenarioTitle_ = null;
             return;
         }
 
@@ -73,9 +73,9 @@ public final class AWordWordOrSpace extends PWordOrSpace
 
     void replaceChild(Node oldChild, Node newChild)
     {
-        if(_word_ == oldChild)
+        if(_scenarioTitle_ == oldChild)
         {
-            setWord((TWord) newChild);
+            setScenarioTitle((PScenarioTitle) newChild);
             return;
         }
 

@@ -3,7 +3,6 @@
 package com.thoughtworks.jbehave.story.codegen.sablecc.analysis;
 
 import java.util.*;
-
 import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
 
 public class DepthFirstAdapter extends AnalysisAdapter
@@ -62,6 +61,13 @@ public class DepthFirstAdapter extends AnalysisAdapter
         if(node.getBenefit() != null)
         {
             node.getBenefit().apply(this);
+        }
+        {
+            Object temp[] = node.getScenario().toArray();
+            for(int i = 0; i < temp.length; i++)
+            {
+                ((PScenario) temp[i]).apply(this);
+            }
         }
         outAStory(node);
     }
@@ -192,6 +198,58 @@ public class DepthFirstAdapter extends AnalysisAdapter
             node.getEndl().apply(this);
         }
         outABenefit(node);
+    }
+
+    public void inAScenario(AScenario node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAScenario(AScenario node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAScenario(AScenario node)
+    {
+        inAScenario(node);
+        if(node.getScenarioTitle() != null)
+        {
+            node.getScenarioTitle().apply(this);
+        }
+        outAScenario(node);
+    }
+
+    public void inAScenarioTitle(AScenarioTitle node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAScenarioTitle(AScenarioTitle node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAScenarioTitle(AScenarioTitle node)
+    {
+        inAScenarioTitle(node);
+        if(node.getScenarioKeyword() != null)
+        {
+            node.getScenarioKeyword().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getPhrase() != null)
+        {
+            node.getPhrase().apply(this);
+        }
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        outAScenarioTitle(node);
     }
 
     public void inAPhrase(APhrase node)

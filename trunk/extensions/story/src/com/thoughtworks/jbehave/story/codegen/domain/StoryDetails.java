@@ -15,13 +15,16 @@ import java.util.List;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
  */
 public class StoryDetails extends BasicDetails {
-    private final String role;
-    private final String feature;
-    private final String benefit;
-    private final List scenarios = new ArrayList();
+    public String role = "";
+    public String feature = "";
+    public String benefit = "";
+    public final List scenarios = new ArrayList();
+	
+	public StoryDetails() {
+	}
 	
     public StoryDetails(String name, String role, String feature, String benefit) {
-        super(name, "");
+		this.name = name;
         this.role = role;
         this.feature = feature;
         this.benefit = benefit;
@@ -31,43 +34,20 @@ public class StoryDetails extends BasicDetails {
         scenarios.add(scenario);
     }
 
-    public String getBenefit() {
-        return benefit;
-    }
-
-    public String getFeature() {
-        return feature;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public List getScenarios() {
-        return scenarios;
-    }
-    
     public boolean equals(Object obj) {
         if (!super.equals(obj)) return false;
         if (!(obj instanceof StoryDetails)) return false;
         StoryDetails that = (StoryDetails) obj;
-        
-//        if (this.scenarios.size() != that.scenarios.size()) return false;
-//        
-//        for (int i = 0; i < this.scenarios.size(); i++) {
-//            if (!this.scenarios.get(i).equals(that.scenarios.get(i))) return false;
-//        }
-        
-        return this.role.equals(that.role)
-                && this.feature.equals(that.feature)
-                && this.benefit.equals(that.benefit)
-                && this.scenarios.equals(that.scenarios);
-                     
+        return super.equals(obj)
+			&& this.role.equals(that.role)
+	        && this.feature.equals(that.feature)
+	        && this.benefit.equals(that.benefit)
+	        && this.scenarios.equals(that.scenarios);
     }
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(getName());
+        buffer.append(name);
         buffer.append("\n");
         buffer.append(role);
         buffer.append("\n");
@@ -81,6 +61,5 @@ public class StoryDetails extends BasicDetails {
             buffer.append("\n");
         }
         return buffer.toString();
-        
     }
 }

@@ -3,7 +3,6 @@
 package com.thoughtworks.jbehave.story.codegen.sablecc.node;
 
 import java.util.*;
-
 import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
 
 public final class ABenefit extends PBenefit

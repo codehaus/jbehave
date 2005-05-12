@@ -15,25 +15,9 @@ import java.util.List;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class ContextDetails {
-    private ScenarioDetails scenario;
-    private List givens = new ArrayList();
-    
-    public ScenarioDetails scenario() {
-        return scenario;
-    }
-    
-    public void setScenario(ScenarioDetails scenario) {
-        this.scenario = scenario;
-    }
-    
-    public void addGiven(BasicDetails given) {
-        givens.add(given);
-    }
-    
-    public List getGivens() {
-        return givens;
-    }
-    
+    public ScenarioDetails scenario;
+    public final List givens = new ArrayList();
+	
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;

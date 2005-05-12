@@ -2,10 +2,9 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.parser;
 
-import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
 import com.thoughtworks.jbehave.story.codegen.sablecc.lexer.*;
 import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
-
+import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
 import java.util.*;
 
 import java.io.DataInputStream;
@@ -223,58 +222,130 @@ public class Parser
 			push(goTo(0), list, false);
 		    }
 		    break;
-                    case 8: /* reduce ATitle */
+                    case 8: /* reduce AAstory9Story */
 		    {
 			ArrayList list = new8();
+			push(goTo(0), list, false);
+		    }
+		    break;
+                    case 9: /* reduce AAstory10Story */
+		    {
+			ArrayList list = new9();
+			push(goTo(0), list, false);
+		    }
+		    break;
+                    case 10: /* reduce AAstory11Story */
+		    {
+			ArrayList list = new10();
+			push(goTo(0), list, false);
+		    }
+		    break;
+                    case 11: /* reduce AAstory12Story */
+		    {
+			ArrayList list = new11();
+			push(goTo(0), list, false);
+		    }
+		    break;
+                    case 12: /* reduce AAstory13Story */
+		    {
+			ArrayList list = new12();
+			push(goTo(0), list, false);
+		    }
+		    break;
+                    case 13: /* reduce AAstory14Story */
+		    {
+			ArrayList list = new13();
+			push(goTo(0), list, false);
+		    }
+		    break;
+                    case 14: /* reduce AAstory15Story */
+		    {
+			ArrayList list = new14();
+			push(goTo(0), list, false);
+		    }
+		    break;
+                    case 15: /* reduce AAstory16Story */
+		    {
+			ArrayList list = new15();
+			push(goTo(0), list, false);
+		    }
+		    break;
+                    case 16: /* reduce ATitle */
+		    {
+			ArrayList list = new16();
 			push(goTo(1), list, false);
 		    }
 		    break;
-                    case 9: /* reduce ARole */
+                    case 17: /* reduce ARole */
 		    {
-			ArrayList list = new9();
+			ArrayList list = new17();
 			push(goTo(2), list, false);
 		    }
 		    break;
-                    case 10: /* reduce AFeature */
+                    case 18: /* reduce AFeature */
 		    {
-			ArrayList list = new10();
+			ArrayList list = new18();
 			push(goTo(3), list, false);
 		    }
 		    break;
-                    case 11: /* reduce ABenefit */
+                    case 19: /* reduce ABenefit */
 		    {
-			ArrayList list = new11();
+			ArrayList list = new19();
 			push(goTo(4), list, false);
 		    }
 		    break;
-                    case 12: /* reduce APhrase */
+                    case 20: /* reduce AScenario */
 		    {
-			ArrayList list = new12();
+			ArrayList list = new20();
 			push(goTo(5), list, false);
 		    }
 		    break;
-                    case 13: /* reduce AWordWordOrSpace */
+                    case 21: /* reduce AScenarioTitle */
 		    {
-			ArrayList list = new13();
+			ArrayList list = new21();
 			push(goTo(6), list, false);
 		    }
 		    break;
-                    case 14: /* reduce ASpaceWordOrSpace */
+                    case 22: /* reduce APhrase */
 		    {
-			ArrayList list = new14();
-			push(goTo(6), list, false);
+			ArrayList list = new22();
+			push(goTo(7), list, false);
 		    }
 		    break;
-                    case 15: /* reduce ATerminal$WordOrSpace */
+                    case 23: /* reduce AWordWordOrSpace */
 		    {
-			ArrayList list = new15();
-			push(goTo(7), list, true);
+			ArrayList list = new23();
+			push(goTo(8), list, false);
 		    }
 		    break;
-                    case 16: /* reduce ANonTerminal$WordOrSpace */
+                    case 24: /* reduce ASpaceWordOrSpace */
 		    {
-			ArrayList list = new16();
-			push(goTo(7), list, true);
+			ArrayList list = new24();
+			push(goTo(8), list, false);
+		    }
+		    break;
+                    case 25: /* reduce ATerminal$Scenario */
+		    {
+			ArrayList list = new25();
+			push(goTo(9), list, true);
+		    }
+		    break;
+                    case 26: /* reduce ANonTerminal$Scenario */
+		    {
+			ArrayList list = new26();
+			push(goTo(9), list, true);
+		    }
+		    break;
+                    case 27: /* reduce ATerminal$WordOrSpace */
+		    {
+			ArrayList list = new27();
+			push(goTo(10), list, true);
+		    }
+		    break;
+                    case 28: /* reduce ANonTerminal$WordOrSpace */
+		    {
+			ArrayList list = new28();
+			push(goTo(10), list, true);
 		    }
 		    break;
                     }
@@ -307,9 +378,12 @@ public class Parser
         Object nullNode3 = null;
         Object nullNode4 = null;
         Object nullNode5 = null;
+        TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        {
+        }
 
-        pstoryNode1 = new AStory(ptitleNode2, null, null, null);
+        pstoryNode1 = new AStory(ptitleNode2, null, null, null, listNode6);
         }
 	nodeList.add(pstoryNode1);
         return nodeList;
@@ -329,10 +403,13 @@ public class Parser
         PRole proleNode3;
         Object nullNode4 = null;
         Object nullNode5 = null;
+        TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         proleNode3 = (PRole)nodeArrayList2.get(0);
+        {
+        }
 
-        pstoryNode1 = new AStory(ptitleNode2, proleNode3, null, null);
+        pstoryNode1 = new AStory(ptitleNode2, proleNode3, null, null, listNode6);
         }
 	nodeList.add(pstoryNode1);
         return nodeList;
@@ -352,10 +429,13 @@ public class Parser
         Object nullNode3 = null;
         PFeature pfeatureNode4;
         Object nullNode5 = null;
+        TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         pfeatureNode4 = (PFeature)nodeArrayList2.get(0);
+        {
+        }
 
-        pstoryNode1 = new AStory(ptitleNode2, null, pfeatureNode4, null);
+        pstoryNode1 = new AStory(ptitleNode2, null, pfeatureNode4, null, listNode6);
         }
 	nodeList.add(pstoryNode1);
         return nodeList;
@@ -376,11 +456,14 @@ public class Parser
         PRole proleNode3;
         PFeature pfeatureNode4;
         Object nullNode5 = null;
+        TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         proleNode3 = (PRole)nodeArrayList2.get(0);
         pfeatureNode4 = (PFeature)nodeArrayList3.get(0);
+        {
+        }
 
-        pstoryNode1 = new AStory(ptitleNode2, proleNode3, pfeatureNode4, null);
+        pstoryNode1 = new AStory(ptitleNode2, proleNode3, pfeatureNode4, null, listNode6);
         }
 	nodeList.add(pstoryNode1);
         return nodeList;
@@ -400,10 +483,13 @@ public class Parser
         Object nullNode3 = null;
         Object nullNode4 = null;
         PBenefit pbenefitNode5;
+        TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         pbenefitNode5 = (PBenefit)nodeArrayList2.get(0);
+        {
+        }
 
-        pstoryNode1 = new AStory(ptitleNode2, null, null, pbenefitNode5);
+        pstoryNode1 = new AStory(ptitleNode2, null, null, pbenefitNode5, listNode6);
         }
 	nodeList.add(pstoryNode1);
         return nodeList;
@@ -424,11 +510,14 @@ public class Parser
         PRole proleNode3;
         Object nullNode4 = null;
         PBenefit pbenefitNode5;
+        TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         proleNode3 = (PRole)nodeArrayList2.get(0);
         pbenefitNode5 = (PBenefit)nodeArrayList3.get(0);
+        {
+        }
 
-        pstoryNode1 = new AStory(ptitleNode2, proleNode3, null, pbenefitNode5);
+        pstoryNode1 = new AStory(ptitleNode2, proleNode3, null, pbenefitNode5, listNode6);
         }
 	nodeList.add(pstoryNode1);
         return nodeList;
@@ -449,11 +538,14 @@ public class Parser
         Object nullNode3 = null;
         PFeature pfeatureNode4;
         PBenefit pbenefitNode5;
+        TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         pfeatureNode4 = (PFeature)nodeArrayList2.get(0);
         pbenefitNode5 = (PBenefit)nodeArrayList3.get(0);
+        {
+        }
 
-        pstoryNode1 = new AStory(ptitleNode2, null, pfeatureNode4, pbenefitNode5);
+        pstoryNode1 = new AStory(ptitleNode2, null, pfeatureNode4, pbenefitNode5, listNode6);
         }
 	nodeList.add(pstoryNode1);
         return nodeList;
@@ -475,12 +567,15 @@ public class Parser
         PRole proleNode3;
         PFeature pfeatureNode4;
         PBenefit pbenefitNode5;
+        TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         proleNode3 = (PRole)nodeArrayList2.get(0);
         pfeatureNode4 = (PFeature)nodeArrayList3.get(0);
         pbenefitNode5 = (PBenefit)nodeArrayList4.get(0);
+        {
+        }
 
-        pstoryNode1 = new AStory(ptitleNode2, proleNode3, pfeatureNode4, pbenefitNode5);
+        pstoryNode1 = new AStory(ptitleNode2, proleNode3, pfeatureNode4, pbenefitNode5, listNode6);
         }
 	nodeList.add(pstoryNode1);
         return nodeList;
@@ -488,7 +583,279 @@ public class Parser
 
 
 
-    ArrayList new8() /* reduce ATitle */
+    ArrayList new8() /* reduce AAstory9Story */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PStory pstoryNode1;
+        {
+        PTitle ptitleNode2;
+        Object nullNode3 = null;
+        Object nullNode4 = null;
+        Object nullNode5 = null;
+        TypedLinkedList listNode7 = new TypedLinkedList();
+        ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        {
+        TypedLinkedList listNode6 = new TypedLinkedList();
+        listNode6 = (TypedLinkedList)nodeArrayList2.get(0);
+	if(listNode6 != null)
+	{
+	  listNode7.addAll(listNode6);
+	}
+        }
+
+        pstoryNode1 = new AStory(ptitleNode2, null, null, null, listNode7);
+        }
+	nodeList.add(pstoryNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new9() /* reduce AAstory10Story */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PStory pstoryNode1;
+        {
+        PTitle ptitleNode2;
+        PRole proleNode3;
+        Object nullNode4 = null;
+        Object nullNode5 = null;
+        TypedLinkedList listNode7 = new TypedLinkedList();
+        ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        proleNode3 = (PRole)nodeArrayList2.get(0);
+        {
+        TypedLinkedList listNode6 = new TypedLinkedList();
+        listNode6 = (TypedLinkedList)nodeArrayList3.get(0);
+	if(listNode6 != null)
+	{
+	  listNode7.addAll(listNode6);
+	}
+        }
+
+        pstoryNode1 = new AStory(ptitleNode2, proleNode3, null, null, listNode7);
+        }
+	nodeList.add(pstoryNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new10() /* reduce AAstory11Story */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PStory pstoryNode1;
+        {
+        PTitle ptitleNode2;
+        Object nullNode3 = null;
+        PFeature pfeatureNode4;
+        Object nullNode5 = null;
+        TypedLinkedList listNode7 = new TypedLinkedList();
+        ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        pfeatureNode4 = (PFeature)nodeArrayList2.get(0);
+        {
+        TypedLinkedList listNode6 = new TypedLinkedList();
+        listNode6 = (TypedLinkedList)nodeArrayList3.get(0);
+	if(listNode6 != null)
+	{
+	  listNode7.addAll(listNode6);
+	}
+        }
+
+        pstoryNode1 = new AStory(ptitleNode2, null, pfeatureNode4, null, listNode7);
+        }
+	nodeList.add(pstoryNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new11() /* reduce AAstory12Story */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList4 = (ArrayList) pop();
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PStory pstoryNode1;
+        {
+        PTitle ptitleNode2;
+        PRole proleNode3;
+        PFeature pfeatureNode4;
+        Object nullNode5 = null;
+        TypedLinkedList listNode7 = new TypedLinkedList();
+        ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        proleNode3 = (PRole)nodeArrayList2.get(0);
+        pfeatureNode4 = (PFeature)nodeArrayList3.get(0);
+        {
+        TypedLinkedList listNode6 = new TypedLinkedList();
+        listNode6 = (TypedLinkedList)nodeArrayList4.get(0);
+	if(listNode6 != null)
+	{
+	  listNode7.addAll(listNode6);
+	}
+        }
+
+        pstoryNode1 = new AStory(ptitleNode2, proleNode3, pfeatureNode4, null, listNode7);
+        }
+	nodeList.add(pstoryNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new12() /* reduce AAstory13Story */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PStory pstoryNode1;
+        {
+        PTitle ptitleNode2;
+        Object nullNode3 = null;
+        Object nullNode4 = null;
+        PBenefit pbenefitNode5;
+        TypedLinkedList listNode7 = new TypedLinkedList();
+        ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        pbenefitNode5 = (PBenefit)nodeArrayList2.get(0);
+        {
+        TypedLinkedList listNode6 = new TypedLinkedList();
+        listNode6 = (TypedLinkedList)nodeArrayList3.get(0);
+	if(listNode6 != null)
+	{
+	  listNode7.addAll(listNode6);
+	}
+        }
+
+        pstoryNode1 = new AStory(ptitleNode2, null, null, pbenefitNode5, listNode7);
+        }
+	nodeList.add(pstoryNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new13() /* reduce AAstory14Story */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList4 = (ArrayList) pop();
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PStory pstoryNode1;
+        {
+        PTitle ptitleNode2;
+        PRole proleNode3;
+        Object nullNode4 = null;
+        PBenefit pbenefitNode5;
+        TypedLinkedList listNode7 = new TypedLinkedList();
+        ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        proleNode3 = (PRole)nodeArrayList2.get(0);
+        pbenefitNode5 = (PBenefit)nodeArrayList3.get(0);
+        {
+        TypedLinkedList listNode6 = new TypedLinkedList();
+        listNode6 = (TypedLinkedList)nodeArrayList4.get(0);
+	if(listNode6 != null)
+	{
+	  listNode7.addAll(listNode6);
+	}
+        }
+
+        pstoryNode1 = new AStory(ptitleNode2, proleNode3, null, pbenefitNode5, listNode7);
+        }
+	nodeList.add(pstoryNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new14() /* reduce AAstory15Story */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList4 = (ArrayList) pop();
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PStory pstoryNode1;
+        {
+        PTitle ptitleNode2;
+        Object nullNode3 = null;
+        PFeature pfeatureNode4;
+        PBenefit pbenefitNode5;
+        TypedLinkedList listNode7 = new TypedLinkedList();
+        ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        pfeatureNode4 = (PFeature)nodeArrayList2.get(0);
+        pbenefitNode5 = (PBenefit)nodeArrayList3.get(0);
+        {
+        TypedLinkedList listNode6 = new TypedLinkedList();
+        listNode6 = (TypedLinkedList)nodeArrayList4.get(0);
+	if(listNode6 != null)
+	{
+	  listNode7.addAll(listNode6);
+	}
+        }
+
+        pstoryNode1 = new AStory(ptitleNode2, null, pfeatureNode4, pbenefitNode5, listNode7);
+        }
+	nodeList.add(pstoryNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new15() /* reduce AAstory16Story */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList5 = (ArrayList) pop();
+        ArrayList nodeArrayList4 = (ArrayList) pop();
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PStory pstoryNode1;
+        {
+        PTitle ptitleNode2;
+        PRole proleNode3;
+        PFeature pfeatureNode4;
+        PBenefit pbenefitNode5;
+        TypedLinkedList listNode7 = new TypedLinkedList();
+        ptitleNode2 = (PTitle)nodeArrayList1.get(0);
+        proleNode3 = (PRole)nodeArrayList2.get(0);
+        pfeatureNode4 = (PFeature)nodeArrayList3.get(0);
+        pbenefitNode5 = (PBenefit)nodeArrayList4.get(0);
+        {
+        TypedLinkedList listNode6 = new TypedLinkedList();
+        listNode6 = (TypedLinkedList)nodeArrayList5.get(0);
+	if(listNode6 != null)
+	{
+	  listNode7.addAll(listNode6);
+	}
+        }
+
+        pstoryNode1 = new AStory(ptitleNode2, proleNode3, pfeatureNode4, pbenefitNode5, listNode7);
+        }
+	nodeList.add(pstoryNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new16() /* reduce ATitle */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -515,7 +882,7 @@ public class Parser
 
 
 
-    ArrayList new9() /* reduce ARole */
+    ArrayList new17() /* reduce ARole */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -542,7 +909,7 @@ public class Parser
 
 
 
-    ArrayList new10() /* reduce AFeature */
+    ArrayList new18() /* reduce AFeature */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -569,7 +936,7 @@ public class Parser
 
 
 
-    ArrayList new11() /* reduce ABenefit */
+    ArrayList new19() /* reduce ABenefit */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -596,7 +963,52 @@ public class Parser
 
 
 
-    ArrayList new12() /* reduce APhrase */
+    ArrayList new20() /* reduce AScenario */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PScenario pscenarioNode1;
+        {
+        PScenarioTitle pscenariotitleNode2;
+        pscenariotitleNode2 = (PScenarioTitle)nodeArrayList1.get(0);
+
+        pscenarioNode1 = new AScenario(pscenariotitleNode2);
+        }
+	nodeList.add(pscenarioNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new21() /* reduce AScenarioTitle */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList4 = (ArrayList) pop();
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PScenarioTitle pscenariotitleNode1;
+        {
+        TScenarioKeyword tscenariokeywordNode2;
+        TSpace tspaceNode3;
+        PPhrase pphraseNode4;
+        TEndl tendlNode5;
+        tscenariokeywordNode2 = (TScenarioKeyword)nodeArrayList1.get(0);
+        tspaceNode3 = (TSpace)nodeArrayList2.get(0);
+        pphraseNode4 = (PPhrase)nodeArrayList3.get(0);
+        tendlNode5 = (TEndl)nodeArrayList4.get(0);
+
+        pscenariotitleNode1 = new AScenarioTitle(tscenariokeywordNode2, tspaceNode3, pphraseNode4, tendlNode5);
+        }
+	nodeList.add(pscenariotitleNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new22() /* reduce APhrase */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -621,7 +1033,7 @@ public class Parser
 
 
 
-    ArrayList new13() /* reduce AWordWordOrSpace */
+    ArrayList new23() /* reduce AWordWordOrSpace */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -639,7 +1051,7 @@ public class Parser
 
 
 
-    ArrayList new14() /* reduce ASpaceWordOrSpace */
+    ArrayList new24() /* reduce ASpaceWordOrSpace */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -657,7 +1069,54 @@ public class Parser
 
 
 
-    ArrayList new15() /* reduce ATerminal$WordOrSpace */
+    ArrayList new25() /* reduce ATerminal$Scenario */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        TypedLinkedList listNode2 = new TypedLinkedList();
+        {
+        PScenario pscenarioNode1;
+        pscenarioNode1 = (PScenario)nodeArrayList1.get(0);
+	if(pscenarioNode1 != null)
+	{
+	  listNode2.add(pscenarioNode1);
+	}
+        }
+	nodeList.add(listNode2);
+        return nodeList;
+    }
+
+
+
+    ArrayList new26() /* reduce ANonTerminal$Scenario */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        TypedLinkedList listNode3 = new TypedLinkedList();
+        {
+        TypedLinkedList listNode1 = new TypedLinkedList();
+        PScenario pscenarioNode2;
+        listNode1 = (TypedLinkedList)nodeArrayList1.get(0);
+        pscenarioNode2 = (PScenario)nodeArrayList2.get(0);
+	if(listNode1 != null)
+	{
+	  listNode3.addAll(listNode1);
+	}
+	if(pscenarioNode2 != null)
+	{
+	  listNode3.add(pscenarioNode2);
+	}
+        }
+	nodeList.add(listNode3);
+        return nodeList;
+    }
+
+
+
+    ArrayList new27() /* reduce ATerminal$WordOrSpace */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -677,7 +1136,7 @@ public class Parser
 
 
 
-    ArrayList new16() /* reduce ANonTerminal$WordOrSpace */
+    ArrayList new28() /* reduce ANonTerminal$WordOrSpace */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -707,63 +1166,82 @@ public class Parser
     private static int[][][] actionTable;
 /*      {
 			{{-1, ERROR, 0}, {0, SHIFT, 1}, },
-			{{-1, ERROR, 1}, {4, SHIFT, 4}, },
-			{{-1, ERROR, 2}, {7, ACCEPT, -1}, },
-			{{-1, REDUCE, 0}, {1, SHIFT, 5}, {2, SHIFT, 6}, {3, SHIFT, 7}, },
-			{{-1, ERROR, 4}, {4, SHIFT, 11}, {5, SHIFT, 12}, },
-			{{-1, ERROR, 5}, {4, SHIFT, 16}, },
-			{{-1, ERROR, 6}, {4, SHIFT, 17}, },
-			{{-1, ERROR, 7}, {4, SHIFT, 18}, },
-			{{-1, REDUCE, 1}, {2, SHIFT, 6}, {3, SHIFT, 7}, },
-			{{-1, REDUCE, 2}, {3, SHIFT, 7}, },
-			{{-1, REDUCE, 4}, },
-			{{-1, REDUCE, 14}, },
-			{{-1, REDUCE, 13}, },
-			{{-1, ERROR, 13}, {6, SHIFT, 22}, },
-			{{-1, REDUCE, 15}, },
-			{{-1, REDUCE, 12}, {4, SHIFT, 11}, {5, SHIFT, 12}, },
-			{{-1, ERROR, 16}, {4, SHIFT, 11}, {5, SHIFT, 12}, },
-			{{-1, ERROR, 17}, {4, SHIFT, 11}, {5, SHIFT, 12}, },
-			{{-1, ERROR, 18}, {4, SHIFT, 11}, {5, SHIFT, 12}, },
-			{{-1, REDUCE, 3}, {3, SHIFT, 7}, },
-			{{-1, REDUCE, 5}, },
-			{{-1, REDUCE, 6}, },
-			{{-1, REDUCE, 8}, },
+			{{-1, ERROR, 1}, {5, SHIFT, 4}, },
+			{{-1, ERROR, 2}, {8, ACCEPT, -1}, },
+			{{-1, REDUCE, 0}, {1, SHIFT, 5}, {2, SHIFT, 6}, {3, SHIFT, 7}, {4, SHIFT, 8}, },
+			{{-1, ERROR, 4}, {5, SHIFT, 15}, {6, SHIFT, 16}, },
+			{{-1, ERROR, 5}, {5, SHIFT, 20}, },
+			{{-1, ERROR, 6}, {5, SHIFT, 21}, },
+			{{-1, ERROR, 7}, {5, SHIFT, 22}, },
+			{{-1, ERROR, 8}, {5, SHIFT, 23}, },
+			{{-1, REDUCE, 1}, {1, SHIFT, 5}, {3, SHIFT, 7}, {4, SHIFT, 8}, },
+			{{-1, REDUCE, 2}, {1, SHIFT, 5}, {4, SHIFT, 8}, },
+			{{-1, REDUCE, 4}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 25}, },
+			{{-1, REDUCE, 20}, },
+			{{-1, REDUCE, 8}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 24}, },
+			{{-1, REDUCE, 23}, },
+			{{-1, ERROR, 17}, {7, SHIFT, 31}, },
+			{{-1, REDUCE, 27}, },
+			{{-1, REDUCE, 22}, {5, SHIFT, 15}, {6, SHIFT, 16}, },
+			{{-1, ERROR, 20}, {5, SHIFT, 15}, {6, SHIFT, 16}, },
+			{{-1, ERROR, 21}, {5, SHIFT, 15}, {6, SHIFT, 16}, },
+			{{-1, ERROR, 22}, {5, SHIFT, 15}, {6, SHIFT, 16}, },
+			{{-1, ERROR, 23}, {5, SHIFT, 15}, {6, SHIFT, 16}, },
+			{{-1, REDUCE, 3}, {1, SHIFT, 5}, {4, SHIFT, 8}, },
+			{{-1, REDUCE, 5}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 9}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 6}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 10}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 12}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 26}, },
 			{{-1, REDUCE, 16}, },
-			{{-1, ERROR, 24}, {6, SHIFT, 28}, },
-			{{-1, ERROR, 25}, {6, SHIFT, 29}, },
-			{{-1, ERROR, 26}, {6, SHIFT, 30}, },
-			{{-1, REDUCE, 7}, },
-			{{-1, REDUCE, 9}, },
-			{{-1, REDUCE, 10}, },
-			{{-1, REDUCE, 11}, },
+			{{-1, REDUCE, 28}, },
+			{{-1, ERROR, 33}, {7, SHIFT, 41}, },
+			{{-1, ERROR, 34}, {7, SHIFT, 42}, },
+			{{-1, ERROR, 35}, {7, SHIFT, 43}, },
+			{{-1, ERROR, 36}, {7, SHIFT, 44}, },
+			{{-1, REDUCE, 7}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 11}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 13}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 14}, {1, SHIFT, 5}, },
+			{{-1, REDUCE, 21}, },
+			{{-1, REDUCE, 17}, },
+			{{-1, REDUCE, 18}, },
+			{{-1, REDUCE, 19}, },
+			{{-1, REDUCE, 15}, {1, SHIFT, 5}, },
         };*/
     private static int[][][] gotoTable;
 /*      {
 			{{-1, 2}, },
 			{{-1, 3}, },
-			{{-1, 8}, },
-			{{-1, 9}, {8, 19}, },
-			{{-1, 10}, {8, 20}, {9, 21}, {19, 27}, },
-			{{-1, 13}, {16, 24}, {17, 25}, {18, 26}, },
-			{{-1, 14}, {15, 23}, },
-			{{-1, 15}, },
+			{{-1, 9}, },
+			{{-1, 10}, {9, 24}, },
+			{{-1, 11}, {9, 25}, {10, 27}, {24, 37}, },
+			{{-1, 12}, {14, 30}, {26, 30}, {28, 30}, {29, 30}, {38, 30}, {39, 30}, {40, 30}, {45, 30}, },
+			{{-1, 13}, },
+			{{-1, 17}, {20, 33}, {21, 34}, {22, 35}, {23, 36}, },
+			{{-1, 18}, {19, 32}, },
+			{{-1, 14}, {9, 26}, {10, 28}, {11, 29}, {24, 38}, {25, 39}, {27, 40}, {37, 45}, },
+			{{-1, 19}, },
         };*/
     private static String[] errorMessages;
 /*      {
 			"expecting: 'Title:'",
 			"expecting: ' '",
 			"expecting: EOF",
-			"expecting: 'As a', 'I want', 'So that', EOF",
+			"expecting: 'Scenario:', 'As a', 'I want', 'So that', EOF",
 			"expecting: ' ', word",
-			"expecting: 'I want', 'So that', EOF",
-			"expecting: 'So that', EOF",
+			"expecting: 'Scenario:', 'I want', 'So that', EOF",
+			"expecting: 'Scenario:', 'So that', EOF",
+			"expecting: 'Scenario:', EOF",
 			"expecting: ' ', word, endl",
 			"expecting: endl",
         };*/
     private static int[] errors;
 /*      {
-			0, 1, 2, 3, 4, 1, 1, 1, 5, 6, 2, 7, 7, 8, 7, 7, 4, 4, 4, 6, 2, 2, 3, 7, 8, 8, 8, 2, 5, 6, 2, 
+			0, 1, 2, 3, 4, 1, 1, 1, 1, 5, 6, 7, 7, 7, 7, 8, 8, 9, 8, 8, 4, 4, 4, 4, 6, 7, 7, 7, 7, 7, 7, 3, 8, 9, 9, 9, 9, 7, 7, 7, 7, 7, 5, 6, 7, 7, 
         };*/
 
     static 

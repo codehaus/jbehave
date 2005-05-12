@@ -3,7 +3,6 @@
 package com.thoughtworks.jbehave.story.codegen.sablecc.node;
 
 import java.util.*;
-
 import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
 
 public final class AStory extends PStory
@@ -12,6 +11,7 @@ public final class AStory extends PStory
     private PRole _role_;
     private PFeature _feature_;
     private PBenefit _benefit_;
+    private final LinkedList _scenario_ = new TypedLinkedList(new Scenario_Cast());
 
     public AStory()
     {
@@ -21,7 +21,8 @@ public final class AStory extends PStory
         PTitle _title_,
         PRole _role_,
         PFeature _feature_,
-        PBenefit _benefit_)
+        PBenefit _benefit_,
+        List _scenario_)
     {
         setTitle(_title_);
 
@@ -31,6 +32,11 @@ public final class AStory extends PStory
 
         setBenefit(_benefit_);
 
+        {
+            this._scenario_.clear();
+            this._scenario_.addAll(_scenario_);
+        }
+
     }
     public Object clone()
     {
@@ -38,7 +44,8 @@ public final class AStory extends PStory
             (PTitle) cloneNode(_title_),
             (PRole) cloneNode(_role_),
             (PFeature) cloneNode(_feature_),
-            (PBenefit) cloneNode(_benefit_));
+            (PBenefit) cloneNode(_benefit_),
+            cloneList(_scenario_));
     }
 
     public void apply(Switch sw)
@@ -146,13 +153,25 @@ public final class AStory extends PStory
         _benefit_ = node;
     }
 
+    public LinkedList getScenario()
+    {
+        return _scenario_;
+    }
+
+    public void setScenario(List list)
+    {
+        _scenario_.clear();
+        _scenario_.addAll(list);
+    }
+
     public String toString()
     {
         return ""
             + toString(_title_)
             + toString(_role_)
             + toString(_feature_)
-            + toString(_benefit_);
+            + toString(_benefit_)
+            + toString(_scenario_);
     }
 
     void removeChild(Node child)
@@ -178,6 +197,11 @@ public final class AStory extends PStory
         if(_benefit_ == child)
         {
             _benefit_ = null;
+            return;
+        }
+
+        if(_scenario_.remove(child))
+        {
             return;
         }
 
@@ -209,5 +233,44 @@ public final class AStory extends PStory
             return;
         }
 
+        for(ListIterator i = _scenario_.listIterator(); i.hasNext();)
+        {
+            if(i.next() == oldChild)
+            {
+                if(newChild != null)
+                {
+                    i.set(newChild);
+                    oldChild.parent(null);
+                    return;
+                }
+
+                i.remove();
+                oldChild.parent(null);
+                return;
+            }
+        }
+
+    }
+
+    private class Scenario_Cast implements Cast
+    {
+        public Object cast(Object o)
+        {
+            PScenario node = (PScenario) o;
+
+            if((node.parent() != null) &&
+                (node.parent() != AStory.this))
+            {
+                node.parent().removeChild(node);
+            }
+
+            if((node.parent() == null) ||
+                (node.parent() != AStory.this))
+            {
+                node.parent(AStory.this);
+            }
+
+            return node;
+        }
     }
 }

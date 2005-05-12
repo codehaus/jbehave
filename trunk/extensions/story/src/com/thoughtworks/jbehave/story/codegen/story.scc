@@ -16,6 +16,7 @@ Helpers
 	
 Tokens
 	title_keyword = 'Title:';
+	scenario_keyword = 'Scenario:';
 	as_a = 'As a';
 	i_want = 'I want';
 	so_that = 'So that';
@@ -26,7 +27,11 @@ Tokens
 Productions
 
 	story =
-		title role? feature? benefit?;
+		title
+		role?
+		feature?
+		benefit?
+		scenario*;
 		
 	title = 
 		title_keyword space phrase endl;
@@ -39,6 +44,12 @@ Productions
 		
 	benefit =
 		so_that space phrase endl;
+		
+	scenario =
+		scenario_title;
+		
+	scenario_title =
+		scenario_keyword space phrase endl;
 
 	phrase = 
 		word_or_space+;

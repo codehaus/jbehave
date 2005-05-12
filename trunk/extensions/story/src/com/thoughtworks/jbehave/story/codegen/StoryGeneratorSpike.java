@@ -28,9 +28,6 @@ import com.thoughtworks.jbehave.story.codegen.domain.ContextDetails;
 import com.thoughtworks.jbehave.story.codegen.domain.OutcomeDetails;
 import com.thoughtworks.jbehave.story.codegen.domain.ScenarioDetails;
 import com.thoughtworks.jbehave.story.codegen.domain.StoryDetails;
-import com.thoughtworks.jbehave.story.codegen.parser.AntlrStoryParser;
-import com.thoughtworks.jbehave.story.codegen.parser.StoryLexer;
-import com.thoughtworks.jbehave.story.codegen.parser.StoryTreeWalker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -63,20 +60,20 @@ public class StoryGeneratorSpike {
     }
 
     private static void generateOtherStuff(VelocityContext vcontext, StoryDetails story, VelocityEngine ve) throws Exception {
-        List scenarios = story.getScenarios();
+        List scenarios = story.scenarios;
         for (int i = 0; i < scenarios.size(); i++) {
             ScenarioDetails scenario = (ScenarioDetails) scenarios.get(i);
-            ContextDetails context = scenario.getContext();
+            ContextDetails context = scenario.context;
             givens(context, ve, vcontext);
-            event(scenario.getEvent(), ve, vcontext);
-            expectations(scenario.getOutcome(), ve, vcontext);
+            event(scenario.event, ve, vcontext);
+            expectations(scenario.outcome, ve, vcontext);
 
         }
     }
 
     private static void expectations(OutcomeDetails outcome, VelocityEngine ve, VelocityContext vcontext) throws Exception {
         Template outcomeTemplate = ve.getTemplate("templates/Expectation.vm");
-        List expectations = outcome.getExpectations();
+        List expectations = outcome.expectations;
         for (int i = 0; i < expectations.size(); i++) {
             BasicDetails expectation = (BasicDetails) expectations.get(i);
             vcontext.put("expectation", expectation.getClassName());
@@ -98,7 +95,7 @@ public class StoryGeneratorSpike {
     }
 
     private static void givens(ContextDetails context, VelocityEngine ve, VelocityContext vcontext) throws Exception {
-        List givens = context.getGivens();
+        List givens = context.givens;
         Template givenTemplate = ve.getTemplate("templates/Given.vm");
         for (int j = 0; j < givens.size(); j++) {
             BasicDetails given = (BasicDetails) givens.get(j);
@@ -132,12 +129,7 @@ public class StoryGeneratorSpike {
 //                "endStory");
 
         Reader r  = new FileReader("analysis/user withdraws cash.txt");
-        StoryLexer lexer = new StoryLexer(r);
-        AntlrStoryParser parser = new AntlrStoryParser(lexer);
-
-        parser.story();
-        StoryTreeWalker walker = new StoryTreeWalker();
-        StoryDetails details = walker.storyDetail(parser.getAST());
+        StoryDetails details = null;
         return details;
     }
 }
