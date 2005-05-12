@@ -3,7 +3,6 @@
 package com.thoughtworks.jbehave.story.codegen.sablecc.analysis;
 
 import java.util.*;
-
 import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
 
 public class AnalysisAdapter implements Analysis
@@ -94,6 +93,16 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAScenario(AScenario node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAScenarioTitle(AScenarioTitle node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAPhrase(APhrase node)
     {
         defaultCase(node);
@@ -110,6 +119,11 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseTTitleKeyword(TTitleKeyword node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTScenarioKeyword(TScenarioKeyword node)
     {
         defaultCase(node);
     }

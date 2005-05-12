@@ -15,15 +15,7 @@ import java.util.List;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class OutcomeDetails {
-    private final List expectations = new ArrayList();
-    
-    public void addExpectation(BasicDetails expectation) {
-        expectations.add(expectation);
-    }
-    
-    public List getExpectations() {
-        return expectations;
-    }
+    public final List expectations = new ArrayList();
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();

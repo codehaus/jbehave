@@ -13,19 +13,8 @@ import com.thoughtworks.jbehave.core.util.ConvertCase;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class BasicDetails {
-    private final String name;
-    private final String description;
+    public String name = "";
 
-    public BasicDetails(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-    public String description() {
-        return description;
-    }
-    public String getName() {
-        return name;
-    }
     public String getClassName() {
         return new ConvertCase(name).toCamelCase();
     }
@@ -35,10 +24,10 @@ public class BasicDetails {
         if (obj == this) return true;
         if (!(obj instanceof BasicDetails)) return false;
         BasicDetails that = (BasicDetails) obj;
-        return this.name.equals(that.name) && this.description.equals(that.description);
+        return this.name.equals(that.name);
     }
     
     public String toString() {
-        return name + ", " + description + "\n";
+        return name + "\n";
     }
 }

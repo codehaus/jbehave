@@ -8,8 +8,6 @@
 package com.thoughtworks.jbehave.story;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
-import com.thoughtworks.jbehave.story.codegen.parser.SimpleStoryParserBehaviour;
-import com.thoughtworks.jbehave.story.codegen.parser.StoryTreeWalkerBehaviour;
 import com.thoughtworks.jbehave.story.codegen.parser.TextStoryParserBehaviour;
 import com.thoughtworks.jbehave.story.domain.GivenScenarioBehaviour;
 import com.thoughtworks.jbehave.story.domain.NarrativeBehaviour;
@@ -29,8 +27,6 @@ import com.thoughtworks.jbehave.story.visitor.VisitableArrayListBehaviour;
 public class AllBehaviourClasses extends Object implements BehaviourClassContainer {
     public Class[] getBehaviourClasses() {
         return new Class[] {
-                SimpleStoryParserBehaviour.class,
-                StoryTreeWalkerBehaviour.class, // TODO remove me
                 TextStoryParserBehaviour.class,
 				GivenScenarioBehaviour.class,
                 NarrativeBehaviour.class,
@@ -42,7 +38,7 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
 				PlainTextRendererBehaviour.class, // TODO remove me
                 StoryVerifierBehaviour.class,
                 VisitableArrayListBehaviour.class,
-                VisitingScenarioVerifierBehaviour.class
+                VisitingScenarioVerifierBehaviour.class,
         };
     }
 }

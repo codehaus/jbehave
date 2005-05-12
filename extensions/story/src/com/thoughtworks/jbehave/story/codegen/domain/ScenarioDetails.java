@@ -11,34 +11,14 @@ package com.thoughtworks.jbehave.story.codegen.domain;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class ScenarioDetails {
-    private final ContextDetails context;
-    private final BasicDetails event;
-    private final OutcomeDetails outcome;
-    private final String name;
+    public String name = "";
+    public ContextDetails context = new ContextDetails();
+    public BasicDetails event = new BasicDetails();
+    public OutcomeDetails outcome = new OutcomeDetails();
 
-    public ScenarioDetails(String name, ContextDetails context, BasicDetails event, OutcomeDetails outcome) {
-        this.name = name;
-        this.context = context;
-        this.event = event;
-        this.outcome = outcome;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public ContextDetails getContext() {
-        return context;
-    }
-    
-    public BasicDetails getEvent() {
-        return event;
-    }
-    
-    public OutcomeDetails getOutcome() {
-        return outcome;
-    }
-    
+	public ScenarioDetails() {
+	}
+	
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
@@ -56,7 +36,7 @@ public class ScenarioDetails {
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(name);
-        buffer.append(";\n");
+        buffer.append("\n");
         buffer.append(context.toString());
         buffer.append(event.toString());
         buffer.append(outcome.toString());

@@ -17,11 +17,14 @@ public interface Analysis extends Switch
     void caseARole(ARole node);
     void caseAFeature(AFeature node);
     void caseABenefit(ABenefit node);
+    void caseAScenario(AScenario node);
+    void caseAScenarioTitle(AScenarioTitle node);
     void caseAPhrase(APhrase node);
     void caseAWordWordOrSpace(AWordWordOrSpace node);
     void caseASpaceWordOrSpace(ASpaceWordOrSpace node);
 
     void caseTTitleKeyword(TTitleKeyword node);
+    void caseTScenarioKeyword(TScenarioKeyword node);
     void caseTAsA(TAsA node);
     void caseTIWant(TIWant node);
     void caseTSoThat(TSoThat node);
