@@ -3,10 +3,10 @@ package com.thoughtworks.jbehave.story.visitor;
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
 import com.thoughtworks.jbehave.story.domain.Context;
 import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.Expectation;
+import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Outcome;
+import com.thoughtworks.jbehave.story.domain.Outcomes;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.domain.Story;
 
@@ -34,9 +34,9 @@ public class VisitorSupport implements Visitor {
 	public void visitEvent(Event event) {
 	}
 
-	public void visitOutcome(Outcome outcome) {
+	public void visitOutcome(Outcomes outcome) {
 	}
 
-	public void visitExpectation(Expectation expectation) {
+	public void visitExpectation(Outcome expectation) {
 	}
 }

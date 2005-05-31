@@ -14,5 +14,5 @@ import com.thoughtworks.jbehave.story.visitor.Visitable;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Event extends Visitable, UsingMocks {
-    void occurIn(Environment environment) throws Exception;
+    void occurIn(World world) throws Exception;
 }

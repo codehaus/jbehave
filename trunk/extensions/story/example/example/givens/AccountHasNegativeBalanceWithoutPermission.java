@@ -7,15 +7,15 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 
 
 /** balance = -50, overdraft limit = 0 */
 public class AccountHasNegativeBalanceWithoutPermission extends GivenUsingMiniMock {
-    public void setUp(Environment environment) throws Exception {
-        new AccountIsOverdrawn().setUp(environment);
-        new AccountDoesNotHaveOverdraftPermission().setUp(environment);
+    public void setUp(World world) throws Exception {
+        new AccountIsOverdrawn().setUp(world);
+        new AccountDoesNotHaveOverdraftPermission().setUp(world);
     }
 
     public String getDescription() {

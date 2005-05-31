@@ -4,17 +4,17 @@ import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.story.visitor.Visitor;
 
-public class OutcomeBehaviour extends UsingMiniMock {
+public class OutcomesBehaviour extends UsingMiniMock {
 	public void shouldPassItselfAndComponentsToVisitorInCorrectOrder() throws Exception {
 		// given...
 		Visitor visitor = (Visitor) mock(Visitor.class);
-		Mock expectation = mock(Expectation.class);
-		Outcome outcome = new Outcome((Expectation)expectation);
+		Mock expectation = mock(Outcome.class);
+		Outcomes outcomes = new Outcomes((Outcome)expectation);
 
 		// expect...
 		expectation.expects("accept").with(visitor);
 		
 		// when...
-		outcome.accept((Visitor)visitor);
+		outcomes.accept((Visitor)visitor);
 	}
 }

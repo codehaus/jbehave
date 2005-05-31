@@ -9,7 +9,7 @@ package example.givens;
 
 
 import com.thoughtworks.jbehave.core.minimock.Mock;
-import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 
 import example.domain.Account;
@@ -17,8 +17,8 @@ import example.domain.Account;
 /** set balance = 50 */
 public class AccountIsInCredit extends GivenUsingMiniMock {
     
-    public void setUp(Environment environment) throws Exception {
-        Mock account = (Mock) environment.get("account", mock(Account.class));
+    public void setUp(World world) throws Exception {
+        Mock account = (Mock) world.get("account", mock(Account.class));
         account.stubs("getBalance").withNoArguments().will(returnValue(50));
     }
 }

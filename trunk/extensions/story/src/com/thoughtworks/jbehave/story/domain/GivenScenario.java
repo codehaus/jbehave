@@ -13,7 +13,7 @@ import com.thoughtworks.jbehave.story.invoker.VisitingScenarioInvoker;
 
 /**
  * Adapter to make a {@link Scenario} look like a {@link GivenUsingMiniMock}
- * so it can be used to set up a {@link Environment}
+ * so it can be used to set up a {@link World}
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
@@ -29,9 +29,9 @@ public class GivenScenario extends GivenUsingMiniMock {
         return scenario;
     }
 
-    public void setUp(Environment environment) throws Exception {
+    public void setUp(World world) throws Exception {
         scenario.accept(new VisitingScenarioInvoker(scenario.getStory().title(), 
-        		environment));
+        		world));
     }
 
     public Context getContext() {
@@ -43,7 +43,7 @@ public class GivenScenario extends GivenUsingMiniMock {
     public String getDescription() {
         return scenario.getDescription();
     }
-    public Outcome getOutcome() {
+    public Outcomes getOutcome() {
         return scenario.getOutcome();
     }
     public Story getStory() {

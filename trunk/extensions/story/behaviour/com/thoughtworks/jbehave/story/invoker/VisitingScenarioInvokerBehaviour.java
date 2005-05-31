@@ -9,9 +9,9 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.result.Result;
-import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.Expectation;
+import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
@@ -32,11 +32,11 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     
     private VisitingScenarioInvoker invoker;
-    private Environment environmentStub;
+    private World worldStub;
     
     public void setUp() {
-        environmentStub = (Environment)stub(Environment.class);
-        invoker = new VisitingScenarioInvoker("story", environmentStub);
+        worldStub = (World)stub(World.class);
+        invoker = new VisitingScenarioInvoker("story", worldStub);
     }
     
     public void shouldDispatchItselfAsVisitorToScenario() throws Exception {
@@ -55,7 +55,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         Mock given = mock(Given.class);
         
         // expect...
-        given.expects("setUp").with(environmentStub);
+        given.expects("setUp").with(worldStub);
         
         // when...
         invoker.visitGiven((Given)given);
@@ -63,13 +63,13 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
 
     public void shouldSetExpectationInEnvironment() throws Exception {
         // given...
-        Mock expectation = mock(Expectation.class);
+        Mock expectation = mock(Outcome.class);
         
         // expect...
-        expectation.expects("setExpectationIn").with(environmentStub);
+        expectation.expects("setExpectationIn").with(worldStub);
         
         // when...
-        invoker.visitExpectation((Expectation)expectation);
+        invoker.visitExpectation((Outcome)expectation);
     }
     
     public void shouldMakeEventOccurInEnvironment() throws Exception {
@@ -77,7 +77,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         Mock event = mock(Event.class);
         
         // expect...
-        event.expects("occurIn").with(environmentStub);
+        event.expects("occurIn").with(worldStub);
         // when...
         invoker.visitEvent((Event)event);
     }
@@ -86,7 +86,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         // given...
         Mock given = mock(Given.class);
         Exception cause = new Exception("oops");
-        given.expects("setUp").with(environmentStub).will(throwException(cause));
+        given.expects("setUp").with(worldStub).will(throwException(cause));
         
         // when...
         try {
@@ -102,7 +102,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         // given...
         Mock event = mock(Event.class);
         Exception cause = new Exception("oops");
-        event.expects("occurIn").with(environmentStub).will(throwException(cause));
+        event.expects("occurIn").with(worldStub).will(throwException(cause));
         
         // when...
         try {
@@ -116,15 +116,15 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     
     public void shouldThrowNestedVerificationExceptionWhenExpectationThrowsException() throws Exception {
         // given...
-        Mock expectation = mock(Expectation.class);
+        Mock expectation = mock(Outcome.class);
         Exception cause = new VerificationException("oops");
         
         // expect...
-        expectation.expects("setExpectationIn").with(environmentStub).will(throwException(cause));
+        expectation.expects("setExpectationIn").with(worldStub).will(throwException(cause));
         
         // when...
         try {
-            invoker.visitExpectation((Expectation) expectation);
+            invoker.visitExpectation((Outcome) expectation);
             Verify.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
@@ -223,13 +223,13 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
 		Mock scenario = mock(Scenario.class);
 		InvocationHandler dispatchItself = new InvocationHandler() {
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				((Visitor)args[0]).visitExpectation((Expectation) proxy);
+				((Visitor)args[0]).visitExpectation((Outcome) proxy);
 				return null;
 			}
 		};
 		
         // expect...
-        Mock expectation = mock(Expectation.class);
+        Mock expectation = mock(Outcome.class);
 		expectation.expects("accept").will(dispatchItself);
         expectation.expects("containsMocks").will(returnValue(true));
         scenario.expects("accept").will(visitComponent((Visitable) expectation));
@@ -242,24 +242,24 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     }
     
     public void shouldClearEnvironmentOnEachInvocationOfAScenario() {
-    	Mock environmentMock = mock(Environment.class);
-    	environmentMock.expects("clear");
-    	Environment environment = (Environment)environmentMock;
+    	Mock worldMock = mock(World.class);
+    	worldMock.expects("clear");
+    	World world = (World)worldMock;
     	
     	Scenario scenario = (Scenario)stub(Scenario.class);
     	
-    	invoker = new VisitingScenarioInvoker("story", environment);
+    	invoker = new VisitingScenarioInvoker("story", world);
     	invoker.invoke(scenario);
     	
-    	environmentMock.verify();
+    	worldMock.verify();
     }
     
     public void shouldSetExpectationsOnEachInvocationOfAScenario() {
 		Mock scenario = mock(Scenario.class);
-    	Mock expectation = mock(Expectation.class);
+    	Mock expectation = mock(Outcome.class);
 		InvocationHandler dispatchItself = new InvocationHandler() {
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				((Visitor)args[0]).visitExpectation((Expectation) proxy);
+				((Visitor)args[0]).visitExpectation((Outcome) proxy);
 				return null;
 			}
 		};

@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class HashMapEnvironment implements Environment {
+public class HashMapWorld implements World {
     private final Map map = new HashMap();
 
     public Object get(String key, Object defaultValue) {

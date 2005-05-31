@@ -23,11 +23,11 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     protected final Context context;
     protected final Event event;
-    protected final Outcome outcome;
+    protected final Outcomes outcome;
     protected final String name;
     protected final Story story;
     
-    public ScenarioUsingMiniMock(String name, Story story, Context context, Event event, Outcome outcome) {
+    public ScenarioUsingMiniMock(String name, Story story, Context context, Event event, Outcomes outcome) {
         this.name = name;
         this.story = story;
         this.context = context;
@@ -35,7 +35,7 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
         this.outcome = outcome;
     }
     
-    public ScenarioUsingMiniMock(String name, Story story, Event event, Outcome outcome) {
+    public ScenarioUsingMiniMock(String name, Story story, Event event, Outcomes outcome) {
         this(name, story, Context.NULL, event, outcome);
     }
     
@@ -52,7 +52,7 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     public Event getEvent() {
         return event;
     }
-    public Outcome getOutcome() {
+    public Outcomes getOutcome() {
         return outcome;
     }
     

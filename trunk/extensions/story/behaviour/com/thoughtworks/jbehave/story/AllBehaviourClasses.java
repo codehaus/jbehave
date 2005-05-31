@@ -11,7 +11,7 @@ import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
 import com.thoughtworks.jbehave.story.codegen.parser.TextStoryParserBehaviour;
 import com.thoughtworks.jbehave.story.domain.GivenScenarioBehaviour;
 import com.thoughtworks.jbehave.story.domain.NarrativeBehaviour;
-import com.thoughtworks.jbehave.story.domain.OutcomeBehaviour;
+import com.thoughtworks.jbehave.story.domain.OutcomesBehaviour;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.story.domain.StoryBehaviour;
 import com.thoughtworks.jbehave.story.invoker.VisitingScenarioInvokerBehaviour;
@@ -30,7 +30,7 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
                 TextStoryParserBehaviour.class,
 				GivenScenarioBehaviour.class,
                 NarrativeBehaviour.class,
-                OutcomeBehaviour.class,
+                OutcomesBehaviour.class,
                 ScenarioUsingMiniMockBehaviour.class,
                 StoryBehaviour.class,
                 VisitingScenarioInvokerBehaviour.class,

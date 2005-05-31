@@ -17,9 +17,9 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public abstract class ExpectationUsingMiniMock extends UsingMiniMock implements Expectation {
-    public abstract void setExpectationIn(Environment environment);
-    public abstract void verify(Environment environment);
+public abstract class ExpectationUsingMiniMock extends UsingMiniMock implements Outcome {
+    public abstract void setExpectationIn(World world);
+    public abstract void verify(World world);
 	public void accept(Visitor visitor) {
 		visitor.visitExpectation(this);
 	}

@@ -20,12 +20,12 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 	public void shouldPassScenarioInvokerToGivenExpectationAndEvent() throws Exception {
 		Mock givenMock = mock(Given.class);
 		Mock eventMock = mock(Event.class);
-		Mock expectationMock = mock(Expectation.class);
+		Mock expectationMock = mock(Outcome.class);
 		
 		Given given = (Given)givenMock;
 		Event event = (Event)eventMock;
-		Expectation expectation = (Expectation)expectationMock;
-		Environment environment = (Environment)stub(Environment.class);
+		Outcome expectation = (Outcome)expectationMock;
+		World world = (World)stub(World.class);
 		Visitor visitor = (Visitor)stub(Visitor.class);
 		
 		givenMock.expects("accept");
@@ -33,7 +33,7 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		eventMock.expects("accept");
 		
 	    Context context = new Context(given);
-	    Outcome outcome = new Outcome(expectation);
+	    Outcomes outcomes = new Outcomes(expectation);
 	    
 	    Story story = new Story(new Narrative("", "", ""),
 	    		new AcceptanceCriteria());
@@ -42,30 +42,30 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 	    		story,
 	    		context,
 				event,
-				outcome);
+				outcomes);
 	    
 	    Given givenScenario = new GivenScenario(scenario);
 	    
-	    givenScenario.setUp(environment);
+	    givenScenario.setUp(world);
 	}
 	
 	public void shouldNotClearEnvironmentWhenVisited() {
 		Given given = (Given)stub(Given.class);
 		Event event = (Event)stub(Event.class);
-		Expectation expectation = (Expectation)stub(Expectation.class);
-		Mock environmentMock = mock(Environment.class);
-		Environment environment = (Environment)environmentMock;
+		Outcome expectation = (Outcome)stub(Outcome.class);
+		Mock worldMock = mock(World.class);
+		World world = (World)worldMock;
 		Story story = new Story(new Narrative("", "", ""), new AcceptanceCriteria());
 	    Context context = new Context(given);
-	    Outcome outcome = new Outcome(expectation);
+	    Outcomes outcomes = new Outcomes(expectation);
 		
-	    environmentMock.expects("clear").never();
+	    worldMock.expects("clear").never();
 	    
 		Scenario scenario = new ScenarioUsingMiniMock("scenario",
 				story,
 				context,
 				event,
-				outcome);
+				outcomes);
 		
 		Given givenScenario = new GivenScenario(scenario);
 		

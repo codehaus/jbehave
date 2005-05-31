@@ -2,11 +2,11 @@ package ${basePackage};
 
 
 import com.thoughtworks.jbehave.extensions.story.domain.EventUsingMiniMock;
-import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import com.thoughtworks.jbehave.extensions.story.domain.World;
 
 public class ${event} extends EventUsingMiniMock {
 
-        public void occurIn(Environment environment) throws Exception {
+        public void occurIn(World world) throws Exception {
             // add your code here
         }
 }

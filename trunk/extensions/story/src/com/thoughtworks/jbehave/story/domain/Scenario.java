@@ -22,5 +22,5 @@ public interface Scenario extends Visitable {
 
     Event getEvent();
 
-    Outcome getOutcome();
+    Outcomes getOutcome();
 }

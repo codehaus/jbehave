@@ -13,11 +13,11 @@ import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
 import com.thoughtworks.jbehave.story.domain.Context;
 import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.Expectation;
+import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Outcome;
+import com.thoughtworks.jbehave.story.domain.Outcomes;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.domain.Story;
 import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
@@ -77,12 +77,12 @@ public class PlainTextRenderer extends VisitorSupport {
         out.println(outcomeString);
     }
 
-    public void visitOutcome(Outcome outcome) {
+    public void visitOutcome(Outcomes outcome) {
         nextWord = "Then ";
         outcomeString = "";
     }
 
-    public void visitExpectation(Expectation expectation) {
+    public void visitExpectation(Outcome expectation) {
         outcomeString = outcomeString + nextWord + new ConvertCase(expectation).toSeparateWords();
         nextWord = System.getProperty("line.separator") + "and ";
     }

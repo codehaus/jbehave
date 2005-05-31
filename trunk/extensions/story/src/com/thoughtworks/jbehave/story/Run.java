@@ -8,8 +8,8 @@
 package com.thoughtworks.jbehave.story;
 import java.io.OutputStreamWriter;
 
-import com.thoughtworks.jbehave.story.domain.Environment;
-import com.thoughtworks.jbehave.story.domain.HashMapEnvironment;
+import com.thoughtworks.jbehave.story.domain.World;
+import com.thoughtworks.jbehave.story.domain.HashMapWorld;
 import com.thoughtworks.jbehave.story.domain.Story;
 import com.thoughtworks.jbehave.story.invoker.ScenarioInvoker;
 import com.thoughtworks.jbehave.story.invoker.VisitingScenarioInvoker;
@@ -28,9 +28,9 @@ public class Run {
         
         try {
             Story story = (Story) Class.forName(args[0]).newInstance();
-            Environment environment = new HashMapEnvironment();
-            ScenarioInvoker scenarioInvoker = new VisitingScenarioInvoker(story.getClass().getName(), environment);
-            ScenarioVerifier scenarioVerifier = new VisitingScenarioVerifier(story.getClass().getName(), environment);
+            World world = new HashMapWorld();
+            ScenarioInvoker scenarioInvoker = new VisitingScenarioInvoker(story.getClass().getName(), world);
+            ScenarioVerifier scenarioVerifier = new VisitingScenarioVerifier(story.getClass().getName(), world);
             StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker, scenarioVerifier);
             PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(System.out));
             storyVerifier.addListener(listener);

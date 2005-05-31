@@ -10,11 +10,11 @@ package com.thoughtworks.jbehave.story.domain;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Context;
-import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.ExpectationUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.Outcome;
+import com.thoughtworks.jbehave.story.domain.Outcomes;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Story;
 import com.thoughtworks.jbehave.story.visitor.Visitor;
@@ -28,17 +28,17 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
         Story storyStub = new Story(null, null);
         Context contextStub = new Context(new GivenUsingMiniMock[0]);
         EventUsingMiniMock eventStub = new EventUsingMiniMock() {
-            public void occurIn(Environment environment) throws Exception {}
+            public void occurIn(World world) throws Exception {}
         };
-        Outcome outcomeStub = new Outcome(new ExpectationUsingMiniMock[0]);
+        Outcomes outcomesStub = new Outcomes(new ExpectationUsingMiniMock[0]);
         
-        ScenarioUsingMiniMock scenario = new ScenarioUsingMiniMock("scenario", storyStub, contextStub, eventStub, outcomeStub);
+        ScenarioUsingMiniMock scenario = new ScenarioUsingMiniMock("scenario", storyStub, contextStub, eventStub, outcomesStub);
         Mock visitor = mock(Visitor.class);
 
         // expect...
         visitor.expects("visitScenario").with(scenario);
         visitor.expects("visitContext").with(contextStub).after("visitScenario");
-        visitor.expects("visitOutcome").with(outcomeStub).after("visitContext");
+        visitor.expects("visitOutcome").with(outcomesStub).after("visitContext");
         visitor.expects("visitEvent").with(eventStub).after("visitOutcome");
         
         // when...
