@@ -7,13 +7,13 @@
  */
 package example.events;
 
-import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
 
 
 public class UserRequestsCash extends EventUsingMiniMock {
     
-    public void occurIn(Environment environment) throws Exception {
+    public void occurIn(World world) throws Exception {
 
     }
 

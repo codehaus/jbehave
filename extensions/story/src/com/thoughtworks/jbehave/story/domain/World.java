@@ -10,21 +10,21 @@ package com.thoughtworks.jbehave.story.domain;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface Environment {
+public interface World {
     /**
-     * Get something out of the environment.
+     * Get a value out of the world.
      * 
      * If it doesn't exist, store the default value.
      */
     Object get(String key, Object defaultValue);
     
     /**
-     * Put a value into the environment, replacing any existing value.
+     * Put a value into the world, replacing any existing value.
      */
     void put(String key, Object value);
 
     /**
-     * Reset the environment to its default state
+     * Reset the world to its default state
      */
     void clear();
 }

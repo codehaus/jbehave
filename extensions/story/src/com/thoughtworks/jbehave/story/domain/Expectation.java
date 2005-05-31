@@ -14,6 +14,6 @@ import com.thoughtworks.jbehave.story.visitor.Visitable;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Expectation extends Visitable, UsingMocks {
-    void setExpectationIn(Environment environment);
-    void verify(Environment environment);
+    void setExpectationIn(World world);
+    void verify(World world);
 }

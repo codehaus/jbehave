@@ -8,10 +8,10 @@ package com.thoughtworks.jbehave.story.visitor;
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
 import com.thoughtworks.jbehave.story.domain.Context;
 import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.Expectation;
+import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Outcome;
+import com.thoughtworks.jbehave.story.domain.Outcomes;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.domain.Story;
 
@@ -26,6 +26,6 @@ public interface Visitor {
 	void visitContext(Context context);
 	void visitGiven(Given given);
 	void visitEvent(Event event);
-	void visitOutcome(Outcome outcome);
-	void visitExpectation(Expectation expectation);
+	void visitOutcome(Outcomes outcome);
+	void visitExpectation(Outcome expectation);
 }

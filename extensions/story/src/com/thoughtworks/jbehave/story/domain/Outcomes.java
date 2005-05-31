@@ -18,23 +18,23 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Outcome implements Visitable {
+public class Outcomes implements Visitable {
 	private final VisitableArrayList expectations = new VisitableArrayList();
 
-    public Outcome(Expectation[] expectations) {
+    public Outcomes(Outcome[] expectations) {
         this.expectations.addAll(Arrays.asList(expectations));
     }
     
-    public Outcome(Expectation expectation) {
-        this(new Expectation[] {expectation});
+    public Outcomes(Outcome expectation) {
+        this(new Outcome[] {expectation});
     }
     
-    public Outcome(Expectation expectation1, Expectation expectation2) {
-        this(new Expectation[] {expectation1, expectation2});
+    public Outcomes(Outcome expectation1, Outcome expectation2) {
+        this(new Outcome[] {expectation1, expectation2});
     }
     
-    public Outcome(Expectation expectation1, Expectation expectation2, Expectation expectation3) {
-        this(new Expectation[] {expectation1, expectation2, expectation3});
+    public Outcomes(Outcome expectation1, Outcome expectation2, Outcome expectation3) {
+        this(new Outcome[] {expectation1, expectation2, expectation3});
     }
     
     public List expectations() {

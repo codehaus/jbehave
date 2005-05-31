@@ -14,12 +14,12 @@ import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
 import com.thoughtworks.jbehave.story.domain.Context;
-import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.ExpectationUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Outcome;
+import com.thoughtworks.jbehave.story.domain.Outcomes;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Story;
 import com.thoughtworks.jbehave.story.renderer.PlainTextRenderer;
@@ -81,7 +81,7 @@ public class PlainTextRendererBehaviour {
 					this,
 					new Context(new EverythingCompiles()),
 					new ICrossMyFingers(),
-					new Outcome(new PlainTextRendererShouldWork()));
+					new Outcomes(new PlainTextRendererShouldWork()));
 			addScenario(firstScenario);
 			
 			ScenarioUsingMiniMock secondScenario = new ScenarioUsingMiniMock(
@@ -89,39 +89,39 @@ public class PlainTextRendererBehaviour {
 					this,
 					new Context(firstScenario, new FirstScenarioRanWithoutFallingOver()),
 					new IDoNothing(),
-					new Outcome(new PlainTextRendererShouldStillWork(),
+					new Outcomes(new PlainTextRendererShouldStillWork(),
 							new BehaviourClassShouldNotFail()));
 			addScenario(secondScenario);
 		}
 	}
 	
 	private static class EverythingCompiles extends GivenUsingMiniMock {
-		public void setUp(Environment environment) throws Exception {}
+		public void setUp(World world) throws Exception {}
 	}
 	
 	private static class FirstScenarioRanWithoutFallingOver extends GivenUsingMiniMock {
-		public void setUp(Environment environment) throws Exception {}
+		public void setUp(World world) throws Exception {}
 	}
 	
 	private static class ICrossMyFingers extends EventUsingMiniMock {
-		public void occurIn(Environment environment) throws Exception {}
+		public void occurIn(World world) throws Exception {}
 	}
 	
 	private static class IDoNothing extends EventUsingMiniMock {
-		public void occurIn(Environment environment) throws Exception {}
+		public void occurIn(World world) throws Exception {}
 	}
 	
 	public static class PlainTextRendererShouldWork extends ExpectationUsingMiniMock {
-		public void setExpectationIn(Environment environment) {}
-		public void verify(Environment environment) {}
+		public void setExpectationIn(World world) {}
+		public void verify(World world) {}
 	}
 	
 	public static class PlainTextRendererShouldStillWork extends ExpectationUsingMiniMock {
-		public void setExpectationIn(Environment environment) {}
-		public void verify(Environment environment) {}
+		public void setExpectationIn(World world) {}
+		public void verify(World world) {}
 	}
 	public static class BehaviourClassShouldNotFail extends ExpectationUsingMiniMock {
-		public void setExpectationIn(Environment environment) {}
-		public void verify(Environment environment) {}
+		public void setExpectationIn(World world) {}
+		public void verify(World world) {}
 	}
 }

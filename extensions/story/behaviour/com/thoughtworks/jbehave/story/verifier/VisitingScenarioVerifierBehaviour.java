@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.Environment;
-import com.thoughtworks.jbehave.story.domain.Expectation;
+import com.thoughtworks.jbehave.story.domain.World;
+import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
 import com.thoughtworks.jbehave.story.visitor.Visitor;
@@ -25,11 +25,11 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
     private VisitingScenarioVerifier verifier;
     private Mock scenario;
-    private Environment environmentStub;
+    private World worldStub;
     
     public void setUp() {
-        environmentStub = (Environment)stub(Environment.class);
-        verifier = new VisitingScenarioVerifier("story", environmentStub);
+        worldStub = (World)stub(World.class);
+        verifier = new VisitingScenarioVerifier("story", worldStub);
         scenario = mock(Scenario.class);
     }
     
@@ -44,20 +44,20 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
     
     public void shouldVerifyExpectationInEnvironment() throws Exception {
         // given...
-        Mock expectation = mock(Expectation.class);
+        Mock expectation = mock(Outcome.class);
 
         // expect...
-        expectation.expects("verify").with(same(environmentStub));
+        expectation.expects("verify").with(same(worldStub));
         
         // when...
-        verifier.visitExpectation((Expectation)expectation);
+        verifier.visitExpectation((Outcome)expectation);
     }
         
     public void shouldReturnResultUsingMocksWhenScenarioSucceedsButExpectationUsesMocks() throws Exception {
         // expect...
-        Mock expectation = mock(Expectation.class);
+        Mock expectation = mock(Outcome.class);
         expectation.expects("containsMocks").will(returnValue(true));
-        scenario.expects("accept").will(visitExpectation((Expectation) expectation));
+        scenario.expects("accept").will(visitExpectation((Outcome) expectation));
         
         // when...
         ScenarioResult result = verifier.verify((Scenario)scenario);
@@ -67,7 +67,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
     }
     
     /** Custom invocation handler so a Scenario can pass a component to the visitor */
-    private InvocationHandler visitExpectation(final Expectation expectation) {
+    private InvocationHandler visitExpectation(final Outcome expectation) {
         return new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) {
                 if (method.getName().equals("accept")) {

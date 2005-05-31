@@ -7,17 +7,17 @@
  */
 package example.expectations;
 
-import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.ExpectationUsingMiniMock;
 
 
 
 public class ATMShouldRetainBankCard extends ExpectationUsingMiniMock {
-    public void setExpectationIn(Environment environment) {
+    public void setExpectationIn(World world) {
         throw new RuntimeException("oops");
     }
 
-    public void verify(Environment context) {
+    public void verify(World world) {
         // keep bank card
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 import com.thoughtworks.jbehave.core.UsingMocks;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
-import com.thoughtworks.jbehave.story.domain.Environment;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
 
@@ -22,13 +22,13 @@ import com.thoughtworks.jbehave.story.result.ScenarioResult;
  */
 public abstract class AbstractScenarioVisitor extends VisitorSupport {
 	protected final String storyName;
-	protected final Environment environment;
+	protected final World world;
 	protected boolean usedMocks = false;
 	protected final List listeners = new ArrayList();
 	
-	public AbstractScenarioVisitor(String storyName, Environment environment) {
+	public AbstractScenarioVisitor(String storyName, World world) {
 		this.storyName = storyName;
-        this.environment = environment;
+        this.world = world;
 	}
 
 	protected ScenarioResult giveSelfToScenario(Scenario scenario) {
