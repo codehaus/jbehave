@@ -82,7 +82,8 @@ class MockObject implements Mock, Expectation.Registry {
     public void verify() {
         try {
             for (Iterator i = expectations.iterator(); i.hasNext();) {
-                ((Expectation) i.next()).verify();
+                Expectation expectation = (Expectation) i.next();
+				expectation.verify();
             }
         }
         catch (VerificationException e) {

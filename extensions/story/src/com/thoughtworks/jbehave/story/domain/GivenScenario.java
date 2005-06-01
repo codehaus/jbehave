@@ -34,8 +34,8 @@ public class GivenScenario extends GivenUsingMiniMock {
         		world));
     }
 
-    public Context getContext() {
-        return scenario.getContext();
+    public Given getGiven() {
+        return scenario.getGiven();
     }
     public Event getEvent() {
         return scenario.getEvent();
@@ -43,7 +43,7 @@ public class GivenScenario extends GivenUsingMiniMock {
     public String getDescription() {
         return scenario.getDescription();
     }
-    public Outcomes getOutcome() {
+    public Outcome getOutcome() {
         return scenario.getOutcome();
     }
     public Story getStory() {

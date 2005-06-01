@@ -46,11 +46,13 @@ public class ExpectationBehaviour {
         Verify.not(expectation.matches("method", new Object[] { "blah" }));
     }
 
-    public void shouldNotMatchWhenInvocationsEqualMaxInvocations() throws Throwable {
+    public void shouldThrowExceptionWhenInvocationsEqualMaxInvocations() throws Throwable {
         Expectation expectation = new Expectation(null, "test").once();
         expectation.invoke(null, null, null);
-        boolean result = expectation.matches("test", null);
-        Verify.not(result);
+        try {
+			expectation.matches("test", null);
+		} catch (Exception expected) {
+		}
     }
     
     public void shouldThrowVerificationExceptionOnSecondInvokeIfExpectingOnce() throws Throwable {

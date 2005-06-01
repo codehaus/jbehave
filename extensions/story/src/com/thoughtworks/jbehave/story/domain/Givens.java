@@ -13,38 +13,51 @@ import com.thoughtworks.jbehave.story.visitor.Visitable;
 import com.thoughtworks.jbehave.story.visitor.VisitableArrayList;
 import com.thoughtworks.jbehave.story.visitor.Visitor;
 
-
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Context implements Visitable {
-    public static final Context NULL = new Context(new Given[0]);
+public class Givens implements Given {
+    public static final Givens NULL = new Givens(new Given[0]);
     
 	private final VisitableArrayList givens = new VisitableArrayList();
 	
     /** A Scenario and a bunch of givens */
-    public Context(Scenario scenario, Given[] givens) {
+    public Givens(Scenario scenario, Given[] givens) {
         this.givens.add(new GivenScenario(scenario));
         this.givens.addAll(Arrays.asList(givens));
     }
 
     /** Just one given */
-    public Context(Given given) {
+    public Givens(Given given) {
         this.givens.add(given);
     }
 
     /** A bunch of givens */
-    public Context(Given[] givens) {
+    public Givens(Given[] givens) {
         this.givens.addAll(Arrays.asList(givens));
     }
 
     /** One scenario and one given */
-    public Context(Scenario scenario, Given given) {
+    public Givens(Scenario scenario, Given given) {
         this(scenario, new Given[] {given});
     }
 
 	public void accept(Visitor visitor) {
-		visitor.visitContext(this);
 		givens.accept(visitor);
+	}
+
+	public void setUp(World world) throws Exception {
+		// TODO implement setUp
+		throw new UnsupportedOperationException("TODO");
+	}
+
+	public boolean containsMocks() {
+		// TODO implement containsMocks
+		throw new UnsupportedOperationException("TODO");
+	}
+
+	public void verifyMocks() {
+		// TODO implement verifyMocks
+		throw new UnsupportedOperationException("TODO");
 	}
 }

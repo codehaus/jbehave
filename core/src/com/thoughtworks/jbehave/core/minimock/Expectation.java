@@ -12,6 +12,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
+import com.thoughtworks.jbehave.core.exception.VerificationException;
 /**
  * Represents an expectation on a mock
  * 
@@ -37,6 +39,7 @@ public class Expectation extends MiniMockSugar {
     private Expectation after;
     private String id;
     private InvocationHandler invoker = NULL_INVOKER;
+	private VerificationException exceptionFromWhenExpectationWasConstructed;
 
     /**
      *  Construct an expectation in a default state.
@@ -46,10 +49,14 @@ public class Expectation extends MiniMockSugar {
     public Expectation(Registry registry, String methodName) {
         this.registry = registry;
         this.id = this.methodName = methodName;
+		// TODO do something with exception from Expectation c'tor
+		this.exceptionFromWhenExpectationWasConstructed = new VerificationException(methodName);
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (after != null) after.verify();
+        if (after != null) {
+			after.verify();
+        }
         Verify.that("Unexpected call to " + methodName + " (Expected " + maxInvocations + " calls)", invocations < maxInvocations);
         invocations++;
         return invoker.invoke(proxy, method, args);
@@ -57,10 +64,9 @@ public class Expectation extends MiniMockSugar {
     
     public boolean matches(String actualName, Object[] args) {
         // avoid NPEs
-        if (args == null) args = new Object[0];
-        
-        if (invocations >= maxInvocations)  return false; // no calls left
-
+        if (args == null) {
+			args = new Object[0];
+        }
         if (!methodName.equals(actualName)) return false;
         
         if (constraints != null) {
@@ -70,18 +76,31 @@ public class Expectation extends MiniMockSugar {
                 if (!constraints[i].matches(args[i])) return false;
             }
         }
+        
+        if (invocations >= maxInvocations) {
+			throw new VerificationException(methodToString() + " called more than " + maxInvocations + " times");
+        }
+
         return true;
     }
     
     public void verify() {
-        String message = "Expected method not called: " + methodName
-				+ ( constraints != null ? Arrays.asList(constraints).toString() : "[anything]");
+		String message = "Expected method not called: " + (methodToString());        
 		if (!id.equals(message)) {
 			message += " id=" + id;
 		}
-		Verify.that(message,
-				invocations >= minInvocations);
+		if (invocations < minInvocations) {
+			throw new NestedVerificationException(message, exceptionFromWhenExpectationWasConstructed);
+		}
     }
+
+	/**
+	 * Assemble the method name and signature
+	 */
+	private String methodToString() {
+		return methodName
+			+ ( constraints != null ? Arrays.asList(constraints).toString() : "[anything]");
+	}
     
     // Return value
     

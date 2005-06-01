@@ -44,20 +44,20 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
     
     public void shouldVerifyExpectationInEnvironment() throws Exception {
         // given...
-        Mock expectation = mock(Outcome.class);
+        Mock outcome = mock(Outcome.class);
 
         // expect...
-        expectation.expects("verify").with(same(worldStub));
+        outcome.expects("verify").with(same(worldStub));
         
         // when...
-        verifier.visitExpectation((Outcome)expectation);
+        verifier.visitOutcome((Outcome)outcome);
     }
         
     public void shouldReturnResultUsingMocksWhenScenarioSucceedsButExpectationUsesMocks() throws Exception {
         // expect...
-        Mock expectation = mock(Outcome.class);
-        expectation.expects("containsMocks").will(returnValue(true));
-        scenario.expects("accept").will(visitExpectation((Outcome) expectation));
+        Mock outcome = mock(Outcome.class);
+        outcome.expects("containsMocks").will(returnValue(true));
+        scenario.expects("accept").will(visitExpectation((Outcome) outcome));
         
         // when...
         ScenarioResult result = verifier.verify((Scenario)scenario);
@@ -67,12 +67,12 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
     }
     
     /** Custom invocation handler so a Scenario can pass a component to the visitor */
-    private InvocationHandler visitExpectation(final Outcome expectation) {
+    private InvocationHandler visitExpectation(final Outcome outcome) {
         return new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) {
                 if (method.getName().equals("accept")) {
                     Visitor visitor = (Visitor) args[0];
-                    visitor.visitExpectation(expectation);
+                    visitor.visitOutcome(outcome);
                 }
                 return null;
             }

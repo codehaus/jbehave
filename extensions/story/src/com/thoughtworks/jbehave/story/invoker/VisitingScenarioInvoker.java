@@ -47,10 +47,10 @@ public class VisitingScenarioInvoker extends AbstractScenarioVisitor implements 
 		}
     }
     
-    public void visitExpectation(Outcome expectation) {
+    public void visitOutcome(Outcome outcome) {
         try {
-			expectation.setExpectationIn(world);
-			checkForMocks(expectation);
+			outcome.setExpectationIn(world);
+			checkForMocks(outcome);
 		} catch (Exception e) {
 			throw new NestedVerificationException(e);
 		}

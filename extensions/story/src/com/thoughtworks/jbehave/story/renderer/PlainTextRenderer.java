@@ -11,7 +11,7 @@ import java.io.PrintStream;
 
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
-import com.thoughtworks.jbehave.story.domain.Context;
+import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.Event;
 import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Given;
@@ -29,8 +29,9 @@ import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 public class PlainTextRenderer extends VisitorSupport {
     
     private final PrintStream out;
-    private String nextWord;
-    private String outcomeString;
+	private boolean visitedAnyOutcomes = false;
+	private boolean visitedAnyGivens = false;
+	private StringBuffer outcomesText = new StringBuffer();
 
     public PlainTextRenderer(PrintStream out) {
         this.out = out;
@@ -52,39 +53,36 @@ public class PlainTextRenderer extends VisitorSupport {
         out.println();
         out.println("Scenario: " + scenario.getDescription());
         out.println();
+		visitedAnyGivens = false;
+		visitedAnyOutcomes = false;
+		outcomesText = new StringBuffer();
     }
     
-    public void visitContext(Context context) {
-        nextWord = "Given ";
-    }
-
     public void visitGiven(Given given) {
-        out.print(nextWord);
+		StringBuffer phrase = new StringBuffer();
+		phrase.append(visitedAnyGivens ? "and " : "Given ");
         if (given instanceof GivenScenario) {
             GivenScenario givenScenario = (GivenScenario) given;
-            out.print("\"" + new ConvertCase(givenScenario.getScenario().getDescription()).toSeparateWords() + "\"");
-            out.print(" from ");
-            out.println("\"" + new ConvertCase(givenScenario.getStory()).toSeparateWords() + "\"");
+            phrase.append("\"" + new ConvertCase(givenScenario.getScenario().getDescription()).toSeparateWords() + "\"")
+            	.append(" from ").append("\"" + new ConvertCase(givenScenario.getStory()).toSeparateWords() + "\"");
         }
         else {
-            out.println(new ConvertCase(given).toSeparateWords());
+            phrase.append(new ConvertCase(given).toSeparateWords());
         }
-        nextWord = "and ";
+		out.println(phrase);
+		visitedAnyGivens = true;
     }
 
     public void visitEvent(Event event) {
         out.println("When " + new ConvertCase(event).toSeparateWords());
-        out.println(outcomeString);
+		out.print(outcomesText);
     }
 
-    public void visitOutcome(Outcomes outcome) {
-        nextWord = "Then ";
-        outcomeString = "";
-    }
-
-    public void visitExpectation(Outcome expectation) {
-        outcomeString = outcomeString + nextWord + new ConvertCase(expectation).toSeparateWords();
-        nextWord = System.getProperty("line.separator") + "and ";
+    public void visitOutcome(Outcome outcome) {
+		outcomesText.append(visitedAnyOutcomes ? "and " : "Then ")
+			.append(new ConvertCase(outcome).toSeparateWords())
+			.append(System.getProperty("line.separator"));
+		visitedAnyOutcomes = true;
     }
 
     public void gotResult(Result result) {

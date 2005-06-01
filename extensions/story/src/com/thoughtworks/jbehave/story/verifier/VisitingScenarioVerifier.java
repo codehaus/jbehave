@@ -26,8 +26,8 @@ public class VisitingScenarioVerifier extends AbstractScenarioVisitor implements
 		return giveSelfToScenario(scenario);
 	}
 
-	public void visitExpectation(Outcome expectation) {
-		expectation.verify(world);
-        checkForMocks(expectation);
+	public void visitOutcome(Outcome outcome) {
+		outcome.verify(world);
+        checkForMocks(outcome);
 	}
 }
