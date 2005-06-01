@@ -15,11 +15,11 @@ import java.util.List;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class OutcomeDetails {
-    public final List expectations = new ArrayList();
+    public final List outcomes = new ArrayList();
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        for (Iterator iter = expectations.iterator(); iter.hasNext();) {
+        for (Iterator iter = outcomes.iterator(); iter.hasNext();) {
             buffer.append(iter.next().toString());
             buffer.append("\n");
         }
@@ -32,6 +32,6 @@ public class OutcomeDetails {
         if (!(obj instanceof OutcomeDetails)) return false;
         
         OutcomeDetails that = (OutcomeDetails)obj;
-        return this.expectations.equals(that.expectations);
+        return this.outcomes.equals(that.outcomes);
     }
 }

@@ -1,7 +1,7 @@
 package com.thoughtworks.jbehave.story.visitor;
 
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Context;
+import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.Event;
 import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Given;
@@ -25,18 +25,12 @@ public class VisitorSupport implements Visitor {
 	public void visitScenario(Scenario scenario) {
 	}
 
-	public void visitContext(Context context) {
-	}
-
 	public void visitGiven(Given given) {
 	}
 
+	public void visitOutcome(Outcome outcome) {
+	}
+
 	public void visitEvent(Event event) {
-	}
-
-	public void visitOutcome(Outcomes outcome) {
-	}
-
-	public void visitExpectation(Outcome expectation) {
 	}
 }

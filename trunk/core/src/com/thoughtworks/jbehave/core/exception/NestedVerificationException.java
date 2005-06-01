@@ -7,6 +7,8 @@
  */
 package com.thoughtworks.jbehave.core.exception;
 
+import java.io.PrintWriter;
+
 /**
  * Pretend to be a {@link VerificationException}.
  * 
@@ -19,12 +21,6 @@ public class NestedVerificationException extends VerificationException {
     public NestedVerificationException(String message, Throwable cause) {
         super(message);
         this.cause = cause;
-        try {
-            setStackTrace(cause.getStackTrace());
-        }
-        catch (NoSuchMethodError e) {
-            // shame - not running in 1.4 VM
-        }
     }
     
     public NestedVerificationException(Throwable cause) {
@@ -40,4 +36,11 @@ public class NestedVerificationException extends VerificationException {
     public Throwable getCause() {
         return cause;
     }
+
+	public void printStackTrace(PrintWriter out) {
+		super.printStackTrace(out);
+		out.println("Caused by:");
+		cause.printStackTrace(out);
+	}
+	
 }

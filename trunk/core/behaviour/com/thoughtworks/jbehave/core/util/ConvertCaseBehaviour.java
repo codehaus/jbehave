@@ -17,12 +17,13 @@ import com.thoughtworks.jbehave.core.Verify;
 public class ConvertCaseBehaviour {
     
     public void shouldConvertStringToSeparateWords() throws Exception {
-        // given
+        // given...
         String string = "StringInCamelCase";
 
+		// when...
         String result = new ConvertCase(string).toSeparateWords();
         
-        // then
+        // then...
         Verify.equal("string in camel case", result);
     }
     

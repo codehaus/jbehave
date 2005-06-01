@@ -11,16 +11,16 @@ import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 /**
- * Represents an expectation on a scenario
+ * Represents an outcome of a scenario
  * 
  * This class is stateful - see {@link #accept(Visitor)} for details.
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public abstract class ExpectationUsingMiniMock extends UsingMiniMock implements Outcome {
+public abstract class OutcomeUsingMiniMock extends UsingMiniMock implements Outcome {
     public abstract void setExpectationIn(World world);
     public abstract void verify(World world);
 	public void accept(Visitor visitor) {
-		visitor.visitExpectation(this);
+		visitor.visitOutcome(this);
 	}
 }

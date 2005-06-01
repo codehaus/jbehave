@@ -13,7 +13,7 @@ import com.thoughtworks.jbehave.story.visitor.Visitable;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface Expectation extends Visitable, UsingMocks {
+public interface Outcome extends Visitable, UsingMocks {
     void setExpectationIn(World world);
     void verify(World world);
 }

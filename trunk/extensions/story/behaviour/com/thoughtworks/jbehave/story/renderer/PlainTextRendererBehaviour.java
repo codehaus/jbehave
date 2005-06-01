@@ -13,10 +13,10 @@ import java.io.PrintStream;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Context;
+import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.ExpectationUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.OutcomeUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Narrative;
 import com.thoughtworks.jbehave.story.domain.Outcomes;
@@ -79,7 +79,7 @@ public class PlainTextRendererBehaviour {
 			ScenarioUsingMiniMock firstScenario = new ScenarioUsingMiniMock(
 					FIRST_SCENARIO_NAME,
 					this,
-					new Context(new EverythingCompiles()),
+					new Givens(new EverythingCompiles()),
 					new ICrossMyFingers(),
 					new Outcomes(new PlainTextRendererShouldWork()));
 			addScenario(firstScenario);
@@ -87,7 +87,7 @@ public class PlainTextRendererBehaviour {
 			ScenarioUsingMiniMock secondScenario = new ScenarioUsingMiniMock(
 					SECOND_SCENARIO_NAME,
 					this,
-					new Context(firstScenario, new FirstScenarioRanWithoutFallingOver()),
+					new Givens(firstScenario, new FirstScenarioRanWithoutFallingOver()),
 					new IDoNothing(),
 					new Outcomes(new PlainTextRendererShouldStillWork(),
 							new BehaviourClassShouldNotFail()));
@@ -111,16 +111,16 @@ public class PlainTextRendererBehaviour {
 		public void occurIn(World world) throws Exception {}
 	}
 	
-	public static class PlainTextRendererShouldWork extends ExpectationUsingMiniMock {
+	public static class PlainTextRendererShouldWork extends OutcomeUsingMiniMock {
 		public void setExpectationIn(World world) {}
 		public void verify(World world) {}
 	}
 	
-	public static class PlainTextRendererShouldStillWork extends ExpectationUsingMiniMock {
+	public static class PlainTextRendererShouldStillWork extends OutcomeUsingMiniMock {
 		public void setExpectationIn(World world) {}
 		public void verify(World world) {}
 	}
-	public static class BehaviourClassShouldNotFail extends ExpectationUsingMiniMock {
+	public static class BehaviourClassShouldNotFail extends OutcomeUsingMiniMock {
 		public void setExpectationIn(World world) {}
 		public void verify(World world) {}
 	}

@@ -18,22 +18,19 @@ import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 public class GivenScenarioBehaviour extends UsingMiniMock {
 	
 	public void shouldPassScenarioInvokerToGivenExpectationAndEvent() throws Exception {
+		// given...
 		Mock givenMock = mock(Given.class);
 		Mock eventMock = mock(Event.class);
-		Mock expectationMock = mock(Outcome.class);
+		Mock outcomeMock = mock(Outcome.class);
 		
-		Given given = (Given)givenMock;
-		Event event = (Event)eventMock;
-		Outcome expectation = (Outcome)expectationMock;
 		World world = (World)stub(World.class);
 		Visitor visitor = (Visitor)stub(Visitor.class);
 		
 		givenMock.expects("accept");
-		expectationMock.expects("accept");
+		outcomeMock.expects("accept");
 		eventMock.expects("accept");
 		
-	    Context context = new Context(given);
-	    Outcomes outcomes = new Outcomes(expectation);
+	    Givens context = new Givens(((Given)givenMock));
 	    
 	    Story story = new Story(new Narrative("", "", ""),
 	    		new AcceptanceCriteria());
@@ -41,29 +38,28 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 	    Scenario scenario = new ScenarioUsingMiniMock("first scenario",
 	    		story,
 	    		context,
-				event,
-				outcomes);
+				((Event)eventMock),
+				((Outcome)outcomeMock));
 	    
 	    Given givenScenario = new GivenScenario(scenario);
 	    
 	    givenScenario.setUp(world);
 	}
 	
-	public void shouldNotClearEnvironmentWhenVisited() {
+	public void shouldNotResetWorldWhenVisited() {
 		Given given = (Given)stub(Given.class);
 		Event event = (Event)stub(Event.class);
-		Outcome expectation = (Outcome)stub(Outcome.class);
+		Outcome outcome = (Outcome)stub(Outcome.class);
 		Mock worldMock = mock(World.class);
 		World world = (World)worldMock;
 		Story story = new Story(new Narrative("", "", ""), new AcceptanceCriteria());
-	    Context context = new Context(given);
-	    Outcomes outcomes = new Outcomes(expectation);
+	    Outcomes outcomes = new Outcomes(outcome);
 		
 	    worldMock.expects("clear").never();
 	    
 		Scenario scenario = new ScenarioUsingMiniMock("scenario",
 				story,
-				context,
+				given,
 				event,
 				outcomes);
 		

@@ -10,6 +10,7 @@ package com.thoughtworks.jbehave.story;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
 import com.thoughtworks.jbehave.story.codegen.parser.TextStoryParserBehaviour;
 import com.thoughtworks.jbehave.story.domain.GivenScenarioBehaviour;
+import com.thoughtworks.jbehave.story.domain.GivensBehaviour;
 import com.thoughtworks.jbehave.story.domain.NarrativeBehaviour;
 import com.thoughtworks.jbehave.story.domain.OutcomesBehaviour;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMockBehaviour;
@@ -19,6 +20,7 @@ import com.thoughtworks.jbehave.story.listener.PlainTextScenarioListenerBehaviou
 import com.thoughtworks.jbehave.story.renderer.PlainTextRendererBehaviour;
 import com.thoughtworks.jbehave.story.verifier.StoryVerifierBehaviour;
 import com.thoughtworks.jbehave.story.verifier.VisitingScenarioVerifierBehaviour;
+import com.thoughtworks.jbehave.story.visitor.CompositeVisitableUsingMiniMockBehaviour;
 import com.thoughtworks.jbehave.story.visitor.VisitableArrayListBehaviour;
 
 /**
@@ -30,12 +32,14 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
                 TextStoryParserBehaviour.class,
 				GivenScenarioBehaviour.class,
                 NarrativeBehaviour.class,
+                CompositeVisitableUsingMiniMockBehaviour.class,
                 OutcomesBehaviour.class,
+                GivensBehaviour.class,
                 ScenarioUsingMiniMockBehaviour.class,
                 StoryBehaviour.class,
                 VisitingScenarioInvokerBehaviour.class,
                 PlainTextScenarioListenerBehaviour.class,
-				PlainTextRendererBehaviour.class, // TODO remove me
+				PlainTextRendererBehaviour.class,
                 StoryVerifierBehaviour.class,
                 VisitableArrayListBehaviour.class,
                 VisitingScenarioVerifierBehaviour.class,

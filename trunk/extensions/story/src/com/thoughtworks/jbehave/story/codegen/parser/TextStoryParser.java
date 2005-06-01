@@ -21,11 +21,11 @@ public class TextStoryParser implements StoryParser {
 			root.apply(builder);
 			return builder.getStoryDetails();
 		} catch (IOException e) {
-			throw new RuntimeException("bastard", e);
+			throw new RuntimeException(e.getMessage());
 		} catch (LexerException e) {
-			throw new RuntimeException("bastard", e);
+			throw new RuntimeException(e.getMessage());
 		} catch (ParserException e) {
-			throw new RuntimeException("bastard", e);
+			throw new RuntimeException(e.getMessage());
 		}
 		
 	}

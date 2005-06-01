@@ -9,22 +9,22 @@
 package example.stories;
 
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Context;
+import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.Narrative;
 import com.thoughtworks.jbehave.story.domain.Outcomes;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Story;
 
 import example.events.UserRequestsCash;
-import example.expectations.ATMShouldDispenseCash;
-import example.expectations.ATMShouldRefuseCash;
-import example.expectations.ATMShouldRetainBankCard;
-import example.expectations.ATMShouldReturnBankCardToCustomer;
-import example.expectations.AccountBalanceShouldBeReduced;
 import example.givens.AccountHasNegativeBalanceWithoutPermission;
 import example.givens.AccountHasOverdraftPermission;
 import example.givens.AccountIsInCredit;
 import example.givens.AccountIsOverOverdraftLimit;
+import example.outcomes.ATMShouldDispenseCash;
+import example.outcomes.ATMShouldRefuseCash;
+import example.outcomes.ATMShouldRetainBankCard;
+import example.outcomes.ATMShouldReturnBankCardToCustomer;
+import example.outcomes.AccountBalanceShouldBeReduced;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
@@ -43,7 +43,7 @@ public class UserWithdrawsCash extends Story {
 
         addScenario(new ScenarioUsingMiniMock(
                 "Happy scenario", this,
-                new Context(
+                new Givens(
                     new AccountIsInCredit()
                 ),
                 new UserRequestsCash(),
@@ -57,7 +57,7 @@ public class UserWithdrawsCash extends Story {
         
         addScenario(new ScenarioUsingMiniMock(
                 "Happy scenario with overdraft", this,
-                new Context(
+                new Givens(
                     new AccountHasOverdraftPermission()
                 ),
                 new UserRequestsCash(),
@@ -71,7 +71,7 @@ public class UserWithdrawsCash extends Story {
         
         addScenario(new ScenarioUsingMiniMock(
                 "Overdrawn without permission", this,
-                new Context(
+                new Givens(
                         scenario("Happy scenario with overdraft"),
                     new AccountHasNegativeBalanceWithoutPermission()
                 ),
@@ -85,7 +85,7 @@ public class UserWithdrawsCash extends Story {
         
         addScenario(new ScenarioUsingMiniMock(
                 "In lots of trouble", this,
-                new Context(
+                new Givens(
                     new AccountIsOverOverdraftLimit()
                 ),
                 new UserRequestsCash(),

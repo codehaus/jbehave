@@ -18,9 +18,9 @@ public interface Scenario extends Visitable {
 
     String getDescription();
 
-    Context getContext();
+    Given getGiven();
 
     Event getEvent();
 
-    Outcomes getOutcome();
+    Outcome getOutcome();
 }

@@ -5,19 +5,19 @@
  *
  * See license.txt for license details
  */
-package example.expectations;
+package example.outcomes;
 
 import com.thoughtworks.jbehave.story.domain.World;
-import com.thoughtworks.jbehave.story.domain.ExpectationUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.OutcomeUsingMiniMock;
 
 
 
-public class ATMShouldDispenseCash extends ExpectationUsingMiniMock {
+public class ATMShouldRefuseCash extends OutcomeUsingMiniMock {
+
     public void setExpectationIn(World world) {
-        
     }
     
     public void verify(World world) {
-        // dispensed 20
+        // refuse cash
     }
 }

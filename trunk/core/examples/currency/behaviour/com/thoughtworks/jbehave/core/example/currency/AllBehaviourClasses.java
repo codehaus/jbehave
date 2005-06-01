@@ -14,7 +14,7 @@ import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 15-Nov-2004
  */
-public class AllBehaviours implements BehaviourClassContainer {
+public class AllBehaviourClasses implements BehaviourClassContainer {
 	public Class[] getBehaviourClasses() {
 		return new Class[] {
 			SterlingCurrencyConverterBehaviour.class,

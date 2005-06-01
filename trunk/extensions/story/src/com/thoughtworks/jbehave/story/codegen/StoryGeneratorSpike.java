@@ -66,18 +66,17 @@ public class StoryGeneratorSpike {
             ContextDetails context = scenario.context;
             givens(context, ve, vcontext);
             event(scenario.event, ve, vcontext);
-            expectations(scenario.outcome, ve, vcontext);
+            outcomes(scenario.outcome, ve, vcontext);
 
         }
     }
 
-    private static void expectations(OutcomeDetails outcome, VelocityEngine ve, VelocityContext vcontext) throws Exception {
+    private static void outcomes(OutcomeDetails outcomes, VelocityEngine ve, VelocityContext vcontext) throws Exception {
         Template outcomeTemplate = ve.getTemplate("templates/Expectation.vm");
-        List expectations = outcome.expectations;
-        for (int i = 0; i < expectations.size(); i++) {
-            BasicDetails expectation = (BasicDetails) expectations.get(i);
-            vcontext.put("expectation", expectation.getClassName());
-            merge(outcomeTemplate, vcontext, new FileWriter(genDir + expectation.getClassName() + ".java"));
+        for (int i = 0; i < outcomes.outcomes.size(); i++) {
+            BasicDetails outcome = (BasicDetails) outcomes.outcomes.get(i);
+            vcontext.put("outcome", outcome.getClassName());
+            merge(outcomeTemplate, vcontext, new FileWriter(genDir + outcome.getClassName() + ".java"));
 
         }
     }
