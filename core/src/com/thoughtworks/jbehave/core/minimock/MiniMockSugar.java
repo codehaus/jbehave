@@ -67,7 +67,7 @@ public class MiniMockSugar {
                 return expectedArg == arg;
             }
             public String toString() {
-                return "same(" + expectedArg + ")";
+                return expectedArg.toString();
             }
         };
     }
@@ -83,13 +83,17 @@ public class MiniMockSugar {
         };
     }
 
+    public Constraint a(final Class type) {
+        return instanceOf(type);
+    }
+
     public Constraint instanceOf(final Class type) {
         return new Constraint() {
             public boolean matches(Object arg) {
                 return type.isInstance(arg);
             }
             public String toString() {
-                return "instance of " + type.getName();
+                return "object of type " + type.getName();
             }
         };
     }

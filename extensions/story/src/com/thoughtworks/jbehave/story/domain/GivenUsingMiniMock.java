@@ -15,7 +15,7 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public abstract class GivenUsingMiniMock extends UsingMiniMock implements Given {
-    public abstract void setUp(World world) throws Exception;
+    public abstract void setUp(World world);
 
 	public void accept(Visitor visitor) {
 		visitor.visitGiven(this);

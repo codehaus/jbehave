@@ -85,7 +85,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     public void shouldThrowNestedVerificationExceptionFromVisitWhenGivenThrowsException() throws Exception {
         // given...
         Mock given = mock(Given.class);
-        Exception cause = new Exception("oops");
+        Exception cause = new RuntimeException("oops");
         given.expects("setUp").with(worldStub).will(throwException(cause));
         
         // when...
@@ -101,7 +101,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
     public void shouldThrowNestedVerificationExceptionFromVisitWhenEventThrowsException() throws Exception {
         // given...
         Mock event = mock(Event.class);
-        Exception cause = new Exception("oops");
+        Exception cause = new RuntimeException("oops");
         event.expects("occurIn").with(worldStub).will(throwException(cause));
         
         // when...

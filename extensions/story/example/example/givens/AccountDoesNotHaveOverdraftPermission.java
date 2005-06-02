@@ -18,7 +18,7 @@ import example.domain.Account;
 /** set overdraft limit = 0 */
 public class AccountDoesNotHaveOverdraftPermission extends GivenUsingMiniMock {
 
-    public void setUp(World world) throws Exception {
+    public void setUp(World world) {
         Mock account = (Mock) world.get("account", mock(Account.class));
         account.stubs("getOverdraftLimit").withNoArguments().will(returnValue(0));
     }

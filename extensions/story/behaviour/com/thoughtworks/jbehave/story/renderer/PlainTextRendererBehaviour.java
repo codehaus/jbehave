@@ -13,16 +13,17 @@ import java.io.PrintStream;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Givens;
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.OutcomeUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.Given;
+import com.thoughtworks.jbehave.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.Narrative;
+import com.thoughtworks.jbehave.story.domain.OutcomeUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Outcomes;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Story;
-import com.thoughtworks.jbehave.story.renderer.PlainTextRenderer;
+import com.thoughtworks.jbehave.story.domain.World;
 
 /**
  * @author <a href="mailto:ekeogh@thoughtworks.com">Elizabeth Keogh</a>
@@ -78,7 +79,7 @@ public class PlainTextRendererBehaviour {
 			
 			ScenarioUsingMiniMock firstScenario = new ScenarioUsingMiniMock(
 					FIRST_SCENARIO_NAME,
-					this,
+					getClass().getName(),
 					new Givens(new EverythingCompiles()),
 					new ICrossMyFingers(),
 					new Outcomes(new PlainTextRendererShouldWork()));
@@ -86,29 +87,32 @@ public class PlainTextRendererBehaviour {
 			
 			ScenarioUsingMiniMock secondScenario = new ScenarioUsingMiniMock(
 					SECOND_SCENARIO_NAME,
-					this,
-					new Givens(firstScenario, new FirstScenarioRanWithoutFallingOver()),
+					getClass().getName(),
+					new Givens(
+							new GivenScenario(firstScenario),
+							new FirstScenarioRanWithoutFallingOver()),
 					new IDoNothing(),
-					new Outcomes(new PlainTextRendererShouldStillWork(),
+					new Outcomes(
+							new PlainTextRendererShouldStillWork(),
 							new BehaviourClassShouldNotFail()));
 			addScenario(secondScenario);
 		}
 	}
 	
 	private static class EverythingCompiles extends GivenUsingMiniMock {
-		public void setUp(World world) throws Exception {}
+		public void setUp(World world) {}
 	}
 	
 	private static class FirstScenarioRanWithoutFallingOver extends GivenUsingMiniMock {
-		public void setUp(World world) throws Exception {}
+		public void setUp(World world) {}
 	}
 	
 	private static class ICrossMyFingers extends EventUsingMiniMock {
-		public void occurIn(World world) throws Exception {}
+		public void occurIn(World world) {}
 	}
 	
 	private static class IDoNothing extends EventUsingMiniMock {
-		public void occurIn(World world) throws Exception {}
+		public void occurIn(World world) {}
 	}
 	
 	public static class PlainTextRendererShouldWork extends OutcomeUsingMiniMock {

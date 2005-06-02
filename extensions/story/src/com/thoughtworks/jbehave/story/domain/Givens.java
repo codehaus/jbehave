@@ -7,57 +7,38 @@
  */
 package com.thoughtworks.jbehave.story.domain;
 
-import java.util.Arrays;
-
-import com.thoughtworks.jbehave.story.visitor.Visitable;
-import com.thoughtworks.jbehave.story.visitor.VisitableArrayList;
-import com.thoughtworks.jbehave.story.visitor.Visitor;
+import com.thoughtworks.jbehave.story.visitor.CompositeVisitableUsingMiniMock;
+import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Givens implements Given {
+public class Givens extends CompositeVisitableUsingMiniMock implements Given {
     public static final Givens NULL = new Givens(new Given[0]);
     
-	private final VisitableArrayList givens = new VisitableArrayList();
-	
-    /** A Scenario and a bunch of givens */
-    public Givens(Scenario scenario, Given[] givens) {
-        this.givens.add(new GivenScenario(scenario));
-        this.givens.addAll(Arrays.asList(givens));
+    /** Constructor with a bunch of givens */
+    public Givens(Given[] givens) {
+		super(givens);
     }
 
     /** Just one given */
     public Givens(Given given) {
-        this.givens.add(given);
+		super(new Given[] {given});
     }
 
-    /** A bunch of givens */
-    public Givens(Given[] givens) {
-        this.givens.addAll(Arrays.asList(givens));
+    public Givens(Given given1, Given given2) {
+		super(new Given[] {given1, given2});
     }
 
-    /** One scenario and one given */
-    public Givens(Scenario scenario, Given given) {
-        this(scenario, new Given[] {given});
+    public Givens(Given given1, Given given2, Given given3) {
+		super(new Given[] {given1, given2, given3});
     }
 
-	public void accept(Visitor visitor) {
-		givens.accept(visitor);
-	}
-
-	public void setUp(World world) throws Exception {
-		// TODO implement setUp
-		throw new UnsupportedOperationException("TODO");
-	}
-
-	public boolean containsMocks() {
-		// TODO implement containsMocks
-		throw new UnsupportedOperationException("TODO");
-	}
-
-	public void verifyMocks() {
-		// TODO implement verifyMocks
-		throw new UnsupportedOperationException("TODO");
+	public void setUp(final World world) {
+		accept(new VisitorSupport() {
+			public void visitGiven(Given given) {
+				given.setUp(world);
+			}
+		});
 	}
 }

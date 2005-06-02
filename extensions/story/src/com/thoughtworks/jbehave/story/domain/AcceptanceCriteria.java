@@ -16,7 +16,7 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class AcceptanceCriteria implements Visitable {
+public class AcceptanceCriteria implements Scenario {
 	private final VisitableArrayList scenarios = new VisitableArrayList();
 
 	public List scenarios() {
@@ -30,5 +30,15 @@ public class AcceptanceCriteria implements Visitable {
 
 	public void addScenario(Scenario scenario) {
 		scenarios.add(scenario);
+	}
+
+	public String getStoryName() {
+		// TODO implement getStoryName
+		throw new UnsupportedOperationException("TODO");
+	}
+
+	public String getDescription() {
+		// TODO implement getDescription
+		throw new UnsupportedOperationException("TODO");
 	}
 }

@@ -29,24 +29,8 @@ public class GivenScenario extends GivenUsingMiniMock {
         return scenario;
     }
 
-    public void setUp(World world) throws Exception {
-        scenario.accept(new VisitingScenarioInvoker(scenario.getStory().title(), 
+    public void setUp(World world) {
+        scenario.accept(new VisitingScenarioInvoker(scenario.getStoryName(), 
         		world));
-    }
-
-    public Given getGiven() {
-        return scenario.getGiven();
-    }
-    public Event getEvent() {
-        return scenario.getEvent();
-    }
-    public String getDescription() {
-        return scenario.getDescription();
-    }
-    public Outcome getOutcome() {
-        return scenario.getOutcome();
-    }
-    public Story getStory() {
-        return scenario.getStory();
     }
 }
