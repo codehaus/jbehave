@@ -14,7 +14,7 @@ import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 
 /** @given overdraft limit = 100 */
 public class AccountHasOverdraftPermission extends GivenUsingMiniMock {
-    public void setUp(World world) throws Exception {
+    public void setUp(World world) {
         Verify.pending();
     }
 

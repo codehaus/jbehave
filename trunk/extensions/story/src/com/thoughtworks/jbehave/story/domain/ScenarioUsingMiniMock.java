@@ -12,7 +12,7 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 
 /**
- * An expected sequence of events
+ * An expected sequence of events.
  * 
  * A <tt>Scenario</tt> is defined by the sentence:<br/>
  * <br/>
@@ -25,22 +25,22 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     protected final Event event;
     protected final Outcome outcome;
     protected final String name;
-    protected final Story story;
+    protected final String storyName;
     
-    public ScenarioUsingMiniMock(String name, Story story, Given given, Event event, Outcome outcome) {
+    public ScenarioUsingMiniMock(String name, String storyName, Given given, Event event, Outcome outcome) {
         this.name = name;
-        this.story = story;
+        this.storyName = storyName;
         this.given = given;
         this.event = event;
         this.outcome = outcome;
     }
     
-    public ScenarioUsingMiniMock(String name, Story story, Event event, Outcomes outcome) {
-        this(name, story, Givens.NULL, event, outcome);
+    public ScenarioUsingMiniMock(String name, String storyName, Event event, Outcome outcome) {
+        this(name, storyName, Givens.NULL, event, outcome);
     }
     
-    public Story getStory() {
-        return story;
+    public String getStoryName() {
+        return storyName;
     }
 
     public String getDescription() {

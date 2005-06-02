@@ -16,25 +16,22 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
-    public void shouldPassItselfAndComponentsToVisitorInCorrectSequence() throws Exception {
-		Verify.pending("Clean this up");
+    public void shouldTellComponentsToAcceptVisitorInCorrectSequence() throws Exception {
 		
         // given...
-        Story storyStub = new Story(null, null);
-        Givens contextStub = new Givens(new GivenUsingMiniMock[0]);
-        EventUsingMiniMock eventStub = new EventUsingMiniMock() {
-            public void occurIn(World world) throws Exception {}
-        };
-        Outcome outcomeStub = (Outcome)stub(Outcome.class);
-        
-        ScenarioUsingMiniMock scenario = new ScenarioUsingMiniMock("scenario", storyStub, contextStub, eventStub, outcomeStub);
+        Mock given = mock(Given.class);
+		Mock event = mock(Event.class);
+        Mock outcome = mock(Outcome.class);
         Mock visitor = mock(Visitor.class);
+        
+        ScenarioUsingMiniMock scenario =
+			new ScenarioUsingMiniMock("scenario", "story", (Given)given, (Event)event, (Outcome) outcome);
 
         // expect...
         visitor.expects("visitScenario").with(scenario);
-        visitor.expects("visitContext").with(contextStub).after("visitScenario");
-        visitor.expects("visitOutcome").with(outcomeStub).after("visitContext");
-        visitor.expects("visitEvent").with(eventStub).after("visitOutcome");
+        given.expects("accept").with(visitor).after(visitor, "visitScenario");
+        outcome.expects("accept").with(visitor).after(given, "accept");
+        event.expects("accept").with(visitor).after(outcome, "accept");
         
         // when...
         scenario.accept((Visitor)visitor);

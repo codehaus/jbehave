@@ -32,11 +32,8 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		
 	    Givens context = new Givens(((Given)givenMock));
 	    
-	    Story story = new Story(new Narrative("", "", ""),
-	    		new AcceptanceCriteria());
-	    
 	    Scenario scenario = new ScenarioUsingMiniMock("first scenario",
-	    		story,
+	    		"story",
 	    		context,
 				((Event)eventMock),
 				((Outcome)outcomeMock));
@@ -52,13 +49,12 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		Outcome outcome = (Outcome)stub(Outcome.class);
 		Mock worldMock = mock(World.class);
 		World world = (World)worldMock;
-		Story story = new Story(new Narrative("", "", ""), new AcceptanceCriteria());
 	    Outcomes outcomes = new Outcomes(outcome);
 		
 	    worldMock.expects("clear").never();
 	    
 		Scenario scenario = new ScenarioUsingMiniMock("scenario",
-				story,
+				"story",
 				given,
 				event,
 				outcomes);

@@ -17,7 +17,7 @@ import example.domain.Account;
 /** set balance = 50 */
 public class AccountIsInCredit extends GivenUsingMiniMock {
     
-    public void setUp(World world) throws Exception {
+    public void setUp(World world) {
         Mock account = (Mock) world.get("account", mock(Account.class));
         account.stubs("getBalance").withNoArguments().will(returnValue(50));
     }

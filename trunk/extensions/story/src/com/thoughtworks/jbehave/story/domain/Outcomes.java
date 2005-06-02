@@ -7,11 +7,11 @@
  */
 package com.thoughtworks.jbehave.story.domain;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 import com.thoughtworks.jbehave.story.visitor.CompositeVisitableUsingMiniMock;
+import com.thoughtworks.jbehave.story.visitor.Visitor;
+import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 
 
 /**
@@ -20,8 +20,9 @@ import com.thoughtworks.jbehave.story.visitor.CompositeVisitableUsingMiniMock;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Outcomes extends CompositeVisitableUsingMiniMock implements Outcome {
+	
 	public Outcomes(Outcome[] outcomes) {
-        super(outcomes);
+		super(outcomes);
     }
     
     public Outcomes(Outcome outcome) {
@@ -36,19 +37,21 @@ public class Outcomes extends CompositeVisitableUsingMiniMock implements Outcome
         this(new Outcome[] {outcome1, outcome2, outcome3});
     }
     
-    public List outcomes() {
-        return visitables;
-    }
-
+	/** delegate to components */
 	public void setExpectationIn(final World world) {
-		for (Iterator i = visitables.iterator(); i.hasNext();) {
-			((Outcome) i.next()).setExpectationIn(world);
-		}
+		accept(new VisitorSupport() {
+			public void visitOutcome(Outcome outcome) {
+				outcome.setExpectationIn(world);
+			}
+		});
 	}
 
-	public void verify(World world) {
-		for (Iterator i = visitables.iterator(); i.hasNext();) {
-			((Outcome) i.next()).verify(world);
-		}
+	/** delegate to components */
+	public void verify(final World world) {
+		accept(new VisitorSupport() {
+			public void visitOutcome(Outcome outcome) {
+				outcome.verify(world);
+			}
+		});
 	}
 }

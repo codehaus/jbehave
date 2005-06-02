@@ -13,7 +13,7 @@ import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
 
 public class UserRequestsCash extends EventUsingMiniMock {
     
-    public void occurIn(World world) throws Exception {
+    public void occurIn(World world) {
 
     }
 

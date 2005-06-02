@@ -62,9 +62,9 @@ public class PlainTextRenderer extends VisitorSupport {
 		StringBuffer phrase = new StringBuffer();
 		phrase.append(visitedAnyGivens ? "and " : "Given ");
         if (given instanceof GivenScenario) {
-            GivenScenario givenScenario = (GivenScenario) given;
-            phrase.append("\"" + new ConvertCase(givenScenario.getScenario().getDescription()).toSeparateWords() + "\"")
-            	.append(" from ").append("\"" + new ConvertCase(givenScenario.getStory()).toSeparateWords() + "\"");
+            Scenario givenScenario = ((GivenScenario) given).getScenario();
+            phrase.append("\"" + new ConvertCase(givenScenario.getDescription()).toSeparateWords() + "\"")
+            	.append(" from ").append("\"" + new ConvertCase(givenScenario.getStoryName()).toSeparateWords() + "\"");
         }
         else {
             phrase.append(new ConvertCase(given).toSeparateWords());

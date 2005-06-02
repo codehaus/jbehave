@@ -32,7 +32,6 @@ public class AllBehaviourClasses extends Object implements BehaviourClassContain
                 TextStoryParserBehaviour.class,
 				GivenScenarioBehaviour.class,
                 NarrativeBehaviour.class,
-                CompositeVisitableUsingMiniMockBehaviour.class,
                 OutcomesBehaviour.class,
                 GivensBehaviour.class,
                 ScenarioUsingMiniMockBehaviour.class,

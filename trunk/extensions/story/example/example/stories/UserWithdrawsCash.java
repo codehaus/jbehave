@@ -9,6 +9,8 @@
 package example.stories;
 
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
+import com.thoughtworks.jbehave.story.domain.Given;
+import com.thoughtworks.jbehave.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.Narrative;
 import com.thoughtworks.jbehave.story.domain.Outcomes;
@@ -42,7 +44,8 @@ public class UserWithdrawsCash extends Story {
         );
 
         addScenario(new ScenarioUsingMiniMock(
-                "Happy scenario", this,
+                "Happy scenario",
+                getClass().getName(),
                 new Givens(
                     new AccountIsInCredit()
                 ),
@@ -56,7 +59,7 @@ public class UserWithdrawsCash extends Story {
         );
         
         addScenario(new ScenarioUsingMiniMock(
-                "Happy scenario with overdraft", this,
+                "Happy scenario with overdraft", getClass().getName(),
                 new Givens(
                     new AccountHasOverdraftPermission()
                 ),
@@ -70,9 +73,10 @@ public class UserWithdrawsCash extends Story {
         );
         
         addScenario(new ScenarioUsingMiniMock(
-                "Overdrawn without permission", this,
+                "Overdrawn without permission",
+                getClass().getName(),
                 new Givens(
-                        scenario("Happy scenario with overdraft"),
+                    new GivenScenario(scenario("Happy scenario with overdraft")),
                     new AccountHasNegativeBalanceWithoutPermission()
                 ),
                 new UserRequestsCash(),
@@ -84,7 +88,8 @@ public class UserWithdrawsCash extends Story {
         );
         
         addScenario(new ScenarioUsingMiniMock(
-                "In lots of trouble", this,
+                "In lots of trouble",
+                getClass().getName(),
                 new Givens(
                     new AccountIsOverOverdraftLimit()
                 ),

@@ -18,7 +18,7 @@ import example.domain.Account;
  * set balance = -50
  */
 public class AccountIsOverdrawn extends GivenUsingMiniMock {
-    public void setUp(World world) throws Exception {
+    public void setUp(World world) {
         Mock accountMock = (Mock)world.get("account", mock(Account.class));
         accountMock.stubs("getBalance").will(returnValue(-50));
     }

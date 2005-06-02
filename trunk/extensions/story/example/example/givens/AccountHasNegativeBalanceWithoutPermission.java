@@ -13,7 +13,7 @@ import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 
 /** balance = -50, overdraft limit = 0 */
 public class AccountHasNegativeBalanceWithoutPermission extends GivenUsingMiniMock {
-    public void setUp(World world) throws Exception {
+    public void setUp(World world) {
         new AccountIsOverdrawn().setUp(world);
         new AccountDoesNotHaveOverdraftPermission().setUp(world);
     }
