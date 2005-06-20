@@ -200,4 +200,8 @@ public class Expectation extends MiniMockSugar {
     public String methodName() {
         return methodName;
     }
+    
+    public boolean matches(String actualName) {
+        return (methodName.equals(actualName));
+    }    
 }

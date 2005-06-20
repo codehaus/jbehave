@@ -8,14 +8,17 @@
 package com.thoughtworks.jbehave.core.minimock;
 
 import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.exception.VerificationException;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class MockObjectBehaviour {
+public class MockObjectBehaviour extends UsingMiniMock {
     public interface Foo {
         void doSomething();
+        void doSomething(String arg);
+        void doSomethingElse();
     }
     
     public void shouldCreateObjectThatCanBeCastToTheCorrectType() throws Exception {
@@ -25,4 +28,49 @@ public class MockObjectBehaviour {
         // verify...
         Verify.that(mock instanceof Foo);
     }
+    
+
+    
+    public void shouldSucceedWhenMethodCalledWithExpectedArgument() {
+        Mock mock = MockObject.mock(Foo.class, "foo");
+        
+        mock.expects("doSomething").with(eq("A"));
+        
+        ((Foo)mock).doSomething("A");
+        
+        try {
+            mock.verify();
+        } catch (VerificationException ve) {
+            Verify.that(false);
+        }
+    }
+    
+    public void shouldFailOnVerifyWhenMethodCalledWithExpectedThenUnexpectedArgument() {
+        Mock mock = MockObject.mock(Foo.class, "foo");
+        
+        mock.expects("doSomething").with(eq("A"));
+        
+        ((Foo)mock).doSomething("A");
+        
+        boolean skippedThis = true;
+        
+        try {
+            ((Foo)mock).doSomething("B");
+            skippedThis = false;
+        } catch (VerificationException ve) {
+            Verify.that(ve.getMessage().equals("Unexpected arguments for foo.doSomething"));
+        }
+        Verify.that(skippedThis);
+    }
+    
+    public void shouldSucceedOnVerifyWhenMethodCalledWithExpectedArgumentThenOtherMethodCalled() {
+        Mock mock = MockObject.mock(Foo.class, "foo");
+        mock.expects("doSomething");
+        
+        ((Foo)mock).doSomething();
+        ((Foo)mock).doSomethingElse();
+        
+        mock.verify();
+    }
+    
 }
