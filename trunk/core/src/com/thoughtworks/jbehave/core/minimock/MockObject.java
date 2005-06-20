@@ -51,11 +51,27 @@ class MockObject implements Mock, Expectation.Registry {
                 }
             }
             
-            // if we get here we didn't match on any expectations
+            // if we get here we didn't match on any expectations           
+            verifyNoExpectationsMatchMethodName(method); 
             unexpectedInvocations.add(new Invocation(method.getName(), args));
             return fallbackBehaviour.invoke(proxy, method, args);
         }
+
+        private void verifyNoExpectationsMatchMethodName(Method method) {
+            if (anyExpectationsMatchMethodName(method.getName())) {
+                throw new VerificationException("Unexpected arguments for " + name + "." + method.getName());
+            }
+        }
+
+        private boolean anyExpectationsMatchMethodName(String methodName) {
+            for (Iterator i = expectations.iterator(); i.hasNext();) {
+               Expectation expectation = (Expectation) i.next();
+               if(expectation.matches(methodName)) return true;
+            }
+            return false;
+        }
     }
+
     
     public MockObject(Class type, String name) {
         this.type = type;
