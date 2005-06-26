@@ -25,20 +25,21 @@ import com.thoughtworks.jbehave.story.verifier.VisitingScenarioVerifier;
 public class Run {
 
     public static void main(String[] args) {
-        
         try {
-            Story story = (Story) Class.forName(args[0]).newInstance();
-            World world = new HashMapWorld();
-            ScenarioInvoker scenarioInvoker = new VisitingScenarioInvoker(story.getClass().getName(), world);
-            ScenarioVerifier scenarioVerifier = new VisitingScenarioVerifier(story.getClass().getName(), world);
-            StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker, scenarioVerifier);
-            PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(System.out));
-            storyVerifier.addListener(listener);
-            storyVerifier.verify(story);
-            listener.printReport();
-
+            story((Story)Class.forName(args[0]).newInstance());
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void story(Story story) {
+        World world = new HashMapWorld();
+        ScenarioInvoker scenarioInvoker = new VisitingScenarioInvoker(story.getClass().getName(), world);
+        ScenarioVerifier scenarioVerifier = new VisitingScenarioVerifier(story.getClass().getName(), world);
+        StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker, scenarioVerifier);
+        PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(System.out));
+        storyVerifier.addListener(listener);
+        storyVerifier.verify(story);
+        listener.printReport();
     }
 }
