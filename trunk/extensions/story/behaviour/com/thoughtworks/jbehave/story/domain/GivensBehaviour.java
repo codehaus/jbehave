@@ -24,7 +24,7 @@ public class GivensBehaviour extends CompositeVisitableUsingMiniMockBehaviour {
 		World world = (World)stub(World.class);
 		Given givens = new Givens((Given) component1, (Given) component2);
 		
-		// do what a real Outcome would do
+		// do what a real Given would do
 		InvocationHandler dispatchItselfToVisitor = new InvocationHandler() {
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 				((Visitor)args[0]).visitGiven((Given)proxy);
