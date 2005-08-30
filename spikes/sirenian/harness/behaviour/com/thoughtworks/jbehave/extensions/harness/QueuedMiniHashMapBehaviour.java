@@ -10,7 +10,7 @@ public class QueuedMiniHashMapBehaviour extends UsingMiniMock {
     
 	private PseudoClock clock = new PseudoClock();
 	
-    public void shouldReturnExistingObjectMatchingKey() {
+    public void shouldReturnExistingObjectMatchingKey() throws TimeoutException {
         QueuedMiniHashMap queuedMiniMap = new QueuedMiniHashMap(new ClockedTimeouterFactory(clock));
         
         queuedMiniMap.put("F", "Frodo");
@@ -23,7 +23,9 @@ public class QueuedMiniHashMapBehaviour extends UsingMiniMock {
         
 		Thread threadForGetToRun = new Thread(new Runnable() {
 			public void run() {
-				objectHolder.object = queuedMiniMap.get("F", 100);
+				try {
+					objectHolder.object = queuedMiniMap.get("F", 100);
+				} catch (TimeoutException e) { }
 				synchronized(QueuedMiniHashMapBehaviour.this) {
 					QueuedMiniHashMapBehaviour.this.notifyAll();
 				}
@@ -82,7 +84,7 @@ public class QueuedMiniHashMapBehaviour extends UsingMiniMock {
 		synchronized (this) {
 			// Wait for a short while to let the thread throw exception
 			try {
-			    wait(100); 
+				while (threadForGetToRun.isAlive()) { wait(100); }
 			} catch (InterruptedException e) {};
 		}
 		

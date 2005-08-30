@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.thoughtworks.jbehave.extensions.harness.time.TimeoutException;
 import com.thoughtworks.jbehave.extensions.harness.time.Timeouter;
 import com.thoughtworks.jbehave.extensions.harness.time.TimeouterFactory;
 
@@ -29,7 +30,7 @@ public class QueuedMiniHashMap implements QueuedMiniMap {
 		}
     }
     
-    public Object get(Object key, long timeout) {
+    public Object get(Object key, long timeout) throws TimeoutException {
         Timeouter timeouter = timeouterFactory.createTimeouter();
         timeouter.start(timeout);
         Object value = map.get(key);

@@ -10,10 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.extensions.harness.component.ComponentFinder;
-import com.thoughtworks.jbehave.extensions.harness.component.ComponentFilter;
 
 public class ComponentFinderBehaviour extends UsingMiniMock {
     

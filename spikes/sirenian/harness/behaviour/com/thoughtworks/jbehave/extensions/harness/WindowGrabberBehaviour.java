@@ -8,6 +8,7 @@ import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.extensions.harness.QueuedMiniMap;
 import com.thoughtworks.jbehave.extensions.harness.WindowGrabber;
+import com.thoughtworks.jbehave.extensions.harness.time.TimeoutException;
 
 public class WindowGrabberBehaviour extends UsingMiniMock {
 
@@ -39,7 +40,7 @@ public class WindowGrabberBehaviour extends UsingMiniMock {
         }
     }
 
-    public void shouldGetAnyWindowFromMiniMap() {
+    public void shouldGetAnyWindowFromMiniMap() throws TimeoutException {
         Mock miniMapMock = mock(QueuedMiniMap.class);
         
         WindowGrabber grabber = new WindowGrabber((QueuedMiniMap)miniMapMock);

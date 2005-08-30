@@ -6,6 +6,8 @@ import java.awt.Window;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 
+import com.thoughtworks.jbehave.extensions.harness.time.TimeoutException;
+
 /**
  * Stores windows as they are opened for later retrieval. Windows will be stored by title,
  * then by name if the title is null, then by class if the name is null. Only one window for
@@ -25,7 +27,7 @@ public class WindowGrabber {
                 AWTEvent.WINDOW_EVENT_MASK);
     }
 
-    public Window getWindow(String nameTitleOrClass) {
+    public Window getWindow(String nameTitleOrClass) throws TimeoutException {
         return (Window)miniMap.get(nameTitleOrClass, DEFAULT_WINDOW_TIMEOUT);
     }
     
