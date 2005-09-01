@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.thoughtworks.jbehave.extensions.harness.time.ClockedTimeouterFactory;
 import com.thoughtworks.jbehave.extensions.harness.time.TimeoutException;
 import com.thoughtworks.jbehave.extensions.harness.time.Timeouter;
 import com.thoughtworks.jbehave.extensions.harness.time.TimeouterFactory;
@@ -18,6 +19,10 @@ public class QueuedMiniHashMap implements QueuedMiniMap {
     private Map map = Collections.synchronizedMap(new HashMap());
     private Object waitingPlace = new Object();
     private TimeouterFactory timeouterFactory;
+    
+    public QueuedMiniHashMap() {
+    	this(new ClockedTimeouterFactory());
+    }
     
     public QueuedMiniHashMap(TimeouterFactory timeouterFactory) {
         this.timeouterFactory = timeouterFactory;

@@ -19,6 +19,10 @@ public class WindowGrabber {
     private QueuedMiniMap miniMap;
     private AWTEventListener windowWatcher = new WindowWatcher();
     
+    public WindowGrabber() {
+    	this(new QueuedMiniHashMap());
+    }
+    
     public WindowGrabber(QueuedMiniMap miniMap) {
         this.miniMap = miniMap;
         
