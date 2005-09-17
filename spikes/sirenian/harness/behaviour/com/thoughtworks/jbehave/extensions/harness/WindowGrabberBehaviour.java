@@ -6,14 +6,11 @@ import javax.swing.SwingUtilities;
 import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.extensions.harness.QueuedMiniMap;
-import com.thoughtworks.jbehave.extensions.harness.WindowGrabber;
 import com.thoughtworks.jbehave.extensions.harness.time.TimeoutException;
 
 public class WindowGrabberBehaviour extends UsingMiniMock {
 
     private static final String FRAME_NAME = "frame.name";
-    private static final Object windowGrabbedNotificator = new Object();
     
     public void shouldAddNewWindowsToAndRemoveNewWindowsFromMiniMap() {
         Mock miniMapMock = mock(QueuedMiniMap.class);

@@ -48,7 +48,7 @@ public class ComponentFinderBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
-    public void shouldFindExactMatchingComponentFromFilter() {
+    public void shouldFindExactMatchingComponentFromFilter() throws ComponentFinderException {
         JFrame frame = new JFrame();
         JPanel centrePanel = new JPanel();
         JPanel southPanel = new JPanel();
@@ -87,7 +87,7 @@ public class ComponentFinderBehaviour extends UsingMiniMock {
         };
         
         try {
-        	Component component = componentFinder.findExactComponent(frame, filter);
+        	componentFinder.findExactComponent(frame, filter);
         	Verify.that("Should have thrown exception", false);
         } catch (ComponentFinderException cfe) { }
     }
@@ -106,7 +106,7 @@ public class ComponentFinderBehaviour extends UsingMiniMock {
         };
         
         try {
-        	Component component = componentFinder.findExactComponent(frame, filter);
+        	componentFinder.findExactComponent(frame, filter);
         	Verify.that("Should have thrown exception", false);
         } catch (ComponentFinderException cfe) { }
     }    

@@ -31,8 +31,8 @@ public class WindowGrabber {
                 AWTEvent.WINDOW_EVENT_MASK);
     }
 
-    public Window getWindow(String nameTitleOrClass) throws TimeoutException {
-        return (Window)miniMap.get(nameTitleOrClass, DEFAULT_WINDOW_TIMEOUT);
+    public Window getWindow(String title) throws TimeoutException {
+        return (Window)miniMap.get(title, DEFAULT_WINDOW_TIMEOUT);
     }
     
     public void dispose() {
