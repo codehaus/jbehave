@@ -9,19 +9,17 @@ import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.extensions.harness.time.TimeoutException;
 
 public class WindowGrabberBehaviour extends UsingMiniMock {
-
-    private static final String FRAME_NAME = "frame.name";
     
     public void shouldAddNewWindowsToAndRemoveNewWindowsFromMiniMap() {
         Mock miniMapMock = mock(QueuedMiniMap.class);
         WindowGrabber grabber = new WindowGrabber((QueuedMiniMap)miniMapMock);
         
         JFrame frame = new JFrame();
-        frame.setName(FRAME_NAME);
-        miniMapMock.expects("put").with(FRAME_NAME, frame);
+        frame.setName("frame.name");
+        miniMapMock.expects("put").with("frame.name", frame);
         frame.setVisible(true);
                 
-        miniMapMock.expects("remove").with(FRAME_NAME);
+        miniMapMock.expects("remove").with("frame.name");
         frame.dispose();
         waitForIdle();
         verifyMocks();
@@ -42,8 +40,8 @@ public class WindowGrabberBehaviour extends UsingMiniMock {
         
         WindowGrabber grabber = new WindowGrabber((QueuedMiniMap)miniMapMock);
         
-        miniMapMock.expects("get").with(same(FRAME_NAME), eq(WindowGrabber.DEFAULT_WINDOW_TIMEOUT));
-        grabber.getWindow(FRAME_NAME);
+        miniMapMock.expects("get").with(same("frame.name"), eq(WindowGrabber.DEFAULT_WINDOW_TIMEOUT));
+        grabber.getWindow("frame.name");
         
         verifyMocks();
         grabber.dispose();

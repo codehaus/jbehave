@@ -48,7 +48,7 @@ public class WindowGrabber {
             }
         }
 
-        private void handleWindowClosed(AWTEvent event) {
+        private void handleWindowClosed(AWTEvent event) {        	
             Window window = (Window)event.getSource();
             miniMap.remove(window.getName());
         }
