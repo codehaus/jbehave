@@ -13,7 +13,7 @@ import com.thoughtworks.jbehave.core.behaviour.Behaviours;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
  */
-public class AllBehaviourClasses implements Behaviours {
+public class AllBehaviours implements Behaviours {
     public Class[] getBehaviourClasses() {
         return new Class[] {
                 UsingJMockBehaviour.class
