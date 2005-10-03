@@ -28,7 +28,7 @@ public class BehaviourClass implements Visitable {
     public void accept(Visitor visitor) {
         visitor.visitBehaviourClass(this);
 
-        if (BehaviourClassContainer.class.isAssignableFrom(classToVerify)) {
+        if (Behaviours.class.isAssignableFrom(classToVerify)) {
             visitBehaviourClasses(visitor);
         }
         else {
@@ -58,7 +58,7 @@ public class BehaviourClass implements Visitable {
 
     private void visitBehaviourClasses(Visitor visitor) {
         try {
-            Class[] behaviourClasses = ((BehaviourClassContainer)createInstance()).getBehaviourClasses();
+            Class[] behaviourClasses = ((Behaviours)createInstance()).getBehaviourClasses();
             for (int i = 0; i < behaviourClasses.length; i++) {
                 BehaviourClass visitableClass = new BehaviourClass(behaviourClasses[i]);
                 visitableClass.accept(visitor);

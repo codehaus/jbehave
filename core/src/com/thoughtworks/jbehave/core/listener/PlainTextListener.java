@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.jbehave.core.result.Result;
+import com.thoughtworks.jbehave.core.util.ConvertCase;
 import com.thoughtworks.jbehave.core.util.Timer;
 
 /**
@@ -94,9 +95,11 @@ public abstract class PlainTextListener implements ResultListener {
         String shortName = containerName.substring(containerName.lastIndexOf('.') + 1);
         shortName = containerName.substring(containerName.lastIndexOf('$') + 1);
         if (shortName.endsWith("Behaviour")) {
-            shortName = shortName.substring(0, shortName.length() - 9);
+            shortName = shortName.substring(0, shortName.length() - "Behaviour".length());
         }
-        out.println(count + ") " + shortName + " " + result.name() + " [" + containerName + "]:");
+        out.println(count + ") " + shortName + " "
+                + new ConvertCase(result.name()).toSeparateWords()
+                + " [" + containerName + "]:");
     }
 
     private void printSummaryCounts() {

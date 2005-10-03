@@ -34,7 +34,7 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
     }
     public static class AnotherBehaviourClass {
     }
-    public static class SomeBehaviourClasses implements BehaviourClassContainer {
+    public static class SomeBehaviourClasses implements Behaviours {
         public Class[] getBehaviourClasses() {
             return new Class[] {OneBehaviourClass.class, AnotherBehaviourClass.class};
         }
@@ -58,7 +58,7 @@ public class BehaviourClassBehaviour extends BehaviourSupport {
         public void shouldDoSomething() {}
     }
     
-    public static class HasOneBehaviourClass implements BehaviourClassContainer {
+    public static class HasOneBehaviourClass implements Behaviours {
         public Class[] getBehaviourClasses() {
             return new Class[] {HasOneMethod.class};
         }

@@ -8,7 +8,7 @@
 package com.thoughtworks.jbehave.core;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassBehaviour;
-import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
+import com.thoughtworks.jbehave.core.behaviour.Behaviours;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodBehaviour;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifierBehaviour;
 import com.thoughtworks.jbehave.core.listener.PlainTextMethodListenerBehaviour;
@@ -22,7 +22,7 @@ import com.thoughtworks.jbehave.core.visitor.VisitableArrayListBehaviour;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class AllBehaviourClasses implements BehaviourClassContainer {
+public class AllBehaviourClasses implements Behaviours {
     public Class[] getBehaviourClasses() {
         return new Class[] {
                 BehaviourClassBehaviour.class,

@@ -36,6 +36,9 @@ public class MiniMockSugar {
                 Number n = (Number)arg;
                 return n.doubleValue() == expectedArg;
             }          
+            public String toString() {
+                return "eq(" + expectedArg + ")";
+            }
         };
     }
     
@@ -46,6 +49,9 @@ public class MiniMockSugar {
                 Number n = (Number)arg;
                 return n.longValue() == expectedArg;
             }          
+            public String toString() {
+                return "eq(" + expectedArg + ")";
+            }
         };
     }
     

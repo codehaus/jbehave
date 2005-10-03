@@ -7,10 +7,8 @@
  */
 package com.thoughtworks.jbehave.core.behaviour;
 
-
-
 /**
- * Implemented by classes that contain behaviour classes. It should probably
+ * Renamed to {@link Behaviours}
  * be called <tt>Composite</tt> but then I'd get strung up by the patterns
  * police because it isn't really an implementation of the Composite
  * pattern - more a way of grouping behaviour classes together.<br/>
@@ -20,12 +18,12 @@ package com.thoughtworks.jbehave.core.behaviour;
  * 
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public interface BehaviourClassContainer {
+public interface Behaviours {
     /**
      * Return an array of all the contained behaviour classes.
      * 
      * This is processed recursively, so the array could contain other
-     * <tt>BehaviourClassContainer</tt> classes.
+     * <tt>Behaviours</tt> classes.
      */
     Class[] getBehaviourClasses();
 }
