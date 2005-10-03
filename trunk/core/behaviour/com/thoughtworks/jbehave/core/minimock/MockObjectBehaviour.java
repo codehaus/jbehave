@@ -29,7 +29,13 @@ public class MockObjectBehaviour extends UsingMiniMock {
         Verify.that(mock instanceof Foo);
     }
     
-
+    public void shouldCreateObjectWithInterfaceFromSystemClassLoader() throws Exception {
+        // given
+        Mock mock = MockObject.mock(Comparable.class, "comparable");
+        
+        // verify
+        Verify.that(mock instanceof Comparable);
+    }
     
     public void shouldSucceedWhenMethodCalledWithExpectedArgument() {
         Mock mock = MockObject.mock(Foo.class, "foo");

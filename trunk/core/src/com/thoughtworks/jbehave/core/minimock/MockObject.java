@@ -81,7 +81,7 @@ class MockObject implements Mock, Expectation.Registry {
     
     /** get the mocked instance */
     public Object proxy() {
-        return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {type}, new ExpectationHandler());
+        return Proxy.newProxyInstance(type.getClassLoader(), new Class[] {type}, new ExpectationHandler());
     }
     
     public Expectation stubs(String methodName) {
@@ -122,7 +122,7 @@ class MockObject implements Mock, Expectation.Registry {
     }
 
     static Mock mock(final Class type, final String name) {
-        Mock result = (Mock) Proxy.newProxyInstance(type.getClassLoader(),
+        Mock result = (Mock) Proxy.newProxyInstance(Mock.class.getClassLoader(),
                 new Class[] { type, Mock.class, Expectation.Registry.class },
                 new InvocationHandler() {
                     private final MockObject mock = new MockObject(type, name);

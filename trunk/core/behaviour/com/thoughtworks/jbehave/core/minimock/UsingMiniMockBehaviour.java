@@ -25,7 +25,7 @@ public class UsingMiniMockBehaviour {
         miniMock = new UsingMiniMock();
     }
     
-    interface BehaviourInterface2 {
+    public interface BehaviourInterface2 {
         
     }
     
@@ -83,7 +83,7 @@ public class UsingMiniMockBehaviour {
         Verify.that(c.matches(new Short(s)));
     }
     
-    interface BehaviourInterface1 {
+    public interface BehaviourInterface1 {
         int getInt();
         long getLong();
         byte getByte();
