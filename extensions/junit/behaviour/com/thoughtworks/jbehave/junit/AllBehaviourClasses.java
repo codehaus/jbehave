@@ -7,13 +7,13 @@
  */
 package com.thoughtworks.jbehave.junit;
 
-import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
+import com.thoughtworks.jbehave.core.behaviour.Behaviours;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class AllBehaviourClasses implements BehaviourClassContainer {
+public class AllBehaviourClasses implements Behaviours {
 
     public Class[] getBehaviourClasses() {
         return new Class[] {
