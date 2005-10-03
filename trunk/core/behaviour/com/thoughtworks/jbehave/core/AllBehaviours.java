@@ -22,7 +22,7 @@ import com.thoughtworks.jbehave.core.visitor.VisitableArrayListBehaviour;
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class AllBehaviourClasses implements Behaviours {
+public class AllBehaviours implements Behaviours {
     public Class[] getBehaviourClasses() {
         return new Class[] {
                 BehaviourClassBehaviour.class,

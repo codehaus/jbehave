@@ -22,8 +22,8 @@ public interface Behaviours {
     /**
      * Return an array of all the contained behaviour classes.
      * 
-     * This is processed recursively, so the array could contain other
-     * <tt>Behaviours</tt> classes.
+     * This is processed recursively, so the array could contain nested
+     * <tt>Behaviours</tt>.
      */
     Class[] getBehaviourClasses();
 }
