@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.story;
 
-import com.thoughtworks.jbehave.core.behaviour.BehaviourClassContainer;
+import com.thoughtworks.jbehave.core.behaviour.Behaviours;
 import com.thoughtworks.jbehave.story.codegen.parser.TextStoryParserBehaviour;
 import com.thoughtworks.jbehave.story.domain.EventsBehaviour;
 import com.thoughtworks.jbehave.story.domain.GivenScenarioBehaviour;
@@ -27,7 +27,7 @@ import com.thoughtworks.jbehave.story.visitor.VisitableArrayListBehaviour;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class AllBehaviourClasses extends Object implements BehaviourClassContainer {
+public class AllBehaviourClasses extends Object implements Behaviours {
     public Class[] getBehaviourClasses() {
         return new Class[] {
                 TextStoryParserBehaviour.class,
