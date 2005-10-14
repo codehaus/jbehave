@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.List;
 
@@ -127,7 +126,7 @@ public class StoryGeneratorSpike {
 //                "Then do something good.\n" +
 //                "endStory");
 
-        Reader r  = new FileReader("analysis/user withdraws cash.txt");
+        new FileReader("analysis/user withdraws cash.txt");
         StoryDetails details = null;
         return details;
     }

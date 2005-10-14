@@ -7,9 +7,9 @@
  */
 package com.thoughtworks.jbehave.story.verifier;
 
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Scenario;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
 import com.thoughtworks.jbehave.story.visitor.AbstractScenarioVisitor;
 

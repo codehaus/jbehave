@@ -2,8 +2,29 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.analysis;
 
-import java.util.*;
-import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
+import java.util.Hashtable;
+
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ABenefit;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AFeature;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.APhrase;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ARole;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AScenario;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AScenarioTitle;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ASpaceWordOrSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AStory;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ATitle;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AWordWordOrSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.EOF;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.Node;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.Start;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TAsA;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TEndl;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TIWant;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TScenarioKeyword;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TSoThat;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TTitleKeyword;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TWord;
 
 public class AnalysisAdapter implements Analysis
 {

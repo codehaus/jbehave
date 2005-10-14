@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.minimock;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 
 
@@ -26,7 +26,7 @@ public class MockObjectBehaviour extends UsingMiniMock {
         Mock mock = MockObject.mock(Foo.class, "foo");
 
         // verify...
-        Verify.that(mock instanceof Foo);
+        Ensure.that(mock instanceof Foo);
     }
     
     public void shouldCreateObjectWithInterfaceFromSystemClassLoader() throws Exception {
@@ -34,7 +34,7 @@ public class MockObjectBehaviour extends UsingMiniMock {
         Mock mock = MockObject.mock(Comparable.class, "comparable");
         
         // verify
-        Verify.that(mock instanceof Comparable);
+        Ensure.that(mock instanceof Comparable);
     }
     
     public void shouldSucceedWhenMethodCalledWithExpectedArgument() {
@@ -47,7 +47,7 @@ public class MockObjectBehaviour extends UsingMiniMock {
         try {
             mock.verify();
         } catch (VerificationException ve) {
-            Verify.that(false);
+            Ensure.that(false);
         }
     }
     
@@ -64,9 +64,9 @@ public class MockObjectBehaviour extends UsingMiniMock {
             ((Foo)mock).doSomething("B");
             skippedThis = false;
         } catch (VerificationException ve) {
-            Verify.that(ve.getMessage().equals("Unexpected arguments for foo.doSomething"));
+            Ensure.that(ve.getMessage().equals("Unexpected arguments for foo.doSomething"));
         }
-        Verify.that(skippedThis);
+        Ensure.that(skippedThis);
     }
     
     public void shouldSucceedOnVerifyWhenMethodCalledWithExpectedArgumentThenOtherMethodCalled() {

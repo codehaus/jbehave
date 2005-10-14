@@ -8,7 +8,7 @@
 package com.thoughtworks.jbehave.core.visitor;
 
 import com.thoughtworks.jbehave.core.Block;
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 
@@ -48,7 +48,7 @@ public class VisitableArrayListBehaviour extends UsingMiniMock {
         component.expects("accept").with(anything()).willThrow(new SomeRuntimeException());
         
         // when...
-        Verify.throwsException(SomeRuntimeException.class, new Block() {
+        Ensure.throwsException(SomeRuntimeException.class, new Block() {
             public void execute() {
                 composite.accept(visitor);
             }

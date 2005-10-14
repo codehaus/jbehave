@@ -9,14 +9,15 @@ import org.jmock.Mock;
 import org.jmock.core.Verifiable;
 
 import com.thoughtworks.jbehave.core.Block;
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
+import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 
 /**
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>
  * @author <a href="mailto:dnorth@thoughtworks.com">Dan North</a>
  */
-public class UsingJMockBehaviour extends JMockSugar {
+public class UsingJMockBehaviour extends UsingConstraints {
     
     public interface Interface {
         void doStuff();
@@ -37,10 +38,10 @@ public class UsingJMockBehaviour extends JMockSugar {
         instance.shouldDoSomething();
         
         // then...
-        Verify.equal(2, instance.getMocks().size());
-        Verify.that(instance.containsMocks());
-        Verify.that(instance.getMocks().get(0) instanceof org.jmock.Mock);
-        Verify.that(instance.getMocks().get(1) instanceof org.jmock.Mock);
+        Ensure.that(instance.getMocks().size(), eq(2));
+        Ensure.that("instance contains mocks", instance.containsMocks());
+        Ensure.that(instance.getMocks().get(0), isA(org.jmock.Mock.class));
+        Ensure.that(instance.getMocks().get(1), isA(org.jmock.Mock.class));
     }
     
     public static class BehaviourClassWithoutMocks extends UsingJMock {
@@ -56,8 +57,8 @@ public class UsingJMockBehaviour extends JMockSugar {
         instance.shouldDoSomething();
         
         // then...
-        Verify.that(instance.getMocks().isEmpty());
-        Verify.not(instance.containsMocks());
+        Ensure.that(instance.getMocks().isEmpty());
+        Ensure.that(instance.containsMocks(), eq(false));
     }
     
     /**
@@ -75,14 +76,15 @@ public class UsingJMockBehaviour extends JMockSugar {
     
     public void shouldVerifyMocks() throws Exception {
         // given...
+    	JMockSugar s = new JMockSugar() {};
         Mock mock1 = new Mock(Verifiable.class);
         Mock mock2 = new Mock(Verifiable.class);
         UsingJMock instance =
             new BehaviourClassWithMockMocks((Verifiable)mock1.proxy(), (Verifiable) mock2.proxy());
         
         // expect...
-        mock1.expects(once()).method("verify").withNoArguments();
-        mock2.expects(once()).method("verify").withNoArguments();
+        mock1.expects(s.once()).method("verify").withNoArguments();
+        mock2.expects(s.once()).method("verify").withNoArguments();
         
         // when...
         instance.verifyMocks();
@@ -103,7 +105,7 @@ public class UsingJMockBehaviour extends JMockSugar {
         final UsingJMock instance = new HasMockThatFailsVerify();
 
         // when...
-        Verify.throwsException(VerificationException.class, new Block() {
+        Ensure.throwsException(VerificationException.class, new Block() {
             public void execute() throws Exception {
                 instance.verifyMocks();
             }
@@ -138,9 +140,9 @@ public class UsingJMockBehaviour extends JMockSugar {
         instance.shouldDoSomething();
         
         // verify...
-        Verify.that(isDynamicProxy(instance.anInterface.proxy()));
-        Verify.not(isDynamicProxy(instance.anAbstractClass.proxy()));
-        Verify.not(isDynamicProxy(instance.aConcreteClass.proxy()));
+        Ensure.that(isDynamicProxy(instance.anInterface.proxy()));
+        Ensure.not(isDynamicProxy(instance.anAbstractClass.proxy()));
+        Ensure.not(isDynamicProxy(instance.aConcreteClass.proxy()));
     }
 	
 	public void shouldVerifyMocksAfterEachMethod() throws Exception {
@@ -156,7 +158,7 @@ public class UsingJMockBehaviour extends JMockSugar {
 		instance.verify();
 		
 		// then
-		Verify.equal("verifyMocks", results[0]);
+		Ensure.that(results[0], eq("verifyMocks"));
 	}
 	
 	public void shouldCallTemplateMethodAfterVerifyingMocks() throws Exception {
@@ -178,6 +180,6 @@ public class UsingJMockBehaviour extends JMockSugar {
 		instance.verify();
 		
 		// then
-		Verify.equal(expected, results);
+		Ensure.that(results, eq(expected));
 	}
 }

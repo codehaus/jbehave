@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.ant;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -17,6 +17,6 @@ import com.thoughtworks.jbehave.core.Verify;
  */
 public class FailingBehaviourClass {
 	public void shouldFail() throws Exception {
-		Verify.that(false);
+		Ensure.that(false);
 	}
 }

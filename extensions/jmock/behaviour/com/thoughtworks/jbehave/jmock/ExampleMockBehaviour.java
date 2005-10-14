@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.jbehave.jmock;
 
-import com.thoughtworks.jbehave.jmock.UsingJMock;
 
 
 /**

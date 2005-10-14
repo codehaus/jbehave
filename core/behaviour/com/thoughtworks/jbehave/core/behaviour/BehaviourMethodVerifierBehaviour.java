@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.behaviour;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 
 
 /**
@@ -32,6 +32,6 @@ public class BehaviourMethodVerifierBehaviour extends BehaviourSupport {
         behaviourMethod.accept(verifier);
         
         // verify...
-		Verify.equal(true, instance.wasInvoked);
+		Ensure.that(instance.wasInvoked);
     }
 }

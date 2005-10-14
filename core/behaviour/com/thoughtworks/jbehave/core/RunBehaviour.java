@@ -22,7 +22,7 @@ public class RunBehaviour {
 		runCount = 0;
 		Run.runBehaviourToStream(new String[] {RunnableBehaviour.class.getName()},
 				new PrintStream(new NullOutputStream()));
-		Verify.that(runCount == 1);
+		Ensure.that(runCount == 1);
 	}
 	
 	public void shouldRunTwoClassesFromArgumentsSuccessfully() {
@@ -31,7 +31,7 @@ public class RunBehaviour {
 				RunnableBehaviour.class.getName(),
 				RunnableBehaviour.class.getName()},
 				new PrintStream(new NullOutputStream()));
-		Verify.that(runCount == 2);
+		Ensure.that(runCount == 2);
 	}
 	
 	public static class RunnableBehaviour {

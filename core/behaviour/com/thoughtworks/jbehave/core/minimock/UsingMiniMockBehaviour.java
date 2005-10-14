@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
-public class UsingMiniMockBehaviour {
+public class UsingMiniMockBehaviour extends UsingConstraints {
     
     UsingMiniMock miniMock;
     
@@ -30,57 +30,67 @@ public class UsingMiniMockBehaviour {
     }
     
     public void shouldStoreMock() throws Exception {
-        // can't think of a better way of doing it without
-        // exposing the internals!
-        Verify.that(!miniMock.containsMocks());
+    	Constraint containsMocks = new ConstraintSupport() {
+    		public boolean matches(Object arg) {
+    			return ((UsingMiniMock)arg).containsMocks();
+    		}
+			public String toString() {
+				return "UsingMiniMock instance containing mocks";
+			}
+    	};
+        Ensure.that(miniMock, not(containsMocks));
         
         miniMock.mock(BehaviourInterface2.class);
         
-        Verify.that(miniMock.containsMocks());
+        Ensure.that(miniMock, containsMocks);
       
     }
     
-    public void shouldCreateConstraintForPrimitiveDoubleType() throws Exception {
-        Constraint c = miniMock.eq(1.0);
-        Verify.that(c.matches(new Double(1.0)));
+    public void shouldCreateConstraintForPrimitiveFloatingPointTypes() throws Exception {
+        Constraint matchesFloatValue = miniMock.eq(1.0);
+        Ensure.that(new Float(1.0), matchesFloatValue);
+        Ensure.that(new Double(1.0), matchesFloatValue);
     }
     
-    public void shouldCreateConstraintForPrimitiveIntType() throws Exception {
-        Constraint c = miniMock.eq(1);
-        Verify.that(c.matches(new Integer(1)));
+    public void shouldCreateConstraintForPrimitiveIntegerTypes() throws Exception {
+        Constraint matchesIntTypeValue = miniMock.eq(1);
+        Ensure.that(new Byte((byte)1), matchesIntTypeValue);
+        Ensure.that(new Short((short)1), matchesIntTypeValue);
+        Ensure.that(new Integer(1), matchesIntTypeValue);
+        Ensure.that(new Long((long)1), matchesIntTypeValue);
     }
     
     public void shouldCreateConstraintForPrimitiveCharType() throws Exception {
         Constraint c = miniMock.eq('c');
-        Verify.that(c.matches(new Character('c')));
+        Ensure.that("constraint should match Character 'c'", c.matches(new Character('c')));
     }
     
     public void shouldCreateConstraintForPrimitiveLongType() throws Exception {
         Constraint c = miniMock.eq(1l);
-        Verify.that(c.matches(new Long(1)));
+        Ensure.that(c.matches(new Long(1)));
     }
     
     public void shouldCreateConstraintForPrimitiveBooleanType() throws Exception {
         Constraint c = miniMock.eq(true);
-        Verify.that(c.matches(Boolean.TRUE)); 
+        Ensure.that(c.matches(Boolean.TRUE)); 
     }
     
     public void shouldCreateConstraintForPrimitiveFloatType() throws Exception {
         float f = 1;
         Constraint c = miniMock.eq(f);
-        Verify.that(c.matches(new Float(1)));
+        Ensure.that(c.matches(new Float(1)));
     }
     
     public void shouldCreateConstraintForPrimitiveByteType() throws Exception {
         byte b = 1;
         Constraint c = miniMock.eq(b);
-        Verify.that(c.matches(new Byte(b)));
+        Ensure.that(c.matches(new Byte(b)));
     }
     
     public void shouldCreateConstraintForPrimitiveShortType() throws Exception {
         short s = 1;
         Constraint c = miniMock.eq(s);
-        Verify.that(c.matches(new Short(s)));
+        Ensure.that(c.matches(new Short(s)));
     }
     
     public interface BehaviourInterface1 {
@@ -99,7 +109,7 @@ public class UsingMiniMockBehaviour {
       mock.stubs("getInt").will(miniMock.returnValue(1));
    
       int i = ((BehaviourInterface1)mock).getInt();
-      Verify.equal(1, i);
+      Ensure.that(i, eq(1));
     }
     
     public void shouldCreateCorrectReturnValueForPrimitiveLong() throws Exception {
@@ -107,7 +117,7 @@ public class UsingMiniMockBehaviour {
         mock.stubs("getLong").will(miniMock.returnValue(1l));
      
         long i = ((BehaviourInterface1)mock).getLong();
-        Verify.equal(1, i);
+        Ensure.that(i, eq(1));
     }
     
     public void shouldCreateCorrectReturnValueForPrimitiveShort() throws Exception {
@@ -116,7 +126,7 @@ public class UsingMiniMockBehaviour {
         mock.stubs("getShort").will(miniMock.returnValue(s));
      
         short i = ((BehaviourInterface1)mock).getShort();
-        Verify.equal(s, i);
+        Ensure.that(i, eq(s));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveByte() throws Exception {
@@ -125,7 +135,7 @@ public class UsingMiniMockBehaviour {
         mock.stubs("getByte").will(miniMock.returnValue(b));
      
         byte i = ((BehaviourInterface1)mock).getByte();
-        Verify.equal(b, i);
+        Ensure.that(i, eq(b));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveDouble() throws Exception {
@@ -134,7 +144,7 @@ public class UsingMiniMockBehaviour {
         mock.stubs("getDouble").will(miniMock.returnValue(d));
      
         double i = ((BehaviourInterface1)mock).getDouble();
-        Verify.equal(d, i, 0);
+        Ensure.that(i, eq(d, 0));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveFloat() throws Exception {
@@ -143,7 +153,7 @@ public class UsingMiniMockBehaviour {
         mock.stubs("getFloat").will(miniMock.returnValue(f));
      
         float i = ((BehaviourInterface1)mock).getFloat();
-        Verify.equal(f, i, 0);
+        Ensure.that(i, eq(f, 0));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveChar() throws Exception {
@@ -152,7 +162,7 @@ public class UsingMiniMockBehaviour {
         mock.stubs("getChar").will(miniMock.returnValue(c));
      
         char i = ((BehaviourInterface1)mock).getChar();
-        Verify.equal(c, i);
+        Ensure.that(i, eq(c));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveBoolean() throws Exception {
@@ -161,7 +171,7 @@ public class UsingMiniMockBehaviour {
         mock.stubs("getBoolean").will(miniMock.returnValue(b));
      
         boolean i = ((BehaviourInterface1)mock).getBoolean();
-        Verify.equal(b, i);
+        Ensure.that(i, eq(b));
      }
 	
 	public static class ChecksMocksAreVerified extends UsingMiniMock {
@@ -187,7 +197,7 @@ public class UsingMiniMockBehaviour {
 		instance.verify();
 		
 		// then
-		Verify.equal("verifyMocks", results[0]);
+		Ensure.that(results[0], eq("verifyMocks"));
 	}
 	
 	public void shouldCallTemplateMethodAfterVerifyingMocks() throws Exception {
@@ -209,6 +219,6 @@ public class UsingMiniMockBehaviour {
 		instance.verify();
 		
 		// then
-		Verify.equal(expected, results);
+		Ensure.that(results, eq(expected));
 	}
 }

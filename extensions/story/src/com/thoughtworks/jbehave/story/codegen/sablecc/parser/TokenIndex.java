@@ -2,8 +2,16 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.parser;
 
-import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
-import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
+import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.AnalysisAdapter;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.EOF;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TAsA;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TEndl;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TIWant;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TScenarioKeyword;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TSoThat;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TTitleKeyword;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TWord;
 
 class TokenIndex extends AnalysisAdapter
 {

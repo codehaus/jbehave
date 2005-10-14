@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.story.verifier;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
@@ -42,7 +42,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         storyVerifier.verify(storyMock);
         
         // verify...
-        Verify.sameInstance(storyVerifier, arg[0]);
+        Ensure.that(arg[0], sameInstanceAs(storyVerifier));
     }
     
     public void shouldPassScenarioToScenarioInvoker() throws Exception {
@@ -57,7 +57,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         Scenario scenario = (Scenario)stub(Scenario.class);
 
         // expect...
-        scenarioInvoker.expects("invoke").with(scenario).with(scenario).will(returnValue(result));;
+        scenarioInvoker.expects("invoke").with(scenario).with(scenario).will(returnValue(result));
         scenarioVerifier.expects("verify").with(scenario);
         
         // when...

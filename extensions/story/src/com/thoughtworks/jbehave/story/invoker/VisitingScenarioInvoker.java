@@ -8,11 +8,11 @@
 package com.thoughtworks.jbehave.story.invoker;
 
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Given;
+import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Scenario;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
 import com.thoughtworks.jbehave.story.visitor.AbstractScenarioVisitor;
 /**

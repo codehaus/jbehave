@@ -2,8 +2,11 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.node;
 
-import java.util.*;
-import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
+import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.Analysis;
 
 public final class AStory extends PStory
 {

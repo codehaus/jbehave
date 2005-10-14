@@ -13,13 +13,13 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.junit.JUnitMethodAdapter;
+import com.thoughtworks.jbehave.core.Ensure;
+import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class JUnitMethodAdapterBehaviour {
+public class JUnitMethodAdapterBehaviour extends UsingConstraints {
     private static final List sequenceOfEvents = new ArrayList();
     
     public static class SomeBehaviourClass {
@@ -37,6 +37,6 @@ public class JUnitMethodAdapterBehaviour {
         TestCase testCase = new JUnitMethodAdapter(method, instance);
         
         // verify
-        Verify.notNull(testCase);
+        Ensure.that(testCase, not(eq(null)));
     }
 }

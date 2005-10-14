@@ -2,8 +2,9 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.node;
 
-import java.util.*;
-import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Node implements Switchable, Cloneable
 {

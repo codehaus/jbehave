@@ -11,10 +11,8 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
 
-import com.thoughtworks.jbehave.ant.AntTask;
-import com.thoughtworks.jbehave.ant.BehaviourClassDetails;
 import com.thoughtworks.jbehave.core.Block;
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
@@ -40,7 +38,7 @@ public class AntTaskBehaviour {
 		task.execute();
 
 		// verify
-		Verify.that(BehaviourClassOne.wasCalled);
+		Ensure.that(BehaviourClassOne.wasCalled);
 	}
 
 	public void shouldRunMultipleBehaviourClasses() throws Exception {
@@ -54,8 +52,8 @@ public class AntTaskBehaviour {
 		task.execute();
 
 		// verify
-		Verify.that(BehaviourClassOne.wasCalled);
-		Verify.that(BehaviourClassTwo.wasCalled);
+		Ensure.that(BehaviourClassOne.wasCalled);
+		Ensure.that(BehaviourClassTwo.wasCalled);
 	}
 
 	public void shouldUseClasspathFromClasspathElement() throws Exception {
@@ -69,7 +67,7 @@ public class AntTaskBehaviour {
 		task.execute();
 
 		// verify
-		Verify.that(BehaviourClassOne.wasCalled);
+		Ensure.that(BehaviourClassOne.wasCalled);
 	}
 
 	public void shouldFailTheBuildWhenVerificationFails() throws Exception {
@@ -77,7 +75,7 @@ public class AntTaskBehaviour {
 		final String behaviourClassName = FailingBehaviourClass.class.getName();
         task.createBehaviourClass().setBehaviourClassName(behaviourClassName);
 		// execute
-        Verify.throwsException(BuildException.class, new Block() {
+        Ensure.throwsException(BuildException.class, new Block() {
             public void execute() throws Exception {
                 task.execute();
             }
@@ -91,14 +89,14 @@ public class AntTaskBehaviour {
 		BehaviourClassOne.wasCalled = false; // i hate this!
 
 		// execute
-        Verify.throwsException(BuildException.class, new Block() {
+        Ensure.throwsException(BuildException.class, new Block() {
             public void execute() {
                 task.execute();
             }
         });
 
 		// verify
-		Verify.that("SpecOne should not have been run", !BehaviourClassOne.wasCalled);
+		Ensure.that("SpecOne should not have been run", !BehaviourClassOne.wasCalled);
 	}
 	
 

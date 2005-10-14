@@ -2,9 +2,21 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.lexer;
 
-import java.io.*;
-import java.util.*;
-import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PushbackReader;
+
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.EOF;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TAsA;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TEndl;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TIWant;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TScenarioKeyword;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TSoThat;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TTitleKeyword;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TWord;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.Token;
 
 public class Lexer
 {
@@ -64,8 +76,8 @@ public class Lexer
         int accept_pos = -1;
         int accept_line = -1;
 
-        int[][][] gotoTable = this.gotoTable[state.id()];
-        int[] accept = this.accept[state.id()];
+        int[][][] gotoTable = Lexer.gotoTable[state.id()];
+        int[] accept = Lexer.accept[state.id()];
         text.setLength(0);
 
         while(true)
@@ -96,7 +108,7 @@ public class Lexer
                     pos++;
                     cr = false;
                     break;
-                };
+                }
 
                 text.append((char) c);
 

@@ -1,11 +1,8 @@
 package com.thoughtworks.jbehave.story.visitor;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.Outcome;
-import com.thoughtworks.jbehave.story.domain.Outcomes;
-import com.thoughtworks.jbehave.story.domain.World;
 
 public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMiniMock {
 	protected abstract CompositeVisitableUsingMiniMock newComposite(Object  component1, Object component2);
@@ -57,7 +54,7 @@ public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMini
 		boolean result = composite.containsMocks();
 		
 		// then...
-		Verify.equal(false, result);
+		Ensure.that(result, eq(false));
 	}
 	
 	public void shouldContainMocksIfAnyOfItsComponentsContainMocks() throws Exception {
@@ -73,6 +70,6 @@ public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMini
 		boolean result = composite.containsMocks();
 		
 		// then...
-		Verify.equal(true, result);
+		Ensure.that(result, eq(true));
 	}
 }

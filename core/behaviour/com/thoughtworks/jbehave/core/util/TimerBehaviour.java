@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.jbehave.core.util;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 
 
 /**
@@ -22,10 +22,10 @@ public class TimerBehaviour {
         
         // execute
         // TODO make this not time-dependent - could possibly fail
-        Thread.sleep(10);
+        Thread.sleep(100);
         timer.stop();
         
         // verify
-        Verify.that(timer.elapsedTimeMillis() > 0);
+        Ensure.that(timer.elapsedTimeMillis() > 0);
     }
 }

@@ -22,7 +22,7 @@ public class NarrativeBehaviour extends UsingMiniMock {
         Mock visitor = mock(Visitor.class);
         
         // expect...
-        visitor.expects("visitNarrative").with(same(narrative));
+        visitor.expects("visitNarrative").with(sameInstanceAs(narrative));
 
         // when...
         narrative.accept((Visitor)visitor);

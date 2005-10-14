@@ -10,11 +10,11 @@ package com.thoughtworks.jbehave.story.renderer;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
+import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
 import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Givens;
@@ -28,7 +28,7 @@ import com.thoughtworks.jbehave.story.domain.World;
 /**
  * @author <a href="mailto:ekeogh@thoughtworks.com">Elizabeth Keogh</a>
  */
-public class PlainTextRendererBehaviour {
+public class PlainTextRendererBehaviour extends UsingConstraints {
 
 	public void shouldRenderStoryWhenVisitingStory() {
 		
@@ -62,7 +62,7 @@ public class PlainTextRendererBehaviour {
 		expectedResult.append("Then ").append(new ConvertCase(new PlainTextRendererShouldStillWork()).toSeparateWords()).append(NL);
 		expectedResult.append("and ").append(new ConvertCase(new BehaviourClassShouldNotFail()).toSeparateWords()).append(NL);
 		
-		Verify.equal(expectedResult.toString(), result);
+		Ensure.that(result, eq(expectedResult.toString()));
 	}
 
 	private static class SimpleStory extends Story {

@@ -1,6 +1,6 @@
 package com.thoughtworks.jbehave.core.minimock;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 
 /**
@@ -14,7 +14,7 @@ public class ExpectationBehaviour {
         Expectation expectation = new Expectation(null, "test").never();
         try {
             expectation.invoke(null, null, null);
-            Verify.impossible("Invoke should have throw VerificationException");
+            Ensure.impossible("Invoke should have throw VerificationException");
         }
         catch (VerificationException ex) {
             // ok;
@@ -28,22 +28,22 @@ public class ExpectationBehaviour {
 
     public void shouldMatchSimpleExpectationCorrectly() {
         Expectation expectation = new Expectation(null, "method");
-        Verify.that(expectation.matches("method", null));
+        Ensure.that(expectation.matches("method", null));
     }
 
     public void shouldMatchExpectationWithArguments() {
         Expectation expectation = new Expectation(null, "method").with("hello");
-        Verify.that(expectation.matches("method", new Object[] { "hello" }));
+        Ensure.that(expectation.matches("method", new Object[] { "hello" }));
     }
 
     public void shouldMatchAnyArgsWhenNoneSpecified() throws Exception {
         Expectation expectation = new Expectation(null, "method");
-        Verify.that(expectation.matches("method", new Object[] { "blah" }));
+        Ensure.that(expectation.matches("method", new Object[] { "blah" }));
     }
 
     public void shouldNotMatchWhenCallingWithArgsWhenNoArgsSet() throws Exception {
         Expectation expectation = new Expectation(null, "method").withNoArguments();
-        Verify.not(expectation.matches("method", new Object[] { "blah" }));
+        Ensure.not(expectation.matches("method", new Object[] { "blah" }));
     }
 
     public void shouldThrowExceptionWhenInvocationsEqualMaxInvocations() throws Throwable {
@@ -60,7 +60,7 @@ public class ExpectationBehaviour {
         expectation.invoke(null, null, null);
         try {
             expectation.invoke(null, null, null);
-            Verify.impossible("Invoke should have throw VerificationException");
+            Ensure.impossible("Invoke should have throw VerificationException");
         }
         catch (VerificationException expected) {
         }
@@ -70,7 +70,7 @@ public class ExpectationBehaviour {
         Expectation expectation = new Expectation(null, "test").once();
         try {
             expectation.verify();
-            Verify.impossible("Verify should have throw VerificationException");
+            Ensure.impossible("Verify should have throw VerificationException");
         } catch (VerificationException expected) {}
 
     }
@@ -96,7 +96,7 @@ public class ExpectationBehaviour {
         expecation.invoke(null, null, null);
         try {
             expecation.invoke(null, null, null);
-            Verify.impossible("Should have failed verification");
+            Ensure.impossible("Should have failed verification");
         } catch (VerificationException expected) {}
     }
 
@@ -106,7 +106,7 @@ public class ExpectationBehaviour {
         expecation.invoke(null, null, null);
         try {
             expecation.verify();
-            Verify.impossible("Should have failed verification");
+            Ensure.impossible("Should have failed verification");
         } catch (VerificationException expected) {}
     }
     

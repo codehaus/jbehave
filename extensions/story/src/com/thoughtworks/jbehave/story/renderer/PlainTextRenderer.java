@@ -11,13 +11,11 @@ import java.io.PrintStream;
 
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
-import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.Event;
-import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Outcomes;
+import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.domain.Story;
 import com.thoughtworks.jbehave.story.visitor.VisitorSupport;

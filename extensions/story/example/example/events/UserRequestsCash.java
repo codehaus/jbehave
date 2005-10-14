@@ -7,8 +7,8 @@
  */
 package example.events;
 
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.EventUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.World;
 
 
 public class UserRequestsCash extends EventUsingMiniMock {
