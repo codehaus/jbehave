@@ -109,6 +109,39 @@ public class UsingConstraints {
 	        }
 	    };
 	}
+	
+	public ConstraintSupport startsWith(final String fragment) {
+	    return new ConstraintSupport() {
+	        public boolean matches(Object arg) {
+	            return ((String)arg).startsWith(fragment);
+	        }
+	        public String toString() {
+	            return "string starting with <" + fragment + ">";
+	        }
+	    };
+	}
+	
+	public ConstraintSupport endsWith(final String fragment) {
+		return new ConstraintSupport() {
+			public boolean matches(Object arg) {
+				return ((String)arg).endsWith(fragment);
+			}
+			public String toString() {
+				return "string ending with <" + fragment + ">";
+			}
+		};
+	}
+	
+	public ConstraintSupport contains(final String fragment) {
+		return new ConstraintSupport() {
+			public boolean matches(Object arg) {
+				return ((String)arg).indexOf(fragment) != -1;
+			}
+			public String toString() {
+				return "string ending with <" + fragment + ">";
+			}
+		};
+	}
 
 	public ConstraintSupport and(final Constraint a, final Constraint b) {
 	    return new ConstraintSupport() {
@@ -116,7 +149,7 @@ public class UsingConstraints {
 	            return a.matches(arg) && b.matches(arg);
 	        }
 	        public String toString() {
-	            return a + " and " + b;
+	            return "(" + a + " and " + b + ")";
 	        }
 	    };
 	}
@@ -131,7 +164,7 @@ public class UsingConstraints {
 	            return a.matches(arg) || b.matches(arg);
 	        }
 	        public String toString() {
-	            return a + " or " + b;
+	            return "(" + a + " or " + b + ")";
 	        }
 	    };
 	}
