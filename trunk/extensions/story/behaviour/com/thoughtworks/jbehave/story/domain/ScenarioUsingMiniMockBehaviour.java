@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.jbehave.story.domain;
 
-import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.story.visitor.Visitor;

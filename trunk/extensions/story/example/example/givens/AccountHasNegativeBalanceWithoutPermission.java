@@ -7,8 +7,8 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.World;
 
 
 /** balance = -50, overdraft limit = 0 */

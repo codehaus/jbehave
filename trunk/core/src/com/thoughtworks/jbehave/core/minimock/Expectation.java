@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 /**
@@ -57,7 +57,7 @@ public class Expectation extends MiniMockSugar {
         if (after != null) {
 			after.verify();
         }
-        Verify.that("Unexpected call to " + methodName + " (Expected " + maxInvocations + " calls)", invocations < maxInvocations);
+        Ensure.that("Unexpected call to " + methodName + " (Expected " + maxInvocations + " calls)", invocations < maxInvocations);
         invocations++;
         return invoker.invoke(proxy, method, args);
     }
@@ -145,11 +145,11 @@ public class Expectation extends MiniMockSugar {
     // with arguments
 
     public Expectation with(Object arg) {
-        return with(same(arg));
+        return with(sameInstanceAs(arg));
     }
 
     public Expectation with(Object arg1, Object arg2) {
-        return with(same(arg1), same(arg2));
+        return with(sameInstanceAs(arg1), sameInstanceAs(arg2));
     }
 
     public Expectation with(Constraint constraint) {

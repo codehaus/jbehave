@@ -3,7 +3,6 @@ package com.thoughtworks.jbehave.story.domain;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.Verify;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.story.visitor.CompositeVisitableUsingMiniMock;
 import com.thoughtworks.jbehave.story.visitor.CompositeVisitableUsingMiniMockBehaviour;
@@ -31,8 +30,8 @@ public class GivensBehaviour extends CompositeVisitableUsingMiniMockBehaviour {
 				return null;
 			}
 		};
-		component1.stubs("accept").with(a(Visitor.class)).will(dispatchItselfToVisitor);
-		component2.stubs("accept").with(a(Visitor.class)).will(dispatchItselfToVisitor);
+		component1.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
+		component2.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
 		
 		// expect...
 		component1.expects("setUp").with(world);

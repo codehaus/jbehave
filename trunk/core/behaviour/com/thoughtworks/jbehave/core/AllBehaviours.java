@@ -8,9 +8,9 @@
 package com.thoughtworks.jbehave.core;
 
 import com.thoughtworks.jbehave.core.behaviour.BehaviourClassBehaviour;
-import com.thoughtworks.jbehave.core.behaviour.Behaviours;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodBehaviour;
 import com.thoughtworks.jbehave.core.behaviour.BehaviourMethodVerifierBehaviour;
+import com.thoughtworks.jbehave.core.behaviour.Behaviours;
 import com.thoughtworks.jbehave.core.listener.PlainTextMethodListenerBehaviour;
 import com.thoughtworks.jbehave.core.minimock.ExpectationBehaviour;
 import com.thoughtworks.jbehave.core.minimock.MockObjectBehaviour;

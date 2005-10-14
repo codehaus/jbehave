@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.result.Result;
@@ -35,20 +35,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         behaviourMethod.accept((Visitor) visitor);
     }
 
-	private Method method(String methodName, Object instance) throws NoSuchMethodException {
-		return instance.getClass().getMethod(methodName, new Class[0]);
-	}
-    
-	private BehaviourMethod behaviourMethod(Object instance, String methodName) throws Exception {
-		return new BehaviourMethod(instance, method(methodName, instance));
-	}
-
-	private BehaviourMethod behaviourMethod(Class type, String methodName) throws Exception {
-		Object instance = type.newInstance();
-		return behaviourMethod(instance, methodName);
-	}
-    
-    public static class StoresInvocation {
+	public static class StoresInvocation {
         public boolean methodWasInvoked = false;
         public void shouldDoSomething() {
             methodWasInvoked = true;
@@ -64,7 +51,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         behaviourMethod.invoke();
         
         // then
-        Verify.that(instance.methodWasInvoked);
+        Ensure.that(instance.methodWasInvoked);
     }
     
     public static class HasSetUpAndTearDown {
@@ -98,7 +85,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         behaviourMethod.invoke();
         
         // then
-        Verify.equal(expected, instance.whatHappened);
+        Ensure.that(instance.whatHappened, eq(expected));
     }
 
     public static class CheckedException extends Exception {}
@@ -118,7 +105,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         Result result = behaviourMethod.invoke();
         
         // then
-        Verify.instanceOf(CheckedException.class, result.cause());
+        Ensure.that(result.cause(), isA(CheckedException.class));
     }
     
     public static class MethodThrowsException extends HasSetUpAndTearDown {
@@ -136,7 +123,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         Result result = behaviourMethod.invoke();
         
         // then
-        Verify.instanceOf(CheckedException.class, result.cause());
+        Ensure.that(result.cause(), isA(CheckedException.class));
     }
     
     public static class VerifyThrowsException extends HasSetUpAndTearDown {
@@ -154,7 +141,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         Result result = behaviourMethod.invoke();
         
         // then
-        Verify.instanceOf(CheckedException.class, result.cause());
+        Ensure.that(result.cause(), isA(CheckedException.class));
     }
     
     public static class TearDownThrowsException extends HasSetUpAndTearDown {
@@ -172,7 +159,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         Result result = behaviourMethod.invoke();
         
         // then
-        Verify.instanceOf(CheckedException.class, result.cause());
+        Ensure.that(result.cause(), isA(CheckedException.class));
     }
     
     public static class MethodAndVerifyBothThrowException extends HasSetUpAndTearDown {
@@ -193,7 +180,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         Result result = behaviourMethod.invoke();
         
         // then
-        Verify.equal("from method", result.cause().getMessage());
+        Ensure.that(result.cause().getMessage(), eq("from method"));
     }
     
     public static class MethodAndTearDownBothThrowException extends HasSetUpAndTearDown {
@@ -214,7 +201,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         Result result = behaviourMethod.invoke();
         
         // then
-        Verify.equal("from method", result.cause().getMessage());
+        Ensure.that(result.cause().getMessage(), eq("from method"));
     }
     
     public static class VerifyAndTearDownBothThrowException extends HasSetUpAndTearDown {
@@ -237,6 +224,6 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         Result result = behaviourMethod.invoke();
         
         // then
-        Verify.equal("from verify", result.cause().getMessage());
+        Ensure.that(result.cause().getMessage(), eq("from verify"));
     }
 }

@@ -2,7 +2,7 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.node;
 
-import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
+import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.Analysis;
 
 public final class TSpace extends Token
 {

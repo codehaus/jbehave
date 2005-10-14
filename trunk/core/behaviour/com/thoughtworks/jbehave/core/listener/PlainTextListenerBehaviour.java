@@ -9,8 +9,10 @@ package com.thoughtworks.jbehave.core.listener;
 
 import java.io.StringWriter;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.PendingException;
+import com.thoughtworks.jbehave.core.minimock.Constraint;
+import com.thoughtworks.jbehave.core.minimock.ConstraintSupport;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.util.Timer;
@@ -48,30 +50,41 @@ public abstract class PlainTextListenerBehaviour extends UsingMiniMock {
         timer = new StatefulTimer();
         listener = newPlainTextListener();
     }
+    
+    private Constraint contains(final Result.Type expected) {
+    	return new ConstraintSupport(){
+			public boolean matches(Object arg) {
+				return ((StringWriter)arg).toString().indexOf(expected.symbol()) != -1;
+			}
+			public String toString() {
+				return "StringWriter containing <" + expected + ">";
+			}
+    	};
+    }
 
     public void shouldRenderSuccessSymbolForSuccess() throws Exception {
         listener.gotResult(new Result("shouldSucceed", "Container", Result.SUCCEEDED));
-        Verify.equal(Result.SUCCEEDED.symbol(), writer.toString());
+        Ensure.that(writer, contains(Result.SUCCEEDED));
     }
 
     public void shouldRenderExceptionSymbolForException() throws Exception {
         listener.gotResult(new Result("shouldThrowException", "Container", Result.THREW_EXCEPTION));
-        Verify.equal(Result.THREW_EXCEPTION.symbol(), writer.toString());
+        Ensure.that(writer, contains(Result.THREW_EXCEPTION));
     }
 
     public void shouldRenderFailureSymbolForFailure() throws Exception {
         listener.gotResult(new Result("shouldFail", "Container", Result.FAILED));
-        Verify.equal(Result.FAILED.symbol(), writer.toString());
+        Ensure.that(writer, contains(Result.FAILED));
     }
 
     public void shouldRenderPendingSymbolForPending() throws Exception {
         listener.gotResult(new Result("shouldBePending", "Container", new PendingException()));
-        Verify.equal(Result.PENDING.symbol(), writer.toString());
+        Ensure.that(writer, contains(Result.PENDING));
     }
 
     protected void verifyOutputContains(String expected) {
         String output = writer.toString();
-        Verify.that("Output should contain: [" + expected + "] but was:\n>>>\n" + output + "\n<<<", output.indexOf(expected) != -1);
+        Ensure.that("Output should contain: [" + expected + "] but was:\n>>>\n" + output + "\n<<<", output.indexOf(expected) != -1);
     }
     
     public void shouldSummarizeSingleSuccessfulResult() throws Exception {
@@ -137,6 +150,6 @@ public abstract class PlainTextListenerBehaviour extends UsingMiniMock {
 
     public void shouldStartTimerWhenConstructed() throws Exception {
         // verify...
-        Verify.that(timer.isRunning);
+        Ensure.that(timer.isRunning);
     }
 }

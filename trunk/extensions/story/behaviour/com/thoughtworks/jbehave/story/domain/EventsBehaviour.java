@@ -30,8 +30,8 @@ public class EventsBehaviour  extends CompositeVisitableUsingMiniMockBehaviour {
 				return null;
 			}
 		};
-		component1.stubs("accept").with(a(Visitor.class)).will(dispatchItselfToVisitor);
-		component2.stubs("accept").with(a(Visitor.class)).will(dispatchItselfToVisitor);
+		component1.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
+		component2.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
 		
 		// expect...
 		component1.expects("occurIn").with(world);

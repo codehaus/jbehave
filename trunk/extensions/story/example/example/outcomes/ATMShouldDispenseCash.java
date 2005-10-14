@@ -7,8 +7,8 @@
  */
 package example.outcomes;
 
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.OutcomeUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.World;
 
 
 

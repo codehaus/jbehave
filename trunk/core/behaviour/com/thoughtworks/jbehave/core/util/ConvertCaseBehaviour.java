@@ -9,12 +9,13 @@ package com.thoughtworks.jbehave.core.util;
 
 import java.text.SimpleDateFormat;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
+import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class ConvertCaseBehaviour {
+public class ConvertCaseBehaviour extends UsingConstraints {
     
     public void shouldConvertStringToSeparateWords() throws Exception {
         // given...
@@ -24,7 +25,7 @@ public class ConvertCaseBehaviour {
         String result = new ConvertCase(string).toSeparateWords();
         
         // then...
-        Verify.equal("string in camel case", result);
+        Ensure.that(result, eq("string in camel case"));
     }
     
     public void shouldLeaveUppercaseWordsWhenConvertingToSeparateWords() throws Exception {
@@ -35,7 +36,7 @@ public class ConvertCaseBehaviour {
         String result = new ConvertCase(string).toSeparateWords();
         
         // then...
-        Verify.equal("UPPERCASE and a single letter", result);
+        Ensure.that( result, eq("UPPERCASE and a single letter"));
     }
     
     public void shouldConvertRegularClassNameToSeparateWords() throws Exception {
@@ -46,7 +47,7 @@ public class ConvertCaseBehaviour {
         String result = new ConvertCase(type).toSeparateWords();
         
         // then...
-        Verify.equal("simple date format", result);
+        Ensure.that(result, eq("simple date format"));
     }
     
     private static class InnerClass{}
@@ -59,7 +60,7 @@ public class ConvertCaseBehaviour {
         String result = new ConvertCase(type).toSeparateWords();
         
         // then...
-        Verify.equal("inner class", result);
+        Ensure.that(result, eq("inner class"));
     }
     
     public void shouldConvertClassNameOfArbitraryObjectToSeparateWords() throws Exception {
@@ -70,7 +71,7 @@ public class ConvertCaseBehaviour {
         String result = new ConvertCase(object).toSeparateWords();
         
         // then...
-        Verify.equal("inner class", result);
+        Ensure.that(result, eq("inner class"));
     }
     
     public void shouldConvertLowercaseWordsToCamelCase() throws Exception {
@@ -81,6 +82,6 @@ public class ConvertCaseBehaviour {
         String result = new ConvertCase(string).toCamelCase();
         
         // then...
-        Verify.equal("TheCatSatOnTheMat", result);
+        Ensure.that(result, eq("TheCatSatOnTheMat"));
     }
 }

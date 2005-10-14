@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import com.thoughtworks.jbehave.core.UsingMocks;
-import com.thoughtworks.jbehave.story.domain.Outcome;
 
 public class CompositeVisitableUsingMiniMock {
 	protected final VisitableArrayList visitables = new VisitableArrayList();

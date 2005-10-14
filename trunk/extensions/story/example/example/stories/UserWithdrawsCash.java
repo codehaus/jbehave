@@ -9,7 +9,6 @@
 package example.stories;
 
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Given;
 import com.thoughtworks.jbehave.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.Narrative;

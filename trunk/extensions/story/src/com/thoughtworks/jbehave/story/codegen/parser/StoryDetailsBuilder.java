@@ -19,7 +19,7 @@ import com.thoughtworks.jbehave.story.codegen.sablecc.node.AWordWordOrSpace;
 class StoryDetailsBuilder extends DepthFirstAdapter {
 	StoryDetails story = new StoryDetails();
 	private StringBuffer phrase;
-	private StringBuffer scenarioTitle;
+//	private StringBuffer scenarioTitle;
 	private ScenarioDetails scenario;
 	
 	// the story 

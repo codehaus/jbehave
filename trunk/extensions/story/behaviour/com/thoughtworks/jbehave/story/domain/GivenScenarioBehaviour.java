@@ -9,7 +9,6 @@ package com.thoughtworks.jbehave.story.domain;
 
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.story.visitor.Visitor;
 import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 
 /**
@@ -24,8 +23,6 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		Mock outcomeMock = mock(Outcome.class);
 		
 		World world = (World)stub(World.class);
-		Visitor visitor = (Visitor)stub(Visitor.class);
-		
 		givenMock.expects("accept");
 		outcomeMock.expects("accept");
 		eventMock.expects("accept");
@@ -48,8 +45,7 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		Event event = (Event)stub(Event.class);
 		Outcome outcome = (Outcome)stub(Outcome.class);
 		Mock worldMock = mock(World.class);
-		World world = (World)worldMock;
-	    Outcomes outcomes = new Outcomes(outcome);
+		Outcomes outcomes = new Outcomes(outcome);
 		
 	    worldMock.expects("clear").never();
 	    

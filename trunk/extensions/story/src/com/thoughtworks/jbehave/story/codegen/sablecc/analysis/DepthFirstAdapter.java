@@ -2,8 +2,20 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.analysis;
 
-import java.util.*;
-import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ABenefit;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AFeature;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.APhrase;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ARole;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AScenario;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AScenarioTitle;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ASpaceWordOrSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AStory;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ATitle;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AWordWordOrSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.Node;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PScenario;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PWordOrSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.Start;
 
 public class DepthFirstAdapter extends AnalysisAdapter
 {

@@ -30,8 +30,8 @@ public class OutcomesBehaviour extends CompositeVisitableUsingMiniMockBehaviour 
 				return null;
 			}
 		};
-		component1.stubs("accept").with(a(Visitor.class)).will(dispatchItselfToVisitor);
-		component2.stubs("accept").with(a(Visitor.class)).will(dispatchItselfToVisitor);
+		component1.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
+		component2.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
 		
 		// expect...
 		component1.expects("setExpectationIn").with(world);
@@ -55,8 +55,8 @@ public class OutcomesBehaviour extends CompositeVisitableUsingMiniMockBehaviour 
 				return null;
 			}
 		};
-		component1.stubs("accept").with(a(Visitor.class)).will(dispatchItselfToVisitor);
-		component2.stubs("accept").with(a(Visitor.class)).will(dispatchItselfToVisitor);
+		component1.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
+		component2.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
 		
 		// expect...
 		component1.expects("verify").with(world);

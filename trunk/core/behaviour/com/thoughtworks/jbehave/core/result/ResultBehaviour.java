@@ -7,41 +7,42 @@
  */
 package com.thoughtworks.jbehave.core.result;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
+import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class ResultBehaviour {
-
-    private void verifyEvaluationState(Result result, Result.Type status, boolean succeeded, boolean failed, boolean exceptionThrown, boolean pending) {
-        Verify.equal("status", status, result.status());
-        Verify.equal("succeeded", succeeded, result.succeeded());
-        Verify.equal("failed", failed, result.failed());
-        Verify.equal("exception thrown", exceptionThrown, result.threwException());
-        Verify.equal("pending", pending, result.isPending());
+public class ResultBehaviour extends UsingConstraints {
+	
+	private void verifyResult(final Result result, final Result.Type status, boolean succeeded, boolean failed, boolean exceptionThrown, boolean pending) {
+        Ensure.that(result.status(), eq(status), "status");
+        Ensure.that(result.succeeded(), eq(result.succeeded()), "succeeded");
+        Ensure.that(result.failed(), eq(failed), "failed");
+        Ensure.that(result.threwException(), eq(exceptionThrown), "exception thrown");
+        Ensure.that(result.isPending(), eq(pending), "pending");
     }
 
     public void shouldHaveConsistentStateForSuccess() throws Exception {
         Result result = new Result("shouldSucceed", "Container", Result.SUCCEEDED);
-        verifyEvaluationState(result, Result.SUCCEEDED, true, false, false, false);
+        verifyResult(result, Result.SUCCEEDED, true, false, false, false);
     }
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
         Result result = new Result("shouldFail", "Container", new VerificationException("oops"));
-        verifyEvaluationState(result, Result.FAILED, false, true, false, false);
+        verifyResult(result, Result.FAILED, false, true, false, false);
     }
 
     public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
         Result result = new Result("shouldThrowException", "Container", new Exception());
-        verifyEvaluationState(result, Result.THREW_EXCEPTION, false, false, true, false);
+        verifyResult(result, Result.THREW_EXCEPTION, false, false, true, false);
     }
     
     public void shouldHaveConsistentStateForPending() throws Exception {
         Result result = new Result("shouldBeImplemented", "Container", new PendingException("todo"));
-        verifyEvaluationState(result, Result.PENDING, false, false, false, true);
+        verifyResult(result, Result.PENDING, false, false, false, true);
     }
 }

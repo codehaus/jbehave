@@ -13,8 +13,8 @@ import java.util.List;
 import com.thoughtworks.jbehave.core.UsingMocks;
 import com.thoughtworks.jbehave.core.exception.NestedVerificationException;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.Scenario;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
 
 /**

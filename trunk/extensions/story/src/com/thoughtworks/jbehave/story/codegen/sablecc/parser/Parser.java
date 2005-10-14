@@ -2,14 +2,51 @@
 
 package com.thoughtworks.jbehave.story.codegen.sablecc.parser;
 
-import com.thoughtworks.jbehave.story.codegen.sablecc.lexer.*;
-import com.thoughtworks.jbehave.story.codegen.sablecc.node.*;
-import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.*;
-import java.util.*;
-
-import java.io.DataInputStream;
 import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
+import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.Analysis;
+import com.thoughtworks.jbehave.story.codegen.sablecc.analysis.AnalysisAdapter;
+import com.thoughtworks.jbehave.story.codegen.sablecc.lexer.Lexer;
+import com.thoughtworks.jbehave.story.codegen.sablecc.lexer.LexerException;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ABenefit;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AFeature;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.APhrase;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ARole;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AScenario;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AScenarioTitle;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ASpaceWordOrSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AStory;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.ATitle;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.AWordWordOrSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.EOF;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.NodeCast;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PBenefit;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PFeature;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PPhrase;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PRole;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PScenario;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PScenarioTitle;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PStory;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PTitle;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.PWordOrSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.Start;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.Switchable;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TAsA;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TEndl;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TIWant;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TScenarioKeyword;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TSoThat;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TSpace;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TTitleKeyword;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TWord;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.Token;
+import com.thoughtworks.jbehave.story.codegen.sablecc.node.TypedLinkedList;
 
 public class Parser
 {
@@ -19,7 +56,6 @@ public class Parser
 
     private final Lexer lexer;
     private final ListIterator stack = new LinkedList().listIterator();
-    private int last_shift;
     private int last_pos;
     private int last_line;
     private Token last_token;
@@ -168,7 +204,6 @@ public class Parser
 		        ArrayList list = new ArrayList();
 		        list.add(lexer.next());
                         push(action[1], list, false);
-                        last_shift = action[1];
                     }
 		    break;
                 case REDUCE:
@@ -375,9 +410,6 @@ public class Parser
         PStory pstoryNode1;
         {
         PTitle ptitleNode2;
-        Object nullNode3 = null;
-        Object nullNode4 = null;
-        Object nullNode5 = null;
         TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         {
@@ -401,8 +433,6 @@ public class Parser
         {
         PTitle ptitleNode2;
         PRole proleNode3;
-        Object nullNode4 = null;
-        Object nullNode5 = null;
         TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         proleNode3 = (PRole)nodeArrayList2.get(0);
@@ -426,9 +456,7 @@ public class Parser
         PStory pstoryNode1;
         {
         PTitle ptitleNode2;
-        Object nullNode3 = null;
         PFeature pfeatureNode4;
-        Object nullNode5 = null;
         TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         pfeatureNode4 = (PFeature)nodeArrayList2.get(0);
@@ -455,7 +483,6 @@ public class Parser
         PTitle ptitleNode2;
         PRole proleNode3;
         PFeature pfeatureNode4;
-        Object nullNode5 = null;
         TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         proleNode3 = (PRole)nodeArrayList2.get(0);
@@ -480,8 +507,6 @@ public class Parser
         PStory pstoryNode1;
         {
         PTitle ptitleNode2;
-        Object nullNode3 = null;
-        Object nullNode4 = null;
         PBenefit pbenefitNode5;
         TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
@@ -508,7 +533,6 @@ public class Parser
         {
         PTitle ptitleNode2;
         PRole proleNode3;
-        Object nullNode4 = null;
         PBenefit pbenefitNode5;
         TypedLinkedList listNode6 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
@@ -535,7 +559,6 @@ public class Parser
         PStory pstoryNode1;
         {
         PTitle ptitleNode2;
-        Object nullNode3 = null;
         PFeature pfeatureNode4;
         PBenefit pbenefitNode5;
         TypedLinkedList listNode6 = new TypedLinkedList();
@@ -592,9 +615,6 @@ public class Parser
         PStory pstoryNode1;
         {
         PTitle ptitleNode2;
-        Object nullNode3 = null;
-        Object nullNode4 = null;
-        Object nullNode5 = null;
         TypedLinkedList listNode7 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         {
@@ -625,8 +645,6 @@ public class Parser
         {
         PTitle ptitleNode2;
         PRole proleNode3;
-        Object nullNode4 = null;
-        Object nullNode5 = null;
         TypedLinkedList listNode7 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         proleNode3 = (PRole)nodeArrayList2.get(0);
@@ -657,9 +675,7 @@ public class Parser
         PStory pstoryNode1;
         {
         PTitle ptitleNode2;
-        Object nullNode3 = null;
         PFeature pfeatureNode4;
-        Object nullNode5 = null;
         TypedLinkedList listNode7 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         pfeatureNode4 = (PFeature)nodeArrayList2.get(0);
@@ -693,7 +709,6 @@ public class Parser
         PTitle ptitleNode2;
         PRole proleNode3;
         PFeature pfeatureNode4;
-        Object nullNode5 = null;
         TypedLinkedList listNode7 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
         proleNode3 = (PRole)nodeArrayList2.get(0);
@@ -725,8 +740,6 @@ public class Parser
         PStory pstoryNode1;
         {
         PTitle ptitleNode2;
-        Object nullNode3 = null;
-        Object nullNode4 = null;
         PBenefit pbenefitNode5;
         TypedLinkedList listNode7 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
@@ -760,7 +773,6 @@ public class Parser
         {
         PTitle ptitleNode2;
         PRole proleNode3;
-        Object nullNode4 = null;
         PBenefit pbenefitNode5;
         TypedLinkedList listNode7 = new TypedLinkedList();
         ptitleNode2 = (PTitle)nodeArrayList1.get(0);
@@ -794,7 +806,6 @@ public class Parser
         PStory pstoryNode1;
         {
         PTitle ptitleNode2;
-        Object nullNode3 = null;
         PFeature pfeatureNode4;
         PBenefit pbenefitNode5;
         TypedLinkedList listNode7 = new TypedLinkedList();

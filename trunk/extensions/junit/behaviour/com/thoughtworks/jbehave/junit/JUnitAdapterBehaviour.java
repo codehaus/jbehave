@@ -14,13 +14,13 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestResult;
 
-import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.junit.JUnitAdapter;
+import com.thoughtworks.jbehave.core.Ensure;
+import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class JUnitAdapterBehaviour {
+public class JUnitAdapterBehaviour extends UsingConstraints {
     private static final List sequenceOfEvents = new ArrayList();
     
     public void setUp() {
@@ -41,7 +41,7 @@ public class JUnitAdapterBehaviour {
         int testCaseCount = suite.countTestCases();
         
         // verify
-        Verify.equal(1, testCaseCount);
+        Ensure.that(testCaseCount, eq(1));
     }
     
     public static class HasTwoMethods {
@@ -60,12 +60,12 @@ public class JUnitAdapterBehaviour {
         int testCaseCount = suite.countTestCases();
         
         // verify
-        Verify.equal(2, testCaseCount);
+        Ensure.that(testCaseCount, eq(2));
     }
     
     public static class HasFailingMethod {
         public void shouldDoSomething() throws Exception {
-            Verify.impossible("should not be invoked");
+            Ensure.impossible("should not be invoked");
         }
     }
     
@@ -105,10 +105,11 @@ public class JUnitAdapterBehaviour {
         suite.run(testResult);
         
         // verify
-        Verify.that(testResult.wasSuccessful());
-        Verify.equal(Arrays.asList(new String[] {
+        List expectedSequenceOfEvents = Arrays.asList(new String[] {
                 "startTest", "shouldDoSomething", "endTest",
                 "startTest", "shouldDoSomethingElse", "endTest"
-        }), sequenceOfEvents);
+        });
+        Ensure.that(testResult.wasSuccessful());
+		Ensure.that(sequenceOfEvents, eq(expectedSequenceOfEvents));
     }
 }

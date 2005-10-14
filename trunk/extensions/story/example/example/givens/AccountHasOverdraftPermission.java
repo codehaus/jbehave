@@ -7,15 +7,15 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.core.Verify;
-import com.thoughtworks.jbehave.story.domain.World;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
+import com.thoughtworks.jbehave.story.domain.World;
 
 
 /** @given overdraft limit = 100 */
 public class AccountHasOverdraftPermission extends GivenUsingMiniMock {
     public void setUp(World world) {
-        Verify.pending();
+        Ensure.pending();
     }
 
     public String getDescription() {

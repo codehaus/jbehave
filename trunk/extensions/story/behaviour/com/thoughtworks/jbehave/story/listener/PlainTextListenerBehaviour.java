@@ -9,7 +9,7 @@ package com.thoughtworks.jbehave.story.listener;
 
 import java.io.StringWriter;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.listener.PlainTextListener;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
@@ -54,27 +54,27 @@ public abstract class PlainTextListenerBehaviour extends UsingMiniMock {
 
     public void shouldRenderSuccessSymbolForSuccess() throws Exception {
         listener.gotResult(new Result("shouldSucceed", "Container", Result.SUCCEEDED));
-        Verify.equal(Result.SUCCEEDED.symbol(), writer.toString());
+        Ensure.that(writer.toString(), eq(Result.SUCCEEDED.symbol()));
     }
 
     public void shouldRenderExceptionSymbolForException() throws Exception {
         listener.gotResult(new Result("shouldThrowException", "Container", Result.THREW_EXCEPTION));
-        Verify.equal(Result.THREW_EXCEPTION.symbol(), writer.toString());
+        Ensure.that(writer.toString(), eq(Result.THREW_EXCEPTION.symbol()));
     }
 
     public void shouldRenderFailureSymbolForFailure() throws Exception {
         listener.gotResult(new Result("shouldFail", "Container", Result.FAILED));
-        Verify.equal(Result.FAILED.symbol(), writer.toString());
+        Ensure.that(writer.toString(), eq(Result.FAILED.symbol()));
     }
 
     public void shouldRenderPendingSymbolForPending() throws Exception {
         listener.gotResult(new Result("shouldBePending", "Container", new PendingException()));
-        Verify.equal(Result.PENDING.symbol(), writer.toString());
+        Ensure.that(writer.toString(), eq(Result.PENDING.symbol()));
     }
 
     protected void verifyOutputContains(String expected) {
         String output = writer.toString();
-        Verify.that("Output should contain: [" + expected + "] but was:\n>>>\n" + output + "\n<<<", output.indexOf(expected) != -1);
+        Ensure.that("Output should contain: [" + expected + "] but was:\n>>>\n" + output + "\n<<<", output.indexOf(expected) != -1);
     }
     
     public void shouldSummarizeSingleSuccessfulResult() throws Exception {
@@ -140,6 +140,6 @@ public abstract class PlainTextListenerBehaviour extends UsingMiniMock {
 
     public void shouldStartTimerWhenConstructed() throws Exception {
         // verify...
-        Verify.that(timer.isRunning);
+        Ensure.that(timer.isRunning);
     }
 }

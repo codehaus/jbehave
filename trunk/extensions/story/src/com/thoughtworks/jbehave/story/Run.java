@@ -8,9 +8,9 @@
 package com.thoughtworks.jbehave.story;
 import java.io.OutputStreamWriter;
 
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.HashMapWorld;
 import com.thoughtworks.jbehave.story.domain.Story;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.invoker.ScenarioInvoker;
 import com.thoughtworks.jbehave.story.invoker.VisitingScenarioInvoker;
 import com.thoughtworks.jbehave.story.listener.PlainTextScenarioListener;

@@ -10,12 +10,12 @@ package com.thoughtworks.jbehave.story.verifier;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import com.thoughtworks.jbehave.core.Verify;
+import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.domain.Outcome;
 import com.thoughtworks.jbehave.story.domain.Scenario;
+import com.thoughtworks.jbehave.story.domain.World;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
 import com.thoughtworks.jbehave.story.visitor.Visitor;
 
@@ -47,7 +47,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         Mock outcome = mock(Outcome.class);
 
         // expect...
-        outcome.expects("verify").with(same(worldStub));
+        outcome.expects("verify").with(sameInstanceAs(worldStub));
         
         // when...
         verifier.visitOutcome((Outcome)outcome);
@@ -63,7 +63,7 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         ScenarioResult result = verifier.verify((Scenario)scenario);
         
         // verify...
-        Verify.that("should have used mocks", result.usedMocks());
+        Ensure.that("should have used mocks", result.usedMocks());
     }
     
     /** Custom invocation handler so a Scenario can pass a component to the visitor */

@@ -7,10 +7,7 @@
  */
 package com.thoughtworks.jbehave.story.domain;
 
-import java.util.Iterator;
-
 import com.thoughtworks.jbehave.story.visitor.CompositeVisitableUsingMiniMock;
-import com.thoughtworks.jbehave.story.visitor.Visitor;
 import com.thoughtworks.jbehave.story.visitor.VisitorSupport;
 
 
