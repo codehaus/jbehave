@@ -45,7 +45,7 @@ public class VisitableArrayListBehaviour extends UsingMiniMock {
         final Visitor visitor = (Visitor)stub(Visitor.class);
 
         // expect...
-        component.expects("accept").with(anything()).willThrow(new SomeRuntimeException());
+        component.expects("accept").with(anything()).will(throwException(new SomeRuntimeException()));
         
         // when...
         Ensure.throwsException(SomeRuntimeException.class, new Block() {
