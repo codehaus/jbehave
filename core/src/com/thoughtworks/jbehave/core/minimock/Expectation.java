@@ -19,7 +19,7 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Expectation extends MiniMockSugar {
+public class Expectation extends UsingConstraints {
     interface Registry {
         Expectation lookup(String id);
     }
@@ -109,10 +109,6 @@ public class Expectation extends MiniMockSugar {
         return this;
     } 
     
-    public void willThrow(Throwable cause) {
-        invoker = throwException(cause);
-    }
-
     // Invocations
     
     public Expectation once() {
