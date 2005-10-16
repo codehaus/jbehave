@@ -53,7 +53,7 @@ public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMini
 		boolean result = composite.containsMocks();
 		
 		// then...
-		ensure(result, eq(false));
+		ensureThat(result, eq(false));
 	}
 	
 	public void shouldContainMocksIfAnyOfItsComponentsContainMocks() throws Exception {
@@ -69,6 +69,6 @@ public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMini
 		boolean result = composite.containsMocks();
 		
 		// then...
-		ensure(result, eq(true));
+		ensureThat(result, eq(true));
 	}
 }

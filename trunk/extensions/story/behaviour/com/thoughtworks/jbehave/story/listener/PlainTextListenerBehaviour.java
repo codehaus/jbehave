@@ -54,22 +54,22 @@ public abstract class PlainTextListenerBehaviour extends UsingMiniMock {
 
     public void shouldRenderSuccessSymbolForSuccess() throws Exception {
         listener.gotResult(new Result("shouldSucceed", "Container", Result.SUCCEEDED));
-        ensure(writer.toString(), eq(Result.SUCCEEDED.symbol()));
+        ensureThat(writer.toString(), eq(Result.SUCCEEDED.symbol()));
     }
 
     public void shouldRenderExceptionSymbolForException() throws Exception {
         listener.gotResult(new Result("shouldThrowException", "Container", Result.THREW_EXCEPTION));
-        ensure(writer.toString(), eq(Result.THREW_EXCEPTION.symbol()));
+        ensureThat(writer.toString(), eq(Result.THREW_EXCEPTION.symbol()));
     }
 
     public void shouldRenderFailureSymbolForFailure() throws Exception {
         listener.gotResult(new Result("shouldFail", "Container", Result.FAILED));
-        ensure(writer.toString(), eq(Result.FAILED.symbol()));
+        ensureThat(writer.toString(), eq(Result.FAILED.symbol()));
     }
 
     public void shouldRenderPendingSymbolForPending() throws Exception {
         listener.gotResult(new Result("shouldBePending", "Container", new PendingException()));
-        ensure(writer.toString(), eq(Result.PENDING.symbol()));
+        ensureThat(writer.toString(), eq(Result.PENDING.symbol()));
     }
 
     protected void verifyOutputContains(String expected) {

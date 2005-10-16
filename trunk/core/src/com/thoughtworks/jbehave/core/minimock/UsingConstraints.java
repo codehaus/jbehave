@@ -187,7 +187,7 @@ public abstract class UsingConstraints {
 	    };
 	}
 	
-    public void ensure(Object arg, Constraint constraint, String note) {
+    public void ensureThat(Object arg, Constraint constraint, String note) {
     	if (!constraint.matches(arg)) {
     		fail("\nExpected: " +
     				(note != null ? "[" + note + "] " : "") +
@@ -195,47 +195,47 @@ public abstract class UsingConstraints {
     				"\nbut got:  " + arg);
     	}
 	}
-	public void ensure(Object arg, Constraint constraint) {
-		ensure(arg, constraint, null);
+	public void ensureThat(Object arg, Constraint constraint) {
+		ensureThat(arg, constraint, null);
 	}
 	
-	public void ensure(long arg, Constraint constraint, String message) {
-		ensure(arg, constraint, message);
+	public void ensureThat(long arg, Constraint constraint, String message) {
+		ensureThat(arg, constraint, message);
 	}
-	public void ensure(long arg, Constraint constraint) {
-		ensure(new Long(arg), constraint, null);
+	public void ensureThat(long arg, Constraint constraint) {
+		ensureThat(new Long(arg), constraint, null);
 	}
     
-    public void ensure(double arg, Constraint constraint, String message) {
-    	ensure(Double.valueOf(arg), constraint, message);
+    public void ensureThat(double arg, Constraint constraint, String message) {
+    	ensureThat(Double.valueOf(arg), constraint, message);
     }
-    public void ensure(double arg, Constraint constraint) {
-    	ensure(arg, constraint, null);
-    }
-    
-    public void ensure(char arg, Constraint constraint, String message) {
-    	ensure(new Character(arg), constraint, message);
-    }
-    public void ensure(char arg, Constraint constraint) {
-    	ensure(arg, constraint, null);
+    public void ensureThat(double arg, Constraint constraint) {
+    	ensureThat(arg, constraint, null);
     }
     
-    public void ensure(boolean arg, Constraint constraint, String message) {
-    	ensure(Boolean.valueOf(arg), constraint, message);
+    public void ensureThat(char arg, Constraint constraint, String message) {
+    	ensureThat(new Character(arg), constraint, message);
     }
-    public void ensure(boolean arg, Constraint constraint) {
-    	ensure(arg, constraint, null);
+    public void ensureThat(char arg, Constraint constraint) {
+    	ensureThat(arg, constraint, null);
+    }
+    
+    public void ensureThat(boolean arg, Constraint constraint, String message) {
+    	ensureThat(Boolean.valueOf(arg), constraint, message);
+    }
+    public void ensureThat(boolean arg, Constraint constraint) {
+    	ensureThat(arg, constraint, null);
     }
     
     /** ensure(...) without constraints */
-    public void ensure(boolean condition, String message) {
+    public void ensureThat(boolean condition, String message) {
     	if (!condition) {
     		fail(message + ": expected condition was not met");
     	}
     }
 
     /** ensure(...) without constraints */
-    public void ensure(boolean condition) {
+    public void ensureThat(boolean condition) {
         if (!condition) {
         	fail("Expected condition was not met");
         }

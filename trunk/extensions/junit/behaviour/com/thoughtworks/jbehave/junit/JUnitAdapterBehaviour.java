@@ -41,7 +41,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
         int testCaseCount = suite.countTestCases();
         
         // verify
-        ensure(testCaseCount, eq(1));
+        ensureThat(testCaseCount, eq(1));
     }
     
     public static class HasTwoMethods {
@@ -60,7 +60,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
         int testCaseCount = suite.countTestCases();
         
         // verify
-        ensure(testCaseCount, eq(2));
+        ensureThat(testCaseCount, eq(2));
     }
     
     public static class HasFailingMethod {
@@ -110,6 +110,6 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
                 "startTest", "shouldDoSomethingElse", "endTest"
         });
         Ensure.that(testResult.wasSuccessful());
-		ensure(sequenceOfEvents, eq(expectedSequenceOfEvents));
+		ensureThat(sequenceOfEvents, eq(expectedSequenceOfEvents));
     }
 }

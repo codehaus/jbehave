@@ -38,26 +38,26 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
 				return "UsingMiniMock instance containing mocks";
 			}
     	};
-        ensure(miniMock, not(containsMocks));
+        ensureThat(miniMock, not(containsMocks));
         
         miniMock.mock(BehaviourInterface2.class);
         
-        ensure(miniMock, containsMocks);
+        ensureThat(miniMock, containsMocks);
       
     }
     
     public void shouldCreateConstraintForPrimitiveFloatingPointTypes() throws Exception {
         Constraint matchesFloatValue = miniMock.eq(1.0);
-        ensure(new Float(1.0), matchesFloatValue);
-        ensure(new Double(1.0), matchesFloatValue);
+        ensureThat(new Float(1.0), matchesFloatValue);
+        ensureThat(new Double(1.0), matchesFloatValue);
     }
     
     public void shouldCreateConstraintForPrimitiveIntegerTypes() throws Exception {
         Constraint matchesIntTypeValue = miniMock.eq(1);
-        ensure(new Byte((byte)1), matchesIntTypeValue);
-        ensure(new Short((short)1), matchesIntTypeValue);
-        ensure(new Integer(1), matchesIntTypeValue);
-        ensure(new Long((long)1), matchesIntTypeValue);
+        ensureThat(new Byte((byte)1), matchesIntTypeValue);
+        ensureThat(new Short((short)1), matchesIntTypeValue);
+        ensureThat(new Integer(1), matchesIntTypeValue);
+        ensureThat(new Long((long)1), matchesIntTypeValue);
     }
     
     public void shouldCreateConstraintForPrimitiveCharType() throws Exception {
@@ -109,7 +109,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
       mock.stubs("getInt").will(miniMock.returnValue(1));
    
       int i = ((BehaviourInterface1)mock).getInt();
-      ensure(i, eq(1));
+      ensureThat(i, eq(1));
     }
     
     public void shouldCreateCorrectReturnValueForPrimitiveLong() throws Exception {
@@ -117,7 +117,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
         mock.stubs("getLong").will(miniMock.returnValue(1l));
      
         long i = ((BehaviourInterface1)mock).getLong();
-        ensure(i, eq(1));
+        ensureThat(i, eq(1));
     }
     
     public void shouldCreateCorrectReturnValueForPrimitiveShort() throws Exception {
@@ -126,7 +126,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
         mock.stubs("getShort").will(miniMock.returnValue(s));
      
         short i = ((BehaviourInterface1)mock).getShort();
-        ensure(i, eq(s));
+        ensureThat(i, eq(s));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveByte() throws Exception {
@@ -135,7 +135,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
         mock.stubs("getByte").will(miniMock.returnValue(b));
      
         byte i = ((BehaviourInterface1)mock).getByte();
-        ensure(i, eq(b));
+        ensureThat(i, eq(b));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveDouble() throws Exception {
@@ -144,7 +144,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
         mock.stubs("getDouble").will(miniMock.returnValue(d));
      
         double i = ((BehaviourInterface1)mock).getDouble();
-        ensure(i, eq(d, 0));
+        ensureThat(i, eq(d, 0));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveFloat() throws Exception {
@@ -153,7 +153,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
         mock.stubs("getFloat").will(miniMock.returnValue(f));
      
         float i = ((BehaviourInterface1)mock).getFloat();
-        ensure(i, eq(f, 0));
+        ensureThat(i, eq(f, 0));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveChar() throws Exception {
@@ -162,7 +162,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
         mock.stubs("getChar").will(miniMock.returnValue(c));
      
         char i = ((BehaviourInterface1)mock).getChar();
-        ensure(i, eq(c));
+        ensureThat(i, eq(c));
      }
     
     public void shouldCreateCorrectReturnValueForPrimitiveBoolean() throws Exception {
@@ -171,7 +171,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
         mock.stubs("getBoolean").will(miniMock.returnValue(b));
      
         boolean i = ((BehaviourInterface1)mock).getBoolean();
-        ensure(i, eq(b));
+        ensureThat(i, eq(b));
      }
 	
 	public static class ChecksMocksAreVerified extends UsingMiniMock {
@@ -197,7 +197,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
 		instance.verify();
 		
 		// then
-		ensure(results[0], eq("verifyMocks"));
+		ensureThat(results[0], eq("verifyMocks"));
 	}
 	
 	public void shouldCallTemplateMethodAfterVerifyingMocks() throws Exception {
@@ -219,6 +219,6 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
 		instance.verify();
 		
 		// then
-		ensure(results, eq(expected));
+		ensureThat(results, eq(expected));
 	}
 }

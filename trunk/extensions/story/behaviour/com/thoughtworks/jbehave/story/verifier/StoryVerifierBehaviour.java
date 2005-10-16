@@ -41,7 +41,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         storyVerifier.verify(storyMock);
         
         // verify...
-        ensure(arg[0], sameInstanceAs(storyVerifier));
+        ensureThat(arg[0], sameInstanceAs(storyVerifier));
     }
     
     public void shouldPassScenarioToScenarioInvoker() throws Exception {

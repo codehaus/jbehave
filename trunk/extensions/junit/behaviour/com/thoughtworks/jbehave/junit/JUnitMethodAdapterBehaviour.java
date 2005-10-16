@@ -36,6 +36,6 @@ public class JUnitMethodAdapterBehaviour extends UsingConstraints {
         TestCase testCase = new JUnitMethodAdapter(method, instance);
         
         // verify
-        ensure(testCase, not(eq(null)));
+        ensureThat(testCase, not(eq(null)));
     }
 }

@@ -61,7 +61,7 @@ public class PlainTextRendererBehaviour extends UsingConstraints {
 		expectedResult.append("Then ").append(new ConvertCase(new PlainTextRendererShouldStillWork()).toSeparateWords()).append(NL);
 		expectedResult.append("and ").append(new ConvertCase(new BehaviourClassShouldNotFail()).toSeparateWords()).append(NL);
 		
-		ensure(result, eq(expectedResult.toString()));
+		ensureThat(result, eq(expectedResult.toString()));
 	}
 
 	private static class SimpleStory extends Story {

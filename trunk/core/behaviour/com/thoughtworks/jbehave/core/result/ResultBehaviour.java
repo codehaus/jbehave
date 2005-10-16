@@ -18,11 +18,11 @@ import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 public class ResultBehaviour extends UsingConstraints {
 	
 	private void verifyResult(final Result result, final Result.Type status, boolean succeeded, boolean failed, boolean exceptionThrown, boolean pending) {
-        ensure(result.status(), eq(status), "status");
-        ensure(result.succeeded(), eq(result.succeeded()), "succeeded");
-        ensure(result.failed(), eq(failed), "failed");
-        ensure(result.threwException(), eq(exceptionThrown), "exception thrown");
-        ensure(result.isPending(), eq(pending),"pending");
+        ensureThat(result.status(), eq(status), "status");
+        ensureThat(result.succeeded(), eq(result.succeeded()), "succeeded");
+        ensureThat(result.failed(), eq(failed), "failed");
+        ensureThat(result.threwException(), eq(exceptionThrown), "exception thrown");
+        ensureThat(result.isPending(), eq(pending),"pending");
     }
 
     public void shouldHaveConsistentStateForSuccess() throws Exception {
