@@ -8,8 +8,8 @@
 package com.thoughtworks.jbehave.core;
 
 import com.thoughtworks.jbehave.core.exception.PendingException;
-import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.minimock.Constraint;
+import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
@@ -18,61 +18,56 @@ import com.thoughtworks.jbehave.core.minimock.Constraint;
  * @author <a href="mailto:steve@m3p.co.uk">Steve Freeman</a>
  */
 public class Ensure {
+	private static final UsingConstraints constraints = new UsingConstraints() {};
+	
     /** should not be subclassed for behaviour classes but can be extended to add methods to namespace */
     protected Ensure() {}
 
     /** Ensure.that(something, isBlah()) */
     public static void that(Object arg, Constraint constraint) {
-    	Ensure.that(arg, constraint, null);
+    	constraints.ensure(arg, constraint);
     }
     
-    public static void that(Object arg, Constraint constraint, String note) {
-    	if (!constraint.matches(arg)) {
-    		fail("\nExpected: " +
-    				(note != null ? "[" + note + "] " : "") +
-    				constraint +
-    				"\nbut got:  " + arg);
-    	}
+    public static void that(Object arg, Constraint constraint, String message) {
+    	constraints.ensure(arg, constraint, message);
 	}
 
 	public static void that(long arg, Constraint constraint) {
-    	Ensure.that(Long.valueOf(arg), constraint, null);
+		constraints.ensure(arg, constraint, null);
     }
-	public static void that(long arg, Constraint constraint, String note) {
-		Ensure.that(Long.valueOf(arg), constraint, note);
+	public static void that(long arg, Constraint constraint, String message) {
+		constraints.ensure(arg, constraint, message);
 	}
     
     public static void that(double arg, Constraint constraint) {
-    	Ensure.that(Double.valueOf(arg), constraint, null);
+    	constraints.ensure(arg, constraint, null);
     }
-    public static void that(double arg, Constraint constraint, String note) {
-    	Ensure.that(Double.valueOf(arg), constraint, note);
+    public static void that(double arg, Constraint constraint, String message) {
+    	constraints.ensure(arg, constraint, message);
     }
     
     public static void that(char arg, Constraint constraint) {
-    	Ensure.that(Character.valueOf(arg), constraint, null);
+    	constraints.ensure(arg, constraint, null);
     }
-    public static void that(char arg, Constraint constraint, String note) {
-    	Ensure.that(Character.valueOf(arg), constraint, note);
+    public static void that(char arg, Constraint constraint, String message) {
+    	constraints.ensure(arg, constraint, message);
     }
     
     public static void that(boolean arg, Constraint constraint) {
-    	Ensure.that(Boolean.valueOf(arg), constraint);
+    	constraints.ensure(arg, constraint);
     }
-    public static void that(boolean arg, Constraint constraint, String note) {
-    	Ensure.that(Boolean.valueOf(arg), constraint, note);
+    public static void that(boolean arg, Constraint constraint, String message) {
+    	constraints.ensure(arg, constraint, message);
     }
 
     /** Ensure.that(...) without constraints */
     public static void that(String message, boolean condition) {
-        if (!condition) {
-            fail(message != null ? message : "Expected condition was not met");
-        }
+    	constraints.ensure(condition, message);
     }
 
     /** Ensure.that(...) without constraints */
     public static void that(boolean condition) {
-        Ensure.that(null, condition);
+        constraints.ensure(condition, (String)null);
     }
 
     public static void not(String message, boolean condition) {
@@ -85,20 +80,12 @@ public class Ensure {
 
     /** like junit fail() */
 	public static void impossible(String message) {
-        throw new VerificationException(("\"Impossible\" behaviour: " + message));
+		constraints.fail(("\"Impossible\" behaviour: " + message));
 	}
     
-    private static void fail(String message) {
-        throw new VerificationException(message);
-    }
-
-    private static void fail(String message, Object expected, Object actual) {
-        throw new VerificationException(message, expected, actual);
-    }
-
     // Verify.pending("...")
     public static void pending(String message) {
-        throw new PendingException(message);
+    	constraints.todo(message);
     }
     
     public static void pending() {
@@ -109,7 +96,7 @@ public class Ensure {
     public static void throwsException(Class exceptionType, Block block) throws Exception {
         try {
             block.execute();
-            fail("should have thrown " + exceptionType.getName());
+            constraints.fail("should have thrown " + exceptionType.getName());
         }
         catch (Exception e) {
             if (!exceptionType.isAssignableFrom(e.getClass())) {
@@ -138,7 +125,7 @@ public class Ensure {
     /** @deprecated use constraints */
     public static void equal(String message, long expected, long actual) {
         if (expected != actual) {
-            fail(message, new Long(expected), new Long(actual));
+            constraints.fail(message, new Long(expected), new Long(actual));
         }
     }
 
@@ -150,7 +137,7 @@ public class Ensure {
     /** @deprecated use constraints */
     public static void equal(String message, double expected, double actual, double delta) {
         if (Math.abs(expected - actual) > delta) {
-            fail(message, new Double(expected), new Double(actual));
+            constraints.fail(message, new Double(expected), new Double(actual));
         }
     }
 
@@ -162,10 +149,12 @@ public class Ensure {
     /** @deprecated use constraints */
     public static void equal(String message, Object expected, Object actual) {
         if (expected == null) {
-            if (actual != null) fail(message, expected, actual);
+            if (actual != null) {
+            	constraints.fail(message, expected, actual);
+            }
         }
         else if (!expected.equals(actual)) {
-            fail(message, expected, actual);
+            constraints.fail(message, expected, actual);
         }
     }
 
@@ -176,7 +165,7 @@ public class Ensure {
 
     /** @deprecated use constraints */
 	public static void sameInstance(String message, Object expected, Object actual) {
-        if (expected != actual) fail(message, expected, actual);
+        if (expected != actual) constraints.fail(message, expected, actual);
 	}
     
     /** @deprecated use constraints */

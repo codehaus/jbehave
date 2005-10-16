@@ -2,7 +2,6 @@ package com.thoughtworks.jbehave.story.codegen.parser;
 
 import java.io.StringReader;
 
-import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 import com.thoughtworks.jbehave.story.codegen.domain.ScenarioDetails;
 import com.thoughtworks.jbehave.story.codegen.domain.StoryDetails;
@@ -16,7 +15,7 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		// when
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
-		Ensure.that(result, eq(expectedStory));
+		ensure(result, eq(expectedStory));
 	}
 	
 	public void shouldBuildStoryDetailsWithTitleAndRole() throws Exception {
@@ -30,7 +29,7 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		// when
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
-		Ensure.that(result, eq(expectedStory));
+		ensure(result, eq(expectedStory));
 	}
 	
 	public void shouldBuildStoryDetailsWithTitleAndRoleAndFeature() throws Exception {
@@ -45,7 +44,7 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		// when
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
-		Ensure.that(result, eq(expectedStory));
+		ensure(result, eq(expectedStory));
 	}
 	
 	public void shouldBuildStoryDetailsWithTitleAndFullNarrative() throws Exception {
@@ -61,7 +60,7 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		// when
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
-		Ensure.that(result, eq(expectedStory));
+		ensure(result, eq(expectedStory));
 	}
 	
 	public void shouldBuildStoryDetailsWithEmptyScenario() throws Exception {
@@ -78,6 +77,6 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		
 		// then
-		Ensure.that(result, eq(expectedStory));
+		ensure(result, eq(expectedStory));
 	}
 }

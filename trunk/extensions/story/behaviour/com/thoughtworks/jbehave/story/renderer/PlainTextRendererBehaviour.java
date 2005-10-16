@@ -10,7 +10,6 @@ package com.thoughtworks.jbehave.story.renderer;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 import com.thoughtworks.jbehave.core.util.ConvertCase;
 import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
@@ -62,7 +61,7 @@ public class PlainTextRendererBehaviour extends UsingConstraints {
 		expectedResult.append("Then ").append(new ConvertCase(new PlainTextRendererShouldStillWork()).toSeparateWords()).append(NL);
 		expectedResult.append("and ").append(new ConvertCase(new BehaviourClassShouldNotFail()).toSeparateWords()).append(NL);
 		
-		Ensure.that(result, eq(expectedResult.toString()));
+		ensure(result, eq(expectedResult.toString()));
 	}
 
 	private static class SimpleStory extends Story {
