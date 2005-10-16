@@ -15,7 +15,7 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		// when
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
-		ensure(result, eq(expectedStory));
+		ensureThat(result, eq(expectedStory));
 	}
 	
 	public void shouldBuildStoryDetailsWithTitleAndRole() throws Exception {
@@ -29,7 +29,7 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		// when
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
-		ensure(result, eq(expectedStory));
+		ensureThat(result, eq(expectedStory));
 	}
 	
 	public void shouldBuildStoryDetailsWithTitleAndRoleAndFeature() throws Exception {
@@ -44,7 +44,7 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		// when
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
-		ensure(result, eq(expectedStory));
+		ensureThat(result, eq(expectedStory));
 	}
 	
 	public void shouldBuildStoryDetailsWithTitleAndFullNarrative() throws Exception {
@@ -60,7 +60,7 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		// when
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		// then
-		ensure(result, eq(expectedStory));
+		ensureThat(result, eq(expectedStory));
 	}
 	
 	public void shouldBuildStoryDetailsWithEmptyScenario() throws Exception {
@@ -77,6 +77,6 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
 		
 		// then
-		ensure(result, eq(expectedStory));
+		ensureThat(result, eq(expectedStory));
 	}
 }

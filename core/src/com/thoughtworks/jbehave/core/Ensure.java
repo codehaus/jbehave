@@ -25,49 +25,49 @@ public class Ensure {
 
     /** Ensure.that(something, isBlah()) */
     public static void that(Object arg, Constraint constraint) {
-    	constraints.ensure(arg, constraint);
+    	constraints.ensureThat(arg, constraint);
     }
     
     public static void that(Object arg, Constraint constraint, String message) {
-    	constraints.ensure(arg, constraint, message);
+    	constraints.ensureThat(arg, constraint, message);
 	}
 
 	public static void that(long arg, Constraint constraint) {
-		constraints.ensure(arg, constraint, null);
+		constraints.ensureThat(arg, constraint, null);
     }
 	public static void that(long arg, Constraint constraint, String message) {
-		constraints.ensure(arg, constraint, message);
+		constraints.ensureThat(arg, constraint, message);
 	}
     
     public static void that(double arg, Constraint constraint) {
-    	constraints.ensure(arg, constraint, null);
+    	constraints.ensureThat(arg, constraint, null);
     }
     public static void that(double arg, Constraint constraint, String message) {
-    	constraints.ensure(arg, constraint, message);
+    	constraints.ensureThat(arg, constraint, message);
     }
     
     public static void that(char arg, Constraint constraint) {
-    	constraints.ensure(arg, constraint, null);
+    	constraints.ensureThat(arg, constraint, null);
     }
     public static void that(char arg, Constraint constraint, String message) {
-    	constraints.ensure(arg, constraint, message);
+    	constraints.ensureThat(arg, constraint, message);
     }
     
     public static void that(boolean arg, Constraint constraint) {
-    	constraints.ensure(arg, constraint);
+    	constraints.ensureThat(arg, constraint);
     }
     public static void that(boolean arg, Constraint constraint, String message) {
-    	constraints.ensure(arg, constraint, message);
+    	constraints.ensureThat(arg, constraint, message);
     }
 
     /** Ensure.that(...) without constraints */
     public static void that(String message, boolean condition) {
-    	constraints.ensure(condition, message);
+    	constraints.ensureThat(condition, message);
     }
 
     /** Ensure.that(...) without constraints */
     public static void that(boolean condition) {
-        constraints.ensure(condition, (String)null);
+        constraints.ensureThat(condition, (String)null);
     }
 
     public static void not(String message, boolean condition) {

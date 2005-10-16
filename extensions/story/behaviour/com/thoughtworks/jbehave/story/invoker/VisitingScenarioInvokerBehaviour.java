@@ -94,7 +94,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
             Ensure.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
-            ensure(expected.getCause(), sameInstanceAs(cause));
+            ensureThat(expected.getCause(), sameInstanceAs(cause));
         }
     }
     
@@ -110,7 +110,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
             Ensure.impossible("should have thrown exception");
         }
         catch (NestedVerificationException expected) {
-            ensure(expected.getCause(), sameInstanceAs(cause));
+            ensureThat(expected.getCause(), sameInstanceAs(cause));
         }
     }
     
@@ -128,7 +128,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
             Ensure.impossible("should have thrown exception");
         }
         catch (NestedVerificationException actualException) {
-            ensure(actualException.getCause(), sameInstanceAs(cause));
+            ensureThat(actualException.getCause(), sameInstanceAs(cause));
         }
     }
     
@@ -158,7 +158,7 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         Result result = invoker.invoke((Scenario)scenario);
         
         // verify...
-        ensure(result.cause(), sameInstanceAs(cause));
+        ensureThat(result.cause(), sameInstanceAs(cause));
     }
     
     /** Custom invocation handler so a Scenario can pass a component to the visitor */

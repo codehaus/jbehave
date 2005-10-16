@@ -24,7 +24,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(string).toSeparateWords();
         
         // then...
-        ensure(result, eq("string in camel case"));
+        ensureThat(result, eq("string in camel case"));
     }
     
     public void shouldLeaveUppercaseWordsWhenConvertingToSeparateWords() throws Exception {
@@ -35,7 +35,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(string).toSeparateWords();
         
         // then...
-        ensure(result, eq("UPPERCASE and a single letter"));
+        ensureThat(result, eq("UPPERCASE and a single letter"));
     }
     
     public void shouldConvertRegularClassNameToSeparateWords() throws Exception {
@@ -46,7 +46,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(type).toSeparateWords();
         
         // then...
-        ensure(result, eq("simple date format"));
+        ensureThat(result, eq("simple date format"));
     }
     
     private static class InnerClass{}
@@ -59,7 +59,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(type).toSeparateWords();
         
         // then...
-        ensure(result, eq("inner class"));
+        ensureThat(result, eq("inner class"));
     }
     
     public void shouldConvertClassNameOfArbitraryObjectToSeparateWords() throws Exception {
@@ -70,7 +70,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(object).toSeparateWords();
         
         // then...
-        ensure(result, eq("inner class"));
+        ensureThat(result, eq("inner class"));
     }
     
     public void shouldConvertLowercaseWordsToCamelCase() throws Exception {
@@ -81,6 +81,6 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(string).toCamelCase();
         
         // then...
-        ensure(result, eq("TheCatSatOnTheMat"));
+        ensureThat(result, eq("TheCatSatOnTheMat"));
     }
 }

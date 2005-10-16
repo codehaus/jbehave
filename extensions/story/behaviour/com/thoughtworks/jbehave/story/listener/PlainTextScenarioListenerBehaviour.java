@@ -49,7 +49,7 @@ public class PlainTextScenarioListenerBehaviour extends PlainTextListenerBehavio
         listener.gotResult(new ScenarioResult("scenario", "container", ScenarioResult.USED_MOCKS));
         
         // then...
-        ensure(writer.toString(), eq(ScenarioResult.USED_MOCKS.symbol()));
+        ensureThat(writer.toString(), eq(ScenarioResult.USED_MOCKS.symbol()));
     }
     
     public void shouldSummarizeScenarioThatUsesMocks() throws Exception {
