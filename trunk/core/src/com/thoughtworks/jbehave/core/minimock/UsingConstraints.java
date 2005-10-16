@@ -187,10 +187,10 @@ public abstract class UsingConstraints {
 	    };
 	}
 	
-    public void ensureThat(Object arg, Constraint constraint, String note) {
+    public void ensureThat(Object arg, Constraint constraint, String message) {
     	if (!constraint.matches(arg)) {
     		fail("\nExpected: " +
-    				(note != null ? "[" + note + "] " : "") +
+    				(message != null ? "[" + message + "] " : "") +
     				constraint +
     				"\nbut got:  " + arg);
     	}
