@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.jbehave.story.listener;
 
-import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.exception.VerificationException;
 import com.thoughtworks.jbehave.core.listener.PlainTextListener;
@@ -50,7 +49,7 @@ public class PlainTextScenarioListenerBehaviour extends PlainTextListenerBehavio
         listener.gotResult(new ScenarioResult("scenario", "container", ScenarioResult.USED_MOCKS));
         
         // then...
-        Ensure.that(writer.toString(), eq(ScenarioResult.USED_MOCKS.symbol()));
+        ensure(writer.toString(), eq(ScenarioResult.USED_MOCKS.symbol()));
     }
     
     public void shouldSummarizeScenarioThatUsesMocks() throws Exception {

@@ -38,10 +38,10 @@ public class UsingJMockBehaviour extends UsingConstraints {
         instance.shouldDoSomething();
         
         // then...
-        Ensure.that(instance.getMocks().size(), eq(2));
-        Ensure.that("instance contains mocks", instance.containsMocks());
-        Ensure.that(instance.getMocks().get(0), isA(org.jmock.Mock.class));
-        Ensure.that(instance.getMocks().get(1), isA(org.jmock.Mock.class));
+        ensure(instance.getMocks().size(), eq(2));
+        ensure(instance.containsMocks(), eq(true), "instance contains mocks");
+        ensure(instance.getMocks().get(0), isA(org.jmock.Mock.class));
+        ensure(instance.getMocks().get(1), isA(org.jmock.Mock.class));
     }
     
     public static class BehaviourClassWithoutMocks extends UsingJMock {
@@ -57,8 +57,8 @@ public class UsingJMockBehaviour extends UsingConstraints {
         instance.shouldDoSomething();
         
         // then...
-        Ensure.that(instance.getMocks().isEmpty());
-        Ensure.that(instance.containsMocks(), eq(false));
+        ensure(instance.getMocks().isEmpty(), eq(true), "isEmpty");
+        ensure(instance.containsMocks(), eq(false), "containsMocks");
     }
     
     /**
@@ -158,7 +158,7 @@ public class UsingJMockBehaviour extends UsingConstraints {
 		instance.verify();
 		
 		// then
-		Ensure.that(results[0], eq("verifyMocks"));
+		ensure(results[0], eq("verifyMocks"));
 	}
 	
 	public void shouldCallTemplateMethodAfterVerifyingMocks() throws Exception {
@@ -180,6 +180,6 @@ public class UsingJMockBehaviour extends UsingConstraints {
 		instance.verify();
 		
 		// then
-		Ensure.that(results, eq(expected));
+		ensure(results, eq(expected));
 	}
 }

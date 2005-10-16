@@ -1,10 +1,13 @@
 package com.thoughtworks.jbehave.core.minimock;
 
+import com.thoughtworks.jbehave.core.exception.PendingException;
+import com.thoughtworks.jbehave.core.exception.VerificationException;
+
 /**
  * Support for constraint-based verification
  */
-public class UsingConstraints {
-
+public abstract class UsingConstraints {
+	/** ensures object equals expected value */
 	public ConstraintSupport eq(final Object expectedArg) {
 	    return new ConstraintSupport() {
 	        public boolean matches(Object arg) {
@@ -182,5 +185,75 @@ public class UsingConstraints {
 	            return "not (" + c + ")";
 	        }
 	    };
+	}
+	
+    public void ensure(Object arg, Constraint constraint, String note) {
+    	if (!constraint.matches(arg)) {
+    		fail("\nExpected: " +
+    				(note != null ? "[" + note + "] " : "") +
+    				constraint +
+    				"\nbut got:  " + arg);
+    	}
+	}
+	public void ensure(Object arg, Constraint constraint) {
+		ensure(arg, constraint, null);
+	}
+	
+	public void ensure(long arg, Constraint constraint, String message) {
+		ensure(arg, constraint, message);
+	}
+	public void ensure(long arg, Constraint constraint) {
+		ensure(new Long(arg), constraint, null);
+	}
+    
+    public void ensure(double arg, Constraint constraint, String message) {
+    	ensure(Double.valueOf(arg), constraint, message);
+    }
+    public void ensure(double arg, Constraint constraint) {
+    	ensure(arg, constraint, null);
+    }
+    
+    public void ensure(char arg, Constraint constraint, String message) {
+    	ensure(new Character(arg), constraint, message);
+    }
+    public void ensure(char arg, Constraint constraint) {
+    	ensure(arg, constraint, null);
+    }
+    
+    public void ensure(boolean arg, Constraint constraint, String message) {
+    	ensure(Boolean.valueOf(arg), constraint, message);
+    }
+    public void ensure(boolean arg, Constraint constraint) {
+    	ensure(arg, constraint, null);
+    }
+    
+    /** ensure(...) without constraints */
+    public void ensure(boolean condition, String message) {
+    	if (!condition) {
+    		fail(message + ": expected condition was not met");
+    	}
+    }
+
+    /** ensure(...) without constraints */
+    public void ensure(boolean condition) {
+        if (!condition) {
+        	fail("Expected condition was not met");
+        }
+    }
+
+    public void fail(String message) {
+        throw new VerificationException(message);
+    }
+
+    public void fail(String message, Object expected, Object actual) {
+        throw new VerificationException(message, expected, actual);
+    }
+
+	public void todo(String message) {
+		throw new PendingException(message);
+	}
+	
+	public void todo() {
+		todo("TODO");
 	}
 }

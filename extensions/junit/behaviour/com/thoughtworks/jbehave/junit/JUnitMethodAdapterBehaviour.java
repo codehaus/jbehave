@@ -13,7 +13,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 
 /**
@@ -37,6 +36,6 @@ public class JUnitMethodAdapterBehaviour extends UsingConstraints {
         TestCase testCase = new JUnitMethodAdapter(method, instance);
         
         // verify
-        Ensure.that(testCase, not(eq(null)));
+        ensure(testCase, not(eq(null)));
     }
 }

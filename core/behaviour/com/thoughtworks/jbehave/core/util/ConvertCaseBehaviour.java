@@ -9,7 +9,6 @@ package com.thoughtworks.jbehave.core.util;
 
 import java.text.SimpleDateFormat;
 
-import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.minimock.UsingConstraints;
 
 /**
@@ -25,7 +24,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(string).toSeparateWords();
         
         // then...
-        Ensure.that(result, eq("string in camel case"));
+        ensure(result, eq("string in camel case"));
     }
     
     public void shouldLeaveUppercaseWordsWhenConvertingToSeparateWords() throws Exception {
@@ -36,7 +35,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(string).toSeparateWords();
         
         // then...
-        Ensure.that( result, eq("UPPERCASE and a single letter"));
+        ensure(result, eq("UPPERCASE and a single letter"));
     }
     
     public void shouldConvertRegularClassNameToSeparateWords() throws Exception {
@@ -47,7 +46,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(type).toSeparateWords();
         
         // then...
-        Ensure.that(result, eq("simple date format"));
+        ensure(result, eq("simple date format"));
     }
     
     private static class InnerClass{}
@@ -60,7 +59,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(type).toSeparateWords();
         
         // then...
-        Ensure.that(result, eq("inner class"));
+        ensure(result, eq("inner class"));
     }
     
     public void shouldConvertClassNameOfArbitraryObjectToSeparateWords() throws Exception {
@@ -71,7 +70,7 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(object).toSeparateWords();
         
         // then...
-        Ensure.that(result, eq("inner class"));
+        ensure(result, eq("inner class"));
     }
     
     public void shouldConvertLowercaseWordsToCamelCase() throws Exception {
@@ -82,6 +81,6 @@ public class ConvertCaseBehaviour extends UsingConstraints {
         String result = new ConvertCase(string).toCamelCase();
         
         // then...
-        Ensure.that(result, eq("TheCatSatOnTheMat"));
+        ensure(result, eq("TheCatSatOnTheMat"));
     }
 }
