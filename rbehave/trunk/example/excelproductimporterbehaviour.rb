@@ -1,4 +1,8 @@
-require 'rbehave/core'
+require 'rbehave/core' # rbehave
+
+# domain classes
+require 'example/vendorwriter'
+require 'example/excelproductimporter'
 require 'rexml/document'
 
 include RBehave
@@ -25,11 +29,12 @@ class ExcelProductImporterBehaviour
     product_importer = ExcelProductImporter.new(vendor_writer)
     
     # expect...
-    vendor_writer.__should_receive { |mock|
-      mock.write(1, 'BrassCorp')
+    vendor_writer.__should_receive { |obj|
+      obj.write(eq(1), 'BrassCorp')
     }
     
     # when...
+    product_importer.import(xml)
     
     ensure_that xml, contains("BrassCorp")
   end

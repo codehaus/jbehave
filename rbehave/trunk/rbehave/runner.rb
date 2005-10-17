@@ -1,6 +1,9 @@
+require 'rbehave/verifiers'
+
 module RBehave
   class Runner
     def initialize
+      Verifiers::Verifier.register_runner self
       @failures = []
       @methods_run = 0
     end
@@ -14,13 +17,19 @@ module RBehave
     
     def verify_method cls, method
       begin
+        @verifiers = []
         @methods_run += 1
         cls.new.send method
+        @verifiers.each { |verifier| verifier.__verify }
         putc '.'
       rescue VerificationError => oops
         putc 'F'
         @failures << {:class => cls, :method => method, :error => oops}
       end
+    end
+    
+    def register_verifier(verifier)
+      @verifiers << verifier
     end
     
     def summarize

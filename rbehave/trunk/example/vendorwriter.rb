@@ -1,0 +1,2 @@
+class VendorWriter
+end
