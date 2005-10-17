@@ -19,7 +19,7 @@ module RBehave
         putc '.'
       rescue VerificationError => oops
         putc 'F'
-        @failures << oops
+        @failures << {:class => cls, :method => method, :error => oops}
       end
     end
     
@@ -30,8 +30,13 @@ module RBehave
       puts summary
       
       if @failures
+        puts
+        i = 1
         @failures.each {|failure|
-          puts failure
+          puts "#{i}) #{failure[:class].to_s.sub(/Behaviour$/, '')} #{failure[:method].gsub(/_/, ' ')}"
+          puts
+          puts failure[:error]
+          puts
         }
       end
     end

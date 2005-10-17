@@ -20,6 +20,6 @@ class ExcelProductImporterBehaviour < UsingConstraints
     
     doc = Document.new xml
     
-    ensure_that doc.to_s, contains('BrassCorp')
+    ensure_that doc, contains('BrassCorp')
   end
 end
