@@ -70,7 +70,7 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 		InvalidAmountException invalidAmountException = new InvalidAmountException("non-negative");
 
 		// expects
-		currencyConverterMock.expects("convertFromSterling").willThrow(invalidAmountException);
+		currencyConverterMock.expects("convertFromSterling").will(throwException(invalidAmountException));
 		viewMock.expects("displayError").with(eq(invalidAmountException));
 
 		// execute
@@ -83,7 +83,7 @@ public class CurrencyConverterControllerBehaviour extends UsingMiniMock {
 		InvalidAmountException invalidAmountException = new InvalidAmountException("non-negative");
 
 		// expects
-		currencyConverterMock.expects("convertToSterling").willThrow(invalidAmountException);
+		currencyConverterMock.expects("convertToSterling").will(throwException(invalidAmountException));
 		viewMock.expects("displayError").with(eq(invalidAmountException));
 
 		// execute

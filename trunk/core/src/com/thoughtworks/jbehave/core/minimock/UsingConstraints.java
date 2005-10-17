@@ -207,7 +207,7 @@ public abstract class UsingConstraints {
 	}
     
     public void ensureThat(double arg, Constraint constraint, String message) {
-    	ensureThat(Double.valueOf(arg), constraint, message);
+    	ensureThat(new Double(arg), constraint, message);
     }
     public void ensureThat(double arg, Constraint constraint) {
     	ensureThat(arg, constraint, null);
