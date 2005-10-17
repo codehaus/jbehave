@@ -1,17 +1,10 @@
 require 'rbehave/constraints'
+require 'rbehave/verifiers'
 require 'rbehave/runner'
 require 'rbehave/util'
 
 module RBehave
   include Constraints
-
-  class UsingConstraints
-    def ensure_that arg, constraint, message = nil
-      unless constraint.matches arg
-        raise VerificationError, "Expected:" + (message ? "[" + message + "] " : "") + constraint.to_s + "\nbut got:  " + arg.to_s
-      end
-    end
-  end
   
   class Behaviour
   end
