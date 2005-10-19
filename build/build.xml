@@ -5,15 +5,14 @@
     <property file="version.properties"/>
 
     <!-- working area stuff -->
-    <property name="working.dir" location="delete_me" />
-    <property name="working.javadoc.dir" location="${working.dir}/javadoc" />
+    <property name="working_dir" location="delete_me" />
+    <property name="javadoc_working_dir" location="${working_dir}/javadoc" />
 
     <!-- dist stuff -->
-    <property name="dist.dir" location="dist"/>
-    <property name="dist.website.dir" location="${dist.dir}/website"/>
-    <property name="dist.javadoc.dir" location="${dist.website.dir}/docs/javadoc"/>
-    <property name="dist.website.dist.dir" location="${dist.website.dir}/dist"/>
-    <property name="dist.src.jar" location="${dist.dir}/${project}-src.jar"/>
+    <property name="dist_dir" location="dist"/>
+    <property name="website_dist_dir" location="${dist_dir}/website"/>
+    <property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
+    <property name="website_download_dir" location="${website_dist_dir}/dist"/>
 
     <!-- core -->
     <property name="core.dir" location="../core"/>
@@ -21,10 +20,10 @@
     <property name="core.src.dir" location="${core.dir}/src"/>
 
     <!-- extensions -->
-    <property name="extensions.dir" location="../extensions"/>
+    <property name="extensions_dir" location="../extensions"/>
 
     <!-- website -->
-    <property name="website.dir" location="../website"/>
+    <property name="website_dir" location="../website"/>
 
     <target name="-init">
         <fail message="Version not defined" unless="version"/>
@@ -35,38 +34,38 @@
     <target name="core" depends="-init">
         <ant dir="${core.dir}" antfile="build/build.xml" target="dist">
             <property name="version" value="${version}"/>
-            <property name="dist.dir" location="${dist.dir}"/>
+            <property name="dist_dir" location="${dist_dir}"/>
         </ant>
     </target>
 
     <target name="extensions" depends="core">
         <subant target="-copy.core.jar" failonerror="true">
-            <property name="core.jar" value="${dist.dir}/${project}-core.jar"/>
-            <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
+            <property name="core.jar" value="${dist_dir}/${project}-core.jar"/>
+            <dirset dir="${extensions_dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
         <subant target="dist" failonerror="true">
             <property name="version" value="${version}"/>
-            <property name="dist.dir" location="${dist.dir}"/>
-            <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
+            <property name="dist_dir" location="${dist_dir}"/>
+            <dirset dir="${extensions_dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
     </target>
 
     <!-- WEBSITE TARGETS -->
 
     <target name="website">
-        <exec executable="ruby" dir="${website.dir}">
+        <exec executable="ruby" dir="${website_dir}">
             <arg value="skinner.rb"/>
         </exec>
     </target>
 
     <target name="javadoc">
-        <mkdir dir="${working.javadoc.dir}"/>
-        <javadoc destdir="${working.javadoc.dir}"
+        <mkdir dir="${javadoc_working_dir}"/>
+        <javadoc destdir="${javadoc_working_dir}"
                 windowtitle="JBehave API Documentation"
                 useexternalfile="true"
                 verbose="true">
 
-            <fileset dir="${extensions.dir}">
+            <fileset dir="${extensions_dir}">
                 <include name="*/src/**/*.java"/>
             </fileset>
             <fileset dir="${core.src.dir}">
@@ -82,7 +81,7 @@
     </target>
 
     <target name="srcjar">
-        <jar destfile="${dist.src.jar}">
+        <jar destfile="${dist_dir}/${project}-src.jar">
             <zipfileset dir=".." prefix="jbehave-${version}">
                 <exclude name="**/*.class" />
                 <exclude name="**/bin/**" />
@@ -96,29 +95,29 @@
     </target>
 
     <target name="dist" depends="core, extensions, website, javadoc, srcjar">
-        <copy todir="${dist.website.dir}">
-            <fileset dir="${website.dir}/output" />
+        <copy todir="${website_dist_dir}">
+            <fileset dir="${website_dir}/output" />
         </copy>
-        <copy todir="${dist.javadoc.dir}">
-            <fileset dir="${working.javadoc.dir}" />
+        <copy todir="${javadoc_dist_dir}">
+            <fileset dir="${javadoc_working_dir}" />
         </copy>
-        <copy todir="${dist.website.dist.dir}">
-            <fileset dir="${dist.dir}" includes="jbehave-*.jar"/>
+        <copy todir="${website_download_dir}">
+            <fileset dir="${dist_dir}" includes="jbehave-*.jar"/>
         </copy>
     </target>
 
     <!-- HOUSEKEEPING TARGETS -->
 
     <target name="clean" >
-        <delete dir="${working.dir}" />
+        <delete dir="${working_dir}" />
     </target>
 
     <target name="clobber" depends="clean">
-        <delete dir="${dist.dir}" />
+        <delete dir="${dist_dir}" />
         <subant target="clobber">
             <property name="version" value="${version}"/>
-        <property name="dist.dir" location="${dist.dir}"/>
-            <dirset dir="${extensions.dir}" includes="*/build" excludes="component-skeleton/build"/>
+        <property name="dist_dir" location="${dist_dir}"/>
+            <dirset dir="${extensions_dir}" includes="*/build" excludes="component-skeleton/build"/>
         </subant>
     </target>
 </project>

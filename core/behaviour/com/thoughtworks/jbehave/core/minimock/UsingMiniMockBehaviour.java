@@ -30,7 +30,7 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
     }
     
     public void shouldStoreMock() throws Exception {
-    	Constraint containsMocks = new ConstraintSupport() {
+    	Constraint containsMocks = new ChainedConstraint() {
     		public boolean matches(Object arg) {
     			return ((UsingMiniMock)arg).containsMocks();
     		}

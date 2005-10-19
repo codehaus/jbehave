@@ -8,8 +8,8 @@ import com.thoughtworks.jbehave.core.exception.VerificationException;
  */
 public abstract class UsingConstraints {
 	/** ensures object equals expected value */
-	public ConstraintSupport eq(final Object expectedArg) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint eq(final Object expectedArg) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            return arg == null ? expectedArg == null : arg.equals(expectedArg);
 	        }
@@ -20,8 +20,8 @@ public abstract class UsingConstraints {
 	}
 
 	/** eq(primitive) for float and double */
-	public ConstraintSupport eq(final double expectedArg, final double delta) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint eq(final double expectedArg, final double delta) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            double value = ((Number) arg).doubleValue();
 				return Math.abs(expectedArg - value) <= delta;
@@ -33,13 +33,13 @@ public abstract class UsingConstraints {
 	}
 
 	/** eq(primitive) for float and double */
-	public ConstraintSupport eq(final double expectedArg) {
+	public ChainedConstraint eq(final double expectedArg) {
 		return eq(expectedArg, 0.0);
 	}
 	
 	/** eq(primitive) for byte, short, integer and long */
-	public ConstraintSupport eq(final long expectedArg) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint eq(final long expectedArg) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            Number n = (Number)arg;
 	            return n.longValue() == expectedArg;
@@ -51,8 +51,8 @@ public abstract class UsingConstraints {
 	}
 
 	/** eq(primitive) for char - note {@link Character} is not a {@link Number} */
-	public ConstraintSupport eq(final char expectedArg) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint eq(final char expectedArg) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            Character n = (Character)arg;
 	            return n.charValue() == expectedArg;
@@ -64,8 +64,8 @@ public abstract class UsingConstraints {
 	}
 
 	/** eq(primitive) for boolean */
-	public ConstraintSupport eq(final boolean expectedArg) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint eq(final boolean expectedArg) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            Boolean n = (Boolean)arg;
 	            return n.booleanValue() == expectedArg;
@@ -76,8 +76,8 @@ public abstract class UsingConstraints {
 	    };
 	}
 
-	public ConstraintSupport sameInstanceAs(final Object expectedArg) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint sameInstanceAs(final Object expectedArg) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            return expectedArg == arg;
 	        }
@@ -87,8 +87,8 @@ public abstract class UsingConstraints {
 	    };
 	}
 
-	public ConstraintSupport anything() {
-	    return new ConstraintSupport() {
+	public ChainedConstraint anything() {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            return true;
 	        }
@@ -98,12 +98,12 @@ public abstract class UsingConstraints {
 	    };
 	}
 
-	public ConstraintSupport a(final Class type) {
+	public ChainedConstraint a(final Class type) {
 	    return isA(type);
 	}
 
-	public ConstraintSupport isA(final Class type) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint isA(final Class type) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            return type.isInstance(arg);
 	        }
@@ -113,8 +113,8 @@ public abstract class UsingConstraints {
 	    };
 	}
 	
-	public ConstraintSupport startsWith(final String fragment) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint startsWith(final String fragment) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            return ((String)arg).startsWith(fragment);
 	        }
@@ -124,8 +124,8 @@ public abstract class UsingConstraints {
 	    };
 	}
 	
-	public ConstraintSupport endsWith(final String fragment) {
-		return new ConstraintSupport() {
+	public ChainedConstraint endsWith(final String fragment) {
+		return new ChainedConstraint() {
 			public boolean matches(Object arg) {
 				return ((String)arg).endsWith(fragment);
 			}
@@ -135,8 +135,8 @@ public abstract class UsingConstraints {
 		};
 	}
 	
-	public ConstraintSupport contains(final String fragment) {
-		return new ConstraintSupport() {
+	public ChainedConstraint contains(final String fragment) {
+		return new ChainedConstraint() {
 			public boolean matches(Object arg) {
 				return ((String)arg).indexOf(fragment) != -1;
 			}
@@ -146,8 +146,8 @@ public abstract class UsingConstraints {
 		};
 	}
 
-	public ConstraintSupport and(final Constraint a, final Constraint b) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint and(final Constraint a, final Constraint b) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            return a.matches(arg) && b.matches(arg);
 	        }
@@ -157,12 +157,12 @@ public abstract class UsingConstraints {
 	    };
 	}
 
-	public ConstraintSupport both(final Constraint a, final Constraint b) {
+	public ChainedConstraint both(final Constraint a, final Constraint b) {
 	    return and(a, b);
 	}
 
-	public ConstraintSupport or(final Constraint a, final Constraint b) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint or(final Constraint a, final Constraint b) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            return a.matches(arg) || b.matches(arg);
 	        }
@@ -172,12 +172,12 @@ public abstract class UsingConstraints {
 	    };
 	}
 
-	public ConstraintSupport either(final Constraint a, final Constraint b) {
+	public ChainedConstraint either(final Constraint a, final Constraint b) {
 	    return either(a, b);
 	}
 
-	public ConstraintSupport not(final Constraint c) {
-	    return new ConstraintSupport() {
+	public ChainedConstraint not(final Constraint c) {
+	    return new ChainedConstraint() {
 	        public boolean matches(Object arg) {
 	            return !c.matches(arg);
 	        }

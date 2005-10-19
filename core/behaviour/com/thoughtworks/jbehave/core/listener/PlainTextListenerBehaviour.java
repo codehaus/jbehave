@@ -12,7 +12,7 @@ import java.io.StringWriter;
 import com.thoughtworks.jbehave.core.Ensure;
 import com.thoughtworks.jbehave.core.exception.PendingException;
 import com.thoughtworks.jbehave.core.minimock.Constraint;
-import com.thoughtworks.jbehave.core.minimock.ConstraintSupport;
+import com.thoughtworks.jbehave.core.minimock.ChainedConstraint;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
 import com.thoughtworks.jbehave.core.result.Result;
 import com.thoughtworks.jbehave.core.util.Timer;
@@ -52,7 +52,7 @@ public abstract class PlainTextListenerBehaviour extends UsingMiniMock {
     }
     
     private Constraint contains(final Result.Type expected) {
-    	return new ConstraintSupport(){
+    	return new ChainedConstraint(){
 			public boolean matches(Object arg) {
 				return ((StringWriter)arg).toString().indexOf(expected.symbol()) != -1;
 			}
