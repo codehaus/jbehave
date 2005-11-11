@@ -21,7 +21,7 @@ import com.thoughtworks.jbehave.story.domain.Narrative;
 import com.thoughtworks.jbehave.story.domain.OutcomeUsingMiniMock;
 import com.thoughtworks.jbehave.story.domain.Outcomes;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.Story;
+import com.thoughtworks.jbehave.story.domain.ScenarioDrivenStory;
 import com.thoughtworks.jbehave.story.domain.World;
 
 /**
@@ -36,7 +36,7 @@ public class PlainTextRendererBehaviour extends UsingConstraints {
 		
 		PlainTextRenderer renderer = new PlainTextRenderer(printStream);
 		
-		Story story = new SimpleStory();
+		ScenarioDrivenStory story = new SimpleStory();
 		story.accept(renderer);
 		
 		String result = byteStream.toString();
@@ -64,7 +64,7 @@ public class PlainTextRendererBehaviour extends UsingConstraints {
 		ensureThat(result, eq(expectedResult.toString()));
 	}
 
-	private static class SimpleStory extends Story {
+	private static class SimpleStory extends ScenarioDrivenStory {
 		
 		private static String ROLE = "behaviour analyst";
 		private static String FEATURE = "to see the behaviour of PlainTextRenderer";

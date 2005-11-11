@@ -14,12 +14,12 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryBehaviour extends UsingMiniMock {
+public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
     public void shouldPassItselfAndItsComponentsToVisitorInCorrectOrder() throws Exception {
         // given...
         Narrative narrative = new Narrative("","","");
         AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
-        Story story = new Story(narrative, acceptanceCriteria);
+        ScenarioDrivenStory story = new ScenarioDrivenStory(narrative, acceptanceCriteria);
         Mock visitorMock = mock(Visitor.class);
 
         // expect...

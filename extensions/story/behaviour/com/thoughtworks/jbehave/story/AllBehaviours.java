@@ -15,7 +15,7 @@ import com.thoughtworks.jbehave.story.domain.GivensBehaviour;
 import com.thoughtworks.jbehave.story.domain.NarrativeBehaviour;
 import com.thoughtworks.jbehave.story.domain.OutcomesBehaviour;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMockBehaviour;
-import com.thoughtworks.jbehave.story.domain.StoryBehaviour;
+import com.thoughtworks.jbehave.story.domain.ScenarioDrivenStoryBehaviour;
 import com.thoughtworks.jbehave.story.invoker.VisitingScenarioInvokerBehaviour;
 import com.thoughtworks.jbehave.story.listener.PlainTextScenarioListenerBehaviour;
 import com.thoughtworks.jbehave.story.renderer.PlainTextRendererBehaviour;
@@ -36,7 +36,7 @@ public class AllBehaviours extends Object implements Behaviours {
                 GivensBehaviour.class,
                 EventsBehaviour.class,
                 ScenarioUsingMiniMockBehaviour.class,
-                StoryBehaviour.class,
+                ScenarioDrivenStoryBehaviour.class,
                 VisitingScenarioInvokerBehaviour.class,
                 PlainTextScenarioListenerBehaviour.class,
 				PlainTextRendererBehaviour.class,

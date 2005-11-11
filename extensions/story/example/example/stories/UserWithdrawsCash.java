@@ -13,8 +13,8 @@ import com.thoughtworks.jbehave.story.domain.GivenScenario;
 import com.thoughtworks.jbehave.story.domain.Givens;
 import com.thoughtworks.jbehave.story.domain.Narrative;
 import com.thoughtworks.jbehave.story.domain.Outcomes;
+import com.thoughtworks.jbehave.story.domain.ScenarioDrivenStory;
 import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.Story;
 
 import example.events.UserRequestsCash;
 import example.givens.AccountHasNegativeBalanceWithoutPermission;
@@ -30,7 +30,7 @@ import example.outcomes.AccountBalanceShouldBeReduced;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
  */
-public class UserWithdrawsCash extends Story {
+public class UserWithdrawsCash extends ScenarioDrivenStory {
 
     public UserWithdrawsCash() {
         super(
