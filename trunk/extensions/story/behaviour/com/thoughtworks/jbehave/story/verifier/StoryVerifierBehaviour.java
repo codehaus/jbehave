@@ -10,13 +10,10 @@ package com.thoughtworks.jbehave.story.verifier;
 import com.thoughtworks.jbehave.core.listener.ResultListener;
 import com.thoughtworks.jbehave.core.minimock.Mock;
 import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.Narrative;
 import com.thoughtworks.jbehave.story.domain.Scenario;
 import com.thoughtworks.jbehave.story.domain.Story;
 import com.thoughtworks.jbehave.story.invoker.ScenarioInvoker;
 import com.thoughtworks.jbehave.story.result.ScenarioResult;
-import com.thoughtworks.jbehave.story.visitor.Visitor;
 
 
 /**
@@ -25,23 +22,20 @@ import com.thoughtworks.jbehave.story.visitor.Visitor;
 public class StoryVerifierBehaviour extends UsingMiniMock {
     public void shouldPassItselfIntoStoryAsVisitor() throws Exception {
         // given...
-        final Object[] arg = new Object[1];
-        
-        Story storyMock = new Story(new Narrative("", "", ""), new AcceptanceCriteria()) {
-            public void accept(Visitor visitor) {
-                arg[0] = visitor;
-            }
-        };
+        Mock storyMock = mock(Story.class);
         
         ScenarioInvoker scenarioInvoker = (ScenarioInvoker) stub(ScenarioInvoker.class);
         ScenarioVerifier scenarioVerifier = (ScenarioVerifier)stub(ScenarioVerifier.class);
         StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker, scenarioVerifier);
 
+        storyMock.expects("accept").once().with(eq(storyVerifier));        
+        
         // when...
-        storyVerifier.verify(storyMock);
+        storyVerifier.verify((Story) storyMock);
         
         // verify...
-        ensureThat(arg[0], sameInstanceAs(storyVerifier));
+//        ensureThat(arg[0], sameInstanceAs(storyVerifier));
+        verify();
     }
     
     public void shouldPassScenarioToScenarioInvoker() throws Exception {

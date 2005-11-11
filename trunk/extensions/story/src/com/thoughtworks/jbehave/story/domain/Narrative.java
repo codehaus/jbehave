@@ -24,6 +24,7 @@ public class Narrative implements Visitable {
         this.feature = feature;
         this.benefit = benefit;
     }
+    
     public String getBenefit() {
         return benefit;
     }
