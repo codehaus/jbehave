@@ -7,9 +7,10 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.core.minimock.Mock;
-import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.World;
+import jbehave.core.minimock.Mock;
+import jbehave.story.domain.GivenUsingMiniMock;
+import jbehave.story.domain.World;
+
 
 import example.domain.Account;
 

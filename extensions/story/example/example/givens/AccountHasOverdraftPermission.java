@@ -7,9 +7,10 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.core.Ensure;
-import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.World;
+import jbehave.core.Ensure;
+import jbehave.story.domain.GivenUsingMiniMock;
+import jbehave.story.domain.World;
+
 
 
 /** @given overdraft limit = 100 */

@@ -7,8 +7,8 @@
  */
 package example.givens;
 
-import com.thoughtworks.jbehave.story.domain.GivenUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.World;
+import jbehave.story.domain.GivenUsingMiniMock;
+import jbehave.story.domain.World;
 
 
 /** set balance = -150 */

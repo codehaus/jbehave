@@ -7,9 +7,10 @@
  */
 package example.outcomes;
 
-import com.thoughtworks.jbehave.core.Ensure;
-import com.thoughtworks.jbehave.story.domain.OutcomeUsingMiniMock;
-import com.thoughtworks.jbehave.story.domain.World;
+import jbehave.core.Ensure;
+import jbehave.story.domain.OutcomeUsingMiniMock;
+import jbehave.story.domain.World;
+
 
 
 /** balance = balance - 20 */

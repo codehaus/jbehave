@@ -8,13 +8,13 @@
 
 package example.stories;
 
-import com.thoughtworks.jbehave.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.story.domain.GivenScenario;
-import com.thoughtworks.jbehave.story.domain.Givens;
-import com.thoughtworks.jbehave.story.domain.Narrative;
-import com.thoughtworks.jbehave.story.domain.Outcomes;
-import com.thoughtworks.jbehave.story.domain.ScenarioDrivenStory;
-import com.thoughtworks.jbehave.story.domain.ScenarioUsingMiniMock;
+import jbehave.story.domain.AcceptanceCriteria;
+import jbehave.story.domain.GivenScenario;
+import jbehave.story.domain.Givens;
+import jbehave.story.domain.Narrative;
+import jbehave.story.domain.Outcomes;
+import jbehave.story.domain.ScenarioDrivenStory;
+import jbehave.story.domain.ScenarioUsingMiniMock;
 
 import example.events.UserRequestsCash;
 import example.givens.AccountHasNegativeBalanceWithoutPermission;
