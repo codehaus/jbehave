@@ -1,21 +1,19 @@
 <project name="jbehave" default="rebuild">
   <property name="working_dir" location="delete_me" />
   <property name="classes_dir" location="${working_dir}/classes" />
-  <property name="core_classes_dir" location="${classes_dir}/core" />
-  <property name="full_classes_dir" location="${classes_dir}/full" />
   <property name="behaviour_classes_dir" location="${working_dir}/behaviour-classes" />
-  <property name="core_behaviour_classes_dir" location="${behaviour_classes_dir}/core" />
-  <property name="full_behaviour_classes_dir" location="${behaviour_classes_dir}/full" />
   <property name="javadoc_working_dir" location="${working_dir}/javadoc"/>
 
   <property name="core_dir" location="../core" />
   <property name="extensions_dir" location="../extensions" />
   <property name="lib_dir" location="../lib" />
-  <property name="core_jar_file" location="${working_dir}/jbehave-core.jar" />
+  <property name="jar_file" location="${working_dir}/jbehave.jar" />
   
   <path id="LIBS">
     <fileset dir="${lib_dir}" includes="**/*.jar, **/*.zip" />
   </path>
+  
+  <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="ant-contrib.jar" />
 
   <target name="-init">
     <mkdir dir="${working_dir}" />
@@ -24,13 +22,25 @@
     <delete dir="${working_dir}" />
   </target>
 
-  <target name="build-core-jar" depends="-init">
-    <mkdir dir="${core_classes_dir}" />
-    <javac srcdir="${core_dir}/src" destdir="${core_classes_dir}" source="1.3" target="1.3" classpathref="LIBS" />
-    <copy todir="${core_classes_dir}" includeemptydirs="no">
-      <fileset dir="${core_dir}/src" excludes="**/*.java" />
+  <target name="build-jar" depends="-init">
+    <mkdir dir="${classes_dir}" />
+    <javac srcdir="${core_dir}/src" destdir="${classes_dir}" source="1.3" target="1.3" classpathref="LIBS">
+      <src>
+        <pathelement path="${core_dir}/src" />
+        <dirset dir="${extensions_dir}" includes="**/src" />
+      </src>
+    </javac>
+    <copy todir="${classes_dir}" includeemptydirs="no">
+      <fileset dir="${core_dir}/src" excludes="**/*.java, **/package.html" />
     </copy>
-    <jar basedir="${core_classes_dir}" jarfile="${core_jar_file}" />
+    <copy todir="${classes_dir}" includeemptydirs="no">
+      <fileset dir="${extensions_dir}">
+        <include name="**/src/**" />
+        <exclude name="**/*.java" />
+      </fileset>
+      <regexpmapper from=".*/src/(.*)" to="\1" />
+    </copy>
+    <jar basedir="${classes_dir}" jarfile="${core_jar_file}" />
   </target>
 
   <target name="verify-core-jar" depends="build-core-jar">
@@ -53,19 +63,11 @@
       <src>
         <dirset dir="${extensions_dir}" includes="**/src" />
       </src>
-      <classpath>
-        <pathelement path="${core_jar_file}" />
-        <path refid="LIBS" />
-      </classpath>
     </javac>
     <copy todir="${full_classes_dir}" includeemptydirs="no">
-      <fileset dir="${extensions_dir}">
-        <include name="**/src/**" />
-        <exclude name="**/*.java" />
-      </fileset>
-      <mapper HERE />
+      <fileset dir="${core_classes_dir}" />
     </copy>
-    <jar basedir="${core_classes_dir}" jarfile="${core_jar_file}" />
+    <jar basedir="${full_classes_dir}" jarfile="${full_jar_file}" />
   </target>
 
   <target name="verify-full-jar" depends="build-full-jar">
