@@ -26,7 +26,6 @@ import jbehave.story.codegen.sablecc.node.TSpace;
 import jbehave.story.codegen.sablecc.node.TTitleKeyword;
 import jbehave.story.codegen.sablecc.node.TWord;
 
-
 public class AnalysisAdapter implements Analysis
 {
     private Hashtable in;

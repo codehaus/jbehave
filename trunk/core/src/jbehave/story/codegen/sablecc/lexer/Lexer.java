@@ -18,7 +18,6 @@ import jbehave.story.codegen.sablecc.node.TTitleKeyword;
 import jbehave.story.codegen.sablecc.node.TWord;
 import jbehave.story.codegen.sablecc.node.Token;
 
-
 public class Lexer
 {
     protected Token token;

@@ -8,7 +8,6 @@ import java.util.ListIterator;
 
 import jbehave.story.codegen.sablecc.analysis.Analysis;
 
-
 public final class APhrase extends PPhrase
 {
     private final LinkedList _wordOrSpace_ = new TypedLinkedList(new WordOrSpace_Cast());
