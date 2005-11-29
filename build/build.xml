@@ -24,72 +24,44 @@
 
   <target name="build-jar" depends="-init">
     <mkdir dir="${classes_dir}" />
-    <javac srcdir="${core_dir}/src" destdir="${classes_dir}" source="1.3" target="1.3" classpathref="LIBS">
+    <javac srcdir="${core_dir}/src" destdir="${classes_dir}" source="1.3" target="1.3" classpathref="LIBS" debug="true">
       <src>
         <pathelement path="${core_dir}/src" />
         <dirset dir="${extensions_dir}" includes="**/src" />
       </src>
     </javac>
     <copy todir="${classes_dir}" includeemptydirs="no">
-      <fileset dir="${core_dir}/src" excludes="**/*.java, **/package.html" />
+      <fileset dir="${core_dir}" includes="src/**" excludes="**/*.java, **/package.html" />
+      <fileset dir="${extensions_dir}" includes="**/src/**" excludes="**/*.java, **/package.html" />
+      <regexpmapper from="(.*/)?src/(.*)" to="\2" handledirsep="true" />
     </copy>
-    <copy todir="${classes_dir}" includeemptydirs="no">
-      <fileset dir="${extensions_dir}">
-        <include name="**/src/**" />
-        <exclude name="**/*.java" />
-      </fileset>
-      <regexpmapper from=".*/src/(.*)" to="\1" />
-    </copy>
-    <jar basedir="${classes_dir}" jarfile="${core_jar_file}" />
+    <jar basedir="${classes_dir}" jarfile="${jar_file}" />
   </target>
 
-  <target name="verify-core-jar" depends="build-core-jar">
-    <mkdir dir="${core_behaviour_classes_dir}" />
-    <javac taskname="compile core behaviours" destdir="${core_behaviour_classes_dir}" source="1.3" target="1.3"
-      srcdir="${core_dir}/behaviour"
-      classpath="${core_jar_file}" />
-    <java taskname="run core behaviours" classname="jbehave.core.Run" fork="true">
-      <arg value="jbehave.core.AllBehaviours" />
-      <classpath>
-        <pathelement path="${core_behaviour_classes_dir}" />
-        <pathelement path="${core_jar_file}" />
-      </classpath>
-    </java>
-  </target>
-
-  <target name="build-full-jar" depends="build-core-jar">
-    <mkdir dir="${full_classes_dir}" />
-    <javac destdir="${full_classes_dir}" source="1.3" target="1.3">
+  <target name="verify-jar" depends="build-jar">
+    <mkdir dir="${behaviour_classes_dir}" />
+    <javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="1.3" target="1.3">
       <src>
-        <dirset dir="${extensions_dir}" includes="**/src" />
+        <pathelement path="${core_dir}/behaviour" />
+        <pathelement path="../everything/behaviour" />
+        <dirset dir="${extensions_dir}" includes="**/behaviour" />
       </src>
-    </javac>
-    <copy todir="${full_classes_dir}" includeemptydirs="no">
-      <fileset dir="${core_classes_dir}" />
-    </copy>
-    <jar basedir="${full_classes_dir}" jarfile="${full_jar_file}" />
-  </target>
-
-  <target name="verify-full-jar" depends="build-full-jar">
-    <mkdir dir="${core_behaviour_classes_dir}" />
-    <javac taskname="compile core behaviours" destdir="${core_behaviour_classes_dir}" source="1.3" target="1.3"
-      srcdir="${core_dir}/behaviour">
       <classpath>
-        <pathelement path="${core_jar_file}" />
-        <path refid="LIBS" />
+          <pathelement path="${jar_file}" />
+          <path refid="LIBS" />
       </classpath>
     </javac>
-    <java taskname="run core behaviours" classname="jbehave.core.Run" fork="true">
-      <arg value="jbehave.core.AllBehaviours" />
+    <java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="true">
+      <arg value="jbehave.AllBehaviours" />
       <classpath>
-        <pathelement path="${core_behaviour_classes_dir}" />
-        <pathelement path="${core_jar_file}" />
+        <pathelement path="${behaviour_classes_dir}" />
+        <pathelement path="${jar_file}" />
         <path refid="LIBS" />
       </classpath>
     </java>
   </target>
-
-  <target name="rebuild" depends="clean, verify-core-jar" />
+  
+  <target name="rebuild" depends="clean, verify-jar" />
 
   <target name="javadoc">
     <mkdir dir="${javadoc_working_dir}" />

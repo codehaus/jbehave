@@ -8,7 +8,6 @@ import java.util.ListIterator;
 
 import jbehave.story.codegen.sablecc.analysis.Analysis;
 
-
 public final class AStory extends PStory
 {
     private PTitle _title_;

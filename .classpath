@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="core/behaviour"/>
-	<classpathentry kind="src" path="extensions/story/example"/>
-	<classpathentry kind="src" path="extensions/story/behaviour"/>
 	<classpathentry kind="src" path="extensions/story/src"/>
 	<classpathentry kind="src" path="extensions/ant/behaviour"/>
 	<classpathentry kind="src" path="extensions/ant/src"/>
@@ -12,7 +10,6 @@
 	<classpathentry kind="src" path="extensions/junit/behaviour"/>
 	<classpathentry kind="src" path="extensions/junit/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/optional/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/ant.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
