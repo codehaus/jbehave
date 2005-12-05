@@ -1,28 +1,46 @@
 <project name="jbehave" default="rebuild">
+  <property name="version" value="snapshot" />
   <property name="working_dir" location="delete_me" />
   <property name="classes_dir" location="${working_dir}/classes" />
   <property name="behaviour_classes_dir" location="${working_dir}/behaviour-classes" />
-  <property name="javadoc_working_dir" location="${working_dir}/javadoc"/>
+  <property name="dist_dir" location="dist" />
+  <property name="website_dist_dir" location="${dist_dir}/website"/>
+  <property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
+  <property name="code_dist_dir" location="${dist_dir}/${version}" />
 
   <property name="core_dir" location="../core" />
   <property name="extensions_dir" location="../extensions" />
+  <property name="website_dir" location="../website" />
   <property name="lib_dir" location="../lib" />
-  <property name="jar_file" location="${working_dir}/jbehave.jar" />
+  <property name="jar_file" location="${code_dist_dir}/jbehave.jar" />
+  <property name="zip_file" location="${code_dist_dir}/jbehave-src.zip" />
   
   <path id="LIBS">
     <fileset dir="${lib_dir}" includes="**/*.jar, **/*.zip" />
   </path>
   
-  <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="ant-contrib.jar" />
-
+  <!-- general targets -->
+  
   <target name="-init">
     <mkdir dir="${working_dir}" />
+    <mkdir dir="${dist_dir}" />
   </target>
-  <target name="clean">
+  
+  <target name="clean" description="Clean out working directory">
     <delete dir="${working_dir}" />
   </target>
+  
+  <target name="clobber" depends="clean" description="Clean out everything">
+    <delete dir="${dist_dir}" />
+  </target>
+  
+  <target name="rebuild" depends="clean, verify-jar" description="Clean out and rebuild everything" />
+  
+  <target name="dist" depends="clobber, verify-jar, website" />
+  
+  <!-- build and assemble -->
 
-  <target name="build-jar" depends="-init">
+  <target name="build-jar" depends="-init" description="Compile and assemble the jar">
     <mkdir dir="${classes_dir}" />
     <javac srcdir="${core_dir}/src" destdir="${classes_dir}" source="1.3" target="1.3" classpathref="LIBS" debug="true">
       <src>
@@ -35,10 +53,11 @@
       <fileset dir="${extensions_dir}" includes="**/src/**" excludes="**/*.java, **/package.html" />
       <regexpmapper from="(.*/)?src/(.*)" to="\2" handledirsep="true" />
     </copy>
+    <mkdir dir="${code_dist_dir}" />
     <jar basedir="${classes_dir}" jarfile="${jar_file}" />
   </target>
 
-  <target name="verify-jar" depends="build-jar">
+  <target name="verify-jar" depends="build-jar" description="Verify behaviour of jar">
     <mkdir dir="${behaviour_classes_dir}" />
     <javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="1.3" target="1.3">
       <src>
@@ -61,11 +80,15 @@
     </java>
   </target>
   
-  <target name="rebuild" depends="clean, verify-jar" />
+  <!-- create website -->
 
-  <target name="javadoc">
-    <mkdir dir="${javadoc_working_dir}" />
-    <javadoc destdir="${javadoc_working_dir}" windowtitle="JBehave API Documentation" verbose="false" useexternalfile="true">
+  <target name="javadoc" description="Generate javadocs">
+    <mkdir dir="${javadoc_dist_dir}" />
+    <javadoc
+      destdir="${javadoc_dist_dir}"
+      windowtitle="JBehave API Documentation"
+      verbose="false"
+      useexternalfile="true">
       <fileset dir="${extensions_dir}">
         <include name="*/src/**/*.java" />
         <exclude name="**/codegen/**" />
@@ -78,10 +101,40 @@
       <group title="JMock Extension" packages="jbehave.jmock*" />
       <group title="Ant Task Extension" packages="jbehave.ant*" />
       <group title="JUnit Adapter" packages="jbehave.junit*" />
-      <group title="Story Runner" packages="jbehave.story*" />
+      <group title="Story Runner" packages="jbehave.core.story*" />
       <classpath>
-        <fileset dir="${lib_dir}" includes="*.jar, *.zip" />
+        <fileset dir="${lib_dir}" />
       </classpath>
     </javadoc>
+  </target>
+  
+  <target name="zipfile" description="Create a zip file of the entire checkout">
+    <mkdir dir="${code_dist_dir}" />
+    <zip zipfile="${zip_file}">
+      <zipfileset dir=".." prefix="jbehave-${version}">
+        <exclude name="bin/**" />
+        <exclude name="build/delete_me/**" />
+        <exclude name="build/dist/**" />
+        <exclude name="website/output/**" />
+      </zipfileset>
+    </zip>
+  </target>
+  
+  <target name="website" depends="-init, javadoc, zipfile" description="Generate website">
+    <exec executable="ruby" dir="${website_dir}">
+        <arg value="skinner.rb"/>
+    </exec>
+    <copy todir="${website_dist_dir}">
+      <fileset dir="${website_dir}/output" />
+    </copy>
+  </target>
+  
+  <!-- additional targets -->
+  
+  <target name="sablecc" description="Generate sablecc grammar files">
+    <java fork="true" jar="sablecc.jar">
+      <arg value="-d" /><arg file="${core_dir}/src" />
+      <arg file="${core_dir}/src/jbehave/core/story/codegen/story.scc" />
+    </java>
   </target>
 </project>
