@@ -28,7 +28,7 @@ import jbehave.core.story.visitor.VisitableArrayListBehaviour;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class AllBehaviours extends Object implements Behaviours {
-    public Class[] getBehaviourClasses() {
+    public Class[] getBehaviours() {
         return new Class[] {
                 TextStoryParserBehaviour.class,
 				GivenScenarioBehaviour.class,

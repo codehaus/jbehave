@@ -50,6 +50,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         invoker.invoke((Scenario)scenario);
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldTellGivenToSetUpEnvironment() throws Exception {
@@ -61,6 +64,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         invoker.visitGiven((Given)given);
+        
+        // then...
+        verifyMocks();
     }
 
     public void shouldSetExpectationInEnvironment() throws Exception {
@@ -72,6 +78,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         
         // when...
         invoker.visitOutcome((Outcome)outcome);
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldMakeEventOccurInEnvironment() throws Exception {
@@ -82,6 +91,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         event.expects("occurIn").with(worldStub);
         // when...
         invoker.visitEvent((Event)event);
+        
+        // then...
+        verifyMocks();
     }
 
     public void shouldThrowNestedVerificationExceptionFromVisitWhenGivenThrowsException() throws Exception {
@@ -97,6 +109,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         }
         catch (NestedVerificationException expected) {
             ensureThat(expected.getCause(), sameInstanceAs(cause));
+            
+            // then...
+            verifyMocks();
         }
     }
     
@@ -113,6 +128,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         }
         catch (NestedVerificationException expected) {
             ensureThat(expected.getCause(), sameInstanceAs(cause));
+            
+            // then...
+            verifyMocks();
         }
     }
     
@@ -131,6 +149,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         }
         catch (NestedVerificationException actualException) {
             ensureThat(actualException.getCause(), sameInstanceAs(cause));
+            
+            // then...
+            verifyMocks();
         }
     }
     
@@ -144,8 +165,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         // when...
         Result result = invoker.invoke((Scenario)scenario);
         
-        // verify...
+        // then...
         Ensure.that(result.succeeded());
+        verifyMocks();
     }
     
     public void shouldReturnFailureResultWhenScenarioFails() throws Exception {
@@ -159,8 +181,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         // when...
         Result result = invoker.invoke((Scenario)scenario);
         
-        // verify...
+        // then...
         ensureThat(result.cause(), sameInstanceAs(cause));
+        verifyMocks();
     }
     
     /** Custom invocation handler so a Scenario can pass a component to the visitor */
@@ -193,8 +216,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         // when...
         ScenarioResult result = invoker.invoke((Scenario)scenario);
         
-        // verify...
+        // then...
         Ensure.that("should have used mocks", result.usedMocks());
+        verifyMocks();
     }
 
 	public void shouldReturnResultUsingMocksWhenScenarioSucceedsButEventUsesMocks() throws Exception {
@@ -216,8 +240,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         // when...
         ScenarioResult result = invoker.invoke((Scenario)scenario);
         
-        // verify...
+        // then...
         Ensure.that("should have used mocks", result.usedMocks());
+        verifyMocks();
     }
     
     public void shouldReturnResultUsingMocksWhenScenarioSucceedsButExpectationUsesMocks() throws Exception {
@@ -239,8 +264,9 @@ public class VisitingScenarioInvokerBehaviour extends UsingMiniMock {
         // when...
         ScenarioResult result = invoker.invoke((Scenario)scenario);
         
-        // verify...
+        // then...
         Ensure.that("should have used mocks", result.usedMocks());
+        verifyMocks();
     }
     
     public void shouldClearEnvironmentOnEachInvocationOfAScenario() {

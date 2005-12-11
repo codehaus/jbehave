@@ -26,7 +26,7 @@ public class PlainTextMethodListenerBehaviour extends PlainTextListenerBehaviour
     }
 
     protected PlainTextListener newPlainTextListener() {
-        return new PlainTextMethodListener(writer, timer);
+        return new PlainTextListener(writer, timer);
     }
 
     protected Result newSuccessResult() {

@@ -33,5 +33,8 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
         
         // when...
         story.accept((Visitor)visitorMock);
+        
+        // then...
+        verifyMocks();
     }
 }

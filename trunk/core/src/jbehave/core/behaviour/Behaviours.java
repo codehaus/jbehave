@@ -8,7 +8,7 @@
 package jbehave.core.behaviour;
 
 /**
- * Represents multiple behaviour classes
+ * Represents multiple behaviours
  * 
  * Any implementing class must also have a default constructor so that it
  * can be instantiated and interrogated.
@@ -17,10 +17,10 @@ package jbehave.core.behaviour;
  */
 public interface Behaviours {
     /**
-     * Return an array of all the contained behaviour classes.
+     * Return an array of all the contained behaviours.
      * 
      * This is processed recursively, so the array could contain nested
      * <tt>Behaviours</tt>.
      */
-    Class[] getBehaviourClasses();
+    Class[] getBehaviours();
 }

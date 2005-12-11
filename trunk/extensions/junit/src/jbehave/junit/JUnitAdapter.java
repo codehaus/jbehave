@@ -46,7 +46,7 @@ public class JUnitAdapter {
         
         final TestSuitePopulater populater = new TestSuitePopulater(suiteRef);
         BehaviourClass visitableClass = new BehaviourClass(classToVerify);
-        visitableClass.accept(populater);
+//        visitableClass.accept(populater);
         
         return suiteRef[0];
     }

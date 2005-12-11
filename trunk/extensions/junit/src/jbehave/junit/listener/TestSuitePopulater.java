@@ -13,16 +13,14 @@ import jbehave.core.behaviour.BehaviourClass;
 import jbehave.core.behaviour.BehaviourMethod;
 import jbehave.core.exception.JBehaveFrameworkError;
 import jbehave.core.result.Result;
-import jbehave.core.visitor.Visitor;
 import jbehave.junit.JUnitMethodAdapter;
-
 import junit.framework.TestSuite;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TestSuitePopulater implements Visitor {
+public class TestSuitePopulater {
     private final TestSuite[] suiteRef;
     private TestSuite currentSuite = null;
     private Class currentBehaviourClass;

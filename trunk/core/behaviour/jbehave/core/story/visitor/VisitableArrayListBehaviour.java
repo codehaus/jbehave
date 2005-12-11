@@ -37,6 +37,9 @@ public class VisitableArrayListBehaviour extends UsingMiniMock {
 
         // when...
         list.accept(visitor);
+        
+        // then...
+        verifyMocks();
     }
 
     private static class SomeRuntimeException extends RuntimeException {}

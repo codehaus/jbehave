@@ -19,6 +19,8 @@
     <fileset dir="${lib_dir}" includes="**/*.jar, **/*.zip" />
   </path>
   
+  <echo message="Building version=${version}..." />
+  
   <!-- general targets -->
   
   <target name="-init">
@@ -34,7 +36,7 @@
     <delete dir="${dist_dir}" />
   </target>
   
-  <target name="rebuild" depends="clean, verify-jar" description="Clean out and rebuild everything" />
+  <target name="rebuild" depends="clean, verify-jar, zipfile" description="Rebuild the binaries" />
   
   <target name="dist" depends="clobber, verify-jar, website" />
   
@@ -51,7 +53,7 @@
     <copy todir="${classes_dir}" includeemptydirs="no">
       <fileset dir="${core_dir}" includes="src/**" excludes="**/*.java, **/package.html" />
       <fileset dir="${extensions_dir}" includes="**/src/**" excludes="**/*.java, **/package.html" />
-      <regexpmapper from="(.*/)?src/(.*)" to="\2" handledirsep="true" />
+      <mapper type="regexp" from="(.*[\\/])?src[\\/](.*)" to="\2" />
     </copy>
     <mkdir dir="${code_dist_dir}" />
     <jar basedir="${classes_dir}" jarfile="${jar_file}" />

@@ -11,17 +11,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import jbehave.core.exception.JBehaveFrameworkError;
+import jbehave.core.listener.ResultListener;
 import jbehave.core.result.BehaviourMethodResult;
-import jbehave.core.result.Result;
-import jbehave.core.visitor.Visitable;
-import jbehave.core.visitor.Visitor;
-
-
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class BehaviourMethod implements Visitable {
+public class BehaviourMethod implements Behaviour {
 
     private final Object instance;
     private final Method method;
@@ -31,15 +27,6 @@ public class BehaviourMethod implements Visitable {
         this.method = method;
     }
 	
-	public BehaviourMethod(Object instance, String methodName) {
-		try {
-			this.instance = instance;
-			this.method = instance.getClass().getMethod(methodName, new Class[0]);
-		} catch (NoSuchMethodException e) {
-			throw new JBehaveFrameworkError(e);
-		}
-	}
-
     public Method method() {
         return method;
     }
@@ -48,29 +35,24 @@ public class BehaviourMethod implements Visitable {
         return instance;
     }
 
-    public void accept(Visitor visitor) {
-        visitor.visitBehaviourMethod(this);
-    }
-
-    public Result invoke() {
+    public void verifyTo(ResultListener listener) {
         try {
-            invoke(instance, method);
-            return new BehaviourMethodResult(this);
+            invokeBehaviourMethod();
+            listener.gotResult(new BehaviourMethodResult(this));
         }
         catch (InvocationTargetException e) {
-            return new BehaviourMethodResult(this, e.getTargetException());
+            listener.gotResult(new BehaviourMethodResult(this, e.getTargetException()));
         }
         catch (Throwable e) {
             throw new JBehaveFrameworkError("Problem verifying method " + method.getName(), e);
         }
     }
 
-    private void invoke(Object instance, Method method) throws Throwable {
+    private void invokeBehaviourMethod() throws Throwable {
         Exception thrownException = null;
         try {
             invokeMethod("setUp", instance);
             method.invoke(instance, new Object[0]);
-            invokeMethod("verify", instance);
         }
         catch (Exception e) {
             throw thrownException = e;

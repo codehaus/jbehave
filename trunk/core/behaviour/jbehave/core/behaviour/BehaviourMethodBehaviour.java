@@ -13,10 +13,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import jbehave.core.Ensure;
+import jbehave.core.exception.JBehaveFrameworkError;
+import jbehave.core.listener.ResultListener;
+import jbehave.core.minimock.ChainedConstraint;
+import jbehave.core.minimock.Constraint;
 import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.result.Result;
-import jbehave.core.visitor.Visitor;
+import jbehave.core.result.Result.Type;
 
 
 /**
@@ -24,18 +28,6 @@ import jbehave.core.visitor.Visitor;
  */
 public class BehaviourMethodBehaviour extends UsingMiniMock {
 	
-    public void shouldDispatchItselfToVisitor() throws Exception {
-        // given...
-        Mock visitor = mock(Visitor.class);
-        BehaviourMethod behaviourMethod = new BehaviourMethod(null, (Method)null);
-        
-        // expect...
-        visitor.expects("visitBehaviourMethod").with(behaviourMethod);
-        
-        // when...
-        behaviourMethod.accept((Visitor) visitor);
-    }
-
 	public static class StoresInvocation {
         public boolean methodWasInvoked = false;
         public void shouldDoSomething() {
@@ -43,26 +35,54 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         }
     }
 	
-    public void shouldInvokeMethod() throws Throwable {
+    public void shouldVerifyByInvokingMethod() throws Throwable {
         // given
 		StoresInvocation instance = new StoresInvocation();
-        BehaviourMethod behaviourMethod = new BehaviourMethod(instance, "shouldDoSomething");
+        ResultListener listener = (ResultListener) stub(ResultListener.class);
+        BehaviourMethod behaviourMethod = createBehaviourMethod(instance, "shouldDoSomething");
         
         // when
-        behaviourMethod.invoke();
+        behaviourMethod.verifyTo(listener);
         
         // then
         Ensure.that(instance.methodWasInvoked);
     }
     
+    public static class HasSuccessfulMethod {
+        public void shouldWork() {
+            // succeeds
+        }
+    }
+    
+    private Constraint resultOfType(Type type) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return ((Result)arg).succeeded();
+            }
+        };
+    }
+    
+    public void shouldTellListenerWhenVerifySucceeds() throws Exception {
+        // given...
+        Object instance = new HasSuccessfulMethod();
+        Mock listener = mock(ResultListener.class);
+        Behaviour behaviour = createBehaviourMethod(instance, "shouldWork");
+        
+        // expect...
+        listener.expects("gotResult").with(resultOfType(Result.SUCCEEDED));
+        
+        // when...
+        behaviour.verifyTo((ResultListener) listener);
+        
+        // then...
+        verifyMocks();
+    }
+    
     public static class HasSetUpAndTearDown {
-        public final List whatHappened = new ArrayList();
+        public static final List whatHappened = new ArrayList();
         
         public void setUp() throws Exception {
             whatHappened.add("setUp");
-        }
-        public void verify() throws Exception {
-            whatHappened.add("verify");
         }
         public void tearDown() throws Exception {
             whatHappened.add("tearDown");
@@ -72,24 +92,66 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         }
     }
     
-    public void shouldInvokeSetUpVerifyAndTearDownInTheCorrectSequence() throws Throwable {
+    private BehaviourMethod createBehaviourMethod(Object instance, String methodName) {
+        try {
+            Method method = instance.getClass().getMethod(methodName, null);
+            return new BehaviourMethod(instance, method);
+        } catch (Exception e) {
+            throw new JBehaveFrameworkError("No method " + methodName + " on class " + instance.getClass().getName());
+        }
+    }
+    
+    public void shouldInvokeSetUpAndTearDownInTheCorrectSequence() throws Throwable {
         // given
-        HasSetUpAndTearDown instance = new HasSetUpAndTearDown();
-        BehaviourMethod behaviourMethod = new BehaviourMethod(instance, "shouldDoSomething");
+        Object instance = new HasSetUpAndTearDown();
+        ResultListener listener = (ResultListener) stub(ResultListener.class);
+        Behaviour behaviour = createBehaviourMethod(instance, "shouldDoSomething");
         
         // expect
         List expected = Arrays.asList(new String[] {
-                "setUp", "shouldDoSomething", "verify", "tearDown"
+                "setUp", "shouldDoSomething", "tearDown"
         });
         
         // when
-        behaviourMethod.invoke();
+        behaviour.verifyTo(listener);
         
         // then
-        ensureThat(instance.whatHappened, eq(expected));
+        ensureThat(HasSetUpAndTearDown.whatHappened, eq(expected));
     }
 
     public static class CheckedException extends Exception {}
+
+    private ChainedConstraint resultContainingCheckedException() {
+        return new ChainedConstraint() {
+            public boolean matches(Object arg) {
+                return isA(CheckedException.class).matches(((Result)arg).cause());
+            }
+            public String toString() {
+                return "result containing a CheckedException";
+            }
+        };
+    }
+    
+    public static class MethodThrowsException {
+        public void shouldDoSomething() throws Exception {
+            throw new CheckedException();
+        }
+    }
+    
+    public void shouldReportExceptionFromMethod() throws Throwable {
+        // given
+        Behaviour behaviour = createBehaviourMethod(new MethodThrowsException(), "shouldDoSomething");
+        Mock listener = mock(ResultListener.class);
+        
+        // expect
+        listener.expects("gotResult").with(resultContainingCheckedException());
+        
+        // when
+        behaviour.verifyTo((ResultListener) listener);
+        
+        // then
+        verifyMocks();
+    }
     
     public static class SetUpThrowsException extends HasSetUpAndTearDown {
         public void setUp() throws Exception {
@@ -99,50 +161,17 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     
     public void shouldReportExceptionFromSetUp() throws Throwable {
         // given
-        BehaviourMethod behaviourMethod =
-			new BehaviourMethod(new SetUpThrowsException(), "shouldDoSomething");
+        Behaviour behaviour = createBehaviourMethod(new SetUpThrowsException(), "shouldDoSomething");
+        Mock listener = mock(ResultListener.class);
+        
+        // expect
+        listener.expects("gotResult").with(resultContainingCheckedException());
         
         // when
-        Result result = behaviourMethod.invoke();
+        behaviour.verifyTo((ResultListener) listener);
         
         // then
-        ensureThat(result.cause(), isA(CheckedException.class));
-    }
-    
-    public static class MethodThrowsException extends HasSetUpAndTearDown {
-        public void shouldDoSomething() throws Exception {
-            throw new CheckedException();
-        }
-    }
-    
-    public void shouldReportExceptionFromMethod() throws Throwable {
-        // given
-        BehaviourMethod behaviourMethod =
-			new BehaviourMethod(new MethodThrowsException(), "shouldDoSomething");
-        
-        // when
-        Result result = behaviourMethod.invoke();
-        
-        // then
-        ensureThat(result.cause(), isA(CheckedException.class));
-    }
-    
-    public static class VerifyThrowsException extends HasSetUpAndTearDown {
-        public void verify() throws Exception {
-            throw new CheckedException();
-        }
-    }
-    
-    public void shouldReportExceptionFromVerify() throws Throwable {
-        // given
-        BehaviourMethod behaviourMethod =
-			new BehaviourMethod(new VerifyThrowsException(), "shouldDoSomething");
-        
-        // when
-        Result result = behaviourMethod.invoke();
-        
-        // then
-        ensureThat(result.cause(), isA(CheckedException.class));
+        verifyMocks();
     }
     
     public static class TearDownThrowsException extends HasSetUpAndTearDown {
@@ -153,35 +182,17 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     
     public void shouldReportExceptionFromTearDown() throws Throwable {
         // given
-        BehaviourMethod behaviourMethod =
-			new BehaviourMethod(new TearDownThrowsException(), "shouldDoSomething");
+        Behaviour behaviour = createBehaviourMethod(new TearDownThrowsException(), "shouldDoSomething");
+        Mock listener = mock(ResultListener.class);
+        
+        // expect
+        listener.expects("gotResult").with(resultContainingCheckedException());
         
         // when
-        Result result = behaviourMethod.invoke();
+        behaviour.verifyTo((ResultListener) listener);
         
         // then
-        ensureThat(result.cause(), isA(CheckedException.class));
-    }
-    
-    public static class MethodAndVerifyBothThrowException extends HasSetUpAndTearDown {
-        public void verify() throws Exception {
-            throw new Exception("from verify");
-        }
-        public void shouldDoSomething() throws Exception {
-            throw new Exception("from method");
-        }
-    }
-    
-    public void shouldReportExceptionFromMethodIfMethodAndVerifyBothThrowException() throws Throwable {
-        // given
-        BehaviourMethod behaviourMethod =
-			new BehaviourMethod(new MethodAndVerifyBothThrowException(), "shouldDoSomething");
-        
-        // when
-        Result result = behaviourMethod.invoke();
-        
-        // then
-        ensureThat(result.cause().getMessage(), eq("from method"));
+        verifyMocks();
     }
     
     public static class MethodAndTearDownBothThrowException extends HasSetUpAndTearDown {
@@ -193,38 +204,29 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         }
     }
     
+    private Constraint resultContainingExceptionMessage(final String message) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return message.equals(((Result)arg).cause().getMessage());
+            }
+            public String toString() {
+                return "result containing CheckedException with message=" + message;
+            }
+        };
+    }
+    
     public void shouldReportExceptionFromMethodIfMethodAndTearDownBothThrowException() throws Throwable {
         // given
-        BehaviourMethod behaviourMethod =
-			new BehaviourMethod(new MethodAndTearDownBothThrowException(), "shouldDoSomething");
+        Behaviour behaviour = createBehaviourMethod(new MethodAndTearDownBothThrowException(), "shouldDoSomething");
+        Mock listener = mock(ResultListener.class);
+        
+        // expect
+        listener.expects("gotResult").with(resultContainingExceptionMessage("from method"));
         
         // when
-        Result result = behaviourMethod.invoke();
+        behaviour.verifyTo((ResultListener) listener);
         
         // then
-        ensureThat(result.cause().getMessage(), eq("from method"));
-    }
-    
-    public static class VerifyAndTearDownBothThrowException extends HasSetUpAndTearDown {
-        public void verify() throws Exception {
-            throw new Exception("from verify");
-        }
-        public void tearDown() throws Exception {
-            throw new Exception("from tearDown");
-        }
-        public void shouldDoSomething() throws Exception {
-        }
-    }
-    
-    public void shouldReportExceptionFromVerifyIfVerifyAndTearDownBothThrowException() throws Throwable {
-        // given
-        BehaviourMethod behaviourMethod =
-			new BehaviourMethod(new VerifyAndTearDownBothThrowException(), "shouldDoSomething");
-        
-        // when
-        Result result = behaviourMethod.invoke();
-        
-        // then
-        ensureThat(result.cause().getMessage(), eq("from verify"));
+        verifyMocks();
     }
 }

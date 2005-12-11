@@ -1,7 +1,6 @@
 package jbehave.core;
 
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -19,25 +18,23 @@ public class RunBehaviour {
 		}
 	}
 	
-	private OutputStream nullOutputStream = new OutputStream() {
-		public void write(int b) throws IOException {
+	private PrintStream nullPrintStream = new PrintStream(new OutputStream() {
+		public void write(int b) {
 			// do nothing
 		}
-	};
+	});
 	
 	public void shouldRunClassFromArgumentSuccessfully() {
 		runCount = 0;
-		Run.runBehaviourToStream(new String[] {RunnableBehaviour.class.getName()},
-				new PrintStream(nullOutputStream));
+		new Run(nullPrintStream).verifyBehaviour(RunnableBehaviour.class);
 		Ensure.that(runCount == 1);
 	}
 	
 	public void shouldRunTwoClassesFromArgumentsSuccessfully() {
 		runCount = 0;
-		Run.runBehaviourToStream(new String[] {
-				RunnableBehaviour.class.getName(),
-				RunnableBehaviour.class.getName()},
-				new PrintStream(nullOutputStream));
+		Run run = new Run(nullPrintStream);
+        run.verifyBehaviour(RunnableBehaviour.class);
+        run.verifyBehaviour(RunnableBehaviour.class);
 		Ensure.that(runCount == 2);
 	}
 }

@@ -21,7 +21,7 @@ import jbehave.core.util.Timer;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public abstract class PlainTextListener implements ResultListener {
+public class PlainTextListener implements ResultListener {
 
     protected final PrintWriter out;
     private int methodsVerified = 0;

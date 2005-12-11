@@ -64,8 +64,9 @@ public class VisitingScenarioVerifierBehaviour extends UsingMiniMock {
         // when...
         ScenarioResult result = verifier.verify((Scenario)scenario);
         
-        // verify...
+        // then...
         Ensure.that("should have used mocks", result.usedMocks());
+        verifyMocks();
     }
     
     /** Custom invocation handler so a Scenario can pass a component to the visitor */
