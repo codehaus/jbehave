@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 import jbehave.core.behaviour.BehaviourMethod;
+import jbehave.core.listener.ResultListener;
 import jbehave.core.result.Result;
 import jbehave.core.util.ConvertCase;
 
@@ -20,9 +21,10 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 
 
-public class JUnitMethodAdapter extends TestCase {
+public class JUnitMethodAdapter extends TestCase implements ResultListener {
     private final Method method;
     private final Object instance;
+    private Result result;
 
     public JUnitMethodAdapter(Method method, Object instance) {
         super(new ConvertCase(method.getName()).toSeparateWords());
@@ -41,7 +43,7 @@ public class JUnitMethodAdapter extends TestCase {
     }
 
     private void verifyMethod(TestResult testResult) {
-        final Result result = new BehaviourMethod(instance, method).invoke();
+        new BehaviourMethod(instance, method).verifyTo(this);
         if (result.failed()) {
             testResult.addFailure(this, buildAssertionFailedError(result.cause()));
         }
@@ -74,5 +76,9 @@ public class JUnitMethodAdapter extends TestCase {
             // shame - not running in 1.4 JRE
         }
         return error;
+    }
+
+    public void gotResult(Result result) {
+        this.result = result;
     }
 }

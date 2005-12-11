@@ -7,10 +7,6 @@
  */
 package jbehave.core.minimock;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import jbehave.core.Ensure;
 
 
@@ -20,30 +16,27 @@ import jbehave.core.Ensure;
  */
 public class UsingMiniMockBehaviour extends UsingConstraints {
     
-    UsingMiniMock miniMock;
+    UsingMiniMock miniMock = new UsingMiniMock();
     
-    public void setUp() {
-        miniMock = new UsingMiniMock();
-    }
-    
-    public interface BehaviourInterface2 {
-        
+    public interface SomeType {}
+
+    private Constraint containsMocks() {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return ((UsingMiniMock)arg).containsMocks();
+            }
+            public String toString() {
+                return "UsingMiniMock instance containing mocks";
+            }
+        };
     }
     
     public void shouldStoreMock() throws Exception {
-    	Constraint containsMocks = new ChainedConstraint() {
-    		public boolean matches(Object arg) {
-    			return ((UsingMiniMock)arg).containsMocks();
-    		}
-			public String toString() {
-				return "UsingMiniMock instance containing mocks";
-			}
-    	};
-        ensureThat(miniMock, not(containsMocks));
+        ensureThat(miniMock, not(containsMocks()));
         
-        miniMock.mock(BehaviourInterface2.class);
+        miniMock.mock(SomeType.class);
         
-        ensureThat(miniMock, containsMocks);
+        ensureThat(miniMock, containsMocks());
       
     }
     
@@ -174,52 +167,4 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
         boolean i = ((BehaviourInterface1)mock).getBoolean();
         ensureThat(i, eq(b));
      }
-	
-	public static class ChecksMocksAreVerified extends UsingMiniMock {
-		public final List results = new ArrayList();
-		public void shouldDoSomething() {
-		}
-		public void shouldDoSomethingElse() {}
-		public void verifyMocks() {
-			results.add("verified");
-		}
-	}
-	
-	public void shouldVerifyMocksAfterEachMethod() throws Exception {
-		// given
-		final Object[] results = new Object[1];
-		UsingMiniMock instance = new UsingMiniMock() {
-			public void verifyMocks() {
-				results[0] = "verifyMocks";
-			}
-		};
-
-		// when
-		instance.verify();
-		
-		// then
-		ensureThat(results[0], eq("verifyMocks"));
-	}
-	
-	public void shouldCallTemplateMethodAfterVerifyingMocks() throws Exception {
-		// given
-		final List results = new ArrayList();
-		UsingMiniMock instance = new UsingMiniMock() {
-			public void verifyMocks() {
-				results.add("verifyMocks");
-			}
-			public void doVerify() {
-				results.add("doVerify");
-			}
-		};
-		List expected = Arrays.asList(new String[] {
-				"doVerify", "verifyMocks"
-		});
-
-		// when
-		instance.verify();
-		
-		// then
-		ensureThat(results, eq(expected));
-	}
 }

@@ -26,6 +26,9 @@ public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMini
 		
 		// when...
 		composite.accept((Visitor)visitor);
+        
+        // then...
+        verifyMocks();
 	}
 	
 	public void shouldTellComponentsToVerifyTheirMocks() throws Exception {
@@ -40,6 +43,9 @@ public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMini
 
 		// when...
 		composite.verifyMocks();
+        
+        // then...
+        verifyMocks();
 	}
 	
 	public void shouldNotContainMocksIfNoneOfItsComponentsContainMocks() throws Exception {
@@ -56,6 +62,7 @@ public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMini
 		
 		// then...
 		ensureThat(result, eq(false));
+        verifyMocks();
 	}
 	
 	public void shouldContainMocksIfAnyOfItsComponentsContainMocks() throws Exception {
@@ -72,5 +79,6 @@ public abstract class CompositeVisitableUsingMiniMockBehaviour extends UsingMini
 		
 		// then...
 		ensureThat(result, eq(true));
+        verifyMocks();
 	}
 }

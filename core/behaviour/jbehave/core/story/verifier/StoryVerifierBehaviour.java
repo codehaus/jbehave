@@ -31,14 +31,15 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         ScenarioVerifier scenarioVerifier = (ScenarioVerifier)stub(ScenarioVerifier.class);
         StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker, scenarioVerifier);
 
+        // expect...
         storyMock.expects("accept").once().with(eq(storyVerifier));        
         
         // when...
         storyVerifier.verify((Story) storyMock);
         
-        // verify...
+        // then...
 //        ensureThat(arg[0], sameInstanceAs(storyVerifier));
-        verify();
+        verifyMocks();
     }
     
     public void shouldPassScenarioToScenarioInvoker() throws Exception {
@@ -58,6 +59,9 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenario);
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldPassScenarioToScenarioVerifierIfInvokerResultSuccessful() throws Exception {
@@ -77,6 +81,9 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenario);
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldPassScenarioToScenarioVerifierIfInvokerResultUsedMocks() throws Exception {
@@ -96,6 +103,9 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenario);
+        
+        // then...
+        verifyMocks();
     }
     
     public void shouldNotPassScenarioToScenarioVerifierIfInvokerResultFailed() throws Exception {
@@ -114,6 +124,9 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenario);
+        
+        // then...
+        verifyMocks();
     }    
     
     public void shouldPassResultToListeners() throws Exception {
@@ -138,5 +151,8 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         // when...
         storyVerifier.visitScenario(scenarioStub);
+        
+        // then...
+        verifyMocks();
     }
 }

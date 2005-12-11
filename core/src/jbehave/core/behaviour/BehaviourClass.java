@@ -10,15 +10,13 @@ package jbehave.core.behaviour;
 import java.lang.reflect.Method;
 
 import jbehave.core.exception.JBehaveFrameworkError;
-import jbehave.core.exception.NestedVerificationException;
-import jbehave.core.visitor.Visitable;
-import jbehave.core.visitor.Visitor;
+import jbehave.core.listener.ResultListener;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class BehaviourClass implements Visitable {
+public class BehaviourClass implements Behaviour {
 
     private final Class classToVerify;
 
@@ -26,52 +24,43 @@ public class BehaviourClass implements Visitable {
         this.classToVerify = classToVerify;
     }
 
-    public void accept(Visitor visitor) {
-        visitor.visitBehaviourClass(this);
-
+    public void verifyTo(ResultListener listener) {
         if (Behaviours.class.isAssignableFrom(classToVerify)) {
-            visitBehaviourClasses(visitor);
+            verifyNestedClassesTo(listener);
         }
-        else {
-            visitBehaviourMethods(visitor);
+        verifyMethodsTo(listener);
+    }
+
+    private void verifyNestedClassesTo(ResultListener listener) {
+        Behaviours behaviours = (Behaviours) createBehaviourClassInstance();
+        Class[] nestedClasses = behaviours.getBehaviours();
+        for (int i = 0; i < nestedClasses.length; i++) {
+            new BehaviourClass(nestedClasses[i]).verifyTo(listener);
         }
     }
-    
-    private void visitBehaviourMethods(Visitor visitor) {
+
+    private void verifyMethodsTo(ResultListener listener) {
         Method[] methods = classToVerify.getMethods();
-        for (int j = 0; j < methods.length; j++) {
-            Method method = methods[j];
-            if (method.getName().startsWith("should") && method.getParameterTypes().length == 0) {
-                BehaviourMethod methodToVerify = new BehaviourMethod(createInstance(), method);
-                methodToVerify.accept(visitor);
+        for (int i = 0; i < methods.length; i++) {
+            Method method = methods[i];
+            if (method.getName().startsWith("should")) {
+                Behaviour behaviourMethod = new BehaviourMethod(createBehaviourClassInstance(), method);
+                behaviourMethod.verifyTo(listener);
             }
         }
     }
 
-    private Object createInstance() {
+    private Object createBehaviourClassInstance() {
         try {
             return classToVerify.newInstance();
         }
         catch (Exception e) {
-            throw new NestedVerificationException("Unable to create instance of " + classToVerify.getName(), e);
+            throw new JBehaveFrameworkError("Unable to create instance of " + classToVerify.getName(), e);
         }
     }
-
-    private void visitBehaviourClasses(Visitor visitor) {
-        try {
-            Class[] behaviourClasses = ((Behaviours)createInstance()).getBehaviourClasses();
-            for (int i = 0; i < behaviourClasses.length; i++) {
-                BehaviourClass visitableClass = new BehaviourClass(behaviourClasses[i]);
-                visitableClass.accept(visitor);
-            }
-        }
-        catch (Exception e) {
-            throw new JBehaveFrameworkError("Unable to verify behaviour classes for " + classToVerify.getName(), e);
-        }
-    }
-
+    
     public String toString() {
-        return "VisitableClass: " + classToVerify.getName();
+        return "BehaviourClass: " + classToVerify.getName();
     }
 
     public Class classToVerify() {

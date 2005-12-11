@@ -14,7 +14,7 @@ import jbehave.core.behaviour.Behaviours;
  *         Date: 19-Jul-2004
  */
 public class AllBehaviours implements Behaviours {
-    public Class[] getBehaviourClasses() {
+    public Class[] getBehaviours() {
         return new Class[] {
                 UsingJMockBehaviour.class
         };

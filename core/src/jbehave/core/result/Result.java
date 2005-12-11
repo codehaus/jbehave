@@ -10,7 +10,6 @@ package jbehave.core.result;
 import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
 
-
 /**
  * Represents the result of verifying an individual behaviour.
  * 

@@ -33,40 +33,52 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
 		Mock outcomeMock = mock(Outcome.class);
 		
 		World world = (World)stub(World.class);
+        
+		Givens context = new Givens(((Given)givenMock));
+		
+		Scenario scenario = new ScenarioUsingMiniMock("first scenario",
+		        "story",
+		        context,
+		        ((Event)eventMock),
+		        ((Outcome)outcomeMock));
+		
+		Given givenScenario = new GivenScenario(scenario);
+		
+        // expect...
 		givenMock.expects("accept");
 		outcomeMock.expects("accept");
 		eventMock.expects("accept");
 		
-	    Givens context = new Givens(((Given)givenMock));
-	    
-	    Scenario scenario = new ScenarioUsingMiniMock("first scenario",
-	    		"story",
-	    		context,
-				((Event)eventMock),
-				((Outcome)outcomeMock));
-	    
-	    Given givenScenario = new GivenScenario(scenario);
-	    
+        // when...
 	    givenScenario.setUp(world);
+        
+        // then...
+        verifyMocks();
 	}
 	
 	public void shouldNotResetWorldWhenVisited() {
+        // given...
 		Given given = (Given)stub(Given.class);
 		Event event = (Event)stub(Event.class);
 		Outcome outcome = (Outcome)stub(Outcome.class);
 		Mock worldMock = mock(World.class);
 		Outcomes outcomes = new Outcomes(outcome);
 		
-	    worldMock.expects("clear").never();
-	    
 		Scenario scenario = new ScenarioUsingMiniMock("scenario",
-				"story",
-				given,
-				event,
-				outcomes);
+		        "story",
+		        given,
+		        event,
+		        outcomes);
 		
 		Given givenScenario = new GivenScenario(scenario);
 		
+        // expect...
+	    worldMock.expects("clear").never();
+
+        // when...
 		givenScenario.accept(new VisitorSupport() {});
+        
+        // then...
+        verifyMocks();
 	}
 }

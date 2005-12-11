@@ -14,8 +14,9 @@ import java.util.List;
 
 import jbehave.ant.listener.AntListener;
 import jbehave.core.behaviour.BehaviourClass;
-import jbehave.core.behaviour.BehaviourMethodVerifier;
-import jbehave.core.listener.PlainTextMethodListener;
+import jbehave.core.listener.PlainTextListener;
+import jbehave.core.listener.ResultListener;
+import jbehave.core.util.Timer;
 
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.BuildException;
@@ -78,22 +79,23 @@ public class AntTask extends org.apache.tools.ant.Task {
 
 	private void verifyAll() {
 		createClassLoader();
-        PlainTextMethodListener textListener = new PlainTextMethodListener(new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)));
+        PlainTextListener textListener =
+        	new PlainTextListener(
+        			new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)),
+					new Timer());
         AntListener antListener = new AntListener(textListener);
-        BehaviourMethodVerifier verifier = new BehaviourMethodVerifier();
-        verifier.addListener(antListener);
         
 		for (Iterator iter = behaviourClassList.iterator(); iter.hasNext(); ) {
 			final BehaviourClassDetails behaviourClassDetails = (BehaviourClassDetails) iter.next();
-            verifyBehaviourClass(behaviourClassDetails, verifier);
+            verifyBehaviourClass(behaviourClassDetails, antListener);
             if (antListener.verificationFailed()) throw new BuildException(behaviourClassDetails.getBehaviourClassName() + "failed");
 		}
 	}
 
-	private void verifyBehaviourClass(BehaviourClassDetails behaviourClassDetails, BehaviourMethodVerifier verifier) {
+	private void verifyBehaviourClass(BehaviourClassDetails behaviourClassDetails, ResultListener listener) {
 		try {
             BehaviourClass behaviourClass = new BehaviourClass(classFor(behaviourClassDetails));
-            behaviourClass.accept(verifier);
+            behaviourClass.verifyTo(listener);
 		} catch (ClassNotFoundException e) {
         	throw new BuildException(e);
 		}

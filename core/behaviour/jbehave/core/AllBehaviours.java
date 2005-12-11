@@ -9,7 +9,7 @@ package jbehave.core;
 
 import jbehave.core.behaviour.BehaviourClassBehaviour;
 import jbehave.core.behaviour.BehaviourMethodBehaviour;
-import jbehave.core.behaviour.BehaviourMethodVerifierBehaviour;
+import jbehave.core.behaviour.BehaviourVerifierBehaviour;
 import jbehave.core.behaviour.Behaviours;
 import jbehave.core.listener.PlainTextMethodListenerBehaviour;
 import jbehave.core.minimock.ExpectationBehaviour;
@@ -18,19 +18,18 @@ import jbehave.core.minimock.UsingMiniMockBehaviour;
 import jbehave.core.result.ResultBehaviour;
 import jbehave.core.util.ConvertCaseBehaviour;
 import jbehave.core.util.TimerBehaviour;
-import jbehave.core.visitor.VisitableArrayListBehaviour;
 
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class AllBehaviours implements Behaviours {
-    public Class[] getBehaviourClasses() {
+    public Class[] getBehaviours() {
         return new Class[] {
         		RunBehaviour.class,
+                BehaviourVerifierBehaviour.class,
                 BehaviourClassBehaviour.class,
                 BehaviourMethodBehaviour.class,
-                BehaviourMethodVerifierBehaviour.class,
                 PlainTextMethodListenerBehaviour.class,
                 ExpectationBehaviour.class,
                 MockObjectBehaviour.class,
@@ -38,7 +37,6 @@ public class AllBehaviours implements Behaviours {
                 ResultBehaviour.class,
                 ConvertCaseBehaviour.class,
                 TimerBehaviour.class,
-                VisitableArrayListBehaviour.class
         };
     }
 }
