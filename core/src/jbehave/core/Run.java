@@ -41,6 +41,6 @@ public class Run {
         PlainTextListener textListener = new PlainTextListener(new PrintWriter(writer), new Timer());
         new BehaviourClass(classToVerify).verifyTo(textListener);
         textListener.printReport();
-        succeeded = succeeded && textListener.hasBehaviourFailures();
+        succeeded = succeeded && !textListener.hasBehaviourFailures();
     }
 }
