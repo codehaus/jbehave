@@ -7,7 +7,7 @@
  */
 package jbehave.core.story.verifier;
 
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.story.domain.Scenario;
 import jbehave.core.story.result.ScenarioResult;
 
@@ -17,5 +17,5 @@ import jbehave.core.story.result.ScenarioResult;
  */
 public interface ScenarioVerifier {
     ScenarioResult verify(Scenario scenario);
-    void addListener(ResultListener listener);
+    void addListener(BehaviourListener listener);
 }

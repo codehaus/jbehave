@@ -8,7 +8,6 @@
 package jbehave.core.result;
 
 import jbehave.core.exception.PendingException;
-import jbehave.core.exception.VerificationException;
 
 /**
  * Represents the result of verifying an individual behaviour.
@@ -18,7 +17,6 @@ import jbehave.core.exception.VerificationException;
 public class Result {
     public static final Type SUCCEEDED = new Type("Succeeded", ".");
     public static final Type FAILED = new Type("Failed", "F");
-    public static final Type THREW_EXCEPTION = new Type("Threw Exception", "E");
     public static final Type PENDING = new Type("Pending", "P");
 
     public static class Type {
@@ -73,11 +71,8 @@ public class Result {
         else if (cause instanceof PendingException) {
             return PENDING;
         }
-        else if (cause instanceof VerificationException) {
-            return FAILED;
-        }
         else {
-            return THREW_EXCEPTION;
+            return FAILED;
         }
     }
 
@@ -113,10 +108,6 @@ public class Result {
 
     public boolean failed() {
         return status == FAILED;
-    }
-
-    public boolean threwException() {
-        return status == THREW_EXCEPTION;
     }
 
     public boolean isPending() {

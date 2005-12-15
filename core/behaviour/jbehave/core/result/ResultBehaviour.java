@@ -18,31 +18,25 @@ import jbehave.core.minimock.UsingConstraints;
  */
 public class ResultBehaviour extends UsingConstraints {
 	
-	private void verifyResult(final Result result, final Result.Type status, boolean succeeded, boolean failed, boolean exceptionThrown, boolean pending) {
+	private void verifyResult(final Result result, final Result.Type status, boolean succeeded, boolean failed, boolean pending) {
         ensureThat(result.status(), eq(status), "status");
-        ensureThat(result.succeeded(), eq(result.succeeded()), "succeeded");
+        ensureThat(result.succeeded(), eq(succeeded), "succeeded");
         ensureThat(result.failed(), eq(failed), "failed");
-        ensureThat(result.threwException(), eq(exceptionThrown), "exception thrown");
         ensureThat(result.isPending(), eq(pending),"pending");
     }
 
     public void shouldHaveConsistentStateForSuccess() throws Exception {
         Result result = new Result("shouldSucceed", "Container", Result.SUCCEEDED);
-        verifyResult(result, Result.SUCCEEDED, true, false, false, false);
+        verifyResult(result, Result.SUCCEEDED, true, false, false);
     }
 
     public void shouldHaveConsistentStateForFailure() throws Exception {
         Result result = new Result("shouldFail", "Container", new VerificationException("oops"));
-        verifyResult(result, Result.FAILED, false, true, false, false);
+        verifyResult(result, Result.FAILED, false, true, false);
     }
 
-    public void shouldHaveConsistentStateForExceptionThrown() throws Exception {
-        Result result = new Result("shouldThrowException", "Container", new Exception());
-        verifyResult(result, Result.THREW_EXCEPTION, false, false, true, false);
-    }
-    
     public void shouldHaveConsistentStateForPending() throws Exception {
         Result result = new Result("shouldBeImplemented", "Container", new PendingException("todo"));
-        verifyResult(result, Result.PENDING, false, false, false, true);
+        verifyResult(result, Result.PENDING, false, false, true);
     }
 }

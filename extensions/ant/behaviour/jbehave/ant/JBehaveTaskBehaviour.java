@@ -19,12 +19,12 @@ import org.apache.tools.ant.types.Path;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
  */
-public class AntTaskBehaviour {
-	private AntTask task;
+public class JBehaveTaskBehaviour {
+	private JBehaveTask task;
 	private Project project;
 
 	public void setUp() {
-		task = new AntTask();
+		task = new JBehaveTask();
 		project = new Project();
 		project.setCoreLoader(getClass().getClassLoader());
 		task.setProject(project);

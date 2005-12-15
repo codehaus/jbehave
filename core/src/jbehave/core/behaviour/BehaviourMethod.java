@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import jbehave.core.exception.JBehaveFrameworkError;
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.result.BehaviourMethodResult;
 
 /**
@@ -35,7 +35,7 @@ public class BehaviourMethod implements Behaviour {
         return instance;
     }
 
-    public void verifyTo(ResultListener listener) {
+    public void verifyTo(BehaviourListener listener) {
         try {
             invokeBehaviourMethod();
             listener.gotResult(new BehaviourMethodResult(this));
@@ -67,12 +67,16 @@ public class BehaviourMethod implements Behaviour {
         }
     }
 
-    private void invokeMethod(String methodName, Object behaviourClassInstance) throws IllegalAccessException, InvocationTargetException {
+    private void invokeMethod(String methodName, Object behaviourClassInstance) throws Exception {
         try {
             Method target = behaviourClassInstance.getClass().getMethod(methodName, new Class[0]);
             target.invoke(behaviourClassInstance, new Object[0]);
         } catch (NoSuchMethodException e) {
             // there wasn't a method - never mind
         }
+    }
+
+    public int countBehaviours() {
+        return 1;
     }
 }

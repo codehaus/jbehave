@@ -1,6 +1,6 @@
 package jbehave.core.behaviour;
 
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
 
@@ -8,11 +8,13 @@ public class BehaviourVerifierBehaviour extends UsingMiniMock {
     public void shouldVerifyBehaviour() throws Exception {
         // given...
         Mock behaviour = mock(Behaviour.class);
-        ResultListener listener = (ResultListener) stub(ResultListener.class);
-        BehaviourVerifier verifier = new BehaviourVerifier(listener);
+        Mock listener = mock(BehaviourListener.class);
+        BehaviourVerifier verifier = new BehaviourVerifier((BehaviourListener) listener);
         
         // expect...
-        behaviour.expects("verifyTo").with(listener);
+        listener.expects("before").with(behaviour);
+        behaviour.expects("verifyTo").with(listener).after(listener, "before");
+        listener.expects("after").with(behaviour).after(behaviour, "verifyTo");
         
         // when...
         verifier.verifyBehaviour((Behaviour)behaviour);

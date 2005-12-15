@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 import jbehave.core.behaviour.BehaviourClass;
+import jbehave.core.behaviour.BehaviourVerifier;
 import jbehave.core.listener.PlainTextListener;
 import jbehave.core.util.Timer;
 
@@ -39,7 +40,8 @@ public class Run {
 
     public void verifyBehaviour(Class classToVerify) {
         PlainTextListener textListener = new PlainTextListener(new PrintWriter(writer), new Timer());
-        new BehaviourClass(classToVerify).verifyTo(textListener);
+        BehaviourVerifier verifier = new BehaviourVerifier(textListener);
+        verifier.verifyBehaviour(new BehaviourClass(classToVerify, verifier));
         textListener.printReport();
         succeeded = succeeded && !textListener.hasBehaviourFailures();
     }

@@ -32,15 +32,15 @@ public class TestSuitePopulater {
     public void gotResult(Result result) {
     }
 
-    public void visitBehaviourClass(BehaviourClass visitableClass) {
-        currentSuite = new TestSuite(visitableClass.classToVerify().getName());
+    public void visitBehaviourClass(BehaviourClass behaviourClass) {
+        currentSuite = new TestSuite(behaviourClass.classToVerify().getName());
         if (suiteRef[0] == null) {
             suiteRef[0] = currentSuite;
         }
         else {
             suiteRef[0].addTest(currentSuite);
         }
-        currentBehaviourClass = visitableClass.classToVerify();
+        currentBehaviourClass = behaviourClass.classToVerify();
     }
 
     public void visitBehaviourMethod(BehaviourMethod behaviourMethod) {

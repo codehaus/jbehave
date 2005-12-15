@@ -13,7 +13,7 @@ import jbehave.core.Ensure;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
  *
- * For use from {@link AntTaskBehaviour}
+ * For use from {@link JBehaveTaskBehaviour}
  */
 public class FailingBehaviourClass {
 	public void shouldFail() throws Exception {

@@ -10,7 +10,7 @@ package jbehave.core.behaviour;
 import java.lang.reflect.Method;
 
 import jbehave.core.exception.JBehaveFrameworkError;
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 
 
 /**
@@ -19,38 +19,46 @@ import jbehave.core.listener.ResultListener;
 public class BehaviourClass implements Behaviour {
 
     private final Class classToVerify;
+    private final BehaviourVerifier verifier;
 
     public BehaviourClass(Class classToVerify) {
+        throw new UnsupportedOperationException();
+//        this(classToVerify, new BehaviourVerifier());
+    }
+
+    public BehaviourClass(Class classToVerify, BehaviourVerifier verifier) {
         this.classToVerify = classToVerify;
+        this.verifier = verifier;
     }
 
-    public void verifyTo(ResultListener listener) {
+    public void verifyTo(BehaviourListener listener) {
+        traverseMethodsWith(new MethodVerifier(verifier));
+    }
+    
+    public int countBehaviours() {
+        MethodCounter counter = new MethodCounter();
+        traverseMethodsWith(counter);
+        return counter.total();
+    }
+
+    private void traverseMethodsWith(MethodHandler methodHandler) {
         if (Behaviours.class.isAssignableFrom(classToVerify)) {
-            verifyNestedClassesTo(listener);
+            Behaviours behaviours = (Behaviours) createInstance();
+            Class[] nestedClasses = behaviours.getBehaviours();
+            for (int i = 0; i < nestedClasses.length; i++) {
+                methodHandler.handleClass(new BehaviourClass(nestedClasses[i], verifier));
+            }
         }
-        verifyMethodsTo(listener);
-    }
-
-    private void verifyNestedClassesTo(ResultListener listener) {
-        Behaviours behaviours = (Behaviours) createBehaviourClassInstance();
-        Class[] nestedClasses = behaviours.getBehaviours();
-        for (int i = 0; i < nestedClasses.length; i++) {
-            new BehaviourClass(nestedClasses[i]).verifyTo(listener);
-        }
-    }
-
-    private void verifyMethodsTo(ResultListener listener) {
         Method[] methods = classToVerify.getMethods();
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
             if (method.getName().startsWith("should")) {
-                Behaviour behaviourMethod = new BehaviourMethod(createBehaviourClassInstance(), method);
-                behaviourMethod.verifyTo(listener);
+                methodHandler.handleMethod(new BehaviourMethod(createInstance(), method));
             }
         }
     }
 
-    private Object createBehaviourClassInstance() {
+    private Object createInstance() {
         try {
             return classToVerify.newInstance();
         }
@@ -63,6 +71,7 @@ public class BehaviourClass implements Behaviour {
         return "BehaviourClass: " + classToVerify.getName();
     }
 
+    /** @deprecated */
     public Class classToVerify() {
         return classToVerify;
     }

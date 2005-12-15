@@ -16,7 +16,7 @@ public class AllBehaviours implements Behaviours {
 
     public Class[] getBehaviours() {
         return new Class[] {
-                AntTaskBehaviour.class
+                JBehaveTaskBehaviour.class
         };
     }
 }

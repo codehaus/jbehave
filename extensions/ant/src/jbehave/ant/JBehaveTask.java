@@ -14,8 +14,9 @@ import java.util.List;
 
 import jbehave.ant.listener.AntListener;
 import jbehave.core.behaviour.BehaviourClass;
+import jbehave.core.behaviour.BehaviourVerifier;
 import jbehave.core.listener.PlainTextListener;
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.util.Timer;
 
 import org.apache.tools.ant.AntClassLoader;
@@ -32,11 +33,9 @@ import org.apache.tools.ant.types.Path;
  * How do I use this task?
  *
  * First, define the taskdef as follows.
- *
- * &lt;taskdef name="jbehave"
- *                classname="jbehave.extensions.ant.JBehaveAntTask"
- *                classpath="jbehave-ant.jar"/&gt;
- *
+ *<pre>
+ * <taskdef name="jbehave" classname="jbehave.ant.JBehaveTask" classpath="jbehave.jar" />
+ *</pre>
  * Now create the behave target. You can have mulitple &lt;spec&gt; elements. Each one
  * can be a single spec or a SpecContainer.
  *
@@ -50,12 +49,12 @@ import org.apache.tools.ant.types.Path;
  *		&lt;/jbehave&gt;
  *	&lt;/target&gt;
  */
-public class AntTask extends org.apache.tools.ant.Task {
+public class JBehaveTask extends org.apache.tools.ant.Task {
 	private List behaviourClassList;
 	private CommandlineJava commandLine = new CommandlineJava();
 	private AntClassLoader loader;
 
-	public AntTask() {
+	public JBehaveTask() {
 		behaviourClassList = new LinkedList();
 	}
 
@@ -92,9 +91,9 @@ public class AntTask extends org.apache.tools.ant.Task {
 		}
 	}
 
-	private void verifyBehaviourClass(BehaviourClassDetails behaviourClassDetails, ResultListener listener) {
+	private void verifyBehaviourClass(BehaviourClassDetails behaviourClassDetails, BehaviourListener listener) {
 		try {
-            BehaviourClass behaviourClass = new BehaviourClass(classFor(behaviourClassDetails));
+            BehaviourClass behaviourClass = new BehaviourClass(classFor(behaviourClassDetails), new BehaviourVerifier(listener));
             behaviourClass.verifyTo(listener);
 		} catch (ClassNotFoundException e) {
         	throw new BuildException(e);
