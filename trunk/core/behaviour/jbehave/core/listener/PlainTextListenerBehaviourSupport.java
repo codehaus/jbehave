@@ -39,7 +39,6 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
     protected abstract PlainTextListener newPlainTextListener();
     protected abstract Result newSuccessResult();
     protected abstract Result newFailureResult();
-    protected abstract Result newExceptionResult();
     protected abstract Result newPendingResult();
     
     public static class FooBehaviour {
@@ -66,11 +65,6 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
     public void shouldRenderSuccessSymbolForSuccess() throws Exception {
         listener.gotResult(new Result("shouldSucceed", "Container", Result.SUCCEEDED));
         ensureThat(writer, contains(Result.SUCCEEDED));
-    }
-
-    public void shouldRenderExceptionSymbolForException() throws Exception {
-        listener.gotResult(new Result("shouldThrowException", "Container", Result.THREW_EXCEPTION));
-        ensureThat(writer, contains(Result.THREW_EXCEPTION));
     }
 
     public void shouldRenderFailureSymbolForFailure() throws Exception {
@@ -123,18 +117,6 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         
         // then...
         verifyOutputContains("\nTotal: 1. Failures: 1");
-    }
-    
-    public void shouldPrintSummaryWhenExceptionThrown() throws Exception {
-        // given...
-        Result threwException = newExceptionResult();
-        
-        // when...
-        listener.gotResult(threwException);
-        listener.printReport();
-        
-        // then...
-        verifyOutputContains("\nTotal: 1. Failures: 0, Exceptions: 1");
     }
     
     public void shouldSummarizePendingResult() throws Exception {

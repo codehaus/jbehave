@@ -11,23 +11,22 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
+import jbehave.core.behaviour.Behaviour;
 import jbehave.core.behaviour.BehaviourMethod;
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.result.Result;
 import jbehave.core.util.ConvertCase;
-
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
+import junit.framework.Test;
 import junit.framework.TestResult;
 
 
-public class JUnitMethodAdapter extends TestCase implements ResultListener {
+public class JUnitMethodAdapter implements BehaviourListener, Test {
     private final Method method;
     private final Object instance;
     private Result result;
 
     public JUnitMethodAdapter(Method method, Object instance) {
-        super(new ConvertCase(method.getName()).toSeparateWords());
         this.method = method;
         this.instance = instance;
     }
@@ -47,7 +46,7 @@ public class JUnitMethodAdapter extends TestCase implements ResultListener {
         if (result.failed()) {
             testResult.addFailure(this, buildAssertionFailedError(result.cause()));
         }
-        else if (result.threwException()) {
+        else if (result.failed()) {
             testResult.addError(this, result.cause());
         }
         else if (result.isPending()) {
@@ -80,5 +79,19 @@ public class JUnitMethodAdapter extends TestCase implements ResultListener {
 
     public void gotResult(Result result) {
         this.result = result;
+    }
+    
+    public String toString() {
+        return new ConvertCase(method.getName()).toSeparateWords();
+    }
+
+    public void before(Behaviour behaviour) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void after(Behaviour behaviour) {
+        // TODO Auto-generated method stub
+        
     }
 }

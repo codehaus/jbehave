@@ -37,10 +37,6 @@ public class PlainTextMethodListenerBehaviour extends PlainTextListenerBehaviour
         return new BehaviourMethodResult(behaviourMethod, new VerificationException("oops"));
     }
 
-    protected Result newExceptionResult() {
-        return new BehaviourMethodResult(behaviourMethod, new Exception());
-    }
-    
     protected Result newPendingResult() {
         return new BehaviourMethodResult(behaviourMethod, new PendingException());
     }
@@ -62,24 +58,5 @@ public class PlainTextMethodListenerBehaviour extends PlainTextListenerBehaviour
         verifyOutputContains(expectedShortName);
         verifyOutputContains(expectedFullName);
         verifyOutputContains("VerificationException");
-    }
-    
-    public void shouldPrintStackTraceWhenExceptionThrown() throws Exception {
-        // given...
-        Result threwException = newExceptionResult();
-        
-        // expect...
-        String expectedShortName = "Foo";
-        String expectedFullName = FooBehaviour.class.getName();
-        
-        // when...
-        listener.gotResult(threwException);
-        listener.printReport();
-        
-        // then...
-        verifyOutputContains("Exceptions Thrown:");
-        verifyOutputContains(expectedShortName);
-        verifyOutputContains(expectedFullName);
-        verifyOutputContains("java.lang.Exception");
     }
 }

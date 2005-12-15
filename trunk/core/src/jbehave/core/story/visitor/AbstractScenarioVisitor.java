@@ -12,7 +12,7 @@ import java.util.List;
 
 import jbehave.core.UsingMocks;
 import jbehave.core.exception.NestedVerificationException;
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.story.domain.Scenario;
 import jbehave.core.story.domain.World;
 import jbehave.core.story.result.ScenarioResult;
@@ -58,7 +58,7 @@ public abstract class AbstractScenarioVisitor extends VisitorSupport {
         }
     }
 
-    public void addListener(ResultListener listener) {
+    public void addListener(BehaviourListener listener) {
 		throw new UnsupportedOperationException("currently unused");
     }
 }

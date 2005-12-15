@@ -12,9 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jbehave.core.Ensure;
 import jbehave.core.exception.JBehaveFrameworkError;
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.minimock.ChainedConstraint;
 import jbehave.core.minimock.Constraint;
 import jbehave.core.minimock.Mock;
@@ -34,18 +33,35 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
             methodWasInvoked = true;
         }
     }
+    
+    private BehaviourMethod createBehaviourMethod(Object instance, String methodName) {
+        try {
+            Method method = instance.getClass().getMethod(methodName, null);
+            return new BehaviourMethod(instance, method);
+        } catch (Exception e) {
+            throw new JBehaveFrameworkError("No method " + methodName + " on class " + instance.getClass().getName());
+        }
+    }
+    
+    public void shouldContainExactlyOneBehaviour() throws Exception {
+        // given...
+        Behaviour behaviour = createBehaviourMethod(new Object(), "toString");
+
+        // then...
+        ensureThat(behaviour.countBehaviours(), eq(1));
+    }
 	
     public void shouldVerifyByInvokingMethod() throws Throwable {
         // given
 		StoresInvocation instance = new StoresInvocation();
-        ResultListener listener = (ResultListener) stub(ResultListener.class);
+        BehaviourListener listener = (BehaviourListener) stub(BehaviourListener.class);
         BehaviourMethod behaviourMethod = createBehaviourMethod(instance, "shouldDoSomething");
         
         // when
         behaviourMethod.verifyTo(listener);
         
         // then
-        Ensure.that(instance.methodWasInvoked);
+        ensureThat(instance.methodWasInvoked);
     }
     
     public static class HasSuccessfulMethod {
@@ -65,14 +81,14 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     public void shouldTellListenerWhenVerifySucceeds() throws Exception {
         // given...
         Object instance = new HasSuccessfulMethod();
-        Mock listener = mock(ResultListener.class);
+        Mock listener = mock(BehaviourListener.class);
         Behaviour behaviour = createBehaviourMethod(instance, "shouldWork");
         
         // expect...
         listener.expects("gotResult").with(resultOfType(Result.SUCCEEDED));
         
         // when...
-        behaviour.verifyTo((ResultListener) listener);
+        behaviour.verifyTo((BehaviourListener) listener);
         
         // then...
         verifyMocks();
@@ -92,19 +108,10 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         }
     }
     
-    private BehaviourMethod createBehaviourMethod(Object instance, String methodName) {
-        try {
-            Method method = instance.getClass().getMethod(methodName, null);
-            return new BehaviourMethod(instance, method);
-        } catch (Exception e) {
-            throw new JBehaveFrameworkError("No method " + methodName + " on class " + instance.getClass().getName());
-        }
-    }
-    
     public void shouldInvokeSetUpAndTearDownInTheCorrectSequence() throws Throwable {
         // given
         Object instance = new HasSetUpAndTearDown();
-        ResultListener listener = (ResultListener) stub(ResultListener.class);
+        BehaviourListener listener = (BehaviourListener) stub(BehaviourListener.class);
         Behaviour behaviour = createBehaviourMethod(instance, "shouldDoSomething");
         
         // expect
@@ -141,13 +148,13 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     public void shouldReportExceptionFromMethod() throws Throwable {
         // given
         Behaviour behaviour = createBehaviourMethod(new MethodThrowsException(), "shouldDoSomething");
-        Mock listener = mock(ResultListener.class);
+        Mock listener = mock(BehaviourListener.class);
         
         // expect
         listener.expects("gotResult").with(resultContainingCheckedException());
         
         // when
-        behaviour.verifyTo((ResultListener) listener);
+        behaviour.verifyTo((BehaviourListener) listener);
         
         // then
         verifyMocks();
@@ -162,13 +169,13 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     public void shouldReportExceptionFromSetUp() throws Throwable {
         // given
         Behaviour behaviour = createBehaviourMethod(new SetUpThrowsException(), "shouldDoSomething");
-        Mock listener = mock(ResultListener.class);
+        Mock listener = mock(BehaviourListener.class);
         
         // expect
         listener.expects("gotResult").with(resultContainingCheckedException());
         
         // when
-        behaviour.verifyTo((ResultListener) listener);
+        behaviour.verifyTo((BehaviourListener) listener);
         
         // then
         verifyMocks();
@@ -183,13 +190,13 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     public void shouldReportExceptionFromTearDown() throws Throwable {
         // given
         Behaviour behaviour = createBehaviourMethod(new TearDownThrowsException(), "shouldDoSomething");
-        Mock listener = mock(ResultListener.class);
+        Mock listener = mock(BehaviourListener.class);
         
         // expect
         listener.expects("gotResult").with(resultContainingCheckedException());
         
         // when
-        behaviour.verifyTo((ResultListener) listener);
+        behaviour.verifyTo((BehaviourListener) listener);
         
         // then
         verifyMocks();
@@ -218,13 +225,13 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     public void shouldReportExceptionFromMethodIfMethodAndTearDownBothThrowException() throws Throwable {
         // given
         Behaviour behaviour = createBehaviourMethod(new MethodAndTearDownBothThrowException(), "shouldDoSomething");
-        Mock listener = mock(ResultListener.class);
+        Mock listener = mock(BehaviourListener.class);
         
         // expect
         listener.expects("gotResult").with(resultContainingExceptionMessage("from method"));
         
         // when
-        behaviour.verifyTo((ResultListener) listener);
+        behaviour.verifyTo((BehaviourListener) listener);
         
         // then
         verifyMocks();

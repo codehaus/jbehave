@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.story.domain.Scenario;
 import jbehave.core.story.domain.Story;
 import jbehave.core.story.invoker.ScenarioInvoker;
@@ -39,7 +39,7 @@ public class StoryVerifier extends VisitorSupport {
     public void visitScenario(Scenario scenario) {
         ScenarioResult result = verify(scenario, invoke(scenario));
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((ResultListener)i.next()).gotResult(result);
+            ((BehaviourListener)i.next()).gotResult(result);
         }
     }
 
@@ -54,7 +54,7 @@ public class StoryVerifier extends VisitorSupport {
 		return result;
 	}
 	
-	public void addListener(ResultListener listener) {
+	public void addListener(BehaviourListener listener) {
         listeners.add(listener);
     }
 }

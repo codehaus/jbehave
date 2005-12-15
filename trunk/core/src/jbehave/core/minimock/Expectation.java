@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import jbehave.core.Ensure;
-import jbehave.core.exception.NestedVerificationException;
 import jbehave.core.exception.VerificationException;
 
 /**
@@ -40,7 +39,6 @@ public class Expectation extends UsingConstraints {
     private Expectation after;
     private String id;
     private InvocationHandler invoker = NULL_INVOKER;
-	private VerificationException exceptionFromWhenExpectationWasConstructed;
 
     /**
      *  Construct an expectation in a default state.
@@ -50,8 +48,6 @@ public class Expectation extends UsingConstraints {
     public Expectation(Registry registry, String methodName) {
         this.registry = registry;
         this.id = this.methodName = methodName;
-		// TODO do something with exception from Expectation c'tor
-		this.exceptionFromWhenExpectationWasConstructed = new VerificationException(methodName);
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -86,12 +82,12 @@ public class Expectation extends UsingConstraints {
     }
     
     public void verify() {
-		String message = "Expected method not called: " + (methodToString());        
-		if (!id.equals(message)) {
-			message += " id=" + id;
-		}
 		if (invocations < minInvocations) {
-			throw new NestedVerificationException(message, exceptionFromWhenExpectationWasConstructed);
+            String message = "Expected method not called: " + methodToString();        
+            if (!id.equals(methodName)) {
+                message += " id=" + id;
+            }
+            throw new VerificationException(message);
 		}
     }
 

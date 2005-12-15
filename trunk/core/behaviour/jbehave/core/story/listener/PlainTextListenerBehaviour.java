@@ -58,11 +58,6 @@ public abstract class PlainTextListenerBehaviour extends UsingMiniMock {
         ensureThat(writer.toString(), eq(Result.SUCCEEDED.symbol()));
     }
 
-    public void shouldRenderExceptionSymbolForException() throws Exception {
-        listener.gotResult(new Result("shouldThrowException", "Container", Result.THREW_EXCEPTION));
-        ensureThat(writer.toString(), eq(Result.THREW_EXCEPTION.symbol()));
-    }
-
     public void shouldRenderFailureSymbolForFailure() throws Exception {
         listener.gotResult(new Result("shouldFail", "Container", Result.FAILED));
         ensureThat(writer.toString(), eq(Result.FAILED.symbol()));
@@ -113,18 +108,6 @@ public abstract class PlainTextListenerBehaviour extends UsingMiniMock {
         
         // then...
         verifyOutputContains("\nTotal: 1. Failures: 1");
-    }
-    
-    public void shouldPrintSummaryWhenExceptionThrown() throws Exception {
-        // given...
-        Result threwException = newExceptionResult();
-        
-        // when...
-        listener.gotResult(threwException);
-        listener.printReport();
-        
-        // then...
-        verifyOutputContains("\nTotal: 1. Failures: 0, Exceptions: 1");
     }
     
     public void shouldSummarizePendingResult() throws Exception {

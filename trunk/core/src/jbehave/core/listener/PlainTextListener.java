@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import jbehave.core.behaviour.Behaviour;
 import jbehave.core.result.Result;
 import jbehave.core.util.ConvertCase;
 import jbehave.core.util.Timer;
@@ -21,7 +22,7 @@ import jbehave.core.util.Timer;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class PlainTextListener implements ResultListener {
+public class PlainTextListener implements BehaviourListener {
 
     protected final PrintWriter out;
     private int methodsVerified = 0;
@@ -41,7 +42,7 @@ public class PlainTextListener implements ResultListener {
         if (result.failed()) {
             failures.add(result);
         }
-        else if (result.threwException()) {
+        else if (result.failed()) {
             exceptionsThrown.add(result);
         }
         else if (result.isPending()) {
@@ -94,7 +95,7 @@ public class PlainTextListener implements ResultListener {
     protected void printResult(int count, Result result) {
         String containerName = result.containerName();
         String shortName = containerName.substring(containerName.lastIndexOf('.') + 1);
-        shortName = containerName.substring(containerName.lastIndexOf('$') + 1);
+        shortName = shortName.substring(shortName.lastIndexOf('$') + 1);
         if (shortName.endsWith("Behaviour")) {
             shortName = shortName.substring(0, shortName.length() - "Behaviour".length());
         }
@@ -127,5 +128,15 @@ public class PlainTextListener implements ResultListener {
 
     public boolean hasBehaviourFailures() {
         return failures.size() + exceptionsThrown.size() > 0;
+    }
+
+    public void before(Behaviour behaviour) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void after(Behaviour behaviour) {
+        // TODO Auto-generated method stub
+        
     }
 }

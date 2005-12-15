@@ -7,7 +7,7 @@
  */
 package jbehave.core.story.verifier;
 
-import jbehave.core.listener.ResultListener;
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.story.domain.Scenario;
@@ -131,8 +131,8 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
     
     public void shouldPassResultToListeners() throws Exception {
         // given...
-        Mock listener1 = mock(ResultListener.class, "listener1");
-        Mock listener2 = mock(ResultListener.class, "listener2");
+        Mock listener1 = mock(BehaviourListener.class, "listener1");
+        Mock listener2 = mock(BehaviourListener.class, "listener2");
         Scenario scenarioStub = (Scenario) stub(Scenario.class);
         
         ScenarioResult result = new ScenarioResult("result", "Container", ScenarioResult.SUCCEEDED);
@@ -142,8 +142,8 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioVerifier.stubs("verify").will(returnValue(result));
         StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker,
         		(ScenarioVerifier)scenarioVerifier);
-        storyVerifier.addListener((ResultListener)listener1);
-        storyVerifier.addListener((ResultListener)listener2);
+        storyVerifier.addListener((BehaviourListener)listener1);
+        storyVerifier.addListener((BehaviourListener)listener2);
 
         // expect...
         listener1.expects("gotResult").with(result);

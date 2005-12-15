@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jbehave.core.minimock.UsingConstraints;
-
-import junit.framework.TestCase;
+import junit.framework.Test;
 
 
 /**
@@ -34,9 +33,9 @@ public class JUnitMethodAdapterBehaviour extends UsingConstraints {
         Object instance = SomeBehaviourClass.class.newInstance();
 
         // execute
-        TestCase testCase = new JUnitMethodAdapter(method, instance);
+        Test test = new JUnitMethodAdapter(method, instance);
         
         // verify
-        ensureThat(testCase, not(eq(null)));
+        ensureThat(test, not(eq(null)));
     }
 }
