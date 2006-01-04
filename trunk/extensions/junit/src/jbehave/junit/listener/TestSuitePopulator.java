@@ -20,12 +20,12 @@ import junit.framework.TestSuite;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class TestSuitePopulater {
+public class TestSuitePopulator {
     private final TestSuite[] suiteRef;
     private TestSuite currentSuite = null;
     private Class currentBehaviourClass;
 
-    public TestSuitePopulater(TestSuite[] suiteRef) {
+    public TestSuitePopulator(TestSuite[] suiteRef) {
         this.suiteRef = suiteRef;
     }
 

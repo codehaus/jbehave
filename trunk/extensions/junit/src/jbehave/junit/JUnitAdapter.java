@@ -12,7 +12,7 @@ import java.util.Properties;
 
 import jbehave.core.behaviour.BehaviourClass;
 import jbehave.core.exception.JBehaveFrameworkError;
-import jbehave.junit.listener.TestSuitePopulater;
+import jbehave.junit.listener.TestSuitePopulator;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -44,9 +44,9 @@ public class JUnitAdapter {
         Class classToVerify = (BEHAVIOUR_CLASS != null ? BEHAVIOUR_CLASS : getBehaviourClass());
         final TestSuite[] suiteRef = new TestSuite[1]; // Collecting Parameter
         
-        final TestSuitePopulater populater = new TestSuitePopulater(suiteRef);
+        final TestSuitePopulator populator = new TestSuitePopulator(suiteRef);
         BehaviourClass visitableClass = new BehaviourClass(classToVerify);
-//        visitableClass.accept(populater);
+//        visitableClass.accept(populator);
         
         return suiteRef[0];
     }
