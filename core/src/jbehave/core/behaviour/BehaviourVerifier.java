@@ -25,7 +25,7 @@ public class BehaviourVerifier implements BehaviourListener {
 
     public void verifyBehaviour(Behaviour behaviour) {
         listener.before(behaviour);
-        behaviour.verifyTo(listener);
+        behaviour.verifyTo(this);
         listener.after(behaviour);
     }
 
