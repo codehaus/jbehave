@@ -13,7 +13,7 @@ public class BehaviourVerifierBehaviour extends UsingMiniMock {
         
         // expect...
         listener.expects("before").with(behaviour);
-        behaviour.expects("verifyTo").with(listener).after(listener, "before");
+        behaviour.expects("verifyTo").with(verifier).after(listener, "before");
         listener.expects("after").with(behaviour).after(behaviour, "verifyTo");
         
         // when...
