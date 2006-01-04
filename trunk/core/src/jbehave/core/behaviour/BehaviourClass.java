@@ -32,7 +32,7 @@ public class BehaviourClass implements Behaviour {
     }
 
     public void verifyTo(BehaviourListener listener) {
-        traverseMethodsWith(new MethodVerifier(verifier));
+        traverseMethodsWith(new MethodVerifier(verifier, listener));
     }
     
     public int countBehaviours() {
