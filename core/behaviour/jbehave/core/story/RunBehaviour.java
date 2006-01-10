@@ -11,7 +11,6 @@ import jbehave.core.story.domain.Narrative;
 import jbehave.core.story.domain.Story;
 import jbehave.core.story.invoker.ScenarioInvoker;
 import jbehave.core.story.listener.PlainTextScenarioListener;
-import jbehave.core.story.renderer.PlainTextRenderer;
 import jbehave.core.story.verifier.ScenarioVerifier;
 import jbehave.core.story.visitor.Visitor;
 
@@ -24,7 +23,7 @@ public class RunBehaviour extends UsingMiniMock {
 		
 		Run.story(MyStory.class.getName(), stream);
 
-		Ensure.that(buffer.toString().indexOf("Total: 0.") != -1);
+		Ensure.that(buffer.toString(), contains("Total: 0."));
 		
 		verifyMocks();
 	}

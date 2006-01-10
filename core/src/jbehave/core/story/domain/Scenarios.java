@@ -16,7 +16,7 @@ import jbehave.core.story.visitor.Visitor;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class AcceptanceCriteria implements Scenario {
+public class Scenarios implements Scenario {
 	private final VisitableArrayList scenarios = new VisitableArrayList();
 
 	public List scenarios() {
@@ -24,7 +24,7 @@ public class AcceptanceCriteria implements Scenario {
     }
 
 	public void accept(Visitor visitor) {
-		visitor.visitAcceptanceCriteria(this);
+		visitor.visitScenarios(this);
 		scenarios.accept(visitor);
 	}
 
