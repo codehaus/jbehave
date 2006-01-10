@@ -1,6 +1,6 @@
 package jbehave.core.story.visitor;
 
-import jbehave.core.story.domain.AcceptanceCriteria;
+import jbehave.core.story.domain.Scenarios;
 import jbehave.core.story.domain.Event;
 import jbehave.core.story.domain.Given;
 import jbehave.core.story.domain.Narrative;
@@ -17,7 +17,7 @@ public class VisitorSupport implements Visitor {
 	public void visitNarrative(Narrative narrative) {
 	}
 
-	public void visitAcceptanceCriteria(AcceptanceCriteria criteria) {
+	public void visitScenarios(Scenarios criteria) {
 	}
 
 	public void visitScenario(Scenario scenario) {

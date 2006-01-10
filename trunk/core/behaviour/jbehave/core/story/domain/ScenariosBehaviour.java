@@ -4,14 +4,14 @@ import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.story.visitor.Visitor;
 
-public class AcceptanceCriteriaBehaviour extends UsingMiniMock {
+public class ScenariosBehaviour extends UsingMiniMock {
 
 	public void shouldVisitorVisitScenariosInOrder() {
 		Mock visitor = mock(Visitor.class);
 		Mock scenarioA = mock(Scenario.class);
 		Mock scenarioB = mock(Scenario.class);
 		
-		AcceptanceCriteria criteria = new AcceptanceCriteria();
+		Scenarios criteria = new Scenarios();
 		
 		visitor.expects("visitScenario").with(scenarioA);
 		scenarioA.expects("accept").with(visitor);

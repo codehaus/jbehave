@@ -9,7 +9,7 @@ package jbehave.core.story;
 
 import jbehave.core.behaviour.Behaviours;
 import jbehave.core.story.codegen.parser.TextStoryParserBehaviour;
-import jbehave.core.story.domain.AcceptanceCriteriaBehaviour;
+import jbehave.core.story.domain.ScenariosBehaviour;
 import jbehave.core.story.domain.EventsBehaviour;
 import jbehave.core.story.domain.GivenScenarioBehaviour;
 import jbehave.core.story.domain.GivensBehaviour;
@@ -31,7 +31,7 @@ public class AllBehaviours implements Behaviours {
     public Class[] getBehaviours() {
         return new Class[] {
         		RunBehaviour.class,
-        		AcceptanceCriteriaBehaviour.class,
+        		ScenariosBehaviour.class,
                 TextStoryParserBehaviour.class,
 				GivenScenarioBehaviour.class,
                 NarrativeBehaviour.class,

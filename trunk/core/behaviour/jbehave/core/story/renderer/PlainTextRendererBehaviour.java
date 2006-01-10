@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import jbehave.core.minimock.UsingConstraints;
-import jbehave.core.story.domain.AcceptanceCriteria;
+import jbehave.core.story.domain.Scenarios;
 import jbehave.core.story.domain.EventUsingMiniMock;
 import jbehave.core.story.domain.GivenScenario;
 import jbehave.core.story.domain.GivenUsingMiniMock;
@@ -76,7 +76,7 @@ public class PlainTextRendererBehaviour extends UsingConstraints {
 		
 		public SimpleStory() {
 			super(new Narrative(ROLE, FEATURE, BENEFIT), 
-					new AcceptanceCriteria());
+					new Scenarios());
 			
 			ScenarioUsingMiniMock firstScenario = new ScenarioUsingMiniMock(
 					FIRST_SCENARIO_NAME,

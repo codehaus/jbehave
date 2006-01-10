@@ -24,15 +24,15 @@ import jbehave.core.util.ConvertCase;
  */
 public class ScenarioDrivenStory implements Story {
     private final Narrative narrative;
-    private final AcceptanceCriteria acceptanceCriteria;
+    private final Scenarios scenarios;
 
-    public ScenarioDrivenStory(Narrative narrative, AcceptanceCriteria criteria) {
+    public ScenarioDrivenStory(Narrative narrative, Scenarios scenarios) {
         this.narrative = narrative;
-        this.acceptanceCriteria = criteria;
+        this.scenarios = scenarios;
     }
 
     public void addScenario(ScenarioUsingMiniMock scenario) {
-        acceptanceCriteria.addScenario(scenario);
+        scenarios.addScenario(scenario);
     }
     
     /* (non-Javadoc)
@@ -46,7 +46,7 @@ public class ScenarioDrivenStory implements Story {
     }
     
     public Scenario scenario(String name) {
-        for (Iterator i = acceptanceCriteria.scenarios().iterator(); i.hasNext();) {
+        for (Iterator i = scenarios.scenarios().iterator(); i.hasNext();) {
             Scenario scenario = (Scenario) i.next();
             if (scenario.getDescription().equals(name)) {
                 return scenario;
@@ -56,7 +56,7 @@ public class ScenarioDrivenStory implements Story {
     }
     
     public List scenarios() {
-        return acceptanceCriteria.scenarios();
+        return scenarios.scenarios();
     }
     
     /* (non-Javadoc)
@@ -75,12 +75,12 @@ public class ScenarioDrivenStory implements Story {
     public void run(Visitor invoker, Visitor verifier) {
         narrative.accept(invoker);
         narrative.accept(verifier);
-        acceptanceCriteria.accept(invoker);
-        acceptanceCriteria.accept(verifier);
+        scenarios.accept(invoker);
+        scenarios.accept(verifier);
     }
     
     public String toString() {
-        return "Story: narrative=" + narrative + ", acceptanceCriteria=" + acceptanceCriteria;
+        return "Story: narrative=" + narrative + ", acceptanceCriteria=" + scenarios;
     }
 
     public void addListener(BehaviourListener listener) {
@@ -90,6 +90,6 @@ public class ScenarioDrivenStory implements Story {
     public void narrate(Visitor renderer) {
         renderer.visitStory(this);
         narrative.accept(renderer);
-        acceptanceCriteria.accept(renderer);
+        scenarios.accept(renderer);
     }
 }

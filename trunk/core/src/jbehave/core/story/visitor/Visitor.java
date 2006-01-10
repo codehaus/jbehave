@@ -5,7 +5,7 @@
  */
 package jbehave.core.story.visitor;
 
-import jbehave.core.story.domain.AcceptanceCriteria;
+import jbehave.core.story.domain.Scenarios;
 import jbehave.core.story.domain.Event;
 import jbehave.core.story.domain.Given;
 import jbehave.core.story.domain.Narrative;
@@ -19,7 +19,7 @@ import jbehave.core.story.domain.Story;
 public interface Visitor {
 	void visitStory(Story story);
 	void visitNarrative(Narrative narrative);
-	void visitAcceptanceCriteria(AcceptanceCriteria criteria);
+	void visitScenarios(Scenarios criteria);
 	void visitScenario(Scenario scenario);
 	void visitGiven(Given given);
 	void visitOutcome(Outcome outcome);
