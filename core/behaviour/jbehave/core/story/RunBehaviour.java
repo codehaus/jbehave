@@ -8,7 +8,7 @@ import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.story.domain.Narrative;
 import jbehave.core.story.domain.Story;
-import jbehave.core.story.verifier.StoryVerifier;
+import jbehave.core.story.verifier.StoryRunner;
 import jbehave.core.story.visitor.Visitor;
 
 public class RunBehaviour extends UsingMiniMock {
@@ -30,7 +30,7 @@ public class RunBehaviour extends UsingMiniMock {
 		
 		public MyStory() {
 			mock = mock(Story.class);
-			mock.expects("accept").with(isA(StoryVerifier.class));
+			mock.expects("accept").with(isA(StoryRunner.class));
 		}
 		
 		public String title() {
