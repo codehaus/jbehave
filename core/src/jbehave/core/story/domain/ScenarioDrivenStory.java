@@ -10,6 +10,10 @@ package jbehave.core.story.domain;
 import java.util.Iterator;
 import java.util.List;
 
+import jbehave.core.listener.BehaviourListener;
+import jbehave.core.story.invoker.ScenarioInvoker;
+import jbehave.core.story.renderer.PlainTextRenderer;
+import jbehave.core.story.verifier.ScenarioVerifier;
 import jbehave.core.story.visitor.Visitable;
 import jbehave.core.story.visitor.Visitor;
 import jbehave.core.util.ConvertCase;
@@ -18,7 +22,7 @@ import jbehave.core.util.ConvertCase;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class ScenarioDrivenStory implements Visitable, Story {
+public class ScenarioDrivenStory implements Story {
     private final Narrative narrative;
     private final AcceptanceCriteria acceptanceCriteria;
 
@@ -68,13 +72,24 @@ public class ScenarioDrivenStory implements Visitable, Story {
     /* (non-Javadoc)
 	 * @see com.thoughtworks.jbehave.story.domain.Story#accept(com.thoughtworks.jbehave.story.visitor.Visitor)
 	 */
-    public void accept(Visitor visitor) {
-        visitor.visitStory(this);
-        narrative.accept(visitor);
-        acceptanceCriteria.accept(visitor);
+    public void run(Visitor invoker, Visitor verifier) {
+        narrative.accept(invoker);
+        narrative.accept(verifier);
+        acceptanceCriteria.accept(invoker);
+        acceptanceCriteria.accept(verifier);
     }
     
     public String toString() {
         return "Story: narrative=" + narrative + ", acceptanceCriteria=" + acceptanceCriteria;
+    }
+
+    public void addListener(BehaviourListener listener) {
+        // TODO Auto-generated method stub        
+    }
+
+    public void narrate(Visitor renderer) {
+        renderer.visitStory(this);
+        narrative.accept(renderer);
+        acceptanceCriteria.accept(renderer);
     }
 }

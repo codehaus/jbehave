@@ -24,15 +24,18 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
         Narrative narrative = new Narrative("","","");
         AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
         ScenarioDrivenStory story = new ScenarioDrivenStory(narrative, acceptanceCriteria);
-        Mock visitorMock = mock(Visitor.class);
+        Mock invoker = mock(Visitor.class);
+        Mock verifier = mock(Visitor.class);
 
         // expect...
-        visitorMock.expects("visitStory").with(story);
-        visitorMock.expects("visitNarrative").with(narrative).after("visitStory");
-        visitorMock.expects("visitAcceptanceCriteria").with(acceptanceCriteria).after("visitNarrative");
+        invoker.expects("visitNarrative").with(narrative);
+        verifier.expects("visitNarrative").with(narrative).after(invoker, "visitNarrative");
+        invoker.expects("visitAcceptanceCriteria").with(acceptanceCriteria).after(verifier, "visitNarrative");
+        verifier.expects("visitAcceptanceCriteria").with(acceptanceCriteria).after(invoker, "visitAcceptanceCriteria");
+        
         
         // when...
-        story.accept((Visitor)visitorMock);
+        story.run((Visitor)invoker, (Visitor)verifier);
         
         // then...
         verifyMocks();

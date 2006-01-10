@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import jbehave.core.listener.BehaviourListener;
 import jbehave.core.listener.PlainTextListener;
 import jbehave.core.result.Result;
 import jbehave.core.story.result.ScenarioResult;
@@ -22,7 +23,7 @@ import jbehave.core.util.Timer;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class PlainTextScenarioListener extends PlainTextListener {
+public class PlainTextScenarioListener extends PlainTextListener implements BehaviourListener {
     private final List usedMocks = new ArrayList();
     
     public PlainTextScenarioListener(Writer writer) {
