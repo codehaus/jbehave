@@ -31,7 +31,7 @@ import jbehave.core.util.ConvertCase;
  */
 public class PlainTextRendererBehaviour extends UsingConstraints {
 
-	public void shouldRenderStoryWhenVisitingStory() {
+	public void shouldRenderStoryWhenNarratingStory() {
 		
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		PrintStream printStream = new PrintStream(byteStream);
@@ -39,7 +39,7 @@ public class PlainTextRendererBehaviour extends UsingConstraints {
 		PlainTextRenderer renderer = new PlainTextRenderer(printStream);
 		
 		ScenarioDrivenStory story = new SimpleStory();
-		story.accept(renderer);
+		story.narrate(renderer);
 		
 		String result = byteStream.toString();
 		
