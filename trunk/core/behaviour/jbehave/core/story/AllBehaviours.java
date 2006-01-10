@@ -20,7 +20,7 @@ import jbehave.core.story.domain.ScenarioUsingMiniMockBehaviour;
 import jbehave.core.story.invoker.VisitingScenarioInvokerBehaviour;
 import jbehave.core.story.listener.PlainTextScenarioListenerBehaviour;
 import jbehave.core.story.renderer.PlainTextRendererBehaviour;
-import jbehave.core.story.verifier.StoryVerifierBehaviour;
+import jbehave.core.story.verifier.StoryRunnerBehaviour;
 import jbehave.core.story.verifier.VisitingScenarioVerifierBehaviour;
 import jbehave.core.story.visitor.VisitableArrayListBehaviour;
 
@@ -44,7 +44,7 @@ public class AllBehaviours implements Behaviours {
                 VisitingScenarioInvokerBehaviour.class,
                 PlainTextScenarioListenerBehaviour.class,
 				PlainTextRendererBehaviour.class,
-                StoryVerifierBehaviour.class,
+                StoryRunnerBehaviour.class,
                 VisitableArrayListBehaviour.class,
                 VisitingScenarioVerifierBehaviour.class,
         };

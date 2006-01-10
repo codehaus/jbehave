@@ -16,7 +16,7 @@ import jbehave.core.story.invoker.ScenarioInvoker;
 import jbehave.core.story.invoker.VisitingScenarioInvoker;
 import jbehave.core.story.listener.PlainTextScenarioListener;
 import jbehave.core.story.verifier.ScenarioVerifier;
-import jbehave.core.story.verifier.StoryVerifier;
+import jbehave.core.story.verifier.StoryRunner;
 import jbehave.core.story.verifier.VisitingScenarioVerifier;
 
 
@@ -48,7 +48,7 @@ public class Run {
         World world = new HashMapWorld();
         ScenarioInvoker scenarioInvoker = new VisitingScenarioInvoker(story.getClass().getName(), world);
         ScenarioVerifier scenarioVerifier = new VisitingScenarioVerifier(story.getClass().getName(), world);
-        StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker, scenarioVerifier);
+        StoryRunner storyVerifier = new StoryRunner(scenarioInvoker, scenarioVerifier);
 		PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(printStream));
         storyVerifier.addListener(listener);
         storyVerifier.verify(story);

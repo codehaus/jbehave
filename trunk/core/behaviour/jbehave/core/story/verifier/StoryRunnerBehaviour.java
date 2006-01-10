@@ -15,27 +15,27 @@ import jbehave.core.story.domain.Story;
 import jbehave.core.story.invoker.ScenarioInvoker;
 import jbehave.core.story.result.ScenarioResult;
 import jbehave.core.story.verifier.ScenarioVerifier;
-import jbehave.core.story.verifier.StoryVerifier;
+import jbehave.core.story.verifier.StoryRunner;
 
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryVerifierBehaviour extends UsingMiniMock {
+public class StoryRunnerBehaviour extends UsingMiniMock {
     public void shouldPassItselfIntoStoryAsVisitor() throws Exception {
         // given...
         Mock storyMock = mock(Story.class);
         
         ScenarioInvoker scenarioInvoker = (ScenarioInvoker) stub(ScenarioInvoker.class);
         ScenarioVerifier scenarioVerifier = (ScenarioVerifier)stub(ScenarioVerifier.class);
-        StoryVerifier storyVerifier = new StoryVerifier(scenarioInvoker, scenarioVerifier);
+        StoryRunner storyRunner = new StoryRunner(scenarioInvoker, scenarioVerifier);
 
         // expect...
-        storyMock.expects("accept").once().with(eq(storyVerifier));        
+        storyMock.expects("accept").once().with(eq(storyRunner));        
         
         // when...
-        storyVerifier.verify((Story) storyMock);
+        storyRunner.verify((Story) storyMock);
         
         // then...
 //        ensureThat(arg[0], sameInstanceAs(storyVerifier));
@@ -49,7 +49,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
 
         ScenarioResult result = new ScenarioResult("result", "Container", ScenarioResult.SUCCEEDED);
         
-        StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker,
+        StoryRunner storyRunner = new StoryRunner((ScenarioInvoker) scenarioInvoker,
         		(ScenarioVerifier)scenarioVerifier);
         Scenario scenario = (Scenario)stub(Scenario.class);
 
@@ -58,7 +58,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioVerifier.expects("verify").with(scenario);
         
         // when...
-        storyVerifier.visitScenario(scenario);
+        storyRunner.visitScenario(scenario);
         
         // then...
         verifyMocks();
@@ -71,7 +71,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         ScenarioResult result = new ScenarioResult("result", "Container", ScenarioResult.SUCCEEDED);
         
-        StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker,
+        StoryRunner storyRunner = new StoryRunner((ScenarioInvoker) scenarioInvoker,
         		(ScenarioVerifier)scenarioVerifier);
         Scenario scenario = (Scenario)stub(Scenario.class);
 
@@ -80,7 +80,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioVerifier.expects("verify");
         
         // when...
-        storyVerifier.visitScenario(scenario);
+        storyRunner.visitScenario(scenario);
         
         // then...
         verifyMocks();
@@ -93,7 +93,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         ScenarioResult result = new ScenarioResult("result", "Container", ScenarioResult.USED_MOCKS);
         
-        StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker,
+        StoryRunner storyRunner = new StoryRunner((ScenarioInvoker) scenarioInvoker,
         		(ScenarioVerifier)scenarioVerifier);
         Scenario scenario = (Scenario)stub(Scenario.class);
 
@@ -102,7 +102,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioVerifier.expects("verify");
         
         // when...
-        storyVerifier.visitScenario(scenario);
+        storyRunner.visitScenario(scenario);
         
         // then...
         verifyMocks();
@@ -115,7 +115,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         
         ScenarioResult result = new ScenarioResult("result", "Container", ScenarioResult.FAILED);
         
-        StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker,
+        StoryRunner storyRunner = new StoryRunner((ScenarioInvoker) scenarioInvoker,
         		(ScenarioVerifier)scenarioVerifier);
         Scenario scenario = (Scenario)stub(Scenario.class);
 
@@ -123,7 +123,7 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioInvoker.expects("invoke").with(scenario).will(returnValue(result));
         
         // when...
-        storyVerifier.visitScenario(scenario);
+        storyRunner.visitScenario(scenario);
         
         // then...
         verifyMocks();
@@ -140,17 +140,17 @@ public class StoryVerifierBehaviour extends UsingMiniMock {
         scenarioInvoker.stubs("invoke").will(returnValue(result));
         Mock scenarioVerifier = mock(ScenarioVerifier.class);
         scenarioVerifier.stubs("verify").will(returnValue(result));
-        StoryVerifier storyVerifier = new StoryVerifier((ScenarioInvoker) scenarioInvoker,
+        StoryRunner storyRunner = new StoryRunner((ScenarioInvoker) scenarioInvoker,
         		(ScenarioVerifier)scenarioVerifier);
-        storyVerifier.addListener((BehaviourListener)listener1);
-        storyVerifier.addListener((BehaviourListener)listener2);
+        storyRunner.addListener((BehaviourListener)listener1);
+        storyRunner.addListener((BehaviourListener)listener2);
 
         // expect...
         listener1.expects("gotResult").with(result);
         listener2.expects("gotResult").with(result).after(listener1, "gotResult");
         
         // when...
-        storyVerifier.visitScenario(scenarioStub);
+        storyRunner.visitScenario(scenarioStub);
         
         // then...
         verifyMocks();

@@ -22,12 +22,12 @@ import jbehave.core.story.visitor.VisitorSupport;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class StoryVerifier extends VisitorSupport {
+public class StoryRunner extends VisitorSupport {
     private final List listeners = new ArrayList();
     private final ScenarioInvoker scenarioInvoker;
     private final ScenarioVerifier scenarioVerifier;
 
-    public StoryVerifier(ScenarioInvoker scenarioInvoker, ScenarioVerifier scenarioVerifier) {
+    public StoryRunner(ScenarioInvoker scenarioInvoker, ScenarioVerifier scenarioVerifier) {
         this.scenarioInvoker = scenarioInvoker;
         this.scenarioVerifier = scenarioVerifier;
     }
