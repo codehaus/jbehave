@@ -9,6 +9,7 @@ package jbehave.core.story;
 
 import jbehave.core.behaviour.Behaviours;
 import jbehave.core.story.codegen.parser.TextStoryParserBehaviour;
+import jbehave.core.story.domain.AcceptanceCriteriaBehaviour;
 import jbehave.core.story.domain.EventsBehaviour;
 import jbehave.core.story.domain.GivenScenarioBehaviour;
 import jbehave.core.story.domain.GivensBehaviour;
@@ -30,6 +31,8 @@ import jbehave.core.story.visitor.VisitableArrayListBehaviour;
 public class AllBehaviours implements Behaviours {
     public Class[] getBehaviours() {
         return new Class[] {
+        		RunBehaviour.class,
+        		AcceptanceCriteriaBehaviour.class,
                 TextStoryParserBehaviour.class,
 				GivenScenarioBehaviour.class,
                 NarrativeBehaviour.class,
