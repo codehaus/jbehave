@@ -23,21 +23,23 @@ import jbehave.core.story.visitor.Visitor;
  */
 public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     protected final Given given;
-    protected final Event event;
-    protected final Outcome outcome;
+    protected final Step step;
     protected final String name;
     protected final String storyName;
     
+    public ScenarioUsingMiniMock(String name, String storyName, Event event, Outcome outcome) {
+        this(name, storyName, Givens.NULL, event, outcome);
+    }
+    
     public ScenarioUsingMiniMock(String name, String storyName, Given given, Event event, Outcome outcome) {
+        this(name, storyName, given, new EventOutcomeStep(event, outcome));
+    }
+    
+    public ScenarioUsingMiniMock(String name, String storyName, Given given, Step step) {
         this.name = name;
         this.storyName = storyName;
         this.given = given;
-        this.event = event;
-        this.outcome = outcome;
-    }
-    
-    public ScenarioUsingMiniMock(String name, String storyName, Event event, Outcome outcome) {
-        this(name, storyName, Givens.NULL, event, outcome);
+        this.step = step;
     }
     
     public String getStoryName() {
@@ -50,15 +52,12 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     
     public void run(World world) {
         given.setUp(world);
-        outcome.setExpectationIn(world);
-        event.occurIn(world);
-        outcome.verify(world);
+        step.perform(world);
     }
 
     public void accept(Visitor visitor) {
         visitor.visitScenario(this);
         given.accept(visitor);
-        event.accept(visitor);
-        outcome.accept(visitor);
+        step.accept(visitor);
     }
 }
