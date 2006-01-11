@@ -9,7 +9,6 @@ package jbehave.core.story;
 
 import jbehave.core.behaviour.Behaviours;
 import jbehave.core.story.codegen.parser.TextStoryParserBehaviour;
-import jbehave.core.story.domain.ScenariosBehaviour;
 import jbehave.core.story.domain.EventsBehaviour;
 import jbehave.core.story.domain.GivenScenarioBehaviour;
 import jbehave.core.story.domain.GivensBehaviour;
@@ -17,10 +16,9 @@ import jbehave.core.story.domain.NarrativeBehaviour;
 import jbehave.core.story.domain.OutcomesBehaviour;
 import jbehave.core.story.domain.ScenarioDrivenStoryBehaviour;
 import jbehave.core.story.domain.ScenarioUsingMiniMockBehaviour;
-import jbehave.core.story.invoker.VisitingScenarioInvokerBehaviour;
+import jbehave.core.story.domain.ScenariosBehaviour;
 import jbehave.core.story.listener.PlainTextScenarioListenerBehaviour;
 import jbehave.core.story.renderer.PlainTextRendererBehaviour;
-import jbehave.core.story.verifier.VisitingScenarioVerifierBehaviour;
 import jbehave.core.story.visitor.VisitableArrayListBehaviour;
 
 
@@ -40,11 +38,9 @@ public class AllBehaviours implements Behaviours {
                 EventsBehaviour.class,
                 ScenarioUsingMiniMockBehaviour.class,
                 ScenarioDrivenStoryBehaviour.class,
-                VisitingScenarioInvokerBehaviour.class,
                 PlainTextScenarioListenerBehaviour.class,
 				PlainTextRendererBehaviour.class,
                 VisitableArrayListBehaviour.class,
-                VisitingScenarioVerifierBehaviour.class,
         };
     }
 }

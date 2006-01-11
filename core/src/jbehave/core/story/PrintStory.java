@@ -20,7 +20,7 @@ public class PrintStory {
         
         try {
             Story story = (Story) Class.forName(args[0]).newInstance();
-            story.narrate(new PlainTextRenderer(System.out));
+            story.accept(new PlainTextRenderer(System.out));
 
         } catch (Exception e) {
             e.printStackTrace();

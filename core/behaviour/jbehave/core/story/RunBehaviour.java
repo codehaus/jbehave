@@ -9,32 +9,36 @@ import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.story.domain.Narrative;
 import jbehave.core.story.domain.Story;
-import jbehave.core.story.invoker.ScenarioInvoker;
+import jbehave.core.story.domain.World;
 import jbehave.core.story.listener.PlainTextScenarioListener;
-import jbehave.core.story.verifier.ScenarioVerifier;
+import jbehave.core.story.result.ScenarioResult;
 import jbehave.core.story.visitor.Visitor;
 
 public class RunBehaviour extends UsingMiniMock {
 
-	public void shouldInvokeVerifyAndListenToStory() throws Exception {
+	public void shouldRunStoryAndOutputResults() throws Exception {
 		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		
 		PrintStream stream = new PrintStream(buffer);
 		
-		Run.story(MyStory.class.getName(), stream);
+		Run.story(SimpleStory.class.getName(), stream);
 
-		Ensure.that(buffer.toString(), contains("Total: 0."));
+        Ensure.that(buffer.toString(), contains(".."));
+		Ensure.that(buffer.toString(), contains("Total: 2."));
 		
 		verifyMocks();
 	}
-
+    
     public static class MyStory extends UsingMiniMock implements Story  {
 		private Mock mock;
 		
 		public MyStory() {
+            ScenarioResult resultA = new ScenarioResult("scenarioA", "MyStory", ScenarioResult.SUCCEEDED);
+            ScenarioResult resultB = new ScenarioResult("scenarioB", "MyStory", ScenarioResult.SUCCEEDED);
+            
 			mock = mock(Story.class);
             mock.expects("addListener").with(isA(PlainTextScenarioListener.class));
-			mock.expects("run").with(isA(ScenarioInvoker.class), isA(ScenarioVerifier.class));
+			mock.expects("run").with(isA(World.class)).will(returnValue(new ScenarioResult[] {resultA, resultB}));
 		}
 		
 		public String title() {
@@ -45,15 +49,15 @@ public class RunBehaviour extends UsingMiniMock {
 			return ((Story)mock).narrative();
 		}
 
-		public void run(Visitor invoker, Visitor verifier) {
-			((Story)mock).run(invoker, verifier);
+		public void run(World world) {
+			((Story)mock).run(world);
 		}
 
         public void addListener(BehaviourListener listener) {
             ((Story)mock).addListener(listener);
         }
 
-        public void narrate(Visitor renderer) {
+        public void accept(Visitor renderer) {
             throw new UnsupportedOperationException("Should not be called");
         }
 		

@@ -47,20 +47,18 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     public String getDescription() {
         return name;
     }
-    public Given getGiven() {
-        return given;
-    }
-    public Event getEvent() {
-        return event;
-    }
-    public Outcome getOutcome() {
-        return outcome;
-    }
     
+    public void run(World world) {
+        given.setUp(world);
+        outcome.setExpectationIn(world);
+        event.occurIn(world);
+        outcome.verify(world);
+    }
+
     public void accept(Visitor visitor) {
-		visitor.visitScenario(this);
+        visitor.visitScenario(this);
         given.accept(visitor);
-        outcome.accept(visitor);
         event.accept(visitor);
+        outcome.accept(visitor);
     }
 }

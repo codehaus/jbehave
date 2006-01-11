@@ -7,7 +7,7 @@
  */
 package jbehave.core.story.domain;
 
-import jbehave.core.story.invoker.VisitingScenarioInvoker;
+
 
 
 
@@ -30,7 +30,7 @@ public class GivenScenario extends GivenUsingMiniMock {
     }
 
     public void setUp(World world) {
-        scenario.accept(new VisitingScenarioInvoker(scenario.getStoryName(), 
-        		world));
+        scenario.run(world);
     }
+    
 }

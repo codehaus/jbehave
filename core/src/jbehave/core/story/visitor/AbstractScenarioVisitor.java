@@ -35,7 +35,7 @@ public abstract class AbstractScenarioVisitor extends VisitorSupport {
 	protected ScenarioResult giveSelfToScenario(Scenario scenario) {
 		Throwable cause = null;
 		try {
-			scenario.accept(this);
+//			scenario.accept(this);
 		}
 
 		catch (NestedVerificationException e) {

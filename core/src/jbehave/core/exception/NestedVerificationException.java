@@ -28,11 +28,18 @@ public class NestedVerificationException extends VerificationException {
     }
     
     public boolean equals(Object obj) {
-        return cause.equals(obj);
+        if (obj == null) return false;
+        if (obj.getClass() != this.getClass()) return false;
+        
+        NestedVerificationException other = (NestedVerificationException) obj;
+        
+        return cause.equals(other.cause);
     }
+    
     public int hashCode() {
         return cause.hashCode();
     }
+    
     public Throwable getCause() {
         return cause;
     }
