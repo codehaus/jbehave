@@ -30,7 +30,6 @@ public class PlainTextRenderer extends VisitorSupport {
     private final PrintStream out;
 	private boolean visitedAnyOutcomes = false;
 	private boolean visitedAnyGivens = false;
-	private StringBuffer outcomesText = new StringBuffer();
 
     public PlainTextRenderer(PrintStream out) {
         this.out = out;
@@ -54,7 +53,6 @@ public class PlainTextRenderer extends VisitorSupport {
         out.println();
 		visitedAnyGivens = false;
 		visitedAnyOutcomes = false;
-		outcomesText = new StringBuffer();
     }
     
     public void visitGiven(Given given) {
@@ -74,13 +72,13 @@ public class PlainTextRenderer extends VisitorSupport {
 
     public void visitEvent(Event event) {
         out.println("When " + new ConvertCase(event).toSeparateWords());
-		out.print(outcomesText);
     }
 
     public void visitOutcome(Outcome outcome) {
-		outcomesText.append(visitedAnyOutcomes ? "and " : "Then ")
-			.append(new ConvertCase(outcome).toSeparateWords())
-			.append(System.getProperty("line.separator"));
+        StringBuffer phrase = new StringBuffer();
+        phrase.append(visitedAnyOutcomes ? "and " : "Then ")
+			.append(new ConvertCase(outcome).toSeparateWords());
+        out.println(phrase);
 		visitedAnyOutcomes = true;
     }
 

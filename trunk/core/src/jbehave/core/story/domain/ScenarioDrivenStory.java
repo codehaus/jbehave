@@ -7,14 +7,11 @@
  */
 package jbehave.core.story.domain;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.story.invoker.ScenarioInvoker;
-import jbehave.core.story.renderer.PlainTextRenderer;
-import jbehave.core.story.verifier.ScenarioVerifier;
-import jbehave.core.story.visitor.Visitable;
 import jbehave.core.story.visitor.Visitor;
 import jbehave.core.util.ConvertCase;
 
@@ -25,13 +22,15 @@ import jbehave.core.util.ConvertCase;
 public class ScenarioDrivenStory implements Story {
     private final Narrative narrative;
     private final Scenarios scenarios;
+    private final ArrayList listeners;
 
-    public ScenarioDrivenStory(Narrative narrative, Scenarios scenarios) {
+    public ScenarioDrivenStory(Narrative narrative) {
         this.narrative = narrative;
-        this.scenarios = scenarios;
+        this.scenarios = new Scenarios();
+        listeners = new ArrayList();
     }
 
-    public void addScenario(ScenarioUsingMiniMock scenario) {
+    public void addScenario(Scenario scenario) {
         scenarios.addScenario(scenario);
     }
     
@@ -59,24 +58,12 @@ public class ScenarioDrivenStory implements Story {
         return scenarios.scenarios();
     }
     
-    /* (non-Javadoc)
-	 * @see com.thoughtworks.jbehave.story.domain.Story#narrative()
-	 */
     public Narrative narrative() {
         return narrative;
     }
 
-    /* (non-Javadoc)
-	 * @see com.thoughtworks.jbehave.story.domain.Story#accept(com.thoughtworks.jbehave.story.visitor.Visitor)
-	 */
-    /* (non-Javadoc)
-	 * @see com.thoughtworks.jbehave.story.domain.Story#accept(com.thoughtworks.jbehave.story.visitor.Visitor)
-	 */
-    public void run(Visitor invoker, Visitor verifier) {
-        narrative.accept(invoker);
-        narrative.accept(verifier);
-        scenarios.accept(invoker);
-        scenarios.accept(verifier);
+    public void run(World world) {
+        scenarios.run(world, (BehaviourListener[]) listeners.toArray(new BehaviourListener[listeners.size()]));
     }
     
     public String toString() {
@@ -84,12 +71,12 @@ public class ScenarioDrivenStory implements Story {
     }
 
     public void addListener(BehaviourListener listener) {
-        // TODO Auto-generated method stub        
+        listeners.add(listener);       
     }
 
-    public void narrate(Visitor renderer) {
-        renderer.visitStory(this);
-        narrative.accept(renderer);
-        scenarios.accept(renderer);
+    public void accept(Visitor visitor) {
+        visitor.visitStory(this);
+        narrative.accept(visitor);
+        scenarios.accept(visitor);
     }
 }

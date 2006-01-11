@@ -16,4 +16,6 @@ import jbehave.core.story.visitor.Visitable;
 public interface Scenario extends Visitable {
     String getStoryName();
     String getDescription();
+    void run(World world);
+    boolean containsMocks();
 }

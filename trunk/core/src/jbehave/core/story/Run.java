@@ -12,10 +12,7 @@ import java.io.PrintStream;
 import jbehave.core.story.domain.HashMapWorld;
 import jbehave.core.story.domain.Story;
 import jbehave.core.story.domain.World;
-import jbehave.core.story.invoker.VisitingScenarioInvoker;
 import jbehave.core.story.listener.PlainTextScenarioListener;
-import jbehave.core.story.verifier.VisitingScenarioVerifier;
-import jbehave.core.story.visitor.Visitor;
 
 
 
@@ -44,11 +41,9 @@ public class Run {
 
     public static void story(Story story, PrintStream printStream) {
         World world = new HashMapWorld();
-        Visitor scenarioInvoker = new VisitingScenarioInvoker(story.getClass().getName(), world);
-        Visitor scenarioVerifier = new VisitingScenarioVerifier(story.getClass().getName(), world);
 		PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(printStream));
         story.addListener(listener);
-        story.run(scenarioInvoker, scenarioVerifier);
+        story.run(world);
         listener.printReport();
     }
 }
