@@ -90,4 +90,16 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 		
 		frame.dispose();
 	}
+    
+    public void shouldCloseWindows() throws TimeoutException {
+        DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+        
+        JFrame frame = new JFrame();
+        frame.setName("a.window");
+        frame.setVisible(true);
+        
+        wrapper.closeWindow();
+        
+        ensureThat(!frame.isShowing());
+    }
 }

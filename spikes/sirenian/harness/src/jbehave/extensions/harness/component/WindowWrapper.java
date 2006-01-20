@@ -13,5 +13,5 @@ public interface WindowWrapper {
 
 	public Component findComponent(String componentName) throws ComponentFinderException, TimeoutException;
 	
-	public void closeWindows();
+	public void closeWindow() throws TimeoutException;
 }

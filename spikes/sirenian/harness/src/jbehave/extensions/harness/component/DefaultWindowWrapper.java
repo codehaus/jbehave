@@ -43,9 +43,8 @@ public class DefaultWindowWrapper implements WindowWrapper {
 		sysQueue = toolkit.getSystemEventQueue();		
 	}
 
-	public void closeWindows() {
-		// TODO Auto-generated method stub
-		
+	public void closeWindow() throws TimeoutException {
+		getWindow().dispose();
 	}
 	
 	public void clickButton(String componentName) throws ComponentFinderException, TimeoutException {
