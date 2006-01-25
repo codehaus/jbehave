@@ -35,6 +35,14 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
         this(name, storyName, given, new EventOutcomeStep(event, outcome));
     }
     
+    public ScenarioUsingMiniMock(String name, String storyName, Given given, Event eventA, Outcome outcomeA, Event eventB, Outcome outcomeB) {
+        this(name, storyName, given, new Steps(new EventOutcomeStep(eventA, outcomeA), new EventOutcomeStep(eventB, outcomeB)));
+    }
+    
+    public ScenarioUsingMiniMock(String name, String storyName, Given given, Event eventA, Outcome outcomeA, Event eventB, Outcome outcomeB, Event eventC, Outcome outcomeC) {
+        this(name, storyName, given, new Steps(new EventOutcomeStep(eventA, outcomeA), new EventOutcomeStep(eventB, outcomeB), new EventOutcomeStep(eventC, outcomeC)));
+    }
+    
     public ScenarioUsingMiniMock(String name, String storyName, Given given, Step step) {
         this.name = name;
         this.storyName = storyName;
