@@ -37,6 +37,7 @@ public class AllBehaviours implements Behaviours {
                 ResultBehaviour.class,
                 ConvertCaseBehaviour.class,
                 TimerBehaviour.class,
+                UsingConstraintsBehaviour.class
         };
     }
 }
