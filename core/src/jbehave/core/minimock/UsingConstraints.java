@@ -200,7 +200,7 @@ public abstract class UsingConstraints {
 	}
 	
 	public void ensureThat(long arg, Constraint constraint, String message) {
-		ensureThat(arg, constraint, message);
+		ensureThat(new Long(arg), constraint, message);
 	}
 	public void ensureThat(long arg, Constraint constraint) {
 		ensureThat(new Long(arg), constraint, null);
