@@ -7,8 +7,8 @@
  */
 package example.events;
 
-import jbehave.story.domain.EventUsingMiniMock;
-import jbehave.story.domain.World;
+import jbehave.core.story.domain.EventUsingMiniMock;
+import jbehave.core.story.domain.World;
 
 
 public class UserRequestsCash extends EventUsingMiniMock {

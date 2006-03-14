@@ -5,15 +5,15 @@
  *
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave.core.example.currency;
+package jbehave.core.example.currency;
 
-import com.thoughtworks.jbehave.core.example.currency.Currency;
-import com.thoughtworks.jbehave.core.example.currency.CurrencyConverter;
-import com.thoughtworks.jbehave.core.example.currency.CurrencyConverterController;
-import com.thoughtworks.jbehave.core.example.currency.CurrencyConverterView;
-import com.thoughtworks.jbehave.core.example.currency.InvalidAmountException;
-import com.thoughtworks.jbehave.core.minimock.Mock;
-import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.example.currency.Currency;
+import jbehave.core.example.currency.CurrencyConverter;
+import jbehave.core.example.currency.CurrencyConverterController;
+import jbehave.core.example.currency.CurrencyConverterView;
+import jbehave.core.example.currency.InvalidAmountException;
+import jbehave.core.minimock.Mock;
+import jbehave.core.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

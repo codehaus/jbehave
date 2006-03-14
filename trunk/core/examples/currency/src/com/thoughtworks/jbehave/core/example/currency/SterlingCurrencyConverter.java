@@ -5,7 +5,7 @@
  *
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave.core.example.currency;
+package jbehave.core.example.currency;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

@@ -7,8 +7,8 @@
  */
 package example.givens;
 
-import jbehave.story.domain.GivenUsingMiniMock;
-import jbehave.story.domain.World;
+import jbehave.core.story.domain.GivenUsingMiniMock;
+import jbehave.core.story.domain.World;
 
 
 /** balance = -50, overdraft limit = 0 */

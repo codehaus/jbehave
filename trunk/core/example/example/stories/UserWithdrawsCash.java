@@ -8,13 +8,13 @@
 
 package example.stories;
 
-import jbehave.story.domain.AcceptanceCriteria;
-import jbehave.story.domain.GivenScenario;
-import jbehave.story.domain.Givens;
-import jbehave.story.domain.Narrative;
-import jbehave.story.domain.Outcomes;
-import jbehave.story.domain.ScenarioDrivenStory;
-import jbehave.story.domain.ScenarioUsingMiniMock;
+import jbehave.core.story.domain.AcceptanceCriteria;
+import jbehave.core.story.domain.GivenScenario;
+import jbehave.core.story.domain.Givens;
+import jbehave.core.story.domain.Narrative;
+import jbehave.core.story.domain.Outcomes;
+import jbehave.core.story.domain.ScenarioDrivenStory;
+import jbehave.core.story.domain.ScenarioUsingMiniMock;
 
 import example.events.UserRequestsCash;
 import example.givens.AccountHasNegativeBalanceWithoutPermission;
