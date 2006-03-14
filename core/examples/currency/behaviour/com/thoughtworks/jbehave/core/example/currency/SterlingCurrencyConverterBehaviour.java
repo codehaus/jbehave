@@ -5,12 +5,12 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave.core.example.currency;
+package jbehave.core.example.currency;
 
-import com.thoughtworks.jbehave.core.Block;
-import com.thoughtworks.jbehave.core.Ensure;
-import com.thoughtworks.jbehave.core.minimock.Mock;
-import com.thoughtworks.jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.Block;
+import jbehave.core.Ensure;
+import jbehave.core.minimock.Mock;
+import jbehave.core.minimock.UsingMiniMock;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

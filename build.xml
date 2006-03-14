@@ -28,7 +28,7 @@
     </copy>
     <jar basedir="${classes_dir}" jarfile="${jar_file}">
       <manifest>
-        <attribute name="Main-Class" value="com.thoughtworks.jbehave.core.Run" />
+        <attribute name="Main-Class" value="jbehave.core.Run" />
       </manifest>
     </jar>
   </target>
@@ -39,15 +39,15 @@
       <src>
         <pathelement path="core/behaviour" />
         <pathelement path="everything/behaviour" />
-        <dirset dir="extensions" includes="*/behaviour" />
+        <dirset dir="extensions" includes="*/Behaviour" />
       </src>
       <classpath>
         <pathelement path="${jar_file}" />
         <fileset dir="lib" includes="**/*.jar, **/*.zip" />
       </classpath>
     </javac>
-    <java taskname="run behaviours" classname="com.thoughtworks.jbehave.core.Run" fork="true">
-        <arg value="com.thoughtworks.jbehave.AllBehaviours" />
+    <java taskname="run behaviours" classname="jbehave.core.Run" fork="true">
+        <arg value="jbehave.AllBehaviours" />
         <classpath>
           <pathelement path="${behaviour_classes_dir}" />
           <pathelement path="${jar_file}" />

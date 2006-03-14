@@ -8,8 +8,8 @@
 package example.outcomes;
 
 import jbehave.core.Ensure;
-import jbehave.story.domain.OutcomeUsingMiniMock;
-import jbehave.story.domain.World;
+import jbehave.core.story.domain.OutcomeUsingMiniMock;
+import jbehave.core.story.domain.World;
 
 
 

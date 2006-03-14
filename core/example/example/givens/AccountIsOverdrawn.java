@@ -8,8 +8,8 @@
 package example.givens;
 
 import jbehave.core.minimock.Mock;
-import jbehave.story.domain.GivenUsingMiniMock;
-import jbehave.story.domain.World;
+import jbehave.core.story.domain.GivenUsingMiniMock;
+import jbehave.core.story.domain.World;
 
 
 import example.domain.Account;

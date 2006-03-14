@@ -5,7 +5,7 @@
  *
  * See license.txt for licence details
  */
-package com.thoughtworks.jbehave.core.example.currency;
+package jbehave.core.example.currency;
 
 import java.util.Map;
 import java.util.HashMap;
