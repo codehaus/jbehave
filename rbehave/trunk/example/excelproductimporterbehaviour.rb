@@ -1,19 +1,14 @@
-require 'rbehave/core' # rbehave
+# rbehave
+require 'rbehave/core'
 
 # domain classes
-require 'example/vendorwriter'
 require 'example/excelproductimporter'
 require 'rexml/document'
 
-include RBehave
+class ExcelProductImporterBehaviour < RBehave::Behaviour
 
-class ExcelProductImporterBehaviour
-
-  include Constraints
-  include Verifiers
-  
   def should_write_vendor_entry
-    # given...
+    # given
     xml = REXML::Document.new <<-END
       <Worksheet>
         <Row>
@@ -24,18 +19,18 @@ class ExcelProductImporterBehaviour
       </Worksheet>
     END
     
-    vendor_writer = verifier_for(VendorWriter)
+    vendor_writer = mock(VendorWriter)
     
     product_importer = ExcelProductImporter.new(vendor_writer)
     
-    # expect...
-    vendor_writer.__should_receive { |obj|
-      obj.write(eq(1), 'BrassCorp')
-    }
+    # expect
+    vendor_writer.expects.write(1, 'BrassCorp')
+    vendor_writer.expects.to_s
     
-    # when...
+    # when
     product_importer.import(xml)
-    
+
+    # then
     ensure_that xml, contains("BrassCorp")
   end
 end

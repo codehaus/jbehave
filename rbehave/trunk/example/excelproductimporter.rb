@@ -1,3 +1,6 @@
+class VendorWriter
+end
+
 class ExcelProductImporter
   def initialize(vendor_writer)
     @vendor_writer = vendor_writer
