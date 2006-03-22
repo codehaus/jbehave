@@ -34,12 +34,6 @@ public class ScenarioDrivenStory implements Story {
         scenarios.addScenario(scenario);
     }
     
-    /* (non-Javadoc)
-	 * @see jbehave.core.story.domain.Story#title()
-	 */
-    /* (non-Javadoc)
-	 * @see jbehave.core.story.domain.Story#title()
-	 */
     public String title() {
         return new ConvertCase(getClass()).toSeparateWords();
     }

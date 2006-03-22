@@ -14,7 +14,6 @@ import java.util.List;
 
 import jbehave.core.exception.JBehaveFrameworkError;
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.minimock.ChainedConstraint;
 import jbehave.core.minimock.Constraint;
 import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
@@ -128,13 +127,10 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
 
     public static class CheckedException extends Exception {}
 
-    private ChainedConstraint resultContainingCheckedException() {
-        return new ChainedConstraint() {
+    private CustomConstraint resultContainingCheckedException() {
+        return new CustomConstraint("result containing a CheckedException") {
             public boolean matches(Object arg) {
                 return isA(CheckedException.class).matches(((Result)arg).cause());
-            }
-            public String toString() {
-                return "result containing a CheckedException";
             }
         };
     }

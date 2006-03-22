@@ -15,6 +15,7 @@ import jbehave.core.story.domain.Story;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @deprecated this has to die - DN
  */
 public interface Visitor {
 	void visitStory(Story story);

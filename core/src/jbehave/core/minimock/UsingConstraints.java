@@ -7,182 +7,159 @@ import jbehave.core.exception.VerificationException;
  * Support for constraint-based verification
  */
 public abstract class UsingConstraints {
+	protected abstract class CustomConstraint extends UsingConstraints implements Constraint {
+		private final String description;
+
+		public CustomConstraint(String description) {
+			this.description = description;
+		}
+
+		public String toString() {
+			return description;
+		}
+		
+		public CustomConstraint and(Constraint that) {
+			return and(this, that);
+		}
+		public CustomConstraint or(Constraint that) {
+			return or(this, that);
+		}
+	}
+	
 	/** ensures object equals expected value */
-	public ChainedConstraint eq(final Object expectedArg) {
-	    return new ChainedConstraint() {
+	public CustomConstraint eq(final Object expectedArg) {
+	    return new CustomConstraint("equal to <" + expectedArg + ">") {
 	        public boolean matches(Object arg) {
 	            return arg == null ? expectedArg == null : arg.equals(expectedArg);
 	        }
-	        public String toString() {
-	            return "equal to <" + expectedArg + ">";
-	        }
 	    };
 	}
 
 	/** eq(primitive) for float and double */
-	public ChainedConstraint eq(final double expectedArg, final double delta) {
-	    return new ChainedConstraint() {
+	public CustomConstraint eq(final double expectedArg, final double delta) {
+	    return new CustomConstraint("floating point number equal to " + expectedArg) {
 	        public boolean matches(Object arg) {
 	            double value = ((Number) arg).doubleValue();
 				return Math.abs(expectedArg - value) <= delta;
-	        }          
-	        public String toString() {
-	            return "floating point number equal to " + expectedArg;
 	        }
 	    };
 	}
 
 	/** eq(primitive) for float and double */
-	public ChainedConstraint eq(final double expectedArg) {
+	public CustomConstraint eq(final double expectedArg) {
 		return eq(expectedArg, 0.0);
 	}
 	
 	/** eq(primitive) for byte, short, integer and long */
-	public ChainedConstraint eq(final long expectedArg) {
-	    return new ChainedConstraint() {
+	public CustomConstraint eq(final long expectedArg) {
+	    return new CustomConstraint("integer type equal to " + expectedArg) {
 	        public boolean matches(Object arg) {
 	            Number n = (Number)arg;
 	            return n.longValue() == expectedArg;
 	        }          
-	        public String toString() {
-	            return "integer type equal to " + expectedArg;
-	        }
 	    };
 	}
 
 	/** eq(primitive) for char - note {@link Character} is not a {@link Number} */
-	public ChainedConstraint eq(final char expectedArg) {
-	    return new ChainedConstraint() {
+	public CustomConstraint eq(final char expectedArg) {
+	    return new CustomConstraint("character equal to '" + expectedArg + "'") {
 	        public boolean matches(Object arg) {
 	            Character n = (Character)arg;
 	            return n.charValue() == expectedArg;
 	        }          
-	        public String toString() {
-	            return "character equal to '" + expectedArg + "'";
-	        }
 	    };
 	}
 
 	/** eq(primitive) for boolean */
-	public ChainedConstraint eq(final boolean expectedArg) {
-	    return new ChainedConstraint() {
+	public CustomConstraint eq(final boolean expectedArg) {
+	    return new CustomConstraint("boolean " + expectedArg) {
 	        public boolean matches(Object arg) {
 	            Boolean n = (Boolean)arg;
 	            return n.booleanValue() == expectedArg;
 	        }          
-	        public String toString() {
-	            return "boolean " + expectedArg;
-	        }
 	    };
 	}
 
-	public ChainedConstraint sameInstanceAs(final Object expectedArg) {
-	    return new ChainedConstraint() {
+	public CustomConstraint sameInstanceAs(final Object expectedArg) {
+	    return new CustomConstraint("same instance as <" + expectedArg.toString() + ">") {
 	        public boolean matches(Object arg) {
 	            return expectedArg == arg;
 	        }
-	        public String toString() {
-	            return "same instance as <" + expectedArg.toString() + ">";
-	        }
 	    };
 	}
 
-	public ChainedConstraint anything() {
-	    return new ChainedConstraint() {
+	public CustomConstraint anything() {
+	    return new CustomConstraint("anything") {
 	        public boolean matches(Object arg) {
 	            return true;
 	        }
-	        public String toString() {
-	            return "anything";
-	        }
 	    };
 	}
 
-	public ChainedConstraint a(final Class type) {
+	public CustomConstraint a(final Class type) {
 	    return isA(type);
 	}
 
-	public ChainedConstraint isA(final Class type) {
-	    return new ChainedConstraint() {
+	public CustomConstraint isA(final Class type) {
+	    return new CustomConstraint("object of type " + type.getName()) {
 	        public boolean matches(Object arg) {
 	            return type.isInstance(arg);
 	        }
-	        public String toString() {
-	            return "object of type " + type.getName();
-	        }
 	    };
 	}
 	
-	public ChainedConstraint startsWith(final String fragment) {
-	    return new ChainedConstraint() {
+	public CustomConstraint startsWith(final String fragment) {
+	    return new CustomConstraint("string starting with <" + fragment + ">") {
 	        public boolean matches(Object arg) {
 	            return ((String)arg).startsWith(fragment);
 	        }
-	        public String toString() {
-	            return "string starting with <" + fragment + ">";
-	        }
 	    };
 	}
 	
-	public ChainedConstraint endsWith(final String fragment) {
-		return new ChainedConstraint() {
+	public CustomConstraint endsWith(final String fragment) {
+		return new CustomConstraint("string ending with <" + fragment + ">") {
 			public boolean matches(Object arg) {
 				return ((String)arg).endsWith(fragment);
 			}
-			public String toString() {
-				return "string ending with <" + fragment + ">";
-			}
 		};
 	}
 	
-	public ChainedConstraint contains(final String fragment) {
-		return new ChainedConstraint() {
+	public CustomConstraint contains(final String fragment) {
+		return new CustomConstraint("string ending with <" + fragment + ">") {
 			public boolean matches(Object arg) {
 				return ((String)arg).indexOf(fragment) != -1;
-			}
-			public String toString() {
-				return "string ending with <" + fragment + ">";
 			}
 		};
 	}
 
-	public ChainedConstraint and(final Constraint a, final Constraint b) {
-	    return new ChainedConstraint() {
+	public CustomConstraint and(final Constraint a, final Constraint b) {
+	    return new CustomConstraint("(" + a + " and " + b + ")") {
 	        public boolean matches(Object arg) {
 	            return a.matches(arg) && b.matches(arg);
 	        }
-	        public String toString() {
-	            return "(" + a + " and " + b + ")";
-	        }
 	    };
 	}
 
-	public ChainedConstraint both(final Constraint a, final Constraint b) {
+	public CustomConstraint both(final Constraint a, final Constraint b) {
 	    return and(a, b);
 	}
 
-	public ChainedConstraint or(final Constraint a, final Constraint b) {
-	    return new ChainedConstraint() {
+	public CustomConstraint or(final Constraint a, final Constraint b) {
+	    return new CustomConstraint("(" + a + " or " + b + ")") {
 	        public boolean matches(Object arg) {
 	            return a.matches(arg) || b.matches(arg);
-	        }
-	        public String toString() {
-	            return "(" + a + " or " + b + ")";
 	        }
 	    };
 	}
 
-	public ChainedConstraint either(final Constraint a, final Constraint b) {
+	public CustomConstraint either(final Constraint a, final Constraint b) {
 	    return either(a, b);
 	}
 
-	public ChainedConstraint not(final Constraint c) {
-	    return new ChainedConstraint() {
+	public CustomConstraint not(final Constraint c) {
+	    return new CustomConstraint("not (" + c + ")") {
 	        public boolean matches(Object arg) {
 	            return !c.matches(arg);
-	        }
-	        public String toString() {
-	            return "not (" + c + ")";
 	        }
 	    };
 	}
@@ -192,9 +169,10 @@ public abstract class UsingConstraints {
     		fail("\nExpected: " +
     				(message != null ? "[" + message + "] " : "") +
     				constraint +
-    				"\nbut got:  " + arg);
+    				"\nbut got:  <" + arg + ">");
     	}
 	}
+    
 	public void ensureThat(Object arg, Constraint constraint) {
 		ensureThat(arg, constraint, null);
 	}

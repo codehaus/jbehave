@@ -2,14 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="core/behaviour"/>
 	<classpathentry kind="src" path="core/src"/>
-	<classpathentry kind="src" path="extensions/story/src"/>
 	<classpathentry kind="src" path="extensions/ant/behaviour"/>
 	<classpathentry kind="src" path="extensions/ant/src"/>
 	<classpathentry kind="src" path="extensions/jmock/behaviour"/>
 	<classpathentry kind="src" path="extensions/jmock/src"/>
 	<classpathentry kind="src" path="extensions/junit/behaviour"/>
 	<classpathentry kind="src" path="extensions/junit/src"/>
+	<classpathentry kind="src" path="examples/atm/src"/>
+	<classpathentry kind="src" path="examples/atm/stories"/>
+	<classpathentry kind="src" path="examples/currency/behaviour"/>
+	<classpathentry kind="src" path="examples/currency/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="everything/behaviour"/>
 	<classpathentry kind="lib" path="lib/extensions/ant.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
@@ -17,6 +21,5 @@
 	<classpathentry kind="lib" path="lib/extensions/jmock-cglib.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/junit.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/velocity-dep-1.4.jar"/>
-	<classpathentry kind="src" path="everything/behaviour"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

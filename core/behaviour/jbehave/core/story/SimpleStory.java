@@ -27,18 +27,23 @@ public class SimpleStory extends ScenarioDrivenStory {
         super(new Narrative(ROLE, FEATURE, BENEFIT));
 
         ScenarioUsingMiniMock firstScenario = new ScenarioUsingMiniMock(
-                FIRST_SCENARIO_NAME, getClass().getName(), new Givens(
-                        new EverythingCompiles()), new ICrossMyFingers(),
-                new Outcomes(new PlainTextRendererShouldWork()));
+                FIRST_SCENARIO_NAME, getClass().getName(),
+                new EverythingCompiles(),
+                new ICrossMyFingers(),
+                new PlainTextRendererShouldWork());
         addScenario(firstScenario);
 
         ScenarioUsingMiniMock secondScenario = new ScenarioUsingMiniMock(
-                SECOND_SCENARIO_NAME, getClass().getName(), new Givens(
+                SECOND_SCENARIO_NAME, getClass().getName(),
+                new Givens(
                         new GivenScenario(firstScenario),
-                        new FirstScenarioRanWithoutFallingOver()),
-                new IDoNothing(), new Outcomes(
+                        new FirstScenarioRanWithoutFallingOver()
+                ),
+                new IDoNothing(),
+                new Outcomes(
                         new PlainTextRendererShouldStillWork(),
-                        new BehaviourClassShouldNotFail()));
+                        new BehaviourClassShouldNotFail())
+                );
         addScenario(secondScenario);
     }
 

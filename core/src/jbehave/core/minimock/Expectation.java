@@ -54,7 +54,7 @@ public class Expectation extends UsingConstraints {
         if (after != null) {
 			after.verify();
         }
-        Ensure.that("Unexpected call to " + methodName + " (Expected " + maxInvocations + " calls)", invocations < maxInvocations);
+        Ensure.that(methodName + " called more than " + maxInvocations + " times", invocations < maxInvocations);
         invocations++;
         return invoker.invoke(proxy, method, args);
     }
@@ -65,19 +65,12 @@ public class Expectation extends UsingConstraints {
 			args = new Object[0];
         }
         if (!methodName.equals(actualName)) return false;
-        
-        if (constraints != null) {
-            if (constraints.length != args.length) return false;
+        if (constraints == null) return true; // allow any args 
+        if (constraints.length != args.length) return false;
 
-            for (int i = 0; i < args.length; i++) {
-                if (!constraints[i].matches(args[i])) return false;
-            }
+        for (int i = 0; i < args.length; i++) {
+            if (!constraints[i].matches(args[i])) return false;
         }
-        
-        if (invocations >= maxInvocations) {
-			throw new VerificationException(methodToString() + " called more than " + maxInvocations + " times");
-        }
-
         return true;
     }
     
