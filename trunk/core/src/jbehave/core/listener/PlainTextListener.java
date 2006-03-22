@@ -27,7 +27,6 @@ public class PlainTextListener implements BehaviourListener {
     protected final PrintWriter out;
     private int methodsVerified = 0;
     private final List failures = new ArrayList();
-    private final List exceptionsThrown = new ArrayList();
     private final List pending = new ArrayList();
     protected final Timer timer;
 
@@ -41,9 +40,6 @@ public class PlainTextListener implements BehaviourListener {
         methodsVerified++;
         if (result.failed()) {
             failures.add(result);
-        }
-        else if (result.failed()) {
-            exceptionsThrown.add(result);
         }
         else if (result.isPending()) {
             pending.add(result);
@@ -67,16 +63,11 @@ public class PlainTextListener implements BehaviourListener {
 
     protected void printDetails() {
         printFailures();
-        printExceptionsThrown();
         printPending();
     }
 
     private void printFailures() {
         printErrorList("Failures:", failures);
-    }
-
-    private void printExceptionsThrown() {
-        printErrorList("Exceptions Thrown:", exceptionsThrown);
     }
 
     private void printPending() {
@@ -106,8 +97,8 @@ public class PlainTextListener implements BehaviourListener {
 
     private void printSummaryCounts() {
         out.print("Total: " + methodsVerified + ".");
-        if (failures.size() + exceptionsThrown.size() > 0) {
-            out.print(" Failures: " + failures.size() + ", Exceptions: " + exceptionsThrown.size() + ".");
+        if (failures.size() > 0) {
+            out.print(" Failures: " + failures.size() + ".");
         }
         out.println();
     }
@@ -127,7 +118,7 @@ public class PlainTextListener implements BehaviourListener {
     }
 
     public boolean hasBehaviourFailures() {
-        return failures.size() + exceptionsThrown.size() > 0;
+        return !failures.isEmpty();
     }
 
     public void before(Behaviour behaviour) {

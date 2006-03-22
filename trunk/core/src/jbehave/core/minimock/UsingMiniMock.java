@@ -10,9 +10,9 @@ package jbehave.core.minimock;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 import jbehave.core.UsingMocks;
 
@@ -24,7 +24,7 @@ import jbehave.core.UsingMocks;
  */
 public class UsingMiniMock extends UsingConstraints implements UsingMocks {
     
-    private final List mocks = new ArrayList();
+    private final Collection mocks = new HashSet();
 
     public Mock mock(Class type) {
         return mock(type, "mock " + type.getName());
