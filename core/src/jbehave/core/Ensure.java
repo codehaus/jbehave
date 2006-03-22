@@ -96,7 +96,7 @@ public class Ensure {
     // throws exception
     public static void throwsException(Class exceptionType, Block block) throws Exception {
         try {
-            block.execute();
+            block.run();
             constraints.fail("should have thrown " + exceptionType.getName());
         }
         catch (Exception e) {

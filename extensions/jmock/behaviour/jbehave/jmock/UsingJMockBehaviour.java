@@ -106,8 +106,8 @@ public class UsingJMockBehaviour extends UsingConstraints {
         final UsingJMock instance = new HasMockThatFailsVerify();
 
         // when...
-        Ensure.throwsException(VerificationException.class, new Block() {
-            public void execute() throws Exception {
+        ensureThrows(VerificationException.class, new Block() {
+            public void run() throws Exception {
                 instance.verifyMocks();
             }
         });

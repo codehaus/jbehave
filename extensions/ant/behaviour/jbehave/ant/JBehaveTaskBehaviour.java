@@ -9,6 +9,7 @@ package jbehave.ant;
 
 import jbehave.core.Block;
 import jbehave.core.Ensure;
+import jbehave.core.minimock.UsingConstraints;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -19,7 +20,7 @@ import org.apache.tools.ant.types.Path;
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 19-Jul-2004
  */
-public class JBehaveTaskBehaviour {
+public class JBehaveTaskBehaviour extends UsingConstraints {
 	private JBehaveTask task;
 	private Project project;
 
@@ -76,8 +77,8 @@ public class JBehaveTaskBehaviour {
 		final String behaviourClassName = FailingBehaviourClass.class.getName();
         task.createBehaviourClass().setBehaviourClassName(behaviourClassName);
 		// execute
-        Ensure.throwsException(BuildException.class, new Block() {
-            public void execute() throws Exception {
+        ensureThrows(BuildException.class, new Block() {
+            public void run() throws Exception {
                 task.execute();
             }
         });
@@ -90,8 +91,8 @@ public class JBehaveTaskBehaviour {
 		BehaviourClassOne.wasCalled = false; // i hate this!
 
 		// execute
-        Ensure.throwsException(BuildException.class, new Block() {
-            public void execute() {
+        ensureThrows(BuildException.class, new Block() {
+            public void run() {
                 task.execute();
             }
         });

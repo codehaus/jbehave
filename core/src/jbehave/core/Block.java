@@ -11,5 +11,5 @@ package jbehave.core;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public interface Block {
-    void execute() throws Exception;
+    void run() throws Exception;
 }
