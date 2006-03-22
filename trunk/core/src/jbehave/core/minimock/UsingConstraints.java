@@ -1,5 +1,6 @@
 package jbehave.core.minimock;
 
+import jbehave.core.Block;
 import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
 
@@ -7,7 +8,7 @@ import jbehave.core.exception.VerificationException;
  * Support for constraint-based verification
  */
 public abstract class UsingConstraints {
-	protected abstract class CustomConstraint extends UsingConstraints implements Constraint {
+	public abstract static class CustomConstraint extends UsingConstraints implements Constraint {
 		private final String description;
 
 		public CustomConstraint(String description) {
@@ -203,6 +204,18 @@ public abstract class UsingConstraints {
     }
     public void ensureThat(boolean arg, Constraint constraint) {
     	ensureThat(arg, constraint, null);
+    }
+    
+    public void ensureThrows(Class exceptionType, Block block) throws Exception {
+        try {
+            block.run();
+            fail("should have thrown " + exceptionType.getName());
+        }
+        catch (Exception e) {
+            if (!exceptionType.isAssignableFrom(e.getClass())) {
+                throw e;
+            }
+        }
     }
     
     /** ensure(...) without constraints */

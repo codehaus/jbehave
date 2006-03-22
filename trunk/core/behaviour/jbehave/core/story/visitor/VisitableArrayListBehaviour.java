@@ -8,12 +8,8 @@
 package jbehave.core.story.visitor;
 
 import jbehave.core.Block;
-import jbehave.core.Ensure;
 import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.story.visitor.Visitable;
-import jbehave.core.story.visitor.VisitableArrayList;
-import jbehave.core.story.visitor.Visitor;
 
 
 /**
@@ -55,8 +51,8 @@ public class VisitableArrayListBehaviour extends UsingMiniMock {
         component.expects("accept").with(anything()).will(throwException(new SomeRuntimeException()));
         
         // when...
-        Ensure.throwsException(SomeRuntimeException.class, new Block() {
-            public void execute() {
+        ensureThrows(SomeRuntimeException.class, new Block() {
+            public void run() {
                 composite.accept(visitor);
             }
         });
