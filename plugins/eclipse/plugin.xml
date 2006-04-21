@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="jbehave.plugin.eclipse.JBehaveLaunchConfiguration"
+            id="jbehave.plugin.eclipse.launchconfig"
+            modes="run, debug"
+            name="JBehave"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"/>
+   </extension>
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+	  <launchConfigurationTypeImage
+		id="jbehave.plugin.eclipse.launchconfigImage"
+		configTypeID="jbehave.plugin.eclipse.launchconfig"
+		icon="icons/behave.gif">
+	</launchConfigurationTypeImage>	
+</extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="jbehave.plugin.eclipse.JBehaveLaunchConfigurationTabGroup"
+            description="Launches behavior verification"
+            helpContextId="jbehave.plugin.eclipse.jbehave_tab_group"
+            id="jbehave.plugin.eclipse.launchConfigurationTabGroup"
+            type="jbehave.plugin.eclipse.launchconfig"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            properties="isBehaviour"
+            namespace="jbehave.plugin.eclipse"
+            type="org.eclipse.core.runtime.IAdaptable"
+            class="jbehave.plugin.eclipse.JavaTypeExtender"
+            id="jbehave.plugin.eclipse.ITypeExtender">
+      </propertyTester>
+   </extension> 
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="Behavior Verification"
+            icon="icons/behave.gif"
+            class="jbehave.plugin.eclipse.VerificationLaunchShortcut"
+            modes="run, debug"
+            id="jbehave.plugin.eclipse.verificationShortcut">
+         <contextualLaunch>
+            <enablement>
+               <with variable="selection">
+                  <count value="1" />
+               	  <iterate>
+                 		<or>
+                   			<test property="org.eclipse.debug.ui.matchesPattern" value="*.java"/>
+                   			<test property="org.eclipse.debug.ui.matchesPattern" value="*.class"/>
+                   			<adapt type="org.eclipse.jdt.core.IJavaElement"/>
+		                    <instanceof value="org.eclipse.jdt.internal.ui.javaeditor.InternalClassFileEditorInput"/>                 		</or>
+                 		<test property="jbehave.plugin.eclipse.isBehaviour"/>
+               	  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaHierarchyPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+      </shortcut>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="jbehave.plugin.eclipse.verificationShortcut.run"
+            name="Behaviour Verification"/>
+      <command
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="jbehave.plugin.eclipse.verificationShortcut.debug"
+            name="Behaviour Verification"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="jbehave.plugin.eclipse.verificationShortcut.run"
+            contextId="org.eclipse.ui.globalScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M2+X B"/>
+      <key
+            commandId="jbehave.plugin.eclipse.verificationShortcut.debug"
+            contextId="org.eclipse.ui.globalScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M2+D B"/>
+   </extension>
+
+</plugin>

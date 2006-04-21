@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JBehave Plugin
+Bundle-SymbolicName: jbehave.plugin.eclipse; singleton:=true
+Bundle-Version: 0.5
+Bundle-Activator: jbehave.plugin.eclipse.JBehavePlugin
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.junit,
+ org.eclipse.jdt.junit.runtime,
+ org.eclipse.jdt.launching,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jdt.debug,
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.source,
+ org.eclipse.jdt.ui,
+ org.eclipse.core.expressions
+Eclipse-AutoStart: true
+Bundle-Vendor: ThoughtWorkers
