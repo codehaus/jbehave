@@ -9,4 +9,5 @@
 		<project reference="0.9.3,svn+ssh://tastapod@jbehave.codehaus.org/home/projects/jbehave/scm/trunk/build,jbehave build"/>
 		<project reference="0.9.3,svn+ssh://tastapod@jbehave.codehaus.org/home/projects/jbehave/scm/trunk/website,jbehave website"/>
 	</provider>
+
 </psf>
