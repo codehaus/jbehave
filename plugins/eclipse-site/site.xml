@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/jbehave.plugin.eclipse.feature_0.5.0.jar" id="jbehave.plugin.eclipse.feature" version="0.5.0">
+      <category name="JBehave Plugin"/>
+   </feature>
+   <category-def name="JBehave Plugin" label="JBehave Plugin"/>
+</site>
