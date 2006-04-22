@@ -75,7 +75,7 @@ public class PlainTextMethodListenerBehaviour extends PlainTextListenerBehaviour
 
         // then...
         verifyOutputContains("Pending:");
-        verifyOutputContains("at mock.jbehave.core.listener.PendingResultInNonJBehavePackage.<init>(PendingResultInNonJBehavePackage.java");
+        verifyOutputContains("at mock.jbehave.core.listener.PendingResultInNonJBehavePackage.<init>(");
     }
 
     private Result newPendingResultFromNonJBehavePackage() {
