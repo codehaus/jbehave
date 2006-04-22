@@ -4,7 +4,8 @@
       label="JBehave"
       version="0.5.0"
       provider-name="JBehave"
-      plugin="jbehave.plugin.eclipse">
+      plugin="jbehave.plugin.eclipse"
+      image="behave.gif">
 
    <description url="http://jbehave.codehaus.org/eclipse">
       Jbehave Plugin

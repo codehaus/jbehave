@@ -79,6 +79,8 @@ public class PlainTextListener implements BehaviourListener {
                 Result result =  (Result) i.next();
                 printResult(count, result);
                 out.println("\t" + result.cause().getMessage());
+                StackTraceElement element = findFirstNonJeBehaveStackElement(result.cause());
+                out.println("\tat " + element.toString() + "\n");
             }
         }
     }
@@ -90,9 +92,21 @@ public class PlainTextListener implements BehaviourListener {
         if (shortName.endsWith("Behaviour")) {
             shortName = shortName.substring(0, shortName.length() - "Behaviour".length());
         }
-        out.println(count + ") " + shortName + " "
-                + new ConvertCase(result.name()).toSeparateWords()
-                + " [" + containerName + "]:");
+        out.println(count + ") " + new ConvertCase(result.name()).toSeparateWords()
+                + " [" + containerName + "]:"
+                );
+    }
+
+    private StackTraceElement findFirstNonJeBehaveStackElement(Throwable throwable) {
+        StackTraceElement[] elements = throwable.getStackTrace();
+        for (int i = 0; i < elements.length; i++) {
+            StackTraceElement element = elements[i];
+            String className = element.getClassName();
+            if (!className.startsWith("jbehave.")) {
+                return elements[i];
+            }
+        }
+        return null;
     }
 
     private void printSummaryCounts() {
