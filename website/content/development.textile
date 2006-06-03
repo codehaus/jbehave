@@ -1,7 +1,7 @@
 ---------------------------------------------------
 Development Resources
 ---------------------------------------------------
-h1. Golden Rules
+h1(FirstChild). Golden Rules
 
 Here are some rules that we follow when developing JBehave:
 

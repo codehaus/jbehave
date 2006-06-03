@@ -1,7 +1,7 @@
 --------------------------------------------
 Getting Started
 --------------------------------------------
-h1. Two minute tutorial
+h1(FirstChild). Two minute tutorial
 
 You create a Behaviour Class, which is a plain Java class that by convention
 has the name of the class whose behaviour we are specifying followed

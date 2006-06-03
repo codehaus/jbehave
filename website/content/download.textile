@@ -1,18 +1,18 @@
 -----------------------------------
 Downloads
 -----------------------------------
-<h1 id="stable">Stable Version: <span class="version"><template:text var="release"/></span></h1>
+h1(FirstChild#stable). Stable Version: %(version)<template:text eval="release"/>%
 
 Not yet available
 
-<h1 id="prerelease">Prerelease Version: <span class="version"><template:text var="prerelease"/></span></h1>
+h1(#prerelease). Prerelease Version: %(version)<template:text eval="prerelease"/>%
 
 h2. Release 0.5.0
 
 * "jbehave.jar":/dist/0.5.0/jbehave.jar
 * "Everything":/dist/0.5.0/jbehave-src.zip
 
-<h1 id="snapshot">Development Snapshot: <span class="version"><template:text var="snapshot"/></span></h1>
+h1(#snapshot). Development Snapshot: %(version)<template:text var="snapshot"/>%
 
 * "jbehave.jar":/dist/snapshot/jbehave.jar
 * "Everything":/dist/snapshot/jbehave-src.zip
