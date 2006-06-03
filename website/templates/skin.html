@@ -1,5 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:template="http://www.b13media.com/xemplate/1.0">
+      xmlns:template="http://buildmaster.rubyforge.org/xtemplate/1.0">
   <head>
     <title>JBehave - <template:include srcvar="content" elements="/html/head/title/text()"/></title>
     <link rel="stylesheet" type="text/css" href="jbehave.css"/>
@@ -11,26 +11,26 @@
       <a href="index.html"><img id="logo" src="logo.gif" alt="JBehave"/></a>
     </div>
 
-    <template:when var="isindex" value="true">
+    <template:when test="index_file?">
       <div id="center" class="Content3Column">
         <div id="content">
-          <template:include srcvar="content" elements="/html/body/*"/>
+          <template:include elements="/html/body/*"/>
         </div>
         <!--
         <div class="Meta">
-          <p><a><template:attr name="href" valuevar="history"/>Document History</a></p>
+          <p><a><template:attribute name="href" eval="history"/>Document History</a></p>
         </div>
         -->
       </div>
     </template:when>
 
-    <template:when var="isindex" value="false">
+    <template:when test="not_index_file?">
       <div id="center" class="Content2Column">
         <div id="content">
           <template:include srcvar="content" elements="/html/body/*"/>
         </div>
         <div class="Meta">
-          <p><a><template:attr name="href" valuevar="history"/>Document History</a></p>
+          <p><a><template:attribute name="href" eval="history"/>Document History</a></p>
         </div>
       </div>
     </template:when>
@@ -87,25 +87,37 @@
       </div>
     </div>
 
-    <template:when var="isindex">
+    <template:when test="index_file?">
       <div class="SidePanel" id="right">
         <div class="NewsGroup">
           <h1>Latest Versions</h1>
           <table>
             <tr>
               <td><a href="download.html#stable">Stable:</a></td>
-              <td><a href="download.html#stable"><template:text var="release"/></a></td>
+              <td><a href="download.html#stable"><template:text eval="release"/></a></td>
             </tr>
             <tr>
               <td><a href="download.html#prerelease">Prerelease:</a></td>
-              <td><a href="download.html#prerelease"><template:text var="prerelease"/></a></td>
+              <td><a href="download.html#prerelease"><template:text eval="prerelease"/></a></td>
             </tr>
             <tr>
               <td><a href="download.html#snapshot">Snapshot:</a></td>
-              <td><a href="download.html#snapshot"><template:text var="snapshot"/></a></td>
+              <td><a href="download.html#snapshot"><template:text eval="snapshot"/></a></td>
             </tr>
           </table>
           <p class="NewsMore"><a href="versioning.html">About JBehave version numbers...</a></p>
+        </div>
+        <div class="NewsGroup">
+        	<h1>Recent News</h1>
+				<template:each source="news_rss2" select="/rss/channel/item" count="3">
+                <div class="NewsItem">
+                    <p class="NewsTitle"><template:include elements="./title/text()"/></p>
+                    <p class="NewsDate"><template:include elements="./pubDate/text()"/></p>
+                    <p class="NewsText"><template:include elements="./xhtml:div/node()"/></p>
+                </div>
+                </template:each>
+
+  			<p class="NewsMore"><a href="/news-rss2.xml">News feed (RSS 2.0)</a></p>
         </div>
       </div>
     </template:when>

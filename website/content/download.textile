@@ -1,0 +1,24 @@
+-----------------------------------
+Downloads
+-----------------------------------
+<h1 id="stable">Stable Version: <span class="version"><template:text var="release"/></span></h1>
+
+Not yet available
+
+<h1 id="prerelease">Prerelease Version: <span class="version"><template:text var="prerelease"/></span></h1>
+
+h2. Release 0.5.0
+
+* "jbehave.jar":/dist/0.5.0/jbehave.jar
+* "Everything":/dist/0.5.0/jbehave-src.zip
+
+<h1 id="snapshot">Development Snapshot: <span class="version"><template:text var="snapshot"/></span></h1>
+
+* "jbehave.jar":/dist/snapshot/jbehave.jar
+* "Everything":/dist/snapshot/jbehave-src.zip
+
+The source snapshot will unpack into a directory named after its version, so
+multiple versions can easily be installed side by side in the same directory.
+
+The very latest code is also available from the
+"source code repository":repository.html.
