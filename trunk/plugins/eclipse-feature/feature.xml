@@ -2,7 +2,7 @@
 <feature
       id="jbehave.plugin.eclipse.feature"
       label="JBehave"
-      version="0.5.0"
+      version="0.5.2"
       provider-name="JBehave"
       plugin="jbehave.plugin.eclipse"
       image="behave.gif">
