@@ -1,24 +1,9 @@
-<!DOCTYPE html
+----------------------------------------------------
+Project License
+----------------------------------------------------
+h1(FirstChild). JBehave Project License
 
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-
-    <title>Project License</title>
-
-  </head>
-
-  <body>
-
-    <h1>JBehave Project License</h1>
-
-
-
-    <div class="Shaded"><pre>
+<div class="Shaded"><pre>
 
 Copyright &copy; 2003-2004 Dan North
 
@@ -69,7 +54,3 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
 WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 
 DAMAGE.</pre></div>
-
-  </body>
-
-</html>

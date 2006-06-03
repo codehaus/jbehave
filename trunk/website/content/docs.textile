@@ -1,10 +1,9 @@
 ------------------------------------------------
 Documentation
 ------------------------------------------------
+h1(FirstChild#reference). Reference Documentation
 
-<h1 id="reference">Reference Documentation</h1>
-
-* "JavaDocs":docs/javadoc/index.html"
+* "JavaDocs":docs/javadoc/index.html
 * "What JBehave version numbers mean":versioning.html"
 
 <h1 id="tutorials">Tutorials</h1>

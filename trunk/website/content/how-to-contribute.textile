@@ -1,0 +1,14 @@
+-------------------------------------------------------------
+How to Contribute
+-------------------------------------------------------------
+h1(FirstChild). How to Contribute to JBehave
+
+In the meantime, you can contact any of the "team":team.html with
+any questions.
+
+If you want, you can log an issue on "JIRA":http://jira.codehaus.org/browse/JBEHAVE.
+
+h2. Become a Committer
+
+We follow the "Codehaus manifest":http://www.codehaus.org
+when it comes to expanding the core team.

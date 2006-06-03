@@ -1,0 +1,36 @@
+-----------------------------------------------
+Using JMock with JBehave
+-----------------------------------------------
+h1(FirstChild). One minute tutorial
+
+Create a Behaviour Class that extends <tt>UsingJMock</tt> from the jmock extension library.
+<tt>UsingJMock</tt> brings together a bunch of "sugar" methods for use when creating/setting up
+mocks and expectations. It also provides auto-verification for all mocks.
+
+You use jMock like so:
+
+<div class="Shaded"><pre>
+	public class BarBehaviour extends UsingJMock {
+	    public void shouldRequireTheUseOfMocks() {
+	        // setup
+	        Mock foo = new Mock(Foo.class);
+	        Bar bar = new Bar((Foo)foo.proxy());
+
+	        //expect
+	        foo.expects(once()).method("blah").withAnyArguments();
+
+	        // execute
+	        bar.doBar();
+
+	        // verify
+	    }
+	}
+</pre></div>
+
+Any mocks created will be auto-magically verified by jBehave.
+
+To run your behaviour you can do it like so:
+<div class="Shaded">
+    	<pre>java -cp jbehave.jar;jbehave-jmock.jar;jmock.jar;your_classpath<br></br>
+    com.thoughtworks.jbehave.extensions.jmock.RunWithJMock your.ApplicationBehaviour</pre>
+</div>
