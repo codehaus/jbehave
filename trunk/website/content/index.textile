@@ -29,5 +29,5 @@ final releases of version 1.0 will be sent to the "mailing lists":mailing-lists.
 
 h1. Getting Started
 
-* "Download it":download.htm.
+* "Download it":download.html.
 * "Use it":getting-started.html.
