@@ -18,26 +18,11 @@ import jbehave.core.minimock.UsingMiniMockBehaviour;
 import jbehave.core.result.ResultBehaviour;
 import jbehave.core.util.ConvertCaseBehaviour;
 import jbehave.core.util.TimerBehaviour;
+import jbehave.core.util.BehavioursLoader;
 
 
-/**
- * @author <a href="mailto:dan@jbehave.org">Dan North</a>
- */
 public class AllBehaviours implements Behaviours {
     public Class[] getBehaviours() {
-        return new Class[] {
-        		RunBehaviour.class,
-                BehaviourVerifierBehaviour.class,
-                BehaviourClassBehaviour.class,
-                BehaviourMethodBehaviour.class,
-                PlainTextMethodListenerBehaviour.class,
-                ExpectationBehaviour.class,
-                MockObjectBehaviour.class,
-                UsingMiniMockBehaviour.class,
-                ResultBehaviour.class,
-                ConvertCaseBehaviour.class,
-                TimerBehaviour.class,
-                UsingConstraintsBehaviour.class
-        };
+        return new BehavioursLoader(getClass()).getBehaviours();
     }
 }

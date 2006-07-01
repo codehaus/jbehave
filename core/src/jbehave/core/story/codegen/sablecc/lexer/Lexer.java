@@ -446,7 +446,7 @@ public class Lexer
         }
         catch(Exception e)
         {
-            throw new RuntimeException("The file \"lexer.dat\" is either missing or corrupted.");
+            throw new RuntimeException("The file \"lexer.dat\" is either missing or corrupted.", e);
         }
     }
 }
