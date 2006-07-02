@@ -23,6 +23,6 @@ import jbehave.core.util.BehavioursLoader;
 
 public class AllBehaviours implements Behaviours {
     public Class[] getBehaviours() {
-        return new BehavioursLoader(getClass()).getBehaviours();
+        return new BehavioursLoader(BehavioursLoader.class).getBehaviours();
     }
 }

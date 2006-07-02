@@ -61,7 +61,7 @@
 
   <target name="verify-jar" depends="build-jar" description="Verify behaviour of jar">
     <mkdir dir="${behaviour_classes_dir}" />
-    <javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="1.3" target="1.3">
+    <javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="1.3" target="1.3" debug="true">
       <src>
         <pathelement path="${core_dir}/behaviour" />
         <pathelement path="../everything/behaviour" />

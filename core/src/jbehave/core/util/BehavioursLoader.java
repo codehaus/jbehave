@@ -2,6 +2,7 @@ package jbehave.core.util;
 
 import net.sf.cotta.TDirectory;
 import net.sf.cotta.TIoException;
+import net.sf.cotta.ClassPathLocator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +16,26 @@ public class BehavioursLoader {
     }
 
     public Class[] getBehaviours() {
-        markerClass = BehavioursLoader.class;
-        TDirectory directory = new ClassPathLocator(markerClass).locateClassPathRoot();
+        ClassPathLocator classPathLocator = new ClassPathLocator(markerClass);
+        TDirectory directory = classPathLocator.locateClassPathRoot();
         List classNames = null;
         try {
             classNames = new BehaviourCollector(directory, "").collectNames();
         } catch (TIoException e) {
             throw new RuntimeException(e);
         }
+        finally {
+            closeResource(classPathLocator);
+        }
         return convertToClasses(classNames);
+    }
+
+    private void closeResource(ClassPathLocator classPathLocator) {
+        try {
+            classPathLocator.closeResource();
+        } catch (TIoException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Class[] convertToClasses(List classNames) {
