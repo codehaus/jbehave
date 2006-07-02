@@ -181,11 +181,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/extensions/ant/ant.iml" filepath="$PROJECT_DIR$/extensions/ant/ant.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/jbehave-core.iml" filepath="$PROJECT_DIR$/core/jbehave-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/intellij/jbehave-intellij.iml" filepath="$PROJECT_DIR$/plugins/intellij/jbehave-intellij.iml" />
       <module fileurl="file://$PROJECT_DIR$/website/website.iml" filepath="$PROJECT_DIR$/website/website.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.4" />
+  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="false" project-jdk-name="1.4" />
   <component name="RmicSettings">
     <option name="IS_EANABLED" value="false" />
     <option name="DEBUGGING_INFO" value="true" />
