@@ -2,7 +2,8 @@ package jbehave.core.util;
 
 import net.sf.cotta.TDirectory;
 import net.sf.cotta.TIoException;
-import net.sf.cotta.ClassPathLocator;
+import net.sf.cotta.utils.ClassPathLocator;
+import net.sf.cotta.utils.ClassPath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,15 @@ public class BehavioursLoader {
         this.markerClass = markerClass;
     }
 
-    public Class[] getBehaviours() {
+    public Class[] loadBehaviours() {
         ClassPathLocator classPathLocator = new ClassPathLocator(markerClass);
-        TDirectory directory = classPathLocator.locateClassPathRoot();
+        ClassPath classPath = classPathLocator.locate();
+        TDirectory directory = null;
+        try {
+            directory = classPath.asDirectory();
+        } catch (TIoException e) {
+            throw new RuntimeException("Error locating classpath contains <" + markerClass.getName() + ">", e);
+        }
         List classNames = null;
         try {
             classNames = new BehaviourCollector(directory, "").collectNames();
@@ -25,12 +32,12 @@ public class BehavioursLoader {
             throw new RuntimeException(e);
         }
         finally {
-            closeResource(classPathLocator);
+            closeResource(classPath);
         }
         return convertToClasses(classNames);
     }
 
-    private void closeResource(ClassPathLocator classPathLocator) {
+    private void closeResource(ClassPath classPathLocator) {
         try {
             classPathLocator.closeResource();
         } catch (TIoException e) {

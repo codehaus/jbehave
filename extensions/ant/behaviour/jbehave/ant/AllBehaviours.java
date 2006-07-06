@@ -8,6 +8,7 @@
 package jbehave.ant;
 
 import jbehave.core.behaviour.Behaviours;
+import jbehave.core.util.BehavioursLoader;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -15,8 +16,6 @@ import jbehave.core.behaviour.Behaviours;
 public class AllBehaviours implements Behaviours {
 
     public Class[] getBehaviours() {
-        return new Class[] {
-                JBehaveTaskBehaviour.class
-        };
+        return new BehavioursLoader(getClass()).loadBehaviours();
     }
 }

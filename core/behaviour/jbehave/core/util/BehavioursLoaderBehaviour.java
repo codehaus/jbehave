@@ -12,7 +12,7 @@ import java.lang.reflect.Modifier;
 
 public class BehavioursLoaderBehaviour extends UsingConstraints {
     public void shouldLoadPublicBehaviourEndedWithBehaviourButNotAbstract() throws Exception {
-        Set loadedFromBehaviourLoader = new HashSet(Arrays.asList(new BehavioursLoader(getClass()).getBehaviours()));
+        Set loadedFromBehaviourLoader = new HashSet(Arrays.asList(new BehavioursLoader(getClass()).loadBehaviours()));
         ensureThat(loadedFromBehaviourLoader, setContains(MockObjectBehaviour.class));
         ensureThat(Modifier.isAbstract(PlainTextListenerBehaviour.class.getModifiers()), eq(true));
         ensureThat(loadedFromBehaviourLoader, not(setContains(PlainTextListenerBehaviour.class)));
