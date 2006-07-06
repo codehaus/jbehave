@@ -15,12 +15,12 @@ package jbehave.ant;
 public class BehaviourClassDetails {
 	private String behaviourClassName;
 
-	public void setBehaviourClassName(String behaviourClassName) {
+	public void setName(String behaviourClassName) {
 		this.behaviourClassName = behaviourClassName;
 
 	}
 
-	public String getBehaviourClassName() {
+	public String getName() {
 		return behaviourClassName;
 	}
 }

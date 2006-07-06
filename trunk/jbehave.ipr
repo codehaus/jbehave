@@ -180,6 +180,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/extensions/ant/ant.iml" filepath="$PROJECT_DIR$/extensions/ant/ant.iml" />
+      <module fileurl="file://C:/Work/buildmaster/misc/fittask/fittask.iml" filepath="C:/Work/buildmaster/misc/fittask/fittask.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/jbehave-core.iml" filepath="$PROJECT_DIR$/core/jbehave-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/website/website.iml" filepath="$PROJECT_DIR$/website/website.iml" />
     </modules>

@@ -1,50 +1,83 @@
 <project name="jbehave-ant" basedir="." default="verify">
-		<property name="src.dir" value="src"/>
-		<property name="version" value="0-1.snapshot"/>
-		<property name="spec.dir" value="behaviour" />
-		<property name="build.dir" value="build"/>
-		<property name="dist.dir" value="dist"/>
-		<property name="jar.file" value="${dist.dir}/jbehave-ant-${version}.jar" />
-		<property name="classes.dir" value="${build.dir}/classes" />
-		<property name="spec.classes.dir" value="${build.dir}/specs" />
-		<property name="lib.dir" location="lib"/>
-		<property name="reqd.libs" value="${lib.dir}/ant.jar:${lib.dir}/jbehave-${version}.jar"/>
+    <property name="src.dir" location="src"/>
+    <property name="version" value="0-1.snapshot"/>
+    <property name="behaviour.dir" location="behaviour"/>
+    <property name="build.dir" location="build"/>
+    <property name="jbehave.dist.dir" location="../../build/dist/snapshot"/>
+    <property name="dist.dir" location="${build.dir}/dist"/>
+    <property name="jar.file" location="${dist.dir}/jbehave-ant-${version}.jar"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="behaviour.classes.dir" value="${build.dir}/behaviours"/>
+    <property name="lib.dir" location="../../lib"/>
+    <path id="required.library">
+        <pathelement location="${lib.dir}/extensions/ant.jar"/>
+        <pathelement location="${jbehave.dist.dir}/jbehave.jar"/>
+        <path location="${lib.dir}/cotta/cotta.jar"/>
+    </path>
+    <path id="jbehave.ant.lib">
+        <pathelement location="${dist.dir}/jbehave-ant.jar"/>
+        <pathelement location="${jbehave.dist.dir}/jbehave.jar"/>
+    </path>
 
-		<target name="clean">
-			<delete dir="${build.dir}" />
-		</target>
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
 
-		<target name="clobber" depends="clean">
-			<delete dir="${dist.dir}" />
-		</target>
+    <target name="clobber" depends="clean">
+        <delete dir="${dist.dir}"/>
+    </target>
 
-		<target name="init">
-			<mkdir dir="${build.dir}" />
-		</target>
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+    </target>
 
-		<target name="src.compile" depends="init">
-			<mkdir dir="${classes.dir}"/>
-			  <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" classpath="${reqd.libs}"/>
-		</target>
+    <target name="src.compile" depends="init">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" includeantruntime="no">
+            <classpath refid="required.library"/>
+        </javac>
+    </target>
 
-		<target name="jar" depends="src.compile">
-			<mkdir dir="${dist.dir}" />
-			<copy todir="${classes.dir}">
-				<fileset dir="${src.dir}" excludes="**/*.java" />
-			</copy>
-			<jar basedir="${classes.dir}" destfile="${jar.file}" />
-		</target>
+    <target name="jar" depends="src.compile">
+        <mkdir dir="${dist.dir}"/>
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}" excludes="**/*.java"/>
+        </copy>
+        <jar basedir="${classes.dir}" destfile="${jar.file}"/>
+    </target>
 
-		<target name="spec.compile" depends="jar">
-			<mkdir dir="${spec.classes.dir}"/>
-			  <javac srcdir="${spec.dir}" destdir="${spec.classes.dir}" debug="yes" classpath="${jar.file}:${reqd.libs}"/>
-		</target>
+    <target name="behaviour.compile" depends="src.compile">
+        <mkdir dir="${behaviour.classes.dir}"/>
+        <javac srcdir="${behaviour.dir}" destdir="${behaviour.classes.dir}" debug="yes" includeantruntime="no">
+            <classpath>
+                <pathelement location="${classes.dir}"/>
+                <path refid="required.library"/>
+            </classpath>
+        </javac>
+    </target>
 
-		<target name="verify" depends="spec.compile">
-			<java classname="jbehave.framework.SpecVerifier" fork="true" failonerror="true" classpath="${jar.file}:${reqd.libs}:${spec.classes.dir}" >
-				<arg value="jbehave.extensions.ant.JBehaveAntTaskSpec"/>
-			</java>
-		</target>
+    <target name="java.verify">
+        <java classname="jbehave.core.Run" fork="true" failonerror="true">
+            <classpath>
+                <path refid="required.library"/>
+            </classpath>
+        </java>
+    </target>
 
+    <target name="jbehave.verify" depends="behaviour.compile, jar, java.verify" description="Use jbehave ant task">
+        <path id="jbehave.ant.lib">
+            <pathelement location="${jbehave.dist.dir}/jbehave.jar" />
+            <pathelement location="${classes.dir}" />
+        </path>
+        <taskdef name="jbehave" classname="jbehave.ant.JBehaveTask" classpathref="jbehave.ant.lib" />
+       <jbehave>
+            <verify name="jbehave.ant.AllBehaviours"/>
+            <classpath>
+                <pathelement location="${classes.dir}"/>
+                <pathelement location="${behaviour.classes.dir}"/>
+                <path refid="required.library"/>
+            </classpath>
+        </jbehave>
+    </target>
 
 </project>

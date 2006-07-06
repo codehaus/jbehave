@@ -1,0 +1,46 @@
+package jbehave.ant;
+
+import org.apache.tools.ant.Task;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.taskdefs.Redirector;
+import org.apache.tools.ant.taskdefs.Execute;
+import org.apache.tools.ant.types.CommandlineJava;
+import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Reference;
+import org.apache.tools.ant.types.Commandline;
+
+import java.io.IOException;
+
+abstract public class AbstractJavaTask extends Task {
+
+    protected CommandlineJava commandLine = new CommandlineJava();
+    private CommandRunner runner;
+
+    public AbstractJavaTask() {
+        this(new CommandRunnerImpl());
+    }
+
+    public AbstractJavaTask(CommandRunner commandRunner) {
+        this.runner = commandRunner;
+    }
+
+    protected int run() throws BuildException {
+        return runner.fork(this, commandLine.getCommandline());
+    }
+
+    public Path createClasspath() {
+        return commandLine.createClasspath(getProject()).createPath();
+    }
+
+    public void setClassPath(Path path) {
+        createClasspath().append(path);
+    }
+
+    public void setClasspathRef(Reference r) {
+        createClasspath().setRefid(r);
+    }
+
+    public Commandline.Argument createJvmarg() {
+        return commandLine.createVmArgument();
+    }
+}
