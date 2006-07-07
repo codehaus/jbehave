@@ -8,21 +8,23 @@
 package jbehave.ant;
 
 import jbehave.core.Run;
+import jbehave.core.Block;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.minimock.Constraint;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Path;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Collection;
 
 import net.sf.cotta.utils.ClassPathLocator;
+import net.sf.cotta.utils.ClassPath;
 
 
-/**
- * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
- *         Date: 19-Jul-2004
- */
 public class JBehaveTaskBehaviour extends UsingMiniMock {
     private JBehaveTask task;
     private StubCommandRunner runner = new StubCommandRunner();
@@ -52,43 +54,59 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
         ensureThat(runner.taskLog, sameInstanceAs(task));
         String[] actualCommand = runner.commandLineLog;
         ensureThat(actualCommand[0].endsWith("java.exe"), eq(true));
-        System.out.println(Arrays.asList(actualCommand));
+        List list = Arrays.asList(actualCommand);
+        ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
     }
-/*
+
+    private Constraint collectionContains(final Object item) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return ((Collection)arg).contains(item);
+            }
+
+            public String toString() {
+                return "Collection that cotains <" + item + ">";
+            }
+        };
+    }
+
     public void shouldRunMultipleBehaviourClasses() throws Exception {
-        // setup
         BehaviourClassDetails spec = task.createVerify();
         spec.setName(BehaviourClassOne.class.getName());
         BehaviourClassDetails spec2 = task.createVerify();
         spec2.setName(BehaviourClassTwo.class.getName());
+        runner.valueToReturn = 0;
 
-        // execute
         task.execute();
 
-        // verify
-        Ensure.that(BehaviourClassOne.wasCalled);
-        Ensure.that(BehaviourClassTwo.wasCalled);
+        List list = Arrays.asList(runner.commandLineLog);
+        ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
+        ensureThat(list, collectionContains(BehaviourClassTwo.class.getName()));
     }
 
     public void shouldUseClasspathFromClasspathElement() throws Exception {
-        // setup
         Path path = task.createClasspath();
         Path.PathElement element = path.createPathElement();
-        element.setPath(".\\classes");
+        ClassPath classPath = new ClassPathLocator(String.class).locate();
+        String pathToRuntimeJar = classPath.path();
+        element.setPath(pathToRuntimeJar);
         task.createVerify().setName(BehaviourClassOne.class.getName());
 
-        //execute
         task.execute();
 
-        // verify
-        Ensure.that(BehaviourClassOne.wasCalled);
+        List list = Arrays.asList(runner.commandLineLog);
+        int classPathSwitchElement = list.indexOf("-classpath");
+        ensureThat(classPathSwitchElement, not(eq(-1)));
+        String classPaths = (String) list.get(classPathSwitchElement + 1);
+        String[] classPathArray = classPaths.split(File.pathSeparator);
+        ensureThat(Arrays.asList(classPathArray), collectionContains(pathToRuntimeJar));
     }
 
     public void shouldFailTheBuildWhenVerificationFails() throws Exception {
-        // setup
         final String behaviourClassName = FailingBehaviourClass.class.getName();
         task.createVerify().setName(behaviourClassName);
-        // execute
+        runner.valueToReturn = 1;
+
         ensureThrows(BuildException.class, new Block() {
             public void run() throws Exception {
                 task.execute();
@@ -96,6 +114,7 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
         });
     }
 
+/* TODO
     public void shouldFailTheBuildWhenFirstSpecFails() throws Exception {
         // setup
         task.createVerify().setName("jbehave.extensions.ant.FailingSpec");

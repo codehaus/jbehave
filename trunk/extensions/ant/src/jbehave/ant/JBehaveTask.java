@@ -64,9 +64,9 @@ public class JBehaveTask extends AbstractJavaTask {
             commandLine.createArgument().setLine(behaviourClassDetail.getName());
         }
         if (run() != 0) {
-            throw new BuildException("behaviour verification failed");
+            throw new BuildException("behaviour verification FAILED");
         }
-        log("Behaviours verificed");
+        log("Behaviours verification passed");
     }
 
     public void executeOld() {
