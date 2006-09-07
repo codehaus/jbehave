@@ -1,5 +1,6 @@
 require 'buildmaster'
 
+
 class MySiteSpec < BuildMaster::SiteSpec
   def initialize
     root = File.dirname(__FILE__)
