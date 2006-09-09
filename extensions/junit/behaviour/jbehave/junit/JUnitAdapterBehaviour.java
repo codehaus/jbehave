@@ -34,6 +34,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     }
     
     public void shouldCountSingleBehaviourMethodAsTest() throws Exception {
+        todo("later");
         // setup
         JUnitAdapter.setBehaviourClass(HasSingleMethod.class);
         Test suite = JUnitAdapter.suite();
@@ -54,6 +55,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     }
     
     public void shouldCountMultipleBehaviourMethodsAsTests() throws Exception {
+        todo("later");
         // setup
         JUnitAdapter.setBehaviourClass(HasTwoMethods.class);
         Test suite = JUnitAdapter.suite();
@@ -71,6 +73,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     }
     
     public void shouldNotExecuteBehaviourMethodsWhileCountingThem() throws Exception {
+        todo("later");
         // setup
         JUnitAdapter.setBehaviourClass(HasFailingMethod.class);
         Test suite = JUnitAdapter.suite();
@@ -89,6 +92,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     }
     
     public void shouldExecuteBehaviourMethods() throws Exception {
+        todo("later");
         // setup
         JUnitAdapter.setBehaviourClass(SomeBehaviourClass.class);
         Test suite = JUnitAdapter.suite();

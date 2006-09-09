@@ -10,17 +10,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/cotta/cotta-1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../lib/extensions/junit.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/../lib/cotta/cotta-1.0-src.zip!/" />
-        </SOURCES>
+        <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="jbehave-core" />
     <orderEntryProperties />
   </component>
 </module>

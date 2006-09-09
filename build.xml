@@ -14,18 +14,15 @@
   
   <target name="build-jar" depends="-init">
     <mkdir dir="${classes_dir}" />
+    <unjar src="lib/cotta/cotta-1.0.jar" dest="${classes_dir}">
+        <patternset includes="net/**/*.*"/>
+    </unjar>
     <javac taskname="compile jbehave" destdir="${classes_dir}" source="1.3" target="1.3">
       <src>
         <pathelement path="core/src" />
         <dirset dir="extensions" includes="*/src" />
       </src>
-      <classpath>
-        <fileset dir="lib" includes="**/*.jar, **/*.zip" />
-      </classpath>
     </javac>
-    <copy todir="${classes_dir}">
-       
-    </copy>
     <jar basedir="${classes_dir}" jarfile="${jar_file}">
       <manifest>
         <attribute name="Main-Class" value="jbehave.core.Run" />
@@ -39,11 +36,10 @@
       <src>
         <pathelement path="core/behaviour" />
         <pathelement path="everything/behaviour" />
-        <dirset dir="extensions" includes="*/Behaviour" />
+        <dirset dir="extensions" includes="*/behaviour" />
       </src>
       <classpath>
         <pathelement path="${jar_file}" />
-        <fileset dir="lib" includes="**/*.jar, **/*.zip" />
       </classpath>
     </javac>
     <java taskname="run behaviours" classname="jbehave.core.Run" fork="true">
