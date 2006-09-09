@@ -19,7 +19,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="jbehave-core" />
+    <orderEntry type="module" module-name="jbehave-core" exported="" />
     <orderEntryProperties />
   </component>
 </module>

@@ -16,7 +16,10 @@
   <property name="zip_file" location="${code_dist_dir}/jbehave-src.zip" />
   
   <path id="LIBS">
-    <fileset dir="${lib_dir}" includes="**/*.jar, **/*.zip" />
+    <fileset dir="${lib_dir}" includes="extensions/jmock*.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/cglib*.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/junit.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/ant*.jar"/>
   </path>
   
   <echo message="Building version=${version}..." />
@@ -25,11 +28,12 @@
   
   <target name="-init">
     <mkdir dir="${working_dir}" />
-    <mkdir dir="${dist_dir}" />
+    <mkdir dir="${code_dist_dir}" />
   </target>
   
   <target name="clean" description="Clean out working directory">
     <delete dir="${working_dir}" />
+    <delete dir="${code_dist_dir}" />
   </target>
   
   <target name="clobber" depends="clean" description="Clean out everything">
@@ -44,22 +48,37 @@
 
   <target name="build-jar" depends="-init" description="Compile and assemble the jar">
     <mkdir dir="${classes_dir}" />
-    <javac srcdir="${core_dir}/src" destdir="${classes_dir}" source="1.3" target="1.3" classpathref="LIBS" debug="true">
+    <unjar taskname="importing cotta classes" src="${lib_dir}/cotta/cotta-1.0.jar" dest="${classes_dir}">
+      <patternset includes="net/**/*.*"/>
+    </unjar>
+    <javac taskname="build jbehave" srcdir="${core_dir}/src" destdir="${classes_dir}" source="1.3" target="1.3" classpathref="LIBS" debug="true">
       <src>
         <pathelement path="${core_dir}/src" />
         <dirset dir="${extensions_dir}" includes="**/src" />
       </src>
     </javac>
-    <copy todir="${classes_dir}" includeemptydirs="no">
-      <fileset dir="${core_dir}" includes="src/**" excludes="**/*.java, **/package.html" />
-      <fileset dir="${extensions_dir}" includes="**/src/**" excludes="**/*.java, **/package.html" />
-      <mapper type="regexp" from="(.*[\\/])?src[\\/](.*)" to="\2" />
+    <copy taskname="copying resource" todir="${classes_dir}">
+        <fileset dir="${core_dir}/src" excludes="**/*.java"/>
     </copy>
-    <mkdir dir="${code_dist_dir}" />
-    <jar basedir="${classes_dir}" jarfile="${jar_file}" />
+    <jar taskname="jbehave jar" basedir="${classes_dir}" jarfile="${jar_file}" />
   </target>
 
-  <target name="verify-jar" depends="build-jar" description="Verify behaviour of jar">
+  <target name="build-source-zip" depends="-init" description="Build the source zip file">
+      <property name="cotta-src" location="${working_dir}/cotta-src"/>
+      <mkdir dir="${cotta-src}"/>
+      <unzip taskname="importing cotta source" src="${lib_dir}/cotta/cotta-1.0-src.zip" dest="${cotta-src}">
+        <patternset includes="net/**/*.*"/>
+      </unzip>
+      <zip taskname="zipping source" destfile="${zip_file}" update="true">
+          <fileset dir="${core_dir}/src"/>
+          <fileset dir="${extensions_dir}/ant/src"/>
+          <fileset dir="${extensions_dir}/jmock/src"/>
+          <fileset dir="${extensions_dir}/junit/src"/>
+          <fileset dir="${cotta-src}" includes="net/**/*"/>
+      </zip>
+  </target>
+
+    <target name="verify-jar" depends="build-jar" description="Verify behaviour of jar">
     <mkdir dir="${behaviour_classes_dir}" />
     <javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="1.3" target="1.3" debug="true">
       <src>
@@ -69,7 +88,7 @@
       </src>
       <classpath>
           <pathelement path="${jar_file}" />
-          <path refid="LIBS" />
+          <path refid="LIBS"/>
       </classpath>
     </javac>
     <java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="true">

@@ -94,7 +94,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     }
     
     public static class HasSetUpAndTearDown {
-        public static final List whatHappened = new ArrayList();
+        public List whatHappened = new ArrayList();
         
         public void setUp() throws Exception {
             whatHappened.add("setUp");
@@ -109,7 +109,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
     
     public void shouldInvokeSetUpAndTearDownInTheCorrectSequence() throws Throwable {
         // given
-        Object instance = new HasSetUpAndTearDown();
+        HasSetUpAndTearDown instance = new HasSetUpAndTearDown();
         BehaviourListener listener = (BehaviourListener) stub(BehaviourListener.class);
         Behaviour behaviour = createBehaviourMethod(instance, "shouldDoSomething");
         
@@ -122,7 +122,7 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         behaviour.verifyTo(listener);
         
         // then
-        ensureThat(HasSetUpAndTearDown.whatHappened, eq(expected));
+        ensureThat(instance.whatHappened, eq(expected));
     }
 
     public static class CheckedException extends Exception {}
