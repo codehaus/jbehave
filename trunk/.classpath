@@ -21,5 +21,6 @@
 	<classpathentry kind="lib" path="lib/extensions/jmock-cglib.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/junit.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/velocity-dep-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/cotta/cotta-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
