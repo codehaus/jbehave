@@ -22,7 +22,13 @@
         <pathelement path="core/src" />
         <dirset dir="extensions" includes="*/src" />
       </src>
+	  <classpath>
+	  	<fileset dir="lib" includes="**/*.jar, **/*.zip" />
+	  </classpath>    	
     </javac>
+  	<copy todir="${classes_dir}">
+  		<fileset dir="core/src" includes="**/*.dat" />
+  	</copy>
     <jar basedir="${classes_dir}" jarfile="${jar_file}">
       <manifest>
         <attribute name="Main-Class" value="jbehave.core.Run" />
@@ -40,9 +46,10 @@
       </src>
       <classpath>
         <pathelement path="${jar_file}" />
+      	<fileset dir="lib" includes="**/*.jar, **/*.zip" />
       </classpath>
     </javac>
-    <java taskname="run behaviours" classname="jbehave.core.Run" fork="true">
+    <java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="true">
         <arg value="jbehave.AllBehaviours" />
         <classpath>
           <pathelement path="${behaviour_classes_dir}" />
