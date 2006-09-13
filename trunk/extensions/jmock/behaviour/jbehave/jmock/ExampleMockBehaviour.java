@@ -7,16 +7,11 @@
  */
 package jbehave.jmock;
 
-import jbehave.core.exception.PendingException;
-
-
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  *         Date: 16-Jul-2004
  */
 public class ExampleMockBehaviour extends UsingJMock {
-
-    private Mock aMock;
 
     interface Dependency {
         String invokeMe();
@@ -35,21 +30,16 @@ public class ExampleMockBehaviour extends UsingJMock {
     }
 
     public void shouldUseAMock() {
-        todo();
         // setup
         Mock dependencyMock = new Mock(Dependency.class);
-        ClassWithDependency a = new ClassWithDependency((Dependency) aMock.proxy());
+        ClassWithDependency dependent = new ClassWithDependency((Dependency) dependencyMock.proxy());
         // expect
         dependencyMock.expects(once()).
                 method("invokeMe").
                 withNoArguments().
                 will(returnValue("hello"));
         // execute
-        a.execute();
+        dependent.execute();
         // verify  happens auto-magically
-    }
-
-    private void todo() {
-        throw new PendingException("later, don't know why it is failing. SD");
     }
 }
