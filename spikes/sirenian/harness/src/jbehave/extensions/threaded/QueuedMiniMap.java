@@ -1,6 +1,6 @@
-package jbehave.extensions.harness;
+package jbehave.extensions.threaded;
 
-import jbehave.extensions.harness.time.TimeoutException;
+import jbehave.extensions.threaded.time.TimeoutException;
 
 public interface QueuedMiniMap {
     

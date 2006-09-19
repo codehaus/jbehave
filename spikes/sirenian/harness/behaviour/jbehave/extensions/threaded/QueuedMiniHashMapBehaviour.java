@@ -1,10 +1,10 @@
-package jbehave.extensions.harness;
+package jbehave.extensions.threaded;
 
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.extensions.harness.QueuedMiniHashMap;
-import jbehave.extensions.harness.time.ClockedTimeouterFactory;
-import jbehave.extensions.harness.time.PseudoClock;
-import jbehave.extensions.harness.time.TimeoutException;
+import jbehave.extensions.threaded.QueuedMiniHashMap;
+import jbehave.extensions.threaded.time.ClockedTimeouterFactory;
+import jbehave.extensions.threaded.time.PseudoClock;
+import jbehave.extensions.threaded.time.TimeoutException;
 
 
 public class QueuedMiniHashMapBehaviour extends UsingMiniMock {

@@ -1,6 +1,6 @@
-package jbehave.extensions.harness.time;
+package jbehave.extensions.threaded.time;
 
-import jbehave.extensions.harness.time.Clock;
+import jbehave.extensions.threaded.time.Clock;
 
 public class PseudoClock implements Clock {
 

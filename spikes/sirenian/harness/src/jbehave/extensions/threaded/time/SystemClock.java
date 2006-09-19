@@ -1,4 +1,4 @@
-package jbehave.extensions.harness.time;
+package jbehave.extensions.threaded.time;
 
 public class SystemClock implements Clock {
 

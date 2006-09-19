@@ -1,8 +1,8 @@
-package jbehave.extensions.harness.component;
+package jbehave.extensions.threaded.component;
 
 import java.awt.Component;
 
-import jbehave.extensions.harness.time.TimeoutException;
+import jbehave.extensions.threaded.time.TimeoutException;
 
 
 public interface WindowWrapper {

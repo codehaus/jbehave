@@ -1,4 +1,4 @@
-package jbehave.extensions.harness;
+package jbehave.extensions.threaded;
 
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
@@ -6,7 +6,7 @@ import java.awt.Window;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 
-import jbehave.extensions.harness.time.TimeoutException;
+import jbehave.extensions.threaded.time.TimeoutException;
 
 
 /**

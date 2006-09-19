@@ -1,4 +1,4 @@
-package jbehave.extensions.harness.component;
+package jbehave.extensions.threaded.component;
 
 import java.awt.AWTEvent;
 import java.awt.Component;
@@ -13,8 +13,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractButton;
 import javax.swing.text.JTextComponent;
 
-import jbehave.extensions.harness.WindowGrabber;
-import jbehave.extensions.harness.time.TimeoutException;
+import jbehave.extensions.threaded.WindowGrabber;
+import jbehave.extensions.threaded.time.TimeoutException;
 
 
 public class DefaultWindowWrapper implements WindowWrapper {

@@ -1,13 +1,14 @@
-package jbehave.extensions.harness;
+package jbehave.extensions.threaded;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import jbehave.extensions.harness.time.ClockedTimeouterFactory;
-import jbehave.extensions.harness.time.TimeoutException;
-import jbehave.extensions.harness.time.Timeouter;
-import jbehave.extensions.harness.time.TimeouterFactory;
+import jbehave.extensions.threaded.QueuedMiniMap;
+import jbehave.extensions.threaded.time.ClockedTimeouterFactory;
+import jbehave.extensions.threaded.time.TimeoutException;
+import jbehave.extensions.threaded.time.Timeouter;
+import jbehave.extensions.threaded.time.TimeouterFactory;
 
 
 /**

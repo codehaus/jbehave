@@ -1,4 +1,4 @@
-package jbehave.extensions.harness.component;
+package jbehave.extensions.threaded.component;
 
 import java.awt.Component;
 import java.awt.Container;

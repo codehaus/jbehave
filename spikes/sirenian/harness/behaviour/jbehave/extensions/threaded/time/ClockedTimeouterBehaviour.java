@@ -1,9 +1,10 @@
-package jbehave.extensions.harness.time;
+package jbehave.extensions.threaded.time;
 
 import jbehave.core.minimock.Constraint;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.extensions.harness.time.ClockedTimeouter;
-import jbehave.extensions.harness.time.TimeoutException;
+import jbehave.extensions.harness.time.PseudoClock;
+import jbehave.extensions.threaded.time.ClockedTimeouter;
+import jbehave.extensions.threaded.time.TimeoutException;
 
 public class ClockedTimeouterBehaviour extends UsingMiniMock {
 	

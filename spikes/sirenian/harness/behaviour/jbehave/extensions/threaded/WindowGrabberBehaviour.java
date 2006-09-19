@@ -1,13 +1,13 @@
-package jbehave.extensions.harness;
+package jbehave.extensions.threaded;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.extensions.harness.QueuedMiniMap;
-import jbehave.extensions.harness.WindowGrabber;
-import jbehave.extensions.harness.time.TimeoutException;
+import jbehave.extensions.threaded.QueuedMiniMap;
+import jbehave.extensions.threaded.WindowGrabber;
+import jbehave.extensions.threaded.time.TimeoutException;
 
 
 public class WindowGrabberBehaviour extends UsingMiniMock {
