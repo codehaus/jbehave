@@ -1,4 +1,4 @@
-package jbehave.extensions.threaded.component;
+package jbehave.extensions.threaded.swing;
 
 import java.awt.AWTEvent;
 import java.awt.Component;

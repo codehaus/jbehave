@@ -1,8 +1,6 @@
 package jbehave.extensions.threaded;
 
 import jbehave.core.behaviour.Behaviours;
-import jbehave.extensions.harness.QueuedMiniHashMapBehaviour;
-import jbehave.extensions.harness.WindowGrabberBehaviour;
 import jbehave.extensions.threaded.swing.ComponentFinderBehaviour;
 import jbehave.extensions.threaded.swing.DefaultWindowWrapperBehaviour;
 import jbehave.extensions.threaded.swing.NamedComponentFilterBehaviour;

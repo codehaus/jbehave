@@ -2,7 +2,7 @@ package jbehave.extensions.threaded.time;
 
 import jbehave.core.minimock.Constraint;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.extensions.harness.time.PseudoClock;
+import jbehave.extensions.threaded.time.PseudoClock;
 import jbehave.extensions.threaded.time.ClockedTimeouter;
 import jbehave.extensions.threaded.time.TimeoutException;
 

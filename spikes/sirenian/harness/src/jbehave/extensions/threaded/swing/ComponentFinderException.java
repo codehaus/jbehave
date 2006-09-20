@@ -1,4 +1,4 @@
-package jbehave.extensions.threaded.component;
+package jbehave.extensions.threaded.swing;
 
 public class ComponentFinderException extends Exception {
 
