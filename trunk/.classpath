@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="core/behaviour"/>
-	<classpathentry kind="src" path="extensions/swing/behaviour"/>
-	<classpathentry kind="src" path="extensions/swing/src"/>
+	<classpathentry kind="src" path="core/src/behaviour"/>
+	<classpathentry kind="src" path="extensions/swing/src/behaviour"/>
+	<classpathentry kind="src" path="extensions/swing/src/java"/>
 	<classpathentry kind="src" path="examples/hellbound/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src"/>
 	<classpathentry kind="src" path="examples/hellbound/stories"/>
-	<classpathentry kind="src" path="core/src"/>
-	<classpathentry kind="src" path="extensions/ant/behaviour"/>
-	<classpathentry kind="src" path="extensions/ant/src"/>
-	<classpathentry kind="src" path="extensions/jmock/behaviour"/>
-	<classpathentry kind="src" path="extensions/jmock/src"/>
-	<classpathentry kind="src" path="extensions/junit/behaviour"/>
-	<classpathentry kind="src" path="extensions/junit/src"/>
+	<classpathentry kind="src" path="core/src/java"/>
+	<classpathentry kind="src" path="extensions/ant/src/behaviour"/>
+	<classpathentry kind="src" path="extensions/ant/src/java"/>
+	<classpathentry kind="src" path="extensions/jmock/src/behaviour"/>
+	<classpathentry kind="src" path="extensions/jmock/src/java"/>
+	<classpathentry kind="src" path="extensions/junit/src/behaviour"/>
+	<classpathentry kind="src" path="extensions/junit/src/java"/>
 	<classpathentry kind="src" path="examples/atm/src"/>
 	<classpathentry kind="src" path="examples/atm/stories"/>
 	<classpathentry kind="src" path="examples/currency/behaviour"/>
 	<classpathentry kind="src" path="examples/currency/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="everything/behaviour"/>
+	<classpathentry kind="src" path="everything/src/behaviour"/>
 	<classpathentry kind="lib" path="lib/extensions/ant.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
