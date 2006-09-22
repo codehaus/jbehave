@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="core/behaviour"/>
+	<classpathentry kind="src" path="extensions/swing/behaviour"/>
+	<classpathentry kind="src" path="extensions/swing/src"/>
+	<classpathentry kind="src" path="examples/hellbound/behaviour"/>
+	<classpathentry kind="src" path="examples/hellbound/src"/>
+	<classpathentry kind="src" path="examples/hellbound/stories"/>
 	<classpathentry kind="src" path="core/src"/>
 	<classpathentry kind="src" path="extensions/ant/behaviour"/>
 	<classpathentry kind="src" path="extensions/ant/src"/>
