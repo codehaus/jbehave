@@ -1,0 +1,12 @@
+Title: The Glyph Moves As Time Passes
+As a game player
+I want the glyph to move downwards as time passes
+So that the game is a challenge
+
+Scenario: The Player Sees The First Glyph Moves
+Given Hellbound is running
+When the player starts the game
+Then the first glyph should be displayed in the pit
+And when time passes
+Then the glyph should move downwards
+

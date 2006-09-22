@@ -1,0 +1,12 @@
+Title: The Player Loses The Game
+As a game player
+I want to lose the game
+So that the game is a challenge
+
+Scenario: No space for the next glyph
+Given that the junk is very high
+When the glyph appears
+And the player drops it
+Then the glyph becomes junk
+And the next glyph appears overlapping the junk
+And the game is over

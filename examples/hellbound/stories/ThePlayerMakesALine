@@ -1,0 +1,12 @@
+Title: The Player Makes A Line
+As a game player
+I want lines to disappear when I complete them
+So that I can progress the game
+
+Scenario: The player drops the glyph to make a line
+Given that the junk requires a space to make a line
+And a glyph is above the space
+When the player presses the drop button
+Then the glyph becomes junk
+And then the line disappears
+And then the next glyph appears
