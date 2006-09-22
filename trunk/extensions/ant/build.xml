@@ -1,7 +1,7 @@
 <project name="jbehave-ant" basedir="." default="all">
-    <property name="src.dir" location="src"/>
+    <property name="src.dir" location="src/java"/>
     <property name="version" value="0-1.snapshot"/>
-    <property name="behaviour.dir" location="behaviour"/>
+    <property name="behaviour.dir" location="src/behaviour"/>
     <property name="build.dir" location="build"/>
     <property name="jbehave.dist.dir" location="../../build/dist/snapshot"/>
     <property name="dist.dir" location="${build.dir}/dist"/>

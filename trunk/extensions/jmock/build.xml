@@ -1,7 +1,7 @@
 <project name="jbehave-jmock" basedir="." default="verify">
-	<property name="src.dir" value="src"/>
+	<property name="src.dir" value="src/java"/>
 	<property name="version" value="0-1.snapshot"/>
-	<property name="spec.dir" value="behaviour" />
+	<property name="spec.dir" value="src/behaviour" />
 	<property name="build.dir" value="build"/>
 	<property name="dist.dir" value="dist"/>
 	<property name="jar.file" value="${dist.dir}/jbehave-jmock-${version}.jar" />
