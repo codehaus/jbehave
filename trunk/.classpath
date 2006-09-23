@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="core/src/java"/>
 	<classpathentry kind="src" path="core/src/behaviour"/>
-	<classpathentry kind="src" path="extensions/swing/src/java"/>
-	<classpathentry kind="src" path="extensions/swing/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/ant/src/java"/>
 	<classpathentry kind="src" path="extensions/ant/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/jmock/src/java"/>
 	<classpathentry kind="src" path="extensions/jmock/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/junit/src/java"/>
 	<classpathentry kind="src" path="extensions/junit/src/behaviour"/>
+	<classpathentry kind="src" path="extensions/swing/src/java"/>
+	<classpathentry kind="src" path="extensions/swing/src/behaviour"/>
 	<classpathentry kind="src" path="everything/src/behaviour"/>
 	<classpathentry kind="src" path="examples/atm/src"/>
 	<classpathentry kind="src" path="examples/atm/stories"/>
