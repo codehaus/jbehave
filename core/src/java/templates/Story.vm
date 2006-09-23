@@ -3,13 +3,13 @@
  */
 package ${basePackage};
 
-import com.thoughtworks.jbehave.extensions.story.domain.Story;
-import com.thoughtworks.jbehave.extensions.story.domain.Context;
-import com.thoughtworks.jbehave.extensions.story.domain.Outcome;
-import com.thoughtworks.jbehave.extensions.story.domain.Narrative;
-import com.thoughtworks.jbehave.extensions.story.domain.AcceptanceCriteria;
-import com.thoughtworks.jbehave.extensions.story.domain.ScenarioUsingMiniMock;
-import com.thoughtworks.jbehave.extensions.story.domain.Given;
+import jbehave.story.domain.Story;
+import jbehave.story.domain.Context;
+import jbehave.story.domain.Outcome;
+import jbehave.story.domain.Narrative;
+import jbehave.story.domain.AcceptanceCriteria;
+import jbehave.story.domain.ScenarioUsingMiniMock;
+import jbehave.story.domain.Given;
 
 public class $story.className extends Story {
 

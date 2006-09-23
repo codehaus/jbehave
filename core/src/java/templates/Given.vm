@@ -3,8 +3,8 @@
  */
 package ${basePackage};
 
-import com.thoughtworks.jbehave.extensions.story.domain.GivenUsingMiniMock;
-import com.thoughtworks.jbehave.extensions.story.domain.Environment;
+import jbehave.story.domain.GivenUsingMiniMock;
+import jbehave.story.domain.Environment;
 
 
 public class ${given.className} extends GivenUsingMiniMock {

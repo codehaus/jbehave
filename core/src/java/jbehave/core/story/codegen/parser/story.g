@@ -1,5 +1,5 @@
 header {
-package com.thoughtworks.jbehave.extensions.story.codegen.parser;
+package jbehave.story.codegen.parser;
 }
 
 // **************************************************************************
@@ -52,11 +52,11 @@ and         : "and" sentence;
 sentence    : (TEXT)+ (NEWLINE)+;
 
 {
-import com.thoughtworks.jbehave.extensions.story.codegen.domain.StoryDetails;
-import com.thoughtworks.jbehave.extensions.story.codegen.domain.ScenarioDetails;
-import com.thoughtworks.jbehave.extensions.story.codegen.domain.BasicDetails;
-import com.thoughtworks.jbehave.extensions.story.codegen.domain.ContextDetails;
-import com.thoughtworks.jbehave.extensions.story.codegen.domain.OutcomeDetails;
+import jbehave.story.codegen.domain.StoryDetails;
+import jbehave.story.codegen.domain.ScenarioDetails;
+import jbehave.story.codegen.domain.BasicDetails;
+import jbehave.story.codegen.domain.ContextDetails;
+import jbehave.story.codegen.domain.OutcomeDetails;
 }
 
 class StoryTreeWalker extends TreeParser;

@@ -32,7 +32,7 @@ import antlr.TokenStreamException;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class StoryGeneratorSpike {
-    private static String genDir = "build/generated/com/thoughtworks/example/stories/";
+    private static String genDir = "build/generated/example/stories/";
 
     public StoryGeneratorSpike(Writer out) {
     }
@@ -46,11 +46,11 @@ public class StoryGeneratorSpike {
 
             ve.init();
             new File("build/generated").delete();
-            new File("build/generated/com/thoughtworks/example/stories").mkdirs();
+            new File("build/generated/example/stories").mkdirs();
             // read template
             StoryDetails story = buildStory();
             VelocityContext context = new VelocityContext();
-            context.put("basePackage", "com.thoughtworks.example.stories");
+            context.put("basePackage", "example.stories");
             generateStory(context, story, ve);
             generateOtherStuff(context, story, ve);
         } catch (Exception e) {

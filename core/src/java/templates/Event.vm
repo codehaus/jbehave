@@ -1,8 +1,8 @@
 package ${basePackage};
 
 
-import com.thoughtworks.jbehave.extensions.story.domain.EventUsingMiniMock;
-import com.thoughtworks.jbehave.extensions.story.domain.World;
+import jbehave.story.domain.EventUsingMiniMock;
+import jbehave.story.domain.World;
 
 public class ${event} extends EventUsingMiniMock {
 
