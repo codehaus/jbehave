@@ -53,7 +53,7 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
 
         ensureThat(runner.taskLog, sameInstanceAs(task));
         String[] actualCommand = runner.commandLineLog;
-        ensureThat(actualCommand[0].endsWith("java.exe"), eq(true));
+        ensureThat(actualCommand[0].contains("java"), eq(true));
         List list = Arrays.asList(actualCommand);
         ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
     }
@@ -65,7 +65,7 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
             }
 
             public String toString() {
-                return "Collection that cotains <" + item + ">";
+                return "Collection that contains <" + item + ">";
             }
         };
     }
