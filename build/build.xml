@@ -1,8 +1,5 @@
 <project name="jbehave" default="build">
 	<property name="version" value="snapshot" />
-	<property name="artifact_dist_dir" location="${dist_dir}/${version}" />
-	<property name="jbehave_jar" location="${artifact_dist_dir}/jbehave.jar" />
-	<property name="jbehave_src_zip" location="${artifact_dist_dir}/jbehave-src.zip" />
 
 	<!-- build output structure -->
 	<property name="output_dir" location="delete_me" />
@@ -11,8 +8,11 @@
 	<property name="hellbound_classes_dir" location="${output_dir}/hellbound-classes" />
 	<property name="hellbound_behaviour_classes_dir" location="${output_dir}/hellbound-behaviours" />
 	<property name="dist_dir" location="${output_dir}/dist" />
+	<property name="artifact_dist_dir" location="${dist_dir}/${version}" />
 	<property name="website_dist_dir" location="${dist_dir}/website"/>
 	<property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
+	<property name="jbehave_jar" location="${artifact_dist_dir}/jbehave.jar" />
+	<property name="jbehave_src_zip" location="${artifact_dist_dir}/jbehave-src.zip" />
 
 	<!-- components -->
 	<property name="core_dir" location="../core" />
