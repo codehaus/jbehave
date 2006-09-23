@@ -1,11 +1,9 @@
 package jbehave.extensions.threaded;
 
-import java.awt.Window;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import jbehave.extensions.threaded.QueuedMiniMap;
 import jbehave.extensions.threaded.time.ClockedTimeouterFactory;
 import jbehave.extensions.threaded.time.TimeoutException;
 import jbehave.extensions.threaded.time.Timeouter;

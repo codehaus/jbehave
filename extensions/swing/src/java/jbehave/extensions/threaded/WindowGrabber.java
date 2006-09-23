@@ -1,11 +1,9 @@
 package jbehave.extensions.threaded;
 
 import java.awt.AWTEvent;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.AWTEventListener;
-import java.awt.event.InvocationEvent;
 import java.awt.event.WindowEvent;
 
 import jbehave.extensions.threaded.time.TimeoutException;

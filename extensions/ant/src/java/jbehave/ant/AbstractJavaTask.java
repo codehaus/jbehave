@@ -1,15 +1,11 @@
 package jbehave.ant;
 
-import org.apache.tools.ant.Task;
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.taskdefs.Redirector;
-import org.apache.tools.ant.taskdefs.Execute;
+import org.apache.tools.ant.Task;
+import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.CommandlineJava;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
-import org.apache.tools.ant.types.Commandline;
-
-import java.io.IOException;
 
 abstract public class AbstractJavaTask extends Task {
 
