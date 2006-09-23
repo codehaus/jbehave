@@ -13,7 +13,8 @@ import jbehave.core.story.listener.PlainTextListenerBehaviour;
 public class BehavioursLoaderBehaviour extends UsingConstraints {
 
     public void shouldLoadPublicBehaviourEndedWithBehaviourButNotAbstract() throws Exception {
-        Set loadedFromBehaviourLoader = new HashSet(Arrays.asList(new BehavioursLoader(getClass()).loadBehaviours()));
+        BehavioursLoader loader = new BehavioursLoader(getClass());
+        Set loadedFromBehaviourLoader = new HashSet(Arrays.asList(loader.loadBehaviours()));
         ensureThatBehavioursAreLoaded(loadedFromBehaviourLoader);
     }
 
@@ -65,14 +66,11 @@ public class BehavioursLoaderBehaviour extends UsingConstraints {
     }
 
     
-    private static class CustomClassLoader extends ClassLoader {
-        
-        boolean invalid;
-        
+    private static class CustomClassLoader extends ClassLoader {        
+        boolean invalid;        
         public CustomClassLoader(boolean invalid) {
             this.invalid = invalid;
         }
-
         public Class findClass(String name) throws ClassNotFoundException{
             if ( invalid ){
                 throw new ClassNotFoundException();
