@@ -11,13 +11,13 @@
 	<classpathentry kind="src" path="extensions/swing/src/java"/>
 	<classpathentry kind="src" path="extensions/swing/src/behaviour"/>
 	<classpathentry kind="src" path="everything/src/behaviour"/>
-	<classpathentry kind="src" path="examples/atm/src"/>
-	<classpathentry kind="src" path="examples/atm/stories"/>
-	<classpathentry kind="src" path="examples/currency/src"/>
-	<classpathentry kind="src" path="examples/currency/behaviour"/>
-	<classpathentry kind="src" path="examples/hellbound/src"/>
-	<classpathentry kind="src" path="examples/hellbound/behaviour"/>
-	<classpathentry kind="src" path="examples/hellbound/stories"/>
+	<classpathentry kind="src" path="examples/atm/src/java"/>
+	<classpathentry kind="src" path="examples/atm/src/stories"/>
+	<classpathentry kind="src" path="examples/currency/src/java"/>
+	<classpathentry kind="src" path="examples/currency/src/behaviour"/>
+	<classpathentry kind="src" path="examples/hellbound/src/java"/>
+	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
+	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/extensions/ant.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/ant-contrib.jar"/>
