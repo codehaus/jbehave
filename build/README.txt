@@ -1,4 +1,4 @@
-The default target "rebuild" cleans out the delete_me working dir and builds
+The default target "build" cleans out the delete_me working dir and builds
 the jbehave.jar and the full source binary jbehave-src.zip.
 
 To build a release:
