@@ -1,26 +1,13 @@
 <project name="jbehave" default="build">
-	<property name="version" value="snapshot" />
+	<property name="version" value="1.0-SNAPSHOT" />
+	<echo message="Building version ${version}..." />
 
-	<!-- build output structure -->
-	<property name="output_dir" location="delete_me" />
-	<property name="classes_dir" location="${output_dir}/classes" />
-	<property name="behaviour_classes_dir" location="${output_dir}/behaviour-classes" />
-	<property name="hellbound_classes_dir" location="${output_dir}/hellbound-classes" />
-	<property name="hellbound_behaviour_classes_dir" location="${output_dir}/hellbound-behaviours" />
-	<property name="dist_dir" location="${output_dir}/dist" />
-	<property name="artifact_dist_dir" location="${dist_dir}/${version}" />
-	<property name="website_dist_dir" location="${dist_dir}/website"/>
-	<property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
-	<property name="jbehave_jar" location="${artifact_dist_dir}/jbehave.jar" />
-	<property name="jbehave_src_zip" location="${artifact_dist_dir}/jbehave-src.zip" />
-
-	<!-- components -->
-	<property name="core_dir" location="../core" />
-	<property name="everything_dir" location="../everything" />
-	<property name="extensions_dir" location="../extensions" />
-	<property name="website_dir" location="../website" />
-
-	<property name="lib_dir" location="../lib" />
+	<!-- modules -->
+	<property name="core_dir" location="core" />
+	<property name="everything_dir" location="everything" />
+	<property name="extensions_dir" location="extensions" />
+	<property name="website_dir" location="website" />
+	<property name="lib_dir" location="lib" />
 	<path id="libs">
 		<fileset dir="${lib_dir}" includes="extensions/jmock*.jar" />
 		<fileset dir="${lib_dir}" includes="extensions/cglib*.jar" />
@@ -28,23 +15,37 @@
 		<fileset dir="${lib_dir}" includes="extensions/ant*.jar"/>
 	</path>
 
-	<echo message="Building version ${version}..." />
+	<!-- build output structure -->
+	<property name="output_dir" location="delete_me" />
+	<property name="classes_dir" location="${output_dir}/classes" />
+	<property name="behaviour_classes_dir" location="${output_dir}/behaviour-classes" />
+	<property name="hellbound_classes_dir" location="${output_dir}/hellbound-classes" />
+	<property name="hellbound_behaviour_classes_dir" location="${output_dir}/hellbound-behaviours" />
+	<property name="jbehave_zip" location="${output_dir}/jbehave.zip" />
+	<property name="dist_dir" location="${output_dir}/${version}" />
+	<property name="jbehave_jar" location="${dist_dir}/jbehave.jar" />
+	<property name="jbehave_src_zip" location="${dist_dir}/jbehave-src.zip" />
+	<property name="website_dist_dir" location="${dist_dir}/website"/>
+	<property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
 
 	<!-- general targets -->
-	<target name="-init">
-		<mkdir dir="${output_dir}" />
-	</target>
-
 	<target name="clean" description="Clean out output directory">
 		<delete dir="${output_dir}" />
 	</target>
 
-	<target name="build" depends="clean, verify-behaviour, build-source-zip" 
-		description="build the binaries and source" />
+	<target name="build" depends="verify-behaviour, build-source-zip" 
+		description="build the jbehave binary and source" />
 
-	<target name="dist" depends="build, website" description="build the binaries and website" />
+	<target name="dist" depends="build, website" description="assemble distribution">
+		<zip taskname="assemble release" destfile="${jbehave_zip}" update="true">
+			<fileset dir="${dist_dir}"/>
+		</zip>
+	</target>
 
 	<!-- build and assemble -->
+	<target name="-init">
+		<mkdir dir="${output_dir}" />
+	</target>
 
 	<target name="build-jar" depends="-init" description="Compile and assemble the jar">
 		<mkdir dir="${classes_dir}" />
@@ -60,7 +61,7 @@
 		<copy taskname="copying resource" todir="${classes_dir}">
 			<fileset dir="${core_dir}/src/java" excludes="**/*.java"/>
 		</copy>
-		<mkdir dir="${artifact_dist_dir}" />
+		<mkdir dir="${dist_dir}" />
 		<jar taskname="jbehave jar" basedir="${classes_dir}" jarfile="${jbehave_jar}" />
 	</target>
 
@@ -70,7 +71,7 @@
 		<unzip taskname="importing cotta source" src="${lib_dir}/cotta/cotta-1.0-src.zip" dest="${cotta-src}">
 			<patternset includes="net/**/*.*"/>
 		</unzip>
-		<mkdir dir="${artifact_dist_dir}" />
+		<mkdir dir="${dist_dir}" />
 		<zip taskname="zipping source" destfile="${jbehave_src_zip}" update="true">
 			<fileset dir="${core_dir}/src"/>
 			<fileset dir="${extensions_dir}/ant/src"/>
