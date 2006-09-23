@@ -14,7 +14,7 @@ might have <tt>shouldFindCustomerBySurname()</tt>).
 
 These will typically set up a known environment, execute some behaviour and
 then verify that stuff happened. There are some static methods in
-<tt>com.thoughtworks.jbehave.core.Verify</tt> that help with this, for instance
+<tt>jbehave.core.Verify</tt> that help with this, for instance
 <tt>Verify.that(somethingHappened)</tt> and <tt>Verify.equal(expectedValue, actualValue)</tt>.
 
 Our template behaviour method looks like this:
@@ -33,8 +33,8 @@ The <tt>DoSomething</tt> is highlighted so we know we have to change it to actua
 describe some behaviour. Templates are nice like that.
 
 Behaviour classes can be contained in, wait for it, a behaviour class container.
-This is a plain Java class that implements the <tt>com.thoughtworks.jbehave.core.BehaviourClassContainer</tt>
-interface. This has a single method: <tt>getBehaviourClasses()</tt>, which returns an
+This is a plain Java class that implements the <tt>jbehave.core.util.BehavioursLoader</tt>
+interface. This has a single method: <tt>loadBehaviours()</tt>, which returns an
 array of <tt>Class</tt> objects representing the behaviour classes to run. Naturally
 behaviour class containers can contain other behaviour class containers.
 
@@ -45,10 +45,10 @@ A single behaviour method is verified by a <tt>MethodVerifier</tt>, a behaviour 
 is verified by a <tt>BehaviourClassVerifier</tt>
 
 So how do we tie this all together? There is a small <tt>main</tt> method inside
-<tt>com.thoughtworks.jbehave.core.Run</tt> that takes a behaviour class name as its argument and invokes a
+<tt>jbehave.core.Run</tt> that takes a behaviour class name as its argument and invokes a
 <tt>BehaviourVerifier</tt> on it passing in a <tt>TextListener</tt>. Run that with
-<tt>jbehave-core.jar</tt> on your classpath. And, um, that's it. So:
+<tt>jbehave.jar</tt> on your classpath. And, um, that's it. So:
 
 <div class="Shaded">
-<pre>java -cp jbehave.jar;your_classpath com.thoughtworks.jbehave.core.Run your.ApplicationBehaviour</pre>
+<pre>java -cp jbehave.jar;your_classpath jbehave.core.Run your.ApplicationBehaviour</pre>
 </div>
