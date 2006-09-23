@@ -93,7 +93,7 @@
           <path refid="LIBS"/>
       </classpath>
     </javac>
-    <java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="false">
+    <java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="true">
       <arg value="jbehave.AllBehaviours" />
       <classpath>
         <pathelement path="${behaviour_classes_dir}" />
