@@ -179,9 +179,8 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/extensions/ant/ant.iml" filepath="$PROJECT_DIR$/extensions/ant/ant.iml" />
-      <module fileurl="file://$PROJECT_DIR$/build/build.iml" filepath="$PROJECT_DIR$/build/build.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/jbehave-core.iml" filepath="$PROJECT_DIR$/core/jbehave-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/extensions/ant/ant.iml" filepath="$PROJECT_DIR$/extensions/ant/ant.iml" />
       <module fileurl="file://$PROJECT_DIR$/extensions/jmock/jmock-extension.iml" filepath="$PROJECT_DIR$/extensions/jmock/jmock-extension.iml" />
       <module fileurl="file://$PROJECT_DIR$/extensions/junit/junit-extension.iml" filepath="$PROJECT_DIR$/extensions/junit/junit-extension.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
