@@ -9,13 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.Modifier;
 
+/**
+ * Loads behaviour classes, using injected ClassLoader.  If none provided,
+ * the current context ClassLoader is used.
+ * 
+ * @author Mauro Talevi
+ */
 public class BehavioursLoader {
     private Class markerClass;
+    private ClassLoader classLoader;
 
     public BehavioursLoader(Class markerClass) {
-        this.markerClass = markerClass;
+        this(markerClass, Thread.currentThread().getContextClassLoader());
     }
 
+    public BehavioursLoader(Class markerClass, ClassLoader classLoader) {
+        this.markerClass = markerClass;
+        this.classLoader = classLoader;
+    }
+    
     public Class[] loadBehaviours() {
         ClassPathLocator classPathLocator = new ClassPathLocator(markerClass);
         ClassPath classPath = classPathLocator.locate();
@@ -51,7 +63,7 @@ public class BehavioursLoader {
             String name = (String) classNames.get(i);
             Class behaviourClass = null;
             try {
-                behaviourClass = Class.forName(name);
+                behaviourClass = classLoader.loadClass(name);
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException("Cannot load class:" + name);
             }
