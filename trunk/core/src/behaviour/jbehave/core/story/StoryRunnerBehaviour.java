@@ -14,14 +14,14 @@ import jbehave.core.story.listener.PlainTextScenarioListener;
 import jbehave.core.story.result.ScenarioResult;
 import jbehave.core.story.visitor.Visitor;
 
-public class RunBehaviour extends UsingMiniMock {
+public class StoryRunnerBehaviour extends UsingMiniMock {
 
 	public void shouldRunStoryAndOutputResults() throws Exception {
 		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		
 		PrintStream stream = new PrintStream(buffer);
 		
-		new Run().story(SimpleStory.class.getName(), stream);
+		new StoryRunner().run(SimpleStory.class.getName(), stream);
 
         Ensure.that(buffer.toString(), contains(".."));
 		Ensure.that(buffer.toString(), contains("Total: 2."));

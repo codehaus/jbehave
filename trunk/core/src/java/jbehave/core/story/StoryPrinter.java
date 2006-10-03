@@ -13,19 +13,18 @@ import jbehave.core.story.renderer.PlainTextRenderer;
 
 /**
  * @todo Introduce StoryLoader
- * @todo Rename PrintStory to StoryPrinter
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Mauro Talevi
  */
-public class PrintStory {
+public class StoryPrinter {
 
     private ClassLoader classLoader;
     
-    public PrintStory(){
+    public StoryPrinter(){
         this(Thread.currentThread().getContextClassLoader());
     }
 
-    public PrintStory(ClassLoader classLoader) {
+    public StoryPrinter(ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
     
@@ -36,7 +35,7 @@ public class PrintStory {
 
     public static void main(String[] args) {        
         try {
-            PrintStory printer = new PrintStory();
+            StoryPrinter printer = new StoryPrinter();
             printer.print(args[0]);            
         } catch (Exception e) {
             e.printStackTrace();

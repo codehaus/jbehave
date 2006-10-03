@@ -20,28 +20,28 @@ import jbehave.core.story.listener.PlainTextScenarioListener;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Mauro Talevi
  */
-public class Run {
+public class StoryRunner {
     
     private ClassLoader classLoader;
     
-    public Run(){
+    public StoryRunner(){
         this(Thread.currentThread().getContextClassLoader());
     }
 
-    public Run(ClassLoader classLoader) {
+    public StoryRunner(ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 
-    public void story(String storyClassName, PrintStream printStream) 
+    public void run(String storyClassName, PrintStream printStream) 
         throws InstantiationException, IllegalAccessException, ClassNotFoundException {    
-        story(loadStory(storyClassName, classLoader), printStream);
+        run(loadStory(storyClassName, classLoader), printStream);
     }
     
-    public void story(Story story) {
-        story(story, System.out);
+    public void run(Story story) {
+        run(story, System.out);
     }
 
-    public void story(Story story, PrintStream printStream) {
+    public void run(Story story, PrintStream printStream) {
         World world = new HashMapWorld();
 		PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(printStream));
         story.addListener(listener);
@@ -55,8 +55,8 @@ public class Run {
     
     public static void main(String[] args) {
         try {
-            Run run = new Run();
-            run.story(args[0], System.out);
+            StoryRunner runner = new StoryRunner();
+            runner.run(args[0], System.out);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -30,7 +30,7 @@ import jbehave.core.story.visitor.VisitableArrayListBehaviour;
 public class AllBehaviours implements Behaviours {
     public Class[] getBehaviours() {
         return new Class[] {
-        		RunBehaviour.class,
+        		StoryRunnerBehaviour.class,
         		ScenariosBehaviour.class,
                 TextStoryParserBehaviour.class,
 				GivenScenarioBehaviour.class,
