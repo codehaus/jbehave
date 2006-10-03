@@ -12,18 +12,35 @@ import jbehave.core.story.renderer.PlainTextRenderer;
 
 
 /**
+ * @todo Introduce StoryLoader
+ * @todo Rename PrintStory to StoryPrinter
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Mauro Talevi
  */
 public class PrintStory {
 
-    public static void main(String[] args) {
-        
-        try {
-            Story story = (Story) Class.forName(args[0]).newInstance();
-            story.accept(new PlainTextRenderer(System.out));
+    private ClassLoader classLoader;
+    
+    public PrintStory(){
+        this(Thread.currentThread().getContextClassLoader());
+    }
 
+    public PrintStory(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+    
+    public void print(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+        Story story = (Story) classLoader.loadClass(storyClassName).newInstance();
+        story.accept(new PlainTextRenderer(System.out));
+    }
+
+    public static void main(String[] args) {        
+        try {
+            PrintStory printer = new PrintStory();
+            printer.print(args[0]);            
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
 }

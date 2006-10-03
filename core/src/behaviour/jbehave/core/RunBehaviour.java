@@ -72,7 +72,7 @@ public class RunBehaviour {
             if ( invalid ){
                 throw new ClassNotFoundException();
             }
-            return Class.forName(name);            
+            return Run.class.getClassLoader().loadClass(name);            
         }
     }
 }

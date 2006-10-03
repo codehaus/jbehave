@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import jbehave.core.Run;
 import jbehave.core.minimock.Constraint;
 import jbehave.core.minimock.MockObjectBehaviour;
 import jbehave.core.minimock.UsingConstraints;
@@ -75,7 +76,7 @@ public class BehavioursLoaderBehaviour extends UsingConstraints {
             if ( invalid ){
                 throw new ClassNotFoundException();
             }
-            return Class.forName(name);            
+            return BehavioursLoader.class.getClassLoader().loadClass(name);            
         }
     }
 }

@@ -21,7 +21,7 @@ public class RunBehaviour extends UsingMiniMock {
 		
 		PrintStream stream = new PrintStream(buffer);
 		
-		Run.story(SimpleStory.class.getName(), stream);
+		new Run().story(SimpleStory.class.getName(), stream);
 
         Ensure.that(buffer.toString(), contains(".."));
 		Ensure.that(buffer.toString(), contains("Total: 2."));
