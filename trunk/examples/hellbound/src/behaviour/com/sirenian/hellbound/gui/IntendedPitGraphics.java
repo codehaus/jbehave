@@ -15,7 +15,8 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import com.sirenian.hellbound.domain.Segment;
-import jbehave.core.minimock.Constraint;
+
+import jbehave.core.mock.Constraint;
 
 public class IntendedPitGraphics extends Graphics implements Constraint {
 

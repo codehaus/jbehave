@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package jbehave.core.minimock;
+package jbehave.core.mock;
 
 
 /**
@@ -21,6 +21,6 @@ public interface Mock {
     /** Verify all the expectations on this mock */
     void verify();
     
-    /** @deprecated you don't need this if you use {@link UsingMiniMock#mock(Class)} */
+    /** @deprecated you don't need this if you use UsingMiniMock#mock(Class) */
     Object proxy();
 }

@@ -1,7 +1,7 @@
 package jbehave.core.story.visitor;
 
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
 import jbehave.core.story.visitor.Visitor;
 

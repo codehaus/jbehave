@@ -8,6 +8,9 @@
 package jbehave.core.minimock;
 
 import jbehave.core.Ensure;
+import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Mock;
+import jbehave.core.mock.UsingConstraints;
 
 
 /**

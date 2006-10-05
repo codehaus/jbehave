@@ -7,8 +7,8 @@
  */
 package jbehave.core.story.domain;
 
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 
 
 /**

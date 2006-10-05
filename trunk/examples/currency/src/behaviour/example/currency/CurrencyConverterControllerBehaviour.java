@@ -7,8 +7,8 @@
  */
 package example.currency;
 
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

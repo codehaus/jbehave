@@ -9,13 +9,14 @@ package jbehave.core.minimock;
 
 import jbehave.core.Ensure;
 import jbehave.core.exception.VerificationException;
+import jbehave.core.mock.Mock;
 
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class MockObjectBehaviour extends UsingMiniMock {
+public class MiniMockObjectBehaviour extends UsingMiniMock {
     public interface Foo {
         void doSomething();
         void doSomething(String arg);
@@ -24,7 +25,7 @@ public class MockObjectBehaviour extends UsingMiniMock {
     
     public void shouldCreateObjectThatCanBeCastToTheCorrectType() throws Exception {
         // given...
-        Mock mock = MockObject.mock(Foo.class, "foo");
+        Mock mock = MiniMockObject.mock(Foo.class, "foo");
 
         // verify...
         Ensure.that(mock instanceof Foo);
@@ -32,14 +33,14 @@ public class MockObjectBehaviour extends UsingMiniMock {
     
     public void shouldCreateObjectWithInterfaceFromSystemClassLoader() throws Exception {
         // given
-        Mock mock = MockObject.mock(Comparable.class, "comparable");
+        Mock mock = MiniMockObject.mock(Comparable.class, "comparable");
         
         // verify
         Ensure.that(mock instanceof Comparable);
     }
     
     public void shouldSucceedWhenMethodCalledWithExpectedArgument() {
-        Mock mock = MockObject.mock(Foo.class, "foo");
+        Mock mock = MiniMockObject.mock(Foo.class, "foo");
         
         mock.expects("doSomething").with(eq("A"));
         
@@ -53,7 +54,7 @@ public class MockObjectBehaviour extends UsingMiniMock {
     }
     
     public void shouldFailOnVerifyWhenMethodCalledWithExpectedThenUnexpectedArgument() {
-        Mock mock = MockObject.mock(Foo.class, "foo");
+        Mock mock = MiniMockObject.mock(Foo.class, "foo");
         
         mock.expects("doSomething").with(eq("A"));
         
@@ -71,7 +72,7 @@ public class MockObjectBehaviour extends UsingMiniMock {
     }
     
     public void shouldSucceedOnVerifyWhenMethodCalledWithExpectedArgumentThenOtherMethodCalled() {
-        Mock mock = MockObject.mock(Foo.class, "foo");
+        Mock mock = MiniMockObject.mock(Foo.class, "foo");
         mock.expects("doSomething");
         
         ((Foo)mock).doSomething();

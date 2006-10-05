@@ -1,8 +1,8 @@
 package com.sirenian.hellbound.engine;
 
-import jbehave.core.minimock.Constraint;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Mock;
 
 import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.glyph.GlyphListener;

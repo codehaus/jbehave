@@ -16,6 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.core.exception.VerificationException;
+import jbehave.core.mock.Expectation;
+import jbehave.core.mock.ExpectationRegistry;
+import jbehave.core.mock.Mock;
 
 
 
@@ -24,7 +27,7 @@ import jbehave.core.exception.VerificationException;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-class MockObject implements Mock, Expectation.Registry {
+class MiniMockObject implements Mock, ExpectationRegistry {
     private final List expectations = new ArrayList();
     private final List unexpectedInvocations = new ArrayList();
     private final Class type;
@@ -74,7 +77,7 @@ class MockObject implements Mock, Expectation.Registry {
     }
 
     
-    public MockObject(Class type, String name) {
+    public MiniMockObject(Class type, String name) {
         this.type = type;
         this.name = name;
         this.fallbackBehaviour = new StubInvocationHandler(name);
@@ -124,9 +127,9 @@ class MockObject implements Mock, Expectation.Registry {
 
     static Mock mock(final Class type, final String name) {
         Mock result = (Mock) Proxy.newProxyInstance(Mock.class.getClassLoader(),
-                new Class[] { type, Mock.class, Expectation.Registry.class },
+                new Class[] { type, Mock.class, ExpectationRegistry.class },
                 new InvocationHandler() {
-                    private final MockObject mock = new MockObject(type, name);
+                    private final MiniMockObject mock = new MiniMockObject(type, name);
                     
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         try {

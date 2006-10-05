@@ -8,7 +8,7 @@
 package example.atm.givens;
 
 
-import jbehave.core.minimock.Mock;
+import jbehave.core.mock.Mock;
 import jbehave.core.story.domain.GivenUsingMiniMock;
 import jbehave.core.story.domain.World;
 

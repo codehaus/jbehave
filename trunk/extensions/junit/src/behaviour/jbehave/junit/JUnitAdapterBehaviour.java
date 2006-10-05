@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import jbehave.core.Ensure;
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.UsingConstraints;
 
 import junit.framework.Test;
 import junit.framework.TestResult;

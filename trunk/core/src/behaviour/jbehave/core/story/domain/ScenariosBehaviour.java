@@ -2,8 +2,8 @@ package jbehave.core.story.domain;
 
 import jbehave.core.exception.NestedVerificationException;
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 import jbehave.core.story.result.ScenarioResult;
 
 public class ScenariosBehaviour extends UsingMiniMock {

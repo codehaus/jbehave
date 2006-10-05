@@ -2,7 +2,7 @@ package jbehave.core.story.codegen.parser;
 
 import java.io.StringReader;
 
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.UsingConstraints;
 import jbehave.core.story.codegen.domain.ScenarioDetails;
 import jbehave.core.story.codegen.domain.StoryDetails;
 import jbehave.core.story.codegen.parser.TextStoryParser;

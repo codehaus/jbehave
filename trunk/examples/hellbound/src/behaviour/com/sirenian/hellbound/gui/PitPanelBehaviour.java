@@ -8,8 +8,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import jbehave.core.minimock.Constraint;
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.Constraint;
+import jbehave.core.mock.UsingConstraints;
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;

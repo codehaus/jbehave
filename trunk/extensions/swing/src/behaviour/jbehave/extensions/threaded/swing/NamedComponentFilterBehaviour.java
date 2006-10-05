@@ -2,7 +2,7 @@ package jbehave.extensions.threaded.swing;
 
 import javax.swing.JButton;
 
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.UsingConstraints;
 import jbehave.extensions.threaded.swing.NamedComponentFilter;
 
 

@@ -8,7 +8,7 @@ import java.util.List;
 import jbehave.core.Block;
 import jbehave.core.Ensure;
 import jbehave.core.exception.VerificationException;
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.UsingConstraints;
 
 import org.jmock.Mock;
 import org.jmock.core.Verifiable;

@@ -10,7 +10,7 @@ package jbehave.ant;
 import jbehave.core.Run;
 import jbehave.core.Block;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.minimock.Constraint;
+import jbehave.core.mock.Constraint;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;

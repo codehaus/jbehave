@@ -1,6 +1,6 @@
 package jbehave.core.story.domain;
 
-import jbehave.core.minimock.Mock;
+import jbehave.core.mock.Mock;
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMockBehaviour;
 import jbehave.core.story.visitor.Visitor;

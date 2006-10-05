@@ -8,8 +8,8 @@
 package jbehave.core;
 
 import jbehave.core.exception.PendingException;
-import jbehave.core.minimock.Constraint;
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.Constraint;
+import jbehave.core.mock.UsingConstraints;
 
 
 /**

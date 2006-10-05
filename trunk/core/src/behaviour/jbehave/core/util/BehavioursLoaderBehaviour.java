@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jbehave.core.Run;
-import jbehave.core.minimock.Constraint;
-import jbehave.core.minimock.MockObjectBehaviour;
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.minimock.MiniMockObjectBehaviour;
+import jbehave.core.mock.Constraint;
+import jbehave.core.mock.UsingConstraints;
 import jbehave.core.story.listener.PlainTextListenerBehaviour;
 
 public class BehavioursLoaderBehaviour extends UsingConstraints {
@@ -37,7 +37,7 @@ public class BehavioursLoaderBehaviour extends UsingConstraints {
     }
     
     private void ensureThatBehavioursAreLoaded(Set loadedFromBehaviourLoader) {
-        ensureThat(loadedFromBehaviourLoader, setContains(MockObjectBehaviour.class));
+        ensureThat(loadedFromBehaviourLoader, setContains(MiniMockObjectBehaviour.class));
         ensureThat(Modifier.isAbstract(PlainTextListenerBehaviour.class.getModifiers()), eq(true));
         ensureThat(loadedFromBehaviourLoader, not(setContains(PlainTextListenerBehaviour.class)));
     }

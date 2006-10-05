@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 
-import jbehave.core.minimock.Constraint;
+import jbehave.core.mock.Constraint;
 import jbehave.core.story.domain.OutcomeUsingMiniMock;
 
 import com.sirenian.hellbound.Hellbound;
