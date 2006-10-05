@@ -8,8 +8,8 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 import jbehave.core.result.Result;
 import jbehave.core.story.result.ScenarioResult;
 

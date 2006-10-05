@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package jbehave.core.minimock;
+package jbehave.core.mock;
 
 import java.util.List;
 

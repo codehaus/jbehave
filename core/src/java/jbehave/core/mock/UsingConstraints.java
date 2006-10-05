@@ -1,4 +1,4 @@
-package jbehave.core.minimock;
+package jbehave.core.mock;
 
 import jbehave.core.Block;
 import jbehave.core.exception.PendingException;

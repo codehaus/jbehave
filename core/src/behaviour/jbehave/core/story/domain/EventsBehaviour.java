@@ -3,7 +3,7 @@ package jbehave.core.story.domain;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import jbehave.core.minimock.Mock;
+import jbehave.core.mock.Mock;
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMockBehaviour;
 import jbehave.core.story.visitor.Visitor;

@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import jbehave.core.UsingMocks;
+import jbehave.core.mock.Mock;
+import jbehave.core.mock.UsingConstraints;
 
 
 /**
@@ -31,7 +33,7 @@ public class UsingMiniMock extends UsingConstraints implements UsingMocks {
     }
     
     public Mock mock(Class type, String name) {
-        Mock mock = MockObject.mock(type, name);
+        Mock mock = MiniMockObject.mock(type, name);
         mocks.add(mock);
         return mock;
     }

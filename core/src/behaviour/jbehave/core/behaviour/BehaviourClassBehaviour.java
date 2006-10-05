@@ -8,9 +8,9 @@
 package jbehave.core.behaviour;
 
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.minimock.Constraint;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Mock;
 import jbehave.core.result.Result;
 
 

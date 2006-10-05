@@ -1,9 +1,9 @@
 package com.sirenian.hellbound.domain.glyph;
 
 import com.sirenian.hellbound.domain.Segment;
-import jbehave.core.minimock.Constraint;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Mock;
 
 public class GlyphBehaviour extends UsingMiniMock {
 	

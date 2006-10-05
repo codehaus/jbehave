@@ -1,7 +1,7 @@
 package com.sirenian.hellbound.engine;
 
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 

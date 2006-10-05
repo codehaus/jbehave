@@ -1,7 +1,8 @@
-package jbehave.core.minimock;
+package jbehave.core.mock;
 
 import jbehave.core.Ensure;
 import jbehave.core.exception.VerificationException;
+import jbehave.core.mock.Expectation;
 
 
 /**

@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import jbehave.core.Ensure;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
 import jbehave.extensions.threaded.swing.WindowWrapper;
 

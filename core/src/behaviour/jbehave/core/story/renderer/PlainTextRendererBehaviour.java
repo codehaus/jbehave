@@ -10,7 +10,7 @@ package jbehave.core.story.renderer;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.UsingConstraints;
 import jbehave.core.story.SimpleStory;
 import jbehave.core.story.domain.ScenarioDrivenStory;
 import jbehave.core.util.ConvertCase;

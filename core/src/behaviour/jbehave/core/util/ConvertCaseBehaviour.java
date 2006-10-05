@@ -9,7 +9,7 @@ package jbehave.core.util;
 
 import java.text.SimpleDateFormat;
 
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.UsingConstraints;
 
 
 /**

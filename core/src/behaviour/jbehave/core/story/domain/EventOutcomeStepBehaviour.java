@@ -1,8 +1,8 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.Ensure;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 import jbehave.core.story.visitor.Visitor;
 
 public class EventOutcomeStepBehaviour extends UsingMiniMock {

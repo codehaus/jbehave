@@ -5,7 +5,7 @@
  * 
  * See license.txt for license details
  */
-package jbehave.core.minimock;
+package jbehave.core.mock;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -20,9 +20,6 @@ import jbehave.core.exception.VerificationException;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Expectation extends UsingConstraints {
-    interface Registry {
-        Expectation lookup(String id);
-    }
     
     private static final InvocationHandler NULL_INVOKER = new InvocationHandler() {
         public Object invoke(Object proxy, Method method, Object[] args) {
@@ -30,7 +27,7 @@ public class Expectation extends UsingConstraints {
         }
     };
     
-    private final Registry registry;
+    private final ExpectationRegistry registry;
     private final String methodName;
     private Constraint[] constraints = null; // initially we don't care about args
     private int minInvocations = 1;
@@ -45,7 +42,7 @@ public class Expectation extends UsingConstraints {
      * 
      * It initially expects to be called exactly once and will use a null invoker.
      */
-    public Expectation(Registry registry, String methodName) {
+    public Expectation(ExpectationRegistry registry, String methodName) {
         this.registry = registry;
         this.id = this.methodName = methodName;
     }
@@ -159,7 +156,7 @@ public class Expectation extends UsingConstraints {
     // after
     
     public Expectation after(Mock otherMock, String otherId) {
-        after = ((Registry)otherMock).lookup(otherId);
+        after = ((ExpectationRegistry)otherMock).lookup(otherId);
         return this;
     }
     

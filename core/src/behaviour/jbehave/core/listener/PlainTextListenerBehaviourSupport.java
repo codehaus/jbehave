@@ -11,8 +11,8 @@ import java.io.StringWriter;
 
 import jbehave.core.Ensure;
 import jbehave.core.exception.PendingException;
-import jbehave.core.minimock.Constraint;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Constraint;
 import jbehave.core.result.Result;
 import jbehave.core.util.Timer;
 

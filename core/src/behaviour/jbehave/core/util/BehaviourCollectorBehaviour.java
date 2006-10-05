@@ -1,7 +1,7 @@
 package jbehave.core.util;
 
-import jbehave.core.minimock.Constraint;
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.Constraint;
+import jbehave.core.mock.UsingConstraints;
 import net.sf.cotta.TDirectory;
 import net.sf.cotta.TFileFactory;
 import net.sf.cotta.memory.InMemoryFileSystem;

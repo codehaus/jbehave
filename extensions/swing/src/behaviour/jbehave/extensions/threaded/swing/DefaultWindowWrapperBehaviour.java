@@ -10,8 +10,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 import jbehave.extensions.threaded.swing.ComponentFinderException;
 import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
 import jbehave.extensions.threaded.time.TimeoutException;

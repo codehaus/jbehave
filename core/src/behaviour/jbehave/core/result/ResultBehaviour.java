@@ -9,7 +9,7 @@ package jbehave.core.result;
 
 import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.UsingConstraints;
 
 
 

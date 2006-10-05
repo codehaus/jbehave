@@ -3,8 +3,8 @@ package jbehave.extensions.threaded;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 import jbehave.extensions.threaded.QueuedMiniMap;
 import jbehave.extensions.threaded.WindowGrabber;
 import jbehave.extensions.threaded.time.TimeoutException;

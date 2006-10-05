@@ -5,8 +5,8 @@ import java.io.PrintStream;
 
 import jbehave.core.Ensure;
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 import jbehave.core.story.domain.Narrative;
 import jbehave.core.story.domain.Story;
 import jbehave.core.story.domain.World;

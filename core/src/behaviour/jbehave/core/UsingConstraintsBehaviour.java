@@ -1,6 +1,6 @@
 package jbehave.core;
 
-import jbehave.core.minimock.UsingConstraints;
+import jbehave.core.mock.UsingConstraints;
 
 public class UsingConstraintsBehaviour extends UsingConstraints {
 

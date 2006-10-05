@@ -1,8 +1,8 @@
 package jbehave.core.behaviour;
 
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.minimock.Mock;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 
 public class BehaviourVerifierBehaviour extends UsingMiniMock {
     public void shouldVerifyBehaviour() throws Exception {
