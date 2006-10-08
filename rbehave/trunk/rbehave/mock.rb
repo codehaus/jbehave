@@ -8,6 +8,10 @@ module RBehave
       @@all_expectations << expectations
     end
     
+    def Mocks.clear
+      @@all_expectations = []
+    end
+    
     def verify_mocks
       @@all_expectations.each do |expectations|
         expectations.each { |ex| ex.verify }
@@ -24,9 +28,15 @@ module RBehave
       
       def initialize(type)
         @type = type
-        @expecting = false
+        @stubbing = @expecting = false
         @expectations = []
         Mocks.register_expectations(@expectations)
+      end
+      
+      def stubs
+        @stubbing = true
+        @expecting = true
+        self
       end
       
       def expects
@@ -34,13 +44,16 @@ module RBehave
         self
       end
       
+      attr_reader :expectations
+      
       def method_missing(meth, *args)
         if @expecting
           raise VerificationError, "Unknown method: #{@type}.#{meth}" unless @type.public_method_defined?(meth)
-          ex = Expectation.new(meth)
+          ex = Expectation.new(@type, meth)
           ex.with(*args) unless args.empty?
+          ex.stubs if @stubbing
           @expectations << ex
-          @expecting = false
+          @expecting = @stubbing = false
           return ex
         end
         

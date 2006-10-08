@@ -10,6 +10,7 @@ class ExcelProductImporterBehaviour < RBehave::Behaviour
   def should_write_vendor_entry
     # given
     xml = REXML::Document.new <<-END
+    <Workbook>
       <Worksheet>
         <Row>
           <Cell>BrassCorp</Cell>
@@ -17,6 +18,7 @@ class ExcelProductImporterBehaviour < RBehave::Behaviour
           <Cell>brass</Cell>
         </Row>
       </Worksheet>
+    </Workbook>
     END
     
     vendor_writer = mock(VendorWriter)

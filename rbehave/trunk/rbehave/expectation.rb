@@ -1,16 +1,18 @@
-require 'rbehave/constraints'
+require 'rbehave/constraint'
 
 module RBehave
   module Mocks
     class Expectation
       include Constraints
       
-      def initialize(method)
+      def initialize(type, method)
+        @type = type
         @method = method
         @min_calls = @max_calls = 1
         @calls = 0
+        @is_stub = false
       end
-      
+            
       def matches(method, *args)
         return false if @method != method
         return true if @constraints == nil # don't care about args
@@ -33,6 +35,10 @@ module RBehave
       
       def once; times(1); end
       
+      def stubs
+        @is_stub = true
+      end
+      
       def at_least(n)
         @min_calls = n
         self
@@ -44,7 +50,9 @@ module RBehave
       end
       
       def call(*args)
-        raise VerificationError, "#{@method} already called #{@calls} times" if @calls >= @max_calls
+        if @calls >= @max_calls and not @is_stub
+          raise VerificationError, "#{@method} already called #{@calls} times"
+        end
         @calls += 1
         return @return_value
       end
@@ -65,7 +73,9 @@ module RBehave
       end
       
       def verify
-        raise VerificationError, "#{@calls} calls made. Expected at least #{@min_calls} calls" unless @calls >= @min_calls
+        if @calls < @min_calls and not @is_stub
+          raise VerificationError, "#{self}: #{@type}.#{@method}: #{@calls} calls made. Expected at least #{@min_calls} calls"
+        end
       end
     end
   end

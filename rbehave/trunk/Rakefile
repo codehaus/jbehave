@@ -1,0 +1,36 @@
+require 'rake'
+require 'rake/testtask'
+require 'rake/rdoctask'
+require 'rake/gempackagetask'
+
+spec = Gem::Specification.new do |s|
+  s.name = "RBehave"
+  s.version = "0.1"
+  s.author = "Dan North"
+  s.email = "tastapod@rbehave.org"
+  s.homepage = "http://rubyforge.org/projects/rbehave/"
+  s.summary = "RBehave is a behaviour-driven development (BDD) framework"
+  s.files = FileList['./*.rb', 'rbehave/*.rb', 'example/*.rb'].to_a
+  #s.require_path = "lib"
+  #s.test_files = Dir.glob('tests/*.rb')
+  s.has_rdoc = false
+end
+
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.need_tar = true
+end
+
+namespace :behaviour do
+  
+end
+
+namespace :test do
+  Rake::TestTask.new(:units) do |t|
+    t.libs << "lib"
+    t.pattern = 'test/unit/*_test.rb'
+    t.verbose = true
+    t.warning = true
+  end
+end
+
+task :default => 'test:units'

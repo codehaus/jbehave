@@ -49,6 +49,8 @@ module RBehave
       end
     end
     
+    alias :is :eq
+    
     def anything
       return constraint("anything") do |arg|
         true
