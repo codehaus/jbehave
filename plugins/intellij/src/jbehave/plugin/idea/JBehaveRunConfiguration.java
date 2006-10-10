@@ -1,10 +1,8 @@
 package jbehave.plugin.idea;
 
 import com.intellij.execution.ExecutionException;
+import com.intellij.execution.filters.TextConsoleBuidlerFactoryImpl;
 import com.intellij.execution.configurations.*;
-import com.intellij.execution.filters.TextConsoleBuidlerFactory;
-import com.intellij.execution.junit.ModuleBasedConfiguration;
-import com.intellij.execution.junit2.configuration.RunConfigurationModule;
 import com.intellij.execution.runners.JavaProgramRunner;
 import com.intellij.execution.runners.RunnerInfo;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -51,7 +49,7 @@ public class JBehaveRunConfiguration extends ModuleBasedConfiguration {
 
     public RunProfileState getState(DataContext context, RunnerInfo runnerInfo, RunnerSettings runner, ConfigurationPerRunnerSettings configuration) throws ExecutionException {
         JBehaveCommandLineState commandLineState = new JBehaveCommandLineState(this, runner, configuration);
-        commandLineState.setConsoleBuilder(TextConsoleBuidlerFactory.getInstance().createBuilder(getProject()));
+        commandLineState.setConsoleBuilder(TextConsoleBuidlerFactoryImpl.getInstance().createBuilder(getProject()));
         commandLineState.setModulesToCompile(getModules());
         return commandLineState;
     }
