@@ -86,7 +86,7 @@ class JBehaveRunSettingsEditor extends SettingsEditor<JBehaveRunConfiguration> {
 
     protected void resetEditorFrom(JBehaveRunConfiguration configuration) {
         behaviorClassInput.setText(configuration.getBehaviorClass());
-        moduleComponent.setSelectedItem(configuration.getConfigurationModule().getModule());
+        moduleComponent.setSelectedItem(configuration.getModule());
     }
 
     protected void applyEditorTo(JBehaveRunConfiguration configuration) throws ConfigurationException {

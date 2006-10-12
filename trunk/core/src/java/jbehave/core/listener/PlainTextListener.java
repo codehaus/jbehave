@@ -80,7 +80,9 @@ public class PlainTextListener implements BehaviourListener {
                 printResult(count, result);
                 out.println("\t" + result.cause().getMessage());
                 StackTraceElement element = findFirstNonJeBehaveStackElement(result.cause());
-                out.println("\tat " + element.toString() + "\n");
+                if (element.getLineNumber() >= 0) {
+                    out.println("\tat " + element.toString() + "\n");
+                }
             }
         }
     }

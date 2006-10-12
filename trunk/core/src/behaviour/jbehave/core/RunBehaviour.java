@@ -1,6 +1,8 @@
 package jbehave.core;
 
 
+import jbehave.core.mock.UsingConstraints;
+
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -9,17 +11,30 @@ import java.io.PrintStream;
  * @author <a href="mailto:ekeogh@thoughtworks.com">Elizabeth Keogh</a>
  * @author Mauro Talevi
  */
-public class RunBehaviour {
+public class RunBehaviour extends UsingConstraints {
 
 	private static int runCount;
-	
-	public static class RunnableBehaviour {
+    private static String methodCalled;
+
+    public static class RunnableBehaviour {
 		public void shouldBeRunByRunClass() {
 			runCount++;
 		}
 	}
-	
-	private PrintStream nullPrintStream = new PrintStream(new OutputStream() {
+
+    public static class RunnableBehaviourWithTwoMethods {
+        public void shouldRunNumberOne() {
+            runCount ++;
+            methodCalled = "shouldRunNumberOne";
+        }
+
+        public void shouldRunNumberTwo() {
+            runCount ++;
+            methodCalled = "shouldRunNumberTwo";
+        }
+    }
+
+    private PrintStream nullPrintStream = new PrintStream(new OutputStream() {
 		public void write(int b) {
 			// do nothing
 		}
@@ -43,6 +58,15 @@ public class RunBehaviour {
         runCount = 0;
         new Run(nullPrintStream).verifyBehaviour(RunnableBehaviour.class.getName());
         Ensure.that(runCount == 1);
+    }
+
+    public void shouldRunClassNamePlusOneMethodSuccessfully() throws ClassNotFoundException {
+        runCount = 0;
+        Run run = new Run(nullPrintStream);
+        run.verifyBehaviour(RunnableBehaviourWithTwoMethods.class.getName() + ":" + "shouldRunNumberOne");
+        ensureThat(run.succeeded(), eq(true));
+        ensureThat(runCount, eq(1));
+        ensureThat(methodCalled, eq("shouldRunNumberOne"));
     }
 
     public void shouldRunClassNameUsingCustomClassLoader() throws ClassNotFoundException {

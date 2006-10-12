@@ -41,6 +41,15 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
             throw new JBehaveFrameworkError("No method " + methodName + " on class " + instance.getClass().getName());
         }
     }
+
+    private BehaviourMethod createBehaviourMethod(Object instance, String methodName, Constraint methodFilter) {
+        try {
+            Method method = instance.getClass().getMethod(methodName, null);
+            return new BehaviourMethod(instance, method, methodFilter);
+        } catch (Exception e) {
+            throw new JBehaveFrameworkError("No method " + methodName + " on class " + instance.getClass().getName());
+        }
+    }
     
     public void shouldContainExactlyOneBehaviour() throws Exception {
         // given...
@@ -69,10 +78,10 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         }
     }
     
-    private Constraint resultOfType(Type type) {
+    private Constraint resultOfType(final Type type) {
         return new Constraint() {
             public boolean matches(Object arg) {
-                return ((Result)arg).succeeded();
+                return ((Result)arg).status() == type;
             }
         };
     }
@@ -92,7 +101,32 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         // then...
         verifyMocks();
     }
-    
+
+    public void shouldSkipFilteredMethods() throws Exception {
+        // given...
+        Object instance = new HasSuccessfulMethod();
+        Mock listener = mock(BehaviourListener.class);
+        Behaviour behaviour = createBehaviourMethod(instance, "shouldWork", none());
+
+        // expect...
+        listener.expects("gotResult").with(resultOfType(Result.PENDING));
+
+        // when...
+        behaviour.verifyTo((BehaviourListener) listener);
+
+        // then...
+        verifyMocks();
+
+    }
+
+    private Constraint none() {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return false;
+            }
+        };
+    }
+
     public static class HasSetUpAndTearDown {
         public List whatHappened = new ArrayList();
         

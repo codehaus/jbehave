@@ -1,8 +1,8 @@
 package jbehave.plugin.idea;
 
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.filters.TextConsoleBuidlerFactoryImpl;
 import com.intellij.execution.configurations.*;
+import com.intellij.execution.filters.TextConsoleBuidlerFactoryImpl;
 import com.intellij.execution.runners.JavaProgramRunner;
 import com.intellij.execution.runners.RunnerInfo;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -20,11 +20,13 @@ import org.jdom.Element;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class JBehaveRunConfiguration extends ModuleBasedConfiguration {
+public class JBehaveRunConfiguration extends RuntimeConfiguration {
     public String behaviorClass;
+    public String behaviorMethod;
+    public String moduleName;
 
     protected JBehaveRunConfiguration(Project project, ConfigurationFactory factory, String name) {
-        super(name, new RunConfigurationModule(project, false), factory);
+        super(name, project, factory);
     }
 
     public SettingsEditor<JBehaveRunConfiguration> getConfigurationEditor() {
@@ -37,13 +39,11 @@ public class JBehaveRunConfiguration extends ModuleBasedConfiguration {
 
     public void readExternal(Element element) throws InvalidDataException {
         super.readExternal(element);
-        readModule(element);
         DefaultJDOMExternalizer.readExternal(this, element);
     }
 
     public void writeExternal(Element element) throws WriteExternalException {
         super.writeExternal(element);
-        writeModule(element);
         DefaultJDOMExternalizer.writeExternal(this, element);
     }
 
@@ -55,15 +55,28 @@ public class JBehaveRunConfiguration extends ModuleBasedConfiguration {
     }
 
     public void checkConfiguration() throws RuntimeConfigurationException {
+        super.checkConfiguration();
     }
 
     public Module[] getModules() {
         return ModuleManager.getInstance(getProject()).getModules();
     }
 
-
     public Module getModule() {
-        return getConfigurationModule().getModule();
+        return lookUp(getModules(), moduleName);
+    }
+
+    private Module lookUp(Module[] modules, String moduleName) {
+        for (Module module : modules) {
+            if (module.getName().equals(moduleName)) {
+                return module;
+            }
+        }
+        return modules.length > 0 ? modules[0] : null;
+    }
+
+    public void setModule(Module module) {
+        moduleName = module == null ? null : module.getName();
     }
 
     public String getWorkingDirectoryPath() {
@@ -78,12 +91,19 @@ public class JBehaveRunConfiguration extends ModuleBasedConfiguration {
         this.behaviorClass = behaviorClass;
     }
 
-    public Collection getValidModules() {
+    public Collection<Module> getValidModules() {
         return Arrays.asList(ModuleManager.getInstance(getProject()).getModules());
     }
 
-    protected ModuleBasedConfiguration createInstance() {
+    protected JBehaveRunConfiguration createInstance() {
         return new JBehaveRunConfiguration(getProject(), getFactory(), getName());
     }
 
+    public String getBehaviourMethod() {
+        return behaviorMethod == null ? "" : behaviorMethod;
+    }
+
+    public void setBehaviorMethod(String methodName) {
+        behaviorMethod = methodName;
+    }
 }
