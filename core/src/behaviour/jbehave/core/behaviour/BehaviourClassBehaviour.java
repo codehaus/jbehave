@@ -106,6 +106,12 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
         // then...
         ensureThat(behaviour.countBehaviours(), eq(2));
     }
+
+    public void shouldOnlyRunTheOnesSpecified() {
+        BehaviourClass behaviour = new BehaviourClass(ClassWithTwoBehaviourMethods.class, "shouldDoOneThing", nullVerifier);
+
+        ensureThat(behaviour.countBehaviours(), eq(1));
+    }
     
     public static class NestedBehaviourClass1 {
         public void shouldDoSomething1() {}

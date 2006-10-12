@@ -57,7 +57,14 @@ public class JBehaveConfigurationType implements LocatableConfigurationType {
         PsiClass behaviorClass = getBehaviorClass(element);
         if (behaviorClass == null)
             return false;
-        return Comparing.equal(ClassUtil.fullName(behaviorClass), ((JBehaveRunConfiguration) configuration).getBehaviorClass());
+        JBehaveRunConfiguration runConfiguration = ((JBehaveRunConfiguration) configuration);
+        return Comparing.equal(ClassUtil.fullName(behaviorClass), runConfiguration.getBehaviorClass())
+                && Comparing.equal(getBehaviourMethodName(element), runConfiguration.getBehaviourMethod());
+    }
+
+    private String getBehaviourMethodName(PsiElement element) {
+        PsiMethod method = getBehaviourMethodElement(element);
+        return method == null ? null : method.getName();
     }
 
     public PsiClass getBehaviorClass(PsiElement element) {
@@ -175,4 +182,13 @@ public class JBehaveConfigurationType implements LocatableConfigurationType {
         return ApplicationManager.getApplication().getComponent(JBehaveConfigurationType.class);
     }
 
+    public PsiMethod getBehaviourMethodElement(PsiElement psiElement) {
+        if (psiElement instanceof PsiIdentifier && psiElement.getParent() instanceof PsiMethod) {
+            PsiMethod method = (PsiMethod) psiElement.getParent();
+            if (method.getName().startsWith("should")) {
+                return method;
+            }
+        }
+        return null;
+    }
 }

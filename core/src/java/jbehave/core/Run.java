@@ -34,18 +34,29 @@ public class Run {
         return succeeded;
     }
 
-    public void verifyBehaviour(String classNameToVerify) throws ClassNotFoundException {
-        verifyBehaviour(classLoader.loadClass(classNameToVerify));
+    public void verifyBehaviour(String behaviourLocator) throws ClassNotFoundException {
+        String className = behaviourLocator;
+        String methodName = "";
+        int index = behaviourLocator.indexOf(':');
+        if (index >= 0) {
+            className = behaviourLocator.substring(0, index);
+            methodName = behaviourLocator.substring(index + 1);
+        }
+        verifyBehaviour(classLoader.loadClass(className), methodName);
     }
     
     public void verifyBehaviour(Class classToVerify) {
+        verifyBehaviour(classToVerify, "");
+    }
+
+    public void verifyBehaviour(Class classToVerify, String methodName) {
         PlainTextListener textListener = new PlainTextListener(new PrintWriter(writer), new Timer());
         BehaviourVerifier verifier = new BehaviourVerifier(textListener);
-        verifier.verifyBehaviour(new BehaviourClass(classToVerify, verifier));
+        verifier.verifyBehaviour(new BehaviourClass(classToVerify, methodName, verifier));
         textListener.printReport();
         succeeded = succeeded && !textListener.hasBehaviourFailures();
     }
-    
+
     public static void main(String[] args) {
         try {
             Run run = new Run(System.out);

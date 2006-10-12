@@ -7,10 +7,11 @@
  */
 package jbehave.core.behaviour;
 
-import java.lang.reflect.Method;
-
 import jbehave.core.exception.JBehaveFrameworkError;
 import jbehave.core.listener.BehaviourListener;
+import jbehave.core.mock.Constraint;
+
+import java.lang.reflect.Method;
 
 
 /**
@@ -20,6 +21,8 @@ public class BehaviourClass implements Behaviour {
 
     private final Class classToVerify;
     private final BehaviourVerifier verifier;
+    private Constraint methodFilter;
+
 
     public BehaviourClass(Class classToVerify) {
         throw new UnsupportedOperationException();
@@ -27,14 +30,31 @@ public class BehaviourClass implements Behaviour {
     }
 
     public BehaviourClass(Class classToVerify, BehaviourVerifier verifier) {
+        this(classToVerify,  "", verifier);
+    }
+
+    public BehaviourClass(Class classToVerify, final String methodName, BehaviourVerifier verifier) {
         this.classToVerify = classToVerify;
         this.verifier = verifier;
+        if (methodName.length() == 0) {
+            this.methodFilter = BehaviourMethod.ALL_METHODS;
+        } else {
+            this.methodFilter = matchMethodName(methodName);
+        }
+    }
+
+    private Constraint matchMethodName(final String methodName) {
+        return new Constraint() {
+            public boolean matches(Object arg) {
+                return ((Method) arg).getName().equals(methodName);
+            }
+        };
     }
 
     public void verifyTo(BehaviourListener listener) {
         traverseMethodsWith(new MethodVerifier(verifier, listener));
     }
-    
+
     public int countBehaviours() {
         MethodCounter counter = new MethodCounter();
         traverseMethodsWith(counter);
@@ -53,7 +73,7 @@ public class BehaviourClass implements Behaviour {
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
             if (method.getName().startsWith("should")) {
-                methodHandler.handleMethod(new BehaviourMethod(createInstance(), method));
+                methodHandler.handleMethod(new BehaviourMethod(createInstance(), method, methodFilter));
             }
         }
     }
@@ -66,12 +86,14 @@ public class BehaviourClass implements Behaviour {
             throw new JBehaveFrameworkError("Unable to create instance of " + classToVerify.getName(), e);
         }
     }
-    
+
     public String toString() {
         return "BehaviourClass: " + classToVerify.getName();
     }
 
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     public Class classToVerify() {
         return classToVerify;
     }
