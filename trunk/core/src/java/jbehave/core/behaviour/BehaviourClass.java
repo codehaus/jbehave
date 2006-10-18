@@ -22,7 +22,11 @@ public class BehaviourClass implements Behaviour {
     private final Class classToVerify;
     private final BehaviourVerifier verifier;
     private Constraint methodFilter;
-
+    public static final Constraint ALL_METHODS = new Constraint() {
+        public boolean matches(Object arg) {
+            return true;
+        }
+    };
 
     public BehaviourClass(Class classToVerify) {
         throw new UnsupportedOperationException();
@@ -37,7 +41,7 @@ public class BehaviourClass implements Behaviour {
         this.classToVerify = classToVerify;
         this.verifier = verifier;
         if (methodName.length() == 0) {
-            this.methodFilter = BehaviourMethod.ALL_METHODS;
+            this.methodFilter = ALL_METHODS;
         } else {
             this.methodFilter = matchMethodName(methodName);
         }
@@ -72,8 +76,8 @@ public class BehaviourClass implements Behaviour {
         Method[] methods = classToVerify.getMethods();
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
-            if (method.getName().startsWith("should")) {
-                methodHandler.handleMethod(new BehaviourMethod(createInstance(), method, methodFilter));
+            if (method.getName().startsWith("should") && methodFilter.matches(method)) {
+                methodHandler.handleMethod(new BehaviourMethod(createInstance(), method));
             }
         }
     }
@@ -97,4 +101,20 @@ public class BehaviourClass implements Behaviour {
     public Class classToVerify() {
         return classToVerify;
     }
+    
+    private static class MethodCounter implements MethodHandler {
+        int total = 0;
+        
+        public void handleClass(BehaviourClass behaviourClass) {
+            total += behaviourClass.countBehaviours();
+        }
+
+        public void handleMethod(BehaviourMethod behaviourMethod) {
+            	total++;
+        }
+
+        public int total() {
+            return total;
+        }
+    }    
 }

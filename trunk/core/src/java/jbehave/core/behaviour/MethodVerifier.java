@@ -1,7 +1,6 @@
 package jbehave.core.behaviour;
 
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.mock.Constraint;
 
 
 class MethodVerifier implements MethodHandler{

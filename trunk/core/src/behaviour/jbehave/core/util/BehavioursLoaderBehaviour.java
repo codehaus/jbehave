@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import jbehave.core.Run;
 import jbehave.core.minimock.MiniMockObjectBehaviour;
 import jbehave.core.mock.Constraint;
 import jbehave.core.mock.UsingConstraints;

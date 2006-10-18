@@ -87,9 +87,11 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
     public void shouldUseClasspathFromClasspathElement() throws Exception {
         Path path = task.createClasspath();
         Path.PathElement element = path.createPathElement();
+        
         ClassPath classPath = new ClassPathLocator(String.class).locate();
         String pathToRuntimeJar = classPath.path();
         element.setPath(pathToRuntimeJar);
+        
         task.createVerify().setName(BehaviourClassOne.class.getName());
 
         task.execute();
@@ -114,6 +116,7 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
         });
     }
 
+    
 /* TODO
     public void shouldFailTheBuildWhenFirstSpecFails() throws Exception {
         // setup
