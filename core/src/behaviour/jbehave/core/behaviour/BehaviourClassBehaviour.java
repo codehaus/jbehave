@@ -109,7 +109,6 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
 
     public void shouldOnlyRunTheOnesSpecified() {
         BehaviourClass behaviour = new BehaviourClass(ClassWithTwoBehaviourMethods.class, "shouldDoOneThing", nullVerifier);
-
         ensureThat(behaviour.countBehaviours(), eq(1));
     }
     

@@ -7,14 +7,12 @@
  */
 package jbehave.core.behaviour;
 
-import jbehave.core.exception.JBehaveFrameworkError;
-import jbehave.core.exception.PendingException;
-import jbehave.core.listener.BehaviourListener;
-import jbehave.core.mock.Constraint;
-import jbehave.core.result.BehaviourMethodResult;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import jbehave.core.exception.JBehaveFrameworkError;
+import jbehave.core.listener.BehaviourListener;
+import jbehave.core.result.BehaviourMethodResult;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -23,21 +21,11 @@ public class BehaviourMethod implements Behaviour {
 
     private final Object instance;
     private final Method method;
-    private Constraint methodFilter;
-    public static final Constraint ALL_METHODS = new Constraint() {
-        public boolean matches(Object arg) {
-            return true;
-        }
-    };
+
 
     public BehaviourMethod(Object instance, Method method) {
-        this(instance, method, ALL_METHODS);
-    }
-
-    public BehaviourMethod(Object instance, Method method, Constraint methodFilter) {
         this.instance = instance;
         this.method = method;
-        this.methodFilter = methodFilter;
     }
 
     public Method method() {
@@ -50,12 +38,8 @@ public class BehaviourMethod implements Behaviour {
 
     public void verifyTo(BehaviourListener listener) {
         try {
-            if (methodFilter.matches(method)) {
-                invokeBehaviourMethod();
-                listener.gotResult(new BehaviourMethodResult(this));
-            } else {
-                listener.gotResult(new BehaviourMethodResult(this, new PendingException("method skippped")));
-            }
+            invokeBehaviourMethod();
+            listener.gotResult(new BehaviourMethodResult(this));
         }
         catch (InvocationTargetException e) {
             listener.gotResult(new BehaviourMethodResult(this, e.getTargetException()));
@@ -64,7 +48,7 @@ public class BehaviourMethod implements Behaviour {
             throw new JBehaveFrameworkError("Problem verifying method " + method.getName(), e);
         }
     }
-
+    
     private void invokeBehaviourMethod() throws Throwable {
         Exception thrownException = null;
         try {

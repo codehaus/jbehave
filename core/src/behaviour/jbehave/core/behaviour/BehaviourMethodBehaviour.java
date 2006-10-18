@@ -41,15 +41,6 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
             throw new JBehaveFrameworkError("No method " + methodName + " on class " + instance.getClass().getName());
         }
     }
-
-    private BehaviourMethod createBehaviourMethod(Object instance, String methodName, Constraint methodFilter) {
-        try {
-            Method method = instance.getClass().getMethod(methodName, null);
-            return new BehaviourMethod(instance, method, methodFilter);
-        } catch (Exception e) {
-            throw new JBehaveFrameworkError("No method " + methodName + " on class " + instance.getClass().getName());
-        }
-    }
     
     public void shouldContainExactlyOneBehaviour() throws Exception {
         // given...
@@ -102,31 +93,6 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         verifyMocks();
     }
 
-    public void shouldSkipFilteredMethods() throws Exception {
-        // given...
-        Object instance = new HasSuccessfulMethod();
-        Mock listener = mock(BehaviourListener.class);
-        Behaviour behaviour = createBehaviourMethod(instance, "shouldWork", none());
-
-        // expect...
-        listener.expects("gotResult").with(resultOfType(Result.PENDING));
-
-        // when...
-        behaviour.verifyTo((BehaviourListener) listener);
-
-        // then...
-        verifyMocks();
-
-    }
-
-    private Constraint none() {
-        return new Constraint() {
-            public boolean matches(Object arg) {
-                return false;
-            }
-        };
-    }
-
     public static class HasSetUpAndTearDown {
         public List whatHappened = new ArrayList();
         
@@ -159,7 +125,9 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         ensureThat(instance.whatHappened, eq(expected));
     }
 
-    public static class CheckedException extends Exception {}
+    public static class CheckedException extends Exception {
+		private static final long serialVersionUID = 1L;
+	}
 
     private CustomConstraint resultContainingCheckedException() {
         return new CustomConstraint("result containing a CheckedException") {
@@ -265,5 +233,5 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         
         // then
         verifyMocks();
-    }
+    }    
 }

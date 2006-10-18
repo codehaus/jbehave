@@ -36,7 +36,7 @@ public class JBehaveTask extends AbstractJavaTask {
     public JBehaveTask(CommandRunner runner) {
         super(runner);
     }
-
+ 
     public BehaviourClassDetails createVerify() {
         BehaviourClassDetails details = new BehaviourClassDetails();
         behaviourClassList.add(details);
