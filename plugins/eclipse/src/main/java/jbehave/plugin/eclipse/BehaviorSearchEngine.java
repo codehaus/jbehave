@@ -23,11 +23,11 @@ import org.eclipse.ui.PlatformUI;
 
 public class BehaviorSearchEngine {
 
-	private static final String ZHU = Signature.SIG_VOID;
+	private static final String ZHU_VALUE_FOR_VOID = Signature.SIG_VOID;
 
-	public static IType findBehaviors(final Object selection)
+	public ConfigurationState findBehaviors(final Object selection)
 			throws InterruptedException, InvocationTargetException {
-		final Set result = new HashSet();
+		final Set<ConfigurationState> result = new HashSet<ConfigurationState>();
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 			public void run(IProgressMonitor pm) throws InterruptedException {
 				doFindBehaviours(selection, result, pm);
@@ -38,10 +38,10 @@ public class BehaviorSearchEngine {
 		if (result.size() == 0) {
 			return null;
 		}
-		return ((IType[]) result.toArray(new IType[result.size()]))[0];
+		return ((ConfigurationState[]) result.toArray(new ConfigurationState[result.size()]))[0];
 	}
 
-	public static void doFindBehaviours(Object selection, Set result,
+	public void doFindBehaviours(Object selection, Set<ConfigurationState> result,
 			IProgressMonitor pm) throws InterruptedException {
 		pm.beginTask("Searching behavior...", 1);
 		try {
@@ -58,8 +58,8 @@ public class BehaviorSearchEngine {
 		}
 	}
 
-	private static void collectTypes(Object element, IProgressMonitor pm,
-			Set result) throws CoreException/* , InvocationTargetException */{
+	private void collectTypes(Object element, IProgressMonitor pm,
+			Set<ConfigurationState> result) throws CoreException/* , InvocationTargetException */{
 		pm.beginTask("Searching behavior...", 10);
 		element = computeScope(element);
 		try {
@@ -67,7 +67,7 @@ public class BehaviorSearchEngine {
 					&& !(element instanceof ICompilationUnit)) {
 				if (element instanceof IType) {
 					if (isBehaviorType((IType) element)) {
-						result.add(element);
+						result.add(new ConfigurationState((IType)element));
 						return;
 					}
 				}
@@ -79,7 +79,7 @@ public class BehaviorSearchEngine {
 	
 				for (int i= 0; i < types.length; i++) {
 					if (isBehaviorType(types[i])) {
-						result.add(types[i]);
+						result.add(new ConfigurationState(types[i]));
 					}
 				}
 			} 
@@ -99,8 +99,7 @@ public class BehaviorSearchEngine {
 		}
 	}
 
-	public static boolean isBehaviorType(IType element)
-			throws JavaModelException {
+	public static boolean isBehaviorType(IType element) throws JavaModelException {
 		return isPublicConcrete(element)
 				&& (hasShouldMethod(element) || implementingBehaviors(element));
 	}
@@ -163,7 +162,7 @@ public class BehaviorSearchEngine {
 		int flags = method.getFlags();
 		return Flags.isPublic(flags) && !Flags.isStatic(flags)
 				&& !Flags.isAbstract(flags)
-				&& method.getReturnType().equals(ZHU);
+				&& method.getReturnType().equals(ZHU_VALUE_FOR_VOID);
 	}
 
 }

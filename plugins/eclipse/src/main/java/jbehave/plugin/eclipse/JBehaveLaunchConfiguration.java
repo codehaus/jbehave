@@ -9,14 +9,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.jdt.internal.launching.LaunchingPlugin;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.ExecutionArguments;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 
 public class JBehaveLaunchConfiguration extends AbstractJavaLaunchConfigurationDelegate {
-	public static final String ATTR_BEHAVIOR_CLASS = LaunchingPlugin.getUniqueIdentifier() + ".BEHAVIOR_CLASS"; //$NON-NLS-1$
+	public static final String ID = "jbehave.plugin.eclipse.launch";  //$NON_NLS-1$
+	public static final String ATTR_BEHAVIOR_CLASS = ID + ".behaviorClass"; //$NON-NLS-1$
+	public static final String ATTR_BEHAVIOR_METHOD = ID + ".behaviorMethod"; //$NON-NLS-1$
 	public static final String ID_JBEHAVE_APPLICATION = "jbehave.plugin.eclipse.launchconfig";
 
 	/* (non-Javadoc)
@@ -28,7 +29,7 @@ public class JBehaveLaunchConfiguration extends AbstractJavaLaunchConfigurationD
 			monitor = new NullProgressMonitor();
 		}
 		
-		monitor.beginTask(MessageFormat.format("{0}...", new String[]{configuration.getName()}), 3); //$NON-NLS-1$
+		monitor.beginTask(MessageFormat.format("{0}...", new Object[]{configuration.getName()}), 3); //$NON-NLS-1$
 		// check for cancellation
 		if (monitor.isCanceled()) {
 			return;
@@ -49,7 +50,7 @@ public class JBehaveLaunchConfiguration extends AbstractJavaLaunchConfigurationD
 		String[] envp= getEnvironment(configuration);
 		
 		// Program & VM args
-		String pgmArgs = getBehaviorClass(configuration);
+		String pgmArgs = getBehaviorLocator(configuration);
 		String vmArgs = getVMArguments(configuration);
 		ExecutionArguments execArgs = new ExecutionArguments(vmArgs, pgmArgs);
 		
@@ -97,7 +98,7 @@ public class JBehaveLaunchConfiguration extends AbstractJavaLaunchConfigurationD
 		monitor.done();
 	}
 
-	private String getBehaviorClass(ILaunchConfiguration configuration) throws CoreException {
+	private String getBehaviorLocator(ILaunchConfiguration configuration) throws CoreException {
 		return configuration.getAttribute(
 				ATTR_BEHAVIOR_CLASS, ""); //$NON-NLS-1$
 }

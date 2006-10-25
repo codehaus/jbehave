@@ -15,9 +15,6 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -54,9 +51,9 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 	}
 	
 	private void launchType(Object selection, String mode) throws LaunchCancelledByUserException {
-		IType types= null;
+		ConfigurationState state= null;
 		try {
-			types = BehaviorSearchEngine.findBehaviors(selection); 
+			state = new BehaviorSearchEngine().findBehaviors(selection); 
 		} catch (InterruptedException e) {
 			JBehavePlugin.log(e);
 			return;
@@ -64,47 +61,38 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 			JBehavePlugin.log(e);
 			return;
 		}
-		if (types == null) {
+		if (state == null) {
 			MessageDialog.openInformation(
 					JBehavePlugin.getActiveWorkbenchShell(), 
 					"Launch Behavior Verification", 
 					"No behavior found"); 
 		} else {
-			launch(types, mode);
+			launch(state, mode);
 		}
 	}
 	
-	private void launch(IType type, String mode) throws LaunchCancelledByUserException {
-		String fullyQualifiedName= type.getFullyQualifiedName('.');
+	private void launch(ConfigurationState state, String mode) throws LaunchCancelledByUserException {
 		ILaunchConfiguration config = findLaunchConfiguration(
 			mode, 
-			type, 
+			state, 
 			"",  //$NON-NLS-1$
-			fullyQualifiedName, 
 			"" //$NON-NLS-1$
 		);
 		if (config == null) {
-			config= createConfiguration(
-				type.getJavaProject(),
-				type.getElementName(),
-				fullyQualifiedName
-			);
+			config = createConfiguration(state);
 		}
 		launchConfiguration(mode, config);
 	}
 	
-	private ILaunchConfiguration findLaunchConfiguration(String mode, IType element, String container, String behaviorClass, String name) throws LaunchCancelledByUserException {
+	private ILaunchConfiguration findLaunchConfiguration(String mode, ConfigurationState state, String container, String name) throws LaunchCancelledByUserException {
 		ILaunchConfigurationType configType= getJBehaveLaunchConfigType();
-		List candidateConfigs= Collections.EMPTY_LIST;
+		List<ILaunchConfiguration> candidateConfigs = Collections.emptyList();
 		try {
 			ILaunchConfiguration[] configs= DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations(configType);
-			candidateConfigs= new ArrayList(configs.length);
+			candidateConfigs = new ArrayList<ILaunchConfiguration>(configs.length);
 			for (int i= 0; i < configs.length; i++) {
-				ILaunchConfiguration config= configs[i];
-				if ((config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, "").equals(element.getJavaProject().getElementName())) && //$NON-NLS-1$
-					(config.getAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOR_CLASS, "").equals(behaviorClass)) //$NON-NLS-1$
-					) {
-						candidateConfigs.add(config);
+				if (new ConfigurationState(configs[i]).equals(state)) {
+					candidateConfigs.add(configs[i]);
 				}
 			}
 		} catch (CoreException e) {
@@ -217,16 +205,13 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 	}
 	
 
-	private ILaunchConfiguration createConfiguration(
-			IJavaProject project, String name, String mainType) {
-				
+	private ILaunchConfiguration createConfiguration(ConfigurationState state) {
 		ILaunchConfiguration config= null;
 		try {
 			ILaunchConfigurationType configType= getJBehaveLaunchConfigType();
-			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, DebugPlugin.getDefault().getLaunchManager().generateUniqueLaunchConfigurationNameFrom(name)); 
-			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "jbehave.core.Run");
-			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, project.getElementName());
-			wc.setAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOR_CLASS, mainType);
+			ILaunchConfigurationWorkingCopy wc = configType.newInstance(
+					null, DebugPlugin.getDefault().getLaunchManager().generateUniqueLaunchConfigurationNameFrom(state.getName())); 
+			state.setAttributes(wc);
 			config= wc.doSave();		
 		} catch (CoreException ce) {
 			JBehavePlugin.log(ce);
