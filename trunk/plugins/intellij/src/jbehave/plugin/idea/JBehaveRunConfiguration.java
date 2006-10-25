@@ -1,8 +1,8 @@
 package jbehave.plugin.idea;
 
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.*;
 import com.intellij.execution.filters.TextConsoleBuidlerFactoryImpl;
+import com.intellij.execution.configurations.*;
 import com.intellij.execution.runners.JavaProgramRunner;
 import com.intellij.execution.runners.RunnerInfo;
 import com.intellij.openapi.actionSystem.DataContext;

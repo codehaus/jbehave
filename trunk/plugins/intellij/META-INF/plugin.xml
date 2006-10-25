@@ -5,10 +5,9 @@
     <version>0.58</version>
     <vendor logo="/behave.png" url="http://jbehave.codehaus.org/intellij.html">JBehave</vendor>
     <change-notes>
-        Move to JBehave Project.
-        Try to look up the behavior class using default naming convention.
+        Upgrade to IntelliJ 6.0.1
     </change-notes>
-    <idea-version since-build="4155"/>
+    <idea-version since-build="5784"/>
 
     <application-components>
         <component>

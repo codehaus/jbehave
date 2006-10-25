@@ -24,8 +24,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchTab;
 import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
-import org.eclipse.jdt.internal.debug.ui.launcher.JavaLaunchConfigurationTab;
 import org.eclipse.jdt.internal.debug.ui.launcher.MainMethodSearchEngine;
 import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog2;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
-public class JBehaveMainTab extends JavaLaunchConfigurationTab {
+public class JBehaveMainTab extends JavaLaunchTab {
 	private static final String BEHAVIOR_CHOOSING_ERROR = "Behavior Choosing Error";
 
 	private final Image behaviorIcon= createImage("icons/behave.gif"); //$NON-NLS-1$
@@ -178,7 +178,7 @@ public class JBehaveMainTab extends JavaLaunchConfigurationTab {
 		try {
 			projectName = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, EMPTY_STRING);	
 		} catch (CoreException ce) {
-			JDIDebugUIPlugin.log(ce);
+			JBehavePlugin.log(ce);
 		}
 		projectText.setText(projectName);
 	}
@@ -189,7 +189,7 @@ public class JBehaveMainTab extends JavaLaunchConfigurationTab {
 			behaviorTypeName = config.getAttribute(
 					JBehaveLaunchConfiguration.ATTR_BEHAVIOR_CLASS, EMPTY_STRING);
 		} catch (CoreException ce) {
-			JDIDebugUIPlugin.log(ce);	
+			JBehavePlugin.log(ce);	
 		}	
 		behaviorText.setText(behaviorTypeName);	
 	}
@@ -198,9 +198,10 @@ public class JBehaveMainTab extends JavaLaunchConfigurationTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectText.getText().trim());
-		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "jbehave.core.Run");
-		config.setAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOR_CLASS, behaviorText.getText().trim());
+		ConfigurationState state = new ConfigurationState();
+		state.setProjectName(projectText.getText().trim());
+		state.setBehaviorClass(behaviorText.getText().trim());
+		state.setAttributes(config);
 	}
 			
 	/**

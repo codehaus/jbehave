@@ -61,6 +61,7 @@
 		</javac>
 		<copy taskname="copying resource" todir="${classes_dir}">
 			<fileset dir="${core_dir}/src/java" excludes="**/*.java"/>
+      <fileset dir="${extensions_dir}/ant/src/java" excludes="**/*.java"/>
 		</copy>
 		<mkdir dir="${dist_dir}" />
 		<jar taskname="jbehave jar" basedir="${classes_dir}" jarfile="${jbehave_jar}" />		
