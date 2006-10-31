@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.domain.glyph;
 
-import com.sirenian.hellbound.domain.Segment;
+import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.util.Listener;
 import com.sirenian.hellbound.util.ListenerNotifier;
 import com.sirenian.hellbound.util.ListenerSet;
@@ -8,13 +8,13 @@ import com.sirenian.hellbound.util.ListenerSet;
 public class Glyph {
 	
 	protected GlyphType type;
-	protected Segment[] previousSegments;
-	protected Segment[] segments;
+	protected Segments previousSegments;
+	protected Segments segments;
 	
 	private ListenerSet listeners;
 	private ListenerNotifier glyphMovementNotifier;
 
-	public Glyph(GlyphType type, Segment[] firstPosition) {
+	public Glyph(GlyphType type, Segments firstPosition) {
 		this.listeners = new ListenerSet();
 		this.type = type;
 		
@@ -34,12 +34,21 @@ public class Glyph {
 		listener.reportGlyphMovement(type, previousSegments, segments);
 	}
 
-	protected void moveTo(Segment[] destination) {
-		
+
+	public void addListeners(ListenerSet listeners) {
+		this.listeners.addListeners(listeners);
+		listeners.notifyListeners(glyphMovementNotifier);
+	}
+	
+	protected void moveTo(Segments destination) {
 		this.previousSegments = segments;
 		this.segments = destination;
 		
 		listeners.notifyListeners(glyphMovementNotifier);
+	}
+
+	public GlyphType type() {
+		return type;
 	}
 
 }

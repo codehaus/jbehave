@@ -68,4 +68,77 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
         given.accept(visitor);
         step.accept(visitor);
     }
+
+	protected static Given given(Given given) {
+		return given;
+	}
+	
+	protected static Given given(Given given1, Given given2) {
+		return new Givens(given1, given2);
+	}
+	
+	protected static Given given(Given given1, Given given2, Given given3) {
+		return new Givens(given1, given2, given3);
+	}
+	
+	protected static Given given(Given[] givens) {
+		return new Givens(givens);
+	}	
+
+	protected static Event when(Event event) {
+		return event;
+	}
+
+	protected static Event when(Event event1, Event event2) {
+		return new Events(event1, event2);
+	}	
+	
+	protected static Event when(Event event1, Event event2, Event event3) {
+		return new Events(event1, event2, event3);
+	}	
+	
+	protected static Event when(Event[] events) {
+		return new Events(events);
+	}	
+
+	protected static Outcome then(Outcome outcome) {
+		return outcome;
+	}
+
+	protected static Outcome then(Outcome outcome1, Outcome outcome2) {
+		return new Outcomes(outcome1, outcome2);
+	}
+
+	protected static Outcome then(Outcome outcome1, Outcome outcome2, Outcome outcome3) {
+		return new Outcomes(outcome1, outcome2, outcome3);
+	}
+
+	protected static Outcome then(Outcome[] outcomes) {
+		return new Outcomes(outcomes);
+	}
+	
+	protected static Step step(Step step) {
+		return step;
+	}
+	
+	protected static Step step(Step step1, Step step2) {
+		return new Steps(step1, step2);
+	}
+
+	protected static Step step(Step step1, Step step2, Step step3) {
+		return new Steps(step1, step2, step3);
+	}
+	
+	protected static Steps step(Step[] steps) {
+		return new Steps(steps);
+	}
+
+	protected static Step step(Event event, Outcome outcome) {
+		return new EventOutcomeStep(event, outcome);
+	}
+	
+
+	protected static Given given(Scenario scenario) {
+		return new GivenScenario(scenario);
+	}	
 }

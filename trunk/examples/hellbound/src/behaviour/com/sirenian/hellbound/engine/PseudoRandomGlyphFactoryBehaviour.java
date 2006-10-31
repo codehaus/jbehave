@@ -5,6 +5,7 @@ import jbehave.core.minimock.UsingMiniMock;
 
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.domain.glyph.Heartbeat;
+import com.sirenian.hellbound.util.ListenerSet;
 
 public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {
 
@@ -26,6 +27,6 @@ public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {
     }
 
     private GlyphType nextGlyphType(PseudoRandomGlyphFactory factory) {
-        return factory.nextGlyph((Heartbeat) stub(Heartbeat.class), 3).type;
+        return factory.nextGlyph((Heartbeat) stub(Heartbeat.class), 3, new ListenerSet()).type();
     }
 }

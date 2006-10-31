@@ -1,35 +1,44 @@
 package com.sirenian.hellbound.events;
 
-import javax.swing.SwingUtilities;
-
 import jbehave.core.story.domain.EventUsingMiniMock;
 import jbehave.core.story.domain.World;
+import jbehave.extensions.threaded.swing.SwingBehaviourException;
+import jbehave.extensions.threaded.swing.WindowWrapper;
 
-import com.sirenian.hellbound.engine.RequestQueue;
-import com.sirenian.hellbound.engine.ThreadedRequestQueue;
+import com.sirenian.hellbound.stories.Idler;
 import com.sirenian.hellbound.stories.WorldKey;
 
 public abstract class HellboundEvent extends EventUsingMiniMock {
+	
+	private Idler idler;
 
-    private static final Runnable EMPTY_RUNNABLE = new Runnable() {
-        public void run() { }
-    };
+	public HellboundEvent() {
+		idler = new Idler();
+	}
 
     public void occurIn(World world) {
         occurAnyTimeIn(world);
-        waitForAllQueuesToEmpty(world);
-    }
-
-    private void waitForAllQueuesToEmpty(World world) {
-        RequestQueue queue = (ThreadedRequestQueue) world.get(WorldKey.REQUEST_QUEUE, null);
-        queue.invokeAndWait(EMPTY_RUNNABLE);
-        try {
-            SwingUtilities.invokeAndWait(EMPTY_RUNNABLE);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        idler.waitForIdle(world);
     }
 
     protected abstract void occurAnyTimeIn(World world);
+
+	protected void clickButton(String buttonName, World world) {
+		WindowWrapper wrapper = (WindowWrapper) world.get(WorldKey.WINDOW_WRAPPER, null);
+	    try {
+			wrapper.clickButton(buttonName);
+	    } catch (SwingBehaviourException e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+	
+	protected void pressKey(int keycode, World world) {
+		WindowWrapper wrapper = (WindowWrapper) world.get(WorldKey.WINDOW_WRAPPER, null);
+		try {
+			wrapper.pressKey(keycode);
+		} catch (SwingBehaviourException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }

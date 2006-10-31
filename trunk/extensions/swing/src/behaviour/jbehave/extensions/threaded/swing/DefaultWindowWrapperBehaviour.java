@@ -2,6 +2,8 @@ package jbehave.extensions.threaded.swing;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,9 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Constraint;
 import jbehave.core.mock.Mock;
-import jbehave.extensions.threaded.swing.ComponentFinderException;
-import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
 import jbehave.extensions.threaded.time.TimeoutException;
 
 public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
@@ -100,5 +101,28 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
         wrapper.closeWindow();
         
         ensureThat(!frame.isShowing());
+    }
+    
+    public void shouldSimulateKeyPresses() throws TimeoutException {
+		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+		
+        JFrame frame = new JFrame();
+        frame.setName("a.window");
+        frame.setVisible(true);
+        
+        Constraint spaceKeyEvent = new Constraint() {
+			public boolean matches(Object arg) {
+				return ((KeyEvent)arg).getKeyCode() == KeyEvent.VK_SPACE;
+			}
+        };
+        
+        Mock keyListener = mock(KeyListener.class);
+        keyListener.stubs("keyTyped");
+        keyListener.stubs("keyPressed");
+        keyListener.expects("keyReleased").once().with(spaceKeyEvent);
+        
+        frame.addKeyListener((KeyListener) keyListener);
+        
+        wrapper.pressKey(KeyEvent.VK_SPACE);
     }
 }

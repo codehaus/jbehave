@@ -6,7 +6,6 @@ import java.awt.EventQueue;
 import java.awt.TextComponent;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.InvocationEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -19,8 +18,6 @@ import jbehave.extensions.threaded.time.TimeoutException;
 
 public class DefaultWindowWrapper implements WindowWrapper {
 
-	private static final Runnable EMPTY_RUNNABLE = new Runnable() { public void run() {}};
-	
 	// Use of the DefaultWindowWrapper starts it grabbing windows ASAP.
 	private static final WindowGrabber grabber = new WindowGrabber();
 	
@@ -28,9 +25,10 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	private String windowName;
 	private ComponentFinder finder;
 
-	private Toolkit toolkit;
 
 	private EventQueue sysQueue;
+
+	private Idler idler;
 		
 	public DefaultWindowWrapper(String windowName) {
 		this(windowName, new ComponentFinder());
@@ -39,8 +37,8 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	public DefaultWindowWrapper(String windowName, ComponentFinder finder) {
 		this.windowName = windowName;
 		this.finder = finder;
-		toolkit = Toolkit.getDefaultToolkit();
-		sysQueue = toolkit.getSystemEventQueue();		
+		sysQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+		idler = new Idler();
 	}
 
 	public void closeWindow() throws TimeoutException {
@@ -53,7 +51,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_PRESSED));
 		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_RELEASED));
 		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_CLICKED));
-        waitForIdle();
+		idler.waitForIdle();
 	}
 
 	public void enterText(String componentName, String text) throws ComponentFinderException, TimeoutException {
@@ -66,7 +64,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 		} else if (component instanceof JTextComponent) {
 			typeIntoJTextComponent((JTextComponent)component, text);
 		}		
-		waitForIdle();
+		idler.waitForIdle();
 	}
 		
 
@@ -76,7 +74,17 @@ public class DefaultWindowWrapper implements WindowWrapper {
 			sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_RELEASED));
 			sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_TYPED));
 		}
+		idler.waitForIdle();
 	}
+	
+	public void pressKey(int keycode) throws TimeoutException {
+		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_PRESSED));
+		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_RELEASED));
+	}
+
+	private KeyEvent createKeyPressEvent(int keycode, int id) throws TimeoutException {
+		return new KeyEvent(getWindow(), id, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, keycode, KeyEvent.CHAR_UNDEFINED);
+	}	
 	
 	public void typeIntoJTextComponent(JTextComponent textComponent, String text) {
 		for (int i = 0; i < text.length(); i++) {
@@ -84,6 +92,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 			sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_RELEASED));
 			sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_TYPED));
 		}
+		idler.waitForIdle();
 	}	
 
 	public Component findComponent(String componentName) throws ComponentFinderException, TimeoutException {
@@ -92,21 +101,12 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	
 	private Window getWindow() throws TimeoutException {
 		if (window == null) {
-			waitForIdle();
+			idler.waitForIdle();
 			window = grabber.getWindow(windowName);			
 		}
 		return window;
 	}
-	
-	private void waitForIdle() {
-		Object lock = new Object();
-        synchronized(lock) {
-        	sysQueue.postEvent(new InvocationEvent(toolkit, EMPTY_RUNNABLE,
-                                             lock, true));
-            try { lock.wait(); }
-            catch(InterruptedException e) { }
-        }
-	}
+
 
 	private MouseEvent createMouseEvent(AbstractButton button, int id) {
 		return new MouseEvent(button, 

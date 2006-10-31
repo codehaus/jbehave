@@ -1,5 +1,8 @@
 package com.sirenian.hellbound.domain;
 
+/**
+ * This class should be immutable.
+ */
 public class Segment {
 	public final int x;
 	public final int y;
@@ -16,7 +19,7 @@ public class Segment {
 	}
 	
 	public int hashCode() {
-		return x + y;
+		return x * 32 + y;
 	}
 
 	public Segment movedDown() {
@@ -34,24 +37,8 @@ public class Segment {
     public Segment movedRight(int offset) {
         return new Segment(x + offset, y);
     }
-
-	public static Segment[] copy(Segment[] segments) {
-		Segment[] copies = new Segment[segments.length];
-		for (int i = 0; i < copies.length; i++) {
-			copies[i] = segments[i];
-		}
-		return copies;
-	}
 	
 	public String toString() {
 		return "(" + x + "," + y + ")";
 	}
-
-    public static Segment[] movedRight(Segment[] segments, int offset) {
-        Segment[] copies = new Segment[segments.length];
-        for (int i = 0; i < copies.length; i++) {
-            copies[i] = segments[i].movedRight(offset);
-        }
-        return copies;
-    }
 }

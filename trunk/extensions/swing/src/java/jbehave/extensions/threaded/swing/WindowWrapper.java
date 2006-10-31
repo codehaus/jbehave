@@ -14,4 +14,6 @@ public interface WindowWrapper {
 	public Component findComponent(String componentName) throws ComponentFinderException, TimeoutException;
 	
 	public void closeWindow() throws TimeoutException;
+
+	public void pressKey(int keycode) throws TimeoutException;
 }
