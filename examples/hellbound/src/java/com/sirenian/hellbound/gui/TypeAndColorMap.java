@@ -6,12 +6,12 @@ import java.util.Map;
 
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 
-public class ColorMap {
+public class TypeAndColorMap {
     
     private Map typesToColors = new HashMap();
     private Map colorsToTypes = new HashMap();
 
-    public ColorMap(GlyphType[] types, Color[] colors) {
+    public TypeAndColorMap(GlyphType[] types, Color[] colors) {
         for (int i = 0; i < types.length; i++) {
             typesToColors.put(types[i], colors[i]);
             colorsToTypes.put(colors[i], types[i]);
@@ -26,9 +26,4 @@ public class ColorMap {
     public GlyphType getTypeFor(Color c) {
         return (GlyphType) colorsToTypes.get(c);
     }
-
-    public char getAsciiFor(Color c) {
-        return getTypeFor(c).ascii;
-    }
-
 }

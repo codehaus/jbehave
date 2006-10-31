@@ -38,4 +38,44 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
         // then...
         verifyMocks();
     }
+    
+    public void shouldAllowScenarioElementsToBeWrappedSoThatTheStoryIsEasyToReadAndConstruct() {
+    	Given given = new GivenUsingMiniMock(){
+			public void setUp(World world) {
+			}
+		};
+		
+    	Event event = new EventUsingMiniMock(){ 
+    		public void occurIn(World world) {}
+    	};
+    	
+    	Outcome outcome = new OutcomeUsingMiniMock(){
+			public void setExpectationIn(World world) {}
+			public void verify(World world) {}
+		};
+		
+    	Step step = new EventOutcomeStep(event, outcome);
+        
+        ensureThat(ScenarioUsingMiniMock.given(given), eq(given));
+        ensureThat(ScenarioUsingMiniMock.given(given, given), isA(Givens.class));
+        ensureThat(ScenarioUsingMiniMock.given(given, given, given), isA(Givens.class));
+        ensureThat(ScenarioUsingMiniMock.given(new Given[]{given, given, given}), isA(Givens.class));
+        ensureThat(ScenarioUsingMiniMock.given((Scenario)null), isA(GivenScenario.class));
+        
+        ensureThat(ScenarioUsingMiniMock.when(event), eq(event));
+        ensureThat(ScenarioUsingMiniMock.when(event, event), isA(Events.class));
+        ensureThat(ScenarioUsingMiniMock.when(event, event, event), isA(Events.class));
+        ensureThat(ScenarioUsingMiniMock.when(new Event[]{event, event, event}), isA(Events.class));
+        
+        ensureThat(ScenarioUsingMiniMock.then(outcome), eq(outcome));
+        ensureThat(ScenarioUsingMiniMock.then(outcome, outcome), isA(Outcomes.class));
+        ensureThat(ScenarioUsingMiniMock.then(outcome, outcome, outcome), isA(Outcomes.class));
+        ensureThat(ScenarioUsingMiniMock.then(new Outcome[]{outcome, outcome, outcome}), isA(Outcomes.class));
+        
+        ensureThat(ScenarioUsingMiniMock.step(event, outcome), isA(EventOutcomeStep.class));
+        ensureThat(ScenarioUsingMiniMock.step(step), eq(step));
+        ensureThat(ScenarioUsingMiniMock.step(step, step), isA(Steps.class));
+        ensureThat(ScenarioUsingMiniMock.step(step, step, step), isA(Steps.class));
+        ensureThat(ScenarioUsingMiniMock.step(new Step[]{step, step, step}), isA(Steps.class));
+    }
 }

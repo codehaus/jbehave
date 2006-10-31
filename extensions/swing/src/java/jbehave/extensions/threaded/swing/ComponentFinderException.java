@@ -1,8 +1,8 @@
 package jbehave.extensions.threaded.swing;
 
-public class ComponentFinderException extends Exception {
+public class ComponentFinderException extends SwingBehaviourException {
 
-	private static final long serialVersionUID = 7574757936188595077L;
+	private static final long serialVersionUID = 1L;
 
 	public ComponentFinderException(String message) {
         super(message);

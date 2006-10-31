@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import com.sirenian.hellbound.domain.Segment;
+import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.glyph.GlyphListener;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 
@@ -22,9 +23,9 @@ public class PitPanel extends JPanel implements GlyphListener {
 	private int pitWidth;
 	private int pitHeight;
 
-    private ColorMap colorMap;
+    private TypeAndColorMap colorMap;
 
-	public PitPanel(int scale, int width, int height, ColorMap colorMap) {
+	public PitPanel(int scale, int width, int height, TypeAndColorMap colorMap) {
 		this.scale = scale;
 		this.pitWidth = width;
 		this.pitHeight = height;
@@ -33,12 +34,12 @@ public class PitPanel extends JPanel implements GlyphListener {
 		this.setPreferredSize(new Dimension(scale * pitWidth, scale * pitHeight));
 	}
 
-	public void reportGlyphMovement(GlyphType type, Segment[] fromSquares, Segment[] toSquares) {
-		for (int i = 0; i < fromSquares.length; i++) {
-			TYPEMAP.remove(fromSquares[i]);
+	public void reportGlyphMovement(GlyphType type, Segments fromSquares, Segments toSquares) {
+		for (int i = 0; i < fromSquares.size(); i++) {
+			TYPEMAP.remove(fromSquares.get(i));
 		}
-		for (int i = 0; i < toSquares.length; i++) {
-			TYPEMAP.put(toSquares[i], type);
+		for (int i = 0; i < toSquares.size(); i++) {
+			TYPEMAP.put(toSquares.get(i), type);
 		}
         repaint();
 	}

@@ -4,30 +4,26 @@
 package com.sirenian.hellbound.domain.glyph;
 
 import com.sirenian.hellbound.domain.Segment;
+import com.sirenian.hellbound.domain.Segments;
 
 public class GlyphType {
 
-	/**
-	 * It's easier to put these here than it is to work out some
-	 * complex way of preventing anyone from changing the contents
-	 * of the array. Don't change the definition of the type! OK?
-	 * There's a nice little 'copy' function you can use in Square 
-	 * instead.
-	 */
-	public final Segment[][] rotationsAtRoot;
-	public final Segment root;
-	public final int segmentCount = 4; // not constant as may not be 4 for all glyphs in future
-    public final char ascii;
+	private static final int SEGMENT_COUNT = 0;
+	
+	private final Segments[] segmentsByQuarterTurn;
+	private final Segment nominalPoint;
+	private final char ascii;
     
 	private GlyphType(char code) { this (null, null, code); }	
 	
 	private GlyphType(
-			Segment[][] rotationsAtRoot,
-			Segment root,
+			Segments[] positionsByQuarterTurn,
+			Segment nominalPoint,
             char ascii) {
-				this.rotationsAtRoot = rotationsAtRoot;
-				this.root = root;
-                this.ascii = ascii; }
+				this.segmentsByQuarterTurn = positionsByQuarterTurn;
+				this.nominalPoint = nominalPoint;
+                this.ascii = ascii;
+    }
     
     public String toString() {
         return super.toString() + ":" + ascii;
@@ -41,11 +37,11 @@ public class GlyphType {
 					p(0, 0), 'O');
 	
 	public static final GlyphType T = new GlyphType(def(
-					rotation(0, 0,  1, 0,  2, 0,  1, 1),
-					rotation(0, 2,  0, 1,  0, 0,  1, 1),
-					rotation(2, 1,  1, 1,  0, 1,  1, 0),
-					rotation(1, 0,  1, 1,  1, 2,  0, 1)),
-					p(1, 0), 'T');
+					rotation(-1, 0,  0, 0,  1, 0,  0, 1),
+					rotation(-1, 2,  -1, 1,  -1, 0,  0, 1),
+					rotation(0, 1,  0, 1,  -1, 1,  0, 0),
+					rotation(0, 0,  0, 1,  0, 2,  -1, 1)),
+					p(0, 0), 'T');
 	
 	public static final GlyphType I = new GlyphType(def(
 					rotation(1, 0,  1, 1,  1, 2,  1, 3),
@@ -93,15 +89,27 @@ public class GlyphType {
         O, T, I, J, L, Z, S, JUNK, PIT
     };
 	
-	private static Segment[][] def(Segment[] s1, Segment[] s2, Segment[] s3, Segment[] s4) {
-		return new Segment[][] { s1, s2, s3, s4 };
+	private static Segments[] def(Segments s1, Segments s2, Segments s3, Segments s4) {
+		return new Segments[] { s1, s2, s3, s4 };
 	}
 	
-	private static Segment[] rotation(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-		return new Segment[] { p(x1, y1), p(x2, y2), p(x3, y3), p(x4, y4) };
+	private static Segments rotation(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+		return new Segments(p(x1, y1), p(x2, y2), p(x3, y3), p(x4, y4));
 	}
 	
 	private static Segment p(int x, int y) {
 		return new Segment(x, y);
+	}
+
+	public Segments nominalSegments(int quarterTurnsToLeft) {
+		return segmentsByQuarterTurn[quarterTurnsToLeft];
+	}
+
+	public int segmentCount() {
+		return SEGMENT_COUNT;
+	}
+
+	public char toAscii() {
+		return ascii;
 	}
 }

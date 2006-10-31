@@ -1,14 +1,13 @@
 package com.sirenian.hellbound.domain.glyph;
 
-import com.sirenian.hellbound.domain.Segment;
-import jbehave.core.Ensure;
+import com.sirenian.hellbound.domain.Segments;
 
 public class LivingGlyphBehaviour extends GlyphBehaviour {
 
 	
 	public void shouldMoveLowerOnHeartbeat() {		
 		VerifiableGlyphListener listener = new VerifiableGlyphListener();
-		ArtificialHeartbeat heartbeat = new ArtificialHeartbeat();
+		StubHeartbeat heartbeat = new StubHeartbeat();
 		
 		LivingGlyph glyph = new LivingGlyph(
 				heartbeat,
@@ -17,15 +16,13 @@ public class LivingGlyphBehaviour extends GlyphBehaviour {
 		
 		glyph.addListener(listener);
 		
-		Segment[] firstSegments = Segment.copy(listener.recordedSegments);
+		Segments firstSegments = listener.recordedSegments;
 		
-		heartbeat.listener.beat();
+		heartbeat.beat();
 		
-		Segment[] secondSegments = Segment.copy(listener.recordedSegments);
+		Segments secondSegments = listener.recordedSegments;
 
-		for (int i = 0; i < GlyphType.O.segmentCount; i++) {
-			Ensure.that(secondSegments[i], eq(firstSegments[i].movedDown()));
-		}		
+		ensureThat(secondSegments, eq(firstSegments.movedDown()));
 	}
 	
 	public void shouldNotMoveIfInCollisionWithWalls() {
@@ -44,18 +41,10 @@ public class LivingGlyphBehaviour extends GlyphBehaviour {
 		// TODO
 	}
 	
-	private class ArtificialHeartbeat implements Heartbeat {
-		private HeartbeatListener listener;
-
-		public void addListener(HeartbeatListener listener) {
-			this.listener = listener;
-		}		
-	}
-	
 	public class VerifiableGlyphListener implements GlyphListener {
-		private Segment[] recordedSegments;
+		private Segments recordedSegments;
 
-		public void reportGlyphMovement(GlyphType type, Segment[] fromSegments, Segment[] toSegments) {
+		public void reportGlyphMovement(GlyphType type, Segments fromSegments, Segments toSegments) {
 			this.recordedSegments = toSegments;
 		}
 	}

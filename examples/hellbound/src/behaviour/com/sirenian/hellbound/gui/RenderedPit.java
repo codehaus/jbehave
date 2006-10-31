@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import com.sirenian.hellbound.domain.Segment;
+import com.sirenian.hellbound.domain.Segments;
 
 public class RenderedPit extends Graphics {
 
@@ -23,11 +24,11 @@ public class RenderedPit extends Graphics {
 	private Color color;
 	private Map pitMap;
     private char[][] asciiRepresentation;
-    private final ColorMap colormap;
+    private final TypeAndColorMap colormap;
     private final int pitWidth;
     private final int pitHeight;
 
-	public RenderedPit(int scale, int width, int height, ColorMap colormap) {
+	public RenderedPit(int scale, int width, int height, TypeAndColorMap colormap) {
 		this.scale = scale;
         this.pitWidth = width;
         this.pitHeight = height;
@@ -131,7 +132,7 @@ public class RenderedPit extends Graphics {
         if (scaledX >= 0 && scaledX < pitWidth && scaledY >=0 && scaledY < pitHeight) { 
         
             pitMap.put(new Segment(scaledX, scaledY), color);
-            asciiRepresentation[scaledY][scaledX] = colormap.getAsciiFor(color);
+            asciiRepresentation[scaledY][scaledX] = colormap.getTypeFor(color).toAscii();
         }
 	}
 
@@ -143,9 +144,9 @@ public class RenderedPit extends Graphics {
 		return pitMap;
 	}
 
-    public boolean contains(Segment[] expectedSegments, Color c) {
-        for (int i = 0; i < expectedSegments.length; i++) {
-            Object colorAtSegment = pitMap.get(expectedSegments[i]);
+    public boolean contains(Segments expectedSegments, Color c) {
+        for (int i = 0; i < expectedSegments.size(); i++) {
+            Object colorAtSegment = pitMap.get(expectedSegments.get(i));
             if (colorAtSegment == null || !colorAtSegment.equals(c)) {
                 return false;
             }

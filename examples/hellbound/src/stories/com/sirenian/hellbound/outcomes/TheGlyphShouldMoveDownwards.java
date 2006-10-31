@@ -1,29 +1,34 @@
 package com.sirenian.hellbound.outcomes;
 
+import java.awt.Color;
+
 import jbehave.core.Ensure;
 import jbehave.core.story.domain.World;
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;
+import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.gui.RenderedPit;
-import com.sirenian.hellbound.stories.WorldKey;
 
 public class TheGlyphShouldMoveDownwards extends HellboundOutcome {
 
-    private Segment[] expectedSegments;
+    private Segments expectedSegments;
+	private Color expectedColor;
     
 	public void setExpectationIn(World world) {
-        GlyphType type = GlyphType.T;
-        expectedSegments = new Segment[4];
-        for (int i = 0; i < 4; i++) {
-            expectedSegments[i] = type.rotationsAtRoot[0][i].movedRight(3).movedDown();
-        }
+        expectedSegments = new Segments(
+        		new Segment(2, 1),
+        		new Segment(3, 1),
+        		new Segment(4, 1),
+        		new Segment(3, 2)
+        );
+        expectedColor = Hellbound.COLORMAP.getColorFor(GlyphType.T);
 	}
 
-	public void verify(World world) {
-        RenderedPit graphics = (RenderedPit) world.get(WorldKey.PIT, null);
-        Ensure.that(graphics, contains(expectedSegments, Hellbound.COLORMAP.getColorFor(GlyphType.T)));
+	public void verifyAnyTimeIn(World world) {
+        RenderedPit pit = getPit(world);
+        Ensure.that(pit, contains(expectedSegments, expectedColor));
 	}
 
 }

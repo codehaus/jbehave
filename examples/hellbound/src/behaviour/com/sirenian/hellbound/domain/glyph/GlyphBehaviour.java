@@ -1,6 +1,9 @@
 package com.sirenian.hellbound.domain.glyph;
 
 import com.sirenian.hellbound.domain.Segment;
+import com.sirenian.hellbound.domain.Segments;
+import com.sirenian.hellbound.util.ListenerSet;
+
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Constraint;
 import jbehave.core.mock.Mock;
@@ -9,18 +12,18 @@ public class GlyphBehaviour extends UsingMiniMock {
 	
 	public void shouldNotifyListenersOfMovement() throws Exception {
 			
-		Segment[] segments1 = new Segment[] {new Segment(0, 0)};
-		Segment[] segments2 = new Segment[] {new Segment(0, 1)};
+		Segments segments1 = new Segments(new Segment[] {new Segment(0, 0)});
+		Segments segments2 = new Segments(new Segment[] {new Segment(0, 1)});
 		
-		Glyph glyph = new Glyph(GlyphType.O, GlyphType.O.rotationsAtRoot[0]);
+		Glyph glyph = new Glyph(GlyphType.O, GlyphType.O.nominalSegments(0));
 		
 		Mock listener1 = mock(GlyphListener.class);
 		Mock listener2 = mock(GlyphListener.class);
 
-		expectGlyphMovement(listener1, GlyphType.O.rotationsAtRoot[0], GlyphType.O.rotationsAtRoot[0]);
-		expectGlyphMovement(listener2, GlyphType.O.rotationsAtRoot[0], GlyphType.O.rotationsAtRoot[0]);
-		expectGlyphMovement(listener1, GlyphType.O.rotationsAtRoot[0], segments1);		
-		expectGlyphMovement(listener2, GlyphType.O.rotationsAtRoot[0], segments1);		
+		expectGlyphMovement(listener1, GlyphType.O.nominalSegments(0), GlyphType.O.nominalSegments(0));
+		expectGlyphMovement(listener2, GlyphType.O.nominalSegments(0), GlyphType.O.nominalSegments(0));
+		expectGlyphMovement(listener1, GlyphType.O.nominalSegments(0), segments1);		
+		expectGlyphMovement(listener2, GlyphType.O.nominalSegments(0), segments1);		
 		expectGlyphMovement(listener1, segments1, segments2);			
 		expectGlyphMovement(listener2, segments1, segments2);		
 		
@@ -32,36 +35,35 @@ public class GlyphBehaviour extends UsingMiniMock {
 		
 		verifyMocks();
 	}
+	
+	public void shouldAllowListenersToBeAddedAsSet() throws Exception {
+		
+		Segments segments1 = new Segments(new Segment[] {new Segment(0, 0)});
+		Segments segments2 = new Segments(new Segment[] {new Segment(0, 1)});
+		
+		Glyph glyph = new Glyph(GlyphType.O, GlyphType.O.nominalSegments(0));
+		
+		Mock listener1 = mock(GlyphListener.class);
+		Mock listener2 = mock(GlyphListener.class);
+
+		expectGlyphMovement(listener1, GlyphType.O.nominalSegments(0), GlyphType.O.nominalSegments(0));
+		expectGlyphMovement(listener2, GlyphType.O.nominalSegments(0), GlyphType.O.nominalSegments(0));
+		
+		ListenerSet listenerSet = new ListenerSet();
+		listenerSet.addListener((GlyphListener) listener1);
+		listenerSet.addListener((GlyphListener) listener2);
+		
+		glyph.addListeners(listenerSet);
+		
+		verifyMocks();
+	}	
 
 
-	private void expectGlyphMovement(Mock listener, Segment[] origin, Segment[] destination) {
+	private void expectGlyphMovement(Mock listener, Segments origin, Segments destination) {
 		listener.expects("reportGlyphMovement").with(new Constraint[] {
 				eq(GlyphType.O),
-				new ArrayConstraint(origin),
-				new ArrayConstraint(destination)
+				eq(origin),
+				eq(destination)
 		});
-	}
-	
-	
-	private class ArrayConstraint implements Constraint {
-		private final Object[] expected;
-
-		public ArrayConstraint(Object[] expected) {
-			this.expected = expected;
-		}
-		
-		public boolean matches(Object actual) {
-			if (!(actual instanceof Object[])) return false;
-			Object[] actualArray = (Object[]) actual;	
-			
-			if (actualArray.length != expected.length) return false;
-			
-			for (int i = 0; i < actualArray.length; i++) {
-				if (!actualArray[i].equals(expected[i])) {
-					return false;
-				}
-			}
-			return true;
-		}
 	}
 }
