@@ -26,7 +26,7 @@ public class GameBehaviour extends UsingMiniMock {
 		
 		Game game = new Game(new PseudoRandomGlyphFactory(), new StubHeartbeat(), 7, 13);
 		
-		game.addListener((GameListener)gameListener);
+		game.addGameListener((GameListener)gameListener);
 		game.requestStart();
 		
 		verifyMocks();
@@ -40,7 +40,7 @@ public class GameBehaviour extends UsingMiniMock {
 		
 		Game game = new Game(new PseudoRandomGlyphFactory(), new StubHeartbeat(), 7, 13);
 		
-		game.addListener((GameListener)gameListener);
+		game.addGameListener((GameListener)gameListener);
 		game.requestStart();
 		
 		verifyMocks();
@@ -55,7 +55,7 @@ public class GameBehaviour extends UsingMiniMock {
 		glyphFactoryMock.expects("nextGlyph").with(new Constraint[] {eq(heartbeat), eq(4), isA(ListenerSet.class)}).will(returnValue(new LivingGlyph(heartbeat, GlyphType.T, 4)));
 		
 		Game game = new Game((GlyphFactory) glyphFactoryMock, heartbeat, 7, 13);
-		game.addListener((GlyphListener)glyphListener);
+		game.addGlyphListener((GlyphListener)glyphListener);
 		game.requestStart();
 		
 		verifyMocks();
@@ -82,7 +82,7 @@ public class GameBehaviour extends UsingMiniMock {
 		glyphListenerMock.expects("glyphMoved").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(glyphSegments)});
 		
 		Game game = new Game((GlyphFactory) glyphFactoryMock, heartbeat, 7, 13);
-		game.addListener((GlyphListener) glyphListenerMock);
+		game.addGlyphListener((GlyphListener) glyphListenerMock);
 		
 		game.requestStart();
 		heartbeat.beat();

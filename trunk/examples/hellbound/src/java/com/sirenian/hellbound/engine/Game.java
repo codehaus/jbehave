@@ -3,7 +3,6 @@ package com.sirenian.hellbound.engine;
 import com.sirenian.hellbound.domain.game.GameListener;
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import com.sirenian.hellbound.domain.game.GameState;
-import com.sirenian.hellbound.domain.glyph.Glyph;
 import com.sirenian.hellbound.domain.glyph.GlyphListener;
 import com.sirenian.hellbound.domain.glyph.Heartbeat;
 import com.sirenian.hellbound.util.Listener;
@@ -20,17 +19,11 @@ public class Game implements GameRequestListener {
 	private final GlyphFactory factory;
 	private final Heartbeat heartbeat;
 
-	private final int width;
-	private final int height;
 	private int centre;
-
-	private Glyph glyph;
 
 	public Game(GlyphFactory factory, Heartbeat heartbeat, int width, int height) {
 		this.factory = factory;
 		this.heartbeat = heartbeat;
-		this.width = width;
-		this.height = height;
 		gameListeners = new ListenerSet();
 		glyphListeners = new ListenerSet();
 		state = GameState.READY;
@@ -44,7 +37,7 @@ public class Game implements GameRequestListener {
 	}
 	
 	public void requestStart() {
-        glyph = factory.nextGlyph(heartbeat, centre, glyphListeners);
+        factory.nextGlyph(heartbeat, centre, glyphListeners);
 		setState(GameState.RUNNING);
 	}
 
@@ -54,12 +47,12 @@ public class Game implements GameRequestListener {
 		
 	}
 
-	public void addListener(GameListener listener) {
+	public void addGameListener(GameListener listener) {
 		gameListeners.addListener(listener);
 		stateNotifier.notify(listener);
 	}
 
-	public void addListener(GlyphListener listener) {
+	public void addGlyphListener(GlyphListener listener) {
 		glyphListeners.addListener(listener);
 	}
 	

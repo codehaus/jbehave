@@ -17,7 +17,6 @@ public class BehaviourClassDetails {
 
 	public void setName(String behaviourClassName) {
 		this.behaviourClassName = behaviourClassName;
-
 	}
 
 	public String getName() {

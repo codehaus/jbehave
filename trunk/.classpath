@@ -19,7 +19,7 @@
 	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/extensions/ant.jar"/>
+	<classpathentry sourcepath="O:/libs/apache-ant-1.6.5-src.zip" kind="lib" path="lib/extensions/ant.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/ant-contrib.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
@@ -28,6 +28,6 @@
 	<classpathentry kind="lib" path="lib/extensions/junit.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/sablecc.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/velocity-dep-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/cotta/cotta-1.0.jar"/>
+	<classpathentry sourcepath="O:/libs/cotta" kind="lib" path="lib/cotta/cotta-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
