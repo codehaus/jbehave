@@ -4,8 +4,8 @@ import javax.swing.SwingUtilities;
 
 import jbehave.core.story.domain.World;
 
-import com.sirenian.hellbound.engine.RequestQueue;
-import com.sirenian.hellbound.engine.ThreadedRequestQueue;
+import com.sirenian.hellbound.engine.EngineQueue;
+import com.sirenian.hellbound.engine.ThreadedEngineQueue;
 
 public class Idler extends jbehave.extensions.threaded.swing.Idler {
 
@@ -19,7 +19,7 @@ public class Idler extends jbehave.extensions.threaded.swing.Idler {
 	}
 	
     private void waitForAllQueuesToEmpty(World world) {
-        RequestQueue queue = (ThreadedRequestQueue) world.get(WorldKey.REQUEST_QUEUE, null);
+        EngineQueue queue = (ThreadedEngineQueue) world.get(WorldKey.REQUEST_QUEUE, null);
         queue.invokeAndWait(EMPTY_RUNNABLE);
         try {
             SwingUtilities.invokeAndWait(EMPTY_RUNNABLE);

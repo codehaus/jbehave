@@ -4,5 +4,8 @@ import com.sirenian.hellbound.util.Listener;
 
 
 public interface GameListener extends Listener {
-	void reportGameStateChanged(GameState state);
+	GameListener NULL = new GameListener() {
+        public void reportGameStateChanged(GameState state) {}};
+
+    void reportGameStateChanged(GameState state);
 }
