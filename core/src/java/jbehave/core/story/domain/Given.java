@@ -16,4 +16,5 @@ import jbehave.core.story.visitor.Visitable;
  */
 public interface Given extends Visitable, UsingMocks {
     void setUp(World world);
+    void tidyUp(World world);
 }

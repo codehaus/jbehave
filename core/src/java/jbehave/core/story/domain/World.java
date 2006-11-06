@@ -12,11 +12,14 @@ package jbehave.core.story.domain;
  */
 public interface World {
     /**
-     * Get a value out of the world.
-     * 
-     * If it doesn't exist, store the default value.
+     * Get a value out of the world. If it doesn't exist, store the default value.
      */
     Object get(String key, Object defaultValue);
+    
+    /**
+     * Get a value out of the world. If it doesn't exist, return null.
+     */
+    Object get(String key);
     
     /**
      * Put a value into the world, replacing any existing value.

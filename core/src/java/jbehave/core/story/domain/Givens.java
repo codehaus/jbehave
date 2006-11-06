@@ -8,6 +8,7 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
+import jbehave.core.story.visitor.Visitor;
 import jbehave.core.story.visitor.VisitorSupport;
 
 /**
@@ -15,30 +16,35 @@ import jbehave.core.story.visitor.VisitorSupport;
  */
 public class Givens extends CompositeVisitableUsingMiniMock implements Given {
     public static final Givens NULL = new Givens(new Given[0]);
+    private final Given[] givens;
     
     /** Constructor with a bunch of givens */
     public Givens(Given[] givens) {
 		super(givens);
+        this.givens = givens;
     }
 
-    /** Just one given */
     public Givens(Given given) {
-		super(new Given[] {given});
+        this(new Given[] {given});
     }
 
     public Givens(Given given1, Given given2) {
-		super(new Given[] {given1, given2});
+        this(new Given[] {given1, given2});
     }
 
     public Givens(Given given1, Given given2, Given given3) {
-		super(new Given[] {given1, given2, given3});
+        this(new Given[] {given1, given2, given3});
     }
 
 	public void setUp(final World world) {
-		accept(new VisitorSupport() {
-			public void visitGiven(Given given) {
-				given.setUp(world);
-			}
-		});
+        for(int i = 0; i < givens.length; i++) {
+            givens[i].setUp(world);
+        }
 	}
+
+    public void tidyUp(World world) {
+        for(int i = givens.length - 1; i > -1; i--) {
+            givens[i].tidyUp(world);
+        }
+    }
 }

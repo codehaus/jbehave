@@ -3,8 +3,8 @@ package com.sirenian.hellbound.domain.game;
 public interface GameRequestListener {
 
 	GameRequestListener NULL = new GameRequestListener() {
-        public void requestStart() {}};
+        public void requestGameStart() {}};
 
-    void requestStart();
+    void requestGameStart();
 
 }

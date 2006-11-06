@@ -16,4 +16,5 @@ import jbehave.core.story.visitor.Visitable;
  */
 public interface Event extends Visitable, UsingMocks {
     void occurIn(World world);
+    void undoIn(World world);
 }

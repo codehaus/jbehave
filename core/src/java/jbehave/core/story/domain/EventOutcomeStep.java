@@ -32,4 +32,8 @@ public class EventOutcomeStep implements Step {
         outcome.verifyMocks();
     }
 
+    public void undoIn(World world) {
+        event.undoIn(world);
+    }
+
 }

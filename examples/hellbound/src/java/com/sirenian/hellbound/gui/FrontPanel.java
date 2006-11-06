@@ -19,7 +19,7 @@ public class FrontPanel extends JPanel {
 		
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				starter.requestStart();
+				starter.requestGameStart();
 			}			
 		});
 	}

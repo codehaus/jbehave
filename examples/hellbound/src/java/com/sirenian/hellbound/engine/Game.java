@@ -32,11 +32,11 @@ public class Game implements GameRequestListener {
 				((GameListener)listener).reportGameStateChanged(state);
 			}			
 		};
-		centre = (int)(width + 1 / 2);
+		centre = (int)((width - 1) / 2);
 		
 	}
 	
-	public void requestStart() {
+	public void requestGameStart() {
         factory.nextGlyph(heartbeat, centre, glyphListeners);
 		setState(GameState.RUNNING);
 	}

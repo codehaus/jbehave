@@ -15,7 +15,10 @@ import jbehave.core.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public abstract class EventUsingMiniMock extends UsingMiniMock implements Event {
-    public abstract void occurIn(World world);
+    
+    public void undoIn(World world) {
+        // default empty implementation
+    };
 	
 	public void accept(Visitor visitor) {
 		visitor.visitEvent(this);

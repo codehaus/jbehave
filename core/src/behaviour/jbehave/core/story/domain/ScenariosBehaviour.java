@@ -8,7 +8,7 @@ import jbehave.core.story.result.ScenarioResult;
 
 public class ScenariosBehaviour extends UsingMiniMock {
 
-	public void shouldRunScenariosInOrder() {
+	public void shouldRunAndTidyUpScenariosInOrder() {
 		Mock scenarioA = mock(Scenario.class);
 		Mock scenarioB = mock(Scenario.class);
         World world = (World) stub(World.class);
@@ -16,7 +16,9 @@ public class ScenariosBehaviour extends UsingMiniMock {
 		Scenarios scenarios = new Scenarios();
 		
 		scenarioA.expects("run").with(world);
-        scenarioB.expects("run").with(world).after(scenarioA, "run");
+        scenarioA.expects("tidyUp").with(world);
+        scenarioB.expects("run").with(world).after(scenarioA, "tidyUp");
+        scenarioB.expects("tidyUp").with(world).after(scenarioB, "run");
 		
 		scenarios.addScenario((Scenario) scenarioA);
 		scenarios.addScenario((Scenario) scenarioB);
