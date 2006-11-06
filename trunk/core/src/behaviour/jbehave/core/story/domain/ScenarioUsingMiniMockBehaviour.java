@@ -15,8 +15,7 @@ import jbehave.core.mock.Mock;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
-    public void shouldSetupGivenSetExpectationsInOutcomeMakeEventOccurAndVerifyOutcomeWhenRun() throws Exception {
-		
+    public void shouldSetupAndRunEventsThenVerifyBehaviourWhenRun() throws Exception {
         // given...
         Mock given = mock(Given.class);
 		Mock event = mock(Event.class);
@@ -39,14 +38,36 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
+    public void shouldUndoEventsThenTidyUpGivensOnTidyUp() {
+        //given...
+        Mock given = mock(Given.class);
+        Mock event = mock(Event.class);
+        Mock outcome = mock(Outcome.class);
+        World world = (World) stub(World.class);
+        
+        //expect...
+        event.expects("undoIn").with(world);
+        given.expects("tidyUp").with(world).after(event, "undoIn");
+        
+        //when...
+        ScenarioUsingMiniMock scenario =
+            new ScenarioUsingMiniMock("scenario", "story", (Given)given, (Event)event, (Outcome) outcome);
+        scenario.tidyUp(world);
+        
+        //then...
+        verifyMocks();
+    }
+    
     public void shouldAllowScenarioElementsToBeWrappedSoThatTheStoryIsEasyToReadAndConstruct() {
+        //given...
     	Given given = new GivenUsingMiniMock(){
-			public void setUp(World world) {
-			}
+			public void setUp(World world) {}
+            public void tidyUp(World world) {}
 		};
 		
     	Event event = new EventUsingMiniMock(){ 
     		public void occurIn(World world) {}
+            public void undoIn(World world) {}
     	};
     	
     	Outcome outcome = new OutcomeUsingMiniMock(){
@@ -56,6 +77,7 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
 		
     	Step step = new EventOutcomeStep(event, outcome);
         
+        //expect when... then...
         ensureThat(ScenarioUsingMiniMock.given(given), eq(given));
         ensureThat(ScenarioUsingMiniMock.given(given, given), isA(Givens.class));
         ensureThat(ScenarioUsingMiniMock.given(given, given, given), isA(Givens.class));

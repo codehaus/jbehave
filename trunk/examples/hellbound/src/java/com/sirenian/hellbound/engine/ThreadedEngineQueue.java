@@ -7,17 +7,24 @@ public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
     private GameRequestListener gameRequestListener = GameRequestListener.NULL;
 
     public ThreadedEngineQueue() {        
-        startQueueThread("EngineRequestQueue");            
+        super("EngineQueue");            
     }
 
-	public void requestStart() {
+	public void requestGameStart() {
 	    queue(new Runnable() { 
-            public void run() { 
-                gameRequestListener.requestStart(); 
-        }});
+            public void run() { gameRequestListener.requestGameStart(); }
+            public String toString() {
+                return "runnable gameRequestListener.requestStart()";
+            }
+        });
     }
 
     public void setGameRequestDelegate(GameRequestListener gameRequestListener) {
         this.gameRequestListener = gameRequestListener;
     }
+
+    protected void perform(Runnable action) {
+        action.run();
+    }
+
 }

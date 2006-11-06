@@ -34,7 +34,8 @@ public class StoryRunner {
 
     public void run(String storyClassName, PrintStream printStream) 
         throws InstantiationException, IllegalAccessException, ClassNotFoundException {    
-        run(loadStory(storyClassName, classLoader), printStream);
+        Story story = loadStory(storyClassName, classLoader);
+        run(story, printStream);
     }
     
     public void run(Story story) {

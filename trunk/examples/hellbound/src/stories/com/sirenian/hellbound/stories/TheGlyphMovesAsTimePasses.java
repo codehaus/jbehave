@@ -10,7 +10,6 @@ public class TheGlyphMovesAsTimePasses extends HellboundStory {
 		super(new Narrative("game player", "the glyph to move downwards as time passes", "the game is a challenge"));
 		
 		addScenario(new ThePlayerSeesTheFirstGlyphMove());
-        
 	}
 	
 }

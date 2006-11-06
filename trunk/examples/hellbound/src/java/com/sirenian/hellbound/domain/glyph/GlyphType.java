@@ -26,7 +26,7 @@ public class GlyphType {
     }
     
     public String toString() {
-        return super.toString() + ":" + ascii;
+        return String.valueOf(ascii);
     }
 	
 	public static final GlyphType O = new GlyphType(def(

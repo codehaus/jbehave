@@ -63,6 +63,11 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
         step.perform(world);
     }
 
+    public void tidyUp(World world) {
+        step.undoIn(world);
+        given.tidyUp(world);
+    }   
+
     public void accept(Visitor visitor) {
         visitor.visitScenario(this);
         given.accept(visitor);
@@ -140,5 +145,5 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
 
 	protected static Given given(Scenario scenario) {
 		return new GivenScenario(scenario);
-	}	
+	}
 }

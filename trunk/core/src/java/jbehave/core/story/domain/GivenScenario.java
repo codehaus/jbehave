@@ -32,5 +32,9 @@ public class GivenScenario extends GivenUsingMiniMock {
     public void setUp(World world) {
         scenario.run(world);
     }
+
+    public void tidyUp(World world) {
+        scenario.tidyUp(world);
+    }
     
 }

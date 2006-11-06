@@ -58,6 +58,19 @@ public class EventOutcomeStepBehaviour extends UsingMiniMock {
         verifyMocks();        
     }
     
+    public void shouldUndoEventsWhenUndone() {
+        Mock event = mock(Event.class);
+        Mock outcome = mock(Outcome.class);
+        
+        World world = new HashMapWorld();
+        event.expects("undoIn").with(world);
+        
+        EventOutcomeStep step = new EventOutcomeStep((Event)event, (Outcome)outcome);
+        step.undoIn(world);
+        
+        verifyMocks();  
+    }
+    
     private EventOutcomeStep stepContainingMocks(boolean eventContainsMocks, boolean outcomeContainsMocks) {
         Mock event = mock(Event.class);
         Mock outcome = mock(Outcome.class);
@@ -68,4 +81,5 @@ public class EventOutcomeStepBehaviour extends UsingMiniMock {
         EventOutcomeStep step = new EventOutcomeStep((Event)event, (Outcome)outcome);
         return step;
     }
+    
 }

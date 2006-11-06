@@ -23,6 +23,10 @@ public class HashMapWorld implements World {
         return map.get(key);
     }
 
+    public Object get(String key) {
+        return map.get(key);
+    }
+    
     public void put(String key, Object value) {
         map.put(key, value);
     }

@@ -27,7 +27,7 @@ public class GameBehaviour extends UsingMiniMock {
 		Game game = new Game(new PseudoRandomGlyphFactory(), new StubHeartbeat(), 7, 13);
 		
 		game.addGameListener((GameListener)gameListener);
-		game.requestStart();
+		game.requestGameStart();
 		
 		verifyMocks();
 	}
@@ -41,7 +41,7 @@ public class GameBehaviour extends UsingMiniMock {
 		Game game = new Game(new PseudoRandomGlyphFactory(), new StubHeartbeat(), 7, 13);
 		
 		game.addGameListener((GameListener)gameListener);
-		game.requestStart();
+		game.requestGameStart();
 		
 		verifyMocks();
 	}
@@ -56,7 +56,7 @@ public class GameBehaviour extends UsingMiniMock {
 		
 		Game game = new Game((GlyphFactory) glyphFactoryMock, heartbeat, 7, 13);
 		game.addGlyphListener((GlyphListener)glyphListener);
-		game.requestStart();
+		game.requestGameStart();
 		
 		verifyMocks();
 	}
@@ -84,7 +84,7 @@ public class GameBehaviour extends UsingMiniMock {
 		Game game = new Game((GlyphFactory) glyphFactoryMock, heartbeat, 7, 13);
 		game.addGlyphListener((GlyphListener) glyphListenerMock);
 		
-		game.requestStart();
+		game.requestGameStart();
 		heartbeat.beat();
 		
 		verifyMocks();

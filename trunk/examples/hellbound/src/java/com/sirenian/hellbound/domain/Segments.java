@@ -107,4 +107,13 @@ public class Segments {
 		
 		public Segment translate(Segment segment) {	return segment.movedRight(offset);	}
 	}
+    
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Segments: ");
+        for (int i = 0; i < segments.length; i++) {
+            builder.append(segments[i].toString());
+        }
+        return builder.toString();
+    }
 }

@@ -7,6 +7,7 @@ import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.domain.glyph.Heartbeat;
 import com.sirenian.hellbound.domain.glyph.LivingGlyph;
 import com.sirenian.hellbound.util.ListenerSet;
+import com.sirenian.hellbound.util.Logger;
 
 public class PseudoRandomGlyphFactory implements GlyphFactory {
 
@@ -21,7 +22,9 @@ public class PseudoRandomGlyphFactory implements GlyphFactory {
     }
 
     public Glyph nextGlyph(Heartbeat heartbeat, int center, ListenerSet glyphListeners) {
-        LivingGlyph glyph = new LivingGlyph(heartbeat, GlyphType.ALL_LIVING[random.nextInt(GlyphType.ALL_LIVING.length)], center);
+        GlyphType glyphType = GlyphType.ALL_LIVING[random.nextInt(GlyphType.ALL_LIVING.length)];
+        Logger.debug(this, "Creating glyph " + glyphType + " at (" + center + ", 0)");
+        LivingGlyph glyph = new LivingGlyph(heartbeat, glyphType, center);
         glyph.addListeners(glyphListeners);
 		return glyph;
     }

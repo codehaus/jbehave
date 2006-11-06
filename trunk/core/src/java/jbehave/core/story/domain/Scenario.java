@@ -17,5 +17,6 @@ public interface Scenario extends Visitable {
     String getStoryName();
     String getDescription();
     void run(World world);
+    void tidyUp(World world);
     boolean containsMocks();
 }

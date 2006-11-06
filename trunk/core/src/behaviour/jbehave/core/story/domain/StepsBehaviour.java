@@ -27,4 +27,20 @@ public class StepsBehaviour extends CompositeVisitableUsingMiniMockBehaviour{
         // when...
         steps.perform(world);
     }
+    
+    public void shouldUndoComponentsInReverseOrder() {
+        // given...
+        Mock step1 = mock(Step.class);
+        Mock step2 = mock(Step.class);
+        World world = (World)stub(World.class);
+        Step steps = new Steps((Step) step1, (Step) step2);
+        
+        
+        // expect...
+        step2.expects("undoIn").with(world);
+        step1.expects("undoIn").with(world).after(step2, "undoIn");
+
+        // when...
+        steps.undoIn(world);
+    }
 }

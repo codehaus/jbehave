@@ -1,8 +1,11 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
+import jbehave.core.story.visitor.Visitor;
 
 public class Steps extends CompositeVisitableUsingMiniMock implements Step {
+
+    private final Step[] steps;
 
     public Steps(Step step) {
         this(new Step[] {step});
@@ -18,13 +21,18 @@ public class Steps extends CompositeVisitableUsingMiniMock implements Step {
     
     public Steps(Step[] steps) {
         super(steps);
+        this.steps = steps;
     }
 
     public void perform(World world) {
-        // We don't do this the same way as the other composites because 
-        // of the odd order in which Outcome and Event do their stuff
         for (int i = 0; i < visitables.size(); i++) {
             ((Step)visitables.get(i)).perform(world);
+        }
+    }
+
+    public void undoIn(World world) {
+        for (int i = steps.length - 1; i > -1; i--) {
+            steps[i].undoIn(world);
         }
     }
 

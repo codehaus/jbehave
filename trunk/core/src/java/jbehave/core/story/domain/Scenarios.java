@@ -28,7 +28,8 @@ public class Scenarios {
 
 	public void run(World world, BehaviourListener[] listeners) {
         for (int i = 0; i < scenarios.size(); i++) {
-            informListeners(listeners, runScenario(world, (Scenario) scenarios.get(i)));
+            Scenario scenario = (Scenario) scenarios.get(i);
+            informListeners(listeners, runScenario(world, scenario));
         }
 	}
 
@@ -44,6 +45,8 @@ public class Scenarios {
         } catch (NestedVerificationException nve) {
             return new ScenarioResult(scenario.getDescription(), scenario.getStoryName(), nve);
         }
+        scenario.tidyUp(world);
+        
         return new ScenarioResult(scenario.getDescription(), scenario.getStoryName(), 
                 scenario.containsMocks() ? ScenarioResult.USED_MOCKS : ScenarioResult.SUCCEEDED);
     }

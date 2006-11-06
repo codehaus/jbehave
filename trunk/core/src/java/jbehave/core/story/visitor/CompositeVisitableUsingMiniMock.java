@@ -13,10 +13,6 @@ public class CompositeVisitableUsingMiniMock {
 		this.visitables.addAll(Arrays.asList(visitables));
 	}
 
-	public void accept(Visitor visitor) {
-		visitables.accept(visitor);
-	}
-
 	public boolean containsMocks() {
 		for (Iterator i = visitables.iterator(); i.hasNext();) {
 			if (((UsingMocks) i.next()).containsMocks()) {
@@ -31,5 +27,9 @@ public class CompositeVisitableUsingMiniMock {
 			((UsingMocks) i.next()).verifyMocks();
 		}
 	}
+    
+    public void accept(Visitor visitor) {
+        visitables.accept(visitor);
+    }
 
 }
