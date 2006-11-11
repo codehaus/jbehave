@@ -10,11 +10,12 @@ public class ThreadedEngineQueueBehaviour extends ThreadedQueueBehaviour {
     public void shouldPassAlongGameRequests() throws Exception {
         
         Mock listener = mock(GameRequestListener.class);
-        listener.expects("requestStart");
+        listener.expects("requestStartGame");
+        listener.expects("requestDropGlyph");
         
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
         queue.setGameRequestDelegate((GameRequestListener) listener);
-        queue.requestGameStart();
+        queue.requestStartGame();
         
         synchronized(this) { wait(20); }
         // needs to be long enough for request queue to start up and pass along the request
@@ -24,7 +25,7 @@ public class ThreadedEngineQueueBehaviour extends ThreadedQueueBehaviour {
 
     public void shouldHandleRequestsSilentlyIfListenersNotSet() {
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
-        queue.requestGameStart();        
+        queue.requestStartGame();        
     }
 
 }

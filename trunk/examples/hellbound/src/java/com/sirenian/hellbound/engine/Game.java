@@ -36,7 +36,7 @@ public class Game implements GameRequestListener {
 		
 	}
 	
-	public void requestGameStart() {
+	public void requestStartGame() {
         factory.nextGlyph(heartbeat, centre, glyphListeners);
 		setState(GameState.RUNNING);
 	}
@@ -55,6 +55,11 @@ public class Game implements GameRequestListener {
 	public void addGlyphListener(GlyphListener listener) {
 		glyphListeners.addListener(listener);
 	}
+
+    public void requestDropGlyph() {
+        // TODO Auto-generated method stub
+        
+    }
 	
 	
 

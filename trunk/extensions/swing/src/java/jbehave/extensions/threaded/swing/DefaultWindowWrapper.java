@@ -15,7 +15,6 @@ import javax.swing.text.JTextComponent;
 import jbehave.extensions.threaded.WindowGrabber;
 import jbehave.extensions.threaded.time.TimeoutException;
 
-
 public class DefaultWindowWrapper implements WindowWrapper {
 
 	// Use of the DefaultWindowWrapper starts it grabbing windows ASAP.
@@ -24,8 +23,6 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	private Window window;
 	private String windowName;
 	private ComponentFinder finder;
-
-
 	private EventQueue sysQueue;
 
 	private Idler idler;

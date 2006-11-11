@@ -84,6 +84,8 @@ public class Hellbound {
             Game game) {
         game.addGameListener(guiQueue);
         game.addGlyphListener(guiQueue);
+        frame.setGameRequestListener(engineQueue);
+        
         engineQueue.setGameRequestDelegate(game);
         guiQueue.setGameListenerDelegate(frame);
         guiQueue.setGlyphListenerDelegate(pitPanel);
