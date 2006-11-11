@@ -10,9 +10,9 @@ public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
         super("EngineQueue");            
     }
 
-	public void requestGameStart() {
+	public void requestStartGame() {
 	    queue(new Runnable() { 
-            public void run() { gameRequestListener.requestGameStart(); }
+            public void run() { gameRequestListener.requestStartGame(); }
             public String toString() {
                 return "runnable gameRequestListener.requestStart()";
             }
@@ -25,6 +25,11 @@ public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
 
     protected void perform(Runnable action) {
         action.run();
+    }
+
+    public void requestDropGlyph() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

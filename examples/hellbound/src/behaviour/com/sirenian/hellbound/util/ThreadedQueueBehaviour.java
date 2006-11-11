@@ -19,9 +19,9 @@ public class ThreadedQueueBehaviour extends UsingMiniMock {
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
         queue.setGameRequestDelegate((GameRequestListener) listener);
         
-        queue.requestGameStart();
+        queue.requestStartGame();
         queue.invokeAndWait((Runnable) runnable);
-        queue.requestGameStart();
+        queue.requestStartGame();
 
         synchronized(this) { wait(20); }
         
