@@ -4,14 +4,14 @@ Source Repository
 h1(FirstChild). Web Access
 
 Web access to the Subversion repository is available through ViewCVS at
-"http://svn.jbehave.codehaus.org/trunk":http://svn.jbehave.codehaus.org/trunk/
+"http://svn.codehaus.org/jbehave/trunk":http://svn.codehaus.org/jbehave/trunk
 
 h1. Anonymous Subversion Access
 
 This project's Subversion repository can be checked out through anonymous
 Subversion access with the following command:
 
-<pre class="Shell">svn co svn://svn.jbehave.codehaus.org/jbehave/scm/trunk jbehave</pre>
+<pre class="Shell">svn co http://svn.codehaus.org/jbehave/trunk jbehave</pre>
 
 h1. Developer Access
 
