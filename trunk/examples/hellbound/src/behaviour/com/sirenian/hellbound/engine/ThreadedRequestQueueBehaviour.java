@@ -14,7 +14,7 @@ public class ThreadedRequestQueueBehaviour extends UsingMiniMock {
         
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
         queue.setGameRequestDelegate((GameRequestListener) listener);
-        queue.requestStart();
+        queue.requestStartGame();
         
         synchronized(this) { wait(20); }
         // needs to be long enough for request queue to start up and pass along the request
@@ -24,7 +24,7 @@ public class ThreadedRequestQueueBehaviour extends UsingMiniMock {
 
     public void shouldHandleRequestsSilentlyIfListenersNotSet() {
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
-        queue.requestStart();        
+        queue.requestStartGame();        
     }
     
     public void shouldInvokeOtherRunnablesAfterQueueIsEmptied() throws Exception {
@@ -38,9 +38,9 @@ public class ThreadedRequestQueueBehaviour extends UsingMiniMock {
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
         queue.setGameRequestDelegate((GameRequestListener) listener);
         
-        queue.requestStart();
+        queue.requestStartGame();
         queue.invokeAndWait((Runnable) runnable);
-        queue.requestStart();
+        queue.requestStartGame();
 
         synchronized(this) { wait(20); }
         
