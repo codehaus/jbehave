@@ -62,6 +62,16 @@ public class ThreadedRequestQueue implements RequestQueue {
 
     public void setGameRequestListener(final GameRequestListener listener) {
         startGameRequest = new Runnable() { 
-            public void run() { listener.requestStart(); }};    
+            public void run() { ((ThreadedRequestQueue) listener).requestStart(); }};    
+    }
+
+    public void requestDropGlyph() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void requestStartGame() {
+        // TODO Auto-generated method stub
+        
     }
 }

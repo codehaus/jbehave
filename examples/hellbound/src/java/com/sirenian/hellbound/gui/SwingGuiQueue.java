@@ -41,4 +41,24 @@ public class SwingGuiQueue implements GuiQueue {
 	    SwingUtilities.invokeLater(runnable);
 	}
 
+    public void setGameListenerDelegate(GameListener listener) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void setGlyphListenerDelegate(GlyphListener listener) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void invokeAndWait(Runnable empty_runnable) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void stop() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
