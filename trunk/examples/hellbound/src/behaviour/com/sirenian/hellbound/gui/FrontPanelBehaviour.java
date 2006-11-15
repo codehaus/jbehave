@@ -17,7 +17,7 @@ public class FrontPanelBehaviour extends UsingMiniMock {
 		WindowWrapper wrapper = new DefaultWindowWrapper("TestFrame");
 		
 		Mock gameStarter = mock(GameRequestListener.class);
-		gameStarter.expects("requestStart");
+		gameStarter.expects("requestStartGame");
 		
 		FrontPanel panel = new FrontPanel((GameRequestListener)gameStarter);
 

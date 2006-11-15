@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import jbehave.core.story.domain.GivenUsingMiniMock;
 import jbehave.core.story.domain.World;
 import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
-import jbehave.extensions.threaded.swing.WindowWrapper;
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.engine.EngineQueue;

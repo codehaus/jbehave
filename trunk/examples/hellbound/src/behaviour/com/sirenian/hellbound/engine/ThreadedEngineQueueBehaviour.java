@@ -16,6 +16,7 @@ public class ThreadedEngineQueueBehaviour extends ThreadedQueueBehaviour {
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
         queue.setGameRequestDelegate((GameRequestListener) listener);
         queue.requestStartGame();
+        queue.requestDropGlyph();
         
         synchronized(this) { wait(20); }
         // needs to be long enough for request queue to start up and pass along the request
