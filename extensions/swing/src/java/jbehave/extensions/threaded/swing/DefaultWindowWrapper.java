@@ -77,6 +77,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	public void pressKey(int keycode) throws TimeoutException {
 		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_PRESSED));
 		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_RELEASED));
+		idler.waitForIdle();
 	}
 
 	private KeyEvent createKeyPressEvent(int keycode, int id) throws TimeoutException {

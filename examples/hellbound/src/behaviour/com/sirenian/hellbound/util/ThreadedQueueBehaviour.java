@@ -13,8 +13,8 @@ public class ThreadedQueueBehaviour extends UsingMiniMock {
         Mock runnable = mock(Runnable.class);
         Mock listener = mock(GameRequestListener.class);
         
-        listener.expects("requestGameStart").times(2);
-        runnable.expects("run").after(listener, "requestGameStart");
+        listener.expects("requestStartGame").times(2);
+        runnable.expects("run").after(listener, "requestStartGame");
         
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
         queue.setGameRequestDelegate((GameRequestListener) listener);

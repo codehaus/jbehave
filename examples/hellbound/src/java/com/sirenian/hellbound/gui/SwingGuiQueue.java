@@ -8,17 +8,22 @@ import com.sirenian.hellbound.domain.game.GameState;
 import com.sirenian.hellbound.domain.glyph.GlyphListener;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.engine.GuiQueue;
+import com.sirenian.hellbound.engine.ThreadedQueue;
 
-public class SwingGuiQueue implements GuiQueue {
+public class SwingGuiQueue extends ThreadedQueue implements GuiQueue {
+
+	protected SwingGuiQueue() {
+		super("SwingGuiQueue");
+	}
 
 	private GameListener gameListener = GameListener.NULL;
     private GlyphListener glyphListener = GlyphListener.NULL;
 
-    public void setGameReportDelegate(GameListener listener) {
+    public void setGameListenerDelegate(GameListener listener) {
         this.gameListener = listener;
 	}
 
-	public void setGlyphReportDelegate(GlyphListener listener) {
+	public void setGlyphListenerDelegate(GlyphListener listener) {
         glyphListener = listener;
 	}
 
@@ -37,28 +42,7 @@ public class SwingGuiQueue implements GuiQueue {
         }});
 	}
 	
-	private void queue(Runnable runnable) {
+	protected void perform(Runnable runnable) {
 	    SwingUtilities.invokeLater(runnable);
 	}
-
-    public void setGameListenerDelegate(GameListener listener) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void setGlyphListenerDelegate(GlyphListener listener) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void invokeAndWait(Runnable empty_runnable) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void stop() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

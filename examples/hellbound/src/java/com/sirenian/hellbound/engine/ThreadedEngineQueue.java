@@ -28,7 +28,12 @@ public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
     }
 
     public void requestDropGlyph() {
-        // TODO Auto-generated method stub
+        queue(new Runnable() {
+            public void run() { gameRequestListener.requestDropGlyph(); }
+            public String toString() {
+                return "runnable gameRequestListener.requestDropGlyph()";
+            }
+        });
         
     }
 

@@ -44,18 +44,18 @@ public class GlyphType {
 					p(0, 0), 'T');
 	
 	public static final GlyphType I = new GlyphType(def(
-					rotation(1, 0,  1, 1,  1, 2,  1, 3),
-					rotation(0, 1,  1, 1,  2, 1,  3, 1),
-					rotation(1, 3,  1, 2,  1, 1,  1, 0),
-					rotation(3, 1,  2, 1,  1, 1,  0, 1)),
-					p(1, 0), 'I');
+					rotation(0, 0,  0, 1,  0, 2,  0, 3),
+					rotation(-1, 1,  0, 1,  1, 1,  2, 1),
+					rotation(0, 3,  0, 2,  0, 1,  0, 0),
+					rotation(2, 1,  1, 1,  0, 1,  -1, 1)),
+					p(0, 0), 'I');
 	
 	public static final GlyphType J = new GlyphType(def(
-					rotation(1, 0,  1, 1,  1, 2,  0, 2),
-					rotation(2, 1,  1, 1,  0, 1,  0, 0),
-					rotation(0, 2,  0, 1,  0, 0,  1, 0),
-					rotation(0, 0,  1, 0,  2, 0,  2, 1)),
-					p(1, 0), 'J');
+					rotation(0, 0,  0, 1,  0, 2,  -1, 2),
+					rotation(0, 1,  0, 1,  -1, 1,  -1, 0),
+					rotation(-1, 2,  -1, 1,  -1, 0,  0, 0),
+					rotation(-1, 0,  0, 0,  1, 0,  1, 1)),
+					p(0, 0), 'J');
 	
 	public static final GlyphType L = new GlyphType(def(
 					rotation(0, 0,  0, 1,  0, 2,  1, 2),
