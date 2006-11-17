@@ -7,11 +7,13 @@
  */
 package jbehave.core.behaviour;
 
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
+
 import jbehave.core.exception.JBehaveFrameworkError;
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.mock.Constraint;
-
-import java.lang.reflect.Method;
 
 
 /**
@@ -19,7 +21,9 @@ import java.lang.reflect.Method;
  */
 public class BehaviourClass implements Behaviour {
 
+    private static final String BEHAVIOUR_METHOD_PREFIX = "should";
     private final Class classToVerify;
+    private final Object instance;
     private final BehaviourVerifier verifier;
     private Constraint methodFilter;
     public static final Constraint ALL_METHODS = new Constraint() {
@@ -27,10 +31,14 @@ public class BehaviourClass implements Behaviour {
             return true;
         }
     };
-
+    public static final Constraint BEHAVIOUR_METHODS = new Constraint() {
+        public boolean matches(Object arg) {
+            return ((Method) arg).getName().startsWith(BEHAVIOUR_METHOD_PREFIX);
+        }
+    };
+    
     public BehaviourClass(Class classToVerify) {
-        throw new UnsupportedOperationException();
-//        this(classToVerify, new BehaviourVerifier());
+        this(classToVerify, new BehaviourVerifier());
     }
 
     public BehaviourClass(Class classToVerify, BehaviourVerifier verifier) {
@@ -39,6 +47,7 @@ public class BehaviourClass implements Behaviour {
 
     public BehaviourClass(Class classToVerify, final String methodName, BehaviourVerifier verifier) {
         this.classToVerify = classToVerify;
+        this.instance = createInstance();
         this.verifier = verifier;
         if (methodName.length() == 0) {
             this.methodFilter = ALL_METHODS;
@@ -65,6 +74,31 @@ public class BehaviourClass implements Behaviour {
         return counter.total();
     }
 
+    public BehaviourMethod[] getBehaviourMethods(){
+        Set set = new HashSet();
+        Method[] methods = getMethods(BEHAVIOUR_METHODS);
+        for (int i = 0; i < methods.length; i++) {
+            set.add(createBehaviourMethod(methods[i]));
+        }        
+        return (BehaviourMethod[]) set.toArray(new BehaviourMethod[set.size()]);
+    }
+    
+    public BehaviourMethod createBehaviourMethod(Method method) {
+        return new BehaviourMethod(instance, method);
+    }
+    
+    private Method[] getMethods(Constraint methodFilter){
+        Set set = new HashSet();
+        Method[] classMethods = classToVerify.getMethods();
+        for (int i = 0; i < classMethods.length; i++) {
+            Method method = classMethods[i];
+            if ( methodFilter.matches(method)) {
+                set.add(method);
+            }
+        }        
+        return (Method[]) set.toArray(new Method[set.size()]);
+    }
+    
     private void traverseMethodsWith(MethodHandler methodHandler) {
         if (Behaviours.class.isAssignableFrom(classToVerify)) {
             Behaviours behaviours = (Behaviours) createInstance();
@@ -73,11 +107,11 @@ public class BehaviourClass implements Behaviour {
                 methodHandler.handleClass(new BehaviourClass(nestedClasses[i], verifier));
             }
         }
-        Method[] methods = classToVerify.getMethods();
+        Method[] methods = getMethods(BEHAVIOUR_METHODS);
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
-            if (method.getName().startsWith("should") && methodFilter.matches(method)) {
-                methodHandler.handleMethod(new BehaviourMethod(createInstance(), method));
+            if ( methodFilter.matches(method)) {
+                methodHandler.handleMethod(createBehaviourMethod(method));
             }
         }
     }
@@ -110,7 +144,7 @@ public class BehaviourClass implements Behaviour {
         }
 
         public void handleMethod(BehaviourMethod behaviourMethod) {
-            	total++;
+            total++;
         }
 
         public int total() {
