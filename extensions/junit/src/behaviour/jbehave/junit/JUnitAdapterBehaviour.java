@@ -5,12 +5,18 @@
  */
 package jbehave.junit;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import jbehave.core.Ensure;
+import jbehave.core.behaviour.Behaviours;
+import jbehave.core.exception.JBehaveFrameworkError;
 import jbehave.core.mock.UsingConstraints;
 import jbehave.junit.JUnitAdapter.BehavioursAdapter;
 import junit.framework.Test;
@@ -88,11 +94,46 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
         }
     }
     
-    public void shouldExecuteBehaviourMethods() throws Exception {
+    public void shouldExecuteBehavioursInjected() throws Exception {
         // setup
         JUnitAdapter.setBehaviours(new BehavioursAdapter(SomeBehaviourClass.class));
         Test suite = JUnitAdapter.suite();
         
+        assertEventsAreInvoked(suite);
+    }
+
+
+    public void shouldExecuteBehavioursLoadedFromBehavioursClassProperty() throws Exception {
+        // setup
+        JUnitAdapter.setBehaviours(null);
+        JUnitAdapter.setClassLoader(new BehavioursClassLoader("behavioursClass="+SomeBehaviours.class.getName()));
+        Test suite = JUnitAdapter.suite();
+
+        assertEventsAreInvoked(suite);
+    }    
+
+    public void shouldExecuteBehavioursLoadedFromBehaviourClassProperty() throws Exception {
+        // setup
+        JUnitAdapter.setBehaviours(null);
+        JUnitAdapter.setClassLoader(new BehavioursClassLoader("behaviourClass="+SomeBehaviourClass.class.getName()));
+        Test suite = JUnitAdapter.suite();
+
+        assertEventsAreInvoked(suite);
+    }    
+
+    public void shouldThrowErrorIfBehavioursAreNotFound() throws Exception {
+        // setup
+        JUnitAdapter.setBehaviours(null);
+        JUnitAdapter.setClassLoader(new BehavioursClassLoader(""));
+        try {
+            JUnitAdapter.suite();
+        } catch ( JBehaveFrameworkError e) {
+            // expected
+        }        
+    }    
+
+    
+    private void assertEventsAreInvoked(Test suite) {
         TestResult testResult = new TestResult() {
             public void startTest(Test test) {
                 sequenceOfEvents.add("startTest");
@@ -116,4 +157,36 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
             ensureThat(event, isContainedIn(sequenceOfEvents));            
         }
     }
+
+    
+    public static class SomeBehaviours implements Behaviours {
+        public Class[] getBehaviours() {
+            return new Class[]{SomeBehaviourClass.class};
+        }        
+    }
+    
+    static class BehavioursClassLoader extends ClassLoader {
+        private String property;
+        
+        public BehavioursClassLoader(String property) {
+            this.property = property;
+        }
+
+        public InputStream getResourceAsStream(String name){
+            return new ReaderInputStream(new StringReader(property));
+        }
+    }
+    
+    static class ReaderInputStream extends InputStream {
+        private Reader reader;
+
+        public ReaderInputStream(Reader isr) {
+            this.reader = isr;
+        }
+
+        public int read() throws IOException {
+            return reader.read();
+        }
+    }
+
 }
