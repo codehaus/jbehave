@@ -47,7 +47,7 @@ public class TestSuitePopulator {
         Method method = behaviourMethod.method();
         try {
             Object instance = currentBehaviourClass.newInstance();
-            currentSuite.addTest(new JUnitMethodAdapter(method, instance));
+            currentSuite.addTest(new JUnitMethodAdapter(new BehaviourMethod(instance, method)));
         } catch (Exception e) {
             String message = "Problem adding test for " + currentBehaviourClass.getName() + "." + method.getName();
             throw new JBehaveFrameworkError(message, e);

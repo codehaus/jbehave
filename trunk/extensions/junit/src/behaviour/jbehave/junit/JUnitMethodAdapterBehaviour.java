@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import jbehave.core.behaviour.BehaviourMethod;
 import jbehave.core.mock.UsingConstraints;
 import junit.framework.Test;
 
@@ -33,7 +34,7 @@ public class JUnitMethodAdapterBehaviour extends UsingConstraints {
         Object instance = SomeBehaviourClass.class.newInstance();
 
         // execute
-        Test test = new JUnitMethodAdapter(method, instance);
+        Test test = new JUnitMethodAdapter(new BehaviourMethod(instance, method));
         
         // verify
         ensureThat(test, not(eq(null)));
