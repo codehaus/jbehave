@@ -18,8 +18,9 @@ import junit.framework.Test;
 import junit.framework.TestResult;
 
 /**
- * Adapter wrapping a BehaviourMethod as a JUnit test 
+ * Adapter wrapping a BehaviourMethod as a JUnit Test 
  * 
+ * @see {@link Test}
  * @author Dan North
  * @author Mauro Talevi
  */
@@ -81,17 +82,16 @@ public class JUnitMethodAdapter implements BehaviourListener, Test {
         this.result = result;
     }
     
+    public void before(Behaviour behaviour) {
+        // no-op
+    }
+
+    public void after(Behaviour behaviour) {
+        // no-op
+    }
+
     public String toString() {
         return new ConvertCase(behaviourMethod.method().getName()).toSeparateWords();
     }
 
-    public void before(Behaviour behaviour) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void after(Behaviour behaviour) {
-        // TODO Auto-generated method stub
-        
-    }
 }
