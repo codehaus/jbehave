@@ -19,6 +19,7 @@ import junit.framework.TestSuite;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @deprecated All functionality now in JUnitAdapter
  */
 public class TestSuitePopulator {
     private final TestSuite[] suiteRef;
