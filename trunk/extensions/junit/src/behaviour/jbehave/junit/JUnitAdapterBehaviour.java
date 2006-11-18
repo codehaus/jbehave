@@ -1,6 +1,4 @@
 /*
- * Created on 11-Aug-2004
- * 
  * (c) 2003-2004 ThoughtWorks Ltd
  *
  * See license.txt for license details
@@ -36,7 +34,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     public void shouldCountSingleBehaviourMethodAsTest() throws Exception {
         todo("later");
         // setup
-        JUnitAdapter.setBehaviourClass(HasSingleMethod.class);
+        JUnitAdapter.setBehavioursClass(HasSingleMethod.class);
         Test suite = JUnitAdapter.suite();
         
         // execute
@@ -57,7 +55,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     public void shouldCountMultipleBehaviourMethodsAsTests() throws Exception {
         todo("later");
         // setup
-        JUnitAdapter.setBehaviourClass(HasTwoMethods.class);
+        JUnitAdapter.setBehavioursClass(HasTwoMethods.class);
         Test suite = JUnitAdapter.suite();
         // execute
         int testCaseCount = suite.countTestCases();
@@ -75,7 +73,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     public void shouldNotExecuteBehaviourMethodsWhileCountingThem() throws Exception {
         todo("later");
         // setup
-        JUnitAdapter.setBehaviourClass(HasFailingMethod.class);
+        JUnitAdapter.setBehavioursClass(HasFailingMethod.class);
         Test suite = JUnitAdapter.suite();
         
         // execute
@@ -94,7 +92,7 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     public void shouldExecuteBehaviourMethods() throws Exception {
         todo("later");
         // setup
-        JUnitAdapter.setBehaviourClass(SomeBehaviourClass.class);
+        JUnitAdapter.setBehavioursClass(SomeBehaviourClass.class);
         Test suite = JUnitAdapter.suite();
         
         TestResult testResult = new TestResult() {
