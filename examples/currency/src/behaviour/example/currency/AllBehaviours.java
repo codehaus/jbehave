@@ -21,4 +21,8 @@ public class AllBehaviours implements Behaviours {
 			CurrencyConverterControllerBehaviour.class
 		};
 	}
+    
+    public String toString() {
+        return "Behaviours: " + AllBehaviours.class.getName();
+    }
 }
