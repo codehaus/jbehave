@@ -11,9 +11,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import jbehave.core.behaviour.BehaviourClass;
+import jbehave.core.behaviour.BehaviourMethod;
 import jbehave.core.exception.JBehaveFrameworkError;
-import jbehave.junit.listener.TestSuitePopulator;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -22,15 +21,16 @@ import junit.framework.TestSuite;
  * Runs a behaviour class in a JUnit test runner.
  * 
  * Looks for a properties file called <tt>jbehave.properties</tt> on
- * the classpath, containing a property called <tt>behaviourClass</tt>.<br/>
+ * the classpath, containing a property called <tt>behaviourClass</tt>.
  * <br/>
  * This means you can set your project up with the jars for JBehave core
  * and the JUnit extension, as well as junit.jar, and then run
- * <tt>jbehave.extensions.junit.JUnitAdapter</tt> as a test inside any
+ * <tt>jbehave.junit.JUnitAdapter</tt> as a test inside any
  * old test runner (such as your IDE's). This will look for the properties
  * file and run the behaviour class it finds in there.
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Mauro Talevi
  */
 public class JUnitAdapter {
 
@@ -40,15 +40,21 @@ public class JUnitAdapter {
         JUnitAdapter.BEHAVIOUR_CLASS = behaviourClass;
     }
 
+    /**
+     * Create test suite with the behaviour methods in the behaviour class
+     * @return A Test suite
+     */
     public static Test suite() {
         Class classToVerify = (BEHAVIOUR_CLASS != null ? BEHAVIOUR_CLASS : getBehaviourClass());
-        final TestSuite[] suiteRef = new TestSuite[1]; // Collecting Parameter
+        final TestSuite suite = new TestSuite(); 
         
-        final TestSuitePopulator populator = new TestSuitePopulator(suiteRef);
-        BehaviourClass visitableClass = new BehaviourClass(classToVerify);
-//        visitableClass.accept(populator);
-        
-        return suiteRef[0];
+        BehaviourClass behaviourClass = new BehaviourClass(classToVerify);
+        BehaviourMethod[] methods = behaviourClass.getBehaviourMethods();
+        for ( int i = 0; i < methods.length; i++ ){
+            BehaviourMethod method = methods[i];
+            suite.addTest(new JUnitMethodAdapter(method));
+        }        
+        return suite;
     }
 
     private static Class getBehaviourClass() {
@@ -63,7 +69,7 @@ public class JUnitAdapter {
             behaviourClassName = props.getProperty("behaviourClass", behaviourClassName);
             return behaviourClassForName(behaviourClassName);
         } catch (Exception e) {
-            throw new JBehaveFrameworkError("No behaviour class found for " + behaviourClassName);
+            throw new JBehaveFrameworkError("No behaviour class found for name " + behaviourClassName);
         }
     }
 

@@ -1,6 +1,4 @@
 /*
- * Created on 12-Aug-2004
- * 
  * (c) 2003-2004 ThoughtWorks Ltd
  *
  * See license.txt for license details
@@ -9,7 +7,6 @@ package jbehave.junit;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
 
 import jbehave.core.behaviour.Behaviour;
 import jbehave.core.behaviour.BehaviourMethod;
@@ -20,15 +17,18 @@ import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestResult;
 
-
+/**
+ * Adapter wrapping a BehaviourMethod as a JUnit test 
+ * 
+ * @author Dan North
+ * @author Mauro Talevi
+ */
 public class JUnitMethodAdapter implements BehaviourListener, Test {
-    private final Method method;
-    private final Object instance;
+    private final BehaviourMethod behaviourMethod;
     private Result result;
 
-    public JUnitMethodAdapter(Method method, Object instance) {
-        this.method = method;
-        this.instance = instance;
+    public JUnitMethodAdapter(BehaviourMethod behaviourMethod) {
+        this.behaviourMethod = behaviourMethod;
     }
 
     public int countTestCases() {
@@ -42,7 +42,7 @@ public class JUnitMethodAdapter implements BehaviourListener, Test {
     }
 
     private void verifyMethod(TestResult testResult) {
-        new BehaviourMethod(instance, method).verifyTo(this);
+        behaviourMethod.verifyTo(this);
         if (result.failed()) {
             testResult.addFailure(this, buildAssertionFailedError(result.cause()));
         }
@@ -82,7 +82,7 @@ public class JUnitMethodAdapter implements BehaviourListener, Test {
     }
     
     public String toString() {
-        return new ConvertCase(method.getName()).toSeparateWords();
+        return new ConvertCase(behaviourMethod.method().getName()).toSeparateWords();
     }
 
     public void before(Behaviour behaviour) {
