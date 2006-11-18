@@ -31,7 +31,7 @@ import junit.framework.TestSuite;
  * <p>
  * To instantiate the Behaviours, it looks for
  * <ul>
- *  <li>the injected behaviours class via the <tt>JUnitAdapter{@link #setBehavioursClass(Class)}</tt> method</li>
+ *  <li>the injected Behaviours instance via the <tt>JUnitAdapter{@link #setBehaviours(Behaviours)}</tt> method</li>
  *  <li>the jbehave properties (either system properties or in a <tt>jbehave.properties</tt> file) in the classloader for the following properties:
  *      <ol>
  *          <li> A property called <tt>behavioursClass</tt> containing the full class name of the Behaviours to run;</li>
@@ -60,15 +60,15 @@ import junit.framework.TestSuite;
  */
 public class JUnitAdapter {
 
-    private static Class behavioursClass = null;
+    private static Behaviours behaviours = null;
     private static ClassLoader classLoader = null;
     
     /**
      * Allows to inject the class of the Behaviours to run
-     * @param behavioursClass the Behaviours Class
+     * @param behaviours the Behaviours Class
      */
-    public static void setBehavioursClass(Class behavioursClass) {
-        JUnitAdapter.behavioursClass = behavioursClass;
+    public static void setBehaviours(Behaviours behaviours) {
+        JUnitAdapter.behaviours = behaviours;
     }
     
     /**
@@ -106,8 +106,8 @@ public class JUnitAdapter {
     }
 
     private static Behaviours getBehaviours() {
-        if ( behavioursClass != null ){
-            return (Behaviours) newInstance(behavioursClass);
+        if ( behaviours != null ){
+            return behaviours;
         }
         return loadBehaviours();
     }

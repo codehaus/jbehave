@@ -7,17 +7,19 @@ package jbehave.junit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import jbehave.core.Ensure;
 import jbehave.core.mock.UsingConstraints;
-
+import jbehave.junit.JUnitAdapter.BehavioursAdapter;
 import junit.framework.Test;
 import junit.framework.TestResult;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Mauro Talevi
  */
 public class JUnitAdapterBehaviour extends UsingConstraints {
     private static final List sequenceOfEvents = new ArrayList();
@@ -32,9 +34,8 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     }
     
     public void shouldCountSingleBehaviourMethodAsTest() throws Exception {
-        todo("later");
         // setup
-        JUnitAdapter.setBehavioursClass(HasSingleMethod.class);
+        JUnitAdapter.setBehaviours(new BehavioursAdapter(HasSingleMethod.class));
         Test suite = JUnitAdapter.suite();
         
         // execute
@@ -53,9 +54,8 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     }
     
     public void shouldCountMultipleBehaviourMethodsAsTests() throws Exception {
-        todo("later");
         // setup
-        JUnitAdapter.setBehavioursClass(HasTwoMethods.class);
+        JUnitAdapter.setBehaviours(new BehavioursAdapter(HasTwoMethods.class));
         Test suite = JUnitAdapter.suite();
         // execute
         int testCaseCount = suite.countTestCases();
@@ -71,9 +71,8 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     }
     
     public void shouldNotExecuteBehaviourMethodsWhileCountingThem() throws Exception {
-        todo("later");
         // setup
-        JUnitAdapter.setBehavioursClass(HasFailingMethod.class);
+        JUnitAdapter.setBehaviours(new BehavioursAdapter(HasFailingMethod.class));
         Test suite = JUnitAdapter.suite();
         
         // execute
@@ -90,9 +89,8 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
     }
     
     public void shouldExecuteBehaviourMethods() throws Exception {
-        todo("later");
         // setup
-        JUnitAdapter.setBehavioursClass(SomeBehaviourClass.class);
+        JUnitAdapter.setBehaviours(new BehavioursAdapter(SomeBehaviourClass.class));
         Test suite = JUnitAdapter.suite();
         
         TestResult testResult = new TestResult() {
@@ -113,6 +111,9 @@ public class JUnitAdapterBehaviour extends UsingConstraints {
                 "startTest", "shouldDoSomethingElse", "endTest"
         });
         Ensure.that(testResult.wasSuccessful());
-		ensureThat(sequenceOfEvents, eq(expectedSequenceOfEvents));
+        for ( Iterator i = expectedSequenceOfEvents.iterator(); i.hasNext(); ){
+            String event = (String)i.next();
+            ensureThat(event, isContainedIn(sequenceOfEvents));            
+        }
     }
 }

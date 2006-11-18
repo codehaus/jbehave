@@ -1,5 +1,7 @@
 package jbehave.core.mock;
 
+import java.util.Collection;
+
 import jbehave.core.Block;
 import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
@@ -165,6 +167,13 @@ public abstract class UsingConstraints {
 	    };
 	}
 	
+    public CustomConstraint isContainedIn(final Collection collection) {
+        return new CustomConstraint("is contained in " + collection) {
+            public boolean matches(Object arg) {
+                return collection.contains(arg);
+            }
+        };
+    }    
     public void ensureThat(Object arg, Constraint constraint, String message) {
     	if (!constraint.matches(arg)) {
     		fail("\nExpected: " +
