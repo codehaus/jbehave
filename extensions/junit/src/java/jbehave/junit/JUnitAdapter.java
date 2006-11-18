@@ -114,13 +114,25 @@ public class JUnitAdapter {
 
     private static Behaviours loadBehaviours() {
         ClassLoader behavioursClassLoader = getClassLoader();
-        Properties properties = loadJBehaveProperties(behavioursClassLoader);
-        if ( properties.containsKey("behavioursClass")){
-            return (Behaviours) newInstance(loadClass(properties.getProperty("behavioursClass"), behavioursClassLoader));
-        } else if ( properties.containsKey("behaviourClass")){
-            return new BehavioursAdapter(loadClass(properties.getProperty("behaviourClass"), behavioursClassLoader));
+        Properties properties = loadProperties(behavioursClassLoader);
+        if ( findProperty(properties, "behavioursClass")){
+            return (Behaviours) newInstance(loadClass(getProperty(properties, "behavioursClass"), behavioursClassLoader));
+        } else if ( findProperty(properties, "behaviourClass")){
+            return new BehavioursAdapter(loadClass(getProperty(properties, "behaviourClass"), behavioursClassLoader));
         }
         throw new JBehaveFrameworkError("Could not load behaviours from properties "+properties);
+    }
+
+    private static boolean findProperty(Properties properties, String key) {
+        return properties.containsKey(key) || System.getProperty(key) != null ;
+    }
+
+    private static String getProperty(Properties properties, String key) {
+        String property = properties.getProperty(key);
+        if ( property == null ) {
+            property = System.getProperty(key);
+        }
+        return property;
     }
     
     private static ClassLoader getClassLoader() {
@@ -130,7 +142,7 @@ public class JUnitAdapter {
         return classLoader;
     }
 
-    private static Properties loadJBehaveProperties(ClassLoader classLoader) {
+    private static Properties loadProperties(ClassLoader classLoader) {
         try {
             // get system properties
             Properties properties = new Properties(System.getProperties());
