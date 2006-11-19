@@ -2,10 +2,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>jbehave</groupId>
+	<parent>
+		<groupId>jbehave</groupId>
+		<artifactId>jbehave-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+	</parent>
 	<artifactId>jbehave-maven-plugin</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 	<name>jBehave Maven Plugin</name>
 
