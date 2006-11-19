@@ -7,7 +7,10 @@ import jbehave.core.story.codegen.domain.ScenarioDetails;
 import jbehave.core.story.codegen.domain.StoryDetails;
 import jbehave.core.story.codegen.sablecc.analysis.DepthFirstAdapter;
 import jbehave.core.story.codegen.sablecc.node.ABenefit;
+import jbehave.core.story.codegen.sablecc.node.AContext;
+import jbehave.core.story.codegen.sablecc.node.AEvent;
 import jbehave.core.story.codegen.sablecc.node.AFeature;
+import jbehave.core.story.codegen.sablecc.node.AOutcome;
 import jbehave.core.story.codegen.sablecc.node.APhrase;
 import jbehave.core.story.codegen.sablecc.node.ARole;
 import jbehave.core.story.codegen.sablecc.node.AScenario;
@@ -20,7 +23,6 @@ import jbehave.core.story.codegen.sablecc.node.AWordWordOrSpace;
 class StoryDetailsBuilder extends DepthFirstAdapter {
 	StoryDetails story = new StoryDetails();
 	private StringBuffer phrase;
-//	private StringBuffer scenarioTitle;
 	private ScenarioDetails scenario;
 	
 	// the story 
@@ -53,7 +55,19 @@ class StoryDetailsBuilder extends DepthFirstAdapter {
 	public void outAScenarioTitle(AScenarioTitle node) {
 		scenario.name = phrase.toString();
 	}
-	
+
+    public void outAContext(AContext node) {
+        scenario.context.givens.add(phrase.toString());
+    }
+
+    public void outAEvent(AEvent node) {
+        scenario.event.name = phrase.toString();
+    }
+
+    public void outAOutcome(AOutcome node) {
+        scenario.outcome.outcomes.add(phrase.toString());
+    }
+
 	// phrase processing
 
 	public void inAPhrase(APhrase node) {

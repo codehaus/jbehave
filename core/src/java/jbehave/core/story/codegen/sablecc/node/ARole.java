@@ -2,7 +2,8 @@
 
 package jbehave.core.story.codegen.sablecc.node;
 
-import jbehave.core.story.codegen.sablecc.analysis.Analysis;
+import java.util.*;
+import jbehave.core.story.codegen.sablecc.analysis.*;
 
 public final class ARole extends PRole
 {

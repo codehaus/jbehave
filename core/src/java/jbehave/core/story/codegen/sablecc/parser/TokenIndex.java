@@ -2,17 +2,8 @@
 
 package jbehave.core.story.codegen.sablecc.parser;
 
-import jbehave.core.story.codegen.sablecc.analysis.AnalysisAdapter;
-import jbehave.core.story.codegen.sablecc.node.EOF;
-import jbehave.core.story.codegen.sablecc.node.TAsA;
-import jbehave.core.story.codegen.sablecc.node.TEndl;
-import jbehave.core.story.codegen.sablecc.node.TIWant;
-import jbehave.core.story.codegen.sablecc.node.TScenarioKeyword;
-import jbehave.core.story.codegen.sablecc.node.TSoThat;
-import jbehave.core.story.codegen.sablecc.node.TSpace;
-import jbehave.core.story.codegen.sablecc.node.TTitleKeyword;
-import jbehave.core.story.codegen.sablecc.node.TWord;
-
+import jbehave.core.story.codegen.sablecc.node.*;
+import jbehave.core.story.codegen.sablecc.analysis.*;
 
 class TokenIndex extends AnalysisAdapter
 {
@@ -43,23 +34,38 @@ class TokenIndex extends AnalysisAdapter
         index = 4;
     }
 
-    public void caseTSpace(TSpace node)
+    public void caseTGiven(TGiven node)
     {
         index = 5;
     }
 
-    public void caseTWord(TWord node)
+    public void caseTWhen(TWhen node)
     {
         index = 6;
     }
 
-    public void caseTEndl(TEndl node)
+    public void caseTThen(TThen node)
     {
         index = 7;
     }
 
-    public void caseEOF(EOF node)
+    public void caseTSpace(TSpace node)
     {
         index = 8;
+    }
+
+    public void caseTWord(TWord node)
+    {
+        index = 9;
+    }
+
+    public void caseTEndl(TEndl node)
+    {
+        index = 10;
+    }
+
+    public void caseEOF(EOF node)
+    {
+        index = 11;
     }
 }

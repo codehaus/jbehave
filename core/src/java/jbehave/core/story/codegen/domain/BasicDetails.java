@@ -20,14 +20,26 @@ public class BasicDetails {
     }
     
     public boolean equals(Object obj)  {
-        if (obj == null) return false;
-        if (obj == this) return true;
-        if (!(obj instanceof BasicDetails)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
         BasicDetails that = (BasicDetails) obj;
         return this.name.equals(that.name);
     }
     
+    public int hashCode() {
+        int hashCode = 1;
+        hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
+        return hashCode;
+    }    
+    
     public String toString() {
-        return name + "\n";
+        return name;
     }
 }

@@ -2,7 +2,7 @@
 
 package jbehave.core.story.codegen.sablecc.parser;
 
-import jbehave.core.story.codegen.sablecc.node.Token;
+import jbehave.core.story.codegen.sablecc.node.*;
 
 public class ParserException extends Exception
 {

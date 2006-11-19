@@ -2,29 +2,8 @@
 
 package jbehave.core.story.codegen.sablecc.analysis;
 
-import java.util.Hashtable;
-
-import jbehave.core.story.codegen.sablecc.node.ABenefit;
-import jbehave.core.story.codegen.sablecc.node.AFeature;
-import jbehave.core.story.codegen.sablecc.node.APhrase;
-import jbehave.core.story.codegen.sablecc.node.ARole;
-import jbehave.core.story.codegen.sablecc.node.AScenario;
-import jbehave.core.story.codegen.sablecc.node.AScenarioTitle;
-import jbehave.core.story.codegen.sablecc.node.ASpaceWordOrSpace;
-import jbehave.core.story.codegen.sablecc.node.AStory;
-import jbehave.core.story.codegen.sablecc.node.ATitle;
-import jbehave.core.story.codegen.sablecc.node.AWordWordOrSpace;
-import jbehave.core.story.codegen.sablecc.node.EOF;
-import jbehave.core.story.codegen.sablecc.node.Node;
-import jbehave.core.story.codegen.sablecc.node.Start;
-import jbehave.core.story.codegen.sablecc.node.TAsA;
-import jbehave.core.story.codegen.sablecc.node.TEndl;
-import jbehave.core.story.codegen.sablecc.node.TIWant;
-import jbehave.core.story.codegen.sablecc.node.TScenarioKeyword;
-import jbehave.core.story.codegen.sablecc.node.TSoThat;
-import jbehave.core.story.codegen.sablecc.node.TSpace;
-import jbehave.core.story.codegen.sablecc.node.TTitleKeyword;
-import jbehave.core.story.codegen.sablecc.node.TWord;
+import java.util.*;
+import jbehave.core.story.codegen.sablecc.node.*;
 
 public class AnalysisAdapter implements Analysis
 {
@@ -124,6 +103,21 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAContext(AContext node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAEvent(AEvent node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAOutcome(AOutcome node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAPhrase(APhrase node)
     {
         defaultCase(node);
@@ -160,6 +154,21 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseTSoThat(TSoThat node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTGiven(TGiven node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTWhen(TWhen node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTThen(TThen node)
     {
         defaultCase(node);
     }

@@ -35,8 +35,18 @@ public class StoryDetails extends BasicDetails {
     }
 
     public boolean equals(Object obj) {
-        if (!super.equals(obj)) return false;
-        if (!(obj instanceof StoryDetails)) return false;
+        if (!super.equals(obj)){
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
         StoryDetails that = (StoryDetails) obj;
         return super.equals(obj)
 			&& this.role.equals(that.role)
@@ -45,21 +55,36 @@ public class StoryDetails extends BasicDetails {
 	        && this.scenarios.equals(that.scenarios);
     }
     
+    /**
+     * Override hashCode because we implemented {@link #equals(Object)}
+     */
+    public int hashCode() {
+        int hashCode = 1;
+        hashCode = 31 * hashCode + (role == null ? 0 : role.hashCode());
+        hashCode = 31 * hashCode + (feature == null ? 0 : feature.hashCode());
+        hashCode = 31 * hashCode + (benefit == null ? 0 : benefit.hashCode());
+        hashCode = 31 * hashCode + scenarios.hashCode();
+        return hashCode;
+    }
+    
     public String toString() {
         StringBuffer buffer = new StringBuffer();
+        buffer.append("[StoryDetails name=");
         buffer.append(name);
-        buffer.append("\n");
+        buffer.append(", role=");
         buffer.append(role);
-        buffer.append("\n");
+        buffer.append(", feature=");
         buffer.append(feature);
-        buffer.append("\n");
+        buffer.append(", benefit=");
         buffer.append(benefit);
-        buffer.append("\n\n");
-        
-        for (Iterator iter = scenarios.iterator(); iter.hasNext();) {
-            buffer.append(iter.next().toString());
+        buffer.append(", scenarios=");
+        for (Iterator i = scenarios.iterator(); i.hasNext(); ){
             buffer.append("\n");
-        }
+            ScenarioDetails scenario = (ScenarioDetails)i.next();
+            buffer.append(scenario);
+        }        
+        buffer.append("\n");
+        buffer.append("]");
         return buffer.toString();
     }
 }

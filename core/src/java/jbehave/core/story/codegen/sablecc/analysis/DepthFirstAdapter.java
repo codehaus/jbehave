@@ -2,20 +2,8 @@
 
 package jbehave.core.story.codegen.sablecc.analysis;
 
-import jbehave.core.story.codegen.sablecc.node.ABenefit;
-import jbehave.core.story.codegen.sablecc.node.AFeature;
-import jbehave.core.story.codegen.sablecc.node.APhrase;
-import jbehave.core.story.codegen.sablecc.node.ARole;
-import jbehave.core.story.codegen.sablecc.node.AScenario;
-import jbehave.core.story.codegen.sablecc.node.AScenarioTitle;
-import jbehave.core.story.codegen.sablecc.node.ASpaceWordOrSpace;
-import jbehave.core.story.codegen.sablecc.node.AStory;
-import jbehave.core.story.codegen.sablecc.node.ATitle;
-import jbehave.core.story.codegen.sablecc.node.AWordWordOrSpace;
-import jbehave.core.story.codegen.sablecc.node.Node;
-import jbehave.core.story.codegen.sablecc.node.PScenario;
-import jbehave.core.story.codegen.sablecc.node.PWordOrSpace;
-import jbehave.core.story.codegen.sablecc.node.Start;
+import java.util.*;
+import jbehave.core.story.codegen.sablecc.node.*;
 
 public class DepthFirstAdapter extends AnalysisAdapter
 {
@@ -229,6 +217,24 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getScenarioTitle().apply(this);
         }
+        {
+            Object temp[] = node.getContext().toArray();
+            for(int i = 0; i < temp.length; i++)
+            {
+                ((PContext) temp[i]).apply(this);
+            }
+        }
+        if(node.getEvent() != null)
+        {
+            node.getEvent().apply(this);
+        }
+        {
+            Object temp[] = node.getOutcome().toArray();
+            for(int i = 0; i < temp.length; i++)
+            {
+                ((POutcome) temp[i]).apply(this);
+            }
+        }
         outAScenario(node);
     }
 
@@ -262,6 +268,102 @@ public class DepthFirstAdapter extends AnalysisAdapter
             node.getEndl().apply(this);
         }
         outAScenarioTitle(node);
+    }
+
+    public void inAContext(AContext node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAContext(AContext node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAContext(AContext node)
+    {
+        inAContext(node);
+        if(node.getGiven() != null)
+        {
+            node.getGiven().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getPhrase() != null)
+        {
+            node.getPhrase().apply(this);
+        }
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        outAContext(node);
+    }
+
+    public void inAEvent(AEvent node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAEvent(AEvent node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAEvent(AEvent node)
+    {
+        inAEvent(node);
+        if(node.getWhen() != null)
+        {
+            node.getWhen().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getPhrase() != null)
+        {
+            node.getPhrase().apply(this);
+        }
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        outAEvent(node);
+    }
+
+    public void inAOutcome(AOutcome node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAOutcome(AOutcome node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAOutcome(AOutcome node)
+    {
+        inAOutcome(node);
+        if(node.getThen() != null)
+        {
+            node.getThen().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getPhrase() != null)
+        {
+            node.getPhrase().apply(this);
+        }
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        outAOutcome(node);
     }
 
     public void inAPhrase(APhrase node)

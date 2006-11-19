@@ -20,6 +20,9 @@ Tokens
 	as_a = 'As a';
 	i_want = 'I want';
 	so_that = 'So that';
+	given = 'Given';
+	when = 'When';
+	then = 'Then';
 	space = ' ';
 	word = letter+;
 	endl = cr | lf | cr lf;
@@ -46,10 +49,19 @@ Productions
 		so_that space phrase endl;
 		
 	scenario =
-		scenario_title;
+		scenario_title context* event? outcome*;
 		
 	scenario_title =
 		scenario_keyword space phrase endl;
+		
+	context =
+		given space phrase endl;
+		
+	event =
+		when space phrase endl;
+
+	outcome =
+		then space phrase endl;
 
 	phrase = 
 		word_or_space+;

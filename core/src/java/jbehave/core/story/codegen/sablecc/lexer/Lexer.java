@@ -2,21 +2,9 @@
 
 package jbehave.core.story.codegen.sablecc.lexer;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.PushbackReader;
-
-import jbehave.core.story.codegen.sablecc.node.EOF;
-import jbehave.core.story.codegen.sablecc.node.TAsA;
-import jbehave.core.story.codegen.sablecc.node.TEndl;
-import jbehave.core.story.codegen.sablecc.node.TIWant;
-import jbehave.core.story.codegen.sablecc.node.TScenarioKeyword;
-import jbehave.core.story.codegen.sablecc.node.TSoThat;
-import jbehave.core.story.codegen.sablecc.node.TSpace;
-import jbehave.core.story.codegen.sablecc.node.TTitleKeyword;
-import jbehave.core.story.codegen.sablecc.node.TWord;
-import jbehave.core.story.codegen.sablecc.node.Token;
+import java.io.*;
+import java.util.*;
+import jbehave.core.story.codegen.sablecc.node.*;
 
 public class Lexer
 {
@@ -76,8 +64,8 @@ public class Lexer
         int accept_pos = -1;
         int accept_line = -1;
 
-        int[][][] gotoTable = Lexer.gotoTable[state.id()];
-        int[] accept = Lexer.accept[state.id()];
+        int[][][] gotoTable = this.gotoTable[state.id()];
+        int[] accept = this.accept[state.id()];
         text.setLength(0);
 
         while(true)
@@ -108,7 +96,7 @@ public class Lexer
                     pos++;
                     cr = false;
                     break;
-                }
+                };
 
                 text.append((char) c);
 
@@ -228,7 +216,6 @@ public class Lexer
                     case 6:
                         {
                             Token token = new6(
-                                getText(accept_length),
                                 start_line + 1,
                                 start_pos + 1);
                             pushBack(accept_length);
@@ -239,6 +226,37 @@ public class Lexer
                     case 7:
                         {
                             Token token = new7(
+                                start_line + 1,
+                                start_pos + 1);
+                            pushBack(accept_length);
+                            pos = accept_pos;
+                            line = accept_line;
+                            return token;
+                        }
+                    case 8:
+                        {
+                            Token token = new8(
+                                start_line + 1,
+                                start_pos + 1);
+                            pushBack(accept_length);
+                            pos = accept_pos;
+                            line = accept_line;
+                            return token;
+                        }
+                    case 9:
+                        {
+                            Token token = new9(
+                                getText(accept_length),
+                                start_line + 1,
+                                start_pos + 1);
+                            pushBack(accept_length);
+                            pos = accept_pos;
+                            line = accept_line;
+                            return token;
+                        }
+                    case 10:
+                        {
+                            Token token = new10(
                                 getText(accept_length),
                                 start_line + 1,
                                 start_pos + 1);
@@ -274,9 +292,12 @@ public class Lexer
     Token new2(int line, int pos) { return new TAsA(line, pos); }
     Token new3(int line, int pos) { return new TIWant(line, pos); }
     Token new4(int line, int pos) { return new TSoThat(line, pos); }
-    Token new5(int line, int pos) { return new TSpace(line, pos); }
-    Token new6(String text, int line, int pos) { return new TWord(text, line, pos); }
-    Token new7(String text, int line, int pos) { return new TEndl(text, line, pos); }
+    Token new5(int line, int pos) { return new TGiven(line, pos); }
+    Token new6(int line, int pos) { return new TWhen(line, pos); }
+    Token new7(int line, int pos) { return new TThen(line, pos); }
+    Token new8(int line, int pos) { return new TSpace(line, pos); }
+    Token new9(String text, int line, int pos) { return new TWord(text, line, pos); }
+    Token new10(String text, int line, int pos) { return new TEndl(text, line, pos); }
 
     private int getChar() throws IOException
     {
@@ -336,42 +357,54 @@ public class Lexer
     private static int[][][][] gotoTable;
 /*  {
         { // INITIAL
-            {{10, 10, 1}, {13, 13, 2}, {32, 32, 3}, {65, 65, 4}, {66, 72, 5}, {73, 73, 6}, {74, 82, 5}, {83, 83, 7}, {84, 84, 8}, {85, 90, 5}, {97, 122, 5}, },
+            {{10, 10, 1}, {13, 13, 2}, {32, 32, 3}, {65, 65, 4}, {66, 70, 5}, {71, 71, 6}, {72, 72, 5}, {73, 73, 7}, {74, 82, 5}, {83, 83, 8}, {84, 84, 9}, {85, 86, 5}, {87, 87, 10}, {88, 90, 5}, {97, 122, 5}, },
             {},
-            {{10, 10, 9}, },
+            {{10, 10, 11}, },
             {},
-            {{65, 90, 5}, {97, 114, 5}, {115, 115, 10}, {116, 122, 5}, },
+            {{65, 90, 5}, {97, 114, 5}, {115, 115, 12}, {116, 122, 5}, },
             {{65, 90, 5}, {97, 122, 5}, },
-            {{32, 32, 11}, {65, 122, -7}, },
-            {{65, 90, 5}, {97, 98, 5}, {99, 99, 12}, {100, 110, 5}, {111, 111, 13}, {112, 122, 5}, },
-            {{65, 90, 5}, {97, 104, 5}, {105, 105, 14}, {106, 122, 5}, },
+            {{65, 90, 5}, {97, 104, 5}, {105, 105, 13}, {106, 122, 5}, },
+            {{32, 32, 14}, {65, 122, -7}, },
+            {{65, 90, 5}, {97, 98, 5}, {99, 99, 15}, {100, 110, 5}, {111, 111, 16}, {112, 122, 5}, },
+            {{65, 90, 5}, {97, 103, 5}, {104, 104, 17}, {105, 105, 18}, {106, 122, 5}, },
+            {{65, 103, -11}, {104, 104, 19}, {105, 122, 5}, },
             {},
-            {{32, 32, 15}, {65, 122, -7}, },
-            {{119, 119, 16}, },
-            {{65, 90, 5}, {97, 100, 5}, {101, 101, 17}, {102, 122, 5}, },
-            {{32, 32, 18}, {65, 122, -7}, },
-            {{65, 90, 5}, {97, 115, 5}, {116, 116, 19}, {117, 122, 5}, },
-            {{97, 97, 20}, },
-            {{97, 97, 21}, },
-            {{65, 90, 5}, {97, 109, 5}, {110, 110, 22}, {111, 122, 5}, },
-            {{116, 116, 23}, },
-            {{65, 90, 5}, {97, 107, 5}, {108, 108, 24}, {109, 122, 5}, },
+            {{32, 32, 20}, {65, 122, -7}, },
+            {{65, 90, 5}, {97, 117, 5}, {118, 118, 21}, {119, 122, 5}, },
+            {{119, 119, 22}, },
+            {{65, 90, 5}, {97, 100, 5}, {101, 101, 23}, {102, 122, 5}, },
+            {{32, 32, 24}, {65, 122, -7}, },
+            {{65, 100, -17}, {101, 101, 25}, {102, 122, 5}, },
+            {{65, 90, 5}, {97, 115, 5}, {116, 116, 26}, {117, 122, 5}, },
+            {{65, 100, -17}, {101, 101, 27}, {102, 122, 5}, },
+            {{97, 97, 28}, },
+            {{65, 100, -17}, {101, 101, 29}, {102, 122, 5}, },
+            {{97, 97, 30}, },
+            {{65, 90, 5}, {97, 109, 5}, {110, 110, 31}, {111, 122, 5}, },
+            {{116, 116, 32}, },
+            {{65, 109, -25}, {110, 110, 33}, {111, 122, 5}, },
+            {{65, 90, 5}, {97, 107, 5}, {108, 108, 34}, {109, 122, 5}, },
+            {{65, 109, -25}, {110, 110, 35}, {111, 122, 5}, },
             {},
-            {{110, 110, 25}, },
-            {{65, 90, 5}, {97, 97, 26}, {98, 122, 5}, },
-            {{104, 104, 27}, },
-            {{65, 100, -14}, {101, 101, 28}, {102, 122, 5}, },
-            {{116, 116, 29}, },
-            {{65, 90, 5}, {97, 113, 5}, {114, 114, 30}, {115, 122, 5}, },
-            {{97, 97, 31}, },
-            {{58, 58, 32}, {65, 122, -7}, },
+            {{65, 109, -25}, {110, 110, 36}, {111, 122, 5}, },
+            {{110, 110, 37}, },
+            {{65, 90, 5}, {97, 97, 38}, {98, 122, 5}, },
+            {{104, 104, 39}, },
+            {{65, 122, -7}, },
+            {{65, 100, -17}, {101, 101, 40}, {102, 122, 5}, },
+            {{65, 122, -7}, },
+            {{65, 122, -7}, },
+            {{116, 116, 41}, },
+            {{65, 90, 5}, {97, 113, 5}, {114, 114, 42}, {115, 122, 5}, },
+            {{97, 97, 43}, },
+            {{58, 58, 44}, {65, 122, -7}, },
             {},
-            {{65, 104, -10}, {105, 105, 33}, {106, 122, 5}, },
-            {{116, 116, 34}, },
+            {{65, 104, -8}, {105, 105, 45}, {106, 122, 5}, },
+            {{116, 116, 46}, },
             {},
-            {{65, 90, 5}, {97, 110, 5}, {111, 111, 35}, {112, 122, 5}, },
+            {{65, 90, 5}, {97, 110, 5}, {111, 111, 47}, {112, 122, 5}, },
             {},
-            {{58, 58, 36}, {65, 122, -7}, },
+            {{58, 58, 48}, {65, 122, -7}, },
             {},
         }
     };*/
@@ -379,7 +412,7 @@ public class Lexer
     private static int[][] accept;
 /*  {
         // INITIAL
-        {-1, 7, 7, 5, 6, 6, 6, 6, 6, 7, 6, -1, 6, 6, 6, -1, -1, 6, -1, 6, 2, -1, 6, -1, 6, -1, 6, -1, 6, 3, 6, -1, 0, 6, 4, 6, 1, },
+        {-1, 10, 10, 8, 9, 9, 9, 9, 9, 9, 9, 10, 9, 9, -1, 9, 9, 9, 9, 9, -1, 9, -1, 9, -1, 9, 9, 9, 2, 9, -1, 9, -1, 7, 9, 6, 5, -1, 9, -1, 9, 3, 9, -1, 0, 9, 4, 9, 1, },
 
     };*/
 
@@ -446,7 +479,7 @@ public class Lexer
         }
         catch(Exception e)
         {
-            throw new RuntimeException("The file \"lexer.dat\" is either missing or corrupted.", e);
+            throw new RuntimeException("The file \"lexer.dat\" is either missing or corrupted.");
         }
     }
 }

@@ -144,7 +144,7 @@
 
 	<!-- additional targets -->
 	<target name="sablecc" description="Generate sablecc grammar files">
-		<java fork="true" jar="${lib_dir}/sablecc.jar">
+		<java fork="true" jar="${lib_dir}/extensions/sablecc.jar">
 			<arg value="-d" />
 			<arg file="${core_dir}/src/java" />
 			<arg file="${core_dir}/src/java/jbehave/core/story/codegen/story.scc" />
