@@ -32,8 +32,7 @@ public class BehavioursClassLoader extends URLClassLoader {
     /**
      * Loads and instantiates a Behaviours class
      * 
-     * @param behavioursName
-     *            the name of the Behaviours
+     * @param behavioursName the name of the Behaviours
      * @return A Behaviours instance
      * @throws IllegalAccessException
      */
@@ -42,7 +41,9 @@ public class BehavioursClassLoader extends URLClassLoader {
         String behavioursNotFound = "The behaviours " + behavioursName
                 + " was not found in " + Arrays.toString(getURLs());
         try {
-            return (Behaviours) loadClass(behavioursName).newInstance();
+            Behaviours behavious = (Behaviours) loadClass(behavioursName).newInstance();
+            Thread.currentThread().setContextClassLoader(this);
+            return behavious;
         } catch (ClassCastException e) {
             throw new RuntimeException(behavioursName + " is not a "
                     + Behaviours.class.getName(), e);
