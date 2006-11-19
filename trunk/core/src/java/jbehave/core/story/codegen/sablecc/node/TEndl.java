@@ -2,7 +2,7 @@
 
 package jbehave.core.story.codegen.sablecc.node;
 
-import jbehave.core.story.codegen.sablecc.analysis.Analysis;
+import jbehave.core.story.codegen.sablecc.analysis.*;
 
 public final class TEndl extends Token
 {

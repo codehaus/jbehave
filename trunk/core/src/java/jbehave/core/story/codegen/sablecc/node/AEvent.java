@@ -5,24 +5,24 @@ package jbehave.core.story.codegen.sablecc.node;
 import java.util.*;
 import jbehave.core.story.codegen.sablecc.analysis.*;
 
-public final class ABenefit extends PBenefit
+public final class AEvent extends PEvent
 {
-    private TSoThat _soThat_;
+    private TWhen _when_;
     private TSpace _space_;
     private PPhrase _phrase_;
     private TEndl _endl_;
 
-    public ABenefit()
+    public AEvent()
     {
     }
 
-    public ABenefit(
-        TSoThat _soThat_,
+    public AEvent(
+        TWhen _when_,
         TSpace _space_,
         PPhrase _phrase_,
         TEndl _endl_)
     {
-        setSoThat(_soThat_);
+        setWhen(_when_);
 
         setSpace(_space_);
 
@@ -33,8 +33,8 @@ public final class ABenefit extends PBenefit
     }
     public Object clone()
     {
-        return new ABenefit(
-            (TSoThat) cloneNode(_soThat_),
+        return new AEvent(
+            (TWhen) cloneNode(_when_),
             (TSpace) cloneNode(_space_),
             (PPhrase) cloneNode(_phrase_),
             (TEndl) cloneNode(_endl_));
@@ -42,19 +42,19 @@ public final class ABenefit extends PBenefit
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseABenefit(this);
+        ((Analysis) sw).caseAEvent(this);
     }
 
-    public TSoThat getSoThat()
+    public TWhen getWhen()
     {
-        return _soThat_;
+        return _when_;
     }
 
-    public void setSoThat(TSoThat node)
+    public void setWhen(TWhen node)
     {
-        if(_soThat_ != null)
+        if(_when_ != null)
         {
-            _soThat_.parent(null);
+            _when_.parent(null);
         }
 
         if(node != null)
@@ -67,7 +67,7 @@ public final class ABenefit extends PBenefit
             node.parent(this);
         }
 
-        _soThat_ = node;
+        _when_ = node;
     }
 
     public TSpace getSpace()
@@ -148,7 +148,7 @@ public final class ABenefit extends PBenefit
     public String toString()
     {
         return ""
-            + toString(_soThat_)
+            + toString(_when_)
             + toString(_space_)
             + toString(_phrase_)
             + toString(_endl_);
@@ -156,9 +156,9 @@ public final class ABenefit extends PBenefit
 
     void removeChild(Node child)
     {
-        if(_soThat_ == child)
+        if(_when_ == child)
         {
-            _soThat_ = null;
+            _when_ = null;
             return;
         }
 
@@ -184,9 +184,9 @@ public final class ABenefit extends PBenefit
 
     void replaceChild(Node oldChild, Node newChild)
     {
-        if(_soThat_ == oldChild)
+        if(_when_ == oldChild)
         {
-            setSoThat((TSoThat) newChild);
+            setWhen((TWhen) newChild);
             return;
         }
 

@@ -2,20 +2,7 @@
 
 package jbehave.core.story.codegen.sablecc.analysis;
 
-import jbehave.core.story.codegen.sablecc.node.ABenefit;
-import jbehave.core.story.codegen.sablecc.node.AFeature;
-import jbehave.core.story.codegen.sablecc.node.APhrase;
-import jbehave.core.story.codegen.sablecc.node.ARole;
-import jbehave.core.story.codegen.sablecc.node.AScenario;
-import jbehave.core.story.codegen.sablecc.node.AScenarioTitle;
-import jbehave.core.story.codegen.sablecc.node.ASpaceWordOrSpace;
-import jbehave.core.story.codegen.sablecc.node.AStory;
-import jbehave.core.story.codegen.sablecc.node.ATitle;
-import jbehave.core.story.codegen.sablecc.node.AWordWordOrSpace;
-import jbehave.core.story.codegen.sablecc.node.Node;
-import jbehave.core.story.codegen.sablecc.node.PScenario;
-import jbehave.core.story.codegen.sablecc.node.PWordOrSpace;
-import jbehave.core.story.codegen.sablecc.node.Start;
+import jbehave.core.story.codegen.sablecc.node.*;
 
 public class ReversedDepthFirstAdapter extends AnalysisAdapter
 {
@@ -225,6 +212,24 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAScenario(AScenario node)
     {
         inAScenario(node);
+        {
+            Object temp[] = node.getOutcome().toArray();
+            for(int i = temp.length - 1; i >= 0; i--)
+            {
+                ((POutcome) temp[i]).apply(this);
+            }
+        }
+        if(node.getEvent() != null)
+        {
+            node.getEvent().apply(this);
+        }
+        {
+            Object temp[] = node.getContext().toArray();
+            for(int i = temp.length - 1; i >= 0; i--)
+            {
+                ((PContext) temp[i]).apply(this);
+            }
+        }
         if(node.getScenarioTitle() != null)
         {
             node.getScenarioTitle().apply(this);
@@ -262,6 +267,102 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getScenarioKeyword().apply(this);
         }
         outAScenarioTitle(node);
+    }
+
+    public void inAContext(AContext node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAContext(AContext node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAContext(AContext node)
+    {
+        inAContext(node);
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        if(node.getPhrase() != null)
+        {
+            node.getPhrase().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getGiven() != null)
+        {
+            node.getGiven().apply(this);
+        }
+        outAContext(node);
+    }
+
+    public void inAEvent(AEvent node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAEvent(AEvent node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAEvent(AEvent node)
+    {
+        inAEvent(node);
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        if(node.getPhrase() != null)
+        {
+            node.getPhrase().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getWhen() != null)
+        {
+            node.getWhen().apply(this);
+        }
+        outAEvent(node);
+    }
+
+    public void inAOutcome(AOutcome node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAOutcome(AOutcome node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAOutcome(AOutcome node)
+    {
+        inAOutcome(node);
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        if(node.getPhrase() != null)
+        {
+            node.getPhrase().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getThen() != null)
+        {
+            node.getThen().apply(this);
+        }
+        outAOutcome(node);
     }
 
     public void inAPhrase(APhrase node)

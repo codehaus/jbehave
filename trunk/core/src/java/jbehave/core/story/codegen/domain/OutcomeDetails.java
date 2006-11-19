@@ -8,7 +8,6 @@
 package jbehave.core.story.codegen.domain;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,21 +16,30 @@ import java.util.List;
 public class OutcomeDetails {
     public final List outcomes = new ArrayList();
     
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        for (Iterator iter = outcomes.iterator(); iter.hasNext();) {
-            buffer.append(iter.next().toString());
-            buffer.append("\n");
-        }
-        return buffer.toString();
-    }
-    
     public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (obj == this) return true;
-        if (!(obj instanceof OutcomeDetails)) return false;
-        
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
         OutcomeDetails that = (OutcomeDetails)obj;
         return this.outcomes.equals(that.outcomes);
     }
+
+    public int hashCode() {
+        int hashCode = 1;
+        hashCode = 31 * hashCode + outcomes.hashCode();
+        return hashCode;
+    }    
+
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(outcomes);
+        return buffer.toString();
+    }
+        
 }

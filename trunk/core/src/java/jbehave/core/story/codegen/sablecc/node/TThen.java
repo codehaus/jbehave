@@ -4,32 +4,32 @@ package jbehave.core.story.codegen.sablecc.node;
 
 import jbehave.core.story.codegen.sablecc.analysis.*;
 
-public final class TSpace extends Token
+public final class TThen extends Token
 {
-    public TSpace()
+    public TThen()
     {
-        super.setText(" ");
+        super.setText("Then");
     }
 
-    public TSpace(int line, int pos)
+    public TThen(int line, int pos)
     {
-        super.setText(" ");
+        super.setText("Then");
         setLine(line);
         setPos(pos);
     }
 
     public Object clone()
     {
-      return new TSpace(getLine(), getPos());
+      return new TThen(getLine(), getPos());
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseTSpace(this);
+        ((Analysis) sw).caseTThen(this);
     }
 
     public void setText(String text)
     {
-        throw new RuntimeException("Cannot change TSpace text.");
+        throw new RuntimeException("Cannot change TThen text.");
     }
 }
