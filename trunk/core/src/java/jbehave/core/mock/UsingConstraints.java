@@ -28,7 +28,16 @@ public abstract class UsingConstraints {
 			return or(this, that);
 		}
 	}
-	
+
+    /** ensures object is not null */
+    public CustomConstraint isNotNull() {
+        return new CustomConstraint("object not null") {
+            public boolean matches(Object arg) {
+                return arg != null;
+            }
+        };
+    }
+    
 	/** ensures object equals expected value */
 	public CustomConstraint eq(final Object expectedArg) {
 	    return new CustomConstraint("equal to <" + expectedArg + ">") {

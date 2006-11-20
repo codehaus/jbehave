@@ -8,6 +8,7 @@
 package jbehave.core.story.domain;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import jbehave.core.exception.NestedVerificationException;
@@ -20,7 +21,7 @@ import jbehave.core.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Scenarios {
-	private final ArrayList scenarios = new ArrayList();
+	private final List scenarios = new ArrayList();
 
 	public List scenarios() {
         return scenarios;
@@ -60,4 +61,18 @@ public class Scenarios {
             ((Scenario) scenarios.get(i)).accept(visitor);
         }
     }
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[");
+        buffer.append("\n");
+        for ( Iterator i = scenarios.iterator(); i.hasNext(); ){
+            Scenario scenario = (Scenario)i.next();
+            buffer.append(scenario);
+            buffer.append("\n");
+        }
+        buffer.append("]");
+        return buffer.toString();
+    }
+
 }

@@ -142,8 +142,21 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
 		return new EventOutcomeStep(event, outcome);
 	}
 	
-
 	protected static Given given(Scenario scenario) {
 		return new GivenScenario(scenario);
 	}
+
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[Scenario name=");
+        buffer.append(name);
+        buffer.append(", storyName=");
+        buffer.append(storyName);
+        buffer.append(",\ngiven=");
+        buffer.append(given);
+        buffer.append(",\nstep=");
+        buffer.append(step);
+        buffer.append("]");
+        return buffer.toString();
+    }
 }
