@@ -7,9 +7,9 @@
  */
 package jbehave.ant;
 
-import jbehave.ant.listener.AntListener;
 import jbehave.core.behaviour.BehaviourClass;
 import jbehave.core.behaviour.BehaviourVerifier;
+import jbehave.core.listener.ValidatingListener;
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.listener.PlainTextListener;
 import jbehave.core.util.Timer;
@@ -79,16 +79,15 @@ public class JBehaveTask extends AbstractJavaTask {
 
     private void verifyAll() {
         createClassLoader();
-        PlainTextListener textListener =
-                new PlainTextListener(
-                        new OutputStreamWriter(new LogOutputStream(this, Project.MSG_INFO)),
-                        new Timer());
-        AntListener antListener = new AntListener(textListener);
+        ValidatingListener listener = new ValidatingListener(
+                new PlainTextListener(new OutputStreamWriter(
+                        new LogOutputStream(this, Project.MSG_INFO)),
+                        new Timer()));
 
         for (Iterator iter = behaviourClassList.iterator(); iter.hasNext();) {
             final BehaviourClassDetails behaviourClassDetails = (BehaviourClassDetails) iter.next();
-            verifyBehaviourClass(behaviourClassDetails, antListener);
-            if (antListener.verificationFailed()) throw new BuildException(behaviourClassDetails.getName() + "failed");
+            verifyBehaviourClass(behaviourClassDetails, listener);
+            if (listener.verificationFailed()) throw new BuildException(behaviourClassDetails.getName() + "failed");
         }
     }
 

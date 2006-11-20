@@ -1,32 +1,35 @@
 /*
- * Created on 19-Jul-2004
- * 
  * (c) 2003-2004 ThoughtWorks
  * 
  * See license.txt for licence details
  */
-package jbehave.ant.listener;
+package jbehave.core.listener;
 
 import jbehave.core.behaviour.Behaviour;
-import jbehave.core.listener.BehaviourListener;
 import jbehave.core.result.Result;
 
 
 /**
+ * A decorator of a listener to allows to check if the verification succeded or failed.
+ * 
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
- *         Date: 19-Jul-2004
+ * @author Mauro Talevi
  */
-public class AntListener implements BehaviourListener {
+public class ValidatingListener implements BehaviourListener {
 	private boolean verificationFailed;
     private final BehaviourListener delegate;
     
-    public AntListener(BehaviourListener delegate) {
+    public ValidatingListener(BehaviourListener delegate) {
         this.delegate = delegate;
     }
 
 	public boolean verificationFailed() {
 		return verificationFailed;
 	}
+
+    public void after(Behaviour behaviour) {
+        delegate.after(behaviour);
+    }
 
     public void gotResult(Result result) {
         if (!result.succeeded()) {
@@ -36,12 +39,7 @@ public class AntListener implements BehaviourListener {
     }
 
     public void before(Behaviour behaviour) {
-        // TODO Auto-generated method stub
-        
+        delegate.before(behaviour);
     }
 
-    public void after(Behaviour behaviour) {
-        // TODO Auto-generated method stub
-        
-    }
 }
