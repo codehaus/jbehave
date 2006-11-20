@@ -21,15 +21,14 @@
 	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry sourcepath="O:/libs/apache-ant-1.6.5-src.zip" kind="lib" path="lib/extensions/ant.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/ant-contrib.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/antlr.jar"/>
+	<classpathentry sourcepath="O:/libs/apache-ant-1.6.5-src.zip" kind="lib" path="lib/extensions/ant-1.6.5.jar"/>
+	<classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/fit-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/jmock.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/jmock-cglib.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/junit.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/sablecc.jar"/>
+	<classpathentry kind="lib" path="lib/extensions/jmock-1.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/extensions/jmock-cglib-1.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/extensions/junit-3.8.2.jar"/>
+	<classpathentry kind="lib" path="lib/extensions/sablecc-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/velocity-dep-1.4.jar"/>
 	<classpathentry sourcepath="O:/libs/cotta" kind="lib" path="lib/cotta/cotta-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
