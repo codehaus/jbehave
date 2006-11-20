@@ -35,4 +35,18 @@ public class Events extends CompositeVisitableUsingMiniMock implements Event {
             events[i].undoIn(world);
         }
     }
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[Events ");
+        for ( int i = 0; i < events.length; i++ ){
+            buffer.append(events[i].getClass().getName());
+            if ( i < events.length - 1 ){
+                buffer.append(",");
+            }
+        }
+        buffer.append("]");
+        return buffer.toString();
+    }
+
 }

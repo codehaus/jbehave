@@ -7,6 +7,8 @@
  */
 package jbehave.core.story.domain;
 
+import java.util.Iterator;
+
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
 import jbehave.core.story.visitor.Visitor;
 import jbehave.core.story.visitor.VisitorSupport;
@@ -46,5 +48,18 @@ public class Givens extends CompositeVisitableUsingMiniMock implements Given {
         for(int i = givens.length - 1; i > -1; i--) {
             givens[i].tidyUp(world);
         }
+    }
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[Givens ");
+        for ( int i = 0; i < givens.length; i++ ){
+            buffer.append(givens[i].getClass().getName());
+            if ( i < givens.length - 1 ){
+                buffer.append(",");
+            }
+        }
+        buffer.append("]");
+        return buffer.toString();
     }
 }

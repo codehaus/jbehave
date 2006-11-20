@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import jbehave.core.listener.BehaviourListener;
+import jbehave.core.story.codegen.domain.ScenarioDetails;
 import jbehave.core.story.visitor.Visitor;
 import jbehave.core.util.ConvertCase;
 
@@ -60,10 +61,6 @@ public class ScenarioDrivenStory implements Story {
         scenarios.run(world, (BehaviourListener[]) listeners.toArray(new BehaviourListener[listeners.size()]));
     }
     
-    public String toString() {
-        return "Story: narrative=" + narrative + ", acceptanceCriteria=" + scenarios;
-    }
-
     public void addListener(BehaviourListener listener) {
         listeners.add(listener);       
     }
@@ -73,4 +70,15 @@ public class ScenarioDrivenStory implements Story {
         narrative.accept(visitor);
         scenarios.accept(visitor);
     }
+
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[Story narrative=");
+        buffer.append(narrative);
+        buffer.append(",\nscenarios=");
+        buffer.append(scenarios);
+        buffer.append("]");
+        return buffer.toString();
+    }
+
 }

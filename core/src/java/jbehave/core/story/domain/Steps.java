@@ -36,4 +36,17 @@ public class Steps extends CompositeVisitableUsingMiniMock implements Step {
         }
     }
 
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[Steps ");
+        for ( int i = 0; i < steps.length; i++ ){
+            buffer.append(steps[i].getClass().getName());
+            if ( i < steps.length - 1 ){
+                buffer.append(",");
+            }
+        }
+        buffer.append("]");
+        return buffer.toString();
+    }
+    
 }

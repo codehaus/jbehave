@@ -18,8 +18,11 @@ import jbehave.core.story.visitor.VisitorSupport;
  */
 public class Outcomes extends CompositeVisitableUsingMiniMock implements Outcome {
 	
+    private final Outcome[] outcomes;
+    
 	public Outcomes(Outcome[] outcomes) {
-		super(outcomes);
+        super(outcomes);
+		this.outcomes = outcomes;
     }
     
     public Outcomes(Outcome outcome) {
@@ -51,4 +54,18 @@ public class Outcomes extends CompositeVisitableUsingMiniMock implements Outcome
 			}
 		});
 	}
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[Outcomes ");
+        for ( int i = 0; i < outcomes.length; i++ ){
+            buffer.append(outcomes[i].getClass().getName());
+            if ( i < outcomes.length - 1 ){
+                buffer.append(",");
+            }
+        }
+        buffer.append("]");
+        return buffer.toString();
+    }
+
 }

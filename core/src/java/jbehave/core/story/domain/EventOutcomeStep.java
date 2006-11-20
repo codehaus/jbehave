@@ -35,5 +35,14 @@ public class EventOutcomeStep implements Step {
     public void undoIn(World world) {
         event.undoIn(world);
     }
-
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[EventOutcomeStep event=");
+        buffer.append(event);
+        buffer.append(", outcome=");
+        buffer.append(outcome);
+        buffer.append("]");
+        return buffer.toString();
+    }
 }

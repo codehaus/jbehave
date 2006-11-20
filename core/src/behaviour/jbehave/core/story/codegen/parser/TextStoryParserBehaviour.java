@@ -118,6 +118,8 @@ public class TextStoryParserBehaviour extends UsingConstraints {
 
         // when
         StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
+        
+        // then
         ensureThat(result, eq(expectedStory));
     }
     

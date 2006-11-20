@@ -39,6 +39,14 @@ public class Narrative implements Visitable {
     }
     
     public String toString() {
-        return "[getRole=" + role + ", getFeature=" + feature + ", getBenefit=" + benefit + "]";
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[Narrative role=");
+        buffer.append(role);
+        buffer.append(", feature=");
+        buffer.append(feature);
+        buffer.append(", benefit=");
+        buffer.append(benefit);
+        buffer.append("]");
+        return buffer.toString();
     }
 }
