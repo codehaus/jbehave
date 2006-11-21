@@ -210,7 +210,7 @@
 	</target>
 
 
-	<target name="run-jbehave-tasks" description="Runs jBehave Ant tasks">
+	<target name="run-jbehave-tasks" depends="compile-behaviour" description="Runs jBehave Ant tasks">
 		<taskdef name="behaviour-runner" classname="jbehave.ant.BehaviourRunnerTask">
 			<classpath>
 				<pathelement path="${jbehave_jar}" />
