@@ -6,6 +6,7 @@ import com.sirenian.hellbound.engine.EngineQueue;
 import com.sirenian.hellbound.engine.GuiQueue;
 import com.sirenian.hellbound.engine.ThreadedEngineQueue;
 import com.sirenian.hellbound.gui.ThreadedSwingQueue;
+import com.sirenian.hellbound.util.Logger;
 
 public class Idler extends jbehave.extensions.threaded.swing.Idler {
 
@@ -20,10 +21,11 @@ public class Idler extends jbehave.extensions.threaded.swing.Idler {
 	}
 	
     private void waitForAllQueuesToEmpty(World world) {
+    	Logger.debug(this, "Waiting for all queues to empty.");
         EngineQueue engineQueue = (ThreadedEngineQueue) world.get(WorldKey.ENGINE_QUEUE, null);
         GuiQueue guiQueue = (ThreadedSwingQueue) world.get(WorldKey.GUI_QUEUE, null);
         
-        engineQueue.invokeAndWait(EMPTY_RUNNABLE);
-        guiQueue.invokeAndWait(EMPTY_RUNNABLE);
+        engineQueue.waitForIdle();
+        guiQueue.waitForIdle();
     }
 }

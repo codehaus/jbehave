@@ -56,18 +56,45 @@ class MiniMockObject implements Mock, ExpectationRegistry {
             }
             
             // if we get here we didn't match on any expectations           
-            verifyNoExpectationsMatchMethodName(method); 
+            verifyNoExpectationsMatchMethodName(method, args); 
             unexpectedInvocations.add(new Invocation(method.getName(), args));
             return fallbackBehaviour.invoke(proxy, method, args);
         }
 
-        private void verifyNoExpectationsMatchMethodName(Method method) {
+        private void verifyNoExpectationsMatchMethodName(Method method, Object[] args) {
             if (anyExpectationsMatchMethodName(method.getName())) {
-                throw new VerificationException("Unexpected arguments for " + name + "." + method.getName());
+            	StringBuilder message = new StringBuilder();
+            	message.append("Unexpected arguments for " + name + ".").append(method.getName())
+            			.append(newLine())
+                		.append("Expected:").append(newLine()).append(toString(expectations))
+                		.append("Got:").append(newLine()).append(method.getName()).append("[").append(toString(args)).append("]");
+                throw new VerificationException(message.toString());
             }
         }
 
-        private boolean anyExpectationsMatchMethodName(String methodName) {
+		private String newLine() {
+			return System.getProperty("line.separator");
+		}
+
+		private String toString(List expectations) {
+			StringBuilder message = new StringBuilder();
+			for (int i = 0; i < expectations.size(); i++) {
+				message.append(expectations.get(i).toString()).append(newLine());
+			}
+			return message.toString();
+		}
+		
+		private String toString(Object[] args) {
+			StringBuilder message = new StringBuilder();
+			for (int i = 0; i < args.length; i++) {
+				message.append(args[i].toString());
+				if (i < args.length - 1) { message.append(", "); }
+			}
+			return message.toString();
+		}
+
+
+		private boolean anyExpectationsMatchMethodName(String methodName) {
             for (Iterator i = expectations.iterator(); i.hasNext();) {
                Expectation expectation = (Expectation) i.next();
                if(expectation.matches(methodName)) return true;

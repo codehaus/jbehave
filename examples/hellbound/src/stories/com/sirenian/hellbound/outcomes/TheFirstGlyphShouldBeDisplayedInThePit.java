@@ -16,7 +16,7 @@ public class TheFirstGlyphShouldBeDisplayedInThePit extends
 
     public void setExpectationIn(World world) {
 		GlyphType type = GlyphType.T;
-		expectedSegments = type.nominalSegments(0).movedRight(3);
+		expectedSegments = type.getSegments(0).movedRight(3);
 	}
 
 	public void verifyAnyTimeIn(World world) {

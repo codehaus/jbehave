@@ -7,21 +7,17 @@ import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;
 
 public class GlyphType {
-
 	private static final int SEGMENT_COUNT = 0;
 	
 	private final Segments[] segmentsByQuarterTurn;
-	private final Segment nominalPoint;
 	private final char ascii;
     
-	private GlyphType(char code) { this (null, null, code); }	
+	private GlyphType(char code) { this (null, code); }	
 	
 	private GlyphType(
 			Segments[] positionsByQuarterTurn,
-			Segment nominalPoint,
-            char ascii) {
+			char ascii) {
 				this.segmentsByQuarterTurn = positionsByQuarterTurn;
-				this.nominalPoint = nominalPoint;
                 this.ascii = ascii;
     }
     
@@ -34,49 +30,49 @@ public class GlyphType {
 					rotation(0, 1,  0, 0,  1, 0,  1, 1),
 					rotation(1, 1,  0, 1,  0, 0,  1, 0),
 					rotation(1, 0,  1, 1,  0, 1,  0, 0)),
-					p(0, 0), 'O');
+					'O');
 	
 	public static final GlyphType T = new GlyphType(def(
 					rotation(-1, 0,  0, 0,  1, 0,  0, 1),
 					rotation(-1, 2,  -1, 1,  -1, 0,  0, 1),
 					rotation(0, 1,  0, 1,  -1, 1,  0, 0),
 					rotation(0, 0,  0, 1,  0, 2,  -1, 1)),
-					p(0, 0), 'T');
+					'T');
 	
 	public static final GlyphType I = new GlyphType(def(
 					rotation(0, 0,  0, 1,  0, 2,  0, 3),
 					rotation(-1, 1,  0, 1,  1, 1,  2, 1),
 					rotation(0, 3,  0, 2,  0, 1,  0, 0),
 					rotation(2, 1,  1, 1,  0, 1,  -1, 1)),
-					p(0, 0), 'I');
+					'I');
 	
 	public static final GlyphType J = new GlyphType(def(
 					rotation(0, 0,  0, 1,  0, 2,  -1, 2),
-					rotation(0, 1,  0, 1,  -1, 1,  -1, 0),
+					rotation(-1, 0,  -1, 1,  0, 1,  1, 1),
 					rotation(-1, 2,  -1, 1,  -1, 0,  0, 0),
 					rotation(-1, 0,  0, 0,  1, 0,  1, 1)),
-					p(0, 0), 'J');
+					'J');
 	
 	public static final GlyphType L = new GlyphType(def(
-					rotation(0, 0,  0, 1,  0, 2,  1, 2),
-					rotation(2, 0,  1, 0,  0, 0,  0, 1),
-					rotation(1, 2,  1, 1,  1, 0,  0, 0),
-					rotation(0, 1,  1, 1,  2, 1,  2, 0)),
-					p(1, 0), 'L');
+					rotation(-1, 0,  -1, 1,  -1, 2,  0, 2),
+					rotation(1, 0,  0, 0,  -1, 0,  -1, 1),
+					rotation(0, 2,  0, 1,  0, 0,  -1, 0),
+					rotation(-1, 1,  0, 1,  1, 1,  1, 0)),
+					'L');
 	
 	public static final GlyphType Z = new GlyphType(def(
-					rotation(0, 0,  1, 0,  1, 1,  2, 1),
-					rotation(1, 0,  1, 1,  0, 1,  0, 2),
-					rotation(2, 1,  1, 1,  1, 0,  0, 0),
-					rotation(0, 2,  0, 1,  1, 1,  1, 0)),
-					p(1, 0), 'Z');
+					rotation(-1, 0,  0, 0,  0, 1,  1, 1),
+					rotation(0, 0,  0, 1,  -1, 1,  -1, 2),
+					rotation(1, 1,  0, 1,  0, 0,  -1, 0),
+					rotation(-1, 2,  0, 1,  0, 1,  0, 0)),
+					'Z');
 	
 	public static final GlyphType S = new GlyphType(def(
-					rotation(0, 1,  1, 1,  1, 0,  2, 0),
-					rotation(0, 0,  0, 1,  1, 1,  1, 2),
-					rotation(2, 0,  1, 0,  1, 1,  0, 1),
-					rotation(1, 2,  1, 1,  0, 1,  0, 0)),
-					p(1, 0), 'S');
+					rotation(-1, 1,  0, 1,  0, 0,  1, 0),
+					rotation(-1, 0,  -1, 1,  0, 1,  0, 2),
+					rotation(1, 0,  0, 0,  0, 1,  -1, 1),
+					rotation(0, 2,  0, 1,  -1, 1,  -1, 0)),
+					'S');
 	
 	public static final GlyphType JUNK = new GlyphType('X');
 	public static final GlyphType PIT = new GlyphType('.');
@@ -88,6 +84,7 @@ public class GlyphType {
     public static final GlyphType[] ALL = new GlyphType[] {
         O, T, I, J, L, Z, S, JUNK, PIT
     };
+
 	
 	private static Segments[] def(Segments s1, Segments s2, Segments s3, Segments s4) {
 		return new Segments[] { s1, s2, s3, s4 };
@@ -101,7 +98,7 @@ public class GlyphType {
 		return new Segment(x, y);
 	}
 
-	public Segments nominalSegments(int quarterTurnsToLeft) {
+	public Segments getSegments(int quarterTurnsToLeft) {
 		return segmentsByQuarterTurn[quarterTurnsToLeft];
 	}
 

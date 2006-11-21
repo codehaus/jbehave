@@ -1,7 +1,6 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
-import jbehave.core.story.visitor.Visitor;
 
 public class Steps extends CompositeVisitableUsingMiniMock implements Step {
 

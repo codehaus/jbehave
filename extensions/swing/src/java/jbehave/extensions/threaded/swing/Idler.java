@@ -7,6 +7,7 @@ import java.awt.event.InvocationEvent;
 public class Idler {
 	
 	private static final Runnable EMPTY_RUNNABLE = new Runnable() { public void run() {}};
+	
 	private Toolkit toolkit;
 	private EventQueue sysQueue;
 

@@ -51,4 +51,8 @@ public class Glyph {
 		return type;
 	}
 
+	public boolean overlaps(Segments segments) {
+		return this.segments.overlaps(segments);
+	}
+
 }
