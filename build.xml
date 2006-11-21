@@ -26,8 +26,8 @@
 	<property name="output_dir" location="delete_me" />
 	<property name="classes_dir" location="${output_dir}/classes" />
 	<property name="behaviour_classes_dir" location="${output_dir}/behaviour-classes" />
-	<property name="hellbound_classes_dir" location="${output_dir}/hellbound-classes" />
-	<property name="hellbound_behaviour_classes_dir" location="${output_dir}/hellbound-behaviours" />
+	<property name="example_classes_dir" location="${output_dir}/example-classes" />
+	<property name="example_behaviour_classes_dir" location="${output_dir}/example-behaviours" />
 	<property name="jbehave_zip" location="${output_dir}/jbehave.zip" />
 	<property name="dist_dir" location="${output_dir}/${version}" />
 	<property name="jbehave_jar" location="${dist_dir}/jbehave.jar" />
@@ -35,6 +35,11 @@
 	<property name="website_dist_dir" location="${dist_dir}/website"/>
 	<property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
 
+	<!-- examples -->
+	<property name="example" value="hellbound" />
+	<property name="example.behaviours" value="com.sirenian.hellbound.AllBehaviours" />	
+	<property name="behaviour.runner.task" value="jbehave.ant.JBehaveTask"/>
+	
 	<!-- general targets -->
 	<target name="clean" description="Clean out output directory">
 		<delete dir="${output_dir}" />
@@ -169,61 +174,44 @@
 		</java>
 	</target>
 
-	<!-- Hellbound Examples -->
-	<target name="run-hellbound-behaviours" description="Runs behaviours for Hellbound examples">
-		<taskdef name="jbehave" classname="jbehave.ant.JBehaveTask" classpath="${classes_dir}" />
-
-		<mkdir dir="${hellbound_classes_dir}" />
-		<javac taskname="compile hellbound" destdir="${hellbound_classes_dir}" 
+	<!-- Examples -->	
+	<target name="compile-example-behaviours" depends="build-jar" description="Compile behaviours for examples">
+		<mkdir dir="${example_classes_dir}" />
+		<javac taskname="compile example" destdir="${example_classes_dir}" 
 			source="${jdk.version}" target="${jdk.version}" debug="true">
 			<src>
-				<pathelement path="${examples_dir}/hellbound/src/java" />
+				<pathelement path="${examples_dir}/${example}/src/java" />
 			</src>
 			<classpath>
 				<pathelement path="${jbehave_jar}" />
 				<path refid="libs"/>
 			</classpath>
 		</javac>
-		<mkdir dir="${hellbound_behaviour_classes_dir}" />
-		<javac taskname="compile hellbound behaviours" destdir="${hellbound_behaviour_classes_dir}" 
+		<mkdir dir="${example_behaviour_classes_dir}" />
+		<javac taskname="compile example behaviours" destdir="${example_behaviour_classes_dir}" 
 			source="${jdk.version}" target="${jdk.version}" debug="true">
 			<src>
-				<pathelement path="${examples_dir}/hellbound/src/behaviour" />
+				<pathelement path="${examples_dir}/${example}/src/behaviour" />
 			</src>
 			<classpath>
 				<pathelement path="${jbehave_jar}" />
 				<path refid="libs"/>
-				<pathelement path="${hellbound_classes_dir}"/>
+				<pathelement path="${example_classes_dir}"/>
 			</classpath>
 		</javac>
-
-		<jbehave>
-			<verify name="com.sirenian.hellbound.AllBehaviours" />
-			<classpath>
-				<pathelement path="${hellbound_behaviour_classes_dir}" />
-				<pathelement path="${extensions_dir}" />
-				<pathelement path="${hellbound_classes_dir}" />
-				<pathelement path="${jbehave_jar}" />
-				<path refid="libs" />
-			</classpath>
-		</jbehave>
 	</target>
 
+	<target name="run-example-behaviours" depends="compile-example-behaviours" description="Runs behaviours for examples">
+		<taskdef name="jbehave" classname="${behaviour.runner.task}" classpath="${classes_dir}" />
 
-	<target name="run-jbehave-tasks" depends="compile-behaviour" description="Runs jBehave Ant tasks">
-		<taskdef name="behaviour-runner" classname="jbehave.ant.BehaviourRunnerTask">
+		<jbehave behavioursClassName="${example.behaviours}">
 			<classpath>
-				<pathelement path="${jbehave_jar}" />
-			</classpath>
-		</taskdef>
-
-		<behaviour-runner behavioursClassName="jbehave.core.AllBehaviours">
-			<classpath>
-				<pathelement path="${behaviour_classes_dir}" />
 				<pathelement path="${jbehave_jar}" />
 				<path refid="libs" />
+				<pathelement path="${example_classes_dir}" />
+				<pathelement path="${example_behaviour_classes_dir}" />
 			</classpath>
-		</behaviour-runner>
+		</jbehave>
 	</target>
 
 </project>

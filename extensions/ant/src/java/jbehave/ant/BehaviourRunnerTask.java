@@ -3,7 +3,6 @@ package jbehave.ant;
 import jbehave.core.Run;
 import jbehave.core.behaviour.Behaviours;
 
-import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Path;
 
@@ -25,8 +24,15 @@ public class BehaviourRunnerTask extends AbstractJavaTask {
                 runner.verifyBehaviour(classes[i]);
             }            
         } catch (Exception e) {
-            throw new BuildException("Failed to verify behaviours "+behavioursClassName, e);
+            String message = "Failed to verify behaviours "+behavioursClassName;
+            log(message, e);
+            throw new BuildException(message, e);
         }
+    }
+
+    private void log(String message, Exception e) {
+        log(message);
+        e.printStackTrace();
     }
 
     public void setBehavioursClassName(String behavioursClassName) {
@@ -38,17 +44,8 @@ public class BehaviourRunnerTask extends AbstractJavaTask {
     }
     
     private ClassLoader createClassLoader() {
-        Path path = commandLine.getClasspath();
-        if (path != null) {
-            Path classPath = (Path) path.clone();
-            AntClassLoader loader = getProject().createClassLoader(classPath);
-            loader.setParentFirst(false);
-            loader.addJavaLibraries();
-            loader.setThreadContextLoader();
-            return loader;
-        } else {
-            return getProject().getCoreLoader();
-        }
+        Path classPath = commandLine.createClasspath(getProject());
+        return getProject().createClassLoader(classPath);
     }
 
 }
