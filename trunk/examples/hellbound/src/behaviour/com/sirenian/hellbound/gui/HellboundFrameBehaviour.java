@@ -49,4 +49,8 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
         windowWrapper.pressKey(KeyEvent.VK_SPACE);
         verifyMocks();
     }
+    
+    public void shouldManageAllFocus() {
+    	ensureThat(frame.isFocusOwner());
+    }
 }

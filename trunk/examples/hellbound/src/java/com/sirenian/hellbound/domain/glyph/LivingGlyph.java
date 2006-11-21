@@ -1,29 +1,43 @@
 package com.sirenian.hellbound.domain.glyph;
 
+import com.sirenian.hellbound.domain.Segments;
+import com.sirenian.hellbound.engine.CollisionDetector;
+
 public class LivingGlyph extends Glyph {
 	
-	public LivingGlyph(
-			Heartbeat heartbeat, 
+	private final CollisionDetector detector;
+
+	public LivingGlyph( 
 			GlyphType type,
+			CollisionDetector detector,
 			int centre) {
 		
-		super(type, type.nominalSegments(0).movedRight(centre));
+		super(type, type.getSegments(0).movedRight(centre));
+		this.detector = detector;
 		
-		heartbeat.addListener(new HeartbeatListener() {
-			public void beat() {
-				requestMoveDown();
-			}
-		});
+
 		
 		this.type = type;
 		
 	}
 	
-	protected void requestMoveDown() {
-		moveTo(segments.movedDown());
+	public boolean requestMoveDown() {
+		Segments newSegments = segments.movedDown();
+		if (detector.collides(newSegments)) {
+			return false;
+		} else {
+			moveTo(newSegments);
+			return true;
+		}
 	}
 
-
-
-
+	public void drop() {
+		Segments segmentsToMoveTo = segments;
+		Segments nextSegmentsDown = segments.movedDown();
+		while (!detector.collides(nextSegmentsDown)) {
+			segmentsToMoveTo = nextSegmentsDown;
+			nextSegmentsDown = nextSegmentsDown.movedDown();
+		}
+		moveTo(segmentsToMoveTo);
+	}
 }

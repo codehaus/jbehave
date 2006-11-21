@@ -10,7 +10,7 @@ import com.sirenian.hellbound.domain.game.GameState;
 import com.sirenian.hellbound.domain.glyph.GlyphListener;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.engine.GuiQueue;
-import com.sirenian.hellbound.engine.ThreadedQueue;
+import com.sirenian.hellbound.util.ThreadedQueue;
 
 public class ThreadedSwingQueue extends ThreadedQueue implements GuiQueue {
 

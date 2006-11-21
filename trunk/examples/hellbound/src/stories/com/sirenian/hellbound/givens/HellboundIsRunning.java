@@ -1,9 +1,7 @@
 package com.sirenian.hellbound.givens;
 
-
 import java.awt.Graphics;
 
-import jbehave.core.story.domain.GivenUsingMiniMock;
 import jbehave.core.story.domain.World;
 import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
 
@@ -17,9 +15,9 @@ import com.sirenian.hellbound.gui.RenderedPit;
 import com.sirenian.hellbound.gui.ThreadedSwingQueue;
 import com.sirenian.hellbound.stories.WorldKey;
 
-public class HellboundIsRunning extends GivenUsingMiniMock {
+public class HellboundIsRunning extends HellboundGiven {
 
-	public void setUp(World world) {
+	public void setUpAnyTimeIn(World world) {
 		DefaultWindowWrapper hellboundFrameWrapper = new DefaultWindowWrapper("HellboundFrame");		
 		ForcedHeartbeat heartbeat = new ForcedHeartbeat();
 		RenderedPit graphics = new RenderedPit(Hellbound.SCALE, Hellbound.WIDTH, Hellbound.HEIGHT, Hellbound.COLORMAP);

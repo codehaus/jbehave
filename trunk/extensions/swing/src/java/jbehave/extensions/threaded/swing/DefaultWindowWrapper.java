@@ -40,6 +40,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 
 	public void closeWindow() throws TimeoutException {
 		getWindow().dispose();
+		idler.waitForIdle();
 	}
 	
 	public void clickButton(String componentName) throws ComponentFinderException, TimeoutException {

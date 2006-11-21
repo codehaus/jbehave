@@ -116,4 +116,34 @@ public class Segments {
         }
         return builder.toString();
     }
+
+	public boolean overlaps(Segments segments) {
+		for (int i = 0; i < segments.size(); i++) {
+			if (contains(segments.get(i))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int lowest() {
+		int lowest = -1;
+		for (int i = 0; i < segments.length; i++) {
+			if (segments[i].y > lowest) { // heighest int represents lowest posn in the pit
+				lowest = segments[i].y;
+			}
+		}
+		return lowest;
+	}
+
+	public Segments add(Segments segments) {
+		Segment[] allSegments = new Segment[this.segments.length + segments.size()];
+		for (int i = 0; i < this.segments.length; i++)  {
+			allSegments[i] = this.segments[i];
+		}
+		for (int i = 0; i < segments.size(); i++) {
+			allSegments[this.segments.length + i] = segments.get(i); 
+		}
+		return new Segments(allSegments);
+	}
 }

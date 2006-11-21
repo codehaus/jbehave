@@ -1,12 +1,11 @@
-package com.sirenian.hellbound.engine;
+package com.sirenian.hellbound.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sirenian.hellbound.util.Logger;
 
-public abstract class ThreadedQueue {
-
+public abstract class ThreadedQueue implements Queue {
+	
     protected static final Runnable EMPTY_RUNNABLE = new Runnable() {
         public void run() {
         }
@@ -14,8 +13,8 @@ public abstract class ThreadedQueue {
 
     private ArrayList eventList = new ArrayList();
     private ArrayList afterEmptyEventList = new ArrayList();
-    private boolean shouldRun = true;
-
+	private boolean shouldRun = true;
+    
     protected ThreadedQueue(String queueName) {
         Runnable runnable = new Runnable() {
             public void run() {
@@ -30,6 +29,13 @@ public abstract class ThreadedQueue {
         };
         Logger.debug(this, "Starting thread for " + queueName);
         new Thread(runnable, queueName).start();
+    }
+    
+    public void stop() {
+    	synchronized (eventList) {
+    		shouldRun = false;
+    		eventList.notifyAll();
+		}
     }
 
     private void waitForNextRequest() {
@@ -58,18 +64,27 @@ public abstract class ThreadedQueue {
         }
     }
 
-    public void invokeAndWait(Runnable runnable) {
-        synchronized (eventList) {
-            afterEmptyEventList.add(runnable);
-            eventList.notifyAll();
-        }
+    public void waitForIdle() {
+    	final Object localLock = new Object();
+    	synchronized (localLock) {
+	        synchronized (eventList) {
+	            afterEmptyEventList.add(runnableOnLock(localLock));
+	            eventList.notifyAll();
+	        }
+	        
+	        try {
+				localLock.wait();
+			} catch (InterruptedException e) {}
+    	}
     }
-    
 
-    public void stop() {
-        shouldRun = false;
-        synchronized(eventList) {
-            eventList.notifyAll();
-        }
-    }    
+	private Runnable runnableOnLock(final Object localLock) {
+		return new Runnable() {
+			public void run() {
+				synchronized (localLock) {
+					localLock.notifyAll();
+				}
+			}
+		};
+	}
 }

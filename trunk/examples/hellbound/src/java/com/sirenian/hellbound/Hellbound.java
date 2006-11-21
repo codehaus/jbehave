@@ -1,15 +1,17 @@
 package com.sirenian.hellbound;
 
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import com.sirenian.hellbound.domain.glyph.GlyphListener;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.domain.glyph.Heartbeat;
+import com.sirenian.hellbound.engine.EngineQueue;
 import com.sirenian.hellbound.engine.Game;
 import com.sirenian.hellbound.engine.GlyphFactory;
-import com.sirenian.hellbound.engine.PseudoRandomGlyphFactory;
 import com.sirenian.hellbound.engine.GuiQueue;
-import com.sirenian.hellbound.engine.EngineQueue;
+import com.sirenian.hellbound.engine.PseudoRandomGlyphFactory;
 import com.sirenian.hellbound.engine.SelfTimedHeartbeat;
 import com.sirenian.hellbound.engine.ThreadedEngineQueue;
 import com.sirenian.hellbound.gui.FrontPanel;
@@ -37,8 +39,6 @@ public class Hellbound {
                     Color.MAGENTA, Color.GRAY, Color.BLACK });
 
     private HellboundFrame frame;
-    private final EngineQueue engineQueue;
-    private final GuiQueue guiQueue;
 
     public Hellbound() {
         this(
@@ -54,14 +54,17 @@ public class Hellbound {
         
         Logger.debug(this, "Creating Hellbound instance...");
 
-        this.engineQueue = engineQueue;
-        this.guiQueue = guiQueue;
         frame = createFrameForGui(engineQueue, pitPanel);
         Game game = createEngineForGame(heartbeat, factory);
         
         connectQueues(engineQueue, guiQueue, pitPanel, frame, game);
-        
+        bindQueuesToFrame(engineQueue, guiQueue, frame);
         startHellbound(frame);
+    }
+    
+    public static void main(String[] args) {
+    	System.getProperties().setProperty("DEBUG", "true");
+        new Hellbound();
     }
 
     private void startHellbound(HellboundFrame frame) {
@@ -70,8 +73,6 @@ public class Hellbound {
     }
 
     public void stopHellbound() {
-        engineQueue.stop();
-        guiQueue.stop();
         frame.dispose();
         Logger.debug(this, "Hellbound stopped.");
     }
@@ -89,7 +90,19 @@ public class Hellbound {
         engineQueue.setGameRequestDelegate(game);
         guiQueue.setGameListenerDelegate(frame);
         guiQueue.setGlyphListenerDelegate(pitPanel);
+        
     }
+
+	private void bindQueuesToFrame(final EngineQueue engineQueue, final GuiQueue guiQueue, HellboundFrame frame) {
+		WindowAdapter queueLife = new WindowAdapter() {
+			public void windowClosed(WindowEvent e) {
+				engineQueue.stop();
+				guiQueue.stop();
+			}
+		};
+		
+		frame.addWindowListener(queueLife);
+	}
 
     private Game createEngineForGame(Heartbeat heartbeat, GlyphFactory factory) {
         return new Game(factory, heartbeat, WIDTH, HEIGHT);
@@ -100,10 +113,4 @@ public class Hellbound {
         FrontPanel frontPanel = new FrontPanel(requestQueue);
         return new HellboundFrame(frontPanel, pitPanel);
     }
-
-
-    public static void main(String[] args) {
-        new Hellbound();
-    }
-
 }

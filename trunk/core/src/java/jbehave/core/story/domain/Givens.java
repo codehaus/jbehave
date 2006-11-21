@@ -10,8 +10,6 @@ package jbehave.core.story.domain;
 import java.util.Iterator;
 
 import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
-import jbehave.core.story.visitor.Visitor;
-import jbehave.core.story.visitor.VisitorSupport;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

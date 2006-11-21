@@ -1,6 +1,7 @@
 package com.sirenian.hellbound.engine;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
+import com.sirenian.hellbound.util.ThreadedQueue;
 
 public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
     

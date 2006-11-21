@@ -1,8 +1,6 @@
 package com.sirenian.hellbound.domain;
 import jbehave.core.mock.UsingConstraints;
 
-import com.sirenian.hellbound.domain.Segments;
-
 public class SegmentsBehaviour extends UsingConstraints {
 
 	public void shouldMoveEachSegmentRight() {
@@ -111,4 +109,59 @@ public class SegmentsBehaviour extends UsingConstraints {
 		ensureThat(segments.contains(new Segment(0, 1)));
 		ensureThat(!segments.contains(new Segment(0, 5)));
 	}
+	
+	public void shouldOverlapSegmentsWithAnyOfTheSameSegmentsAsSelf() {
+		Segments segments1 = new Segments(
+				new Segment(0, 1), 
+				new Segment(0, 2), 
+				new Segment(0, 3), 
+				new Segment(0, 4));
+		
+		Segments segments2 = new Segments(
+				new Segment(1, 1), 
+				new Segment(2, 2), 
+				new Segment(3, 3), 
+				new Segment(4, 4));
+		
+		Segments segments3 = new Segments(
+				new Segment(0, 1), 
+				new Segment(0, 2), 
+				new Segment(1, 3), 
+				new Segment(1, 4));
+		
+		ensureThat(segments1.overlaps(segments3));
+		ensureThat(segments3.overlaps(segments1));
+		ensureThat(!segments1.overlaps(segments2));
+	}
+	
+	public void shouldReturnTheLowestYPosition() {
+		Segments segments = new Segments(
+				new Segment(0, 1), 
+				new Segment(0, 4), 
+				new Segment(0, 3), 
+				new Segment(0, 2));
+		
+		ensureThat(segments.lowest(), eq(4));
+	}
+	
+	public void shouldReturnAddedSegments() {
+		Segments segments1 = new Segments(new Segment[] {
+				new Segment(0, 5),
+				new Segment(1, 5),
+		});
+		
+		Segments segments2 = new Segments(new Segment[] {
+				new Segment(2, 5),
+				new Segment(3, 5)
+		});
+		
+		Segments expectedSegments = new Segments(new Segment[] {
+				new Segment(0, 5),
+				new Segment(1, 5),
+				new Segment(2, 5),
+				new Segment(3, 5)
+		});		
+		
+		ensureThat(segments1.add(segments2), eq(expectedSegments));
+	}	
 }

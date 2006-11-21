@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import com.sirenian.hellbound.domain.game.GameListener;
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import com.sirenian.hellbound.domain.game.GameState;
+import com.sirenian.hellbound.util.Logger;
 
 
 public class HellboundFrame extends JFrame implements GameListener {
@@ -46,7 +47,13 @@ public class HellboundFrame extends JFrame implements GameListener {
     }
 
 	public void reportGameStateChanged(GameState state) {
+		Logger.debug(this, "gameStateChanged to " + state);
 		cardLayout.show(this.getContentPane(), state.toString());
+	}
+	
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		Logger.debug(this, "setting to " + (visible ? "visible" : "invisible"));
 	}
 
 }

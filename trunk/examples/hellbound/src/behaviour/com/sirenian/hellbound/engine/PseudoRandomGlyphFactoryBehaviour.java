@@ -27,6 +27,6 @@ public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {
     }
 
     private GlyphType nextGlyphType(PseudoRandomGlyphFactory factory) {
-        return factory.nextGlyph((Heartbeat) stub(Heartbeat.class), 3, new ListenerSet()).type();
+        return factory.nextGlyph(3, CollisionDetector.NULL, new ListenerSet()).type();
     }
 }

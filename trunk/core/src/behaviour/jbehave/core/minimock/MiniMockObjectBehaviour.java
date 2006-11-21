@@ -66,11 +66,19 @@ public class MiniMockObjectBehaviour extends UsingMiniMock {
             ((Foo)mock).doSomething("B");
             skippedThis = false;
         } catch (VerificationException ve) {
-            Ensure.that(ve.getMessage().equals("Unexpected arguments for foo.doSomething"));
+            Ensure.that(ve.getMessage(), eq("Unexpected arguments for foo.doSomething" + newLine() +
+                    "Expected:" + newLine() +
+                    "doSomething[equal to <A>]" + newLine() +
+                    "Got:" + newLine() +
+                    "doSomething[B]"));
         }
         Ensure.that(skippedThis);
     }
     
+    private String newLine() {
+        return System.getProperty("line.separator");
+    }
+
     public void shouldSucceedOnVerifyWhenMethodCalledWithExpectedArgumentThenOtherMethodCalled() {
         Mock mock = MiniMockObject.mock(Foo.class, "foo");
         mock.expects("doSomething");
