@@ -9,11 +9,6 @@ import com.sirenian.hellbound.gui.ThreadedSwingQueue;
 import com.sirenian.hellbound.util.Logger;
 
 public class Idler extends jbehave.extensions.threaded.swing.Idler {
-
-    private static final Runnable EMPTY_RUNNABLE = new Runnable() {
-        public void run() { }
-        public String toString() { return "Idler"; }
-    };
     
 	public void waitForIdle(World world) {
 		waitForAllQueuesToEmpty(world);
