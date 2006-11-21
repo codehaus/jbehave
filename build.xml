@@ -90,7 +90,7 @@
 		</jar>
 	</target>
 
-	<target name="verify-behaviour" depends="build-jar" description="Verify behaviour">
+	<target name="compile-behaviour" depends="build-jar" description="Compile behaviour">
 		<mkdir dir="${behaviour_classes_dir}" />
 		<javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="1.4" target="1.4" debug="true">
 			<src>
@@ -103,6 +103,17 @@
 				<path refid="libs"/>
 			</classpath>
 		</javac>
+		<java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="true">
+			<arg value="jbehave.AllBehaviours" />
+			<classpath>
+				<pathelement path="${behaviour_classes_dir}" />
+				<pathelement path="${jbehave_jar}" />
+				<path refid="libs" />
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="verify-behaviour" depends="compile-behaviour" description="Verify behaviour">
 		<java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="true">
 			<arg value="jbehave.AllBehaviours" />
 			<classpath>
@@ -133,7 +144,7 @@
 			<group title="Story Runner" packages="jbehave.core.story*" />
 			<group title="Ant Task Extension" packages="jbehave.ant*" />
 			<group title="JMock Extension" packages="jbehave.jmock*" />
-			<group title="JUnit Adapter" packages="jbehave.junit*" />
+			<group title="JUnit Extension" packages="jbehave.junit*" />
 			<classpath>
 				<fileset dir="${lib_dir}" />
 			</classpath>
@@ -151,7 +162,7 @@
 
 	<!-- additional targets -->
 	<target name="sablecc" description="Generate sablecc grammar files">
-		<java fork="true" jar="${lib_dir}/extensions/sablecc.jar">
+		<java fork="true" jar="${lib_dir}/extensions/sablecc-3.2.jar">
 			<arg value="-d" />
 			<arg file="${core_dir}/src/java" />
 			<arg file="${core_dir}/src/java/jbehave/core/story/codegen/story.scc" />
@@ -196,6 +207,23 @@
 				<path refid="libs" />
 			</classpath>
 		</jbehave>
+	</target>
+
+
+	<target name="run-jbehave-tasks" description="Runs jBehave Ant tasks">
+		<taskdef name="behaviour-runner" classname="jbehave.ant.BehaviourRunnerTask">
+			<classpath>
+				<pathelement path="${jbehave_jar}" />
+			</classpath>
+		</taskdef>
+
+		<behaviour-runner behavioursClassName="jbehave.core.AllBehaviours">
+			<classpath>
+				<pathelement path="${behaviour_classes_dir}" />
+				<pathelement path="${jbehave_jar}" />
+				<path refid="libs" />
+			</classpath>
+		</behaviour-runner>
 	</target>
 
 </project>
