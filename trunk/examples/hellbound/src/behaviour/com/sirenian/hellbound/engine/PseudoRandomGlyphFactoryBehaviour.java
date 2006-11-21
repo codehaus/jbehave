@@ -4,7 +4,6 @@ import jbehave.core.Ensure;
 import jbehave.core.minimock.UsingMiniMock;
 
 import com.sirenian.hellbound.domain.glyph.GlyphType;
-import com.sirenian.hellbound.domain.glyph.Heartbeat;
 import com.sirenian.hellbound.util.ListenerSet;
 
 public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {

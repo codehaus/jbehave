@@ -10,7 +10,7 @@ public class TheFirstGlyphIsDisplayedOnTheBoard extends ScenarioUsingMiniMock {
 
 	public TheFirstGlyphIsDisplayedOnTheBoard() {
 		super("The first glyph is displayed on the board",
-			"The first glyph is displayed on the board",
+                "utility scenarios",
 			given(new HellboundIsRunning()),
             when(new ThePlayerStartsTheGame()), 
             then(new TheFirstGlyphShouldBeDisplayedInThePit())				
