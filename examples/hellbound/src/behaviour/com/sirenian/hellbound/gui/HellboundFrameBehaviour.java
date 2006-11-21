@@ -46,11 +46,9 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
     
     public void shouldRequestThatTheShapeIsDroppedWhenTheSpaceKeyIsPressed() throws Exception {
         gameRequestListener.expects("requestDropGlyph").once();
+        
+        frame.reportGameStateChanged(GameState.RUNNING);
         windowWrapper.pressKey(KeyEvent.VK_SPACE);
         verifyMocks();
-    }
-    
-    public void shouldManageAllFocus() {
-    	ensureThat(frame.isFocusOwner());
     }
 }

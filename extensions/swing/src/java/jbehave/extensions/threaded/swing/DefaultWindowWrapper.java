@@ -1,8 +1,10 @@
 package jbehave.extensions.threaded.swing;
 
 import java.awt.AWTEvent;
+import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Robot;
 import java.awt.TextComponent;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -76,8 +78,16 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	}
 	
 	public void pressKey(int keycode) throws TimeoutException {
-		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_PRESSED));
-		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_RELEASED));
+        try {
+            Robot robot = new Robot();
+            robot.keyPress(keycode);
+            robot.keyRelease(keycode);
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
+        }
+        
+//		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_PRESSED));
+//		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_RELEASED));
 		idler.waitForIdle();
 	}
 

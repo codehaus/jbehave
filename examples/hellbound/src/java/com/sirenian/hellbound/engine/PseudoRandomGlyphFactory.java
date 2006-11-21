@@ -3,7 +3,6 @@ package com.sirenian.hellbound.engine;
 import java.util.Random;
 
 import com.sirenian.hellbound.domain.glyph.GlyphType;
-import com.sirenian.hellbound.domain.glyph.Heartbeat;
 import com.sirenian.hellbound.domain.glyph.Junk;
 import com.sirenian.hellbound.domain.glyph.LivingGlyph;
 import com.sirenian.hellbound.util.ListenerSet;
