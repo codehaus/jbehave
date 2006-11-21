@@ -63,7 +63,7 @@ class MiniMockObject implements Mock, ExpectationRegistry {
 
         private void verifyNoExpectationsMatchMethodName(Method method, Object[] args) {
             if (anyExpectationsMatchMethodName(method.getName())) {
-            	StringBuilder message = new StringBuilder();
+            	StringBuffer message = new StringBuffer();
             	message.append("Unexpected arguments for " + name + ".").append(method.getName())
             			.append(newLine())
                 		.append("Expected:").append(newLine()).append(toString(expectations))
@@ -77,7 +77,7 @@ class MiniMockObject implements Mock, ExpectationRegistry {
 		}
 
 		private String toString(List expectations) {
-			StringBuilder message = new StringBuilder();
+			StringBuffer message = new StringBuffer();
 			for (int i = 0; i < expectations.size(); i++) {
 				message.append(expectations.get(i).toString()).append(newLine());
 			}
@@ -85,7 +85,7 @@ class MiniMockObject implements Mock, ExpectationRegistry {
 		}
 		
 		private String toString(Object[] args) {
-			StringBuilder message = new StringBuilder();
+			StringBuffer message = new StringBuffer();
 			for (int i = 0; i < args.length; i++) {
 				message.append(args[i].toString());
 				if (i < args.length - 1) { message.append(", "); }

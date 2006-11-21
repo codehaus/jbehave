@@ -87,6 +87,7 @@ public class Game implements GameRequestListener {
 	}
 
     public void requestDropGlyph() {
+        Logger.debug(this, "Drop of glyph requested");
         if (state == GameState.RUNNING) {
         	glyph.drop();
         }

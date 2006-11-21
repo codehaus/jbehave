@@ -19,7 +19,7 @@ public class ParserTest extends TestCase {
         Parse leaf = parts.leaf();
         StringWriter writer = new StringWriter();
         leaf.print(new PrintWriter(writer));
-        assertTrue(writer.getBuffer().toString().trim().contains(TestFixture.class.getName()));
+        assertTrue(writer.getBuffer().toString().trim().indexOf(TestFixture.class.getName()) > -1);
     }
 
     private Reader getReader(String resource) {

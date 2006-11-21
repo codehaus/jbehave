@@ -109,7 +109,7 @@ public class Segments {
 	}
     
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        StringBuffer builder = new StringBuffer();
         builder.append("Segments: ");
         for (int i = 0; i < segments.length; i++) {
             builder.append(segments[i].toString());

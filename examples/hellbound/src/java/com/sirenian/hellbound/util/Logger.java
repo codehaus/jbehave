@@ -6,7 +6,7 @@ public class Logger {
 
     public static void debug(Object source, String message) {
         if (DEBUG) {
-            System.out.println(source.getClass().getSimpleName() + ": " + message);
+            System.out.println(source.getClass().getName() + ": " + message);
         }
     }
 
