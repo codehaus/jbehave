@@ -1,0 +1,6 @@
+---------------------------------------------------
+Architecture
+---------------------------------------------------
+h1(FirstChild). Architecture
+
+(TODO: Describe JBehave's architecture)
