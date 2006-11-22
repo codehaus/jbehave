@@ -119,8 +119,10 @@ def skin_content_file( content_file, root_content_dir )
 end
 
 def add_class( element, new_class )
+    return if element.nil?
+    
     old_class = element.attributes["class"]
-    if old_class != nil
+    if old_class.nil?
         new_class = "#{old_class} #{new_class}"
     end
     element.add_attribute( "class", new_class )
@@ -147,4 +149,5 @@ rescue REXML::ParseException => ex
     
     exit 1
 end
+
 
