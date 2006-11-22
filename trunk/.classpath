@@ -20,6 +20,7 @@
 	<classpathentry kind="src" path="examples/hellbound/src/java"/>
 	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
+    <classpathentry kind="src" path="sandbox/src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry sourcepath="O:/libs/apache-ant-1.6.5-src.zip" kind="lib" path="lib/extensions/ant-1.6.5.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
