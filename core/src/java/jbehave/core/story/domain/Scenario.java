@@ -7,13 +7,13 @@
  */
 package jbehave.core.story.domain;
 
-import jbehave.core.story.visitor.Visitable;
+import jbehave.core.story.renderer.Renderable;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface Scenario extends Visitable {
+public interface Scenario extends Renderable {
     String getStoryName();
     String getDescription();
     void run(World world);

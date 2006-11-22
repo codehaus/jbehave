@@ -12,7 +12,9 @@ package example.currency;
  *         Date: 15-Nov-2004
  */
 public class InvalidAmountException extends Exception {
-	public InvalidAmountException(String message) {
+    private static final long serialVersionUID = 1L;
+
+    public InvalidAmountException(String message) {
 		super(message);
 	}
 }

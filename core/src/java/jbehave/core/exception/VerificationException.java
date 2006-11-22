@@ -12,7 +12,8 @@ package jbehave.core.exception;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class VerificationException extends RuntimeException {
-	private final Object expected;
+    private static final long serialVersionUID = 1L;
+    private final Object expected;
 	private final Object actual;
 
 	public VerificationException(String message, Object expected, Object actual) {

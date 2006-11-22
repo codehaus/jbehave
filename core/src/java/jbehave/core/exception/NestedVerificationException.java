@@ -15,7 +15,7 @@ import java.io.PrintWriter;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class NestedVerificationException extends VerificationException {
-
+    private static final long serialVersionUID = 1L;
     private final Throwable cause;
 
     public NestedVerificationException(String message, Throwable cause) {

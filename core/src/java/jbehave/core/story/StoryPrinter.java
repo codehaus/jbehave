@@ -30,7 +30,7 @@ public class StoryPrinter {
     
     public void print(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
         Story story = (Story) classLoader.loadClass(storyClassName).newInstance();
-        story.accept(new PlainTextRenderer(System.out));
+        story.narrateTo(new PlainTextRenderer(System.out));
     }
 
     public static void main(String[] args) {        

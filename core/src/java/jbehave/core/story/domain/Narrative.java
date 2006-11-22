@@ -7,13 +7,13 @@
  */
 package jbehave.core.story.domain;
 
-import jbehave.core.story.visitor.Visitable;
-import jbehave.core.story.visitor.Visitor;
+import jbehave.core.story.renderer.Renderable;
+import jbehave.core.story.renderer.Renderer;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Narrative implements Visitable {
+public class Narrative implements Renderable {
 
     private final String role;
     private final String feature;
@@ -34,8 +34,8 @@ public class Narrative implements Visitable {
     public String getRole() {
         return role;
     }
-    public void accept(Visitor visitor) {
-        visitor.visitNarrative(this);
+    public void narrateTo(Renderer renderer) {
+        renderer.renderNarrative(this);
     }
     
     public String toString() {

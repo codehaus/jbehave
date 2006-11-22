@@ -7,14 +7,11 @@ import jbehave.core.mock.Mock;
 import jbehave.core.story.domain.Outcome;
 import jbehave.core.story.domain.Outcomes;
 import jbehave.core.story.domain.World;
-import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
-import jbehave.core.story.visitor.CompositeVisitableUsingMiniMockBehaviour;
-import jbehave.core.story.visitor.Visitor;
+import jbehave.core.story.renderer.Renderer;
 
+public class OutcomesBehaviour extends ScenarioComponentsBehaviour {
 
-public class OutcomesBehaviour extends CompositeVisitableUsingMiniMockBehaviour {
-
-	protected CompositeVisitableUsingMiniMock newComposite(Object component1, Object component2) {
+	protected ScenarioComponents newComposite(ScenarioComponent component1, ScenarioComponent component2) {
 		return new Outcomes(new Outcome[] {(Outcome) component1, (Outcome) component2});
 	}
 	
@@ -28,14 +25,14 @@ public class OutcomesBehaviour extends CompositeVisitableUsingMiniMockBehaviour 
 		Outcome outcomes = new Outcomes(new Outcome[] {(Outcome) component1, (Outcome) component2});
 		
 		// do what a real Outcome would do
-		InvocationHandler dispatchItselfToVisitor = new InvocationHandler() {
+		InvocationHandler dispatchItselfToRenderer = new InvocationHandler() {
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				((Visitor)args[0]).visitOutcome((Outcome)proxy);
+				((Renderer)args[0]).renderOutcome((Outcome)proxy);
 				return null;
 			}
 		};
-		component1.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
-		component2.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
+		component1.stubs("narrateTo").with(isA(Renderer.class)).will(dispatchItselfToRenderer);
+		component2.stubs("narrateTo").with(isA(Renderer.class)).will(dispatchItselfToRenderer);
 		
 		// expect...
 		component1.expects("setExpectationIn").with(world);
@@ -55,12 +52,12 @@ public class OutcomesBehaviour extends CompositeVisitableUsingMiniMockBehaviour 
 		// do what a real Outcome would do
 		InvocationHandler dispatchItselfToVisitor = new InvocationHandler() {
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				((Visitor)args[0]).visitOutcome((Outcome)proxy);
+				((Renderer)args[0]).renderOutcome((Outcome)proxy);
 				return null;
 			}
 		};
-		component1.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
-		component2.stubs("accept").with(isA(Visitor.class)).will(dispatchItselfToVisitor);
+		component1.stubs("accept").with(isA(Renderer.class)).will(dispatchItselfToVisitor);
+		component2.stubs("accept").with(isA(Renderer.class)).will(dispatchItselfToVisitor);
 		
 		// expect...
 		component1.expects("verify").with(world);

@@ -86,14 +86,9 @@ public class DefaultWindowWrapper implements WindowWrapper {
             throw new RuntimeException(e);
         }
         
-//		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_PRESSED));
-//		sysQueue.postEvent(createKeyPressEvent(keycode, KeyEvent.KEY_RELEASED));
 		idler.waitForIdle();
 	}
 
-	private KeyEvent createKeyPressEvent(int keycode, int id) throws TimeoutException {
-		return new KeyEvent(getWindow(), id, System.currentTimeMillis(), KeyEvent.VK_UNDEFINED, keycode, KeyEvent.CHAR_UNDEFINED);
-	}	
 	
 	public void typeIntoJTextComponent(JTextComponent textComponent, String text) {
 		for (int i = 0; i < text.length(); i++) {

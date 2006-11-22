@@ -1,12 +1,10 @@
 package jbehave.core.story.domain;
 
-import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
 
-public class Events extends CompositeVisitableUsingMiniMock implements Event {
+public class Events extends ScenarioComponents implements Event {
 
     private final Event[] events;
 
-    /** Constructor with a bunch of events */
     public Events(Event[] events) {
 		super(events);
         this.events = events;

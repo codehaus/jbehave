@@ -1,8 +1,6 @@
 package jbehave.core.story.domain;
 
-import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
-
-public class Steps extends CompositeVisitableUsingMiniMock implements Step {
+public class Steps extends ScenarioComponents implements Step {
 
     private final Step[] steps;
 
@@ -24,8 +22,8 @@ public class Steps extends CompositeVisitableUsingMiniMock implements Step {
     }
 
     public void perform(World world) {
-        for (int i = 0; i < visitables.size(); i++) {
-            ((Step)visitables.get(i)).perform(world);
+        for (int i = 0; i < steps.length; i++) {
+            steps[i].perform(world);
         }
     }
 
