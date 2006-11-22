@@ -7,16 +7,12 @@
  */
 package jbehave.core.story.domain;
 
-import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
-import jbehave.core.story.visitor.VisitorSupport;
-
-
 /**
  * Represents a composite {@link Outcome}.
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Outcomes extends CompositeVisitableUsingMiniMock implements Outcome {
+public class Outcomes extends ScenarioComponents implements Outcome {
 	
     private final Outcome[] outcomes;
     
@@ -37,22 +33,16 @@ public class Outcomes extends CompositeVisitableUsingMiniMock implements Outcome
         this(new Outcome[] {outcome1, outcome2, outcome3});
     }
     
-	/** delegate to components */
 	public void setExpectationIn(final World world) {
-		accept(new VisitorSupport() {
-			public void visitOutcome(Outcome outcome) {
-				outcome.setExpectationIn(world);
-			}
-		});
+		for(int i = 0; i < outcomes.length; i++) {
+		    outcomes[i].setExpectationIn(world);
+        }
 	}
 
-	/** delegate to components */
 	public void verify(final World world) {
-		accept(new VisitorSupport() {
-			public void visitOutcome(Outcome outcome) {
-				outcome.verify(world);
-			}
-		});
+        for(int i = 0; i < outcomes.length; i++) {
+            outcomes[i].verify(world);
+        }
 	}
     
     public String toString() {

@@ -7,14 +7,11 @@
  */
 package jbehave.core.story.domain;
 
-import java.util.Iterator;
-
-import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Givens extends CompositeVisitableUsingMiniMock implements Given {
+public class Givens extends ScenarioComponents implements Given {
     public static final Givens NULL = new Givens(new Given[0]);
     private final Given[] givens;
     

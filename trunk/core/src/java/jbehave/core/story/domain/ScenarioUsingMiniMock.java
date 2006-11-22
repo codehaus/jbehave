@@ -8,7 +8,7 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.story.visitor.Visitor;
+import jbehave.core.story.renderer.Renderer;
 
 
 
@@ -68,10 +68,10 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
         given.tidyUp(world);
     }   
 
-    public void accept(Visitor visitor) {
-        visitor.visitScenario(this);
-        given.accept(visitor);
-        step.accept(visitor);
+    public void narrateTo(Renderer renderer) {
+        renderer.renderScenario(this);
+        given.narrateTo(renderer);
+        step.narrateTo(renderer);
     }
 
 	protected static Given given(Given given) {

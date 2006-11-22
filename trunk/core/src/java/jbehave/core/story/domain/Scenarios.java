@@ -13,14 +13,15 @@ import java.util.List;
 
 import jbehave.core.exception.NestedVerificationException;
 import jbehave.core.listener.BehaviourListener;
+import jbehave.core.story.renderer.Renderable;
+import jbehave.core.story.renderer.Renderer;
 import jbehave.core.story.result.ScenarioResult;
-import jbehave.core.story.visitor.Visitor;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Scenarios {
+public class Scenarios implements Renderable {
 	private final List scenarios = new ArrayList();
 
 	public List scenarios() {
@@ -56,9 +57,9 @@ public class Scenarios {
 		scenarios.add(scenario);
 	}
 
-    public void accept(Visitor visitor) {
+    public void narrateTo(Renderer renderer) {
         for (int i = 0; i < scenarios.size(); i++) {
-            ((Scenario) scenarios.get(i)).accept(visitor);
+            ((Scenario) scenarios.get(i)).narrateTo(renderer);
         }
     }
     

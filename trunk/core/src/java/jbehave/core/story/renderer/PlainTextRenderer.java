@@ -16,48 +16,47 @@ import jbehave.core.story.domain.GivenScenario;
 import jbehave.core.story.domain.Narrative;
 import jbehave.core.story.domain.Outcome;
 import jbehave.core.story.domain.Scenario;
+import jbehave.core.story.domain.ScenarioComponent;
+import jbehave.core.story.domain.Scenarios;
 import jbehave.core.story.domain.Story;
-import jbehave.core.story.visitor.VisitorSupport;
 import jbehave.core.util.ConvertCase;
-
-
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class PlainTextRenderer extends VisitorSupport {
+public class PlainTextRenderer implements Renderer {
     
     private final PrintStream out;
-	private boolean visitedAnyOutcomes = false;
-	private boolean visitedAnyGivens = false;
+    private ScenarioComponent previousComponent;
 
     public PlainTextRenderer(PrintStream out) {
         this.out = out;
     }
         
-    public void visitStory(Story story) {
+    public void renderStory(Story story) {
+        previousComponent = null;
         out.println("Story: " + story.title());
         out.println();
     }
     
-    public void visitNarrative(Narrative narrative) {
+    public void renderNarrative(Narrative narrative) {
+        previousComponent = null;
         out.println("As a " + narrative.getRole());
         out.println("I want " + narrative.getFeature());
         out.println("So that " + narrative.getBenefit());
 
     }
 
-    public void visitScenario(Scenario scenario) {
+    public void renderScenario(Scenario scenario) {
+        previousComponent = null;
         out.println();
         out.println("Scenario: " + scenario.getDescription());
         out.println();
-		visitedAnyGivens = false;
-		visitedAnyOutcomes = false;
     }
     
-    public void visitGiven(Given given) {
+    public void renderGiven(Given given) {
 		StringBuffer phrase = new StringBuffer();
-		phrase.append(visitedAnyGivens ? "and " : "Given ");
+		phrase.append(previousComponentWasA(Given.class) ? "and " : "Given ");
         if (given instanceof GivenScenario) {
             Scenario givenScenario = ((GivenScenario) given).getScenario();
             phrase.append("\"" + new ConvertCase(givenScenario.getDescription()).toSeparateWords() + "\"")
@@ -66,22 +65,36 @@ public class PlainTextRenderer extends VisitorSupport {
         else {
             phrase.append(new ConvertCase(given).toSeparateWords());
         }
+        previousComponent = given;
 		out.println(phrase);
-		visitedAnyGivens = true;
     }
 
-    public void visitEvent(Event event) {
-        out.println("When " + new ConvertCase(event).toSeparateWords());
-    }
 
-    public void visitOutcome(Outcome outcome) {
-        StringBuffer phrase = new StringBuffer();
-        phrase.append(visitedAnyOutcomes ? "and " : "Then ")
-			.append(new ConvertCase(outcome).toSeparateWords());
+    public void renderEvent(Event event) {
+        String phrase = (previousComponentWasA(Event.class) ? "and " : "When ") + new ConvertCase(event).toSeparateWords();
+        previousComponent = event;
         out.println(phrase);
-		visitedAnyOutcomes = true;
+    }
+
+    public void renderOutcome(Outcome outcome) {
+        StringBuffer phrase = new StringBuffer();
+        phrase.append(previousComponentWasA(Outcome.class) ? "and " : "Then ")
+			.append(new ConvertCase(outcome).toSeparateWords());
+
+        previousComponent = outcome;
+        out.println(phrase);
+    }
+
+
+    private boolean previousComponentWasA(Class clazz) {
+        return previousComponent != null && clazz.isAssignableFrom(previousComponent.getClass());
+    }    
+    
+    public void renderScenarios(Scenarios criteria) {
+        // Do nothing
     }
 
     public void gotResult(Result result) {
     }
+
 }

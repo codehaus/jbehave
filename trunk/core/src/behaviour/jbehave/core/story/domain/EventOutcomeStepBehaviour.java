@@ -3,7 +3,7 @@ package jbehave.core.story.domain;
 import jbehave.core.Ensure;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Mock;
-import jbehave.core.story.visitor.Visitor;
+import jbehave.core.story.renderer.Renderer;
 
 public class EventOutcomeStepBehaviour extends UsingMiniMock {
 
@@ -25,13 +25,13 @@ public class EventOutcomeStepBehaviour extends UsingMiniMock {
     public void shouldPassVisitorToEventThenOutcome() {
         Mock event = mock(Event.class);
         Mock outcome = mock(Outcome.class);
-        Visitor visitor = (Visitor)stub(Visitor.class);
+        Renderer renderer = (Renderer)stub(Renderer.class);
         
-        event.expects("accept").with(visitor);
-        outcome.expects("accept").with(visitor).after(event, "accept");
+        event.expects("narrateTo").with(renderer);
+        outcome.expects("narrateTo").with(renderer).after(event, "narrateTo");
         
         EventOutcomeStep step = new EventOutcomeStep((Event)event, (Outcome)outcome);
-        step.accept(visitor);
+        step.narrateTo(renderer);
         
         verifyMocks();  
     }

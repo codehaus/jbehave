@@ -57,6 +57,7 @@ public class JUnitMethodAdapter implements BehaviourListener, Test {
 
     private AssertionFailedError buildAssertionFailedError(final Throwable targetException) {
         AssertionFailedError error = new AssertionFailedError(targetException.getMessage()) {
+            private static final long serialVersionUID = 1L;
             public void printStackTrace() {
                 targetException.printStackTrace();
             }

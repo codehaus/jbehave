@@ -11,6 +11,7 @@ package jbehave.core.exception;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class PendingException extends VerificationException {
+    private static final long serialVersionUID = 1L;
 
     public PendingException(String message) {
         super(message);

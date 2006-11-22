@@ -1,12 +1,10 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.mock.Mock;
-import jbehave.core.story.visitor.CompositeVisitableUsingMiniMock;
-import jbehave.core.story.visitor.CompositeVisitableUsingMiniMockBehaviour;
 
-public class StepsBehaviour extends CompositeVisitableUsingMiniMockBehaviour{
+public class StepsBehaviour extends ScenarioComponentsBehaviour{
     
-    protected CompositeVisitableUsingMiniMock newComposite(Object component1, Object component2) {
+    protected ScenarioComponents newComposite(ScenarioComponent component1, ScenarioComponent component2) {
         return new Steps((Step) component1, (Step) component2);
     }
     

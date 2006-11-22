@@ -8,7 +8,7 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.story.visitor.Visitor;
+import jbehave.core.story.renderer.Renderer;
 
 
 
@@ -16,8 +16,8 @@ import jbehave.core.story.visitor.Visitor;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public abstract class GivenUsingMiniMock extends UsingMiniMock implements Given {
-	public void accept(Visitor visitor) {
-		visitor.visitGiven(this);
+	public void narrateTo(Renderer renderer) {
+		renderer.renderGiven(this);
 	}
     
     public void tidyUp(World world) {

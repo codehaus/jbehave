@@ -11,8 +11,8 @@ import jbehave.core.story.domain.Narrative;
 import jbehave.core.story.domain.Story;
 import jbehave.core.story.domain.World;
 import jbehave.core.story.listener.PlainTextScenarioListener;
+import jbehave.core.story.renderer.Renderer;
 import jbehave.core.story.result.ScenarioResult;
-import jbehave.core.story.visitor.Visitor;
 
 public class StoryRunnerBehaviour extends UsingMiniMock {
 
@@ -57,7 +57,7 @@ public class StoryRunnerBehaviour extends UsingMiniMock {
             ((Story)mock).addListener(listener);
         }
 
-        public void accept(Visitor renderer) {
+        public void narrateTo(Renderer renderer) {
             throw new UnsupportedOperationException("Should not be called");
         }
 		

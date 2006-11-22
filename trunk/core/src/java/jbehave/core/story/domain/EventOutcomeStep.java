@@ -1,6 +1,6 @@
 package jbehave.core.story.domain;
 
-import jbehave.core.story.visitor.Visitor;
+import jbehave.core.story.renderer.Renderer;
 
 public class EventOutcomeStep implements Step {
 
@@ -18,9 +18,9 @@ public class EventOutcomeStep implements Step {
         outcome.verify(world);
     }
 
-    public void accept(Visitor visitor) {
-        event.accept(visitor);
-        outcome.accept(visitor);
+    public void narrateTo(Renderer renderer) {
+        event.narrateTo(renderer);
+        outcome.narrateTo(renderer);
     }
 
     public boolean containsMocks() {

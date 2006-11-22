@@ -18,7 +18,8 @@ import java.io.PrintWriter;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class JBehaveFrameworkError extends Error {
-
+    private static final long serialVersionUID = 1L;
+    
     private Throwable nestedException;
 
     public JBehaveFrameworkError(String message, Throwable nestedException) {

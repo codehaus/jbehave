@@ -29,7 +29,7 @@ public class PlainTextRendererBehaviour extends UsingConstraints {
 		PlainTextRenderer renderer = new PlainTextRenderer(printStream);
 		
 		ScenarioDrivenStory story = new SimpleStory();
-		story.accept(renderer);
+		story.narrateTo(renderer);
 		
 		String result = byteStream.toString();
 		

@@ -7,14 +7,10 @@
  */
 package jbehave.core.story.domain;
 
-import jbehave.core.UsingMocks;
-import jbehave.core.story.visitor.Visitable;
-
-
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface Event extends Visitable, UsingMocks {
+public interface Event extends ScenarioComponent {
     void occurIn(World world);
     void undoIn(World world);
 }

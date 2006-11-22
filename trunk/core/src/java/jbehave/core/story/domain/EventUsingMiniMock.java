@@ -8,7 +8,7 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.story.visitor.Visitor;
+import jbehave.core.story.renderer.Renderer;
 
 
 /**
@@ -20,7 +20,7 @@ public abstract class EventUsingMiniMock extends UsingMiniMock implements Event 
         // default empty implementation
     };
 	
-	public void accept(Visitor visitor) {
-		visitor.visitEvent(this);
+	public void narrateTo(Renderer renderer) {
+		renderer.renderEvent(this);
 	}
 }
