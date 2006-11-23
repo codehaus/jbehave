@@ -10,16 +10,56 @@ package jbehave.core.story.domain;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.story.renderer.Renderer;
 
-
-
 /**
- * An expected sequence of events.
+ * <p>A Scenario describes a series of events, run in a particular
+ * context, and for which certain outcomes are expected.</p>
  * 
- * A <tt>Scenario</tt> is defined by the sentence:<br/>
- * <br/>
- * <b>Given X, When Y, Then Z</b>
+ * <p>This class allows a scenario to be implemented with
+ * instances of particular contexts (Givens), events and outcomes.
+ * Each {@link Given}, {@link Event} or {@link Outcome} should be 
+ * represented by a different class, which can be reused in different
+ * scenarios.</p>
  * 
+ * <p>A scenario's elements can be used to describe it thus:<ul>
+ * <li>Given <a context></li>
+ * <li>When <an event happens></li>
+ * <li>Then <an outcome should occur></li>.
+ * </ul></p>
+ * 
+ * <p>eg:<ul>
+ * <li>Given that I already have two crosses in opposite corners</li>
+ * <li>When I put a cross in the middle</li>
+ * <li>Then I should win the game.</li>
+ * </ul></p>
+ * 
+ * <p>Sometimes a scenario may only finish after several events and
+ * the outcomes that result from them. A {@link Step}, as implemented
+ * by {@link EventOutcomeStep}, allows these events and outcomes to
+ * be chained.</p>
+ * 
+ * <p>Each scenario runs as follows:<ul>
+ * <li>Set up the context</li>
+ * <li>For each step, or for an outcome and event if there isn't a step</li>
+ * <ul><li>Set up the outcome expectations</li>
+ * <li>Make the event happen</li>
+ * <li>Verify that the outcome occurred.</li></ul></ul>
+ * 
+ * <p>Multiple contexts, events and outcomes can be bound together
+ * using {@link Givens}, {@link Events} and {@link Outcomes}, so that
+ * they aggregate to form a single component.</p>
+ * 
+ * <p>A number of utility constructors are provided to make construction
+ * of a ScenarioUsingMiniMock easier. The annotation methods <code>given</code>,
+ * <code>when</code> and <code>then</code> can be used to make the Scenario
+ * code easier to read, and to create aggregates simply.</p>
+ * 
+ * <p>ScenarioUsingMiniMock also gives you easy access to JBehave's Minimock
+ * framework. This allows you to mock out the bits of the system that you
+ * haven't written yet. The Scenario will report the use of mocks, but
+ * will not consider them a failure.</p>
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:liz@thoughtworks.com">Elizabeth Keogh</a>
  */
 public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     protected final Given given;

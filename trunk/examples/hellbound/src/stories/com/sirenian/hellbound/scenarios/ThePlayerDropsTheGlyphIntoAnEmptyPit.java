@@ -14,13 +14,10 @@ public class ThePlayerDropsTheGlyphIntoAnEmptyPit extends ScenarioUsingMiniMock 
         super("The player drops the glyph into an empty pit",
                 "The player drops the glyph",
                 given(new TheFirstGlyphIsDisplayedOnTheBoard()),
-                step(
-                	step(
-                			when(new ThePlayerPressesTheDropKey()),                
-                			then(new TheGlyphShouldFallToTheBottom())),
-                    step(
-                    		when(new TimePasses()),
-            		        then(new TheGlyphSegmentsShouldBecomeJunk(),
-            		             new TheNextGlyphShouldAppear()))));
+    			when(new ThePlayerPressesTheDropKey()),                
+                then(new TheGlyphShouldFallToTheBottom()),
+                when(new TimePasses()),
+                then(new TheGlyphSegmentsShouldBecomeJunk(),
+            		 new TheNextGlyphShouldAppear()));
     }
 }

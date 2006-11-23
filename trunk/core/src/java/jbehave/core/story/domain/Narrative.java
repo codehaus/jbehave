@@ -11,6 +11,23 @@ import jbehave.core.story.renderer.Renderable;
 import jbehave.core.story.renderer.Renderer;
 
 /**
+ * <p>A Narrative contains elements that describe the purpose of a 
+ * {@link Story}. It consists of a role to whom a benefit is to be 
+ * delivered, the feature which will deliver that benefit, and 
+ * the benefit itself.</p>
+ * 
+ * <p>A Narrative's elements can be used to describe the story thus:<ul>
+ * <li>As a <role></li>
+ * <li>I want <feature></li>
+ * <li>So that <benefit></li>
+ * </ul></p>
+ * 
+ * <p>eg:<ul>
+ * <li>As a bank manager</li>
+ * <li>I want the hole in the wall to refuse cash to overdrawn customers</li>
+ * <li>So that I don't end up chasing their debts.</li>
+ * </p>
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Narrative implements Renderable {

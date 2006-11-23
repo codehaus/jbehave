@@ -20,9 +20,9 @@ import junit.framework.TestResult;
 /**
  * Adapter wrapping a BehaviourMethod as a JUnit Test 
  * 
- * @see {@link Test}
  * @author Dan North
  * @author Mauro Talevi
+ * @see {@link Test}
  */
 public class JUnitMethodAdapter implements BehaviourListener, Test {
     private final BehaviourMethod behaviourMethod;

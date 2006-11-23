@@ -12,8 +12,8 @@ package jbehave.core.story.domain;
 
 
 /**
- * Adapter to make a {@link Scenario} look like a {@link GivenUsingMiniMock}
- * so it can be used to set up a {@link World}
+ * Adapter to allow a {@link Scenario} to be used as the context
+ * for another Scenario.
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */

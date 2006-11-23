@@ -1,6 +1,7 @@
 package jbehave.core.story.domain;
 
 import jbehave.core.exception.NestedVerificationException;
+import jbehave.core.exception.VerificationException;
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Mock;
@@ -83,4 +84,23 @@ public class ScenariosBehaviour extends UsingMiniMock {
         
         verifyMocks();
     }
+    
+    public void shouldTidyUpScenariosEvenIfVerificationFails() {
+        Mock scenario = mock(Scenario.class);
+        World world = (World) stub(World.class);
+        
+        Scenarios scenarios = new Scenarios();
+        scenarios.addScenario((Scenario) scenario);
+        
+        scenario.expects("run").with(world).will(throwException(new VerificationException("Thrown by an outcome when an ensureThat fails")));
+        scenario.expects("tidyUp").with(world);
+
+        try {
+            scenarios.run(world, new BehaviourListener[0]);
+        } catch (VerificationException e) {
+            // Expected, but AFTER tidyUp.
+        }
+        
+        verifyMocks();
+    }    
 }

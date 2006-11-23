@@ -15,9 +15,21 @@ import jbehave.core.listener.BehaviourListener;
 import jbehave.core.story.renderer.Renderer;
 import jbehave.core.util.ConvertCase;
 
-
 /**
+ * <p>A ScenarioDrivenStory is an executable description of a value 
+ * that the customer wants, with {@link Scenario}s to illustrate 
+ * the Story and verify that it has been delivered.</p>
+ * 
+ * <p>A Story is the top level of JBehave's Story framework;
+ * the scenarios are the equivalent of acceptance tests. A Story 
+ * can be executed using the {@link jbehave.core.story.StoryRunner}, 
+ * and documented using a {@link jbehave.core.story.StoryPrinter}.</p>
+ * 
+ * <p>To write a ScenarioDrivenStory, provide a {@link Narrative},
+ * and add some {@link Scenario}s. Simple!</p>
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:liz@thoughtworks.com">Elizabeth Keogh</a>
  */
 public class ScenarioDrivenStory implements Story {
     private final Narrative narrative;
