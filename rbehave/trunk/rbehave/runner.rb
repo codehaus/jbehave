@@ -1,8 +1,10 @@
 module RBehave
   class Runner
-    def initialize
+    def initialize(listener)
+      @listener = listener
       @failures = []
       @methods_run = 0
+      @listener.starting_run
     end
     
     def verify(cls)
@@ -11,16 +13,16 @@ module RBehave
         verify_method cls, method
       end
     end
-        
+    
     def verify_method(cls, method)
       begin
         @methods_run += 1
         Mocks.clear
         instance = cls.new
         instance.send method
-        raise VerificationError unless instance.finished?
-        putc '.'
-      rescue Exception => error
+        raise VerificationError, "#{method}: method does not contain Given/When/Then" unless instance.finished?
+        putc '.' # TODO: move this into a listener
+      rescue StandardError => error
         putc 'F'
         @failures << {:class => cls, :method => method, :error => error}
       end
@@ -34,7 +36,7 @@ module RBehave
       if @failures
         i = 1
         @failures.each do |failure|
-          puts "#{i}) #{failure[:class].to_s.sub(/Behaviour$/, '')} #{failure[:method].gsub(/_/, ' ')}"
+          puts "#{i}) #{failure[:class].to_s.sub(/Behaviour$/, '')} #{as_text(failure[:method])}"
           puts "", failure[:error], failure[:error].backtrace, ""
         end
       end
@@ -42,6 +44,12 @@ module RBehave
     
     def succeeded?
       @failures.empty?
+    end
+    
+    private
+    
+    def as_text(method_name)
+      method_name.gsub(/_/, ' ')
     end
   end
 end

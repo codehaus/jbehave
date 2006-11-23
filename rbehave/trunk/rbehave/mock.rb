@@ -1,22 +1,21 @@
 require 'rbehave/expectation'
-require 'rbehave/core'
 
 module RBehave
   module Mocks
     def Mocks.register_expectations(expectations)
-      @@all_expectations ||= [] # list of lists of expectations
-      @@all_expectations << expectations
+      @@__jbehave_all_expectations ||= [] # list of lists of expectations
+      @@__jbehave_all_expectations << expectations
     end
     
     def Mocks.clear
-      @@all_expectations = []
+      @@__jbehave_all_expectations = []
     end
     
     def verify_mocks
-      @@all_expectations.each do |expectations|
+      @@__jbehave_all_expectations.each do |expectations|
         expectations.each { |ex| ex.verify }
       end
-      @@all_expectations.clear
+      @@__jbehave_all_expectations.clear
     end
     
     def mock(type)
@@ -24,8 +23,6 @@ module RBehave
     end
     
     class Mock
-      include Utils
-      
       def initialize(type)
         @type = type
         @stubbing = @expecting = false
@@ -56,11 +53,10 @@ module RBehave
           @expecting = @stubbing = false
           return ex
         end
-        
         @expectations.each do |ex|
           return ex.call(meth, *args) if ex.matches(meth, *args)
         end
-        raise VerificationError, "Unexpected call: #{meth}(#{args.join(", ")})", clean_backtrace
+        raise VerificationError, "Unexpected call: #{meth}(#{args.join(", ")})"
       end
     end
   end

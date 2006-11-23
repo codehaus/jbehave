@@ -1,6 +1,4 @@
 require 'rbehave'
-require 'rbehave/core'
-require 'rbehave/mock'
 
 class Sheep
   def baa(); end
@@ -8,7 +6,7 @@ class Sheep
 end
 
 class MockBehaviour < RBehave::Behaviour
-  include Mocks
+  include RBehave
   
   def should_fail_for_unexpected_method_call
     Given {

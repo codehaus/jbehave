@@ -6,6 +6,7 @@
 module RBehave
   class Behaviour
     def Behaviour.inherited(subclass) # intercept behaviour classes
+      return if subclass.to_s.index('::') # ignore sub-behaviours [hack for behaviours inside rbehave itself]
       printf "\n%s\n", subclass.to_s.sub(/(Behaviou?r|Spec)$/, "")
       eval <<-EOM
         def #{subclass}.method_added(id) # intercept behaviour methods

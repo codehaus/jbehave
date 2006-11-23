@@ -1,5 +1,4 @@
 require 'rbehave'
-require 'rbehave/expectation'
 
 =begin
 I want to use a mock like:
@@ -8,7 +7,7 @@ I want to use a mock like:
 =end
 
 class ExpectationBehaviour < RBehave::Behaviour
-  include Mocks
+  include RBehave
   
   # mockFoo.expects.upcase("word").never
   def should_fail_when_called_if_expecting_never_to_be_called

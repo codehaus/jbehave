@@ -1,7 +1,8 @@
 require 'rbehave'
 
-class BehaviourBehaviour < RBehave::Behaviour # no, really!
-
+class BehaviourBehaviour < RBehave::Behaviour # no, really
+  include RBehave
+  
   def should_succeed_when_Given_When_Then_invoked_in_correct_order
     Given {
       @b = Behaviour.new
@@ -43,9 +44,9 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really!
   def should_fail_if_Given_is_invoked_more_than_once
     Given {
       @b = Behaviour.new
+      @b.Given {}
     }
     When {
-      @b.Given {}
       @b.Given {}
     }
     Then {
@@ -56,10 +57,10 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really!
   def should_fail_if_When_is_invoked_more_than_once
     Given {
       @b = Behaviour.new
-    }
-    When {
       @b.Given {}
       @b.When {}
+    }
+    When {
       @b.When {}
     }
     Then {
@@ -70,11 +71,9 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really!
   def should_fail_if_Then_is_invoked_more_than_once
     Given {
       @b = Behaviour.new
+      @b.Given {}; @b.When {}; @b.Then {}
     }
     When {
-      @b.Given {}
-      @b.When {}
-      @b.Then {}
       @b.Then {}
     }
     Then {
@@ -96,23 +95,34 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really!
     }
   end
   
-  def should_reraise_rescued_exception_if_method_should_have_succeeded
+  class WhenFailed < StandardError; end
+  class ThenFailed < StandardError; end
+  
+  def should_report_exception_from_Then_block_if_When_and_Then_both_fail
     Given {
       @b = Behaviour.new
-      @exception = StandardError.new
-      
-      # something goes wrong in b
       @b.Given{}
-      @b.When {
-        raise @exception # is this meta enough for you?!
-      }
-      @b.Then{}
+      @b.When { raise WhenFailed }
     }
     When {
-      @b.ensure_succeeded
+      @b.Then { raise ThenFailed }
     }
     Then {
-      ensure_raised @exception
+      ensure_raised ThenFailed
+    }
+  end
+  
+  def should_reraise_exception_in_Then_block_if_When_failed_with_an_unexpected_error
+    Given {
+      @b = Behaviour.new
+      @b.Given{}
+      @b.When { raise WhenFailed }
+    }
+    When {
+      @b.Then {} # doesn't check for WhenFailed
+    }
+    Then {
+      ensure_raised WhenFailed
     }
   end
 end

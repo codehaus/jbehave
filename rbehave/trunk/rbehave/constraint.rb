@@ -1,9 +1,7 @@
-require 'rbehave/core'
+require 'rbehave/exceptions'
 
 module RBehave
-  
   module Constraints
-    include Utils
 
     # superclass for all constraint types
     class Constraint
