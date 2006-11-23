@@ -63,11 +63,6 @@ public class GameBehaviour extends UsingMiniMock {
 		
 		verifyMocks();
 	}
-
-	public void shouldDropGlyphWhenRequestedThenWaitForAestheticPause() throws Exception {
-		throw new PendingException();
-	}
-	
 	
 	public void shouldIgnoreRequestsToDropOrMoveGlyphWhenGameNotRunning() {
 		throw new PendingException();

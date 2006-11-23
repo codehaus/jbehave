@@ -15,7 +15,6 @@ import com.sirenian.hellbound.stories.Idler;
 import com.sirenian.hellbound.stories.WorldKey;
 
 public abstract class HellboundOutcome extends OutcomeUsingMiniMock {
-
 	
 	private Idler idler;
 

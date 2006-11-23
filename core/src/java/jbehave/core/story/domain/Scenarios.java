@@ -42,15 +42,18 @@ public class Scenarios implements Renderable {
     }
 
     private ScenarioResult runScenario(World world, Scenario scenario) {
+        ScenarioResult result;
         try {                
             scenario.run(world);
+            result = new ScenarioResult(scenario.getDescription(), scenario.getStoryName(), 
+                    scenario.containsMocks() ? ScenarioResult.USED_MOCKS : ScenarioResult.SUCCEEDED);
         } catch (NestedVerificationException nve) {
-            return new ScenarioResult(scenario.getDescription(), scenario.getStoryName(), nve);
+            result = new ScenarioResult(scenario.getDescription(), scenario.getStoryName(), nve);
+        } finally {
+            scenario.tidyUp(world);
         }
-        scenario.tidyUp(world);
         
-        return new ScenarioResult(scenario.getDescription(), scenario.getStoryName(), 
-                scenario.containsMocks() ? ScenarioResult.USED_MOCKS : ScenarioResult.SUCCEEDED);
+        return result;
     }
     
     public void addScenario(Scenario scenario) {
