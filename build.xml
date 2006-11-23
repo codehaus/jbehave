@@ -151,7 +151,9 @@
 			<group title="JMock Extension" packages="jbehave.jmock*" />
 			<group title="JUnit Extension" packages="jbehave.junit*" />
 			<classpath>
-				<fileset dir="${lib_dir}" />
+				<fileset dir="${lib_dir}">
+					<include name="**/*.jar" />
+				</fileset>
 			</classpath>
 		</javadoc>
 	</target>
