@@ -13,7 +13,7 @@ module RBehave
         verify_method cls, method
       end
     end
-    
+
     def verify_method(cls, method)
       begin
         @methods_run += 1
