@@ -12,7 +12,7 @@ have directly contributed to the project in one way or another.
 |Damian Guy|damian|damian.guy <i>at</i> thoughtworks.com|ThoughtWorks|
 |Olav Maassen|olav|olav.maassen <i>at</i> jixaw.com||
 |Liz Keogh|liz|ekeogh <i>at</i> thoughtworks.com|ThoughtWorks|
-|Shane Duan|wolfdancer|shane.duan <i>at</i> gmail.com|ThoughtWorks|
+|Shane Duan|wolfdancer|shane.duan <i>at</i> gmail.com||
 |Li, Chaoqun|cli|cli <i>at</i> thoughtworks.com|ThoughtWorks|
 
 h1. The Contributors

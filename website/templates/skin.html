@@ -94,22 +94,22 @@
           <table>
             <tr>
               <td><a href="download.html#stable">Stable:</a></td>
-              <td><a href="download.html#stable"><template:text eval="release"/></a></td>
+              <td><a href="download.html#stable"><template:text property="release"/></a></td>
             </tr>
             <tr>
               <td><a href="download.html#prerelease">Prerelease:</a></td>
-              <td><a href="download.html#prerelease"><template:text eval="prerelease"/></a></td>
+              <td><a href="download.html#prerelease"><template:text property="prerelease"/></a></td>
             </tr>
             <tr>
               <td><a href="download.html#snapshot">Snapshot:</a></td>
-              <td><a href="download.html#snapshot"><template:text eval="snapshot"/></a></td>
+              <td><a href="download.html#snapshot"><template:text property="snapshot"/></a></td>
             </tr>
           </table>
           <p class="NewsMore"><a href="versioning.html">About JBehave version numbers...</a></p>
         </div>
         <div class="NewsGroup">
         	<h1>Recent News</h1>
-				<template:each source="news_rss2" select="/rss/channel/item" count="3">
+				<template:each source="news-rss2.xml" select="/rss/channel/item" count="3">
                 <div class="NewsItem">
                     <p class="NewsTitle"><template:include elements="./title/text()"/></p>
                     <p class="NewsDate"><template:include elements="./pubDate/text()"/></p>
