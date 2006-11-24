@@ -43,7 +43,7 @@ class ExpectationBehaviour < RBehave::Behaviour
       @expectation = Expectation.new(String, :upcase)
     }
     When {
-      @result = @expectation.matches(:upcase)
+      @result = @expectation.matches(:upcase1)
     }
     Then {
       ensure_that @result, is(true)

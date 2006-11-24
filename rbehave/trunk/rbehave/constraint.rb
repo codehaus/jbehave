@@ -147,7 +147,7 @@ module RBehave
     def ensure_that arg, constraint = is_true, message = nil
       unless constraint.matches arg
         raise VerificationError, "Expected: " + (message ? message : "") + "[" + constraint.to_s + "]" +
-          "\nbut got:  [" + arg.to_s + "]", clean_backtrace(caller)
+          "\nbut got:  [" + arg.to_s + "]" #, clean_backtrace(caller)
       end
     end
     
@@ -157,11 +157,11 @@ module RBehave
       rescue expected_error
         return
       end
-      raise VerificationError, "Should have failed with #{expected_error}", clean_backtrace(caller)
+      raise VerificationError, "Should have failed with #{expected_error}" #, clean_backtrace(caller)
     end
     
     def fail_with(message)
-      raise VerificationError, message, clean_backtrace(caller)
+      raise VerificationError, message #, clean_backtrace(caller)
     end
   end
 end
