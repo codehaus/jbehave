@@ -4,93 +4,93 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
   include RBehave
   
   def should_succeed_when_Given_When_Then_invoked_in_correct_order
-    Given {
+    _given {
       @b = Behaviour.new
     }
-    When {
-      @b.Given {}
-      @b.When {}
-      @b.Then {}
+    _when {
+      @b._given {}
+      @b._when {}
+      @b._then {}
     }
-    Then {
+    _then {
       ensure_succeeded
     }
   end
 
   def should_fail_in_When_unless_Given_was_invoked
-    Given {
+    _given {
       @b = Behaviour.new
     }
-    When {
-      @b.When {}
+    _when {
+      @b._when {}
     }
-    Then {
+    _then {
       ensure_raised VerificationError
     }
   end
 
   def should_fail_in_Then_unless_When_was_invoked
-    Given {
+    _given {
       @b = Behaviour.new
     }
-    When {
-      @b.Then {}
+    _when {
+      @b._then {}
     }
-    Then {
+    _then {
       ensure_raised VerificationError
     }
   end
   
   def should_fail_if_Given_is_invoked_more_than_once
-    Given {
+    _given {
       @b = Behaviour.new
-      @b.Given {}
+      @b._given {}
     }
-    When {
-      @b.Given {}
+    _when {
+      @b._given {}
     }
-    Then {
+    _then {
       ensure_raised VerificationError
     }
   end
   
   def should_fail_if_When_is_invoked_more_than_once
-    Given {
+    _given {
       @b = Behaviour.new
-      @b.Given {}
-      @b.When {}
+      @b._given {}
+      @b._when {}
     }
-    When {
-      @b.When {}
+    _when {
+      @b._when {}
     }
-    Then {
+    _then {
       ensure_raised VerificationError
     }
   end
   
   def should_fail_if_Then_is_invoked_more_than_once
-    Given {
+    _given {
       @b = Behaviour.new
-      @b.Given {}; @b.When {}; @b.Then {}
+      @b._given {}; @b._when {}; @b._then {}
     }
-    When {
-      @b.Then {}
+    _when {
+      @b._then {}
     }
-    Then {
+    _then {
       ensure_raised VerificationError
     }
   end
   
   def should_fail_if_sections_are_called_in_wrong_order
-    Given {
+    _given {
       @b = Behaviour.new
     }
     
-    When {
-      @b.Given {}; @b.Then {}; @b.When {}
+    _when {
+      @b._given {}; @b._then {}; @b._when {}
     }
 
-    Then {
+    _then {
       ensure_raised VerificationError
     }
   end
@@ -99,29 +99,29 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
   class ThenFailed < StandardError; end
   
   def should_report_exception_from_Then_block_if_When_and_Then_both_fail
-    Given {
+    _given {
       @b = Behaviour.new
-      @b.Given{}
-      @b.When { raise WhenFailed }
+      @b._given{}
+      @b._when { raise WhenFailed }
     }
-    When {
-      @b.Then { raise ThenFailed }
+    _when {
+      @b._then { raise ThenFailed }
     }
-    Then {
+    _then {
       ensure_raised ThenFailed
     }
   end
   
   def should_reraise_exception_in_Then_block_if_When_failed_with_an_unexpected_error
-    Given {
+    _given {
       @b = Behaviour.new
-      @b.Given{}
-      @b.When { raise WhenFailed }
+      @b._given{}
+      @b._when { raise WhenFailed }
     }
-    When {
-      @b.Then {} # doesn't check for WhenFailed
+    _when {
+      @b._then {} # doesn't check for WhenFailed
     }
-    Then {
+    _then {
       ensure_raised WhenFailed
     }
   end

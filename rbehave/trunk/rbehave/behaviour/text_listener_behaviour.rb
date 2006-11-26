@@ -2,11 +2,11 @@ require 'rbehave'
 
 class TextListenerBehaviour < RBehave::Behaviour
   def should_print_dot_when_method_succeeds
-    Given {
+    _given {
     }
-    When {
+    _when {
     }
-    Then {
+    _then {
     }
   end
 end

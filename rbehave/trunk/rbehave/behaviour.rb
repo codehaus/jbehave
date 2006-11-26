@@ -27,14 +27,14 @@ module RBehave
       @__jbehave_error
     end
     
-    def Given
-      raise VerificationError, "'Given' not expected here" unless @__jbehave_state == :starting
+    def _given
+      raise VerificationError, "'_given' not expected here" unless @__jbehave_state == :starting
       yield
       @__jbehave_state = :done_given
     end
     
-    def When
-      raise VerificationError, "'When' not expected here" unless @__jbehave_state == :done_given
+    def _when
+      raise VerificationError, "'_when' not expected here" unless @__jbehave_state == :done_given
       begin
         yield
       rescue StandardError => e
@@ -43,8 +43,8 @@ module RBehave
       @__jbehave_state = :done_when
     end
     
-    def Then
-      raise VerificationError, "'Then' not expected here" unless @__jbehave_state == :done_when
+    def _then
+      raise VerificationError, "'_then' not expected here" unless @__jbehave_state == :done_when
       begin
         yield
         ensure_succeeded unless @__jbehave_checked_for_failure

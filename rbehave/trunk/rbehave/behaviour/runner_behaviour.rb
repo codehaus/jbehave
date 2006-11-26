@@ -7,19 +7,19 @@ class RunnerBehaviour < RBehave::Behaviour
   class SheepBehaviour < Behaviour
     include RBehave::DoNotAutorun # otherwise it gets run automagically
     def should_baa
-      Given{}; When{}; Then{}
+      _given{}; _when{}; _then{}
     end
   end
   
   def should_tell_listener_when_starting_run
-    Given {
+    _given {
       @listener = mock(Listener)
       @listener.expects.starting_run
     }
-    When {
+    _when {
       Runner.new(@listener)
     }
-    Then {
+    _then {
       verify_mocks
     }
   end

@@ -20,7 +20,7 @@ module RBehave
         Mocks.clear
         instance = cls.new
         instance.send method
-        raise VerificationError, "#{method}: method does not contain Given/When/Then" unless instance.finished?
+        raise VerificationError, "#{method}: method does not contain _given/_when/_then" unless instance.finished?
         putc '.' # TODO: move this into a listener
       rescue StandardError => error
         putc 'F'
