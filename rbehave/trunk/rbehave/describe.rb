@@ -11,7 +11,7 @@ module RBehave
       eval <<-EOM
         def #{subclass}.method_added(id) # intercept behaviour methods
           meth = id.to_s
-          printf("- %s\n", meth.gsub(/_/, ' ')) if meth =~ /^should/
+          printf("- %s\n", meth.gsub(/(\\w)_/, '\\1 ')) if meth =~ /^should/
         end
       EOM
     end

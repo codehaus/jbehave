@@ -3,7 +3,7 @@ require 'rbehave'
 class BehaviourBehaviour < RBehave::Behaviour # no, really
   include RBehave
   
-  def should_succeed_when_Given_When_Then_invoked_in_correct_order
+  def should_succeed_when__given__when__then_invoked_in_correct_order
     _given {
       @b = Behaviour.new
     }
@@ -17,7 +17,7 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
     }
   end
 
-  def should_fail_in_When_unless_Given_was_invoked
+  def should_fail_in__when_unless__given_was_invoked
     _given {
       @b = Behaviour.new
     }
@@ -29,7 +29,7 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
     }
   end
 
-  def should_fail_in_Then_unless_When_was_invoked
+  def should_fail_in__then_unless__when_was_invoked
     _given {
       @b = Behaviour.new
     }
@@ -41,7 +41,7 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
     }
   end
   
-  def should_fail_if_Given_is_invoked_more_than_once
+  def should_fail_if__given_is_invoked_more_than_once
     _given {
       @b = Behaviour.new
       @b._given {}
@@ -54,7 +54,7 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
     }
   end
   
-  def should_fail_if_When_is_invoked_more_than_once
+  def should_fail_if__when_is_invoked_more_than_once
     _given {
       @b = Behaviour.new
       @b._given {}
@@ -68,7 +68,7 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
     }
   end
   
-  def should_fail_if_Then_is_invoked_more_than_once
+  def should_fail_if__then_is_invoked_more_than_once
     _given {
       @b = Behaviour.new
       @b._given {}; @b._when {}; @b._then {}
@@ -98,7 +98,7 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
   class WhenFailed < StandardError; end
   class ThenFailed < StandardError; end
   
-  def should_report_exception_from_Then_block_if_When_and_Then_both_fail
+  def should_report_exception_from__then_block_if__when_and__then_both_fail
     _given {
       @b = Behaviour.new
       @b._given{}
@@ -112,7 +112,7 @@ class BehaviourBehaviour < RBehave::Behaviour # no, really
     }
   end
   
-  def should_reraise_exception_in_Then_block_if_When_failed_with_an_unexpected_error
+  def should_reraise_exception_in__then_block_if__when_failed_with_an_unexpected_error
     _given {
       @b = Behaviour.new
       @b._given{}
