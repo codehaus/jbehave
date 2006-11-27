@@ -13,6 +13,7 @@ import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.gui.RenderedPit;
 import com.sirenian.hellbound.stories.Idler;
 import com.sirenian.hellbound.stories.WorldKey;
+import com.sirenian.hellbound.util.Logger;
 
 public abstract class HellboundOutcome extends OutcomeUsingMiniMock {
 	
@@ -23,6 +24,7 @@ public abstract class HellboundOutcome extends OutcomeUsingMiniMock {
 	}
 	
 	public void verify(World world) {
+        Logger.debug(this, "verifying Outcome");
 		idler.waitForIdle();
 		verifyAnyTimeIn(world);
 	}

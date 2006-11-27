@@ -12,6 +12,7 @@ import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.glyph.GlyphListener;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
+import com.sirenian.hellbound.util.Logger;
 
 public class PitPanel extends JPanel implements GlyphListener {
 
@@ -35,20 +36,31 @@ public class PitPanel extends JPanel implements GlyphListener {
 	}
 
 	public void reportGlyphMovement(GlyphType type, Segments fromSquares, Segments toSquares) {
-		for (int i = 0; i < fromSquares.size(); i++) {
-			TYPEMAP.remove(fromSquares.get(i));
-		}
-		for (int i = 0; i < toSquares.size(); i++) {
-			TYPEMAP.put(toSquares.get(i), type);
-		}
+        Logger.debug(this, "Glyph movement of type " + type + " from " + fromSquares + " to " + toSquares);
+		removeOldSegmentsOfType(type, fromSquares);
+		addSegments(type, toSquares);
         repaint();
 	}
+
+    private void addSegments(GlyphType type, Segments toSquares) {
+        for (int i = 0; i < toSquares.size(); i++) {
+			TYPEMAP.put(toSquares.get(i), type);
+		}
+    }
+
+    private void removeOldSegmentsOfType(GlyphType type, Segments fromSquares) {
+        for (int i = 0; i < fromSquares.size(); i++) {
+            if (TYPEMAP.get(fromSquares.get(i)) == type) {
+                TYPEMAP.remove(fromSquares.get(i));
+            }
+		}
+    }
 	
 	public void paint(Graphics g) {
 		for (int i = 0; i < pitWidth; i++) {
 			for (int j = 0; j < pitHeight; j++) {
 				GlyphType type = (GlyphType)TYPEMAP.get(new Segment(i, j));
-				if (type == null) {type = GlyphType.PIT; }
+				if (type == null) { type = GlyphType.PIT; }
 				Color color = colorMap.getColorFor(type);
 				g.setColor(color);
 				g.fillRect(getBounds().x + (scale * i), getBounds().y + (scale * j), scale, scale);

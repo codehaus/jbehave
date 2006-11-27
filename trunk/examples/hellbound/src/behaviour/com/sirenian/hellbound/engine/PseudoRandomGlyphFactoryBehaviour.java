@@ -2,8 +2,13 @@ package com.sirenian.hellbound.engine;
 
 import jbehave.core.Ensure;
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.mock.Mock;
 
+import com.sirenian.hellbound.domain.glyph.GlyphListener;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
+import com.sirenian.hellbound.domain.glyph.Junk;
+import com.sirenian.hellbound.domain.glyph.LivingGlyph;
+import com.sirenian.hellbound.util.Listener;
 import com.sirenian.hellbound.util.ListenerSet;
 
 public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {
@@ -23,6 +28,20 @@ public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {
         for (int i = 0; i < 21; i++) {
             Ensure.that(nextGlyphType(factory) == expected[i]);
         }
+    }
+    
+    public void shouldAddListenersToTheGlyphsThatItCreates() {
+        ListenerSet listenerSet = new ListenerSet();
+        Mock listener = mock(GlyphListener.class);
+        listenerSet.addListener((Listener) listener);
+        
+        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42);
+        LivingGlyph glyph = factory.nextGlyph(0, CollisionDetector.NULL, listenerSet);
+        Junk junk = factory.createJunk(listenerSet);
+        
+        listener.expects("reportGlyphMovement").times(2); // once for junk change, once for glyph change
+        
+        junk.absorb(glyph);
     }
 
     private GlyphType nextGlyphType(PseudoRandomGlyphFactory factory) {

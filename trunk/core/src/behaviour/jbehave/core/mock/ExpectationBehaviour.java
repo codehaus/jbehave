@@ -2,15 +2,15 @@ package jbehave.core.mock;
 
 import jbehave.core.Ensure;
 import jbehave.core.exception.VerificationException;
+import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Expectation;
 
 
 /**
  * @author <a href="mailto:nsnoek@thoughtworks.com">Nic Snoek </a>
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy </a>
- *  
  */
-public class ExpectationBehaviour {
+public class ExpectationBehaviour extends UsingMiniMock {
 
     public void shouldThrowVerificationExceptionOnInvokeIfExpectingNever() throws Throwable {
         Expectation expectation = new Expectation(null, "test").never();
@@ -110,6 +110,14 @@ public class ExpectationBehaviour {
             expecation.verify();
             Ensure.impossible("Should have failed verification");
         } catch (VerificationException expected) {}
+    }
+    
+    public void shouldProvideMultipleInvocationsWhenRunningInOrder() throws Throwable {
+        Expectation expectation = new Expectation(null, "method").inOrder().will(returnValue(1), returnValue(2), returnValue(3));
+        
+        ensureThat(expectation.invoke(null, null, null), eq(1));
+        ensureThat(expectation.invoke(null, null, null), eq(2));
+        ensureThat(expectation.invoke(null, null, null), eq(3));
     }
     
     

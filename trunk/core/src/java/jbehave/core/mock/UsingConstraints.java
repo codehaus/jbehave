@@ -7,7 +7,25 @@ import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
 
 /**
- * Support for constraint-based verification
+ * <p>Constraints are used by the MiniMock framework, 
+ * {@link jbehave.core.Ensure}, {@link UsingConstraints} and 
+ * {@link jbehave.core.minimock.UsingMiniMock} to
+ * verify or ensure behaviours. Constraints are also
+ * used by the default elements of the Story framework.</p>
+ * 
+ * <p>Some simple constraints are provided by
+ * this class.</p>
+ * 
+ * <p>In any domain, there will be more complex, specific
+ * constraints which can be reused across behaviours. CustomConstraint
+ * may be extended to provide these behaviours, or Constraint
+ * may be implemented. If you provide a useful
+ * description, either to the constructor of the CustomConstraint
+ * or by overriding <code>toString()</code> in your Constraint,
+ * a useful message will be given should the Constraint not match.</p>
+ * 
+ * <p>You may find it more useful to extend or delegate to 
+ * {@link jbehave.core.minimock.UsingMiniMock} than to UsingConstraints.
  */
 public abstract class UsingConstraints {
 	public abstract static class CustomConstraint extends UsingConstraints implements Constraint {

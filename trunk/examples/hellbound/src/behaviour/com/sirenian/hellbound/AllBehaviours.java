@@ -6,7 +6,7 @@ import com.sirenian.hellbound.domain.SegmentsBehaviour;
 import com.sirenian.hellbound.domain.glyph.GlyphBehaviour;
 import com.sirenian.hellbound.domain.glyph.LivingGlyphBehaviour;
 import com.sirenian.hellbound.engine.PseudoRandomGlyphFactoryBehaviour;
-import com.sirenian.hellbound.engine.SelfTimedHeartbeatBehaviour;
+import com.sirenian.hellbound.engine.AcceleratingHeartbeatBehaviour;
 import com.sirenian.hellbound.engine.ThreadedEngineQueueBehaviour;
 import com.sirenian.hellbound.gui.FrontPanelBehaviour;
 import com.sirenian.hellbound.gui.HellboundFrameBehaviour;
@@ -24,7 +24,7 @@ public class AllBehaviours implements Behaviours {
 			LivingGlyphBehaviour.class,
 			GlyphBehaviour.class,
 			PseudoRandomGlyphFactoryBehaviour.class,
-			SelfTimedHeartbeatBehaviour.class,
+			AcceleratingHeartbeatBehaviour.class,
 			
 			ThreadedQueueBehaviour.class,
 			ThreadedEngineQueueBehaviour.class,

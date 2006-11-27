@@ -10,6 +10,11 @@ import jbehave.core.mock.Mock;
 
 public class GlyphBehaviour extends UsingMiniMock {
 	
+    public void shouldExposeSegments() {
+        Segments segments = new Glyph(GlyphType.O, GlyphType.O.getSegments(0)).getSegments();
+        ensureThat(segments, eq(GlyphType.O.getSegments(0)));
+    }
+    
 	public void shouldNotifyListenersOfMovement() throws Exception {
 			
 		Segments segments1 = new Segments(new Segment[] {new Segment(0, 0)});

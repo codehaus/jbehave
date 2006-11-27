@@ -12,7 +12,7 @@ import com.sirenian.hellbound.engine.Game;
 import com.sirenian.hellbound.engine.GlyphFactory;
 import com.sirenian.hellbound.engine.GuiQueue;
 import com.sirenian.hellbound.engine.PseudoRandomGlyphFactory;
-import com.sirenian.hellbound.engine.SelfTimedHeartbeat;
+import com.sirenian.hellbound.engine.AcceleratingHeartbeat;
 import com.sirenian.hellbound.engine.ThreadedEngineQueue;
 import com.sirenian.hellbound.gui.FrontPanel;
 import com.sirenian.hellbound.gui.HellboundFrame;
@@ -44,7 +44,7 @@ public class Hellbound {
         this(
                 new ThreadedEngineQueue(), 
                 new ThreadedSwingQueue(),
-                new SelfTimedHeartbeat(), 
+                new AcceleratingHeartbeat(), 
                 new PitPanel(SCALE, WIDTH, HEIGHT, COLORMAP), 
                 new PseudoRandomGlyphFactory());
     }

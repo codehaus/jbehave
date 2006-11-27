@@ -14,21 +14,31 @@ public abstract class ThreadedQueue implements Queue {
     private ArrayList eventList = new ArrayList();
     private ArrayList afterEmptyEventList = new ArrayList();
 	private boolean shouldRun = true;
+    private Throwable throwable;
     
     protected ThreadedQueue(String queueName) {
         Runnable runnable = new Runnable() {
+
             public void run() {
                 synchronized (eventList) {
-                    while (shouldRun) {
-                        runAllInList(eventList);
-                        runAllInList(afterEmptyEventList);
-                        waitForNextRequest();
+                    while (shouldRun && throwable == null) {
+                        try {
+                            runAllInList(eventList);
+                            runAllInList(afterEmptyEventList);
+                            waitForNextRequest();
+                        } catch (Throwable t) {
+                            throwable = t;
+                        }
                     }
+
                 }
             }
         };
         Logger.debug(this, "Starting thread for " + queueName);
         new Thread(runnable, queueName).start();
+        if (throwable != null) {
+            throw new RuntimeException(throwable);
+        }
     }
     
     public void stop() {

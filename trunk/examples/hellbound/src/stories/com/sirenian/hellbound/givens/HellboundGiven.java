@@ -1,6 +1,7 @@
 package com.sirenian.hellbound.givens;
 
 import com.sirenian.hellbound.stories.Idler;
+import com.sirenian.hellbound.util.Logger;
 
 import jbehave.core.story.domain.GivenUsingMiniMock;
 import jbehave.core.story.domain.World;
@@ -15,6 +16,7 @@ public abstract class HellboundGiven extends GivenUsingMiniMock {
 
 	
 	public void setUp(World world) {
+        Logger.debug(this, "setting up Given");
 		setUpAnyTimeIn(world);
 		idler.waitForIdle();
 	}

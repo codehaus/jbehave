@@ -85,6 +85,8 @@ public class GlyphType {
         O, T, I, J, L, Z, S, JUNK, PIT
     };
 
+    public static final GlyphType NULL = new GlyphType(def(Segments.EMPTY, Segments.EMPTY, Segments.EMPTY, Segments.EMPTY), ' ');
+
 	
 	private static Segments[] def(Segments s1, Segments s2, Segments s3, Segments s4) {
 		return new Segments[] { s1, s2, s3, s4 };
