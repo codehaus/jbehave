@@ -17,10 +17,22 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.jdt.source,
  org.eclipse.jdt.ui,
+<<<<<<< .mine
+ org.eclipse.core.expressions,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.views
+=======
  org.eclipse.core.expressions,
  org.eclipse.jface.text,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor
+>>>>>>> .r585
 Eclipse-AutoStart: true
 Bundle-Vendor: JBehave
+<<<<<<< .mine
+Bundle-ClassPath: eclipse-plugin.jar
+=======
 Bundle-ClassPath: lib/commons-lang-1.0.1.jar
+>>>>>>> .r585
