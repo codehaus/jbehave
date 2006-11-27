@@ -7,5 +7,5 @@ import com.sirenian.hellbound.util.ListenerSet;
 public interface GlyphFactory {
     public LivingGlyph nextGlyph(int center, CollisionDetector detector, ListenerSet glyphListeners);
 
-	public Junk createJunk();
+	public Junk createJunk(ListenerSet glyphListeners);
 }

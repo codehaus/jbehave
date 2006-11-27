@@ -6,14 +6,14 @@ import com.sirenian.hellbound.util.Listener;
 import com.sirenian.hellbound.util.ListenerNotifier;
 import com.sirenian.hellbound.util.ListenerSet;
 
-public class SelfTimedHeartbeat implements Heartbeat {
+public class AcceleratingHeartbeat implements Heartbeat {
 
 	private ListenerSet listenerSet;
 	private ListenerNotifier pulse;
 	private long timeBetweenBeats;
 	private boolean beating;
 
-	public SelfTimedHeartbeat() {
+	public AcceleratingHeartbeat() {
 		listenerSet = new ListenerSet();
 		pulse = new ListenerNotifier(){
 			public void notify(Listener listener) {
@@ -21,32 +21,46 @@ public class SelfTimedHeartbeat implements Heartbeat {
 			}};
 	}
 
-	public void start(long initialTimeBetweenBeats) {
+	public void start(int initialTimeBetweenBeats) {
+        stop();
 		timeBetweenBeats = initialTimeBetweenBeats;
 		beating = true;
 		
 		Runnable pulseTimer = new Runnable() {
 			public void run() {
-				while (beating) {
-					synchronized(this) {
-						try {
-							wait(timeBetweenBeats);
-						} catch (InterruptedException e) { }
-						listenerSet.notifyListeners(pulse);
-					}
+				while (beating && timeBetweenBeats > 0) {
+					waitForTimeToElapse();
+					speedUp();
 				}
-			}			
+			}
 		};
 		
 		new Thread(pulseTimer).start();
 	}
+    
+    private synchronized void waitForTimeToElapse() {
+        try {
+            wait(timeBetweenBeats);
+        } catch (InterruptedException e) { }
+        listenerSet.notifyListeners(pulse);
+    }       
 
+    private void speedUp() {
+        timeBetweenBeats--;
+    }       
+    
 	public void addListener(HeartbeatListener listener) {
 		listenerSet.addListener(listener);
 	}
 
 	public void stop() {
-		beating = false;
+	    beating = false;
+        synchronized (this) {
+            notifyAll();
+        }
 	}
 
+    public boolean isBeating() {
+        return beating;
+    }
 }

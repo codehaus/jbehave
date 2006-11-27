@@ -16,7 +16,8 @@ import com.sirenian.hellbound.util.Logger;
 
 public class Game implements GameRequestListener {
 
-	private final GlyphFactory factory;
+	private static final int ONE_SECOND = 1000;
+    private final GlyphFactory factory;
 	private final Heartbeat heartbeat;
 	private final CollisionDetector collisionDetector;
 	private final ListenerSet gameListeners;
@@ -28,8 +29,8 @@ public class Game implements GameRequestListener {
     
 	private GameState state;
 
-	private LivingGlyph glyph = null;
-	private Junk junk = null;
+	private LivingGlyph glyph = LivingGlyph.NULL;
+	private Junk junk = Junk.NULL;
 
 	public Game(GlyphFactory factory, Heartbeat heartbeat, int width, int height) {
 		this.factory = factory;
@@ -55,9 +56,9 @@ public class Game implements GameRequestListener {
         
         this.heartbeat.addListener(new HeartbeatListener() {
             public void beat() {
-                glyph.requestMoveDown();
-                // TODO Move the glyph down, and if it can't move
-                // convert to junk and get next glyph.
+                if (state == GameState.RUNNING) {
+                    moveGlyphDownOrJunkIt();
+                }
             }
         });
     	
@@ -66,9 +67,14 @@ public class Game implements GameRequestListener {
 	
 	public void requestStartGame() {
 		glyph = factory.nextGlyph(centre, collisionDetector, glyphListeners);
-		junk = factory.createJunk();
+		junk = factory.createJunk(glyphListeners);
+        heartbeat.start(ONE_SECOND);
 		setState(GameState.RUNNING);
 	}
+
+    private void resetGlyph() {
+        glyph = factory.nextGlyph(centre, collisionDetector, glyphListeners);
+    }
 
 	private void setState(GameState newState) {
 		state = newState;
@@ -84,12 +90,21 @@ public class Game implements GameRequestListener {
 	public void addGlyphListener(GlyphListener listener) {
 		Logger.debug(this, "Adding glyph listener " + listener);
 		glyphListeners.addListener(listener);
+        junk.addListener(listener);
+        glyph.addListener(listener);
 	}
 
     public void requestDropGlyph() {
         Logger.debug(this, "Drop of glyph requested");
         if (state == GameState.RUNNING) {
         	glyph.drop();
+        }
+    }
+    
+    private void moveGlyphDownOrJunkIt() {
+        if (!glyph.requestMoveDown()) {
+            junk.absorb(glyph);
+            resetGlyph();
         }
     }
 	

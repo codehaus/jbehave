@@ -31,11 +31,11 @@ public class LivingGlyphBehaviour extends GlyphBehaviour {
 	public void shouldDropUntilInCollision() {
 		setUp();
 
-		Segments firstSegments = listener.getSegments();
+		Segments firstSegments = listener.toLastSegments();
 		
 		glyph.drop();
 		
-		Segments secondSegments = listener.getSegments();
+		Segments secondSegments = listener.toLastSegments();
 		Segments expectedSegments = firstSegments.movedDown().movedDown().movedDown();
 		ensureThat(secondSegments, eq(expectedSegments));
 	}
@@ -56,22 +56,25 @@ public class LivingGlyphBehaviour extends GlyphBehaviour {
 		
 		glyph.addListener(listener);
 		
-		Segments firstSegments = listener.getSegments();
+		Segments firstSegments = listener.toLastSegments();
 		
 		ensureThat(!glyph.requestMoveDown());
 		
-		Segments secondSegments = listener.getSegments();
+		Segments secondSegments = listener.toLastSegments();
 		
 		ensureThat(firstSegments, eq(secondSegments));
 	}
-	
-	public void shouldQueueAttemptsToMoveIfAlreadyMoving() {
-		// TODO
-	}
-	
-	public void shouldClearAllQueuedDownwardMovementsOnHeartbeat() {
-		// TODO
-	}
+    
+    public void shouldReduceSegmentsToEmptyIfKilled() {
+        setUp();
+        Segments originalSegments = glyph.getSegments();
+        
+        glyph.kill();
+        
+        ensureThat(glyph.getSegments(), eq(Segments.EMPTY));
+        ensureThat(listener.fromLastSegments(), eq(originalSegments));
+        ensureThat(listener.toLastSegments(), eq(Segments.EMPTY));
+    }
 	
 
 	

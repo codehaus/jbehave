@@ -14,6 +14,7 @@ import com.sirenian.hellbound.gui.PitPanel;
 import com.sirenian.hellbound.gui.RenderedPit;
 import com.sirenian.hellbound.gui.ThreadedSwingQueue;
 import com.sirenian.hellbound.stories.WorldKey;
+import com.sirenian.hellbound.util.Logger;
 
 public class HellboundIsRunning extends HellboundGiven {
 
@@ -49,6 +50,7 @@ public class HellboundIsRunning extends HellboundGiven {
 	}	
 
     public void tidyUp(World world) {
+        Logger.debug(this, "tidyUp Given");
         Hellbound hellbound = (Hellbound) world.get(WorldKey.HELLBOUND);
         hellbound.stopHellbound();
     }

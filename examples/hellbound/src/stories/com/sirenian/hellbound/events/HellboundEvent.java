@@ -7,6 +7,7 @@ import jbehave.extensions.threaded.swing.WindowWrapper;
 
 import com.sirenian.hellbound.stories.Idler;
 import com.sirenian.hellbound.stories.WorldKey;
+import com.sirenian.hellbound.util.Logger;
 
 public abstract class HellboundEvent extends EventUsingMiniMock {
 	
@@ -17,6 +18,7 @@ public abstract class HellboundEvent extends EventUsingMiniMock {
 	}
 
     public void occurIn(World world) {
+        Logger.debug(this, "performing Event");
         occurAnyTimeIn(world);
         idler.waitForIdle(world);
     }

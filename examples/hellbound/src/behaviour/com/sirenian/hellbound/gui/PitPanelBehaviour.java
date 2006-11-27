@@ -31,10 +31,10 @@ public class PitPanelBehaviour extends UsingConstraints {
 	);	
 	
 	Segments FINAL_SEGMENTS = new Segments (
-			new Segment(1, 2),
 			new Segment(1, 3),
-			new Segment(2, 3),
-			new Segment(3, 3)
+			new Segment(1, 4),
+			new Segment(2, 4),
+			new Segment(3, 4)
 	);
 	
 	public void shouldBeScaledToFitThePit() {
@@ -70,7 +70,7 @@ public class PitPanelBehaviour extends UsingConstraints {
 		JFrame frame = createFrameAndDisplay(panel);
 			
 		
-		panel.reportGlyphMovement(GlyphType.O, new Segments(new Segment[0]), INITIAL_SEGMENTS);
+		panel.reportGlyphMovement(GlyphType.O, Segments.EMPTY, INITIAL_SEGMENTS);
 		
 		panel.reportGlyphMovement(GlyphType.O, INITIAL_SEGMENTS, FINAL_SEGMENTS);
 		
@@ -79,6 +79,22 @@ public class PitPanelBehaviour extends UsingConstraints {
 		
 		ensureThat(renderedPit, contains(FINAL_SEGMENTS, Color.RED));
 	}
+    
+    public void shouldNotCleanGlyphsOfOtherTypesAfterMovement() {
+        
+        RenderedPit renderedPit = new RenderedPit(SCALE, WIDTH, HEIGHT, COLORMAP);
+        PitPanel panel = createPitPanelWithDoublePaint(renderedPit);
+
+        JFrame frame = createFrameAndDisplay(panel);
+            
+        panel.reportGlyphMovement(GlyphType.O, Segments.EMPTY, INITIAL_SEGMENTS);
+        panel.reportGlyphMovement(GlyphType.T, INITIAL_SEGMENTS, Segments.EMPTY);
+        
+        panel.repaint();
+        frame.dispose();        
+        
+        ensureThat(renderedPit, contains(INITIAL_SEGMENTS, Color.RED));
+    }    
 
 	private JFrame createFrameAndDisplay(PitPanel panel) {
 		JFrame frame = new JFrame();
@@ -112,8 +128,8 @@ public class PitPanelBehaviour extends UsingConstraints {
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("something containing ").append(System.getProperty("line.separator"));
 
-                for (int y = 0; y < Hellbound.HEIGHT; y++) {
-                    for (int x = 0; x < Hellbound.WIDTH; x++) {
+                for (int y = 0; y < HEIGHT; y++) {
+                    for (int x = 0; x < WIDTH; x++) {
                         if (segments.contains(new Segment(x, y))) {
                             buffer.append(Hellbound.COLORMAP.getTypeFor(color).toString());
                         } else {

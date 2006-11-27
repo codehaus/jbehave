@@ -18,9 +18,12 @@ import jbehave.core.UsingMocks;
 import jbehave.core.mock.Mock;
 import jbehave.core.mock.UsingConstraints;
 
-
 /**
- * Base class for behaviour classes that use MiniMock.
+ * <p>We recommend that you extend this class to use MiniMocks in
+ * your behaviours. Or you could just delegate to it.</p>
+ * 
+ * <p>This class is also extended by various parts of JBehave's Story
+ * framework.</p>
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
@@ -100,4 +103,5 @@ public class UsingMiniMock extends UsingConstraints implements UsingMocks {
     public InvocationHandler returnValue(boolean result) {
         return returnValue(result ? Boolean.TRUE : Boolean.FALSE);
     }
+
 }

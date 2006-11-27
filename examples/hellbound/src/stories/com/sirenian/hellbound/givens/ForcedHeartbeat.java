@@ -13,6 +13,7 @@ public class ForcedHeartbeat implements Heartbeat {
 
 	private ListenerSet listeners;
 	private ListenerNotifier pulse;
+    private boolean beating;
 	
 	public ForcedHeartbeat() {
 		listeners = new ListenerSet();
@@ -30,5 +31,17 @@ public class ForcedHeartbeat implements Heartbeat {
 	public void causeBeat() {
 		listeners.notifyListeners(pulse);
 	}
+
+    public void start(int initialTimeBetweenBeats) {
+        beating = true;
+    }
+
+    public void stop() {
+        beating = false;
+    }
+
+    public boolean isBeating() {
+        return beating;
+    }
 
 }

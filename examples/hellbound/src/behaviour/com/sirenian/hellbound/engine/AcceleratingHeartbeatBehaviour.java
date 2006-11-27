@@ -13,14 +13,14 @@ import com.sirenian.hellbound.domain.glyph.HeartbeatListener;
  * It also won't get used in any of the automated stories, as
  * it would take too long (ForcedHeartBeat will be used instead).
  */
-public class SelfTimedHeartbeatBehaviour extends UsingMiniMock {
+public class AcceleratingHeartbeatBehaviour extends UsingMiniMock {
 
 	
 	public void shouldBeatAfterElapsedTime() throws Exception {
 		Mock heartbeatListener = mock(HeartbeatListener.class);
 		heartbeatListener.expects("beat").atLeastOnce();
 		
-		SelfTimedHeartbeat heartbeat = new SelfTimedHeartbeat();
+		AcceleratingHeartbeat heartbeat = new AcceleratingHeartbeat();
 		heartbeat.addListener((HeartbeatListener)heartbeatListener);
 		heartbeat.start(3);
 	
@@ -36,12 +36,16 @@ public class SelfTimedHeartbeatBehaviour extends UsingMiniMock {
 	public void shouldBeatMoreQuicklyWithEachBeat() {
 		// No way of ensuring this with automation. 
 	}
+    
+    public void shouldStopAnyExistingTimerThreadsBeforeStarting() {
+        // No way of ensuring this with automation. 
+    }    
 	
 	public void shouldNotBeatAfterBeingStopped() throws Exception {
 		Mock heartbeatListener = mock(HeartbeatListener.class);
 		heartbeatListener.expects("beat").never();
 		
-		SelfTimedHeartbeat heartbeat = new SelfTimedHeartbeat();
+		AcceleratingHeartbeat heartbeat = new AcceleratingHeartbeat();
 		heartbeat.start(3);
 	
 		heartbeat.stop();

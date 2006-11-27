@@ -37,6 +37,10 @@ public class Expectation extends UsingConstraints {
     private String id;
     private InvocationHandler invoker = NULL_INVOKER;
 
+    private InvocationHandler[] invokers;
+
+    private boolean inOrder;
+
     /**
      *  Construct an expectation in a default state.
      * 
@@ -52,8 +56,13 @@ public class Expectation extends UsingConstraints {
 			after.verify();
         }
         Ensure.that(methodName + " called more than " + maxInvocations + " times", invocations < maxInvocations);
-        invocations++;
-        return invoker.invoke(proxy, method, args);
+        
+        if (inOrder) {
+            return invokers[invocations++].invoke(proxy, method, args);
+        } else {
+            invocations++;
+            return invoker.invoke(proxy, method, args);
+        }
     }
     
     public boolean matches(String actualName, Object[] args) {
@@ -95,6 +104,25 @@ public class Expectation extends UsingConstraints {
         this.invoker = result;
         return this;
     } 
+    
+    public Expectation inOrder() {
+        inOrder = true;
+        return this;
+    }
+
+    public Expectation will(InvocationHandler handler1, InvocationHandler handler2) {
+        return will(new InvocationHandler[] {handler1, handler2});
+    }
+    
+    public Expectation will(InvocationHandler handler1, InvocationHandler handler2, InvocationHandler handler3) {
+        return will(new InvocationHandler[] {handler1, handler2, handler3});
+    }
+
+    private Expectation will(InvocationHandler[] invokers) {
+        times(invokers.length);
+        this.invokers = invokers;
+        return this;
+    }     
     
     // Invocations
     
@@ -142,6 +170,10 @@ public class Expectation extends UsingConstraints {
     public Expectation with(Constraint constraint1, Constraint constraint2) {
         return with(new Constraint[] {constraint1, constraint2});
     }
+    
+    public Expectation with(Constraint constraint1, Constraint constraint2, Constraint constraint3) {
+        return with(new Constraint[] {constraint1, constraint2, constraint3});
+    }
 
     public Expectation with(Constraint[] constraints) {
         this.constraints = constraints;
@@ -186,5 +218,7 @@ public class Expectation extends UsingConstraints {
     
     public boolean matches(String actualName) {
         return (methodName.equals(actualName));
-    }    
+    }
+
+   
 }

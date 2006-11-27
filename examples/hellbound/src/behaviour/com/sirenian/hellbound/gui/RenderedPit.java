@@ -130,7 +130,6 @@ public class RenderedPit extends Graphics {
 		int scaledY = (y - pitPanel.getY()) / scale;
 		
         if (scaledX >= 0 && scaledX < pitWidth && scaledY >=0 && scaledY < pitHeight) { 
-        
             pitMap.put(new Segment(scaledX, scaledY), color);
             asciiRepresentation[scaledY][scaledX] = colormap.getTypeFor(color).toAscii();
         }
