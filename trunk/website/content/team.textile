@@ -7,13 +7,14 @@ The following is a list of developers with commit privileges that
 have directly contributed to the project in one way or another.
 
 |_.Name|_.ID|_.Email|_.Organization|
-|Dan North|tastapod|dan.north <i>at</i> thoughtworks.com|ThoughtWorks|
-|Manish Shah|manish|manish.shah <i>at</i> thoughtworks.com|ThoughtWorks|
-|Damian Guy|damian|damian.guy <i>at</i> thoughtworks.com|ThoughtWorks|
-|Olav Maassen|olav|olav.maassen <i>at</i> jixaw.com||
-|Liz Keogh|liz|ekeogh <i>at</i> thoughtworks.com|ThoughtWorks|
-|Shane Duan|wolfdancer|shane.duan <i>at</i> gmail.com||
-|Li, Chaoqun|cli|cli <i>at</i> thoughtworks.com|ThoughtWorks|
+|Dan North|tastapod|dan.north _at_ thoughtworks.com|ThoughtWorks|
+|Manish Shah|manish|manish.shah _at_ thoughtworks.com|ThoughtWorks|
+|Damian Guy|damian|damian.guy _at_ thoughtworks.com|ThoughtWorks|
+|Olav Maassen|olav|olav.maassen _at_ jixaw.com|&nbsp;|
+|Liz Keogh|liz|ekeogh _at_ thoughtworks.com|ThoughtWorks|
+|Mauro Talevi|mauro|mauro.talevi _at_ aquelonia.org|&nbsp;|
+|Shane Duan|wolfdancer|shane.duan _at_ gmail.com|&nbsp;|
+|Li, Chaoqun|cli|cli _at_ thoughtworks.com|ThoughtWorks|
 
 h1. The Contributors
 
@@ -23,4 +24,7 @@ through the way of suggestions, code or just old-fashioned encouragement.
 |_.Name|
 |Lindsay Terhorst North|
 |Chris "Business Value" Matts|
-
+|Carlos Villela|
+|Vyvyan Codd|
+|Felix Leipold|
+|Antonio Terreno|

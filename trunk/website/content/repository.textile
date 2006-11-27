@@ -1,20 +1,46 @@
------------------------------------------------
-Source Repository
------------------------------------------------
-h1(FirstChild). Web Access
+h1(FirstChild). Source Repository
 
-Web access to the Subversion repository is available through ViewCVS at
-"http://svn.codehaus.org/jbehave/trunk":http://svn.codehaus.org/jbehave/trunk
+h2. Browser
 
-h1. Anonymous Subversion Access
+You can "navigate within the sources online":jbehave_fisheye_url
+with the help of the "FishEye":fisheye_url installation on Codehaus.
+
+h2. Subversion
+
+JBehave uses Subversion as the source control manager. See "Subversion":http://subversion.tigris.org 
+website for details and documentation on IDE integration.
+
+h2. Anonymous Subversion access
 
 This project's Subversion repository can be checked out through anonymous
 Subversion access with the following command:
 
-<pre class="Shell">svn co http://svn.codehaus.org/jbehave/trunk jbehave</pre>
+<div class="Shaded"><pre>svn co http://svn.codehaus.org/jbehave/trunk jbehave</pre></div>
 
-h1. Developer Access
+You might also use this URL to browse the repository in a simple manner.
 
-Developers of jBehave can check out through https access with the following command:
+h2. Developer Subversion access
 
-<pre class="Shell">svn co https://<username>@svn.codehaus.org/jbehave/trunk jbehave</pre>
+Developers of JBehave can check out through HTTPS access with the following command:
+
+<div class="Shaded"><pre>svn co https://<username>@svn.codehaus.org/jbehave/trunk jbehave</pre></div>
+
+This access protocol is available to all, but only developers can commit changes.
+
+Developers require a LDAP password for CodeHaus username (contact Bob at the Haus to get assigned 
+a password if you don't have one).
+
+To test HTTPS commit access, one may eg:
+
+<div class="Shaded"><pre>
+svn co https://svn.codehaus.org/jbehave/trunk jbehave
+cd jbehave
+echo "test" > TEST
+svn add TEST
+svn commit --username username --password your-password --message "Testing HTTPS"
+</pre></div>
+
+_Note_: you only need to specify username and password once per client.
+
+[jbehave_fisheye_url]http://fisheye.codehaus.org/browse/jbehave 
+[fisheye_url]http://www.cenqua.com/fisheye
