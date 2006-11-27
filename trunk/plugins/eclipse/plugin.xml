@@ -98,5 +98,35 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M2+D B"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="jbehave.plugin.eclipse.editors.BehaviourEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            extensions="story"
+            icon="icons/behave.gif"
+            id="jbehave.plugin.eclipse.editors.BehaviourEditor"
+            name="Behaviour Editor"/>
+   </extension>
+   <extension
+         id="jbehave.plugin.eclipse.editorActions"
+         name="editorActions"
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            id="jbehave-eclipse.behaviourEditorContribution"
+            targetID="jbehave.plugin.eclipse.editors.BehaviourEditor">
+         <action
+               class="jbehave.plugin.eclipse.actions.NavigateToJavaSource"
+               id="jbehave-eclipse.navigate-source"
+               definitionId="org.eclipse.jdt.ui.edit.text.java.open.editor"
+               label="Navigate to Source"
+               menubarPath="navigate/open.ext"
+               style="push"
+               tooltip="Navigate to Source"/>
+         
+      </editorContribution>
+   </extension>
+   
+   
 
 </plugin>
