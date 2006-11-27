@@ -1,48 +1,48 @@
-----------------------------------------------------
-Plugins
-----------------------------------------------------
-h1(FirstChild). Over View
+h1(FirstChild). Plugins
 
-The following are the plugins under implementation:
+h2. Overview
+
+The following are the plugins under development:
+
 * "IntelliJ IDEA":#idea
 * "Eclipse":#eclipse
 * "Apache Ant":#ant
 
 <a name="idea"> </a>
-h1. IntelliJ IDEA
+h2. IntelliJ IDEA
 
-JBehave has an "IDEA":http://www.jetbrains.com/idea/ plug-in that allows the developers to launch behaviour verifications.
+JBehave has an "IDEA":idea_url plug-in that allows developers to launch behaviour verifications.
 
-<a href="idea.png"><img src="idea.png"/></a>
+!idea.png!
 
-It can be downloaded through IDEA's plugin download site:
-"http://www.jetbrains.com/idea/plugins/plugins.html":http://www.jetbrains.com/idea/plugins/plugins.html
+It can be downloaded through "IDEA's plugin download site":idea_plugins_url.
 
-<a href="idea_plugins.png"><img src="idea_plugins.png"/></a>
-
+!idea_plugins.png!
 
 <a name="eclipse"> </a>
-h1. Eclipse
+h2. Eclipse
 
-JBehave plugin for "Eclipse":http://www.eclipse.org/ allows you to launch the behaviour verification process
-through a short-cut a predefined run configuration.
+JBehave plugin for "Eclipse":eclipse_url allows you to launch the behaviour verification 
+process through a short-cut a predefined run configuration.
 
-<a href="eclipse.png"><img src="eclipse.png"/></a>
+!eclipse.png!
 
-You can use Eclipse' update mechanism by adding a "Remote Site" in your Eclipse Software
-Update configuration which links to:
-<center>
-    "http://www.jbehave.org/eclipse":http://www.jbehave.org/eclipse
-</center>
+You can use Eclipse's update mechanism by adding a "Remote Site" in your Eclipse Software 
+Update configuration which links to "http://www.jbehave.org/eclipse":jbehave_eclipse_url.
 
-<a href="eclipse_install.png"><img src="eclipse_install.png"/></a>
+!eclipse_install.png!
 
-After a successful installation, you should be able to see JBehave feature in your Eclipse about dialog
+After a successful installation, you should be able to see the JBehave feature in your Eclipse about
+dialog:
 
-<a href="eclipse_feature.png"><img src="eclipse_feature.png"/></a>
+!eclipse_feature.png!
 
 <a name="ant"> </a>
-h1. Apache ANT
+h2. Apache ANT
 
-Coming soon
+Coming soon!
 
+[idea_url]http://www.jetbrains.com/idea/
+[idea_plugins_url]http://www.jetbrains.com/idea/plugins/plugins.html
+[eclipse_url]http://eclipse.org
+[jbehave_eclipse_url]http://www.jbehave.org/eclipse

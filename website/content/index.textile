@@ -1,7 +1,4 @@
-----------------------------------------------
-because TDD is more than testing
-----------------------------------------------
-<h1 class="FirstChild">About JBehave</h1>
+h1(FirstChild). About JBehave
 
 h2. JBehave is a framework for Behaviour Driven Development
 
@@ -10,7 +7,7 @@ development (TDD) and is designed to make TDD more accessible and
 intuitive to newcomers and experts alike.
 
 It shifts the vocabulary from being test-based to behaviour-based,
-and positions itself as a <em>design</em> philosophy.
+and positions itself as a *design* philosophy.
 
 You can find out more about behaviour-driven development on
 "the BDD wiki":http://behaviour-driven.org.

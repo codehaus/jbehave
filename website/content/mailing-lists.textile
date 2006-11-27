@@ -1,6 +1,3 @@
--------------------------------------------------
-Mailing Lists
--------------------------------------------------
 h1(FirstChild). Mailing Lists
 
 These are the mailing lists that have been established for this project.
@@ -10,3 +7,4 @@ These are the mailing lists that have been established for this project.
 JBehave Developers|"dev-subscribe@jbehave.codehaus.org":mailto:dev-subscribe@jbehave.codehaus.org|
 JBehave Subversion Commits|"scm-subscribe@jbehave.codehaus.org":mailto:scm-subscribe@jbehave.codehaus.org|
 
+Simply send a blank message and follow the instructions from there.

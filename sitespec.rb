@@ -1,4 +1,5 @@
-require 'buildmaster'
+require 'rubygems'
+require_gem 'BuildMaster'
 
 
 class MySiteSpec < BuildMaster::SiteSpec
