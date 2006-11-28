@@ -9,11 +9,9 @@ import com.sirenian.hellbound.outcomes.TheFirstGlyphShouldBeDisplayedInThePit;
 public class TheFirstGlyphIsDisplayedOnTheBoard extends ScenarioUsingMiniMock {
 
 	public TheFirstGlyphIsDisplayedOnTheBoard() {
-		super("The first glyph is displayed on the board",
-                "utility scenarios",
-			given(new HellboundIsRunning()),
-            when(new ThePlayerStartsTheGame()), 
-            then(new TheFirstGlyphShouldBeDisplayedInThePit())				
+		super(given(new HellboundIsRunning()),
+                when(new ThePlayerStartsTheGame()),
+			then(new TheFirstGlyphShouldBeDisplayedInThePit())				
 		);
 	}
 

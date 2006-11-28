@@ -8,12 +8,10 @@
 package jbehave.core.story.domain;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.story.renderer.Renderer;
-import jbehave.core.util.ConvertCase;
 
 /**
  * <p>A ScenarioDrivenStory is an executable description of a value 
@@ -45,21 +43,7 @@ public class ScenarioDrivenStory implements Story {
     public void addScenario(Scenario scenario) {
         scenarios.addScenario(scenario);
     }
-    
-    public String title() {
-        return new ConvertCase(getClass()).toSeparateWords();
-    }
-    
-    public Scenario scenario(String name) {
-        for (Iterator i = scenarios.scenarios().iterator(); i.hasNext();) {
-            Scenario scenario = (Scenario) i.next();
-            if (scenario.getDescription().equals(name)) {
-                return scenario;
-            }
-        }
-        throw new RuntimeException(name);
-    }
-    
+
     public List scenarios() {
         return scenarios.scenarios();
     }
@@ -69,7 +53,7 @@ public class ScenarioDrivenStory implements Story {
     }
 
     public void run(World world) {
-        scenarios.run(world, (BehaviourListener[]) listeners.toArray(new BehaviourListener[listeners.size()]));
+        scenarios.run(world, this.getClass(), (BehaviourListener[]) listeners.toArray(new BehaviourListener[listeners.size()]));
     }
     
     public void addListener(BehaviourListener listener) {

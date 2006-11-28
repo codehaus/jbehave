@@ -23,7 +23,7 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
         World world = (World) stub(World.class);
         
         ScenarioUsingMiniMock scenario =
-			new ScenarioUsingMiniMock("scenario", "story", (Given)given, (Event)event, (Outcome) outcome);
+			new ScenarioUsingMiniMock((Given)given, (Event)event, (Outcome) outcome);
 
         // expect...
         given.expects("setUp").with(world);
@@ -51,7 +51,7 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
         
         //when...
         ScenarioUsingMiniMock scenario =
-            new ScenarioUsingMiniMock("scenario", "story", (Given)given, (Event)event, (Outcome) outcome);
+            new ScenarioUsingMiniMock((Given)given, (Event)event, (Outcome) outcome);
         scenario.tidyUp(world);
         
         //then...

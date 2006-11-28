@@ -7,7 +7,7 @@
  */
 package jbehave.core.story.codegen.domain;
 
-import jbehave.core.util.ConvertCase;
+import jbehave.core.util.CamelCaseConverter;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -16,7 +16,7 @@ public class BasicDetails {
     public String name = "";
 
     public String getClassName() {
-        return new ConvertCase(name).toCamelCase();
+        return new CamelCaseConverter(name).toCamelCase();
     }
     
     public boolean equals(Object obj)  {

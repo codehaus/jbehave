@@ -19,7 +19,7 @@ import jbehave.core.story.domain.Scenario;
 import jbehave.core.story.domain.ScenarioComponent;
 import jbehave.core.story.domain.Scenarios;
 import jbehave.core.story.domain.Story;
-import jbehave.core.util.ConvertCase;
+import jbehave.core.util.CamelCaseConverter;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -35,7 +35,7 @@ public class PlainTextRenderer implements Renderer {
         
     public void renderStory(Story story) {
         previousComponent = null;
-        out.println("Story: " + story.title());
+        out.println("Story: " + new CamelCaseConverter(story).toPhrase());
         out.println();
     }
     
@@ -50,7 +50,7 @@ public class PlainTextRenderer implements Renderer {
     public void renderScenario(Scenario scenario) {
         previousComponent = null;
         out.println();
-        out.println("Scenario: " + scenario.getDescription());
+        out.println("Scenario: " + new CamelCaseConverter(scenario).toPhrase());
         out.println();
     }
     
@@ -59,11 +59,10 @@ public class PlainTextRenderer implements Renderer {
 		phrase.append(previousComponentWasA(Given.class) ? "and " : "Given ");
         if (given instanceof GivenScenario) {
             Scenario givenScenario = ((GivenScenario) given).getScenario();
-            phrase.append("\"" + new ConvertCase(givenScenario.getDescription()).toSeparateWords() + "\"")
-            	.append(" from ").append("\"" + new ConvertCase(givenScenario.getStoryName()).toSeparateWords() + "\"");
+            phrase.append(new CamelCaseConverter(givenScenario).toPhrase());
         }
         else {
-            phrase.append(new ConvertCase(given).toSeparateWords());
+            phrase.append(new CamelCaseConverter(given).toPhrase());
         }
         previousComponent = given;
 		out.println(phrase);
@@ -71,7 +70,7 @@ public class PlainTextRenderer implements Renderer {
 
 
     public void renderEvent(Event event) {
-        String phrase = (previousComponentWasA(Event.class) ? "and " : "When ") + new ConvertCase(event).toSeparateWords();
+        String phrase = (previousComponentWasA(Event.class) ? "and " : "When ") + new CamelCaseConverter(event).toPhrase();
         previousComponent = event;
         out.println(phrase);
     }
@@ -79,7 +78,7 @@ public class PlainTextRenderer implements Renderer {
     public void renderOutcome(Outcome outcome) {
         StringBuffer phrase = new StringBuffer();
         phrase.append(previousComponentWasA(Outcome.class) ? "and " : "Then ")
-			.append(new ConvertCase(outcome).toSeparateWords());
+			.append(new CamelCaseConverter(outcome).toPhrase());
 
         previousComponent = outcome;
         out.println(phrase);

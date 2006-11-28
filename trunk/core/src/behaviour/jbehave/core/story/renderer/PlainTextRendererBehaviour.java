@@ -13,7 +13,7 @@ import java.io.PrintStream;
 import jbehave.core.mock.UsingConstraints;
 import jbehave.core.story.SimpleStory;
 import jbehave.core.story.domain.ScenarioDrivenStory;
-import jbehave.core.util.ConvertCase;
+import jbehave.core.util.CamelCaseConverter;
 
 
 /**
@@ -36,23 +36,26 @@ public class PlainTextRendererBehaviour extends UsingConstraints {
 		String NL = System.getProperty("line.separator");
 		
 		StringBuffer expectedResult = new StringBuffer();
-		expectedResult.append("Story: ").append(story.title()).append(NL + NL);
+		expectedResult.append("Story: ").append(textOf(story)).append(NL + NL);
 		expectedResult.append("As a ").append(SimpleStory.ROLE).append(NL);
 		expectedResult.append("I want ").append(SimpleStory.FEATURE).append(NL);
 		expectedResult.append("So that ").append(SimpleStory.BENEFIT).append(NL + NL);
-		expectedResult.append("Scenario: ").append(SimpleStory.FIRST_SCENARIO_NAME).append(NL + NL);
-		expectedResult.append("Given ").append(new ConvertCase(new SimpleStory.EverythingCompiles()).toSeparateWords()).append(NL);
-		expectedResult.append("When ").append(new ConvertCase(new SimpleStory.ICrossMyFingers()).toSeparateWords()).append(NL);
-		expectedResult.append("Then ").append(new ConvertCase(new SimpleStory.PlainTextRendererShouldWork()).toSeparateWords()).append(NL + NL);
+        expectedResult.append("Scenario: ").append(textOf(new SimpleStory.PlainTextRendererWorks())).append(NL + NL);
+        expectedResult.append("Given ").append(textOf(new SimpleStory.EverythingCompiles())).append(NL);
+		expectedResult.append("When ").append(textOf(new SimpleStory.ICrossMyFingers())).append(NL);
+		expectedResult.append("Then ").append(textOf(new SimpleStory.PlainTextRendererShouldWork())).append(NL + NL);
 		
-		expectedResult.append("Scenario: ").append(SimpleStory.SECOND_SCENARIO_NAME).append(NL + NL);
-		expectedResult.append("Given \"").append(new ConvertCase(SimpleStory.FIRST_SCENARIO_NAME).toSeparateWords());
-		expectedResult.append("\" from \"").append(new ConvertCase(story).toSeparateWords()).append("\"" + NL);
-		expectedResult.append("and ").append(new ConvertCase(new SimpleStory.FirstScenarioRanWithoutFallingOver()).toSeparateWords()).append(NL);
-		expectedResult.append("When ").append(new ConvertCase(new SimpleStory.IDoNothing()).toSeparateWords()).append(NL);
-		expectedResult.append("Then ").append(new ConvertCase(new SimpleStory.PlainTextRendererShouldStillWork()).toSeparateWords()).append(NL);
-		expectedResult.append("and ").append(new ConvertCase(new SimpleStory.BehaviourClassShouldNotFail()).toSeparateWords()).append(NL);
+		expectedResult.append("Scenario: ").append(textOf(new SimpleStory.PlainTextRendererStillWorks())).append(NL + NL);
+		expectedResult.append("Given ").append(textOf(new SimpleStory.PlainTextRendererWorks())).append(NL);;
+		expectedResult.append("and ").append(textOf(new SimpleStory.FirstScenarioRanWithoutFallingOver())).append(NL);
+		expectedResult.append("When ").append(textOf(new SimpleStory.IDoNothing())).append(NL);
+		expectedResult.append("Then ").append(textOf(new SimpleStory.PlainTextRendererShouldStillWork())).append(NL);
+		expectedResult.append("and ").append(textOf(new SimpleStory.BehaviourClassShouldNotFail())).append(NL);
 		
 		ensureThat(result, eq(expectedResult.toString()));
 	}
+
+    private String textOf(Object obj) {
+        return new CamelCaseConverter(obj).toPhrase();
+    }
 }

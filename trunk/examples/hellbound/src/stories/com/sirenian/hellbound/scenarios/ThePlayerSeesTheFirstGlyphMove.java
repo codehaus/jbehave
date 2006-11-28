@@ -8,11 +8,9 @@ import com.sirenian.hellbound.outcomes.TheGlyphShouldMoveDownwards;
 public class ThePlayerSeesTheFirstGlyphMove extends ScenarioUsingMiniMock {
 	
 	public ThePlayerSeesTheFirstGlyphMove() {
-		super("The player sees the first glyph move", 
-				"The glyph moves as time passes",
-				given(new TheFirstGlyphIsDisplayedOnTheBoard()),
-				when(new TimePasses()), 
-                then(new TheGlyphShouldMoveDownwards()));
+		super(given(new TheFirstGlyphIsDisplayedOnTheBoard()), 
+				when(new TimePasses()),
+				then(new TheGlyphShouldMoveDownwards()));
 	}
 
 

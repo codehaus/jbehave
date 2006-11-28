@@ -25,26 +25,28 @@ public class SimpleStory extends ScenarioDrivenStory {
 
     public SimpleStory() {
         super(new Narrative(ROLE, FEATURE, BENEFIT));
-
-        ScenarioUsingMiniMock firstScenario = new ScenarioUsingMiniMock(
-                FIRST_SCENARIO_NAME, getClass().getName(),
-                new EverythingCompiles(),
-                new ICrossMyFingers(),
+        addScenario(new PlainTextRendererWorks());
+        addScenario(new PlainTextRendererStillWorks());
+    }
+    
+    public static class PlainTextRendererWorks extends ScenarioUsingMiniMock {
+        public PlainTextRendererWorks() {
+            super(new EverythingCompiles(), new ICrossMyFingers(),
                 new PlainTextRendererShouldWork());
-        addScenario(firstScenario);
-
-        ScenarioUsingMiniMock secondScenario = new ScenarioUsingMiniMock(
-                SECOND_SCENARIO_NAME, getClass().getName(),
-                new Givens(
-                        new GivenScenario(firstScenario),
-                        new FirstScenarioRanWithoutFallingOver()
-                ),
-                new IDoNothing(),
-                new Outcomes(
-                        new PlainTextRendererShouldStillWork(),
-                        new BehaviourClassShouldNotFail())
-                );
-        addScenario(secondScenario);
+        }
+    }
+    
+    public static class PlainTextRendererStillWorks extends ScenarioUsingMiniMock {
+        public PlainTextRendererStillWorks() {
+             super(new Givens(
+                    new GivenScenario(new PlainTextRendererWorks()),
+                    new FirstScenarioRanWithoutFallingOver()
+            ), new IDoNothing(),
+                    new Outcomes(
+                            new PlainTextRendererShouldStillWork(),
+                            new BehaviourClassShouldNotFail())
+                    );
+        }
     }
 
     public static class EverythingCompiles extends GivenUsingMiniMock {

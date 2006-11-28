@@ -15,7 +15,7 @@ import java.util.List;
 
 import jbehave.core.behaviour.Behaviour;
 import jbehave.core.result.Result;
-import jbehave.core.util.ConvertCase;
+import jbehave.core.util.CamelCaseConverter;
 import jbehave.core.util.Timer;
 
 
@@ -94,7 +94,7 @@ public class PlainTextListener implements BehaviourListener {
         if (shortName.endsWith("Behaviour")) {
             shortName = shortName.substring(0, shortName.length() - "Behaviour".length());
         }
-        out.println(count + ") " + new ConvertCase(result.name()).toSeparateWords()
+        out.println(count + ") " + new CamelCaseConverter(result.name()).toPhrase()
                 + " [" + containerName + "]:"
                 );
     }
