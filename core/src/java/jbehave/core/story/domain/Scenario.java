@@ -31,8 +31,6 @@ import jbehave.core.story.renderer.Renderable;
  * @see ScenarioUsingMiniMock
  */
 public interface Scenario extends Renderable {
-    String getStoryName();
-    String getDescription();
     void run(World world);
     void tidyUp(World world);
     boolean containsMocks();

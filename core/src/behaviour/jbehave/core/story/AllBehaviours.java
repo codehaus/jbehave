@@ -19,7 +19,6 @@ import jbehave.core.story.domain.ScenarioDrivenStoryBehaviour;
 import jbehave.core.story.domain.ScenarioUsingMiniMockBehaviour;
 import jbehave.core.story.domain.ScenariosBehaviour;
 import jbehave.core.story.domain.StepsBehaviour;
-import jbehave.core.story.domain.ScenarioComponents;
 import jbehave.core.story.listener.PlainTextScenarioListenerBehaviour;
 import jbehave.core.story.renderer.PlainTextRendererBehaviour;
 

@@ -21,7 +21,7 @@ import jbehave.core.story.domain.Scenario;
 import jbehave.core.story.domain.ScenarioDrivenStory;
 import jbehave.core.story.domain.ScenarioUsingMiniMock;
 import jbehave.core.story.domain.Story;
-import jbehave.core.util.ConvertCase;
+import jbehave.core.util.CamelCaseConverter;
 
 /**
  * Builds a Story from the StoryDetails.  
@@ -54,7 +54,7 @@ public class StoryBuilder {
     }
 
     private Scenario scenario(ScenarioDetails details, String storyName) {
-        return new ScenarioUsingMiniMock(details.name, storyName, givens(details.context), whens(details.event), thens(details.outcome));
+        return new ScenarioUsingMiniMock(givens(details.context), whens(details.event), thens(details.outcome));
     }
 
     private Given givens(ContextDetails context) {
@@ -108,7 +108,7 @@ public class StoryBuilder {
         }
 
         private String toCamelCase(String name) {
-            return new ConvertCase(name).toCamelCase();
+            return new CamelCaseConverter(name).toCamelCase();
         }
     }   
 

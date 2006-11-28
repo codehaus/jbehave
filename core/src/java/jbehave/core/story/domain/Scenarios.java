@@ -16,6 +16,7 @@ import jbehave.core.listener.BehaviourListener;
 import jbehave.core.story.renderer.Renderable;
 import jbehave.core.story.renderer.Renderer;
 import jbehave.core.story.result.ScenarioResult;
+import jbehave.core.util.CamelCaseConverter;
 
 
 /**
@@ -28,10 +29,10 @@ public class Scenarios implements Renderable {
         return scenarios;
     }
 
-	public void run(World world, BehaviourListener[] listeners) {
+	public void run(World world, Class storyClass, BehaviourListener[] listeners) {
         for (int i = 0; i < scenarios.size(); i++) {
             Scenario scenario = (Scenario) scenarios.get(i);
-            informListeners(listeners, runScenario(world, scenario));
+            informListeners(listeners, runScenario(world, storyClass, scenario));
         }
 	}
 
@@ -41,14 +42,17 @@ public class Scenarios implements Renderable {
         }
     }
 
-    private ScenarioResult runScenario(World world, Scenario scenario) {
+    private ScenarioResult runScenario(World world, Class storyClass, Scenario scenario) {
         ScenarioResult result;
+        String storyDescription = new CamelCaseConverter(storyClass).toPhrase();
+        String description = new CamelCaseConverter(scenario).toPhrase();
+        
         try {                
             scenario.run(world);
-            result = new ScenarioResult(scenario.getDescription(), scenario.getStoryName(), 
+            result = new ScenarioResult(description, storyDescription, 
                     scenario.containsMocks() ? ScenarioResult.USED_MOCKS : ScenarioResult.SUCCEEDED);
         } catch (NestedVerificationException nve) {
-            result = new ScenarioResult(scenario.getDescription(), scenario.getStoryName(), nve);
+            result = new ScenarioResult(description, storyDescription, nve);
         } finally {
             scenario.tidyUp(world);
         }

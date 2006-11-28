@@ -4,7 +4,6 @@ import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.util.Listener;
 import com.sirenian.hellbound.util.ListenerNotifier;
 import com.sirenian.hellbound.util.ListenerSet;
-import com.sirenian.hellbound.util.Logger;
 
 public class Glyph {
 	

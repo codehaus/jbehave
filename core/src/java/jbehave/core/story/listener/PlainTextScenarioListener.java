@@ -16,7 +16,7 @@ import jbehave.core.listener.BehaviourListener;
 import jbehave.core.listener.PlainTextListener;
 import jbehave.core.result.Result;
 import jbehave.core.story.result.ScenarioResult;
-import jbehave.core.util.ConvertCase;
+import jbehave.core.util.CamelCaseConverter;
 import jbehave.core.util.Timer;
 
 
@@ -53,7 +53,7 @@ public class PlainTextScenarioListener extends PlainTextListener implements Beha
     
     protected void printResult(int count, Result result) {
         String storyClassName = result.containerName();
-        String storyName =  new ConvertCase(result.containerName()).toSeparateWords();
+        String storyName =  new CamelCaseConverter(result.containerName()).toPhrase();
         out.println(count + ") " + storyName + " -> " + result.name() + " [" + storyClassName + "]");
     }
     

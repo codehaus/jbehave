@@ -12,7 +12,7 @@ import jbehave.core.behaviour.Behaviour;
 import jbehave.core.behaviour.BehaviourMethod;
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.result.Result;
-import jbehave.core.util.ConvertCase;
+import jbehave.core.util.CamelCaseConverter;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestResult;
@@ -92,7 +92,7 @@ public class JUnitMethodAdapter implements BehaviourListener, Test {
     }
 
     public String toString() {
-        return new ConvertCase(behaviourMethod.method().getName()).toSeparateWords();
+        return new CamelCaseConverter(behaviourMethod.method().getName()).toPhrase();
     }
 
 }

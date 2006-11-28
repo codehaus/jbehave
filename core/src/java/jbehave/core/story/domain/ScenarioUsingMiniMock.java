@@ -9,6 +9,7 @@ package jbehave.core.story.domain;
 
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.story.renderer.Renderer;
+import jbehave.core.util.CamelCaseConverter;
 
 /**
  * <p>A Scenario describes a series of events, run in a particular
@@ -64,38 +65,26 @@ import jbehave.core.story.renderer.Renderer;
 public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     protected final Given given;
     protected final Step step;
-    protected final String name;
-    protected final String storyName;
     
-    public ScenarioUsingMiniMock(String name, String storyName, Event event, Outcome outcome) {
-        this(name, storyName, Givens.NULL, event, outcome);
+    public ScenarioUsingMiniMock(Event event, Outcome outcome) {
+        this(Givens.NULL, event, outcome);
     }
     
-    public ScenarioUsingMiniMock(String name, String storyName, Given given, Event event, Outcome outcome) {
-        this(name, storyName, given, new EventOutcomeStep(event, outcome));
+    public ScenarioUsingMiniMock(Given given, Event event, Outcome outcome) {
+        this(given, new EventOutcomeStep(event, outcome));
     }
     
-    public ScenarioUsingMiniMock(String name, String storyName, Given given, Event eventA, Outcome outcomeA, Event eventB, Outcome outcomeB) {
-        this(name, storyName, given, new Steps(new EventOutcomeStep(eventA, outcomeA), new EventOutcomeStep(eventB, outcomeB)));
+    public ScenarioUsingMiniMock(Given given, Event eventA, Outcome outcomeA, Event eventB, Outcome outcomeB) {
+        this(given, new Steps(new EventOutcomeStep(eventA, outcomeA), new EventOutcomeStep(eventB, outcomeB)));
     }
     
-    public ScenarioUsingMiniMock(String name, String storyName, Given given, Event eventA, Outcome outcomeA, Event eventB, Outcome outcomeB, Event eventC, Outcome outcomeC) {
-        this(name, storyName, given, new Steps(new EventOutcomeStep(eventA, outcomeA), new EventOutcomeStep(eventB, outcomeB), new EventOutcomeStep(eventC, outcomeC)));
+    public ScenarioUsingMiniMock(Given given, Event eventA, Outcome outcomeA, Event eventB, Outcome outcomeB, Event eventC, Outcome outcomeC) {
+        this(given, new Steps(new EventOutcomeStep(eventA, outcomeA), new EventOutcomeStep(eventB, outcomeB), new EventOutcomeStep(eventC, outcomeC)));
     }
     
-    public ScenarioUsingMiniMock(String name, String storyName, Given given, Step step) {
-        this.name = name;
-        this.storyName = storyName;
+    public ScenarioUsingMiniMock(Given given, Step step) {
         this.given = given;
         this.step = step;
-    }
-    
-    public String getStoryName() {
-        return storyName;
-    }
-
-    public String getDescription() {
-        return name;
     }
     
     public void run(World world) {
@@ -189,9 +178,7 @@ public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("[Scenario name=");
-        buffer.append(name);
-        buffer.append(", storyName=");
-        buffer.append(storyName);
+        buffer.append(new CamelCaseConverter(this).toPhrase());
         buffer.append(",\ngiven=");
         buffer.append(given);
         buffer.append(",\nstep=");

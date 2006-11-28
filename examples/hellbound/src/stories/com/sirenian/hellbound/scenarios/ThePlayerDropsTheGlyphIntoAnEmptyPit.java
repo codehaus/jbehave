@@ -11,12 +11,10 @@ import com.sirenian.hellbound.outcomes.TheNextGlyphShouldAppear;
 public class ThePlayerDropsTheGlyphIntoAnEmptyPit extends ScenarioUsingMiniMock {
 
     public ThePlayerDropsTheGlyphIntoAnEmptyPit() {
-        super("The player drops the glyph into an empty pit",
-                "The player drops the glyph",
-                given(new TheFirstGlyphIsDisplayedOnTheBoard()),
-    			when(new ThePlayerPressesTheDropKey()),                
+        super(given(new TheFirstGlyphIsDisplayedOnTheBoard()),
+                when(new ThePlayerPressesTheDropKey()),
                 then(new TheGlyphShouldFallToTheBottom()),
-                when(new TimePasses()),
+    			when(new TimePasses()),                
                 then(new TheGlyphSegmentsShouldBecomeJunk(),
             		 new TheNextGlyphShouldAppear()));
     }

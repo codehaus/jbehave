@@ -40,10 +40,6 @@ public class StoryRunnerBehaviour extends UsingMiniMock {
             mock.expects("addListener").with(isA(PlainTextScenarioListener.class));
 			mock.expects("run").with(isA(World.class)).will(returnValue(new ScenarioResult[] {resultA, resultB}));
 		}
-		
-		public String title() {
-			return ((Story)mock).title();
-		}
 
 		public Narrative narrative() {
 			return ((Story)mock).narrative();
