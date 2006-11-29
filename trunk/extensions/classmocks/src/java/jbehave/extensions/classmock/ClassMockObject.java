@@ -76,7 +76,55 @@ class ClassMockObject extends MiniMockObject {
 	}
     
 	private static Object[] createConstructorArgsFor(Class[] constructorArgClasses) {
-		return new Object[constructorArgClasses.length];
+		Object[] args = new Object[constructorArgClasses.length];
+		
+		for (int i = 0; i < args.length; i++) {
+			Class clazz = constructorArgClasses[i];
+			try {
+				Object result = construct(clazz);
+				args[i] = result;
+			} catch (Exception e) {
+				throw new RuntimeException("Could not mock class " + constructorArgClasses[i] + " at index " + i, e);
+			}
+		}
+		
+		return args;
+	}
+
+	private static Object construct(Class clazz) throws InstantiationException, IllegalAccessException {
+		Object result = null;
+		if (clazz.isPrimitive()) {
+			result = constructPrimitive(clazz);
+		} else if (clazz.isArray()) {
+			result = new Object[] {};
+		} else if (Modifier.isFinal(clazz.getModifiers())) {
+			result = clazz.newInstance();
+		} else {
+			result = new UsingClassMock().mock(clazz);
+		}
+		return result;
+	}
+
+	private static Object constructPrimitive(Class clazz) {
+		if (clazz == byte.class) {
+			return new Byte((byte) 0);
+		} else if (clazz == boolean.class) {
+			return Boolean.FALSE;
+		} else if (clazz == char.class) {
+			return new Character(' ');
+		} else if (clazz == double.class) {
+			return new Double(0);
+		} else if (clazz == float.class) {
+			return new Float(0);
+		} else if (clazz == int.class) {
+			return new Integer(0);
+		} else if (clazz == long.class) {
+			return new Long(0L);
+		} else if (clazz == short.class) {
+			return new Short((short) 0);
+		} else {
+			throw new IllegalArgumentException("Never heard of a primitive called " + clazz + " before. ");
+		}
 	}
 
 	private class ExpectationHandlerDelegate extends ExpectationHandler implements MethodInterceptor {

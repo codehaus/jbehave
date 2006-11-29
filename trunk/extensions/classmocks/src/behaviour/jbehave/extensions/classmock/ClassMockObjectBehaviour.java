@@ -19,7 +19,16 @@ public class ClassMockObjectBehaviour extends UsingMiniMock {
 	}
 	
 	private static class AClassWithNoConstructors {}
-	
+
+    
+    public static class AClassWithAComplexConstructor {
+        public AClassWithAComplexConstructor(String anObject, int primitive, char primitive2, Object[] array) {
+            anObject.compareTo("What happens if the argument is null?");
+            int i = primitive + array.length;
+        }
+        
+    }
+    
     public void shouldCreateClassObjectThatCanBeCastToTheCorrectType() {
         Mock mock = ClassMockObject.mockClass(AClass.class, "bar");
         Ensure.that(mock instanceof AClass);
@@ -54,5 +63,7 @@ public class ClassMockObjectBehaviour extends UsingMiniMock {
 		ensureThat(expected, eq(actual));
     }
         
-    
+    public void shouldBeAbleToMockClassesWithConstructorArgs() {
+    	Mock mock = ClassMockObject.mockClass(AClassWithAComplexConstructor.class, "foo");
+    }
 }
