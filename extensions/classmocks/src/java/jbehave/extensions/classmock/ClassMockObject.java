@@ -8,6 +8,7 @@ import java.lang.reflect.Modifier;
 import jbehave.core.minimock.MiniMockObject;
 import jbehave.core.mock.ExpectationRegistry;
 import jbehave.core.mock.Mock;
+import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -19,8 +20,13 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 class ClassMockObject extends MiniMockObject {
 
-	private ClassMockObject(Class type, String name) {
+	private final Class[] constructorArgClasses;
+	private final Object[] constructorArgs;
+
+	private ClassMockObject(Class type, String name, Class[] constructorArgClasses, Object[] constructorArgs) {
 		super(type, name);
+		this.constructorArgClasses = constructorArgClasses;
+		this.constructorArgs = constructorArgs;
 	}
 	
     /** get the mocked instance */
@@ -29,12 +35,21 @@ class ClassMockObject extends MiniMockObject {
     	enhancer.setClassLoader(getType().getClassLoader());
     	enhancer.setSuperclass(getType());
     	enhancer.setCallback(new ExpectationHandlerDelegate());
-    	Class[] constructorArgClasses = getConstructorArgClasses(getType());
-    	Object[] constructorArgs = createConstructorArgsFor(constructorArgClasses);
         return enhancer.create(constructorArgClasses, constructorArgs);
     }	
 
-    static Mock mockClass(final Class type, final String name) {
+    public static Mock mockClass(Class type, String name) {
+    	Class[] constructorArgClasses = getConstructorArgClasses(type);
+    	Object[] constructorArgs = createConstructorArgsFor(constructorArgClasses);
+    	return createMockClass(type, name, constructorArgClasses, constructorArgs);
+    	
+    }
+    
+    public static Mock mockClass(final Class type, final String name, Class[] constructorArgClasses, Object[] constructorArgs) {
+    	return createMockClass(type, name, constructorArgClasses, constructorArgs);
+    }
+    
+	private static Mock createMockClass(final Class type, final String name, final Class[] constructorArgClasses, final Object[] constructorArgs) {
     	if (type.getDeclaringClass() != null && !Modifier.isStatic(type.getModifiers())) {
             throw new IllegalArgumentException("cannot mock non-static inner class " + type.getName());
         }
@@ -44,7 +59,7 @@ class ClassMockObject extends MiniMockObject {
     	enhancer.setClassLoader(Mock.class.getClassLoader());
     	enhancer.setInterfaces(new Class[]{Mock.class, ExpectationRegistry.class});
     	enhancer.setCallback(new MethodInterceptor() {
-    		final ClassMockObject mock = new ClassMockObject(type, name);
+    		final ClassMockObject mock = new ClassMockObject(type, name, constructorArgClasses, constructorArgs);
     		
     	    public Object intercept(Object thisProxy, Method method, Object[] args, MethodProxy superProxy) throws Throwable 
     		{
@@ -60,71 +75,62 @@ class ClassMockObject extends MiniMockObject {
     		}    		
     	});
     	
-    	Class[] constructorArgClasses = getConstructorArgClasses(type);
-    	Object[] constructorArgs = createConstructorArgsFor(constructorArgClasses);
-    	
-        return (Mock) enhancer.create(constructorArgClasses, constructorArgs);
+    	try {
+    		return (Mock) enhancer.create(constructorArgClasses, constructorArgs);
+    	} catch (CodeGenerationException e) {
+    		// Does this in Eclipse, but...
+    		if (e.getCause() instanceof NullPointerException) {
+	    		throw caughtANullPointer(type, e);
+    		} else {
+    			throw e;
+    		}
+    	} catch (NullPointerException e) {
+    		// For some reason, it does this on the command line 
+    		// (calls Enhancer.nextInstance() instead of Enhancer.firstInstance() )
+    		throw caughtANullPointer(type, e);
+    	}
     }
+
+	private static IllegalArgumentException caughtANullPointer(final Class type, Throwable e) {
+		return new IllegalArgumentException("Caught a NullPointerException while trying to mock a " + type + ". This could be caused " +
+				"because a constructor argument that couldn't be instantiated was used in the constructor. Have you tried " +
+				"providing constructor arguments?", e);
+	}
 
 
 	private static Class[] getConstructorArgClasses(Class type) {
-		Constructor[] constructors = type.getConstructors();
+		Constructor[] constructors = type.getDeclaredConstructors();
 		if (constructors.length == 0) {
-			throw new IllegalArgumentException("Cannot construct class " + type);
+			constructors = type.getConstructors();			
+		}
+		if (constructors.length == 0) {
+			throw new IllegalArgumentException("No constructors available for class " + type);
+		}
+		if (Modifier.isPrivate(constructors[0].getModifiers())) {
+			try {
+				constructors[0].setAccessible(true);
+			} catch (SecurityException e) {
+				throw new IllegalArgumentException("No constructors available for class " + type);
+			}
 		}
 		return constructors[0].getParameterTypes();
 	}
     
 	private static Object[] createConstructorArgsFor(Class[] constructorArgClasses) {
 		Object[] args = new Object[constructorArgClasses.length];
+		ConstructorFactory constructorFactory = new ConstructorFactory();
 		
 		for (int i = 0; i < args.length; i++) {
 			Class clazz = constructorArgClasses[i];
 			try {
-				Object result = construct(clazz);
+				Object result = constructorFactory.construct(clazz);
 				args[i] = result;
 			} catch (Exception e) {
-				throw new RuntimeException("Could not mock class " + constructorArgClasses[i] + " at index " + i, e);
+				throw new RuntimeException("Could not create constructor argument for class " + constructorArgClasses[i] + " at index " + i, e);
 			}
 		}
 		
 		return args;
-	}
-
-	private static Object construct(Class clazz) throws InstantiationException, IllegalAccessException {
-		Object result = null;
-		if (clazz.isPrimitive()) {
-			result = constructPrimitive(clazz);
-		} else if (clazz.isArray()) {
-			result = new Object[] {};
-		} else if (Modifier.isFinal(clazz.getModifiers())) {
-			result = clazz.newInstance();
-		} else {
-			result = new UsingClassMock().mock(clazz);
-		}
-		return result;
-	}
-
-	private static Object constructPrimitive(Class clazz) {
-		if (clazz == byte.class) {
-			return new Byte((byte) 0);
-		} else if (clazz == boolean.class) {
-			return Boolean.FALSE;
-		} else if (clazz == char.class) {
-			return new Character(' ');
-		} else if (clazz == double.class) {
-			return new Double(0);
-		} else if (clazz == float.class) {
-			return new Float(0);
-		} else if (clazz == int.class) {
-			return new Integer(0);
-		} else if (clazz == long.class) {
-			return new Long(0L);
-		} else if (clazz == short.class) {
-			return new Short((short) 0);
-		} else {
-			throw new IllegalArgumentException("Never heard of a primitive called " + clazz + " before. ");
-		}
 	}
 
 	private class ExpectationHandlerDelegate extends ExpectationHandler implements MethodInterceptor {
