@@ -27,7 +27,7 @@ import jbehave.core.mock.Mock;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-class MiniMockObject implements Mock, ExpectationRegistry {
+public class MiniMockObject implements Mock, ExpectationRegistry {
     private final List expectations = new ArrayList();
     private final List unexpectedInvocations = new ArrayList();
     private final Class type;
@@ -44,7 +44,7 @@ class MiniMockObject implements Mock, ExpectationRegistry {
     }
     
     /** Manages method invocations on the mock */
-    private class ExpectationHandler implements InvocationHandler {
+    protected class ExpectationHandler implements InvocationHandler {
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             if (args == null) args = new Object[0];
             
@@ -108,6 +108,10 @@ class MiniMockObject implements Mock, ExpectationRegistry {
         this.type = type;
         this.name = name;
         this.fallbackBehaviour = new StubInvocationHandler(name);
+    }
+    
+    protected Class getType() {
+    	return type;
     }
     
     /** get the mocked instance */
