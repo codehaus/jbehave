@@ -36,10 +36,14 @@ public class UsingMiniMock extends UsingConstraints implements UsingMocks {
     }
     
     public Mock mock(Class type, String name) {
-        Mock mock = MiniMockObject.mock(type, name);
+        Mock mock = createMock(type, name);
         mocks.add(mock);
         return mock;
     }
+
+	protected Mock createMock(Class type, String name) {
+		return MiniMockObject.mock(type, name);
+	}
 
     public void verifyMocks() {
         for (Iterator i = mocks.iterator(); i.hasNext();) {
