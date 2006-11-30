@@ -18,10 +18,14 @@ public class StubHeartbeat implements Heartbeat {
     }
 
     public void stop() {
-        
+        beating = false;
     }
 
     public boolean isBeating() {
         return beating;
+    }
+
+    public void skipNextBeat() {
+        
     }
 }

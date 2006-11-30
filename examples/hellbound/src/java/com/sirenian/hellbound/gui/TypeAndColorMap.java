@@ -18,12 +18,12 @@ public class TypeAndColorMap {
         }
     }
     
-    public Color getColorFor(GlyphType t) {
-        Color color = (Color) typesToColors.get(t);
+    public Color getColorFor(GlyphType type) {
+        Color color = (Color) typesToColors.get(type);
         return color == null ? Color.BLACK : color;
     }
     
-    public GlyphType getTypeFor(Color c) {
-        return (GlyphType) colorsToTypes.get(c);
+    public GlyphType getTypeFor(Color color) {
+        return (GlyphType) colorsToTypes.get(color);
     }
 }

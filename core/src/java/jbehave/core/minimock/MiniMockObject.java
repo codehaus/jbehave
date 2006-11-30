@@ -156,7 +156,7 @@ public class MiniMockObject implements Mock, ExpectationRegistry {
         return '[' + name + ']';
     }
 
-    static Mock mock(final Class type, final String name) {
+    protected static Mock mock(final Class type, final String name) {
         Mock result = (Mock) Proxy.newProxyInstance(Mock.class.getClassLoader(),
                 new Class[] { type, Mock.class, ExpectationRegistry.class },
                 new InvocationHandler() {

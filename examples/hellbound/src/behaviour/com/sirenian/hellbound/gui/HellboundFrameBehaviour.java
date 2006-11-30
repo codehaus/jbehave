@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Mock;
 import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
+import jbehave.extensions.threaded.time.TimeoutException;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import com.sirenian.hellbound.domain.game.GameState;
@@ -45,10 +46,26 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
 	}
     
     public void shouldRequestThatTheShapeIsDroppedWhenTheSpaceKeyIsPressed() throws Exception {
-        gameRequestListener.expects("requestDropGlyph").once();
+        ensureThatKeycodeProducesRequest(KeyEvent.VK_SPACE, "requestDropGlyph");
+    }
+    
+    public void shouldRequestThatTheShapeIsMovedRightWhenTheRightKeyIsPressed() throws Exception {
+        ensureThatKeycodeProducesRequest(KeyEvent.VK_RIGHT, "requestMoveGlyphRight");
+    }
+    
+    public void shouldRequestThatTheShapeIsMovedLeftWhenTheMoveLeftKeyIsPressed() throws Exception {
+        ensureThatKeycodeProducesRequest(KeyEvent.VK_LEFT, "requestMoveGlyphLeft");
+    }
+    
+    public void shouldRequestThatTheShapeIsMovedDownWhenTheMoveDownKeyIsPressed() throws Exception {
+        ensureThatKeycodeProducesRequest(KeyEvent.VK_DOWN, "requestDropGlyph");
+    }
+
+    private void ensureThatKeycodeProducesRequest(int keycode, String expectedRequest) throws TimeoutException {
+        gameRequestListener.expects(expectedRequest).once();
         
         frame.reportGameStateChanged(GameState.RUNNING);
-        windowWrapper.pressKey(KeyEvent.VK_SPACE);
+        windowWrapper.pressKey(keycode);
         verifyMocks();
     }
 }

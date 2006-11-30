@@ -24,8 +24,9 @@ public class HellboundIsRunning extends HellboundGiven {
 		RenderedPit graphics = new RenderedPit(Hellbound.SCALE, Hellbound.WIDTH, Hellbound.HEIGHT, Hellbound.COLORMAP);
         EngineQueue engineQueue = new ThreadedEngineQueue();
         GuiQueue guiQueue = new ThreadedSwingQueue();
+        PseudoRandomGlyphFactory glyphFactory = new PseudoRandomGlyphFactory(42);
 		
-		Hellbound hellbound = new Hellbound(engineQueue, guiQueue, heartbeat, createPitPanelWithDoublePaint(graphics), new PseudoRandomGlyphFactory(42));
+        Hellbound hellbound = new Hellbound(engineQueue, guiQueue, heartbeat, createPitPanelWithDoublePaint(graphics), glyphFactory);
 		
 		world.put(WorldKey.HEARTBEAT, heartbeat);
 		world.put(WorldKey.WINDOW_WRAPPER, hellboundFrameWrapper);

@@ -12,6 +12,7 @@ public class AcceleratingHeartbeat implements Heartbeat {
 	private ListenerNotifier pulse;
 	private long timeBetweenBeats;
 	private boolean beating;
+    private boolean skipping;
 
 	public AcceleratingHeartbeat() {
 		listenerSet = new ListenerSet();
@@ -29,7 +30,7 @@ public class AcceleratingHeartbeat implements Heartbeat {
 		Runnable pulseTimer = new Runnable() {
 			public void run() {
 				while (beating && timeBetweenBeats > 0) {
-					waitForTimeToElapse();
+					waitForTheBeat();
 					speedUp();
 				}
 			}
@@ -38,11 +39,14 @@ public class AcceleratingHeartbeat implements Heartbeat {
 		new Thread(pulseTimer).start();
 	}
     
-    private synchronized void waitForTimeToElapse() {
+    private synchronized void waitForTheBeat() {
         try {
             wait(timeBetweenBeats);
         } catch (InterruptedException e) { }
-        listenerSet.notifyListeners(pulse);
+        
+        if (!skipping) {
+            listenerSet.notifyListeners(pulse);
+        }
     }       
 
     private void speedUp() {
@@ -62,5 +66,13 @@ public class AcceleratingHeartbeat implements Heartbeat {
 
     public boolean isBeating() {
         return beating;
+    }
+
+    public void skipNextBeat() {
+        skipping = true;
+        synchronized(this) {
+            this.notifyAll();
+        }
+        skipping = false;
     }
 }

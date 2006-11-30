@@ -17,7 +17,14 @@ import com.sirenian.hellbound.util.Logger;
 
 public abstract class HellboundOutcome extends OutcomeUsingMiniMock {
 	
-	private Idler idler;
+	protected static final Segments T_SHAPE_AT_TOP = new Segments(
+                		new Segment(2, 0),
+                		new Segment(3, 0),
+                		new Segment(4, 0),
+                		new Segment(3, 1)
+                );
+    
+    private Idler idler;
 
 	public HellboundOutcome() {
 		idler = new Idler();

@@ -14,6 +14,7 @@ public class ForcedHeartbeat implements Heartbeat {
 	private ListenerSet listeners;
 	private ListenerNotifier pulse;
     private boolean beating;
+    private boolean skipped;
 	
 	public ForcedHeartbeat() {
 		listeners = new ListenerSet();
@@ -30,18 +31,29 @@ public class ForcedHeartbeat implements Heartbeat {
 	
 	public void causeBeat() {
 		listeners.notifyListeners(pulse);
+        skipped = false;
 	}
 
     public void start(int initialTimeBetweenBeats) {
         beating = true;
+        skipped = false;
     }
 
     public void stop() {
         beating = false;
+        skipped = false;
     }
 
     public boolean isBeating() {
         return beating;
+    }
+
+    public boolean wasSkipped() {
+        return skipped;
+    }
+
+    public void skipNextBeat() {
+        skipped = true;
     }
 
 }

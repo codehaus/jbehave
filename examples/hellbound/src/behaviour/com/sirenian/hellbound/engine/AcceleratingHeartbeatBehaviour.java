@@ -39,7 +39,11 @@ public class AcceleratingHeartbeatBehaviour extends UsingMiniMock {
     
     public void shouldStopAnyExistingTimerThreadsBeforeStarting() {
         // No way of ensuring this with automation. 
-    }    
+    }
+    
+    public void shouldMoveImmediatelyToNextWaitingPhaseWhenSkippingABeat() {
+        // Nor this.
+    }
 	
 	public void shouldNotBeatAfterBeingStopped() throws Exception {
 		Mock heartbeatListener = mock(HeartbeatListener.class);
