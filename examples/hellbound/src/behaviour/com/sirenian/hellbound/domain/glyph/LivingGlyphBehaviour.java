@@ -59,11 +59,39 @@ public class LivingGlyphBehaviour extends GlyphBehaviour {
 		Segments firstSegments = listener.toLastSegments();
 		
 		ensureThat(!glyph.requestMoveDown());
+        ensureThat(!glyph.requestMoveRight());
+        ensureThat(!glyph.requestMoveLeft());
 		
 		Segments secondSegments = listener.toLastSegments();
 		
 		ensureThat(firstSegments, eq(secondSegments));
 	}
+    
+    public void shouldMoveIfNotInCollision() {
+        CollisionDetector detector = new CollisionDetector() {
+            public boolean collides(Segments segments) {
+                return false;
+            }
+        };
+        
+        glyph = new LivingGlyph(
+                GlyphType.O,
+                detector,
+                4);
+        
+        Segments latestSegments = glyph.getSegments();
+        
+        ensureThat(glyph.requestMoveDown());        
+        ensureThat(glyph.getSegments(), eq(latestSegments.movedDown()));
+        latestSegments = latestSegments.movedDown();
+
+        ensureThat(glyph.requestMoveRight());
+        ensureThat(glyph.getSegments(), eq(latestSegments.movedRight()));
+        latestSegments = latestSegments.movedRight();
+
+        ensureThat(glyph.requestMoveLeft());
+        ensureThat(glyph.getSegments(), eq(latestSegments.movedLeft()));
+    }
     
     public void shouldReduceSegmentsToEmptyIfKilled() {
         setUp();

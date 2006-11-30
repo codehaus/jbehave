@@ -25,15 +25,27 @@ public class LivingGlyph extends Glyph {
 	}
 	
 	public boolean requestMoveDown() {
-		Segments newSegments = segments.movedDown();
-		if (detector.collides(newSegments)) {
-			return false;
-		} else {
-			moveTo(newSegments);
-			return true;
-		}
+		return attemptMoveTo(segments.movedDown());
 	}
 
+    public boolean requestMoveLeft() {
+        return attemptMoveTo(segments.movedLeft());
+    }
+
+
+    public boolean requestMoveRight() {
+        return attemptMoveTo(segments.movedRight());
+    }
+
+    private boolean attemptMoveTo(Segments newSegments) {
+        if (detector.collides(newSegments)) {
+            return false;
+        } else {
+            moveTo(newSegments);
+            return true;
+        }
+    }
+    
 	public void drop() {
 		Segments segmentsToMoveTo = segments;
 		Segments nextSegmentsDown = segments.movedDown();
@@ -51,4 +63,6 @@ public class LivingGlyph extends Glyph {
     public String toString() {
         return "LivingGlyph[ " + type + ", " + segments + "]";
     }
+
+
 }

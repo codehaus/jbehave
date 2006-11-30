@@ -19,6 +19,7 @@
 		<fileset dir="${lib_dir}" includes="extensions/fit-1.1.jar" />
 		<fileset dir="${lib_dir}" includes="extensions/cotta-1.0.jar" />
 		<fileset dir="${lib_dir}" includes="extensions/velocity-dep-1.4.jar" />
+		<fileset dir="${lib_dir}" includes="extensions/proxytoys-0.2.1.jar" />
 	</path>
 
 	<!-- build output structure -->
@@ -97,7 +98,7 @@
 
 	<target name="compile-behaviour" depends="build-jar" description="Compile behaviour">
 		<mkdir dir="${behaviour_classes_dir}" />
-		<javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="1.4" target="1.4" debug="true">
+		<javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="${jdk.version}" target="${jdk.version}" debug="true">
 			<src>
 				<pathelement path="${core_dir}/src/behaviour" />
 				<pathelement path="${everything_dir}/src/behaviour" />

@@ -103,23 +103,26 @@ public class Game implements GameRequestListener {
     
     private void moveGlyphDownOrJunkIt() {
         if (!glyph.requestMoveDown()) {
+            Logger.debug(this, "Could not move glyph down; junking it");
             junk.absorb(glyph);
             resetGlyph();
         }
     }
 
     public void requestMoveGlyphDown() {
+        Logger.debug(this, "Move down glyph requested");
         moveGlyphDownOrJunkIt();
     }
 
     public void requestMoveGlyphLeft() {
-        // TODO Auto-generated method stub
+        Logger.debug(this, "Move left glyph requested");
+        glyph.requestMoveLeft();
         
     }
 
     public void requestMoveGlyphRight() {
-        // TODO Auto-generated method stub
-        
+        Logger.debug(this, "Move right glyph requested");
+        glyph.requestMoveRight();
     }
 	
 	

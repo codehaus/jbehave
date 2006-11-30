@@ -9,7 +9,6 @@ public class VerifiableGlyphListener implements GlyphListener {
     private Segments fromSegments;
 
     public void reportGlyphMovement(GlyphType type, Segments fromSegments, Segments toSegments) {
-        Logger.debug(this, "Glyph movement reported from " + fromSegments + " to " + toSegments + " with type " + type);
         this.fromSegments = fromSegments;
         this.toSegments = toSegments;
         this.type = type;
