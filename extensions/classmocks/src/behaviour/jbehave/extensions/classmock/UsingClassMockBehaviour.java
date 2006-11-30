@@ -35,8 +35,8 @@ public class UsingClassMockBehaviour extends UsingMiniMock {
             		AClassWithNoConstructorsAtAll.class}, 
     			new Object[] {
     				"",
-    				Integer.valueOf(0),
-    				Character.valueOf(' '),
+    				new Integer(0),
+    				new Character(' '),
     				new Object[0],
     				AClassWithNoConstructorsAtAll.INSTANCE});
 		mock.expects("getSomething").will(returnValue(expected));

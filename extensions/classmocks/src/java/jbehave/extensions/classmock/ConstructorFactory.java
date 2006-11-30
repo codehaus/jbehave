@@ -28,17 +28,17 @@ public class ConstructorFactory {
 		} else if (clazz == boolean.class) {
 			return Boolean.FALSE;
 		} else if (clazz == char.class) {
-			return Character.valueOf(' ');
+			return new Character(' ');
 		} else if (clazz == double.class) {
-			return Double.valueOf(0);
+			return new Double(0);
 		} else if (clazz == float.class) {
-			return Float.valueOf(0);
+			return new Float(0);
 		} else if (clazz == int.class) {
-			return Integer.valueOf(0);
+			return new Integer(0);
 		} else if (clazz == long.class) {
-			return Long.valueOf(0L);
+			return new Long(0L);
 		} else if (clazz == short.class) {
-			return Short.valueOf((short) 0);
+			return new Short((short) 0);
 		} else {
 			throw new IllegalArgumentException("Never heard of a primitive called " + clazz + " before. ");
 		}
