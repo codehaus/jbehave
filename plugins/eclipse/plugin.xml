@@ -101,11 +101,11 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="jbehave.plugin.eclipse.editors.BehaviourEditor"
+            class="jbehave.plugin.eclipse.editors.StoryEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             extensions="story"
             icon="icons/behave.gif"
-            id="jbehave.plugin.eclipse.editors.BehaviourEditor"
+            id="jbehave.plugin.eclipse.editors.StoryEditor"
             name="Behaviour Editor"/>
    </extension>
    <extension
@@ -114,7 +114,7 @@
          point="org.eclipse.ui.editorActions">
       <editorContribution
             id="jbehave-eclipse.behaviourEditorContribution"
-            targetID="jbehave.plugin.eclipse.editors.BehaviourEditor">
+            targetID="jbehave.plugin.eclipse.editors.StoryEditor">
          <action
                class="jbehave.plugin.eclipse.actions.NavigateToJavaSource"
                id="jbehave-eclipse.navigate-source"
