@@ -94,7 +94,7 @@ class ClassMockObject extends MiniMockObject {
 	private static IllegalArgumentException caughtANullPointer(final Class type, Throwable e) {
 		return new IllegalArgumentException("Caught a NullPointerException while trying to mock a " + type + ". This could be caused " +
 				"because a constructor argument that couldn't be instantiated was used in the constructor. Have you tried " +
-				"providing constructor arguments?", e);
+				"providing constructor arguments?");
 	}
 
 
