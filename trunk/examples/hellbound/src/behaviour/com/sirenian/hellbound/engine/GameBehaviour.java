@@ -1,8 +1,8 @@
 package com.sirenian.hellbound.engine;
 
-import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Constraint;
 import jbehave.core.mock.Mock;
+import jbehave.extensions.classmock.UsingClassMock;
 
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.game.GameListener;
@@ -16,7 +16,7 @@ import com.sirenian.hellbound.domain.glyph.StubCollisionDetector;
 import com.sirenian.hellbound.domain.glyph.StubHeartbeat;
 import com.sirenian.hellbound.util.ListenerSet;
 
-public class GameBehaviour extends UsingMiniMock {
+public class GameBehaviour extends UsingClassMock {
 
     public void shouldMoveGlyphLowerOnHeartbeat() {
         StubHeartbeat heartbeat = new StubHeartbeat();
@@ -85,6 +85,28 @@ public class GameBehaviour extends UsingMiniMock {
         
         verifyMocks();
 	}
+    
+    public void shouldDelegateMovementRequestsToGlyph() {
+        Mock glyphFactory = mock(GlyphFactory.class);
+        Mock glyph = mock(LivingGlyph.class, new Class[]{GlyphType.class, CollisionDetector.class, int.class},
+                new Object[] {GlyphType.NULL, CollisionDetector.NULL, Integer.valueOf(3)});
+        glyphFactory.stubs("nextGlyph").will(returnValue(glyph));
+        
+        Game game = new Game((GlyphFactory) glyphFactory, new StubHeartbeat(), 7, 13);
+        
+        glyph.expects("requestMoveDown").will(returnValue(true));
+        glyph.expects("requestMoveLeft").will(returnValue(true));
+        glyph.expects("requestMoveRight").will(returnValue(true));
+        glyph.expects("drop");
+        
+        game.requestStartGame();
+        game.requestMoveGlyphDown();
+        game.requestMoveGlyphLeft();
+        game.requestMoveGlyphRight();
+        game.requestDropGlyph();
+        
+        verifyMocks();
+    }
     
     public void shouldCauseGlyphSegmentsToBeAddedToPitThenCreateNewGlyphWhenGlyphCannotMoveDown() {
         // Given...

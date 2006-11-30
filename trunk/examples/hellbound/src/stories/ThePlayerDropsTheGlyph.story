@@ -13,7 +13,7 @@ When time passes
 Then the glyph segments should become junk
 and the next glyph should appear
 
-Scenario: The player drops the glyph onto junk
+Scenario: the player drops the glyph onto junk
 
 Given the player drops the glyph into an empty pit
 When the player presses the drop key

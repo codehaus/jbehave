@@ -11,7 +11,7 @@ import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.gui.RenderedPit;
 import com.sirenian.hellbound.stories.WorldKey;
 
-public class TheFirstGlyphShouldBeDisplayedInThePit extends
+public class TheGlyphShouldBeCentredAtTheTopOfThePit extends
 		HellboundOutcome {
 
 	private Segments expectedSegments;

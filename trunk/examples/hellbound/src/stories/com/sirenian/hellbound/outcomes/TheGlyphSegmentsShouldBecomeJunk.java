@@ -17,6 +17,7 @@ public class TheGlyphSegmentsShouldBecomeJunk extends HellboundOutcome {
     private Color expectedColor;
 
     public void setExpectationIn(World world) {
+        
         expectedSegments = new Segments(
                 new Segment(2, 11),
                 new Segment(3, 11),

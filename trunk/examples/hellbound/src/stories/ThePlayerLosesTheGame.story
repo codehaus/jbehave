@@ -10,6 +10,6 @@ Given that the junk is almost to the top
 When the glyph appears
 and the player drops it
 and time passes
-Then the glyph becomes junk
-and the next glyph appears overlapping the junk
-and the game is over
+Then the glyph should add to the junk
+and the next glyph should appear overlapping the junk
+and the game should be over

@@ -12,11 +12,17 @@ public class ThreadedEngineQueueBehaviour extends ThreadedQueueBehaviour {
         Mock listener = mock(GameRequestListener.class);
         listener.expects("requestStartGame");
         listener.expects("requestDropGlyph");
+        listener.expects("requestMoveGlyphLeft");
+        listener.expects("requestMoveGlyphRight");
+        listener.expects("requestMoveGlyphDown");
         
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
         queue.setGameRequestDelegate((GameRequestListener) listener);
         queue.requestStartGame();
         queue.requestDropGlyph();
+        queue.requestMoveGlyphLeft();
+        queue.requestMoveGlyphRight();
+        queue.requestMoveGlyphDown();
         
         synchronized(this) { wait(20); }
         // needs to be long enough for request queue to start up and pass along the request

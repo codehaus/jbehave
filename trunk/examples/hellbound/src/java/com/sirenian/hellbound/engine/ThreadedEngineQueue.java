@@ -38,4 +38,31 @@ public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
         
     }
 
+    public void requestMoveGlyphDown() {
+        queue(new Runnable() {
+            public void run() { gameRequestListener.requestMoveGlyphDown(); }
+            public String toString() {
+                return "runnable gameRequestListener.requestMoveGlyphDown()";
+            }
+        });
+    }
+
+    public void requestMoveGlyphLeft() {
+        queue(new Runnable() {
+            public void run() { gameRequestListener.requestMoveGlyphLeft(); }
+            public String toString() {
+                return "runnable gameRequestListener.requestMoveGlyphLeft()";
+            }
+        });
+    }
+
+    public void requestMoveGlyphRight() {
+        queue(new Runnable() {
+            public void run() { gameRequestListener.requestMoveGlyphRight(); }
+            public String toString() {
+                return "runnable gameRequestListener.requestMoveGlyphRight()";
+            }
+        });
+    }
+
 }

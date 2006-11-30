@@ -107,6 +107,20 @@ public class Game implements GameRequestListener {
             resetGlyph();
         }
     }
+
+    public void requestMoveGlyphDown() {
+        moveGlyphDownOrJunkIt();
+    }
+
+    public void requestMoveGlyphLeft() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void requestMoveGlyphRight() {
+        // TODO Auto-generated method stub
+        
+    }
 	
 	
 

@@ -7,6 +7,7 @@ public interface Heartbeat {
         public boolean isBeating() { return false; }
         public void start(int initialTimeBetweenBeats) {}
         public void stop() {}
+        public void skipNextBeat() {}
 	};
 
 	void addListener(HeartbeatListener listener);
@@ -16,4 +17,6 @@ public interface Heartbeat {
     void stop();
     
     boolean isBeating();
+    
+    void skipNextBeat();
 }
