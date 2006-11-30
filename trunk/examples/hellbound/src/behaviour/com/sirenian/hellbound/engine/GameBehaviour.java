@@ -86,24 +86,22 @@ public class GameBehaviour extends UsingClassMock {
         verifyMocks();
 	}
     
-    public void shouldDelegateMovementRequestsToGlyph() {
-        Mock glyphFactory = mock(GlyphFactory.class);
-        Mock glyph = mock(LivingGlyph.class, new Class[]{GlyphType.class, CollisionDetector.class, int.class},
-                new Object[] {GlyphType.NULL, CollisionDetector.NULL, Integer.valueOf(3)});
-        glyphFactory.stubs("nextGlyph").will(returnValue(glyph));
-        
-        Game game = new Game((GlyphFactory) glyphFactory, new StubHeartbeat(), 7, 13);
-        
-        glyph.expects("requestMoveDown").will(returnValue(true));
-        glyph.expects("requestMoveLeft").will(returnValue(true));
-        glyph.expects("requestMoveRight").will(returnValue(true));
-        glyph.expects("drop");
-        
+    public void shouldMoveGlyphWhenRequested() {
+       AccessibleFactory factory  = new AccessibleFactory();
+        Game game = new Game(factory, new StubHeartbeat(), 7, 13);
+        Segments latestSegments = GlyphType.T.getSegments(0).movedRight(3);
         game.requestStartGame();
+        
         game.requestMoveGlyphDown();
+        ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedDown()));
+        latestSegments = latestSegments.movedDown();
+        
         game.requestMoveGlyphLeft();
+        ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedLeft()));
+        latestSegments = latestSegments.movedLeft();
+        
         game.requestMoveGlyphRight();
-        game.requestDropGlyph();
+        ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedRight()));
         
         verifyMocks();
     }
@@ -144,5 +142,17 @@ public class GameBehaviour extends UsingClassMock {
             result = result.movedDown();
         }
         return result;
+    }
+    
+    private static class AccessibleFactory extends PseudoRandomGlyphFactory {
+        private AccessibleFactory() {
+            super(42);
+        }
+        
+        LivingGlyph glyph;
+        public LivingGlyph nextGlyph(int center, CollisionDetector detector, ListenerSet glyphListeners) {
+            glyph = super.nextGlyph(center, detector, glyphListeners);
+            return glyph;
+        }
     }
 }
