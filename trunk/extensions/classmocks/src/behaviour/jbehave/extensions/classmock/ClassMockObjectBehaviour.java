@@ -63,8 +63,4 @@ public class ClassMockObjectBehaviour extends UsingMiniMock {
     public void shouldBeAbleToMockMostClassesWithConstructorArgs() {
     	ClassMockObject.mockClass(AClassWithAComplexConstructor.class, "foo");
     }
-    
-    public void shouldBeAbleToProvideMinimalProblemClassConstructorsAndHaveTheFactoryFillInTheRest() {
-    	throw new PendingException();
-    }
 }
