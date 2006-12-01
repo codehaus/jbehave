@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="core/src/java"/>
+	<classpathentry kind="src" path="extensions/classmocks/src/behaviour"/>
+	<classpathentry kind="src" path="extensions/classmocks/src/java"/>
 	<classpathentry kind="src" path="core/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/ant/src/java"/>
 	<classpathentry kind="src" path="extensions/ant/src/behaviour"/>
@@ -20,9 +22,8 @@
 	<classpathentry kind="src" path="examples/hellbound/src/java"/>
 	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
-    <classpathentry kind="src" path="sandbox/src/java"/>
+	<classpathentry kind="src" path="sandbox/src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry sourcepath="O:/libs/apache-ant-1.6.5-src.zip" kind="lib" path="lib/extensions/ant-1.6.5.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/fit-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
@@ -31,6 +32,8 @@
 	<classpathentry kind="lib" path="lib/extensions/junit-3.8.2.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/sablecc-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/velocity-dep-1.4.jar"/>
-	<classpathentry sourcepath="O:/libs/cotta" kind="lib" path="lib/cotta/cotta-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/extensions/proxytoys-0.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/cotta/cotta-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/extensions/ant-1.6.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
