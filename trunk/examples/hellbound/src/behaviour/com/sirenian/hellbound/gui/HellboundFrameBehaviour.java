@@ -30,35 +30,51 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
 	}
 	
 	public void tearDown() {
-		frame.dispose();		
+		try {
+            windowWrapper.closeWindow();
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }	
 	}
 	
 	public void shouldDisplayTheFrontPanelWhenTheGameIsReady() {
+        setUp();
 		frame.reportGameStateChanged(GameState.READY);		
 		ensureThat(frontPanel.isShowing());
 		ensureThat(!gamePanel.isShowing());
+        tearDown();
 	}
 	
 	public void shouldDisplayGamePanelWhenTheGameIsRunning() {
+        setUp();
 		frame.reportGameStateChanged(GameState.RUNNING);
 		ensureThat(!frontPanel.isShowing());
 		ensureThat(gamePanel.isShowing());
+        tearDown();
 	}
     
     public void shouldRequestThatTheShapeIsDroppedWhenTheSpaceKeyIsPressed() throws Exception {
+        setUp();
         ensureThatKeycodeProducesRequest(KeyEvent.VK_SPACE, "requestDropGlyph");
+        tearDown();
     }
     
     public void shouldRequestThatTheShapeIsMovedRightWhenTheRightKeyIsPressed() throws Exception {
+        setUp();
         ensureThatKeycodeProducesRequest(KeyEvent.VK_RIGHT, "requestMoveGlyphRight");
+        tearDown();
     }
     
     public void shouldRequestThatTheShapeIsMovedLeftWhenTheMoveLeftKeyIsPressed() throws Exception {
+        setUp();
         ensureThatKeycodeProducesRequest(KeyEvent.VK_LEFT, "requestMoveGlyphLeft");
+        tearDown();
     }
     
     public void shouldRequestThatTheShapeIsMovedDownWhenTheMoveDownKeyIsPressed() throws Exception {
-        ensureThatKeycodeProducesRequest(KeyEvent.VK_DOWN, "requestDropGlyph");
+        setUp();
+        ensureThatKeycodeProducesRequest(KeyEvent.VK_DOWN, "requestMoveGlyphDown");
+        tearDown();
     }
 
     private void ensureThatKeycodeProducesRequest(int keycode, String expectedRequest) throws TimeoutException {
