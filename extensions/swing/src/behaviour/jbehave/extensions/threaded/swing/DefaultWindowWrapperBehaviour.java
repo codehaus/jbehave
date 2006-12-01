@@ -5,11 +5,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
 import jbehave.core.minimock.UsingMiniMock;
@@ -107,8 +109,11 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
 		
         JFrame frame = new JFrame();
+        JPanel panel = new JPanel();
+        frame.setContentPane(panel);
         frame.setName("a.window");
         frame.setVisible(true);
+        
         
         Constraint spaceKeyEvent = new Constraint() {
 			public boolean matches(Object arg) {
@@ -120,6 +125,12 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
         keyListener.stubs("keyTyped");
         keyListener.stubs("keyPressed");
         keyListener.expects("keyReleased").once().with(spaceKeyEvent);
+        
+        Mock action = mock(Action.class);
+        action.expects("actionPerformed");
+        
+        panel.getInputMap().put(KeyStroke.getKeyStroke(' '), "drop");
+        panel.getActionMap().put("drop", (Action) action);
         
         frame.addKeyListener((KeyListener) keyListener);
         

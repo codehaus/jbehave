@@ -4,7 +4,6 @@ import java.awt.AWTEvent;
 import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Robot;
 import java.awt.TextComponent;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -58,13 +57,11 @@ public class DefaultWindowWrapper implements WindowWrapper {
 		Component component = findComponent(componentName);
 		
 		component.requestFocus();
-		
 		if (component instanceof TextComponent) {
 			typeIntoTextComponent((TextComponent)component, text);
 		} else if (component instanceof JTextComponent) {
 			typeIntoJTextComponent((JTextComponent)component, text);
 		}		
-		idler.waitForIdle();
 	}
 		
 
@@ -76,29 +73,29 @@ public class DefaultWindowWrapper implements WindowWrapper {
 		}
 		idler.waitForIdle();
 	}
+    
+    public void typeIntoJTextComponent(JTextComponent textComponent, String text) {
+        for (int i = 0; i < text.length(); i++) {
+            sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_PRESSED));
+            sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_RELEASED));
+            sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_TYPED));
+        }
+        idler.waitForIdle();
+    }   
 	
 	public void pressKey(int keycode) throws TimeoutException {
-        try {
-            Robot robot = new Robot();
-            robot.keyPress(keycode);
-            robot.keyRelease(keycode);
-        } catch (AWTException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+            sysQueue.postEvent(createKeyPressEvent(getWindow().getFocusOwner(), keycode, KeyEvent.KEY_PRESSED));
+            sysQueue.postEvent(createKeyPressEvent(getWindow().getFocusOwner(), keycode, KeyEvent.KEY_RELEASED));
+//            Robot robot = new Robot();
+//            robot.keyPress(keycode);
+//            robot.keyRelease(keycode);
+//        } catch (AWTException e) {
+//            throw new RuntimeException(e);
+//        }
         
 		idler.waitForIdle();
 	}
-
-	
-	public void typeIntoJTextComponent(JTextComponent textComponent, String text) {
-		for (int i = 0; i < text.length(); i++) {
-			sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_PRESSED));
-			sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_RELEASED));
-			sysQueue.postEvent(createKeyPressEvent(textComponent, text.charAt(i), KeyEvent.KEY_TYPED));
-		}
-		idler.waitForIdle();
-	}	
-
 	public Component findComponent(String componentName) throws ComponentFinderException, TimeoutException {
 		return finder.findExactComponent(getWindow(), new NamedComponentFilter(componentName));
 	}
@@ -131,4 +128,13 @@ public class DefaultWindowWrapper implements WindowWrapper {
 				KeyEvent.VK_UNDEFINED,
 				c);
 	}
+    
+    private AWTEvent createKeyPressEvent(Component component, int keycode, int id) {
+        return new KeyEvent(component, 
+                id, 
+                System.currentTimeMillis(),
+                0,
+                keycode,
+                KeyEvent.CHAR_UNDEFINED);
+    }
 }
