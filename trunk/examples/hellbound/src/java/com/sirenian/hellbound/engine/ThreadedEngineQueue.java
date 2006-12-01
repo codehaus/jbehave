@@ -65,4 +65,14 @@ public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
         });
     }
 
+    public void requestRotateGlyphLeft() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void requestRotateGlyphRight() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

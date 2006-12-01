@@ -4,6 +4,7 @@ import jbehave.core.behaviour.Behaviours;
 
 import com.sirenian.hellbound.domain.SegmentsBehaviour;
 import com.sirenian.hellbound.domain.glyph.GlyphBehaviour;
+import com.sirenian.hellbound.domain.glyph.JunkBehaviour;
 import com.sirenian.hellbound.domain.glyph.LivingGlyphBehaviour;
 import com.sirenian.hellbound.engine.GameBehaviour;
 import com.sirenian.hellbound.engine.PseudoRandomGlyphFactoryBehaviour;
@@ -34,7 +35,8 @@ public class AllBehaviours implements Behaviours {
 				
 			FrontPanelBehaviour.class,
 			HellboundFrameBehaviour.class,
-			PitPanelBehaviour.class
+			PitPanelBehaviour.class,
+            JunkBehaviour.class
 		};
 	}
 

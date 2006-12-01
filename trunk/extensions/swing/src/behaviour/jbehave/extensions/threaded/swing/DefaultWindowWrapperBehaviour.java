@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
+import jbehave.core.exception.PendingException;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Constraint;
 import jbehave.core.mock.Mock;
@@ -22,118 +23,171 @@ import jbehave.extensions.threaded.time.TimeoutException;
 public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	
 	public void shouldClickAButtonOnAWindow() throws Exception {
-		
-		JFrame frame = new JFrame();
-		frame.setName("a.window");
-		
-		JButton button = new JButton("Press Me!");
-		button.setName("a.button");
-		
-		Mock actionListener = mock(ActionListener.class);
-		actionListener.expects("actionPerformed");
-		
-		button.addActionListener((ActionListener)actionListener);
-		
+		checkForHeadless();
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
-		
-		frame.getContentPane().add(button);
-		frame.pack();
-		frame.setVisible(true);
-		
-		wrapper.clickButton("a.button");
-		
-		frame.dispose();
-		
-		verifyMocks();
+        
+		try {
+            JFrame frame = disposeOnCloseFrame();
+    		frame.setName("a.window");
+    		
+    		JButton button = new JButton("Press Me!");
+    		button.setName("a.button");
+    		
+    		Mock actionListener = mock(ActionListener.class);
+    		actionListener.expects("actionPerformed");
+    		
+    		button.addActionListener((ActionListener)actionListener);
+    		
+    		
+    		frame.getContentPane().add(button);
+    		frame.pack();
+    		frame.setVisible(true);
+    		
+    		wrapper.clickButton("a.button");
+    		
+    		verifyMocks();
+        } finally {
+            wrapper.closeWindow();
+        }
 	}
+
 	
 	public void shouldEnterTextIntoTextComponents() throws Exception {
-		
-		JFrame frame = new JFrame();
-		frame.setName("a.window");
-		
-		JTextComponent textField = new JTextField();
-		textField.setName("a.textfield");
-		
-		JTextComponent textArea = new JTextArea();
-		textArea.setName("b.textarea");
-		
-		frame.getContentPane().setLayout(new FlowLayout());
-		
-		frame.getContentPane().add(textField);
-		frame.getContentPane().add(textArea);
-		frame.pack();
-		
-		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
-		
-		frame.setVisible(true);
-		wrapper.enterText("a.textfield", "Text1");
-		wrapper.enterText("b.textarea", "Text2");
-		
-		ensureThat(textField.getText(), eq("Text1"));
-		ensureThat(textArea.getText(), eq("Text2"));
-		
-		frame.dispose();
+        checkForHeadless();
+        DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+
+        try {
+            JFrame frame = disposeOnCloseFrame();
+    		frame.setName("a.window");
+    		
+    		JTextComponent textField = new JTextField();
+    		textField.setName("a.textfield");
+    		
+    		JTextComponent textArea = new JTextArea();
+    		textArea.setName("b.textarea");
+    		
+    		frame.getContentPane().setLayout(new FlowLayout());
+    		
+    		frame.getContentPane().add(textField);
+    		frame.getContentPane().add(textArea);
+    		frame.pack();
+    		
+    		
+    		frame.setVisible(true);
+    		wrapper.enterText("a.textfield", "Text1");
+    		wrapper.enterText("b.textarea", "Text2");
+    		
+    		ensureThat(textField.getText(), eq("Text1"));
+    		ensureThat(textArea.getText(), eq("Text2"));
+        } finally {
+            wrapper.closeWindow();
+        }
 	}
 	
 	public void shouldFindComponent() throws ComponentFinderException, TimeoutException  {
-		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
-		
-		JFrame frame = new JFrame();
-		frame.setName("a.window");
-		
-		JPanel panel = new JPanel();
-		panel.setName("a.panel");
-		
-		frame.getContentPane().add(panel);
-		frame.setVisible(true);
-		
-		ensureThat(wrapper.findComponent("a.panel"), eq(panel));
-		
-		frame.dispose();
+	    checkForHeadless();
+	    DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+        try {
+    		
+    		JFrame frame = disposeOnCloseFrame();
+    		frame.setName("a.window");
+    		
+    		JPanel panel = new JPanel();
+    		panel.setName("a.panel");
+    		
+    		frame.getContentPane().add(panel);
+    		frame.setVisible(true);
+    		
+    		ensureThat(wrapper.findComponent("a.panel"), eq(panel));
+        } finally {
+            wrapper.closeWindow();
+        }
 	}
     
     public void shouldCloseWindows() throws TimeoutException {
+        checkForHeadless();
         DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
         
-        JFrame frame = new JFrame();
+        JFrame frame = disposeOnCloseFrame();
         frame.setName("a.window");
         frame.setVisible(true);
         
         wrapper.closeWindow();
-        
         ensureThat(!frame.isShowing());
+        frame.dispose();
+    }
+
+
+    private JFrame disposeOnCloseFrame() {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        return frame;
     }
     
-    public void shouldSimulateKeyPresses() throws TimeoutException {
+    public void shouldSimulateKeyPressesForInputMap() throws TimeoutException {
+        checkForHeadless();
+        if (true) { throw new PendingException(); }
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
 		
-        JFrame frame = new JFrame();
-        JPanel panel = new JPanel();
-        frame.setContentPane(panel);
-        frame.setName("a.window");
-        frame.setVisible(true);
-        
-        
-        Constraint spaceKeyEvent = new Constraint() {
-			public boolean matches(Object arg) {
-				return ((KeyEvent)arg).getKeyCode() == KeyEvent.VK_SPACE;
-			}
-        };
-        
-        Mock keyListener = mock(KeyListener.class);
-        keyListener.stubs("keyTyped");
-        keyListener.stubs("keyPressed");
-        keyListener.expects("keyReleased").once().with(spaceKeyEvent);
-        
-        Mock action = mock(Action.class);
-        action.expects("actionPerformed");
-        
-        panel.getInputMap().put(KeyStroke.getKeyStroke(' '), "drop");
-        panel.getActionMap().put("drop", (Action) action);
-        
-        frame.addKeyListener((KeyListener) keyListener);
-        
-        wrapper.pressKey(KeyEvent.VK_SPACE);
+        try {
+            JFrame frame = disposeOnCloseFrame();
+            JPanel panel = new JPanel();
+            panel.getInputMap().put(KeyStroke.getKeyStroke(' '), "an action");
+            frame.setContentPane(panel);
+            frame.setName("a.window");
+            frame.pack();
+            frame.setVisible(true);
+            
+            
+            Mock action = mock(Action.class);
+            action.expects("actionPerformed");
+            panel.getActionMap().put("an action", (Action) action);
+            
+            wrapper.pressKeychar(' ');
+            
+            verifyMocks();
+        } finally {
+            wrapper.closeWindow();
+        }
     }
+    
+    public void shouldSimulateKeyPressesForKeyListeners() throws TimeoutException {
+        
+        checkForHeadless();
+        DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+        
+        try {
+            JFrame frame = disposeOnCloseFrame();
+            JPanel panel = new JPanel();
+            frame.setContentPane(panel);
+            frame.setName("a.window");
+            frame.pack();
+            frame.setVisible(true);
+            
+            Constraint spaceKeyEvent = new Constraint() {
+                public boolean matches(Object arg) {
+                    return ((KeyEvent)arg).getKeyCode() == KeyEvent.VK_SPACE ||
+                        ((KeyEvent)arg).getKeyChar() == ' ';
+                }
+            };
+            Mock keyListener = mock(KeyListener.class);
+            keyListener.stubs("keyTyped").once().with(spaceKeyEvent);
+            keyListener.stubs("keyPressed").once().with(spaceKeyEvent);
+            keyListener.expects("keyReleased").once().with(spaceKeyEvent);
+            frame.addKeyListener((KeyListener) keyListener);    
+            
+            wrapper.pressKeychar(' ');
+            
+            verifyMocks();
+        } finally {
+            wrapper.closeWindow();
+        }
+    }
+    
+
+    private void checkForHeadless() {
+        new HeadlessChecker().check();
+    }
+
+
 }

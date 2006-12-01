@@ -44,6 +44,24 @@ public class ActionFactory {
                 gameRequestListener.requestDropGlyph();
             }
         };
+    }
+
+    public Action leftRotate(final GameRequestListener gameRequestListener) {
+        return new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                Logger.debug(this, "Adding left rotate action to frame action map");
+                gameRequestListener.requestRotateGlyphLeft();
+            }
+        };
+    }
+
+    public Action rightRotate(final GameRequestListener gameRequestListener) {
+        return new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                Logger.debug(this, "Adding right rotate action to frame action map");
+                gameRequestListener.requestRotateGlyphRight();
+            }
+        };
     }    
 
 }

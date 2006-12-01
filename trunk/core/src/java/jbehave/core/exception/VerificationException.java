@@ -26,7 +26,13 @@ public class VerificationException extends RuntimeException {
         this(message, null, null);
 	}
 
-	public Object getActual() {
+	public VerificationException(String message, Exception e) {
+        super(message, e);
+        expected = null;
+        actual = null;
+    }
+
+    public Object getActual() {
 		return actual;
 	}
     

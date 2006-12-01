@@ -3,7 +3,6 @@ package jbehave.extensions.classmock;
 import java.util.HashMap;
 
 import jbehave.core.Ensure;
-import jbehave.core.exception.PendingException;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Mock;
 

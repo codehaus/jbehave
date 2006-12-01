@@ -56,6 +56,16 @@ public abstract class UsingConstraints {
         };
     }
     
+
+    
+    public CustomConstraint isNull() {
+        return new CustomConstraint("object is null") {
+            public boolean matches(Object arg) {
+                return arg == null;
+            }
+        };
+    }
+    
 	/** ensures object equals expected value */
 	public CustomConstraint eq(final Object expectedArg) {
 	    return new CustomConstraint("equal to <" + expectedArg + ">") {
@@ -245,12 +255,26 @@ public abstract class UsingConstraints {
     public void ensureThrows(Class exceptionType, Block block) throws Exception {
         try {
             block.run();
-            fail("should have thrown " + exceptionType.getName());
+            fail("Should have thrown " + exceptionType.getName());
         }
         catch (Exception e) {
             if (!exceptionType.isAssignableFrom(e.getClass())) {
-                throw e;
+                fail("Got exception of wrong type", exceptionType.getName(), e.getClass().getName());
             }
+        }
+    }
+    
+    /**
+     * This allows checks for eg: PendingExceptions, or anything else which would ordinarily
+     * count as a pass. It can also be used for emphasis, or where an exception should
+     * be interpreted as a misbehaviour rather than an error.
+     */
+    public void ensureDoesNotThrowException(Block block) throws Exception {
+        try {
+            block.run();
+        }
+        catch (Exception e) {
+            fail("Should not have thrown exception", e);
         }
     }
     
@@ -270,6 +294,10 @@ public abstract class UsingConstraints {
 
     public void fail(String message) {
         throw new VerificationException(message);
+    }
+    
+    public void fail(String message, Exception e) {
+        throw new VerificationException(message, e);
     }
 
     public void fail(String message, Object expected, Object actual) {

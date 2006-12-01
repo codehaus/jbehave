@@ -2,10 +2,8 @@ package jbehave.extensions.classmock;
 
 import java.util.HashMap;
 
-import jbehave.core.exception.PendingException;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Mock;
-import jbehave.extensions.classmock.ClassMockObjectBehaviour.AClassWithNoConstructorsAtAll;
 
 public class UsingClassMockBehaviour extends UsingMiniMock {
 

@@ -15,5 +15,7 @@ public interface WindowWrapper {
 	
 	public void closeWindow() throws TimeoutException;
 
-	public void pressKey(int keycode) throws TimeoutException;
+	public void pressKeycode(int keycode) throws TimeoutException;
+    
+    public void pressKeychar(char keychar) throws TimeoutException;
 }
