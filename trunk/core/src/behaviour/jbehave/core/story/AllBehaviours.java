@@ -15,6 +15,7 @@ import jbehave.core.story.domain.GivenScenarioBehaviour;
 import jbehave.core.story.domain.GivensBehaviour;
 import jbehave.core.story.domain.NarrativeBehaviour;
 import jbehave.core.story.domain.OutcomesBehaviour;
+import jbehave.core.story.domain.ScenarioComponentsBehaviour;
 import jbehave.core.story.domain.ScenarioDrivenStoryBehaviour;
 import jbehave.core.story.domain.ScenarioUsingMiniMockBehaviour;
 import jbehave.core.story.domain.ScenariosBehaviour;
@@ -34,13 +35,13 @@ public class AllBehaviours implements Behaviours {
                 TextStoryParserBehaviour.class,
                 EventOutcomeStepBehaviour.class,
                 EventsBehaviour.class,
-                GivenScenarioBehaviour.class,
                 GivensBehaviour.class,
+                GivenScenarioBehaviour.class,
                 NarrativeBehaviour.class,
                 OutcomesBehaviour.class,
                 ScenarioDrivenStoryBehaviour.class,
-                ScenarioUsingMiniMockBehaviour.class,
                 ScenariosBehaviour.class,
+                ScenarioUsingMiniMockBehaviour.class,
                 StepsBehaviour.class,
                 PlainTextScenarioListenerBehaviour.class,
 				PlainTextRendererBehaviour.class,

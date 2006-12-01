@@ -12,7 +12,6 @@ import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
 import jbehave.core.result.BehaviourMethodResult;
 import jbehave.core.result.Result;
-import mock.jbehave.core.listener.PendingResultInNonJBehavePackage;
 
 
 /**
@@ -55,15 +54,15 @@ public class PlainTextMethodListenerBehaviour extends PlainTextListenerBehaviour
         listener.printReport();
 
         // then...
-        verifyOutputContains("Failures:");
-        verifyOutputContains(expectedShortName);
-        verifyOutputContains(expectedFullName);
-        verifyOutputContains("VerificationException");
+        ensureThat(writer, contains("Failures:"));
+        ensureThat(writer, contains(expectedShortName));
+        ensureThat(writer, contains(expectedFullName));
+        ensureThat(writer, contains("VerificationException"));
     }
 
-    public void shouldPrintStackElementForPending() throws Exception {
+    public void shouldPrintBehaviourClassNameForPending() throws Exception {
         // given...
-        Result pending = newPendingResultFromNonJBehavePackage();
+        Result pending = new PendingResult(behaviourMethod);
 
         // expect
         String expectedShortName = "Foo";
@@ -74,11 +73,7 @@ public class PlainTextMethodListenerBehaviour extends PlainTextListenerBehaviour
         listener.printReport();
 
         // then...
-        verifyOutputContains("Pending:");
-        verifyOutputContains("at mock.jbehave.core.listener.PendingResultInNonJBehavePackage.<init>(");
-    }
-
-    private Result newPendingResultFromNonJBehavePackage() {
-        return new PendingResultInNonJBehavePackage(behaviourMethod);
+        ensureThat(writer, contains("Pending:"));
+        ensureThat(writer, contains(FooBehaviour.class.getName()));
     }
 }

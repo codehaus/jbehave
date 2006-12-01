@@ -165,9 +165,9 @@ public abstract class UsingConstraints {
 	}
 	
 	public CustomConstraint contains(final String fragment) {
-		return new CustomConstraint("string ending with <" + fragment + ">") {
+		return new CustomConstraint("string containing <" + fragment + ">") {
 			public boolean matches(Object arg) {
-				return ((String)arg).indexOf(fragment) != -1;
+				return arg.toString().indexOf(fragment) != -1;
 			}
 		};
 	}

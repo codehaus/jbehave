@@ -10,15 +10,15 @@ package jbehave.core.story.listener;
 import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
 import jbehave.core.listener.PlainTextListener;
+import jbehave.core.listener.PlainTextListenerBehaviourSupport;
 import jbehave.core.result.Result;
-import jbehave.core.story.listener.PlainTextScenarioListener;
 import jbehave.core.story.result.ScenarioResult;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class PlainTextScenarioListenerBehaviour extends PlainTextListenerBehaviour {
+public class PlainTextScenarioListenerBehaviour extends PlainTextListenerBehaviourSupport {
 
     public void setUp() throws Exception {
         super.setUp();
@@ -63,6 +63,6 @@ public class PlainTextScenarioListenerBehaviour extends PlainTextListenerBehavio
         listener.printReport();
         
         // then...
-        verifyOutputContains("\nUsed mocks: 1");
+        ensureThat(writer, contains("\nUsed mocks: 1"));
     }
 }

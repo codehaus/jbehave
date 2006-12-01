@@ -73,11 +73,6 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         ensureThat(writer, contains(Result.PENDING));
     }
 
-    protected void verifyOutputContains(String expected) {
-        String output = writer.toString();
-        Ensure.that("Output should contain: [" + expected + "] but was:\n>>>\n" + output + "\n<<<", output.indexOf(expected) != -1);
-    }
-    
     public void shouldSummarizeSingleSuccessfulResult() throws Exception {
         // given...
         Result succeeded = newSuccessResult();
@@ -87,7 +82,7 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         listener.printReport();
         
         // then...
-        verifyOutputContains("\nTotal: 1");
+        ensureThat(writer, contains("\nTotal: 1"));
     }
 
     public void shouldSummarizeTwoSuccessfulResults() throws Exception {
@@ -100,7 +95,7 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         listener.printReport();
         
         // then...
-        verifyOutputContains("\nTotal: 2");
+        ensureThat(writer, contains("\nTotal: 2"));
     }
     
     public void shouldPrintSummaryForFailure() throws Exception {
@@ -112,7 +107,7 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         listener.printReport();
         
         // then...
-        verifyOutputContains("\nTotal: 1. Failures: 1");
+        ensureThat(writer, contains("\nTotal: 1. Failures: 1"));
     }
     
     public void shouldSummarizePendingResult() throws Exception {
@@ -124,7 +119,7 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         listener.printReport();
         
         // then...
-        verifyOutputContains("\nPending: 1");
+        ensureThat(writer, contains("\nPending: 1"));
     }
 
     public void shouldStartTimerWhenConstructed() throws Exception {
