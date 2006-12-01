@@ -16,31 +16,6 @@ public class OutcomesBehaviour extends ScenarioComponentsBehaviour {
 	}
 	
 	protected Class componentType() { return Outcome.class; }
-	
-	public void shouldTellComponentsToSetExpectationsInWorld() throws Exception {
-		// given...
-		Mock component1 = mockComponent("component1");
-		Mock component2 = mockComponent("component2");
-		World world = (World)stub(World.class);
-		Outcome outcomes = new Outcomes(new Outcome[] {(Outcome) component1, (Outcome) component2});
-		
-		// do what a real Outcome would do
-		InvocationHandler dispatchItselfToRenderer = new InvocationHandler() {
-			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				((Renderer)args[0]).renderOutcome((Outcome)proxy);
-				return null;
-			}
-		};
-		component1.stubs("narrateTo").with(isA(Renderer.class)).will(dispatchItselfToRenderer);
-		component2.stubs("narrateTo").with(isA(Renderer.class)).will(dispatchItselfToRenderer);
-		
-		// expect...
-		component1.expects("setExpectationIn").with(world);
-		component2.expects("setExpectationIn").with(world).after(component1, "setExpectationIn");
-
-		// when...
-		outcomes.setExpectationIn(world);
-	}
 
 	public void shouldTellComponentsToVerifyWorld() throws Exception {
 		// given...

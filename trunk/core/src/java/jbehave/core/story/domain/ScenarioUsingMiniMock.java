@@ -63,8 +63,8 @@ import jbehave.core.util.CamelCaseConverter;
  * @author <a href="mailto:liz@thoughtworks.com">Elizabeth Keogh</a>
  */
 public class ScenarioUsingMiniMock extends UsingMiniMock implements Scenario {
-    protected final Given given;
-    protected final Step step;
+    protected Given given;
+    protected Step step;
     
     public ScenarioUsingMiniMock(Event event, Outcome outcome) {
         this(Givens.NULL, event, outcome);

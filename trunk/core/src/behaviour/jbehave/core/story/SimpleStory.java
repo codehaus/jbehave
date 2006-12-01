@@ -70,29 +70,17 @@ public class SimpleStory extends ScenarioDrivenStory {
         }
     }
 
-    public static class PlainTextRendererShouldWork extends
-            OutcomeUsingMiniMock {
-        public void setExpectationIn(World world) {
-        }
-
+    public static class PlainTextRendererShouldWork extends OutcomeUsingMiniMock {
         public void verify(World world) {
         }
     }
 
-    public static class PlainTextRendererShouldStillWork extends
-            OutcomeUsingMiniMock {
-        public void setExpectationIn(World world) {
-        }
-
+    public static class PlainTextRendererShouldStillWork extends OutcomeUsingMiniMock {
         public void verify(World world) {
         }
     }
 
-    public static class BehaviourClassShouldNotFail extends
-            OutcomeUsingMiniMock {
-        public void setExpectationIn(World world) {
-        }
-
+    public static class BehaviourClassShouldNotFail extends OutcomeUsingMiniMock {
         public void verify(World world) {
         }
     }

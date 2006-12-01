@@ -7,13 +7,12 @@ import jbehave.core.story.renderer.Renderer;
 
 public class EventOutcomeStepBehaviour extends UsingMiniMock {
 
-    public void shouldSetUpOutcomeThenMakeEventOccurThenVerifyOutcomeWhenPerformed() {
+    public void shouldMakeEventOccurThenVerifyOutcomeWhenPerformed() {
         Mock event = mock(Event.class);
         Mock outcome = mock(Outcome.class);
         World world = (World)stub(World.class);
         
-        outcome.expects("setExpectationIn").with(world);
-        event.expects("occurIn").with(world).after(outcome, "setExpectationIn");
+        event.expects("occurIn").with(world);
         outcome.expects("verify").with(world).after(event, "occurIn");
         
         EventOutcomeStep step = new EventOutcomeStep((Event)event, (Outcome)outcome);

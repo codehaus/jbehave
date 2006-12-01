@@ -13,7 +13,6 @@ public class EventOutcomeStep implements Step {
     }
 
     public void perform(World world) {
-        outcome.setExpectationIn(world);
         event.occurIn(world);
         outcome.verify(world);
     }

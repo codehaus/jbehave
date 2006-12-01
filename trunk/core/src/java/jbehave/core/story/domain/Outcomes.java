@@ -33,12 +33,6 @@ public class Outcomes extends ScenarioComponents implements Outcome {
         this(new Outcome[] {outcome1, outcome2, outcome3});
     }
     
-	public void setExpectationIn(final World world) {
-		for(int i = 0; i < outcomes.length; i++) {
-		    outcomes[i].setExpectationIn(world);
-        }
-	}
-
 	public void verify(final World world) {
         for(int i = 0; i < outcomes.length; i++) {
             outcomes[i].verify(world);
@@ -57,5 +51,4 @@ public class Outcomes extends ScenarioComponents implements Outcome {
         buffer.append("]");
         return buffer.toString();
     }
-
 }

@@ -11,22 +11,12 @@ import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.gui.RenderedPit;
 import com.sirenian.hellbound.stories.WorldKey;
 
-public class TheGlyphShouldBeCentredAtTheTopOfThePit extends
-		HellboundOutcome {
-
-	private Segments expectedSegments;
-    private Color expectedColor;
-
-    public void setExpectationIn(World world) {
-		GlyphType type = GlyphType.T;
-		expectedSegments = type.getSegments(0).movedRight(3);
-        expectedColor = Hellbound.COLORMAP.getColorFor(GlyphType.T);
-	}
-
+public class TheGlyphShouldBeCentredAtTheTopOfThePit extends HellboundOutcome {
 	public void verifyAnyTimeIn(World world) {
+	    GlyphType type = GlyphType.T;
+	    Segments expectedSegments = type.getSegments(0).movedRight(3);
+	    Color expectedColor = Hellbound.COLORMAP.getColorFor(GlyphType.T);
 		RenderedPit graphics = (RenderedPit) world.get(WorldKey.PIT, null);
         Ensure.that(graphics, contains(expectedSegments, expectedColor));
 	}
-
-
 }
