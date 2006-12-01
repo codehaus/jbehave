@@ -22,6 +22,12 @@ public class UsingClassMockBehaviour extends UsingMiniMock {
 	}
 	
 	public void shouldBeAbleToStubClasses() {
-		throw new PendingException();
+        Object expected = new Object();
+
+        Mock mock = classMock.mock(HashMap.class);
+        mock.stubs("get").will(returnValue(expected));
+        
+        Object actual = ((HashMap)mock).get("some key");
+        ensureThat(expected, eq(actual));
 	}
 }

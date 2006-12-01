@@ -84,16 +84,15 @@ public class DefaultWindowWrapper implements WindowWrapper {
     }   
 	
 	public void pressKey(int keycode) throws TimeoutException {
-//        try {
-            sysQueue.postEvent(createKeyPressEvent(getWindow().getFocusOwner(), keycode, KeyEvent.KEY_PRESSED));
-            sysQueue.postEvent(createKeyPressEvent(getWindow().getFocusOwner(), keycode, KeyEvent.KEY_RELEASED));
-//            Robot robot = new Robot();
-//            robot.keyPress(keycode);
-//            robot.keyRelease(keycode);
-//        } catch (AWTException e) {
-//            throw new RuntimeException(e);
-//        }
         
+        //NB: Don't use the Robot.
+        //Why not the Robot?
+        //Because the Robot tries to press the space bar, which is really annoying if you're running things
+        //from Eclipse's vm.
+
+        sysQueue.postEvent(createKeyPressEvent(getWindow(), keycode, KeyEvent.KEY_PRESSED));
+        sysQueue.postEvent(createKeyPressEvent(getWindow(), keycode, KeyEvent.KEY_RELEASED));
+            
 		idler.waitForIdle();
 	}
 	public Component findComponent(String componentName) throws ComponentFinderException, TimeoutException {
