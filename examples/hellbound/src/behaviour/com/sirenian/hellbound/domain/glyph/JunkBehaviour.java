@@ -25,7 +25,7 @@ public class JunkBehaviour extends UsingMiniMock {
         Segments originalSegments = glyph.getSegments();
 
 		Junk junk = new Junk();
-		
+        glyphListener.expects("reportGlyphMovement").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(Segments.EMPTY)});
 		glyphListener.expects("reportGlyphMovement").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(originalSegments)});
 
         junk.addListener((GlyphListener)glyphListener);
