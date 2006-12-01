@@ -16,6 +16,8 @@ import jbehave.core.util.BehavioursLoader;
 public class AllBehaviours implements Behaviours {
 
     public Class[] getBehaviours() {
-        return new BehavioursLoader(getClass()).loadBehaviours();
+        return new Class[] {
+            JBehaveTaskBehaviour.class
+        };
     }
 }

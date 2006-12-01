@@ -109,14 +109,6 @@
 				<path refid="libs"/>
 			</classpath>
 		</javac>
-		<java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="true">
-			<arg value="jbehave.AllBehaviours" />
-			<classpath>
-				<pathelement path="${behaviour_classes_dir}" />
-				<pathelement path="${jbehave_jar}" />
-				<path refid="libs" />
-			</classpath>
-		</java>
 	</target>
 	
 	<target name="verify-behaviour" depends="compile-behaviour" description="Verify behaviour">

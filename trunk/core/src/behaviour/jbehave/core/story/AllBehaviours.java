@@ -29,20 +29,21 @@ import jbehave.core.story.renderer.PlainTextRendererBehaviour;
 public class AllBehaviours implements Behaviours {
     public Class[] getBehaviours() {
         return new Class[] {
-        		StoryRunnerBehaviour.class,
-        		ScenariosBehaviour.class,
+                StoryBuilderBehaviour.class,
+                StoryRunnerBehaviour.class,
                 TextStoryParserBehaviour.class,
-				GivenScenarioBehaviour.class,
+                EventOutcomeStepBehaviour.class,
+                EventsBehaviour.class,
+                GivenScenarioBehaviour.class,
+                GivensBehaviour.class,
                 NarrativeBehaviour.class,
                 OutcomesBehaviour.class,
-                GivensBehaviour.class,
-                EventsBehaviour.class,
-                ScenarioUsingMiniMockBehaviour.class,
                 ScenarioDrivenStoryBehaviour.class,
+                ScenarioUsingMiniMockBehaviour.class,
+                ScenariosBehaviour.class,
+                StepsBehaviour.class,
                 PlainTextScenarioListenerBehaviour.class,
 				PlainTextRendererBehaviour.class,
-                EventOutcomeStepBehaviour.class,
-                StepsBehaviour.class
         };
     }
 }
