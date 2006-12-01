@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
-import jbehave.core.exception.PendingException;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Constraint;
 import jbehave.core.mock.Mock;
@@ -126,22 +125,16 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     
     public void shouldSimulateKeyPressesForInputMap() throws TimeoutException {
         checkForHeadless();
-        if (true) { throw new PendingException(); }
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
 		
         try {
-            JFrame frame = disposeOnCloseFrame();
-            JPanel panel = new JPanel();
-            panel.getInputMap().put(KeyStroke.getKeyStroke(' '), "an action");
-            frame.setContentPane(panel);
-            frame.setName("a.window");
-            frame.pack();
-            frame.setVisible(true);
-            
-            
+            AFrame frame = new AFrame();            
+
             Mock action = mock(Action.class);
-            action.expects("actionPerformed");
-            panel.getActionMap().put("an action", (Action) action);
+            action.stubs("isEnabled").will(returnValue(true));
+            action.expects("actionPerformed").with(anything());
+            
+            frame.contentPanel.getActionMap().put("an action", (Action) action);
             
             wrapper.pressKeychar(' ');
             
@@ -189,5 +182,18 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
         new HeadlessChecker().check();
     }
 
+    public class AFrame extends JFrame {
+        private JPanel contentPanel = new JPanel();
+        public AFrame() {
+            setName("a.window");
+            setContentPane(contentPanel);
 
+            contentPanel.getInputMap().put(KeyStroke.getKeyStroke(' '), "an action");
+            
+            this.pack();
+            this.setVisible(true);
+            
+            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
+    }
 }
