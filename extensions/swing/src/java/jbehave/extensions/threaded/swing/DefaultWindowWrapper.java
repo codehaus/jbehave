@@ -1,7 +1,6 @@
 package jbehave.extensions.threaded.swing;
 
 import java.awt.AWTEvent;
-import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.TextComponent;
@@ -83,8 +82,10 @@ public class DefaultWindowWrapper implements WindowWrapper {
         idler.waitForIdle();
     }   
 	
-	public void pressKey(int keycode) throws TimeoutException {
-        
+    /**
+     * Use this for any key which doesn't have a corresponding character.
+     */
+	public void pressKeycode(int keycode) throws TimeoutException {
         //NB: Don't use the Robot.
         //Why not the Robot?
         //Because the Robot tries to press the space bar, which is really annoying if you're running things
@@ -95,6 +96,15 @@ public class DefaultWindowWrapper implements WindowWrapper {
             
 		idler.waitForIdle();
 	}
+    
+    public void pressKeychar(char key) throws TimeoutException {
+        sysQueue.postEvent(createKeyPressEvent(getWindow(), key, KeyEvent.KEY_PRESSED));
+        sysQueue.postEvent(createKeyPressEvent(getWindow(), key, KeyEvent.KEY_RELEASED));
+        sysQueue.postEvent(createKeyPressEvent(getWindow(), key, KeyEvent.KEY_TYPED));
+            
+        idler.waitForIdle();
+    }
+    
 	public Component findComponent(String componentName) throws ComponentFinderException, TimeoutException {
 		return finder.findExactComponent(getWindow(), new NamedComponentFilter(componentName));
 	}
@@ -135,5 +145,10 @@ public class DefaultWindowWrapper implements WindowWrapper {
                 0,
                 keycode,
                 KeyEvent.CHAR_UNDEFINED);
+    }
+
+    public void requestWindowFocus() throws TimeoutException {
+        getWindow().requestFocus();
+        idler.waitForIdle();
     }
 }

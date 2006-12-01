@@ -124,6 +124,16 @@ public class Game implements GameRequestListener {
         Logger.debug(this, "Move right glyph requested");
         glyph.requestMoveRight();
     }
+
+    public void requestRotateGlyphLeft() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void requestRotateGlyphRight() {
+        // TODO Auto-generated method stub
+        
+    }
 	
 	
 

@@ -29,10 +29,12 @@ public class HellboundFrame extends JFrame implements GameListener {
         contentPanel.add(readyPanel, GameState.READY.toString());
         contentPanel.add(runningPanel, GameState.RUNNING.toString());
         
-        contentPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "drop");
+        contentPanel.getInputMap().put(KeyStroke.getKeyStroke(' '), "drop");
         contentPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
         contentPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
         contentPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
+        contentPanel.getInputMap().put(KeyStroke.getKeyStroke('z'), "leftRotate");
+        contentPanel.getInputMap().put(KeyStroke.getKeyStroke('x'), "rightRotate");
         
         this.pack();
         this.setVisible(true);
@@ -41,10 +43,13 @@ public class HellboundFrame extends JFrame implements GameListener {
 	}
 
     public void setGameRequestListener(final GameRequestListener gameRequestListener) {
+        contentPanel.getActionMap().clear();
         contentPanel.getActionMap().put("drop", actionFactory.drop(gameRequestListener));
         contentPanel.getActionMap().put("left", actionFactory.left(gameRequestListener));
         contentPanel.getActionMap().put("right", actionFactory.right(gameRequestListener));
         contentPanel.getActionMap().put("down", actionFactory.down(gameRequestListener));
+        contentPanel.getActionMap().put("leftRotate", actionFactory.leftRotate(gameRequestListener));
+        contentPanel.getActionMap().put("rightRotate", actionFactory.rightRotate(gameRequestListener));
     }
 
 	public void reportGameStateChanged(GameState state) {

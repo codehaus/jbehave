@@ -8,6 +8,8 @@ public interface GameRequestListener {
         public void requestMoveGlyphDown() {}
         public void requestMoveGlyphLeft() {}
         public void requestMoveGlyphRight() {}
+        public void requestRotateGlyphLeft() {}
+        public void requestRotateGlyphRight() {}
     };
 
     void requestStartGame();
@@ -19,5 +21,9 @@ public interface GameRequestListener {
     void requestMoveGlyphLeft();
 
     void requestMoveGlyphDown();
+
+    void requestRotateGlyphLeft();
+
+    void requestRotateGlyphRight();
 
 }

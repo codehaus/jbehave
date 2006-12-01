@@ -17,7 +17,7 @@ import jbehave.extensions.threaded.swing.ComponentFinderException;
 public class ComponentFinderBehaviour extends UsingMiniMock {
     
     public void shouldFindMatchingComponentsFromFilter() {
-        
+        checkForHeadless();
         JFrame frame = new JFrame();
         JPanel centrePanel = new JPanel();
         JPanel southPanel = new JPanel();
@@ -49,8 +49,9 @@ public class ComponentFinderBehaviour extends UsingMiniMock {
         
         verifyMocks();
     }
-    
+
     public void shouldFindExactMatchingComponentFromFilter() throws ComponentFinderException {
+        checkForHeadless();
         JFrame frame = new JFrame();
         JPanel centrePanel = new JPanel();
         JPanel southPanel = new JPanel();
@@ -78,6 +79,7 @@ public class ComponentFinderBehaviour extends UsingMiniMock {
     }
     
     public void shouldThrowExceptionIfExactComponentSoughtAndNoComponentFound() {
+        checkForHeadless();
         JFrame frame = new JFrame();
                                
         ComponentFinder componentFinder = new ComponentFinder();
@@ -95,6 +97,7 @@ public class ComponentFinderBehaviour extends UsingMiniMock {
     }
 
 	public void shouldThrowExceptionIfExactComponentSoughtAndMoreThanOneFound() {
+        checkForHeadless();
     	JFrame frame = new JFrame();
     	frame.getContentPane().add(new JButton());
     	frame.getContentPane().add(new JButton());
@@ -118,4 +121,8 @@ public class ComponentFinderBehaviour extends UsingMiniMock {
 		return false;
 	}
 	
+    
+    private void checkForHeadless() {
+        new HeadlessChecker().check();
+    }
 }
