@@ -16,9 +16,6 @@ import jbehave.core.story.domain.World;
 /** balance = balance - 20 */
 public class AccountBalanceShouldBeReduced extends OutcomeUsingMiniMock {
 
-    public void setExpectationIn(World world) {
-    }
-    
     public void verify(World world) {
         Ensure.pending();
     }

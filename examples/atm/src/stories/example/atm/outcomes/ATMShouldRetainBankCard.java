@@ -13,10 +13,6 @@ import jbehave.core.story.domain.World;
 
 
 public class ATMShouldRetainBankCard extends OutcomeUsingMiniMock {
-    public void setExpectationIn(World world) {
-        throw new RuntimeException("oops");
-    }
-
     public void verify(World world) {
         // keep bank card
     }

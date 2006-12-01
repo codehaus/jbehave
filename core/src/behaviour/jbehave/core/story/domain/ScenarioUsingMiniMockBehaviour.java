@@ -27,8 +27,7 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
 
         // expect...
         given.expects("setUp").with(world);
-        outcome.expects("setExpectationIn").with(world).after(given, "setUp");
-        event.expects("occurIn").with(world).after(outcome, "setExpectationIn");
+        event.expects("occurIn").with(world).after(given, "setUp");
         outcome.expects("verify").with(world).after(event, "occurIn");
         
         // when...
@@ -71,7 +70,6 @@ public class ScenarioUsingMiniMockBehaviour extends UsingMiniMock {
     	};
     	
     	Outcome outcome = new OutcomeUsingMiniMock(){
-			public void setExpectationIn(World world) {}
 			public void verify(World world) {}
 		};
 		

@@ -19,7 +19,6 @@ import jbehave.core.story.renderer.Renderer;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public abstract class OutcomeUsingMiniMock extends UsingMiniMock implements Outcome {
-    public abstract void setExpectationIn(World world);
     public abstract void verify(World world);
 	public void narrateTo(Renderer renderer) {
 		renderer.renderOutcome(this);

@@ -13,10 +13,6 @@ import jbehave.core.story.domain.World;
 
 
 public class ATMShouldDispenseCash extends OutcomeUsingMiniMock {
-    public void setExpectationIn(World world) {
-        
-    }
-    
     public void verify(World world) {
         // dispensed 20
     }

@@ -21,6 +21,5 @@ package jbehave.core.story.domain;
  * @see Outcomes
  */
 public interface Outcome extends ScenarioComponent {
-    void setExpectationIn(World world);
     void verify(World world);
 }
