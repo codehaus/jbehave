@@ -16,7 +16,6 @@ import jbehave.core.minimock.MiniMockObjectBehaviour;
 import jbehave.core.minimock.UsingMiniMockBehaviour;
 import jbehave.core.mock.ExpectationBehaviour;
 import jbehave.core.result.ResultBehaviour;
-import jbehave.core.story.listener.PlainTextListenerBehaviour;
 
 
 public class AllBehaviours implements Behaviours {
@@ -30,8 +29,6 @@ public class AllBehaviours implements Behaviours {
                 MiniMockObjectBehaviour.class,
                 UsingMiniMockBehaviour.class,
                 ExpectationBehaviour.class,
-                ExpectationBehaviour.class,
-                ResultBehaviour.class,
                 ResultBehaviour.class,
                 jbehave.core.story.AllBehaviours.class
         };
