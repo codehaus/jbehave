@@ -66,7 +66,7 @@ public class SwingCurrencyConverterView implements CurrencyConverterView {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(frameSize);
 		frame.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
-        frame.show();
+        frame.setVisible(true);
     }
 
 	public void registerEventHandler(final CurrencyConverterViewEventHandler eventHandler) {
