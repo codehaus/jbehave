@@ -23,6 +23,7 @@ public class Game implements GameRequestListener {
 	private final ListenerSet gameListeners;
 	private final ListenerSet glyphListeners;
 	private final ListenerNotifier stateNotifier;
+	private final HeartbeatListener heartbeatListener;
 
 	private final int height;
     
@@ -30,7 +31,6 @@ public class Game implements GameRequestListener {
 
 	private LivingGlyph glyph = LivingGlyph.NULL;
 	private Junk junk = Junk.NULL;
-    private HeartbeatListener heartbeatListener;
 
 	public Game(GlyphFactory factory, Heartbeat heartbeat, int width, int height) {
 		this.factory = factory;
