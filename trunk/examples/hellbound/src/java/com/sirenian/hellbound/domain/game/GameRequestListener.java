@@ -1,29 +1,15 @@
 package com.sirenian.hellbound.domain.game;
 
+import com.sirenian.hellbound.domain.glyph.GlyphMovement;
+
 public interface GameRequestListener {
 
 	GameRequestListener NULL = new GameRequestListener() {
         public void requestStartGame() {}
-        public void requestDropGlyph() {}
-        public void requestMoveGlyphDown() {}
-        public void requestMoveGlyphLeft() {}
-        public void requestMoveGlyphRight() {}
-        public void requestRotateGlyphLeft() {}
-        public void requestRotateGlyphRight() {}
+        public void requestGlyphMovement(GlyphMovement movement) {}
     };
 
     void requestStartGame();
     
-    void requestDropGlyph();
-
-    void requestMoveGlyphRight();
-
-    void requestMoveGlyphLeft();
-
-    void requestMoveGlyphDown();
-
-    void requestRotateGlyphLeft();
-
-    void requestRotateGlyphRight();
-
+    void requestGlyphMovement(GlyphMovement movement);
 }

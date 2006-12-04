@@ -5,6 +5,7 @@ import com.sirenian.hellbound.domain.game.GameListener;
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import com.sirenian.hellbound.domain.game.GameState;
 import com.sirenian.hellbound.domain.glyph.GlyphListener;
+import com.sirenian.hellbound.domain.glyph.GlyphMovement;
 import com.sirenian.hellbound.domain.glyph.Heartbeat;
 import com.sirenian.hellbound.domain.glyph.HeartbeatListener;
 import com.sirenian.hellbound.domain.glyph.Junk;
@@ -58,7 +59,7 @@ public class Game implements GameRequestListener {
                     public void beat() {
                         if (state == GameState.RUNNING) {
                             Logger.debug(this, "Hearing heartbeat; moving glyph down");
-                            moveGlyphDownOrJunkIt();
+                            requestGlyphMovement(GlyphMovement.DOWN);
                         }
                     }
                 };
@@ -95,45 +96,17 @@ public class Game implements GameRequestListener {
         glyph.addListener(listener);
 	}
 
-    public void requestDropGlyph() {
-        Logger.debug(this, "Drop of glyph requested");
+    public void requestGlyphMovement(GlyphMovement movement) {
         if (state == GameState.RUNNING) {
-        	glyph.drop();
+            Logger.debug(this, "Glyph movement " + movement + "requested");
+            boolean result = movement.performOn(glyph);
+            
+            if (result == false && movement == GlyphMovement.DOWN) {
+                Logger.debug(this, "Could not move glyph down; junking it");
+                junk.absorb(glyph);
+                resetGlyph();
+            }
         }
-    }
-    
-    private void moveGlyphDownOrJunkIt() {
-        if (!glyph.requestMoveDown()) {
-            Logger.debug(this, "Could not move glyph down; junking it");
-            junk.absorb(glyph);
-            resetGlyph();
-        }
-    }
-
-    public void requestMoveGlyphDown() {
-        Logger.debug(this, "Move glyph down requested");
-        moveGlyphDownOrJunkIt();
-    }
-
-    public void requestMoveGlyphLeft() {
-        Logger.debug(this, "Move glyph left requested");
-        glyph.requestMoveLeft();
-        
-    }
-
-    public void requestMoveGlyphRight() {
-        Logger.debug(this, "Move glyph right requested");
-        glyph.requestMoveRight();
-    }
-
-    public void requestRotateGlyphLeft() {
-        Logger.debug(this, "Rotate glyph left requested");
-        glyph.requestRotateLeft();
-    }
-
-    public void requestRotateGlyphRight() {
-        Logger.debug(this, "Rotate glyph left requested");
-        glyph.requestRotateRight();
     }
 	
 	
