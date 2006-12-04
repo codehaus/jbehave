@@ -40,6 +40,10 @@ public class Glyph {
 		listeners.notifyListeners(glyphMovementNotifier);
 	}
 	
+    protected void clearListeners() {
+        listeners.clear();
+    }
+    
 	protected void moveTo(Segments destination) {
 		this.previousSegments = segments;
 		this.segments = destination;

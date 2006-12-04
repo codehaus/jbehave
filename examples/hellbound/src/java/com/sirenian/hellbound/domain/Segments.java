@@ -5,24 +5,12 @@ package com.sirenian.hellbound.domain;
  */
 public class Segments {
 
-	private static final Translator MOVE_LEFT = new Translator() {
-		public Segment translate(Segment segment) { return segment.movedLeft(); }};
-	
-	private static final Translator MOVE_RIGHT = new Translator() {
-		public Segment translate(Segment segment) { return segment.movedRight(); }};
-		
-	private static final Translator MOVE_DOWN = new Translator() {
-		public Segment translate(Segment segment) { return segment.movedDown(); }};
-
-	private static final Translator COPY = new Translator() {
-		public Segment translate(Segment segment) { return segment; }};
-
 	public static final Segments EMPTY = new Segments(new Segment[0]);	
 	
-	private final Segment[] segments;
+	private final ImmutableSegments segments;
 
 	public Segments(Segment[] segments) {
-		this.segments = segments;
+		this.segments = new ImmutableSegments(segments);
 	}
 
 	public Segments(Segment segment1, Segment segment2, Segment segment3, Segment segment4) {
@@ -30,16 +18,11 @@ public class Segments {
 	}
 
 	public Segment get(int index) {
-		return segments[index];
+		return segments.get(index);
 	}
-
-
-	public Segments copy() {
-		return translateWith(COPY);
-	}	
 	
 	public Segments movedRight() {
-		return translateWith(MOVE_RIGHT);
+		return translateWith(new MoveRightTranslator(1));
 	}
 
 	public Segments movedRight(int offset) {
@@ -47,19 +30,24 @@ public class Segments {
 	}
 	
 	public Segments movedLeft() {
-		return translateWith(MOVE_LEFT);
+		return translateWith(new MoveRightTranslator(-1));
 	}
 
 	public Segments movedDown() {
-		return translateWith(MOVE_DOWN);
+        return translateWith(new MoveDownTranslator(1));
 	}
+    
+
+    public Segments movedDown(int offset) {
+        return translateWith(new MoveDownTranslator(offset));
+    }
 	
 	public boolean equals(Object obj) {
 		Segments that = (Segments) obj;
 		
 		if (this.size() != that.size()) { return false; }
 		
-		for (int i = 0; i < segments.length; i++) {
+		for (int i = 0; i < segments.size(); i++) {
 			if (!this.get(i).equals(that.get(i))) {
 				return false;
 			}
@@ -69,14 +57,14 @@ public class Segments {
 	
 	public int hashCode() {
 		int hash = 0;
-		for (int i = 0; i < segments.length; i++) {
-			hash = (hash * 32) + segments[i].hashCode();
+		for (int i = 0; i < segments.size(); i++) {
+			hash = (hash * 32) + segments.get(i).hashCode();
 		}
 		return hash;
 	}
 
 	public int size() {
-		return segments.length;
+		return segments.size();
 	}
 
 	public boolean contains(Segment segment) {
@@ -89,9 +77,9 @@ public class Segments {
 	}
 	
 	private Segments translateWith(Translator action) {
-		Segment[] newSegments = new Segment[segments.length];
-		for (int i = 0; i < segments.length; i++) {
-			newSegments[i] = action.translate(segments[i]);
+		Segment[] newSegments = new Segment[segments.size()];
+		for (int i = 0; i < segments.size(); i++) {
+			newSegments[i] = action.translate(segments.get(i));
 		}
 		return new Segments(newSegments);
 	}
@@ -108,13 +96,15 @@ public class Segments {
 		public Segment translate(Segment segment) {	return segment.movedRight(offset);	}
 	}
     
+    private static class MoveDownTranslator implements Translator {
+        private final int offset;
+        private MoveDownTranslator(int offset) { this.offset = offset; }
+        
+        public Segment translate(Segment segment) { return segment.movedDown(offset);  }
+    }
+    
     public String toString() {
-        StringBuffer builder = new StringBuffer();
-        builder.append("Segments: ");
-        for (int i = 0; i < segments.length; i++) {
-            builder.append(segments[i].toString());
-        }
-        return builder.toString();
+        return segments.toString();
     }
 
 	public boolean overlaps(Segments segments) {
@@ -128,22 +118,64 @@ public class Segments {
 
 	public int lowest() {
 		int lowest = -1;
-		for (int i = 0; i < segments.length; i++) {
-			if (segments[i].y > lowest) { // heighest int represents lowest posn in the pit
-				lowest = segments[i].y;
+		for (int i = 0; i < segments.size(); i++) {
+			if (segments.get(i).y > lowest) { // heighest int represents lowest posn in the pit
+				lowest = segments.get(i).y;
 			}
 		}
 		return lowest;
 	}
 
 	public Segments add(Segments segments) {
-		Segment[] allSegments = new Segment[this.segments.length + segments.size()];
-		for (int i = 0; i < this.segments.length; i++)  {
-			allSegments[i] = this.segments[i];
+		Segment[] allSegments = new Segment[this.segments.size() + segments.size()];
+		for (int i = 0; i < this.segments.size(); i++)  {
+			allSegments[i] = this.segments.get(i);
 		}
 		for (int i = 0; i < segments.size(); i++) {
-			allSegments[this.segments.length + i] = segments.get(i); 
+			allSegments[this.segments.size() + i] = segments.get(i); 
 		}
 		return new Segments(allSegments);
 	}
+
+    /**
+     * @throws IllegalArgumentException if the Segment being removed is not
+     * contained in this Segments.
+     */
+    public Segments remove(Segment segment) {
+        Segment[] newSegments = new Segment[segments.size() - 1];
+        boolean foundSegment = false;
+        for (int i = 0; i < segments.size(); i++) {
+            if (segments.get(i).equals(segment)) {
+                foundSegment = true;
+            } else {
+                newSegments[foundSegment ? i - 1 : i] = segments.get(i);
+            }
+        }
+        if (!foundSegment) {
+            throw new IllegalArgumentException("Cannot remove " + segment + "; not contained in " + this);
+        }
+        return new Segments(newSegments);
+    }
+
+    /**
+     * @throws IllegalArgumentException if the Segment being removed is not
+     * contained in this Segments.
+     */
+    public Segments replace(Segment original, Segment replacement) {
+        boolean foundSegment = false;
+        Segment[] newSegments = new Segment[segments.size()];
+        for (int i = 0; i < segments.size(); i++) {
+            if (segments.get(i).equals(original)) {
+                foundSegment = true;
+                newSegments[i] = replacement;
+            } else {
+                newSegments[i] = segments.get(i);
+            }
+        }
+        if (!foundSegment) {
+            throw new IllegalArgumentException("Cannot replace " + original + " with " + replacement + "; not contained in " + this);
+        }
+        return new Segments(newSegments);
+    }
+
 }

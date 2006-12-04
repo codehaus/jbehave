@@ -11,7 +11,7 @@ public class JunkBehaviour extends UsingMiniMock {
 
 	public void shouldInitiallyContainNoSegments() {
 		Mock glyphListener = mock(GlyphListener.class);
-		Junk junk = new Junk();
+		Junk junk = new Junk(9, 13);
 		
 		glyphListener.expects("reportGlyphMovement").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(Segments.EMPTY)});
 		junk.addListener((GlyphListener)glyphListener);
@@ -24,7 +24,7 @@ public class JunkBehaviour extends UsingMiniMock {
         LivingGlyph glyph = new LivingGlyph(GlyphType.O, CollisionDetector.NULL, 4);
         Segments originalSegments = glyph.getSegments();
 
-		Junk junk = new Junk();
+		Junk junk = new Junk(9, 13);
         glyphListener.expects("reportGlyphMovement").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(Segments.EMPTY)});
 		glyphListener.expects("reportGlyphMovement").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(originalSegments)});
 
@@ -36,4 +36,30 @@ public class JunkBehaviour extends UsingMiniMock {
         
 		verifyMocks();
 	}
+    
+    public void shouldRemoveCompletedLinesWhenAbsorbingOtherGlyphsThenMoveAnySegmentsAboveLineDown() {
+        Junk junk = new Junk(4, 13);
+        
+        LivingGlyph glyphToCheckThatOnlyWholeLinesAreRemoved = new LivingGlyph(GlyphType.T, CollisionDetector.NULL, 2);
+        Segments expectedSegments = glyphToCheckThatOnlyWholeLinesAreRemoved.getSegments();
+        
+        LivingGlyph glyphForWholeLine = new LivingGlyph(GlyphType.I, new CollisionDetector(){
+            public boolean collides(Segments segments) {
+                return false;
+            }}, 1);
+        
+        glyphForWholeLine.requestRotateLeft(); // now takes up whole row for width 4
+
+        glyphForWholeLine.requestMoveDown();
+        glyphForWholeLine.requestMoveDown();
+        glyphForWholeLine.requestMoveDown();
+        glyphForWholeLine.requestMoveDown(); // get it out of the way of the T
+        
+        junk.absorb(glyphToCheckThatOnlyWholeLinesAreRemoved);
+        junk.absorb(glyphForWholeLine);
+        
+        ensureThat(junk.getSegments(), eq(expectedSegments.movedDown())); // absorbs whole row
+        
+        verifyMocks();
+    }
 }

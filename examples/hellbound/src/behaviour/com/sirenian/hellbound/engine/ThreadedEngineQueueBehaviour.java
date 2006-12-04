@@ -15,6 +15,8 @@ public class ThreadedEngineQueueBehaviour extends ThreadedQueueBehaviour {
         listener.expects("requestMoveGlyphLeft");
         listener.expects("requestMoveGlyphRight");
         listener.expects("requestMoveGlyphDown");
+        listener.expects("requestRotateGlyphLeft");
+        listener.expects("requestRotateGlyphRight");
         
         final ThreadedEngineQueue queue = new ThreadedEngineQueue();
         queue.setGameRequestDelegate((GameRequestListener) listener);
@@ -23,6 +25,8 @@ public class ThreadedEngineQueueBehaviour extends ThreadedQueueBehaviour {
         queue.requestMoveGlyphLeft();
         queue.requestMoveGlyphRight();
         queue.requestMoveGlyphDown();
+        queue.requestRotateGlyphLeft();
+        queue.requestRotateGlyphRight();
         
         synchronized(this) { wait(20); }
         // needs to be long enough for request queue to start up and pass along the request

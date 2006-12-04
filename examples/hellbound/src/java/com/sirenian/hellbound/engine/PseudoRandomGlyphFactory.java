@@ -9,25 +9,29 @@ import com.sirenian.hellbound.util.ListenerSet;
 
 public class PseudoRandomGlyphFactory implements GlyphFactory {
 
-    private Random random;
+    private final Random random;
+    private final int width;
+    private final int height;
 
-    public PseudoRandomGlyphFactory() {
-        this(System.currentTimeMillis());
+    public PseudoRandomGlyphFactory(int width, int height) {
+        this(System.currentTimeMillis(), width, height);
     }
     
-    public PseudoRandomGlyphFactory(long seed) {
+    public PseudoRandomGlyphFactory(long seed, int width, int height) {
+        this.width = width;
+        this.height = height;
         random = new Random(seed);
     }
 
-    public LivingGlyph nextGlyph(int center, CollisionDetector detector, ListenerSet glyphListeners) {
+    public LivingGlyph nextGlyph(CollisionDetector detector, ListenerSet glyphListeners) {
         GlyphType glyphType = GlyphType.ALL_LIVING[random.nextInt(GlyphType.ALL_LIVING.length)];
-        LivingGlyph glyph = new LivingGlyph(glyphType, detector, center);
+        LivingGlyph glyph = new LivingGlyph(glyphType, detector, CenterCalculator.forWidth(width));
         glyph.addListeners(glyphListeners);
 		return glyph;
     }
 
 	public Junk createJunk(ListenerSet glyphListeners) {
-		Junk junk = new Junk();
+		Junk junk = new Junk(width, this.height);
         junk.addListeners(glyphListeners);
         return junk;
 	}

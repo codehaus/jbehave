@@ -26,4 +26,8 @@ public class ListenerSet {
 	public void addListeners(ListenerSet others) {
 		listeners.putAll(others.listeners);	
 	}
+
+    public void clear() {
+        listeners.clear();
+    }
 }

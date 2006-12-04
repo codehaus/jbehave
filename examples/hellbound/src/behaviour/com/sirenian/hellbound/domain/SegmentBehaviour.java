@@ -15,5 +15,25 @@ public class SegmentBehaviour extends UsingConstraints {
 		
 		ensureThat(segment1.hashCode(), eq(segment2.hashCode()));
 	}
+    
+    public void shouldMoveRightOnePlace() {
+        ensureThat(new Segment(3, 2).movedRight(), eq(new Segment(4, 2)));
+    }
+    
+    public void shouldMoveRightByOffset() {
+        ensureThat(new Segment(3, 2).movedRight(3), eq(new Segment(6, 2)));
+    }
+    
+    public void shouldMoveLeftOnePlace() {
+        ensureThat(new Segment(3, 2).movedLeft(), eq(new Segment(2, 2)));
+    }
+    
+    public void shouldMoveDownOnePlace() {
+        ensureThat(new Segment(3, 2).movedDown(), eq(new Segment(3, 3)));
+    }
+    
+    public void shouldMoveDownByOffset() {
+        ensureThat(new Segment(3, 2).movedDown(3), eq(new Segment(3, 5)));
+    }
 
 }

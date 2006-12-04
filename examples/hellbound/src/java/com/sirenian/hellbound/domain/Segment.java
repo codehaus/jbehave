@@ -25,6 +25,10 @@ public class Segment {
 	public Segment movedDown() {
 		return new Segment(x, y + 1);
 	}
+
+    public Segment movedDown(int offset) {
+	    return new Segment(x, y + offset);
+	}
 	
 	public Segment movedLeft() {
 		return new Segment(x - 1, y);
@@ -41,4 +45,5 @@ public class Segment {
 	public String toString() {
 		return "(" + x + "," + y + ")";
 	}
+
 }

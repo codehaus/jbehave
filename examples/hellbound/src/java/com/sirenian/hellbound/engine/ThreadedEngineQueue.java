@@ -66,13 +66,21 @@ public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
     }
 
     public void requestRotateGlyphLeft() {
-        // TODO Auto-generated method stub
-        
+        queue(new Runnable() {
+            public void run() { gameRequestListener.requestRotateGlyphLeft(); }
+            public String toString() {
+                return "runnable gameRequestListener.requestRotateGlyphLeft()";
+            }
+        });
     }
 
     public void requestRotateGlyphRight() {
-        // TODO Auto-generated method stub
-        
+        queue(new Runnable() {
+            public void run() { gameRequestListener.requestRotateGlyphRight(); }
+            public String toString() {
+                return "runnable gameRequestListener.requestRotateGlyphRight()";
+            }
+        });
     }
 
 }

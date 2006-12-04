@@ -13,8 +13,7 @@ import com.sirenian.hellbound.stories.WorldKey;
 
 public class TheGlyphShouldBeCentredAtTheTopOfThePit extends HellboundOutcome {
 	public void verifyAnyTimeIn(World world) {
-	    GlyphType type = GlyphType.T;
-	    Segments expectedSegments = type.getSegments(0).movedRight(3);
+	    Segments expectedSegments = T_SHAPE_AT_TOP;
 	    Color expectedColor = Hellbound.COLORMAP.getColorFor(GlyphType.T);
 		RenderedPit graphics = (RenderedPit) world.get(WorldKey.PIT, null);
         Ensure.that(graphics, contains(expectedSegments, expectedColor));

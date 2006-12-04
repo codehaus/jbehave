@@ -2,13 +2,15 @@ package com.sirenian.hellbound;
 
 import jbehave.core.behaviour.Behaviours;
 
+import com.sirenian.hellbound.domain.SegmentBehaviour;
 import com.sirenian.hellbound.domain.SegmentsBehaviour;
 import com.sirenian.hellbound.domain.glyph.GlyphBehaviour;
 import com.sirenian.hellbound.domain.glyph.JunkBehaviour;
 import com.sirenian.hellbound.domain.glyph.LivingGlyphBehaviour;
+import com.sirenian.hellbound.engine.AcceleratingHeartbeatBehaviour;
+import com.sirenian.hellbound.engine.CenterCalculatorBehaviour;
 import com.sirenian.hellbound.engine.GameBehaviour;
 import com.sirenian.hellbound.engine.PseudoRandomGlyphFactoryBehaviour;
-import com.sirenian.hellbound.engine.AcceleratingHeartbeatBehaviour;
 import com.sirenian.hellbound.engine.ThreadedEngineQueueBehaviour;
 import com.sirenian.hellbound.gui.FrontPanelBehaviour;
 import com.sirenian.hellbound.gui.HellboundFrameBehaviour;
@@ -21,22 +23,24 @@ public class AllBehaviours implements Behaviours {
 	public Class[] getBehaviours() {
 		return new Class[] {
 			SegmentsBehaviour.class,
+            SegmentBehaviour.class,
 			
 			LivingGlyphBehaviour.class,
 			GlyphBehaviour.class,
-			PseudoRandomGlyphFactoryBehaviour.class,
+			JunkBehaviour.class,
+            
 			AcceleratingHeartbeatBehaviour.class,
+            CenterCalculatorBehaviour.class,
             GameBehaviour.class,
-			
-			ThreadedQueueBehaviour.class,
+			PseudoRandomGlyphFactoryBehaviour.class,
 			ThreadedEngineQueueBehaviour.class,
-			ThreadedQueueBehaviour.class,
-			ListenerSetBehaviour.class,				
-				
+			
 			FrontPanelBehaviour.class,
 			HellboundFrameBehaviour.class,
 			PitPanelBehaviour.class,
-            JunkBehaviour.class
+            
+			ListenerSetBehaviour.class,				
+			ThreadedQueueBehaviour.class,
 		};
 	}
 
