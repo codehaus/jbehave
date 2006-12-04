@@ -11,6 +11,7 @@ import jbehave.extensions.threaded.time.TimeoutException;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import com.sirenian.hellbound.domain.game.GameState;
+import com.sirenian.hellbound.domain.glyph.GlyphMovement;
 
 public class HellboundFrameBehaviour extends UsingMiniMock {
 
@@ -50,34 +51,34 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
 	}
     
     public void shouldRequestThatTheShapeIsDroppedWhenTheSpaceKeyIsPressed() throws Exception {
-        ensureThatKeycodeProducesRequest(' ', "requestDropGlyph");
+        ensureThatKeycodeProducesRequest(' ', GlyphMovement.DROP);
     }
     
     public void shouldRequestThatTheShapeIsMovedRightWhenTheRightKeyIsPressed() throws Exception {
-        ensureThatKeycodeProducesRequest(KeyEvent.VK_RIGHT, "requestMoveGlyphRight");
+        ensureThatKeycodeProducesRequest(KeyEvent.VK_RIGHT, GlyphMovement.RIGHT);
     }
     
     public void shouldRequestThatTheShapeIsMovedLeftWhenTheMoveLeftKeyIsPressed() throws Exception {
-        ensureThatKeycodeProducesRequest(KeyEvent.VK_LEFT, "requestMoveGlyphLeft");
+        ensureThatKeycodeProducesRequest(KeyEvent.VK_LEFT, GlyphMovement.LEFT);
     }
     
     public void shouldRequestThatTheShapeIsMovedDownWhenTheMoveDownKeyIsPressed() throws Exception {
-        ensureThatKeycodeProducesRequest(KeyEvent.VK_DOWN, "requestMoveGlyphDown");
+        ensureThatKeycodeProducesRequest(KeyEvent.VK_DOWN, GlyphMovement.DOWN);
     }
     
     public void shouldRequestThatTheShapeIsRotatedLeftWhenTheZKeyIsPressed() throws Exception {
-        ensureThatKeycodeProducesRequest('z', "requestRotateGlyphLeft");
+        ensureThatKeycodeProducesRequest('z', GlyphMovement.ROTATE_LEFT);
     }
     
     public void shouldRequestThatTheShapeIsRotatedRightWhenTheXKeyIsPressed() throws Exception {
-        ensureThatKeycodeProducesRequest('x', "requestRotateGlyphRight");
+        ensureThatKeycodeProducesRequest('x', GlyphMovement.ROTATE_RIGHT);
 
     }
 
-    private void ensureThatKeycodeProducesRequest(int keycode, String expectedRequest) throws TimeoutException {
+    private void ensureThatKeycodeProducesRequest(int keycode, GlyphMovement movement) throws TimeoutException {
         setUp();
         try {
-            gameRequestListener.expects(expectedRequest).once();
+            gameRequestListener.expects("requestGlyphMovement").with(movement).once();
             
             frame.reportGameStateChanged(GameState.RUNNING);
             windowWrapper.pressKeycode(keycode);
@@ -87,10 +88,10 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
         }
     }
     
-    private void ensureThatKeycodeProducesRequest(char keyChar, String expectedRequest) throws TimeoutException {
+    private void ensureThatKeycodeProducesRequest(char keyChar, GlyphMovement movement) throws TimeoutException {
         setUp();
         try {
-            gameRequestListener.expects(expectedRequest).once();
+            gameRequestListener.expects("requestGlyphMovement").with(movement).once();
             
             frame.reportGameStateChanged(GameState.RUNNING);
             windowWrapper.pressKeychar(keyChar);

@@ -6,60 +6,16 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
+import com.sirenian.hellbound.domain.glyph.GlyphMovement;
 import com.sirenian.hellbound.util.Logger;
 
 public class ActionFactory {
 
-    public Action right(final GameRequestListener gameRequestListener) {
+    public Action createAction(final GameRequestListener gameRequestListener, final GlyphMovement movement) {
+        Logger.debug(this, "Creating " + movement + " action ");
         return new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                Logger.debug(this, "Adding right action to frame action map");
-                gameRequestListener.requestMoveGlyphRight();
-            }
-        };
-    }
-    
-    public Action left(final GameRequestListener gameRequestListener) {
-        Logger.debug(this, "Adding left action to frame action map");
-        return new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                gameRequestListener.requestMoveGlyphLeft();
-            }
-        };
-    }
-
-    public Action down(final GameRequestListener gameRequestListener) {
-        return new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                Logger.debug(this, "Adding down action to frame action map");
-                gameRequestListener.requestMoveGlyphDown();
-            }
-        };
-    }
-    
-    public Action drop(final GameRequestListener gameRequestListener) {
-        return new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                Logger.debug(this, "Adding drop action to frame action map");
-                gameRequestListener.requestDropGlyph();
-            }
-        };
-    }
-
-    public Action leftRotate(final GameRequestListener gameRequestListener) {
-        return new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                Logger.debug(this, "Adding left rotate action to frame action map");
-                gameRequestListener.requestRotateGlyphLeft();
-            }
-        };
-    }
-
-    public Action rightRotate(final GameRequestListener gameRequestListener) {
-        return new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                Logger.debug(this, "Adding right rotate action to frame action map");
-                gameRequestListener.requestRotateGlyphRight();
+                gameRequestListener.requestGlyphMovement(movement);
             }
         };
     }    

@@ -8,6 +8,7 @@ import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.game.GameListener;
 import com.sirenian.hellbound.domain.game.GameState;
 import com.sirenian.hellbound.domain.glyph.GlyphListener;
+import com.sirenian.hellbound.domain.glyph.GlyphMovement;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.domain.glyph.Heartbeat;
 import com.sirenian.hellbound.domain.glyph.Junk;
@@ -81,7 +82,12 @@ public class GameBehaviour extends UsingClassMock {
         glyphListener.stubs("reportGlyphMovement").never();
         
         heartbeat.beat();
-        game.requestDropGlyph();
+        game.requestGlyphMovement(GlyphMovement.DOWN);
+        game.requestGlyphMovement(GlyphMovement.LEFT);
+        game.requestGlyphMovement(GlyphMovement.RIGHT);
+        game.requestGlyphMovement(GlyphMovement.DROP);
+        game.requestGlyphMovement(GlyphMovement.ROTATE_LEFT);
+        game.requestGlyphMovement(GlyphMovement.ROTATE_RIGHT);
         
         verifyMocks();
 	}
@@ -92,21 +98,21 @@ public class GameBehaviour extends UsingClassMock {
         Segments latestSegments = GlyphType.T.getSegments(0).movedRight(3);
         game.requestStartGame();
                
-        game.requestRotateGlyphLeft();
+        game.requestGlyphMovement(GlyphMovement.ROTATE_LEFT);
         ensureThat(factory.glyph.getSegments(), eq(GlyphType.T.getSegments(1).movedRight(3)));
         
-        game.requestRotateGlyphRight();
+        game.requestGlyphMovement(GlyphMovement.ROTATE_RIGHT);
         ensureThat(factory.glyph.getSegments(), eq(GlyphType.T.getSegments(0).movedRight(3)));
 
-        game.requestMoveGlyphLeft();
+        game.requestGlyphMovement(GlyphMovement.LEFT);
         ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedLeft()));
         latestSegments = latestSegments.movedLeft();
         
-        game.requestMoveGlyphRight();
+        game.requestGlyphMovement(GlyphMovement.RIGHT);
         ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedRight()));
         latestSegments = latestSegments.movedRight();
-        
-        game.requestMoveGlyphDown();
+
+        game.requestGlyphMovement(GlyphMovement.DOWN);
         ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedDown()));
         latestSegments = latestSegments.movedDown();
         
@@ -134,7 +140,7 @@ public class GameBehaviour extends UsingClassMock {
         game.requestStartGame();
         
         // When...
-        game.requestDropGlyph();
+        game.requestGlyphMovement(GlyphMovement.DROP);
         heartbeat.beat();
         
         //Then...

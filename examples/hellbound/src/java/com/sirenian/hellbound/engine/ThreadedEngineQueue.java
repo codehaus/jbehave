@@ -1,6 +1,7 @@
 package com.sirenian.hellbound.engine;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
+import com.sirenian.hellbound.domain.glyph.GlyphMovement;
 import com.sirenian.hellbound.util.ThreadedQueue;
 
 public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
@@ -28,57 +29,11 @@ public class ThreadedEngineQueue extends ThreadedQueue implements EngineQueue {
         action.run();
     }
 
-    public void requestDropGlyph() {
+    public void requestGlyphMovement(final GlyphMovement movement) {
         queue(new Runnable() {
-            public void run() { gameRequestListener.requestDropGlyph(); }
+            public void run() { gameRequestListener.requestGlyphMovement(movement); }
             public String toString() {
-                return "runnable gameRequestListener.requestDropGlyph()";
-            }
-        });
-        
-    }
-
-    public void requestMoveGlyphDown() {
-        queue(new Runnable() {
-            public void run() { gameRequestListener.requestMoveGlyphDown(); }
-            public String toString() {
-                return "runnable gameRequestListener.requestMoveGlyphDown()";
-            }
-        });
-    }
-
-    public void requestMoveGlyphLeft() {
-        queue(new Runnable() {
-            public void run() { gameRequestListener.requestMoveGlyphLeft(); }
-            public String toString() {
-                return "runnable gameRequestListener.requestMoveGlyphLeft()";
-            }
-        });
-    }
-
-    public void requestMoveGlyphRight() {
-        queue(new Runnable() {
-            public void run() { gameRequestListener.requestMoveGlyphRight(); }
-            public String toString() {
-                return "runnable gameRequestListener.requestMoveGlyphRight()";
-            }
-        });
-    }
-
-    public void requestRotateGlyphLeft() {
-        queue(new Runnable() {
-            public void run() { gameRequestListener.requestRotateGlyphLeft(); }
-            public String toString() {
-                return "runnable gameRequestListener.requestRotateGlyphLeft()";
-            }
-        });
-    }
-
-    public void requestRotateGlyphRight() {
-        queue(new Runnable() {
-            public void run() { gameRequestListener.requestRotateGlyphRight(); }
-            public String toString() {
-                return "runnable gameRequestListener.requestRotateGlyphRight()";
+                return "runnable gameRequestListener.requestGlyphMovement(" + movement + ")";
             }
         });
     }
