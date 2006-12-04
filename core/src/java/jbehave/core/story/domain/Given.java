@@ -21,5 +21,4 @@ package jbehave.core.story.domain;
  */
 public interface Given extends ScenarioComponent {
     void setUp(World world);
-    void tidyUp(World world);
 }

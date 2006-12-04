@@ -27,13 +27,13 @@ public class GivenScenarioBehaviour extends UsingMiniMock {
         verifyMocks();
 	}
     
-    public void shouldTidyUpScenarioWhenTidiedUp() {
+    public void shouldCleanUpScenarioWhenCleanedUp() {
         Mock scenario = mock(Scenario.class);
         World world = (World) stub(World.class);
-        scenario.expects("tidyUp").with(world);
+        scenario.expects("cleanUp").with(world);
                 
         GivenScenario givenScenario = new GivenScenario((Scenario) scenario);
-        givenScenario.tidyUp(world);
+        givenScenario.cleanUp(world);
         
         verifyMocks();
     }

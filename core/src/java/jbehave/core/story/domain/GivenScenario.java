@@ -33,8 +33,8 @@ public class GivenScenario extends GivenUsingMiniMock {
         scenario.run(world);
     }
 
-    public void tidyUp(World world) {
-        scenario.tidyUp(world);
+    public void cleanUp(World world) {
+        scenario.cleanUp(world);
     }
     
 }

@@ -1,14 +1,11 @@
 package jbehave.core.story;
 
 import jbehave.core.story.domain.EventUsingMiniMock;
-import jbehave.core.story.domain.GivenScenario;
 import jbehave.core.story.domain.GivenUsingMiniMock;
-import jbehave.core.story.domain.Givens;
+import jbehave.core.story.domain.MultiStepScenario;
 import jbehave.core.story.domain.Narrative;
 import jbehave.core.story.domain.OutcomeUsingMiniMock;
-import jbehave.core.story.domain.Outcomes;
 import jbehave.core.story.domain.ScenarioDrivenStory;
-import jbehave.core.story.domain.ScenarioUsingMiniMock;
 import jbehave.core.story.domain.World;
 
 public class SimpleStory extends ScenarioDrivenStory {
@@ -29,23 +26,21 @@ public class SimpleStory extends ScenarioDrivenStory {
         addScenario(new PlainTextRendererStillWorks());
     }
     
-    public static class PlainTextRendererWorks extends ScenarioUsingMiniMock {
-        public PlainTextRendererWorks() {
-            super(new EverythingCompiles(), new ICrossMyFingers(),
-                new PlainTextRendererShouldWork());
+    public static class PlainTextRendererWorks extends MultiStepScenario {
+        public void assemble() {
+            given(new EverythingCompiles());
+            when(new ICrossMyFingers());
+            then(new PlainTextRendererShouldWork());
         }
     }
     
-    public static class PlainTextRendererStillWorks extends ScenarioUsingMiniMock {
-        public PlainTextRendererStillWorks() {
-             super(new Givens(
-                    new GivenScenario(new PlainTextRendererWorks()),
-                    new FirstScenarioRanWithoutFallingOver()
-            ), new IDoNothing(),
-                    new Outcomes(
-                            new PlainTextRendererShouldStillWork(),
-                            new BehaviourClassShouldNotFail())
-                    );
+    public static class PlainTextRendererStillWorks extends MultiStepScenario {
+        public void assemble() {
+             given(new PlainTextRendererWorks());
+             given(new FirstScenarioRanWithoutFallingOver());
+             when(new IDoNothing());
+             then(new PlainTextRendererShouldStillWork());
+             then(new BehaviourClassShouldNotFail());
         }
     }
 
@@ -54,8 +49,7 @@ public class SimpleStory extends ScenarioDrivenStory {
         }
     }
 
-    public static class FirstScenarioRanWithoutFallingOver extends
-            GivenUsingMiniMock {
+    public static class FirstScenarioRanWithoutFallingOver extends GivenUsingMiniMock {
         public void setUp(World world) {
         }
     }

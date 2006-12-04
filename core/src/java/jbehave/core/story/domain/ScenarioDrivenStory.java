@@ -32,7 +32,7 @@ import jbehave.core.story.renderer.Renderer;
 public class ScenarioDrivenStory implements Story {
     private final Narrative narrative;
     private final Scenarios scenarios;
-    private final ArrayList listeners;
+    private final List listeners;
 
     public ScenarioDrivenStory(Narrative narrative) {
         this.narrative = narrative;

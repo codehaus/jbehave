@@ -16,7 +16,7 @@ import jbehave.core.story.renderer.Renderer;
  */
 public abstract class EventUsingMiniMock extends UsingMiniMock implements Event {
     
-    public void undoIn(World world) {
+    public void tidyUp(World world) {
         // default empty implementation
     };
 	

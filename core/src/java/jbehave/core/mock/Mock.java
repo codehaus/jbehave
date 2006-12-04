@@ -9,7 +9,7 @@ package jbehave.core.mock;
 
 
 /**
- * This is the core of MiniMock - it represents an object that can have expectations set on it
+ * This is the core of the mocking framework - it represents an object that can have expectations set on it
  */
 public interface Mock {
     /** Create expectation with default invocation properties - invoked once */
@@ -21,6 +21,6 @@ public interface Mock {
     /** Verify all the expectations on this mock */
     void verify();
     
-    /** @deprecated you don't need this if you use UsingMiniMock#mock(Class) */
+    /** Get the underlying object - you don't need this if you use UsingMiniMock#mock(Class) */
     Object proxy();
 }

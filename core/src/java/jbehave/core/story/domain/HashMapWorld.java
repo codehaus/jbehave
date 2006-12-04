@@ -34,4 +34,8 @@ public class HashMapWorld implements World {
     public void clear() {
         map.clear();
     }
+    
+    public String toString() {
+        return "World containing " + map.keySet();
+    }
 }

@@ -22,5 +22,4 @@ package jbehave.core.story.domain;
  */
 public interface Event extends ScenarioComponent {
     void occurIn(World world);
-    void undoIn(World world);
 }
