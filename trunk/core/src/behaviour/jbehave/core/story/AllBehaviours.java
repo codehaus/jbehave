@@ -9,17 +9,13 @@ package jbehave.core.story;
 
 import jbehave.core.behaviour.Behaviours;
 import jbehave.core.story.codegen.parser.TextStoryParserBehaviour;
-import jbehave.core.story.domain.EventOutcomeStepBehaviour;
-import jbehave.core.story.domain.EventsBehaviour;
+import jbehave.core.story.domain.AbstractStepBehaviour;
 import jbehave.core.story.domain.GivenScenarioBehaviour;
-import jbehave.core.story.domain.GivensBehaviour;
+import jbehave.core.story.domain.GivenStepBehaviour;
+import jbehave.core.story.domain.MultiStepScenarioBehaviour;
 import jbehave.core.story.domain.NarrativeBehaviour;
-import jbehave.core.story.domain.OutcomesBehaviour;
-import jbehave.core.story.domain.ScenarioComponentsBehaviour;
+import jbehave.core.story.domain.OutcomeStepBehaviour;
 import jbehave.core.story.domain.ScenarioDrivenStoryBehaviour;
-import jbehave.core.story.domain.ScenarioUsingMiniMockBehaviour;
-import jbehave.core.story.domain.ScenariosBehaviour;
-import jbehave.core.story.domain.StepsBehaviour;
 import jbehave.core.story.listener.PlainTextScenarioListenerBehaviour;
 import jbehave.core.story.renderer.PlainTextRendererBehaviour;
 
@@ -33,16 +29,20 @@ public class AllBehaviours implements Behaviours {
                 StoryBuilderBehaviour.class,
                 StoryRunnerBehaviour.class,
                 TextStoryParserBehaviour.class,
-                EventOutcomeStepBehaviour.class,
-                EventsBehaviour.class,
-                GivensBehaviour.class,
+//                EventOutcomeStepBehaviour.class,
+//                EventsBehaviour.class,
+//                GivensBehaviour.class,
+                GivenStepBehaviour.class,
                 GivenScenarioBehaviour.class,
+                MultiStepScenarioBehaviour.class,
                 NarrativeBehaviour.class,
-                OutcomesBehaviour.class,
+//                OutcomesBehaviour.class,
+                OutcomeStepBehaviour.class,
                 ScenarioDrivenStoryBehaviour.class,
-                ScenariosBehaviour.class,
-                ScenarioUsingMiniMockBehaviour.class,
-                StepsBehaviour.class,
+//                ScenariosBehaviour.class,
+//                ScenarioUsingMiniMockBehaviour.class,
+                AbstractStepBehaviour.class,
+//                StepsBehaviour.class,
                 PlainTextScenarioListenerBehaviour.class,
 				PlainTextRendererBehaviour.class,
         };

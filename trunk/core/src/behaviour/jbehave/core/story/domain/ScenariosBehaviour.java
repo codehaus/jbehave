@@ -122,13 +122,16 @@ public class ScenariosBehaviour extends UsingMiniMock {
             delegate.run(world);
         }
 
-        public void tidyUp(World world) {
-            delegate.tidyUp(world);
+        public void cleanUp(World world) {
+            delegate.cleanUp(world);
         }
 
         public void narrateTo(Renderer renderer) {
             delegate.narrateTo(renderer);
         }
         
+        public void assemble() {
+            delegate.assemble();
+        }
     }
 }

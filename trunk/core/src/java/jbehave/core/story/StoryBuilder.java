@@ -1,25 +1,14 @@
 package jbehave.core.story;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-import jbehave.core.story.codegen.domain.BasicDetails;
-import jbehave.core.story.codegen.domain.ContextDetails;
-import jbehave.core.story.codegen.domain.OutcomeDetails;
 import jbehave.core.story.codegen.domain.ScenarioDetails;
 import jbehave.core.story.codegen.domain.StoryDetails;
-import jbehave.core.story.domain.Event;
-import jbehave.core.story.domain.Events;
-import jbehave.core.story.domain.Given;
-import jbehave.core.story.domain.Givens;
+import jbehave.core.story.domain.MultiStepScenario;
 import jbehave.core.story.domain.Narrative;
-import jbehave.core.story.domain.Outcome;
-import jbehave.core.story.domain.Outcomes;
 import jbehave.core.story.domain.Scenario;
 import jbehave.core.story.domain.ScenarioDrivenStory;
-import jbehave.core.story.domain.ScenarioUsingMiniMock;
 import jbehave.core.story.domain.Story;
 import jbehave.core.util.CamelCaseConverter;
 
@@ -33,7 +22,6 @@ public class StoryBuilder {
 
     private StoryDetails details;
     private ClassLoader classLoader;
-    private ClassNameBuilder classNameBuilder;
 
     public StoryBuilder(StoryDetails details, String rootPackageName) {
         this(details, rootPackageName, Thread.currentThread().getContextClassLoader());
@@ -42,7 +30,6 @@ public class StoryBuilder {
     public StoryBuilder(StoryDetails details, String rootPackageName, ClassLoader classLaoder) {
         this.details = details;
         this.classLoader = classLaoder;
-        this.classNameBuilder = new ClassNameBuilder(rootPackageName);
     }    
 
     public Story story(){
@@ -53,30 +40,14 @@ public class StoryBuilder {
         return story;        
     }
 
-    private Scenario scenario(ScenarioDetails details, String storyName) {
-        return new ScenarioUsingMiniMock(givens(details.context), whens(details.event), thens(details.outcome));
+    private Scenario scenario(final ScenarioDetails details, String storyName) {
+        return new MultiStepScenario() {
+            public void assemble() {
+                // TODO fix ScenarioDetails to have arbitrary steps
+            }
+        };
     }
-
-    private Given givens(ContextDetails context) {
-        List givens = new ArrayList();
-        for ( Iterator i = context.givens.iterator(); i.hasNext(); ){
-            givens.add((Given)newInstance(classNameBuilder.givenName((String) i.next())));
-        }        
-        return new Givens((Given[]) givens.toArray(new Given[givens.size()]));
-    }
-
-    private Event whens(BasicDetails event) {
-        return new Events((Event)newInstance(classNameBuilder.eventName(event.name)));
-    }
-
-    private Outcome thens(OutcomeDetails outcome) {
-        List outcomes = new ArrayList();
-        for ( Iterator i = outcome.outcomes.iterator(); i.hasNext(); ){
-            outcomes.add((Outcome)newInstance(classNameBuilder.outcomeName((String) i.next())));
-        }        
-        return new Outcomes((Outcome[]) outcomes.toArray(new Outcome[outcomes.size()]));
-    }
-
+    
     private Object newInstance(String name) {
         try {
             return classLoader.loadClass(name).newInstance();
@@ -111,6 +82,4 @@ public class StoryBuilder {
             return new CamelCaseConverter(name).toCamelCase();
         }
     }   
-
-
 }

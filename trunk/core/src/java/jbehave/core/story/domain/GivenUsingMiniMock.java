@@ -20,7 +20,7 @@ public abstract class GivenUsingMiniMock extends UsingMiniMock implements Given 
 		renderer.renderGiven(this);
 	}
     
-    public void tidyUp(World world) {
+    public void cleanUp(World world) {
         // default empty implementation
     }
 	

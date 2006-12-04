@@ -23,4 +23,6 @@ public abstract class OutcomeUsingMiniMock extends UsingMiniMock implements Outc
 	public void narrateTo(Renderer renderer) {
 		renderer.renderOutcome(this);
 	}
+    public void tidyUp(World world) {
+    }
 }

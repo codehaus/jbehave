@@ -304,11 +304,14 @@ public abstract class UsingConstraints {
         throw new VerificationException(message, expected, actual);
     }
 
-	public void todo(String message) {
+	public void pending(String message) {
 		throw new PendingException(message);
 	}
 	
-	public void todo() {
-		todo("TODO");
+	public void pending() {
+		pending("TODO");
 	}
+    
+    public void todo() { pending(); }
+    public void todo(String message) { pending(message); }
 }

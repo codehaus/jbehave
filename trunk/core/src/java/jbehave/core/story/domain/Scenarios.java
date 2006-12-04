@@ -30,8 +30,8 @@ public class Scenarios implements Renderable {
     }
 
 	public void run(World world, Class storyClass, BehaviourListener[] listeners) {
-        for (int i = 0; i < scenarios.size(); i++) {
-            Scenario scenario = (Scenario) scenarios.get(i);
+        for (Iterator i = scenarios.iterator(); i.hasNext();) {
+            Scenario scenario = (Scenario) i.next();
             informListeners(listeners, runScenario(world, storyClass, scenario));
         }
 	}
@@ -54,7 +54,7 @@ public class Scenarios implements Renderable {
         } catch (NestedVerificationException nve) {
             result = new ScenarioResult(description, storyDescription, nve);
         } finally {
-            scenario.tidyUp(world);
+            scenario.cleanUp(world);
         }
         
         return result;
@@ -65,8 +65,8 @@ public class Scenarios implements Renderable {
 	}
 
     public void narrateTo(Renderer renderer) {
-        for (int i = 0; i < scenarios.size(); i++) {
-            ((Scenario) scenarios.get(i)).narrateTo(renderer);
+        for ( Iterator i = scenarios.iterator(); i.hasNext(); ){
+            ((Scenario) i.next()).narrateTo(renderer);
         }
     }
     

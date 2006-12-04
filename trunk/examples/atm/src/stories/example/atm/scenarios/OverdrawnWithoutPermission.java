@@ -1,27 +1,18 @@
 package example.atm.scenarios;
 
-import jbehave.core.story.domain.GivenScenario;
-import jbehave.core.story.domain.Givens;
-import jbehave.core.story.domain.Outcomes;
-import jbehave.core.story.domain.ScenarioUsingMiniMock;
+import jbehave.core.story.domain.MultiStepScenario;
 import example.atm.events.UserRequestsCash;
 import example.atm.givens.AccountHasNegativeBalanceWithoutPermission;
 import example.atm.outcomes.ATMShouldRefuseCash;
 import example.atm.outcomes.ATMShouldReturnBankCardToCustomer;
 
-public class OverdrawnWithoutPermission extends ScenarioUsingMiniMock {
+public class OverdrawnWithoutPermission extends MultiStepScenario {
 
-    public OverdrawnWithoutPermission() {
-        super(new Givens(
-            new GivenScenario(new HappyScenarioWithOverdraft()),
-            new AccountHasNegativeBalanceWithoutPermission()
-        ),
-                new UserRequestsCash(),
-                new Outcomes(
-                    new ATMShouldRefuseCash(),
-                    new ATMShouldReturnBankCardToCustomer()
-                )
-            ); 
+    public void assemble() {
+        given(new HappyScenarioWithOverdraft());
+        given(new AccountHasNegativeBalanceWithoutPermission());
+        when(new UserRequestsCash());
+        then(new ATMShouldRefuseCash());
+        then(new ATMShouldReturnBankCardToCustomer());
     }
-
 }
