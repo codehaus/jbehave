@@ -5,6 +5,7 @@ import com.sirenian.hellbound.domain.glyph.HeartbeatListener;
 import com.sirenian.hellbound.util.Listener;
 import com.sirenian.hellbound.util.ListenerNotifier;
 import com.sirenian.hellbound.util.ListenerSet;
+import com.sirenian.hellbound.util.Logger;
 
 public class AcceleratingHeartbeat implements Heartbeat {
 
@@ -45,6 +46,7 @@ public class AcceleratingHeartbeat implements Heartbeat {
         } catch (InterruptedException e) { }
         
         if (!skipping) {
+            Logger.debug(this, "Beating");
             listenerSet.notifyListeners(pulse);
         }
     }       

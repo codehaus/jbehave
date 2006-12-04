@@ -25,12 +25,12 @@ public class Game implements GameRequestListener {
 	private final ListenerNotifier stateNotifier;
 
 	private final int height;
-	private final int centre;
     
 	private GameState state;
 
 	private LivingGlyph glyph = LivingGlyph.NULL;
 	private Junk junk = Junk.NULL;
+    private HeartbeatListener heartbeatListener;
 
 	public Game(GlyphFactory factory, Heartbeat heartbeat, int width, int height) {
 		this.factory = factory;
@@ -54,26 +54,27 @@ public class Game implements GameRequestListener {
 			}
     	};
         
-        this.heartbeat.addListener(new HeartbeatListener() {
-            public void beat() {
-                if (state == GameState.RUNNING) {
-                    moveGlyphDownOrJunkIt();
-                }
-            }
-        });
-    	
-		centre = (int)((width - 1) / 2);
+        heartbeatListener = new HeartbeatListener() {
+                    public void beat() {
+                        if (state == GameState.RUNNING) {
+                            Logger.debug(this, "Hearing heartbeat; moving glyph down");
+                            moveGlyphDownOrJunkIt();
+                        }
+                    }
+                };
+                
+        this.heartbeat.addListener(heartbeatListener);
 	}
 	
 	public void requestStartGame() {
-		glyph = factory.nextGlyph(centre, collisionDetector, glyphListeners);
+		glyph = factory.nextGlyph(collisionDetector, glyphListeners);
 		junk = factory.createJunk(glyphListeners);
         heartbeat.start(ONE_SECOND);
 		setState(GameState.RUNNING);
 	}
 
     private void resetGlyph() {
-        glyph = factory.nextGlyph(centre, collisionDetector, glyphListeners);
+        glyph = factory.nextGlyph(collisionDetector, glyphListeners);
     }
 
 	private void setState(GameState newState) {
@@ -110,29 +111,29 @@ public class Game implements GameRequestListener {
     }
 
     public void requestMoveGlyphDown() {
-        Logger.debug(this, "Move down glyph requested");
+        Logger.debug(this, "Move glyph down requested");
         moveGlyphDownOrJunkIt();
     }
 
     public void requestMoveGlyphLeft() {
-        Logger.debug(this, "Move left glyph requested");
+        Logger.debug(this, "Move glyph left requested");
         glyph.requestMoveLeft();
         
     }
 
     public void requestMoveGlyphRight() {
-        Logger.debug(this, "Move right glyph requested");
+        Logger.debug(this, "Move glyph right requested");
         glyph.requestMoveRight();
     }
 
     public void requestRotateGlyphLeft() {
-        // TODO Auto-generated method stub
-        
+        Logger.debug(this, "Rotate glyph left requested");
+        glyph.requestRotateLeft();
     }
 
     public void requestRotateGlyphRight() {
-        // TODO Auto-generated method stub
-        
+        Logger.debug(this, "Rotate glyph left requested");
+        glyph.requestRotateRight();
     }
 	
 	

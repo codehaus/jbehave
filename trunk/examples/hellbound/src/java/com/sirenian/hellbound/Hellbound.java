@@ -24,11 +24,8 @@ import com.sirenian.hellbound.util.Logger;
 public class Hellbound {
 
     public static final int SCALE = 50;
-
     public static final int WIDTH = 7;
-
     public static final int CENTER = 3;
-
     public static final int HEIGHT = 13;
 
     public static final TypeAndColorMap COLORMAP = new TypeAndColorMap(
@@ -46,7 +43,7 @@ public class Hellbound {
                 new ThreadedSwingQueue(),
                 new AcceleratingHeartbeat(), 
                 new PitPanel(SCALE, WIDTH, HEIGHT, COLORMAP), 
-                new PseudoRandomGlyphFactory());
+                new PseudoRandomGlyphFactory(7, 13));
     }
 
     public Hellbound(EngineQueue engineQueue, GuiQueue guiQueue,

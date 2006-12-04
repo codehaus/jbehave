@@ -35,7 +35,7 @@ public class GlyphType {
 	public static final GlyphType T = new GlyphType(def(
 					rotation(-1, 0,  0, 0,  1, 0,  0, 1),
 					rotation(-1, 2,  -1, 1,  -1, 0,  0, 1),
-					rotation(0, 1,  0, 1,  -1, 1,  0, 0),
+					rotation(1, 1,  0, 1,  -1, 1,  0, 0),
 					rotation(0, 0,  0, 1,  0, 2,  -1, 1)),
 					'T');
 	
@@ -55,16 +55,16 @@ public class GlyphType {
 	
 	public static final GlyphType L = new GlyphType(def(
 					rotation(-1, 0,  -1, 1,  -1, 2,  0, 2),
-					rotation(1, 0,  0, 0,  -1, 0,  -1, 1),
+					rotation(-1, 1,  0, 1,  1, 1,  1, 0),
 					rotation(0, 2,  0, 1,  0, 0,  -1, 0),
-					rotation(-1, 1,  0, 1,  1, 1,  1, 0)),
+					rotation(1, 0,  0, 0,  -1, 0,  -1, 1)),
 					'L');
 	
 	public static final GlyphType Z = new GlyphType(def(
 					rotation(-1, 0,  0, 0,  0, 1,  1, 1),
 					rotation(0, 0,  0, 1,  -1, 1,  -1, 2),
 					rotation(1, 1,  0, 1,  0, 0,  -1, 0),
-					rotation(-1, 2,  0, 1,  0, 1,  0, 0)),
+					rotation(-1, 2,  -1, 1,  0, 1,  0, 0)),
 					'Z');
 	
 	public static final GlyphType S = new GlyphType(def(

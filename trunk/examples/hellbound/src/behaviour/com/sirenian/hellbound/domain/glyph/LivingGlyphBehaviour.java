@@ -61,6 +61,8 @@ public class LivingGlyphBehaviour extends GlyphBehaviour {
 		ensureThat(!glyph.requestMoveDown());
         ensureThat(!glyph.requestMoveRight());
         ensureThat(!glyph.requestMoveLeft());
+        ensureThat(!glyph.requestRotateLeft());
+        ensureThat(!glyph.requestRotateRight());
 		
 		Segments secondSegments = listener.toLastSegments();
 		
@@ -91,6 +93,17 @@ public class LivingGlyphBehaviour extends GlyphBehaviour {
 
         ensureThat(glyph.requestMoveLeft());
         ensureThat(glyph.getSegments(), eq(latestSegments.movedLeft()));
+        
+        glyph = new LivingGlyph(
+                GlyphType.O,
+                detector,
+                4);
+        
+        ensureThat(glyph.requestRotateLeft());
+        ensureThat(glyph.getSegments(), eq(GlyphType.O.getSegments(1).movedRight(4)));
+        
+        ensureThat(glyph.requestRotateRight());
+        ensureThat(glyph.getSegments(), eq(GlyphType.O.getSegments(0).movedRight(4)));
     }
     
     public void shouldReduceSegmentsToEmptyIfKilled() {

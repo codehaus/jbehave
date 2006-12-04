@@ -23,7 +23,6 @@
 	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
 	<classpathentry kind="src" path="sandbox/src/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/sun-1.5.0_08"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/fit-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
@@ -35,5 +34,6 @@
 	<classpathentry kind="lib" path="lib/extensions/proxytoys-0.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/cotta/cotta-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/ant-1.6.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

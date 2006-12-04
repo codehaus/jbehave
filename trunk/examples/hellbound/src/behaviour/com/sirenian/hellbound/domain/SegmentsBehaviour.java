@@ -58,6 +58,20 @@ public class SegmentsBehaviour extends UsingConstraints {
 		ensureThat(movedSegments.get(1), eq(new Segment(0, 3)));
 		ensureThat(movedSegments.get(2), eq(new Segment(0, 4)));
 	}
+    
+    public void shouldMoveEachSegmentDownByOffset() {
+        Segments segments = new Segments(new Segment[] {
+                new Segment(0, 1),
+                new Segment(0, 2),
+                new Segment(0, 3)
+        });
+        
+        Segments movedSegments = segments.movedDown(4);
+        
+        ensureThat(movedSegments.get(0), eq(new Segment(0, 5)));
+        ensureThat(movedSegments.get(1), eq(new Segment(0, 6)));
+        ensureThat(movedSegments.get(2), eq(new Segment(0, 7)));
+    }   
 	
 	public void shouldBeEqualToSegmentsWithSameCoordinatesAndOrder() {
 		Segments segments1 = new Segments(
@@ -164,4 +178,39 @@ public class SegmentsBehaviour extends UsingConstraints {
 		
 		ensureThat(segments1.add(segments2), eq(expectedSegments));
 	}	
+    
+    public void shouldRemoveAGivenSegment() {
+        Segments segments = new Segments(
+                new Segment(0, 1), 
+                new Segment(0, 4), 
+                new Segment(0, 3), 
+                new Segment(0, 2));
+        
+        Segments expectedSegments = new Segments(new Segment[] {
+                new Segment(0, 1), 
+                new Segment(0, 3), 
+                new Segment(0, 2)});
+        
+        Segments actualSegments = segments.remove(new Segment(0, 4));
+        
+        ensureThat(actualSegments, eq(expectedSegments));
+    }
+    
+    public void shouldReplaceAGivenSegment() {
+        Segments segments = new Segments(new Segment[] {
+                new Segment(0, 1), 
+                new Segment(0, 3), 
+                new Segment(0, 2),
+                new Segment(1, 5)});
+        
+        Segments expectedSegments = new Segments(
+                new Segment(0, 1), 
+                new Segment(0, 3), 
+                new Segment(0, 2), 
+                new Segment(0, 4));
+        
+        Segments actualSegments = segments.replace(new Segment(1, 5), new Segment(0, 4));
+        
+        ensureThat(actualSegments, eq(expectedSegments));
+    }
 }

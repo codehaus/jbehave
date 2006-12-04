@@ -15,7 +15,7 @@ public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {
 
     public void shouldCreateLivingGlyphsPseudoRandomly() {
         
-        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42);
+        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42, 7, 13);
         GlyphType[] expected = new GlyphType[] { GlyphType.T,
                 GlyphType.Z, GlyphType.S, GlyphType.J, GlyphType.Z,
                 GlyphType.L, GlyphType.T, GlyphType.J, GlyphType.S,
@@ -35,8 +35,8 @@ public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {
         Mock listener = mock(GlyphListener.class);
         listenerSet.addListener((Listener) listener);
         
-        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42);
-        LivingGlyph glyph = factory.nextGlyph(0, CollisionDetector.NULL, listenerSet);
+        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42, 7, 13);
+        LivingGlyph glyph = factory.nextGlyph(CollisionDetector.NULL, listenerSet);
         Junk junk = factory.createJunk(listenerSet);
         
         listener.expects("reportGlyphMovement").times(2); // once for junk change, once for glyph change
@@ -45,6 +45,6 @@ public class PseudoRandomGlyphFactoryBehaviour extends UsingMiniMock {
     }
 
     private GlyphType nextGlyphType(PseudoRandomGlyphFactory factory) {
-        return factory.nextGlyph(3, CollisionDetector.NULL, new ListenerSet()).type();
+        return factory.nextGlyph(CollisionDetector.NULL, new ListenerSet()).type();
     }
 }

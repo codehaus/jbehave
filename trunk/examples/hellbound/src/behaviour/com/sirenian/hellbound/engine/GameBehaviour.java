@@ -20,7 +20,7 @@ public class GameBehaviour extends UsingClassMock {
 
     public void shouldMoveGlyphLowerOnHeartbeat() {
         StubHeartbeat heartbeat = new StubHeartbeat();
-        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42); // T, Z, S, J...
+        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42, 7, 13); // T, Z, S, J...
         Mock glyphListener = mock(GlyphListener.class);
         Game game = new Game(factory, heartbeat, 7, 13);
         game.addGlyphListener((GlyphListener) glyphListener);
@@ -44,7 +44,7 @@ public class GameBehaviour extends UsingClassMock {
 		gameListener.expects("reportGameStateChanged").once().with(GameState.READY);
 		gameListener.expects("reportGameStateChanged").once().with(GameState.RUNNING);
 		
-        Game game = new Game(new PseudoRandomGlyphFactory(), heartbeat, 7, 13);
+        Game game = new Game(new PseudoRandomGlyphFactory(7, 13), heartbeat, 7, 13);
 		
 		game.addGameListener((GameListener)gameListener);
 		game.requestStartGame();
@@ -61,7 +61,7 @@ public class GameBehaviour extends UsingClassMock {
 		Mock glyphListener = mock(GlyphListener.class);
 		
 		glyphFactoryMock.expects("nextGlyph")
-            .with(new Constraint[] {eq(3), isA(CollisionDetector.class), isA(ListenerSet.class)})
+            .with(new Constraint[] {isA(CollisionDetector.class), isA(ListenerSet.class)})
                 .will(returnValue(new LivingGlyph(GlyphType.T, CollisionDetector.NULL, 4)));
 		
 		Game game = new Game((GlyphFactory) glyphFactoryMock, heartbeat, 7, 13);
@@ -73,7 +73,7 @@ public class GameBehaviour extends UsingClassMock {
 	
 	public void shouldIgnoreRequestsToDropOrMoveGlyphWhenGameNotRunning() {
         StubHeartbeat heartbeat = new StubHeartbeat();
-        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42); // T, Z, S, J...
+        PseudoRandomGlyphFactory factory = new PseudoRandomGlyphFactory(42, 7, 13); // T, Z, S, J...
         Mock glyphListener = mock(GlyphListener.class);
         Game game = new Game(factory, heartbeat, 7, 13);
         game.addGlyphListener((GlyphListener) glyphListener);
@@ -87,21 +87,28 @@ public class GameBehaviour extends UsingClassMock {
 	}
     
     public void shouldMoveGlyphWhenRequested() {
-       AccessibleFactory factory  = new AccessibleFactory();
+        AccessibleFactory factory  = new AccessibleFactory(7);
         Game game = new Game(factory, new StubHeartbeat(), 7, 13);
         Segments latestSegments = GlyphType.T.getSegments(0).movedRight(3);
         game.requestStartGame();
+               
+        game.requestRotateGlyphLeft();
+        ensureThat(factory.glyph.getSegments(), eq(GlyphType.T.getSegments(1).movedRight(3)));
         
-        game.requestMoveGlyphDown();
-        ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedDown()));
-        latestSegments = latestSegments.movedDown();
-        
+        game.requestRotateGlyphRight();
+        ensureThat(factory.glyph.getSegments(), eq(GlyphType.T.getSegments(0).movedRight(3)));
+
         game.requestMoveGlyphLeft();
         ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedLeft()));
         latestSegments = latestSegments.movedLeft();
         
         game.requestMoveGlyphRight();
         ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedRight()));
+        latestSegments = latestSegments.movedRight();
+        
+        game.requestMoveGlyphDown();
+        ensureThat(factory.glyph.getSegments(), eq(latestSegments.movedDown()));
+        latestSegments = latestSegments.movedDown();
         
         verifyMocks();
     }
@@ -114,10 +121,10 @@ public class GameBehaviour extends UsingClassMock {
         
         LivingGlyph firstGlyph = new LivingGlyph(GlyphType.T, new StubCollisionDetector(13), 3);
         LivingGlyph secondGlyph = new LivingGlyph(GlyphType.S, CollisionDetector.NULL, 3);
-        Junk junk = new Junk();
+        Junk junk = new Junk(7, 13);
         
         glyphFactoryMock.expects("nextGlyph").inOrder()
-            .with(new Constraint[] {eq(3), isA(CollisionDetector.class), isA(ListenerSet.class)})
+            .with(new Constraint[] {isA(CollisionDetector.class), isA(ListenerSet.class)})
             .will(returnValue(firstGlyph), returnValue(secondGlyph));
         glyphFactoryMock.expects("createJunk").with(isA(ListenerSet.class)).will(returnValue(junk));
 
@@ -135,7 +142,7 @@ public class GameBehaviour extends UsingClassMock {
         ensureThat(junk.getSegments(), eq(segmentsForTShapeOnFloor));
         verifyMocks();        
     }
-
+    
     private Segments droppedToFloor(Segments segments, int floor) {
         Segments result = segments;
         while(result.lowest() < floor) {
@@ -145,13 +152,13 @@ public class GameBehaviour extends UsingClassMock {
     }
     
     private static class AccessibleFactory extends PseudoRandomGlyphFactory {
-        private AccessibleFactory() {
-            super(42);
+        private AccessibleFactory(int width) {
+            super(42, width, 13);
         }
         
         LivingGlyph glyph;
-        public LivingGlyph nextGlyph(int center, CollisionDetector detector, ListenerSet glyphListeners) {
-            glyph = super.nextGlyph(center, detector, glyphListeners);
+        public LivingGlyph nextGlyph(CollisionDetector detector, ListenerSet glyphListeners) {
+            glyph = super.nextGlyph(detector, glyphListeners);
             return glyph;
         }
     }
