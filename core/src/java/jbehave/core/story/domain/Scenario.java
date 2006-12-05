@@ -33,5 +33,4 @@ public interface Scenario extends Renderable, HasCleanUp {
     void assemble();
     void run(World world);
     boolean containsMocks();
-    void cleanUp(World world);
 }

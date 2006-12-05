@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="core/src/java"/>
-	<classpathentry kind="src" path="extensions/classmocks/src/behaviour"/>
-	<classpathentry kind="src" path="extensions/classmocks/src/java"/>
 	<classpathentry kind="src" path="core/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/ant/src/java"/>
 	<classpathentry kind="src" path="extensions/ant/src/behaviour"/>
+    <classpathentry kind="src" path="extensions/classmocks/src/behaviour"/>
+    <classpathentry kind="src" path="extensions/classmocks/src/java"/>
 	<classpathentry kind="src" path="extensions/fit/src/java"/>
 	<classpathentry kind="src" path="extensions/fit/src/test"/>
 	<classpathentry kind="src" path="extensions/jmock/src/java"/>
