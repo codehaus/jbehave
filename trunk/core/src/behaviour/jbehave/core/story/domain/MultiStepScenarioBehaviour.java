@@ -10,10 +10,11 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // given
         final Mock given = mock(Given.class);
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 given((Given) given);
             }
         };
+        scenario.specify();
         World world = new HashMapWorld();
         
         // expect
@@ -30,10 +31,11 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // given
         final Mock event = mock(Event.class);
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 when((Event)event);
             }
         };
+        scenario.specify();
         World world = new HashMapWorld();
         
         // expect
@@ -50,10 +52,11 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // given
         final Mock outcome = mock(Outcome.class);
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 then((Outcome)outcome);
             }
         };
+        scenario.specify();
         World world = new HashMapWorld();
         
         // expect
@@ -74,12 +77,13 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         World world = new HashMapWorld();
         
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
             }
         };
+        scenario.specify();
         
         // expect
         given.expects("setUp").with(world);
@@ -104,12 +108,13 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         World world = new HashMapWorld();
 
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
             }
         };
+        scenario.specify();
 
         // expect
         outcome.expects("cleanUp").with(world);
@@ -131,12 +136,13 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         Mock renderer = mock(Renderer.class);
         
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
             }
         };
+        scenario.specify();
         
         // expect
         renderer.expects("renderScenario").with(scenario);
@@ -163,12 +169,13 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         outcome.expects("containsMocks").will(returnValue(true)); // mock mock!
 
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
             }
         };
+        scenario.specify();
         
         // when
         boolean result = scenario.containsMocks();
@@ -190,12 +197,13 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         outcome.expects("containsMocks").never();               // so third step not checked
         
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
             }
         };
+        scenario.specify();
         
         // when
         boolean result = scenario.containsMocks();
@@ -217,12 +225,13 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         outcome.expects("containsMocks").will(returnValue(false));
         
         Scenario scenario = new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
             }
         };
+        scenario.specify();
         
         // when
         boolean result = scenario.containsMocks();

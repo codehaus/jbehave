@@ -12,7 +12,7 @@ import com.sirenian.hellbound.outcomes.TheHeartbeatShouldBeSkipped;
 
 public class ThePlayerMovesTheGlyph extends MultiStepScenario {
 
-    public void assemble() {
+    public void specify() {
         given(new TheFirstGlyphIsDisplayedOnTheBoard());
         when(new ThePlayerPressesTheRightKey());
         then(new TheGlyphShouldMoveRight());

@@ -42,7 +42,7 @@ public class StoryBuilder {
 
     private Scenario scenario(final ScenarioDetails details, String storyName) {
         return new MultiStepScenario() {
-            public void assemble() {
+            public void specify() {
                 // TODO fix ScenarioDetails to have arbitrary steps
             }
         };

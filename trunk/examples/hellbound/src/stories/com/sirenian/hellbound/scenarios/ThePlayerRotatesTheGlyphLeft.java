@@ -10,7 +10,7 @@ import com.sirenian.hellbound.outcomes.TheGlyphTurnsToTwoQuarters;
 
 public class ThePlayerRotatesTheGlyphLeft extends MultiStepScenario {
 
-    public void assemble() {
+    public void specify() {
         given(new TheFirstGlyphIsDisplayedOnTheBoard());
         when(new ThePlayerPressesLeftRotate());
         then(new TheGlyphShouldTurnToOneQuarter());

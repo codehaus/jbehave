@@ -64,11 +64,7 @@ import jbehave.core.story.renderer.Renderer;
 public abstract class MultiStepScenario implements Scenario {
     private List steps = new ArrayList();
     
-    public MultiStepScenario() {
-        assemble();
-    }
-
-    public abstract void assemble();
+    public abstract void specify();
 
     public void run(World world) {
         perform(world);

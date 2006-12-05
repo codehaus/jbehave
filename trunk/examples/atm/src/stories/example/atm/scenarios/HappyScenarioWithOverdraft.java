@@ -9,7 +9,7 @@ import example.atm.outcomes.AccountBalanceShouldBeReduced;
 
 public class HappyScenarioWithOverdraft extends MultiStepScenario {
 
-    public void assemble() {
+    public void specify() {
         given(new AccountHasOverdraftPermission());
         when(new UserRequestsCash());
         then(new ATMShouldDispenseCash());

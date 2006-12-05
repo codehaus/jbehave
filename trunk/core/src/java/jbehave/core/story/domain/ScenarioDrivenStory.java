@@ -45,6 +45,7 @@ public class ScenarioDrivenStory implements Story {
     }
 
     public void addScenario(Scenario scenario) {
+        scenario.specify();
         scenarios.add(scenario);
     }
 

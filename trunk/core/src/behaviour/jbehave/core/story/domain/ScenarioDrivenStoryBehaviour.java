@@ -160,8 +160,8 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
             delegate.narrateTo(renderer);
         }
         
-        public void assemble() {
-            delegate.assemble();
+        public void specify() {
+            delegate.specify();
         }
         
     }    
