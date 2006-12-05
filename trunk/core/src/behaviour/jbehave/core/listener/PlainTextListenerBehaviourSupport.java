@@ -12,7 +12,7 @@ import java.io.StringWriter;
 import jbehave.core.Ensure;
 import jbehave.core.exception.PendingException;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.result.Result;
 import jbehave.core.util.Timer;
 
@@ -50,8 +50,8 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         listener = newPlainTextListener();
     }
     
-    private Constraint contains(final Result.Type expected) {
-    	return new CustomConstraint("StringWriter containing <" + expected + ">"){
+    private Matcher contains(final Result.Type expected) {
+    	return new CustomMatcher("StringWriter containing <" + expected + ">"){
 			public boolean matches(Object arg) {
 				return ((StringWriter)arg).toString().indexOf(expected.symbol()) != -1;
 			}

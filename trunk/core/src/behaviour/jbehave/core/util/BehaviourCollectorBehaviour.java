@@ -1,7 +1,7 @@
 package jbehave.core.util;
 
-import jbehave.core.mock.Constraint;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.Matcher;
+import jbehave.core.mock.UsingMatchers;
 import net.sf.cotta.TDirectory;
 import net.sf.cotta.TFileFactory;
 import net.sf.cotta.memory.InMemoryFileSystem;
@@ -9,7 +9,7 @@ import net.sf.cotta.memory.InMemoryFileSystem;
 import java.util.Collection;
 import java.util.List;
 
-public class BehaviourCollectorBehaviour extends UsingConstraints {
+public class BehaviourCollectorBehaviour extends UsingMatchers {
     private TDirectory directory;
 
     public void setUp() throws Exception {
@@ -40,8 +40,8 @@ public class BehaviourCollectorBehaviour extends UsingConstraints {
         ensureThat(list.size(), eq(1));
     }
 
-    private Constraint collectionContains(final Object expected) {
-        return new Constraint() {
+    private Matcher collectionContains(final Object expected) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return arg != null && ((Collection) arg).contains(expected);
             }

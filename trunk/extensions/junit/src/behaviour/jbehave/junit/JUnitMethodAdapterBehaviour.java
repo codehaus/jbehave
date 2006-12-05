@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jbehave.core.behaviour.BehaviourMethod;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 import junit.framework.Test;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class JUnitMethodAdapterBehaviour extends UsingConstraints {
+public class JUnitMethodAdapterBehaviour extends UsingMatchers {
     private static final List sequenceOfEvents = new ArrayList();
     
     public static class SomeBehaviourClass {

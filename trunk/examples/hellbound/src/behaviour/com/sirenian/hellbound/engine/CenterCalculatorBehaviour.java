@@ -1,8 +1,8 @@
 package com.sirenian.hellbound.engine;
 
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
-public class CenterCalculatorBehaviour extends UsingConstraints {
+public class CenterCalculatorBehaviour extends UsingMatchers {
 
     public void shouldCalculateCenterExactlyForOddWidths() {
         ensureThat(CenterCalculator.forWidth(5), eq(2));

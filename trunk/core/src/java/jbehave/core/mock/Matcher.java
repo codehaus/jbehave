@@ -9,10 +9,10 @@ package jbehave.core.mock;
 
 
 /**
- * Represents a constraint on a method argument.
+ * Represents a matcher on a method argument.
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public interface Constraint {
+public interface Matcher {
     boolean matches(Object arg);
 }

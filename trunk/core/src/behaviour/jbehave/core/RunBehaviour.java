@@ -1,7 +1,7 @@
 package jbehave.core;
 
 
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -11,7 +11,7 @@ import java.io.PrintStream;
  * @author <a href="mailto:ekeogh@thoughtworks.com">Elizabeth Keogh</a>
  * @author Mauro Talevi
  */
-public class RunBehaviour extends UsingConstraints {
+public class RunBehaviour extends UsingMatchers {
 
 	private static int runCount;
     private static String methodCalled;

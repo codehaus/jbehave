@@ -15,7 +15,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.mock.Mock;
 import jbehave.extensions.threaded.time.TimeoutException;
 
@@ -160,7 +160,7 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
             frame.pack();
             frame.setVisible(true);
             
-            Constraint spaceKeyEvent = new Constraint() {
+            Matcher spaceKeyEvent = new Matcher() {
                 public boolean matches(Object arg) {
                     return ((KeyEvent)arg).getKeyCode() == KeyEvent.VK_SPACE ||
                         ((KeyEvent)arg).getKeyChar() == ' ';

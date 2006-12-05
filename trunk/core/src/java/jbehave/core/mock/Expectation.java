@@ -19,7 +19,7 @@ import jbehave.core.exception.VerificationException;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Expectation extends UsingConstraints {
+public class Expectation extends UsingMatchers {
     
     private static final InvocationHandler NULL_INVOKER = new InvocationHandler() {
         public Object invoke(Object proxy, Method method, Object[] args) {
@@ -29,7 +29,7 @@ public class Expectation extends UsingConstraints {
     
     private final ExpectationRegistry registry;
     private final String methodName;
-    private Constraint[] constraints = null; // initially we don't care about args
+    private Matcher[] matchers = null; // initially we don't care about args
     private int minInvocations = 1;
     private int maxInvocations = 1;
     private int invocations;
@@ -71,11 +71,11 @@ public class Expectation extends UsingConstraints {
 			args = new Object[0];
         }
         if (!methodName.equals(actualName)) return false;
-        if (constraints == null) return true; // allow any args 
-        if (constraints.length != args.length) return false;
+        if (matchers == null) return true; // allow any args 
+        if (matchers.length != args.length) return false;
 
         for (int i = 0; i < args.length; i++) {
-            if (!constraints[i].matches(args[i])) return false;
+            if (!matchers[i].matches(args[i])) return false;
         }
         return true;
     }
@@ -95,7 +95,7 @@ public class Expectation extends UsingConstraints {
 	 */
 	private String methodToString() {
 		return methodName
-			+ ( constraints != null ? Arrays.asList(constraints).toString() : "[anything]");
+			+ ( matchers != null ? Arrays.asList(matchers).toString() : "[anything]");
 	}
     
     // Return value
@@ -163,25 +163,25 @@ public class Expectation extends UsingConstraints {
         return with(sameInstanceAs(arg1), sameInstanceAs(arg2));
     }
 
-    public Expectation with(Constraint constraint) {
-        return with(new Constraint[] {constraint});
+    public Expectation with(Matcher matcher) {
+        return with(new Matcher[] {matcher});
     }
 
-    public Expectation with(Constraint constraint1, Constraint constraint2) {
-        return with(new Constraint[] {constraint1, constraint2});
+    public Expectation with(Matcher matcher1, Matcher matcher2) {
+        return with(new Matcher[] {matcher1, matcher2});
     }
     
-    public Expectation with(Constraint constraint1, Constraint constraint2, Constraint constraint3) {
-        return with(new Constraint[] {constraint1, constraint2, constraint3});
+    public Expectation with(Matcher matcher1, Matcher matcher2, Matcher matcher3) {
+        return with(new Matcher[] {matcher1, matcher2, matcher3});
     }
 
-    public Expectation with(Constraint[] constraints) {
-        this.constraints = constraints;
+    public Expectation with(Matcher[] matchers) {
+        this.matchers = matchers;
         return this;
     }
     
     public Expectation withNoArguments() {
-        this.constraints = new Constraint[0];
+        this.matchers = new Matcher[0];
         return this;
     }
 
@@ -209,7 +209,7 @@ public class Expectation extends UsingConstraints {
     }
     
     public String toString() {
-        return methodName + Arrays.asList(constraints);
+        return methodName + Arrays.asList(matchers);
     }
     
     public String methodName() {

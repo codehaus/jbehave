@@ -1,8 +1,8 @@
 package com.sirenian.hellbound.domain;
 
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
-public class SegmentBehaviour extends UsingConstraints {
+public class SegmentBehaviour extends UsingMatchers {
 	
 	public void shouldBeEqualToSegmentAtSameCoordinates() {
 		Segment segment1 = new Segment(1, 3);

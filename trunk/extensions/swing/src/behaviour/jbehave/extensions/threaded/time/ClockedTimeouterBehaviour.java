@@ -1,7 +1,7 @@
 package jbehave.extensions.threaded.time;
 
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.extensions.threaded.time.PseudoClock;
 import jbehave.extensions.threaded.time.ClockedTimeouter;
 import jbehave.extensions.threaded.time.TimeoutException;
@@ -26,8 +26,8 @@ public class ClockedTimeouterBehaviour extends UsingMiniMock {
 		}
 	}
 
-	private Constraint isLessThanOrEq(final int time) {
-		return new Constraint() {
+	private Matcher isLessThanOrEq(final int time) {
+		return new Matcher() {
 			public boolean matches(Object arg) {
 				return arg instanceof Long && ((Long)arg).longValue() <= time;
 			}
@@ -38,8 +38,8 @@ public class ClockedTimeouterBehaviour extends UsingMiniMock {
 		};
 	}
 	
-	private Constraint isGreaterThan(final int time) {
-		return new Constraint() {
+	private Matcher isGreaterThan(final int time) {
+		return new Matcher() {
 			public boolean matches(Object arg) {
 				return arg instanceof Long && ((Long)arg).longValue() > time;
 			}	

@@ -7,10 +7,10 @@ import java.util.Set;
 
 import jbehave.core.listener.PlainTextListenerBehaviourSupport;
 import jbehave.core.minimock.MiniMockObjectBehaviour;
-import jbehave.core.mock.Constraint;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.Matcher;
+import jbehave.core.mock.UsingMatchers;
 
-public class BehavioursLoaderBehaviour extends UsingConstraints {
+public class BehavioursLoaderBehaviour extends UsingMatchers {
 
     public void shouldLoadPublicBehaviourEndedWithBehaviourButNotAbstract() throws Exception {
         BehavioursLoader loader = new BehavioursLoader(getClass());
@@ -41,8 +41,8 @@ public class BehavioursLoaderBehaviour extends UsingConstraints {
         ensureThat(loadedFromBehaviourLoader, not(setContains(PlainTextListenerBehaviourSupport.class)));
     }
 
-    private Constraint setContains(final Object item) {
-        return new Constraint() {
+    private Matcher setContains(final Object item) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return ((Set) arg).contains(item);
             }
@@ -53,8 +53,8 @@ public class BehavioursLoaderBehaviour extends UsingConstraints {
         };
     }
 
-    private Constraint setEmpty() {
-        return new Constraint() {
+    private Matcher setEmpty() {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return ((Set) arg).isEmpty();
             }

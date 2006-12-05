@@ -9,7 +9,7 @@ package jbehave.core.behaviour;
 
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.mock.Mock;
 import jbehave.core.result.Result;
 
@@ -26,8 +26,8 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
         public void shouldDoOneThing() {}
     }
     
-    private Constraint successfulResultFromMethodCalled(final String name) {
-        return new Constraint() {
+    private Matcher successfulResultFromMethodCalled(final String name) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 Result result = (Result)arg;
                 return result.succeeded() && result.name().equals(name);
@@ -38,8 +38,8 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
         };
     }
     
-    private Constraint isBehaviourMethodFor(final String name) {
-        return new Constraint() {
+    private Matcher isBehaviourMethodFor(final String name) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 BehaviourMethod behaviourMethod = (BehaviourMethod)arg;
                 return behaviourMethod != null && behaviourMethod.method().getName().equals(name);

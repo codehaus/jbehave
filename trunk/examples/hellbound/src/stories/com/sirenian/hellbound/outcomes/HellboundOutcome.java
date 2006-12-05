@@ -2,7 +2,7 @@ package com.sirenian.hellbound.outcomes;
 
 import java.awt.Color;
 
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.story.domain.OutcomeUsingMiniMock;
 import jbehave.core.story.domain.World;
 
@@ -38,9 +38,9 @@ public abstract class HellboundOutcome extends OutcomeUsingMiniMock {
 	
 	protected abstract void verifyAnyTimeIn(World world);
 	
-    public Constraint contains(final Segments segments, final Color color) {
+    public Matcher contains(final Segments segments, final Color color) {
     	
-        return new Constraint() {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return ((RenderedPit)arg).contains(segments, color);
             }

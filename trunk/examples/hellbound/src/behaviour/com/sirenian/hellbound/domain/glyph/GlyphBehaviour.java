@@ -5,7 +5,7 @@ import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.util.ListenerSet;
 
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.mock.Mock;
 
 public class GlyphBehaviour extends UsingMiniMock {
@@ -68,7 +68,7 @@ public class GlyphBehaviour extends UsingMiniMock {
 	}
 
 	private void expectGlyphMovement(Mock listener, Segments origin, Segments destination) {
-		listener.expects("reportGlyphMovement").with(new Constraint[] {
+		listener.expects("reportGlyphMovement").with(new Matcher[] {
 				eq(GlyphType.O),
 				eq(origin),
 				eq(destination)

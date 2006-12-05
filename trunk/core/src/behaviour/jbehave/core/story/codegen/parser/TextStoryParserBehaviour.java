@@ -2,12 +2,12 @@ package jbehave.core.story.codegen.parser;
 
 import java.io.StringReader;
 
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 import jbehave.core.story.codegen.domain.ScenarioDetails;
 import jbehave.core.story.codegen.domain.StoryDetails;
 
 
-public class TextStoryParserBehaviour extends UsingConstraints {
+public class TextStoryParserBehaviour extends UsingMatchers {
 
 	public void shouldBuildStoryDetailsWithTitle() throws Exception {
 		// given

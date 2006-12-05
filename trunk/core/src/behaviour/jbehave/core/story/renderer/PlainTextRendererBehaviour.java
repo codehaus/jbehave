@@ -10,7 +10,7 @@ package jbehave.core.story.renderer;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 import jbehave.core.story.SimpleStory;
 import jbehave.core.story.domain.ScenarioDrivenStory;
 import jbehave.core.util.CamelCaseConverter;
@@ -19,7 +19,7 @@ import jbehave.core.util.CamelCaseConverter;
 /**
  * @author <a href="mailto:ekeogh@thoughtworks.com">Elizabeth Keogh</a>
  */
-public class PlainTextRendererBehaviour extends UsingConstraints {
+public class PlainTextRendererBehaviour extends UsingMatchers {
 
 	public void shouldRenderStoryWhenNarratingStory() {
 		

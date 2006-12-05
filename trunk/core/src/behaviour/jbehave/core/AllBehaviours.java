@@ -21,7 +21,7 @@ import jbehave.core.result.ResultBehaviour;
 public class AllBehaviours implements Behaviours {
     public Class[] getBehaviours() {
         return new Class[] {
-                UsingConstraintsBehaviour.class,
+                UsingMatchersBehaviour.class,
                 BehaviourClassBehaviour.class,
                 BehaviourMethodBehaviour.class,
                 BehaviourVerifierBehaviour.class,

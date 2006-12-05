@@ -16,7 +16,7 @@ import java.util.Iterator;
 
 import jbehave.core.UsingMocks;
 import jbehave.core.mock.Mock;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
 /**
  * <p>We recommend that you extend this class to use MiniMocks in
@@ -27,7 +27,7 @@ import jbehave.core.mock.UsingConstraints;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class UsingMiniMock extends UsingConstraints implements UsingMocks {
+public class UsingMiniMock extends UsingMatchers implements UsingMocks {
     
     private final Collection mocks = new HashSet();
 

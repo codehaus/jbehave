@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.engine;
 
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.mock.Mock;
 import jbehave.extensions.classmock.UsingClassMock;
 
@@ -62,7 +62,7 @@ public class GameBehaviour extends UsingClassMock {
 		Mock glyphListener = mock(GlyphListener.class);
 		
 		glyphFactoryMock.expects("nextGlyph")
-            .with(new Constraint[] {isA(CollisionDetector.class), isA(ListenerSet.class)})
+            .with(new Matcher[] {isA(CollisionDetector.class), isA(ListenerSet.class)})
                 .will(returnValue(new LivingGlyph(GlyphType.T, CollisionDetector.NULL, 4)));
 		
 		Game game = new Game((GlyphFactory) glyphFactoryMock, heartbeat, 7, 13);
@@ -130,7 +130,7 @@ public class GameBehaviour extends UsingClassMock {
         Junk junk = new Junk(7, 13);
         
         glyphFactoryMock.expects("nextGlyph").inOrder()
-            .with(new Constraint[] {isA(CollisionDetector.class), isA(ListenerSet.class)})
+            .with(new Matcher[] {isA(CollisionDetector.class), isA(ListenerSet.class)})
             .will(returnValue(firstGlyph), returnValue(secondGlyph));
         glyphFactoryMock.expects("createJunk").with(isA(ListenerSet.class)).will(returnValue(junk));
 

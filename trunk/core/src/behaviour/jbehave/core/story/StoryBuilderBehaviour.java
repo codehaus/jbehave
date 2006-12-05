@@ -1,11 +1,11 @@
 package jbehave.core.story;
 
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 import jbehave.core.story.codegen.domain.ScenarioDetails;
 import jbehave.core.story.codegen.domain.StoryDetails;
 import jbehave.core.story.domain.Story;
 
-public class StoryBuilderBehaviour extends UsingConstraints {
+public class StoryBuilderBehaviour extends UsingMatchers {
 
     public void shouldBuildStoryFromStoryDetails() throws Exception {
         // given
