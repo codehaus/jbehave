@@ -2,11 +2,11 @@ package jbehave.extensions.threaded.swing;
 
 import javax.swing.JButton;
 
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 import jbehave.extensions.threaded.swing.NamedComponentFilter;
 
 
-public class NamedComponentFilterBehaviour extends UsingConstraints {
+public class NamedComponentFilterBehaviour extends UsingMatchers {
 
 	public void shouldMatchComponentsWithGivenName() {
 		JButton buttonFrodo = new JButton("Frodo");

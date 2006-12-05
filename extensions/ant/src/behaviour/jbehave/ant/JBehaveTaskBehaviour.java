@@ -10,7 +10,7 @@ package jbehave.ant;
 import jbehave.core.Run;
 import jbehave.core.Block;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
@@ -58,8 +58,8 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
         ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
     }
 
-    private Constraint collectionContains(final Object item) {
-        return new Constraint() {
+    private Matcher collectionContains(final Object item) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return ((Collection)arg).contains(item);
             }

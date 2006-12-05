@@ -7,31 +7,31 @@ import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
 
 /**
- * <p>Constraints are used by the MiniMock framework, 
- * {@link jbehave.core.Ensure}, {@link UsingConstraints} and 
+ * <p>Matchers are used by the MiniMock framework, 
+ * {@link jbehave.core.Ensure}, {@link UsingMatchers} and 
  * {@link jbehave.core.minimock.UsingMiniMock} to
- * verify or ensure behaviours. Constraints are also
+ * verify or ensure behaviours. Matchers are also
  * used by the default elements of the Story framework.</p>
  * 
- * <p>Some simple constraints are provided by
+ * <p>Some simple matchers are provided by
  * this class.</p>
  * 
  * <p>In any domain, there will be more complex, specific
- * constraints which can be reused across behaviours. CustomConstraint
- * may be extended to provide these behaviours, or Constraint
+ * matchers which can be reused across behaviours. CustomMatcher
+ * may be extended to provide these behaviours, or Matcher
  * may be implemented. If you provide a useful
- * description, either to the constructor of the CustomConstraint
- * or by overriding <code>toString()</code> in your Constraint,
- * a useful message will be given should the Constraint not match.</p>
+ * description, either to the constructor of the CustomMatcher
+ * or by overriding <code>toString()</code> in your Matcher,
+ * a useful message will be given should the Matcher not match.</p>
  * 
  * <p>You may find it more useful to extend or delegate to 
- * {@link jbehave.core.minimock.UsingMiniMock} than to UsingConstraints.
+ * {@link jbehave.core.minimock.UsingMiniMock} than to UsingMatchers.
  */
-public abstract class UsingConstraints {
-	public abstract static class CustomConstraint extends UsingConstraints implements Constraint {
+public abstract class UsingMatchers {
+	public abstract static class CustomMatcher extends UsingMatchers implements Matcher {
 		private final String description;
 
-		public CustomConstraint(String description) {
+		public CustomMatcher(String description) {
 			this.description = description;
 		}
 
@@ -39,17 +39,17 @@ public abstract class UsingConstraints {
 			return description;
 		}
 		
-		public CustomConstraint and(Constraint that) {
+		public CustomMatcher and(Matcher that) {
 			return and(this, that);
 		}
-		public CustomConstraint or(Constraint that) {
+		public CustomMatcher or(Matcher that) {
 			return or(this, that);
 		}
 	}
 
     /** ensures object is not null */
-    public CustomConstraint isNotNull() {
-        return new CustomConstraint("object not null") {
+    public CustomMatcher isNotNull() {
+        return new CustomMatcher("object not null") {
             public boolean matches(Object arg) {
                 return arg != null;
             }
@@ -58,8 +58,8 @@ public abstract class UsingConstraints {
     
 
     
-    public CustomConstraint isNull() {
-        return new CustomConstraint("object is null") {
+    public CustomMatcher isNull() {
+        return new CustomMatcher("object is null") {
             public boolean matches(Object arg) {
                 return arg == null;
             }
@@ -67,8 +67,8 @@ public abstract class UsingConstraints {
     }
     
 	/** ensures object equals expected value */
-	public CustomConstraint eq(final Object expectedArg) {
-	    return new CustomConstraint("equal to <" + expectedArg + ">") {
+	public CustomMatcher eq(final Object expectedArg) {
+	    return new CustomMatcher("equal to <" + expectedArg + ">") {
 	        public boolean matches(Object arg) {
 	            return arg == null ? expectedArg == null : arg.equals(expectedArg);
 	        }
@@ -76,8 +76,8 @@ public abstract class UsingConstraints {
 	}
 
 	/** eq(primitive) for float and double */
-	public CustomConstraint eq(final double expectedArg, final double delta) {
-	    return new CustomConstraint("floating point number equal to " + expectedArg) {
+	public CustomMatcher eq(final double expectedArg, final double delta) {
+	    return new CustomMatcher("floating point number equal to " + expectedArg) {
 	        public boolean matches(Object arg) {
 	            double value = ((Number) arg).doubleValue();
 				return Math.abs(expectedArg - value) <= delta;
@@ -86,13 +86,13 @@ public abstract class UsingConstraints {
 	}
 
 	/** eq(primitive) for float and double */
-	public CustomConstraint eq(final double expectedArg) {
+	public CustomMatcher eq(final double expectedArg) {
 		return eq(expectedArg, 0.0);
 	}
 	
 	/** eq(primitive) for byte, short, integer and long */
-	public CustomConstraint eq(final long expectedArg) {
-	    return new CustomConstraint("integer type equal to " + expectedArg) {
+	public CustomMatcher eq(final long expectedArg) {
+	    return new CustomMatcher("integer type equal to " + expectedArg) {
 	        public boolean matches(Object arg) {
 	            Number n = (Number)arg;
 	            return n.longValue() == expectedArg;
@@ -101,8 +101,8 @@ public abstract class UsingConstraints {
 	}
 
 	/** eq(primitive) for char - note {@link Character} is not a {@link Number} */
-	public CustomConstraint eq(final char expectedArg) {
-	    return new CustomConstraint("character equal to '" + expectedArg + "'") {
+	public CustomMatcher eq(final char expectedArg) {
+	    return new CustomMatcher("character equal to '" + expectedArg + "'") {
 	        public boolean matches(Object arg) {
 	            Character n = (Character)arg;
 	            return n.charValue() == expectedArg;
@@ -111,8 +111,8 @@ public abstract class UsingConstraints {
 	}
 
 	/** eq(primitive) for boolean */
-	public CustomConstraint eq(final boolean expectedArg) {
-	    return new CustomConstraint("boolean " + expectedArg) {
+	public CustomMatcher eq(final boolean expectedArg) {
+	    return new CustomMatcher("boolean " + expectedArg) {
 	        public boolean matches(Object arg) {
 	            Boolean n = (Boolean)arg;
 	            return n.booleanValue() == expectedArg;
@@ -120,136 +120,136 @@ public abstract class UsingConstraints {
 	    };
 	}
 
-	public CustomConstraint sameInstanceAs(final Object expectedArg) {
-	    return new CustomConstraint("same instance as <" + expectedArg.toString() + ">") {
+	public CustomMatcher sameInstanceAs(final Object expectedArg) {
+	    return new CustomMatcher("same instance as <" + expectedArg.toString() + ">") {
 	        public boolean matches(Object arg) {
 	            return expectedArg == arg;
 	        }
 	    };
 	}
 
-	public CustomConstraint anything() {
-	    return new CustomConstraint("anything") {
+	public CustomMatcher anything() {
+	    return new CustomMatcher("anything") {
 	        public boolean matches(Object arg) {
 	            return true;
 	        }
 	    };
 	}
 
-	public CustomConstraint a(final Class type) {
+	public CustomMatcher a(final Class type) {
 	    return isA(type);
 	}
 
-	public CustomConstraint isA(final Class type) {
-	    return new CustomConstraint("object of type " + type.getName()) {
+	public CustomMatcher isA(final Class type) {
+	    return new CustomMatcher("object of type " + type.getName()) {
 	        public boolean matches(Object arg) {
 	            return type.isInstance(arg);
 	        }
 	    };
 	}
 	
-	public CustomConstraint startsWith(final String fragment) {
-	    return new CustomConstraint("string starting with <" + fragment + ">") {
+	public CustomMatcher startsWith(final String fragment) {
+	    return new CustomMatcher("string starting with <" + fragment + ">") {
 	        public boolean matches(Object arg) {
 	            return ((String)arg).startsWith(fragment);
 	        }
 	    };
 	}
 	
-	public CustomConstraint endsWith(final String fragment) {
-		return new CustomConstraint("string ending with <" + fragment + ">") {
+	public CustomMatcher endsWith(final String fragment) {
+		return new CustomMatcher("string ending with <" + fragment + ">") {
 			public boolean matches(Object arg) {
 				return ((String)arg).endsWith(fragment);
 			}
 		};
 	}
 	
-	public CustomConstraint contains(final String fragment) {
-		return new CustomConstraint("string containing <" + fragment + ">") {
+	public CustomMatcher contains(final String fragment) {
+		return new CustomMatcher("string containing <" + fragment + ">") {
 			public boolean matches(Object arg) {
 				return arg.toString().indexOf(fragment) != -1;
 			}
 		};
 	}
 
-	public CustomConstraint and(final Constraint a, final Constraint b) {
-	    return new CustomConstraint("(" + a + " and " + b + ")") {
+	public CustomMatcher and(final Matcher a, final Matcher b) {
+	    return new CustomMatcher("(" + a + " and " + b + ")") {
 	        public boolean matches(Object arg) {
 	            return a.matches(arg) && b.matches(arg);
 	        }
 	    };
 	}
 
-	public CustomConstraint both(final Constraint a, final Constraint b) {
+	public CustomMatcher both(final Matcher a, final Matcher b) {
 	    return and(a, b);
 	}
 
-	public CustomConstraint or(final Constraint a, final Constraint b) {
-	    return new CustomConstraint("(" + a + " or " + b + ")") {
+	public CustomMatcher or(final Matcher a, final Matcher b) {
+	    return new CustomMatcher("(" + a + " or " + b + ")") {
 	        public boolean matches(Object arg) {
 	            return a.matches(arg) || b.matches(arg);
 	        }
 	    };
 	}
 
-	public CustomConstraint either(final Constraint a, final Constraint b) {
+	public CustomMatcher either(final Matcher a, final Matcher b) {
 	    return either(a, b);
 	}
 
-	public CustomConstraint not(final Constraint c) {
-	    return new CustomConstraint("not (" + c + ")") {
+	public CustomMatcher not(final Matcher c) {
+	    return new CustomMatcher("not (" + c + ")") {
 	        public boolean matches(Object arg) {
 	            return !c.matches(arg);
 	        }
 	    };
 	}
 	
-    public CustomConstraint isContainedIn(final Collection collection) {
-        return new CustomConstraint("is contained in " + collection) {
+    public CustomMatcher isContainedIn(final Collection collection) {
+        return new CustomMatcher("is contained in " + collection) {
             public boolean matches(Object arg) {
                 return collection.contains(arg);
             }
         };
     }    
-    public void ensureThat(Object arg, Constraint constraint, String message) {
-    	if (!constraint.matches(arg)) {
+    public void ensureThat(Object arg, Matcher matcher, String message) {
+    	if (!matcher.matches(arg)) {
     		fail("\nExpected: " +
     				(message != null ? "[" + message + "] " : "") +
-    				constraint +
+    				matcher +
     				"\nbut got:  <" + arg + ">");
     	}
 	}
     
-	public void ensureThat(Object arg, Constraint constraint) {
-		ensureThat(arg, constraint, null);
+	public void ensureThat(Object arg, Matcher matcher) {
+		ensureThat(arg, matcher, null);
 	}
 	
-	public void ensureThat(long arg, Constraint constraint, String message) {
-		ensureThat(new Long(arg), constraint, message);
+	public void ensureThat(long arg, Matcher matcher, String message) {
+		ensureThat(new Long(arg), matcher, message);
 	}
-	public void ensureThat(long arg, Constraint constraint) {
-		ensureThat(new Long(arg), constraint, null);
+	public void ensureThat(long arg, Matcher matcher) {
+		ensureThat(new Long(arg), matcher, null);
 	}
     
-    public void ensureThat(double arg, Constraint constraint, String message) {
-    	ensureThat(new Double(arg), constraint, message);
+    public void ensureThat(double arg, Matcher matcher, String message) {
+    	ensureThat(new Double(arg), matcher, message);
     }
-    public void ensureThat(double arg, Constraint constraint) {
-    	ensureThat(arg, constraint, null);
-    }
-    
-    public void ensureThat(char arg, Constraint constraint, String message) {
-    	ensureThat(new Character(arg), constraint, message);
-    }
-    public void ensureThat(char arg, Constraint constraint) {
-    	ensureThat(arg, constraint, null);
+    public void ensureThat(double arg, Matcher matcher) {
+    	ensureThat(arg, matcher, null);
     }
     
-    public void ensureThat(boolean arg, Constraint constraint, String message) {
-    	ensureThat(Boolean.valueOf(arg), constraint, message);
+    public void ensureThat(char arg, Matcher matcher, String message) {
+    	ensureThat(new Character(arg), matcher, message);
     }
-    public void ensureThat(boolean arg, Constraint constraint) {
-    	ensureThat(arg, constraint, null);
+    public void ensureThat(char arg, Matcher matcher) {
+    	ensureThat(arg, matcher, null);
+    }
+    
+    public void ensureThat(boolean arg, Matcher matcher, String message) {
+    	ensureThat(Boolean.valueOf(arg), matcher, message);
+    }
+    public void ensureThat(boolean arg, Matcher matcher) {
+    	ensureThat(arg, matcher, null);
     }
     
     public void ensureThrows(Class exceptionType, Block block) throws Exception {
@@ -278,14 +278,14 @@ public abstract class UsingConstraints {
         }
     }
     
-    /** ensure(...) without constraints */
+    /** ensure(...) without matchers */
     public void ensureThat(boolean condition, String message) {
     	if (!condition) {
     		fail(message + ": expected condition was not met");
     	}
     }
 
-    /** ensure(...) without constraints */
+    /** ensure(...) without matchers */
     public void ensureThat(boolean condition) {
         if (!condition) {
         	fail("Expected condition was not met");

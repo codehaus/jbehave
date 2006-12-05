@@ -6,15 +6,15 @@ import java.awt.Graphics;
 
 import javax.swing.JFrame;
 
-import jbehave.core.mock.Constraint;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.Matcher;
+import jbehave.core.mock.UsingMatchers;
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 
-public class PitPanelBehaviour extends UsingConstraints {
+public class PitPanelBehaviour extends UsingMatchers {
 
 	// Can't yet find a way of checking the colours in the pit!
 	
@@ -118,8 +118,8 @@ public class PitPanelBehaviour extends UsingConstraints {
 		return panel;
 	}
     
-    public Constraint contains(final Segments segments, final Color color) {
-        return new Constraint() {
+    public Matcher contains(final Segments segments, final Color color) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return ((RenderedPit)arg).contains(segments, color);
             }

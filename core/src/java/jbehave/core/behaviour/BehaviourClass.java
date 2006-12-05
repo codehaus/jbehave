@@ -13,7 +13,7 @@ import java.util.Set;
 
 import jbehave.core.exception.JBehaveFrameworkError;
 import jbehave.core.listener.BehaviourListener;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 
 
 /**
@@ -25,13 +25,13 @@ public class BehaviourClass implements Behaviour {
     private final Class classToVerify;
     private final Object instance;
     private final BehaviourVerifier verifier;
-    private Constraint methodFilter;
-    public static final Constraint ALL_METHODS = new Constraint() {
+    private Matcher methodFilter;
+    public static final Matcher ALL_METHODS = new Matcher() {
         public boolean matches(Object arg) {
             return true;
         }
     };
-    public static final Constraint BEHAVIOUR_METHODS = new Constraint() {
+    public static final Matcher BEHAVIOUR_METHODS = new Matcher() {
         public boolean matches(Object arg) {
             return ((Method) arg).getName().startsWith(BEHAVIOUR_METHOD_PREFIX);
         }
@@ -56,8 +56,8 @@ public class BehaviourClass implements Behaviour {
         }
     }
 
-    private Constraint matchMethodName(final String methodName) {
-        return new Constraint() {
+    private Matcher matchMethodName(final String methodName) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return ((Method) arg).getName().equals(methodName);
             }
@@ -87,7 +87,7 @@ public class BehaviourClass implements Behaviour {
         return new BehaviourMethod(instance, method);
     }
     
-    private Method[] getMethods(Constraint methodFilter){
+    private Method[] getMethods(Matcher methodFilter){
         Set set = new HashSet();
         Method[] classMethods = classToVerify.getMethods();
         for (int i = 0; i < classMethods.length; i++) {

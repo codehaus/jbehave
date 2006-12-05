@@ -8,7 +8,7 @@ import java.util.List;
 import jbehave.core.Block;
 import jbehave.core.Ensure;
 import jbehave.core.exception.VerificationException;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
 import org.jmock.Mock;
 import org.jmock.core.Verifiable;
@@ -18,7 +18,7 @@ import org.jmock.core.Verifiable;
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy</a>
  * @author <a href="mailto:dnorth@thoughtworks.com">Dan North</a>
  */
-public class UsingJMockBehaviour extends UsingConstraints {
+public class UsingJMockBehaviour extends UsingMatchers {
     
     public interface Interface {
         void doStuff();

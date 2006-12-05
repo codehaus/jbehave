@@ -2,7 +2,7 @@ package jbehave.extensions.threaded.swing;
 
 import jbehave.core.Block;
 import jbehave.core.exception.PendingException;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
 /**
  * Use this class at the beginning of any Swing behaviours which
@@ -10,7 +10,7 @@ import jbehave.core.mock.UsingConstraints;
  * shown as pending instead (which won't break your automated
  * build).
  */
-public class HeadlessCheckerBehaviour extends UsingConstraints {
+public class HeadlessCheckerBehaviour extends UsingMatchers {
 
     private String envHeadless;
 

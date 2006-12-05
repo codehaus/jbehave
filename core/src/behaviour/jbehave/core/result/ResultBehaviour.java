@@ -9,14 +9,14 @@ package jbehave.core.result;
 
 import jbehave.core.exception.PendingException;
 import jbehave.core.exception.VerificationException;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
 
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
-public class ResultBehaviour extends UsingConstraints {
+public class ResultBehaviour extends UsingMatchers {
 	
 	private void verifyResult(final Result result, final Result.Type status, boolean succeeded, boolean failed, boolean pending) {
         ensureThat(result.status(), eq(status), "status");

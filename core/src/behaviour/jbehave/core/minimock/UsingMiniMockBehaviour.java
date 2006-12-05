@@ -8,23 +8,23 @@
 package jbehave.core.minimock;
 
 import jbehave.core.Ensure;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.mock.Mock;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  */
-public class UsingMiniMockBehaviour extends UsingConstraints {
+public class UsingMiniMockBehaviour extends UsingMatchers {
     
     UsingMiniMock miniMock = new UsingMiniMock();
     
     public interface SomeType {}
 
-    private Constraint containsMocks() {
-        return new Constraint() {
+    private Matcher containsMocks() {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return ((UsingMiniMock)arg).containsMocks();
             }
@@ -43,50 +43,50 @@ public class UsingMiniMockBehaviour extends UsingConstraints {
       
     }
     
-    public void shouldCreateConstraintForPrimitiveFloatingPointTypes() throws Exception {
-        Constraint matchesFloatValue = miniMock.eq(1.0);
+    public void shouldCreateMatcherForPrimitiveFloatingPointTypes() throws Exception {
+        Matcher matchesFloatValue = miniMock.eq(1.0);
         ensureThat(new Float(1.0), matchesFloatValue);
         ensureThat(new Double(1.0), matchesFloatValue);
     }
     
-    public void shouldCreateConstraintForPrimitiveIntegerTypes() throws Exception {
-        Constraint matchesIntTypeValue = miniMock.eq(1);
+    public void shouldCreateMatcherForPrimitiveIntegerTypes() throws Exception {
+        Matcher matchesIntTypeValue = miniMock.eq(1);
         ensureThat(new Byte((byte)1), matchesIntTypeValue);
         ensureThat(new Short((short)1), matchesIntTypeValue);
         ensureThat(new Integer(1), matchesIntTypeValue);
         ensureThat(new Long((long)1), matchesIntTypeValue);
     }
     
-    public void shouldCreateConstraintForPrimitiveCharType() throws Exception {
-        Constraint c = miniMock.eq('c');
-        Ensure.that("constraint should match Character 'c'", c.matches(new Character('c')));
+    public void shouldCreateMatcherForPrimitiveCharType() throws Exception {
+        Matcher c = miniMock.eq('c');
+        Ensure.that("matcher should match Character 'c'", c.matches(new Character('c')));
     }
     
-    public void shouldCreateConstraintForPrimitiveLongType() throws Exception {
-        Constraint c = miniMock.eq(1l);
+    public void shouldCreateMatcherForPrimitiveLongType() throws Exception {
+        Matcher c = miniMock.eq(1l);
         Ensure.that(c.matches(new Long(1)));
     }
     
-    public void shouldCreateConstraintForPrimitiveBooleanType() throws Exception {
-        Constraint c = miniMock.eq(true);
+    public void shouldCreateMatcherForPrimitiveBooleanType() throws Exception {
+        Matcher c = miniMock.eq(true);
         Ensure.that(c.matches(Boolean.TRUE)); 
     }
     
-    public void shouldCreateConstraintForPrimitiveFloatType() throws Exception {
+    public void shouldCreateMatcherForPrimitiveFloatType() throws Exception {
         float f = 1;
-        Constraint c = miniMock.eq(f);
+        Matcher c = miniMock.eq(f);
         Ensure.that(c.matches(new Float(1)));
     }
     
-    public void shouldCreateConstraintForPrimitiveByteType() throws Exception {
+    public void shouldCreateMatcherForPrimitiveByteType() throws Exception {
         byte b = 1;
-        Constraint c = miniMock.eq(b);
+        Matcher c = miniMock.eq(b);
         Ensure.that(c.matches(new Byte(b)));
     }
     
-    public void shouldCreateConstraintForPrimitiveShortType() throws Exception {
+    public void shouldCreateMatcherForPrimitiveShortType() throws Exception {
         short s = 1;
-        Constraint c = miniMock.eq(s);
+        Matcher c = miniMock.eq(s);
         Ensure.that(c.matches(new Short(s)));
     }
     

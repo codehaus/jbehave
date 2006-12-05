@@ -1,7 +1,7 @@
 package com.sirenian.hellbound.domain.glyph;
 
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.mock.Mock;
 
 import com.sirenian.hellbound.domain.Segments;
@@ -13,7 +13,7 @@ public class JunkBehaviour extends UsingMiniMock {
 		Mock glyphListener = mock(GlyphListener.class);
 		Junk junk = new Junk(9, 13);
 		
-		glyphListener.expects("reportGlyphMovement").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(Segments.EMPTY)});
+		glyphListener.expects("reportGlyphMovement").with(new Matcher[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(Segments.EMPTY)});
 		junk.addListener((GlyphListener)glyphListener);
 		
 		verifyMocks();
@@ -25,8 +25,8 @@ public class JunkBehaviour extends UsingMiniMock {
         Segments originalSegments = glyph.getSegments();
 
 		Junk junk = new Junk(9, 13);
-        glyphListener.expects("reportGlyphMovement").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(Segments.EMPTY)});
-		glyphListener.expects("reportGlyphMovement").with(new Constraint[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(originalSegments)});
+        glyphListener.expects("reportGlyphMovement").with(new Matcher[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(Segments.EMPTY)});
+		glyphListener.expects("reportGlyphMovement").with(new Matcher[] {eq(GlyphType.JUNK), eq(Segments.EMPTY), eq(originalSegments)});
 
         junk.addListener((GlyphListener)glyphListener);
 		junk.absorb(glyph);

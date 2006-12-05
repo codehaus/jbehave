@@ -9,13 +9,13 @@ package jbehave.core.util;
 
 import java.text.SimpleDateFormat;
 
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class CamelCaseConverterBehaviour extends UsingConstraints {
+public class CamelCaseConverterBehaviour extends UsingMatchers {
     
     public void shouldConvertStringToSeparateWords() throws Exception {
         // given...

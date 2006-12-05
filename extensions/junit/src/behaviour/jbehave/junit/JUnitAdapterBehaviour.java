@@ -17,7 +17,7 @@ import java.util.List;
 import jbehave.core.Ensure;
 import jbehave.core.behaviour.Behaviours;
 import jbehave.core.exception.JBehaveFrameworkError;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 import jbehave.junit.JUnitAdapter.BehavioursAdapter;
 import junit.framework.Test;
 import junit.framework.TestResult;
@@ -27,7 +27,7 @@ import junit.framework.TestResult;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Mauro Talevi
  */
-public class JUnitAdapterBehaviour extends UsingConstraints {
+public class JUnitAdapterBehaviour extends UsingMatchers {
     private static final List sequenceOfEvents = new ArrayList();
     
     public void setUp() {

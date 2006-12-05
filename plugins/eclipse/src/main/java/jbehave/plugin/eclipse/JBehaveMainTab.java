@@ -147,7 +147,7 @@ public class JBehaveMainTab extends JavaLaunchTab {
 	private void createProjectEditor(Composite parent) {
 		Font font= parent.getFont();
 		Group group= new Group(parent, SWT.NONE);
-		group.setText("Choose a project to constraint the search for behavior types"); //$NON-NLS-1$
+		group.setText("Choose a project to matcher the search for behavior types"); //$NON-NLS-1$
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		group.setLayoutData(gd);
 		GridLayout layout = new GridLayout();

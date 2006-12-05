@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.InvocationEvent;
 
+import javax.swing.SwingUtilities;
+
 public class Idler {
 	
 	private static final Runnable EMPTY_RUNNABLE = new Runnable() { public void run() {}};

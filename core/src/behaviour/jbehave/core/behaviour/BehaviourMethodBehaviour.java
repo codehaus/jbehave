@@ -15,7 +15,7 @@ import java.util.List;
 import jbehave.core.exception.JBehaveFrameworkError;
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 import jbehave.core.mock.Mock;
 import jbehave.core.result.Result;
 import jbehave.core.result.Result.Type;
@@ -69,8 +69,8 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         }
     }
     
-    private Constraint resultOfType(final Type type) {
-        return new Constraint() {
+    private Matcher resultOfType(final Type type) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return ((Result)arg).status() == type;
             }
@@ -129,8 +129,8 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
 		private static final long serialVersionUID = 1L;
 	}
 
-    private CustomConstraint resultContainingCheckedException() {
-        return new CustomConstraint("result containing a CheckedException") {
+    private CustomMatcher resultContainingCheckedException() {
+        return new CustomMatcher("result containing a CheckedException") {
             public boolean matches(Object arg) {
                 return isA(CheckedException.class).matches(((Result)arg).cause());
             }
@@ -209,8 +209,8 @@ public class BehaviourMethodBehaviour extends UsingMiniMock {
         }
     }
     
-    private Constraint resultContainingExceptionMessage(final String message) {
-        return new Constraint() {
+    private Matcher resultContainingExceptionMessage(final String message) {
+        return new Matcher() {
             public boolean matches(Object arg) {
                 return message.equals(((Result)arg).cause().getMessage());
             }

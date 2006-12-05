@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 
 import com.sirenian.hellbound.domain.Segment;
 
-import jbehave.core.mock.Constraint;
+import jbehave.core.mock.Matcher;
 
-public class IntendedPitGraphics extends Graphics implements Constraint {
+public class IntendedPitGraphics extends Graphics implements Matcher {
 
 	private JPanel pitPanel;
 	private final int scale;

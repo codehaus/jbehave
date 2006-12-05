@@ -1,7 +1,7 @@
 package com.sirenian.hellbound.domain;
-import jbehave.core.mock.UsingConstraints;
+import jbehave.core.mock.UsingMatchers;
 
-public class SegmentsBehaviour extends UsingConstraints {
+public class SegmentsBehaviour extends UsingMatchers {
 
 	public void shouldMoveEachSegmentRight() {
 		Segments segments = new Segments(new Segment[] {
