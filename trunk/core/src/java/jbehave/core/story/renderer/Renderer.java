@@ -5,7 +5,6 @@
  */
 package jbehave.core.story.renderer;
 
-import jbehave.core.story.domain.Scenarios;
 import jbehave.core.story.domain.Event;
 import jbehave.core.story.domain.Given;
 import jbehave.core.story.domain.Narrative;
@@ -19,7 +18,6 @@ import jbehave.core.story.domain.Story;
 public interface Renderer {
 	void renderStory(Story story);
 	void renderNarrative(Narrative narrative);
-	void renderScenarios(Scenarios criteria);
 	void renderScenario(Scenario scenario);
 	void renderGiven(Given given);
 	void renderOutcome(Outcome outcome);

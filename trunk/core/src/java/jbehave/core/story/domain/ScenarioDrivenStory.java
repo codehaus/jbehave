@@ -8,10 +8,14 @@
 package jbehave.core.story.domain;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import jbehave.core.exception.NestedVerificationException;
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.story.renderer.Renderer;
+import jbehave.core.story.result.ScenarioResult;
+import jbehave.core.util.CamelCaseConverter;
 
 /**
  * <p>A ScenarioDrivenStory is an executable description of a value 
@@ -31,21 +35,21 @@ import jbehave.core.story.renderer.Renderer;
  */
 public class ScenarioDrivenStory implements Story {
     private final Narrative narrative;
-    private final Scenarios scenarios;
+    private final List scenarios;
     private final List listeners;
 
     public ScenarioDrivenStory(Narrative narrative) {
         this.narrative = narrative;
-        this.scenarios = new Scenarios();
-        listeners = new ArrayList();
+        this.scenarios = new ArrayList();
+        this.listeners = new ArrayList();
     }
 
     public void addScenario(Scenario scenario) {
-        scenarios.addScenario(scenario);
+        scenarios.add(scenario);
     }
 
     public List scenarios() {
-        return scenarios.scenarios();
+        return scenarios;
     }
     
     public Narrative narrative() {
@@ -53,7 +57,33 @@ public class ScenarioDrivenStory implements Story {
     }
 
     public void run(World world) {
-        scenarios.run(world, this.getClass(), (BehaviourListener[]) listeners.toArray(new BehaviourListener[listeners.size()]));
+        for (Iterator i = scenarios.iterator(); i.hasNext();) {
+            Scenario scenario = (Scenario) i.next();
+            informListeners(runScenario(world, this.getClass(), scenario));
+        }
+    }
+    
+    private ScenarioResult runScenario(World world, Class storyClass, Scenario scenario) {
+        ScenarioResult result;
+        String storyDescription = new CamelCaseConverter(storyClass).toPhrase();
+        String description = new CamelCaseConverter(scenario).toPhrase();
+        
+        try {                
+            scenario.run(world);
+            result = new ScenarioResult(description, storyDescription, 
+                    scenario.containsMocks() ? ScenarioResult.USED_MOCKS : ScenarioResult.SUCCEEDED);
+        } catch (NestedVerificationException nve) {
+            result = new ScenarioResult(description, storyDescription, nve);
+        } finally {
+            scenario.cleanUp(world);
+        }        
+        return result;
+    }
+        
+    private void informListeners(ScenarioResult result) {
+        for ( Iterator i = listeners.iterator(); i.hasNext(); ){
+            ((BehaviourListener) i.next()).gotResult(result);
+        }
     }
     
     public void addListener(BehaviourListener listener) {
@@ -63,8 +93,10 @@ public class ScenarioDrivenStory implements Story {
     public void narrateTo(Renderer renderer) {
         renderer.renderStory(this);
         narrative.narrateTo(renderer);
-        scenarios.narrateTo(renderer);
-    }
+        for ( Iterator i = scenarios.iterator(); i.hasNext(); ){
+            ((Scenario) i.next()).narrateTo(renderer);
+        }
+    }    
 
     public String toString() {
         StringBuffer buffer = new StringBuffer();

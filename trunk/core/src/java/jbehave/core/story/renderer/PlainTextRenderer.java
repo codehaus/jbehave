@@ -17,7 +17,6 @@ import jbehave.core.story.domain.Narrative;
 import jbehave.core.story.domain.Outcome;
 import jbehave.core.story.domain.Scenario;
 import jbehave.core.story.domain.ScenarioComponent;
-import jbehave.core.story.domain.Scenarios;
 import jbehave.core.story.domain.Story;
 import jbehave.core.util.CamelCaseConverter;
 
@@ -89,10 +88,6 @@ public class PlainTextRenderer implements Renderer {
         return previousComponent != null && clazz.isAssignableFrom(previousComponent.getClass());
     }    
     
-    public void renderScenarios(Scenarios criteria) {
-        // Do nothing
-    }
-
     public void gotResult(Result result) {
     }
 

@@ -7,6 +7,8 @@
  */
 package jbehave.core.story.domain;
 
+import jbehave.core.exception.NestedVerificationException;
+import jbehave.core.exception.VerificationException;
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Expectation;
@@ -60,6 +62,70 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
+    public void shouldInformListenersOfScenarioUsingMocks() {
+        World world = (World) stub(World.class);
+        Narrative narrative = new Narrative("","","");
+        AStory story = new AStory(narrative);
+        
+        Mock listener = mock(BehaviourListener.class);
+        AScenario scenario = new AScenario();
+        ScenarioResult result = new ScenarioResult("a scenario", "a story", ScenarioResult.USED_MOCKS);
+
+        scenario.expects("run").with(world);
+        scenario.expects("containsMocks").will(returnValue(true));
+        listener.expects("gotResult").with(eq(result));
+        
+        story.addScenario((Scenario)scenario);
+        story.addListener((BehaviourListener)listener);
+        
+        story.run(world);
+        
+        verifyMocks();
+    }
+
+    public void shouldInformListenersOfScenarioFailure() {
+        World world = (World) stub(World.class);
+        Narrative narrative = new Narrative("","","");
+        AStory story = new AStory(narrative);
+        
+        Mock listener = mock(BehaviourListener.class);
+        AScenario scenario = new AScenario();
+        NestedVerificationException nve = new NestedVerificationException(new RuntimeException());
+        ScenarioResult result = new ScenarioResult("a scenario", "a story", nve);
+        scenario.expects("run").with(world).will(throwException(nve));
+        listener.expects("gotResult").with(eq(result));
+        
+        story.addScenario((Scenario)scenario);
+        story.addListener((BehaviourListener)listener);
+        
+        story.run(world);
+        
+        verifyMocks();
+    }
+
+    public void shouldCleanUpScenariosEvenIfVerificationFails() {
+        World world = (World) stub(World.class);
+        Narrative narrative = new Narrative("","","");
+        AStory story = new AStory(narrative);
+        
+        Mock listener = mock(BehaviourListener.class);
+        AScenario scenario = new AScenario();
+        VerificationException ve = new VerificationException("Thrown by an outcome when an ensureThat fails");
+        ScenarioResult result = new ScenarioResult("a scenario", "a story", ve);
+        scenario.expects("run").with(world).will(throwException(ve));
+        scenario.expects("cleanUp").with(world);
+        
+        story.addScenario((Scenario)scenario);
+        
+        try {
+            story.run(world);
+        } catch (VerificationException e) {
+            // Expected, but AFTER cleanUp.
+        }
+        
+        verifyMocks();
+    }
+        
     private class AStory extends ScenarioDrivenStory {
         // just used to provide the story name
 
