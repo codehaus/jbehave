@@ -8,7 +8,7 @@ import example.atm.outcomes.ATMShouldReturnBankCardToCustomer;
 
 public class OverdrawnWithoutPermission extends MultiStepScenario {
 
-    public void assemble() {
+    public void specify() {
         given(new HappyScenarioWithOverdraft());
         given(new AccountHasNegativeBalanceWithoutPermission());
         when(new UserRequestsCash());

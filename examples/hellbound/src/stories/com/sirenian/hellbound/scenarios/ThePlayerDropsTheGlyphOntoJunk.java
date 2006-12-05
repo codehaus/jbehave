@@ -8,7 +8,7 @@ import com.sirenian.hellbound.outcomes.TheNextGlyphShouldAppear;
 
 public class ThePlayerDropsTheGlyphOntoJunk extends MultiStepScenario {
 
-    public void assemble() {
+    public void specify() {
         given(new ThePlayerDropsTheGlyphIntoAnEmptyPit());
         when(new ThePlayerPressesTheDropKey());
         then(new TheGlyphShouldFallOntoTheJunk());

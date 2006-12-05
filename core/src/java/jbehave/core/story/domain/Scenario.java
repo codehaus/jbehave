@@ -30,7 +30,7 @@ import jbehave.core.story.renderer.Renderable;
  * @see MultiStepScenario
  */
 public interface Scenario extends Renderable, HasCleanUp {
-    void assemble();
+    void specify();
     void run(World world);
     boolean containsMocks();
 }

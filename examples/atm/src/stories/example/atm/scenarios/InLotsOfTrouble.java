@@ -8,7 +8,7 @@ import example.atm.outcomes.ATMShouldRetainBankCard;
 
 public class InLotsOfTrouble extends MultiStepScenario {
 
-    public void assemble() {
+    public void specify() {
         given(new AccountIsOverOverdraftLimit());
         when(new UserRequestsCash());
         then(new ATMShouldRefuseCash());

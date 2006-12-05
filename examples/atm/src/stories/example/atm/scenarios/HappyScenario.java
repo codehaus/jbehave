@@ -9,7 +9,7 @@ import example.atm.outcomes.AccountBalanceShouldBeReduced;
 
 public class HappyScenario extends MultiStepScenario {
 
-    public void assemble() {
+    public void specify() {
         given(new AccountIsInCredit());
         when(new UserRequestsCash());
         then(new ATMShouldDispenseCash());

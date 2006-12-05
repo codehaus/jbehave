@@ -8,7 +8,7 @@ import com.sirenian.hellbound.outcomes.TheGlyphShouldBeCentredAtTheTopOfThePit;
 
 public class TheFirstGlyphIsDisplayedOnTheBoard extends MultiStepScenario {
 
-    public void assemble() {
+    public void specify() {
         given(new HellboundIsRunning());
         when(new ThePlayerStartsTheGame());
         then(new TheGlyphShouldBeCentredAtTheTopOfThePit());
