@@ -166,7 +166,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // expect
         given.expects("containsMocks").will(returnValue(false));
         event.expects("containsMocks").will(returnValue(false));
-        outcome.expects("containsMocks").will(returnValue(true)); // mock mock!
+        outcome.expects("containsMocks").will(returnValue(true)); // has mocks
 
         Scenario scenario = new MultiStepScenario() {
             public void specify() {

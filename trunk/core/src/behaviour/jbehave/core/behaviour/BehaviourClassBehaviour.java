@@ -7,6 +7,9 @@
  */
 package jbehave.core.behaviour;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jbehave.core.listener.BehaviourListener;
 import jbehave.core.minimock.UsingMiniMock;
 import jbehave.core.mock.Matcher;
@@ -51,7 +54,7 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
     }
     
     public void shouldVerifySingleBehaviourMethod() throws Exception {
-        // given...
+        // given
         Mock listener = mock(BehaviourListener.class);
         final Behaviour[] capturedBehaviour = new Behaviour[1]; // the behaviour
         
@@ -62,18 +65,18 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
         };
         Behaviour behaviour = new BehaviourClass(ClassWithOneBehaviourMethod.class, verifier);
 
-        // when...
+        // when
         behaviour.verifyTo((BehaviourListener) listener);
         
-        // then...
+        // then
         ensureThat(capturedBehaviour[0], isBehaviourMethodFor("shouldDoOneThing"));
     }
     
     public void shouldCountSingleBehaviourMethod() throws Exception {
-        // given...
+        // given
         Behaviour behaviour = new BehaviourClass(ClassWithOneBehaviourMethod.class, nullVerifier);
 
-        // then...
+        // then
         ensureThat(behaviour.countBehaviours(), eq(1));
     }
     
@@ -83,27 +86,27 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
     }
     
     public void shouldVerifyMultipleBehaviourMethods() throws Exception {
-        // given...
+        // given
         Mock listener = mock(BehaviourListener.class);
         Behaviour behaviour = new BehaviourClass(
                 ClassWithTwoBehaviourMethods.class, new BehaviourVerifier((BehaviourListener) listener));
         
-        // expect...
+        // expect
         listener.expects("gotResult").with(successfulResultFromMethodCalled("shouldDoOneThing"));
         listener.expects("gotResult").with(successfulResultFromMethodCalled("shouldDoAnotherThing"));
         
-        // when...
+        // when
         behaviour.verifyTo((BehaviourListener) listener);
         
-        // then...
+        // then
         verifyMocks();
     }
     
     public void shouldCountMultipleBehaviourMethods() throws Exception {
-        // given...
+        // given
         Behaviour behaviour = new BehaviourClass(ClassWithTwoBehaviourMethods.class, nullVerifier);
 
-        // then...
+        // then
         ensureThat(behaviour.countBehaviours(), eq(2));
     }
 
@@ -125,28 +128,31 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
     }
     
     public void shouldVerifyNestedBehaviourClasses() throws Exception {
-        // given...
+        // given
         Mock listener = mock(BehaviourListener.class);
         Behaviour behaviour = new BehaviourClass(
                 ClassWithNestedClasses.class, new BehaviourVerifier((BehaviourListener) listener));
         
-        // expect...
+        // expect
         listener.expects("gotResult").with(successfulResultFromMethodCalled("shouldDoSomething1"));
         listener.expects("gotResult").with(successfulResultFromMethodCalled("shouldDoSomething2"));
         
-        // when...
+        // when
         behaviour.verifyTo((BehaviourListener) listener);
         
-        // then...
+        // then
         verifyMocks();
     }
     
     public void shouldCountNestedBehaviourClasses() throws Exception {
-        // given...
+        // given
         Behaviour behaviour = new BehaviourClass(ClassWithNestedClasses.class, nullVerifier);
 
-        // then...
-        ensureThat(behaviour.countBehaviours(), eq(2));
+        // when
+        int count = behaviour.countBehaviours();
+        
+        // then
+        ensureThat(count, eq(2));
     }
     
     public static class ClassWithDeeplyNestedClasses implements Behaviours {
@@ -156,28 +162,31 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
     }
     
     public void shouldVerifyDeeplyNestedBehaviourClasses() throws Exception {
-        // given...
+        // given
         Mock listener = mock(BehaviourListener.class);
         Behaviour behaviour = new BehaviourClass(
                 ClassWithDeeplyNestedClasses.class, new BehaviourVerifier((BehaviourListener) listener));
         
-        // expect...
+        // expect
         listener.expects("gotResult").with(successfulResultFromMethodCalled("shouldDoSomething1"));
         listener.expects("gotResult").with(successfulResultFromMethodCalled("shouldDoSomething2"));
         
-        // when...
+        // when
         behaviour.verifyTo((BehaviourListener) listener);
         
-        // then...
+        // then
         verifyMocks();
     }
     
     public void shouldCountDeeplyNestedBehaviourMethods() throws Exception {
-        // given...
+        // given
         Behaviour behaviour = new BehaviourClass(ClassWithDeeplyNestedClasses.class, nullVerifier);
 
-        // then...
-        ensureThat(behaviour.countBehaviours(), eq(2));
+        // when
+        int count = behaviour.countBehaviours();
+        
+        // then
+        ensureThat(count, eq(2));
     }
     
     public static class HasNoBehaviourMethods {
@@ -185,17 +194,17 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
     }
     
     public void shouldIgnorePublicMethodsThatDontStartWithShould() throws Exception {
-        // given...
+        // given
         Mock listener = mock(BehaviourListener.class);
         Behaviour behaviour = new BehaviourClass(HasNoBehaviourMethods.class, nullVerifier);
         
-        // expect...
+        // expect
         listener.expects("gotResult").never();
         
-        // when...
+        // when
         behaviour.verifyTo((BehaviourListener) listener);
         
-        // then...
+        // then
         verifyMocks();
     }
     
@@ -204,17 +213,42 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
     }
     
     public void shouldIgnoreNonPublicMethodsThatStartWithShould() throws Exception {
-        // given...
+        // given
         Mock listener = mock(BehaviourListener.class);
         Behaviour behaviour = new BehaviourClass(HasNonPublicBehaviourMethod.class, nullVerifier);
         
-        // expect...
+        // expect
         listener.expects("gotResult").never();
         
-        // when...
+        // when
         behaviour.verifyTo((BehaviourListener) listener);
         
-        // then...
+        // then
         verifyMocks();
+    }
+    
+    private static List instantiatedClasses;
+    
+    public static class CapturesClassInstance {
+        public void shouldCaptureInstance() {
+            instantiatedClasses.add(this);
+        }
+        public void shouldAlsoCaptureInstance() {
+            instantiatedClasses.add(this);
+        }
+    }
+    
+    public void shouldCreateNewInstanceForEachBehaviourMethod() throws Exception {
+        // given
+        instantiatedClasses = new ArrayList();
+        BehaviourListener nullListener = (BehaviourListener) stub(BehaviourListener.class);
+        Behaviour behaviour = new BehaviourClass(CapturesClassInstance.class, nullVerifier);
+        
+        // when
+        behaviour.verifyTo(nullListener);
+        
+        // then
+        ensureThat(instantiatedClasses.size(), eq(2));
+        ensureThat(instantiatedClasses.get(0), not(sameInstanceAs(instantiatedClasses.get(1))));
     }
 }

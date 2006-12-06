@@ -23,7 +23,6 @@ public class BehaviourClass implements Behaviour {
 
     private static final String BEHAVIOUR_METHOD_PREFIX = "should";
     private final Class classToVerify;
-    private final Object instance;
     private final BehaviourVerifier verifier;
     private Matcher methodFilter;
     public static final Matcher ALL_METHODS = new Matcher() {
@@ -47,8 +46,8 @@ public class BehaviourClass implements Behaviour {
 
     public BehaviourClass(Class classToVerify, final String methodName, BehaviourVerifier verifier) {
         this.classToVerify = classToVerify;
-        this.instance = createInstance();
         this.verifier = verifier;
+        
         if (methodName.length() == 0) {
             this.methodFilter = ALL_METHODS;
         } else {
@@ -84,7 +83,7 @@ public class BehaviourClass implements Behaviour {
     }
     
     public BehaviourMethod createBehaviourMethod(Method method) {
-        return new BehaviourMethod(instance, method);
+        return new BehaviourMethod(createInstance(), method);
     }
     
     private Method[] getMethods(Matcher methodFilter){
