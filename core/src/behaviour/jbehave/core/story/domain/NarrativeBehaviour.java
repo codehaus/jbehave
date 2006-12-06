@@ -24,7 +24,7 @@ public class NarrativeBehaviour extends UsingMiniMock {
         Mock renderer = mock(Renderer.class);
         
         // expect...
-        renderer.expects("renderNarrative").with(sameInstanceAs(narrative));
+        renderer.expects("renderNarrative").with(narrative);
 
         // when...
         narrative.narrateTo((Renderer)renderer);

@@ -38,15 +38,15 @@ public class StoryRunnerBehaviour extends UsingMiniMock {
             
 			mock = mock(Story.class);
             mock.expects("addListener").with(isA(PlainTextScenarioListener.class));
-			mock.expects("run").with(isA(World.class)).will(returnValue(new ScenarioResult[] {resultA, resultB}));
+			mock.expects("run").with(a(World.class)).will(returnValue(new ScenarioResult[] {resultA, resultB}));
 		}
 
 		public Narrative narrative() {
 			return ((Story)mock).narrative();
 		}
 
-		public void run(World world) {
-			((Story)mock).run(world);
+		public void run() {
+			((Story)mock).run();
 		}
 
         public void addListener(BehaviourListener listener) {
@@ -57,5 +57,7 @@ public class StoryRunnerBehaviour extends UsingMiniMock {
             throw new UnsupportedOperationException("Should not be called");
         }
 		
+        public void specify() {
+        }
 	}
 }

@@ -21,8 +21,10 @@ import jbehave.core.story.renderer.Renderable;
 public interface Story extends Renderable {
 
 	Narrative narrative();
+	
+	void specify();
     
-    void run(World world);
+    void run();
 
     void addListener(BehaviourListener listener);
 

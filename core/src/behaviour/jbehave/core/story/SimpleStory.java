@@ -22,6 +22,9 @@ public class SimpleStory extends ScenarioDrivenStory {
 
     public SimpleStory() {
         super(new Narrative(ROLE, FEATURE, BENEFIT));
+    }
+    
+    public void specify() {
         addScenario(new PlainTextRendererWorks());
         addScenario(new PlainTextRendererStillWorks());
     }

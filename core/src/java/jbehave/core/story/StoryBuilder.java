@@ -3,10 +3,14 @@ package jbehave.core.story;
 import java.text.MessageFormat;
 import java.util.Iterator;
 
+import jbehave.core.story.codegen.domain.BasicDetails;
 import jbehave.core.story.codegen.domain.ScenarioDetails;
 import jbehave.core.story.codegen.domain.StoryDetails;
+import jbehave.core.story.domain.Event;
+import jbehave.core.story.domain.Given;
 import jbehave.core.story.domain.MultiStepScenario;
 import jbehave.core.story.domain.Narrative;
+import jbehave.core.story.domain.Outcome;
 import jbehave.core.story.domain.Scenario;
 import jbehave.core.story.domain.ScenarioDrivenStory;
 import jbehave.core.story.domain.Story;
@@ -21,65 +25,83 @@ import jbehave.core.util.CamelCaseConverter;
 public class StoryBuilder {
 
     private StoryDetails details;
+    private final String rootPackageName;
     private ClassLoader classLoader;
+    private final ClassBuilder builder = new ClassBuilder();
 
     public StoryBuilder(StoryDetails details, String rootPackageName) {
         this(details, rootPackageName, Thread.currentThread().getContextClassLoader());
     }    
     
-    public StoryBuilder(StoryDetails details, String rootPackageName, ClassLoader classLaoder) {
+    public StoryBuilder(StoryDetails details, String rootPackageName, ClassLoader classLoader) {
         this.details = details;
-        this.classLoader = classLaoder;
-    }    
+        this.rootPackageName = rootPackageName;
+        this.classLoader = classLoader;
+        }    
 
     public Story story(){
-        ScenarioDrivenStory story = new ScenarioDrivenStory(new Narrative(details.role, details.feature, details.benefit));
-        for ( Iterator i = details.scenarios.iterator(); i.hasNext(); ){
-            story.addScenario(scenario((ScenarioDetails)i.next(), details.name));
-        }
+        ScenarioDrivenStory story = new ScenarioDrivenStory(new Narrative(details.role, details.feature, details.benefit)) {
+            public void specify() {
+                for ( Iterator i = details.scenarios.iterator(); i.hasNext(); ){
+                    addScenario(scenario((ScenarioDetails)i.next(), details.name));
+                }
+            }
+        };
         return story;        
     }
 
     private Scenario scenario(final ScenarioDetails details, String storyName) {
         return new MultiStepScenario() {
             public void specify() {
-                // TODO fix ScenarioDetails to have arbitrary steps
+                // given
+                for (Iterator i = details.context.givens.iterator(); i.hasNext();) {
+                    BasicDetails given = (BasicDetails)i.next();
+                    given((Given)builder.newGiven(given.name));
+                }
+                
+                // when
+                when((Event)builder.newEvent(details.event.name));
+                
+                // then
+                for (Iterator i = details.outcome.outcomes.iterator(); i.hasNext();) {
+                    BasicDetails outcome = (BasicDetails)i.next();
+                    then((Outcome)builder.newOutcome(outcome.name));
+                }
             }
         };
     }
     
-    private Object newInstance(String name) {
-        try {
-            return classLoader.loadClass(name).newInstance();
-        } catch ( Exception e) {
-            throw new RuntimeException("Failed to create instance for name "+name, e);
-        }
-    }
-    
-    private static final class ClassNameBuilder {
+    private final class ClassBuilder {
         private static final String CLASS_NAME_TEMPLATE = "{0}.{1}.{2}";
         private static final String GIVENS = "givens";
         private static final String EVENTS = "events";
         private static final String OUTCOMES = "outcomes";
-        private final String root;
 
-        public ClassNameBuilder(final String root) {
-            this.root = root;
+        public Object newGiven(String name) {
+            return newInstance(name, GIVENS);
         }
-
-        public String givenName(String name){
-            return MessageFormat.format(CLASS_NAME_TEMPLATE, new Object[]{root, GIVENS, toCamelCase(name)});
+        public Object newEvent(String name) {
+            return newInstance(name, EVENTS);
         }
-
-        public String eventName(String name){
-            return MessageFormat.format(CLASS_NAME_TEMPLATE, new Object[]{root, EVENTS, toCamelCase(name)});
+        public Object newOutcome(String name) {
+            return newInstance(name, OUTCOMES);
         }
-        public String outcomeName(String name){
-            return MessageFormat.format(CLASS_NAME_TEMPLATE, new Object[]{root, OUTCOMES, toCamelCase(name)});
-        }
-
+        
         private String toCamelCase(String name) {
             return new CamelCaseConverter(name).toCamelCase();
+        }
+        
+        private Object newInstance(String name, String packageName) {
+            try {
+                String fullName = buildFullClassName(name, packageName);
+                return classLoader.loadClass(name).newInstance();
+            } catch ( Exception e) {
+                throw new RuntimeException("Failed to create instance for name "+name, e);
+            }
+        }
+        
+        private String buildFullClassName(String name, String packageName) {
+            return MessageFormat.format(CLASS_NAME_TEMPLATE, new Object[]{rootPackageName, packageName, toCamelCase(name)});
         }
     }   
 }

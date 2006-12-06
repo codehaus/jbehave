@@ -10,9 +10,10 @@ public class ThePlayerDropsTheGlyph extends ScenarioDrivenStory {
 
 	public ThePlayerDropsTheGlyph() {
 		super(new Narrative("game player", "to drop the glyph", " I can save time"));
-		
-		addScenario(new ThePlayerDropsTheGlyphIntoAnEmptyPit());
-        addScenario(new ThePlayerDropsTheGlyphOntoJunk());
 	}
 
+    public void specify() {
+        addScenario(new ThePlayerDropsTheGlyphIntoAnEmptyPit());
+        addScenario(new ThePlayerDropsTheGlyphOntoJunk());
+    }
 }
