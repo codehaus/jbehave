@@ -8,7 +8,7 @@
 package example.currency;
 
 
-import jbehave.core.behaviour.Behaviours;
+import org.jbehave.core.behaviour.Behaviours;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

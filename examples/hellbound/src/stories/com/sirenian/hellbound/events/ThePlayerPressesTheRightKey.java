@@ -2,7 +2,8 @@ package com.sirenian.hellbound.events;
 
 import java.awt.event.KeyEvent;
 
-import jbehave.core.story.domain.World;
+import org.jbehave.core.story.domain.World;
+
 
 public class ThePlayerPressesTheRightKey extends HellboundEvent {
 

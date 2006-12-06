@@ -2,9 +2,10 @@ package com.sirenian.hellbound.givens;
 
 import java.awt.Graphics;
 
-import jbehave.core.story.domain.HasCleanUp;
-import jbehave.core.story.domain.World;
-import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
+import org.jbehave.core.story.domain.HasCleanUp;
+import org.jbehave.core.story.domain.World;
+import org.jbehave.threaded.swing.DefaultWindowWrapper;
+
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.engine.EngineQueue;

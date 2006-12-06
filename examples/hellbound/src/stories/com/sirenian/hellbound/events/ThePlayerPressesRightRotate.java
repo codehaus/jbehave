@@ -1,7 +1,7 @@
 package com.sirenian.hellbound.events;
 
-import jbehave.core.exception.PendingException;
-import jbehave.core.story.domain.World;
+import org.jbehave.core.exception.PendingException;
+import org.jbehave.core.story.domain.World;
 
 public class ThePlayerPressesRightRotate extends HellboundEvent {
 

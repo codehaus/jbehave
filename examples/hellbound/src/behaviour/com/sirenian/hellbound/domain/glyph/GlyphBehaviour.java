@@ -1,12 +1,13 @@
 package com.sirenian.hellbound.domain.glyph;
 
+import org.jbehave.core.minimock.UsingMiniMock;
+import org.jbehave.core.mock.Matcher;
+import org.jbehave.core.mock.Mock;
+
 import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.util.ListenerSet;
 
-import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Matcher;
-import jbehave.core.mock.Mock;
 
 public class GlyphBehaviour extends UsingMiniMock {
 	

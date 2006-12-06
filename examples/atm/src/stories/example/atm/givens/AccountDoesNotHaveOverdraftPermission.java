@@ -8,9 +8,9 @@
 package example.atm.givens;
 
 
-import jbehave.core.minimock.story.domain.GivenUsingMiniMock;
-import jbehave.core.mock.Mock;
-import jbehave.core.story.domain.World;
+import org.jbehave.core.minimock.story.domain.GivenUsingMiniMock;
+import org.jbehave.core.mock.Mock;
+import org.jbehave.core.story.domain.World;
 
 
 import example.domain.Account;

@@ -1,7 +1,7 @@
 package com.sirenian.hellbound.stories;
 
-import jbehave.core.story.domain.Narrative;
-import jbehave.core.story.domain.ScenarioDrivenStory;
+import org.jbehave.core.story.domain.Narrative;
+import org.jbehave.core.story.domain.ScenarioDrivenStory;
 
 public class HellboundStory extends ScenarioDrivenStory {
 

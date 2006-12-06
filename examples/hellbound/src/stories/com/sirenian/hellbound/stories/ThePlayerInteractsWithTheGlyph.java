@@ -1,11 +1,12 @@
 package com.sirenian.hellbound.stories;
 
+import org.jbehave.core.story.domain.Narrative;
+import org.jbehave.core.story.domain.ScenarioDrivenStory;
+
 import com.sirenian.hellbound.scenarios.ThePlayerMovesTheGlyph;
 import com.sirenian.hellbound.scenarios.ThePlayerRotatesTheGlyphLeft;
 import com.sirenian.hellbound.scenarios.ThePlayerRotatesTheGlyphRight;
 
-import jbehave.core.story.domain.Narrative;
-import jbehave.core.story.domain.ScenarioDrivenStory;
 
 public class ThePlayerInteractsWithTheGlyph extends ScenarioDrivenStory {
 

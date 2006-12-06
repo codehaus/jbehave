@@ -2,7 +2,8 @@ package com.sirenian.hellbound.outcomes;
 
 import java.awt.Color;
 
-import jbehave.core.story.domain.World;
+import org.jbehave.core.story.domain.World;
+
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segments;

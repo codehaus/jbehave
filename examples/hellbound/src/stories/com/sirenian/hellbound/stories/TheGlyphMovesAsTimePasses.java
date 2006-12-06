@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.stories;
 
-import jbehave.core.story.domain.Narrative;
+import org.jbehave.core.story.domain.Narrative;
 
 import com.sirenian.hellbound.scenarios.ThePlayerSeesTheFirstGlyphMove;
 

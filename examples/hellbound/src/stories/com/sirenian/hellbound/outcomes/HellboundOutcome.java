@@ -2,9 +2,10 @@ package com.sirenian.hellbound.outcomes;
 
 import java.awt.Color;
 
-import jbehave.core.minimock.story.domain.OutcomeUsingMiniMock;
-import jbehave.core.mock.Matcher;
-import jbehave.core.story.domain.World;
+import org.jbehave.core.minimock.story.domain.OutcomeUsingMiniMock;
+import org.jbehave.core.mock.Matcher;
+import org.jbehave.core.story.domain.World;
+
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;

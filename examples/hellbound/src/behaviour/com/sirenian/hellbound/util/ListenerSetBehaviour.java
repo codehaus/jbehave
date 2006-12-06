@@ -1,10 +1,11 @@
 package com.sirenian.hellbound.util;
 
+import org.jbehave.core.minimock.UsingMiniMock;
+import org.jbehave.core.mock.Mock;
+
 import com.sirenian.hellbound.util.Listener;
 import com.sirenian.hellbound.util.ListenerNotifier;
 import com.sirenian.hellbound.util.ListenerSet;
-import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Mock;
 
 public class ListenerSetBehaviour extends UsingMiniMock {
 

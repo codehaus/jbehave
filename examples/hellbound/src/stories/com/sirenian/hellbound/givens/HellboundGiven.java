@@ -1,10 +1,11 @@
 package com.sirenian.hellbound.givens;
 
+import org.jbehave.core.minimock.story.domain.GivenUsingMiniMock;
+import org.jbehave.core.story.domain.World;
+
 import com.sirenian.hellbound.stories.Idler;
 import com.sirenian.hellbound.util.Logger;
 
-import jbehave.core.minimock.story.domain.GivenUsingMiniMock;
-import jbehave.core.story.domain.World;
 
 public abstract class HellboundGiven extends GivenUsingMiniMock {
 

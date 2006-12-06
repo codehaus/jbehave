@@ -1,8 +1,8 @@
 package com.sirenian.hellbound.domain.glyph;
 
-import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Matcher;
-import jbehave.core.mock.Mock;
+import org.jbehave.core.minimock.UsingMiniMock;
+import org.jbehave.core.mock.Matcher;
+import org.jbehave.core.mock.Mock;
 
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.engine.CollisionDetector;

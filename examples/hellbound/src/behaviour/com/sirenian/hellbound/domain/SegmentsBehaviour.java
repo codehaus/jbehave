@@ -1,5 +1,5 @@
 package com.sirenian.hellbound.domain;
-import jbehave.core.mock.UsingMatchers;
+import org.jbehave.core.mock.UsingMatchers;
 
 public class SegmentsBehaviour extends UsingMatchers {
 

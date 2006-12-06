@@ -14,9 +14,10 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import org.jbehave.core.mock.Matcher;
+
 import com.sirenian.hellbound.domain.Segment;
 
-import jbehave.core.mock.Matcher;
 
 public class IntendedPitGraphics extends Graphics implements Matcher {
 

@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.scenarios;
 
-import jbehave.core.story.domain.MultiStepScenario;
+import org.jbehave.core.story.domain.MultiStepScenario;
 
 import com.sirenian.hellbound.events.ThePlayerPressesRightRotate;
 import com.sirenian.hellbound.outcomes.TheGlyphShouldBeCentredAtTheTopOfThePit;

@@ -1,6 +1,6 @@
 package com.sirenian.hellbound;
 
-import jbehave.core.behaviour.Behaviours;
+import org.jbehave.core.behaviour.Behaviours;
 
 import com.sirenian.hellbound.domain.SegmentBehaviour;
 import com.sirenian.hellbound.domain.SegmentsBehaviour;

@@ -6,8 +6,9 @@ import java.awt.Graphics;
 
 import javax.swing.JFrame;
 
-import jbehave.core.mock.Matcher;
-import jbehave.core.mock.UsingMatchers;
+import org.jbehave.core.mock.Matcher;
+import org.jbehave.core.mock.UsingMatchers;
+
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;

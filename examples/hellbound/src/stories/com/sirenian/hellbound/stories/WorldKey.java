@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.stories;
 
-import jbehave.extensions.threaded.swing.WindowWrapper;
+import org.jbehave.threaded.swing.WindowWrapper;
 
 import com.sirenian.hellbound.engine.ThreadedEngineQueue;
 import com.sirenian.hellbound.givens.ForcedHeartbeat;
