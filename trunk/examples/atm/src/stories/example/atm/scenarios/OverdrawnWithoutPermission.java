@@ -1,6 +1,7 @@
 package example.atm.scenarios;
 
-import jbehave.core.story.domain.MultiStepScenario;
+import org.jbehave.core.story.domain.MultiStepScenario;
+
 import example.atm.events.UserRequestsCash;
 import example.atm.givens.AccountHasNegativeBalanceWithoutPermission;
 import example.atm.outcomes.ATMShouldRefuseCash;

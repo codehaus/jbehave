@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.events;
 
-import jbehave.core.story.domain.World;
+import org.jbehave.core.story.domain.World;
 
 import com.sirenian.hellbound.gui.ComponentNames;
 

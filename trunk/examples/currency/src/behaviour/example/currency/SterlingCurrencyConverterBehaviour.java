@@ -7,9 +7,9 @@
  */
 package example.currency;
 
-import jbehave.core.Block;
-import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Mock;
+import org.jbehave.core.Block;
+import org.jbehave.core.minimock.UsingMiniMock;
+import org.jbehave.core.mock.Mock;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

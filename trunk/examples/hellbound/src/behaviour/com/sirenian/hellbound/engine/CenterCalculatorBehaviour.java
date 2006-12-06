@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.engine;
 
-import jbehave.core.mock.UsingMatchers;
+import org.jbehave.core.mock.UsingMatchers;
 
 public class CenterCalculatorBehaviour extends UsingMatchers {
 

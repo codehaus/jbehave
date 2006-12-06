@@ -8,8 +8,9 @@
 
 package example.atm.stories;
 
-import jbehave.core.story.domain.Narrative;
-import jbehave.core.story.domain.ScenarioDrivenStory;
+import org.jbehave.core.story.domain.Narrative;
+import org.jbehave.core.story.domain.ScenarioDrivenStory;
+
 import example.atm.scenarios.HappyScenario;
 import example.atm.scenarios.HappyScenarioWithOverdraft;
 import example.atm.scenarios.InLotsOfTrouble;

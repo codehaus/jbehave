@@ -1,8 +1,9 @@
 package com.sirenian.hellbound.engine;
 
-import jbehave.core.mock.Matcher;
-import jbehave.core.mock.Mock;
-import jbehave.extensions.classmock.UsingClassMock;
+import org.jbehave.classmock.UsingClassMock;
+import org.jbehave.core.mock.Matcher;
+import org.jbehave.core.mock.Mock;
+
 
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.game.GameListener;

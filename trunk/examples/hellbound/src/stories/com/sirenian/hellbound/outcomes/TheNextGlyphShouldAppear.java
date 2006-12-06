@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.outcomes;
 
-import jbehave.core.story.domain.World;
+import org.jbehave.core.story.domain.World;
 
 
 public class TheNextGlyphShouldAppear extends HellboundOutcome {

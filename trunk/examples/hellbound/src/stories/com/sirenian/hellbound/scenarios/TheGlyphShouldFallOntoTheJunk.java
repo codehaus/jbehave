@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.scenarios;
 
-import jbehave.core.story.domain.World;
+import org.jbehave.core.story.domain.World;
 
 import com.sirenian.hellbound.outcomes.HellboundOutcome;
 

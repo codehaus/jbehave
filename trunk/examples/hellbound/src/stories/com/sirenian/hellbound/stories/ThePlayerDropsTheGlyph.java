@@ -1,10 +1,11 @@
 package com.sirenian.hellbound.stories;
 
+import org.jbehave.core.story.domain.Narrative;
+import org.jbehave.core.story.domain.ScenarioDrivenStory;
+
 import com.sirenian.hellbound.scenarios.ThePlayerDropsTheGlyphIntoAnEmptyPit;
 import com.sirenian.hellbound.scenarios.ThePlayerDropsTheGlyphOntoJunk;
 
-import jbehave.core.story.domain.Narrative;
-import jbehave.core.story.domain.ScenarioDrivenStory;
 
 public class ThePlayerDropsTheGlyph extends ScenarioDrivenStory {
 

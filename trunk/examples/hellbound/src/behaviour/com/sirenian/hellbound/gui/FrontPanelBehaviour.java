@@ -3,12 +3,13 @@ package com.sirenian.hellbound.gui;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import org.jbehave.core.Ensure;
+import org.jbehave.core.minimock.UsingMiniMock;
+import org.jbehave.core.mock.Mock;
+import org.jbehave.threaded.swing.DefaultWindowWrapper;
+import org.jbehave.threaded.swing.WindowWrapper;
+
 import com.sirenian.hellbound.domain.game.GameRequestListener;
-import jbehave.core.Ensure;
-import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Mock;
-import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
-import jbehave.extensions.threaded.swing.WindowWrapper;
 
 public class FrontPanelBehaviour extends UsingMiniMock {
 	

@@ -1,7 +1,7 @@
 package com.sirenian.hellbound.util;
 
-import jbehave.core.Block;
-import jbehave.core.minimock.UsingMiniMock;
+import org.jbehave.core.Block;
+import org.jbehave.core.minimock.UsingMiniMock;
 
 public class ThreadedQueueBehaviour extends UsingMiniMock {
     

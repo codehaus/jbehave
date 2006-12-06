@@ -39,7 +39,7 @@
 	<!-- examples -->
 	<property name="example" value="hellbound" />
 	<property name="example.behaviours" value="com.sirenian.hellbound.AllBehaviours" />	
-	<property name="behaviour.runner.task" value="jbehave.ant.JBehaveTask"/>
+	<property name="behaviour.runner.task" value="org.jbehave.ant.JBehaveTask"/>
 	
 	<!-- general targets -->
 	<target name="clean" description="Clean out output directory">
@@ -112,8 +112,8 @@
 	</target>
 	
 	<target name="verify-behaviour" depends="compile-behaviour" description="Verify behaviour">
-		<java taskname="run behaviours" classname="jbehave.core.Run" fork="true" failonerror="true">
-			<arg value="jbehave.AllBehaviours" />
+		<java taskname="run behaviours" classname="org.jbehave.core.Run" fork="true" failonerror="true">
+			<arg value="org.jbehave.AllBehaviours" />
 			<classpath>
 				<pathelement path="${behaviour_classes_dir}" />
 				<pathelement path="${jbehave_jar}" />
@@ -138,11 +138,11 @@
 				<include name="src/java/**/*.java" />
 			</fileset>
 			<classpath refid="libs" />
-			<group title="Core API" packages="jbehave.core*" />
-			<group title="Story Runner" packages="jbehave.core.story*" />
-			<group title="Ant Task Extension" packages="jbehave.ant*" />
-			<group title="JMock Extension" packages="jbehave.jmock*" />
-			<group title="JUnit Extension" packages="jbehave.junit*" />
+			<group title="Core API" packages="org.jbehave.core*" />
+			<group title="Story Runner" packages="org.jbehave.core.story*" />
+			<group title="Ant Task Extension" packages="org.jbehave.ant*" />
+			<group title="JMock Extension" packages="org.jbehave.jmock*" />
+			<group title="JUnit Extension" packages="org.jbehave.junit*" />
 			<classpath>
 				<fileset dir="${lib_dir}">
 					<include name="**/*.jar" />

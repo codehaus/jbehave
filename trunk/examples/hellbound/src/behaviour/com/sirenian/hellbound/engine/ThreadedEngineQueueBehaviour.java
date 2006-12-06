@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.engine;
 
-import jbehave.core.mock.Mock;
+import org.jbehave.core.mock.Mock;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import com.sirenian.hellbound.domain.glyph.GlyphMovement;

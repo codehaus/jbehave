@@ -4,10 +4,11 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
 
-import jbehave.core.minimock.UsingMiniMock;
-import jbehave.core.mock.Mock;
-import jbehave.extensions.threaded.swing.DefaultWindowWrapper;
-import jbehave.extensions.threaded.time.TimeoutException;
+import org.jbehave.core.minimock.UsingMiniMock;
+import org.jbehave.core.mock.Mock;
+import org.jbehave.threaded.swing.DefaultWindowWrapper;
+import org.jbehave.threaded.time.TimeoutException;
+
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import com.sirenian.hellbound.domain.game.GameState;
