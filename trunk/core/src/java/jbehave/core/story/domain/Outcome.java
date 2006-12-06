@@ -7,6 +7,8 @@
  */
 package jbehave.core.story.domain;
 
+import jbehave.core.minimock.story.domain.OutcomeUsingMiniMock;
+
 /**
  * <p>An outcome follows an event that has been run in a 
  * particular context.</p>

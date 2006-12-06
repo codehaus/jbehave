@@ -7,7 +7,7 @@
  */
 package example.atm.givens;
 
-import jbehave.core.story.domain.GivenUsingMiniMock;
+import jbehave.core.minimock.story.domain.GivenUsingMiniMock;
 import jbehave.core.story.domain.World;
 
 

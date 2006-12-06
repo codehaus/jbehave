@@ -7,6 +7,8 @@
  */
 package jbehave.core.story.domain;
 
+import jbehave.core.minimock.story.domain.GivenUsingMiniMock;
+
 /**
  * <p>A Given is the context in which a scenario runs.</p>
  * 
