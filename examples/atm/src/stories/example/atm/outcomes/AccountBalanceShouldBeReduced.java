@@ -8,7 +8,7 @@
 package example.atm.outcomes;
 
 import jbehave.core.Ensure;
-import jbehave.core.story.domain.OutcomeUsingMiniMock;
+import jbehave.core.minimock.story.domain.OutcomeUsingMiniMock;
 import jbehave.core.story.domain.World;
 
 

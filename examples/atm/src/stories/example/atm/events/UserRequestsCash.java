@@ -7,7 +7,7 @@
  */
 package example.atm.events;
 
-import jbehave.core.story.domain.EventUsingMiniMock;
+import jbehave.core.minimock.story.domain.EventUsingMiniMock;
 import jbehave.core.story.domain.World;
 
 

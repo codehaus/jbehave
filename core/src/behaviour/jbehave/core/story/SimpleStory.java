@@ -1,10 +1,10 @@
 package jbehave.core.story;
 
-import jbehave.core.story.domain.EventUsingMiniMock;
-import jbehave.core.story.domain.GivenUsingMiniMock;
+import jbehave.core.minimock.story.domain.EventUsingMiniMock;
+import jbehave.core.minimock.story.domain.GivenUsingMiniMock;
+import jbehave.core.minimock.story.domain.OutcomeUsingMiniMock;
 import jbehave.core.story.domain.MultiStepScenario;
 import jbehave.core.story.domain.Narrative;
-import jbehave.core.story.domain.OutcomeUsingMiniMock;
 import jbehave.core.story.domain.ScenarioDrivenStory;
 import jbehave.core.story.domain.World;
 

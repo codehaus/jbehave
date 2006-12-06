@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.events;
 
-import jbehave.core.story.domain.EventUsingMiniMock;
+import jbehave.core.minimock.story.domain.EventUsingMiniMock;
 import jbehave.core.story.domain.World;
 import jbehave.extensions.threaded.swing.SwingBehaviourException;
 import jbehave.extensions.threaded.swing.WindowWrapper;

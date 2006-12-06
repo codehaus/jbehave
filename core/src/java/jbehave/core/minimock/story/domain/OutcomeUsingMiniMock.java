@@ -5,9 +5,11 @@
  *
  * See license.txt for license details
  */
-package jbehave.core.story.domain;
+package jbehave.core.minimock.story.domain;
 
 import jbehave.core.minimock.UsingMiniMock;
+import jbehave.core.story.domain.Outcome;
+import jbehave.core.story.domain.World;
 import jbehave.core.story.renderer.Renderer;
 
 

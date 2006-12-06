@@ -7,6 +7,8 @@
  */
 package jbehave.core.story.domain;
 
+import jbehave.core.minimock.story.domain.EventUsingMiniMock;
+
 /**
  * <p>An Event, occurring in a particular context, with a desired outcome,
  * forms the basis of a {@link Scenario}.</p>
