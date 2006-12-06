@@ -29,6 +29,7 @@ public class PlainTextRendererBehaviour extends UsingMatchers {
 		PlainTextRenderer renderer = new PlainTextRenderer(printStream);
 		
 		ScenarioDrivenStory story = new SimpleStory();
+        story.specify();
 		story.narrateTo(renderer);
 		
 		String result = byteStream.toString();

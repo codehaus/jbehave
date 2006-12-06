@@ -11,7 +11,9 @@ public class ThePlayerInteractsWithTheGlyph extends ScenarioDrivenStory {
 
     public ThePlayerInteractsWithTheGlyph() {
         super(new Narrative("game player", "to move the shape", "I can make space for the next glyph"));
-        
+    }
+
+    public void specify() {
         addScenario(new ThePlayerMovesTheGlyph());
         addScenario(new ThePlayerRotatesTheGlyphLeft());
         addScenario(new ThePlayerRotatesTheGlyphRight());

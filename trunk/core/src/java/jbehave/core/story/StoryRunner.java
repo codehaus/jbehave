@@ -35,6 +35,7 @@ public class StoryRunner {
     public void run(String storyClassName, PrintStream printStream) 
         throws InstantiationException, IllegalAccessException, ClassNotFoundException {    
         Story story = loadStory(storyClassName, classLoader);
+        story.specify();
         run(story, printStream);
     }
     
@@ -43,10 +44,9 @@ public class StoryRunner {
     }
 
     public void run(Story story, PrintStream printStream) {
-        World world = new HashMapWorld();
 		PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(printStream));
         story.addListener(listener);
-        story.run(world);
+        story.run();
         listener.printReport();
     }
 

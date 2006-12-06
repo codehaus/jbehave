@@ -26,13 +26,12 @@ public class UserWithdrawsCash extends ScenarioDrivenStory {
             "to be able to withdraw cash from an ATM",
             "I don't have to visit the bank"
         ));
+    }
 
+    public void specify() {
         addScenario(new HappyScenario());
-        
         addScenario(new HappyScenarioWithOverdraft());
-        
         addScenario(new OverdrawnWithoutPermission());
-        
         addScenario(new InLotsOfTrouble());
     }
 }

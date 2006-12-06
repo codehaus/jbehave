@@ -23,12 +23,16 @@ import jbehave.core.story.result.ScenarioResult;
  */
 public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
     public void shouldRunScenariosInOrder() throws Exception {
-        World world = (World)stub(World.class);
+        final World world = (World)stub(World.class);
         // given...
         Narrative narrative = new Narrative("","","");
         AScenario scenarioA = new AScenario();
         AScenario scenarioB = new AScenario();
-        AStory story = new AStory(narrative);
+        AStory story = new AStory(narrative) {
+            protected World createWorld() {
+                return world;
+            }
+        };
         story.addScenario((Scenario) scenarioA);
         story.addScenario((Scenario) scenarioB);
 
@@ -36,16 +40,20 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
         scenarioB.expects("run").with(world);
         
         // when...
-        story.run(world);
+        story.run();
         
         // then...
         verifyMocks();
     }
     
     public void shouldInformListenersOfScenarioResult() {
-        World world = (World)stub(World.class);
+        final World world = (World)stub(World.class);
         Narrative narrative = new Narrative("","","");
-        AStory story = new AStory(narrative);
+        AStory story = new AStory(narrative) {
+            protected World createWorld() {
+                return world;
+            }
+        };
         
         Mock listener = mock(BehaviourListener.class);
         AScenario scenario = new AScenario();
@@ -57,15 +65,19 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
         
         story.addScenario((Scenario)scenario);
         story.addListener((BehaviourListener)listener);
-        story.run(world);
+        story.run();
         
         verifyMocks();
     }
     
     public void shouldInformListenersOfScenarioUsingMocks() {
-        World world = (World) stub(World.class);
+        final World world = (World) stub(World.class);
         Narrative narrative = new Narrative("","","");
-        AStory story = new AStory(narrative);
+        AStory story = new AStory(narrative) {
+            protected World createWorld() {
+                return world;
+            }
+        };
         
         Mock listener = mock(BehaviourListener.class);
         AScenario scenario = new AScenario();
@@ -78,15 +90,19 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
         story.addScenario((Scenario)scenario);
         story.addListener((BehaviourListener)listener);
         
-        story.run(world);
+        story.run();
         
         verifyMocks();
     }
 
     public void shouldInformListenersOfScenarioFailure() {
-        World world = (World) stub(World.class);
+        final World world = (World) stub(World.class);
         Narrative narrative = new Narrative("","","");
-        AStory story = new AStory(narrative);
+        AStory story = new AStory(narrative) {
+            protected World createWorld() {
+                return world;
+            }
+        };
         
         Mock listener = mock(BehaviourListener.class);
         AScenario scenario = new AScenario();
@@ -98,15 +114,19 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
         story.addScenario((Scenario)scenario);
         story.addListener((BehaviourListener)listener);
         
-        story.run(world);
+        story.run();
         
         verifyMocks();
     }
 
     public void shouldCleanUpScenariosEvenIfVerificationFails() {
-        World world = (World) stub(World.class);
+        final World world = (World) stub(World.class);
         Narrative narrative = new Narrative("","","");
-        AStory story = new AStory(narrative);
+        AStory story = new AStory(narrative) {
+            protected World createWorld() {
+                return world;
+            }
+        };
         
         Mock listener = mock(BehaviourListener.class);
         AScenario scenario = new AScenario();
@@ -118,7 +138,7 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
         story.addScenario((Scenario)scenario);
         
         try {
-            story.run(world);
+            story.run();
         } catch (VerificationException e) {
             // Expected, but AFTER cleanUp.
         }
@@ -131,6 +151,8 @@ public class ScenarioDrivenStoryBehaviour extends UsingMiniMock {
 
         public AStory(Narrative narrative) {
             super(narrative);
+        }
+        public void specify() {
         }
     }
     

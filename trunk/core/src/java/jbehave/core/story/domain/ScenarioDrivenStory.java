@@ -33,7 +33,7 @@ import jbehave.core.util.CamelCaseConverter;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:liz@thoughtworks.com">Elizabeth Keogh</a>
  */
-public class ScenarioDrivenStory implements Story {
+public abstract class ScenarioDrivenStory implements Story {
     private final Narrative narrative;
     private final List scenarios;
     private final List listeners;
@@ -56,14 +56,25 @@ public class ScenarioDrivenStory implements Story {
     public Narrative narrative() {
         return narrative;
     }
-
-    public void run(World world) {
+    
+    public void run() {
         for (Iterator i = scenarios.iterator(); i.hasNext();) {
             Scenario scenario = (Scenario) i.next();
-            informListeners(runScenario(world, this.getClass(), scenario));
+            informListeners(runScenario(createWorld(), this.getClass(), scenario));
         }
     }
-    
+
+    /**
+     * Creates a new world to be passed into each scenario
+     * 
+     * The default is a {@link HashMapWorld}. Override this to supply your own world
+     * 
+     * @return a new world
+     */
+    protected World createWorld() {
+        return new HashMapWorld();
+    }
+
     private ScenarioResult runScenario(World world, Class storyClass, Scenario scenario) {
         ScenarioResult result;
         String storyDescription = new CamelCaseConverter(storyClass).toPhrase();

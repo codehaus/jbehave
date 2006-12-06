@@ -9,4 +9,7 @@ public class HellboundStory extends ScenarioDrivenStory {
 		super(narrative);      
 	}
 
+    public void specify() {
+        // TODO Auto-generated method stub
+    }
 }
