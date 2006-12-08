@@ -6,6 +6,7 @@ import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.domain.glyph.Junk;
 import com.sirenian.hellbound.domain.glyph.LivingGlyph;
 import com.sirenian.hellbound.util.ListenerSet;
+import com.sirenian.hellbound.util.Logger;
 
 public class PseudoRandomGlyphFactory implements GlyphFactory {
 
@@ -25,6 +26,7 @@ public class PseudoRandomGlyphFactory implements GlyphFactory {
 
     public LivingGlyph nextGlyph(CollisionDetector detector, ListenerSet glyphListeners) {
         GlyphType glyphType = GlyphType.ALL_LIVING[random.nextInt(GlyphType.ALL_LIVING.length)];
+        Logger.debug(this, "Creating next glyph, glyph type is " + glyphType);
         LivingGlyph glyph = new LivingGlyph(glyphType, detector, CenterCalculator.forWidth(width));
         glyph.addListeners(glyphListeners);
 		return glyph;

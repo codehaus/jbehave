@@ -4,6 +4,7 @@ import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.engine.CollisionDetector;
 import com.sirenian.hellbound.util.ListenerSet;
+import com.sirenian.hellbound.util.Logger;
 
 public class LivingGlyph extends Glyph {
 	
@@ -59,6 +60,7 @@ public class LivingGlyph extends Glyph {
 
     private boolean attemptMoveTo(Segments newSegments, int newRotations, Segment newRoot) {
         if (detector.collides(newSegments)) {
+            Logger.debug(this, "Detector " + detector + " collided; cannot move.");
             return false;
         } else {
             moveTo(newSegments);

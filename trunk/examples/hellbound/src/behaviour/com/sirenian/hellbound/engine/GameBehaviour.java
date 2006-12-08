@@ -149,6 +149,24 @@ public class GameBehaviour extends UsingClassMock {
         verifyMocks();        
     }
     
+    public void shouldEndGameWhenTheNewGlyphOverlapsTheJunk() {
+        StubHeartbeat heartbeat = new StubHeartbeat();
+        Game game = new Game(new PseudoRandomGlyphFactory(42, 7, 2), heartbeat, 7, 2); // pit is only 2 deep!
+       
+        Mock gameListener = mock(GameListener.class);
+        game.requestStartGame();
+        
+        gameListener.expects("reportGameStateChanged").with(GameState.RUNNING);
+        gameListener.expects("reportGameStateChanged").with(GameState.OVER);
+        game.addGameListener((GameListener) gameListener);
+        
+        
+        heartbeat.beat(); // first glyph falls; cannot add second glyph as it overlaps
+        
+        verifyMocks();
+        
+    }
+    
     private Segments droppedToFloor(Segments segments, int floor) {
         Segments result = segments;
         while(result.lowest() < floor) {

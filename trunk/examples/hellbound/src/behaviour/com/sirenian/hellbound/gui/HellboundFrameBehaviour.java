@@ -2,11 +2,13 @@ package com.sirenian.hellbound.gui;
 
 import java.awt.event.KeyEvent;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
 import org.jbehave.threaded.swing.DefaultWindowWrapper;
+import org.jbehave.threaded.swing.Idler;
 import org.jbehave.threaded.time.TimeoutException;
 
 import com.sirenian.hellbound.domain.game.GameRequestListener;
@@ -24,7 +26,9 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
 	public void setUp() {
         windowWrapper = new DefaultWindowWrapper(ComponentNames.HELLBOUND_FRAME);
 		frontPanel = new JPanel();
+        frontPanel.setName("front.panel");
 		gamePanel = new JPanel();
+        gamePanel.setName("game.panel");
         gameRequestListener = mock(GameRequestListener.class);
 		frame = new HellboundFrame(frontPanel, gamePanel);
         frame.setGameRequestListener((GameRequestListener) gameRequestListener);
@@ -50,6 +54,16 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
 		ensureThat(gamePanel.isShowing());
 	}
     
+    public void shouldHaveLabelDisplayingGameOverMessageWhenGameOver() throws Exception {
+        frame.reportGameStateChanged(GameState.RUNNING);
+        new Idler().waitForIdle();
+        JLabel label = (JLabel) windowWrapper.findComponent(ComponentNames.GAME_MESSAGE);
+        ensureThat(label.getText(), eq(""));
+        frame.reportGameStateChanged(GameState.OVER);
+        new Idler().waitForIdle();
+        ensureThat(label.getText(), eq("Game over, man! Game over!"));
+    }
+    
     public void shouldRequestThatTheShapeIsDroppedWhenTheSpaceKeyIsPressed() throws Exception {
         ensureThatKeycodeProducesRequest(' ', GlyphMovement.DROP);
     }
@@ -72,7 +86,6 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
     
     public void shouldRequestThatTheShapeIsRotatedRightWhenTheXKeyIsPressed() throws Exception {
         ensureThatKeycodeProducesRequest('x', GlyphMovement.ROTATE_RIGHT);
-
     }
 
     private void ensureThatKeycodeProducesRequest(int keycode, GlyphMovement movement) throws TimeoutException {

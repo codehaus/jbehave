@@ -32,7 +32,11 @@ public class PitPanel extends JPanel implements GlyphListener {
 		this.pitHeight = height;
         this.colorMap = colorMap;
         
-		this.setPreferredSize(new Dimension(scale * pitWidth, scale * pitHeight));
+		Dimension dimension = new Dimension(scale * pitWidth, scale * pitHeight);
+        
+        this.setPreferredSize(dimension);
+        this.setMinimumSize(dimension);
+        this.setMaximumSize(dimension);
 	}
 
 	public void reportGlyphMovement(GlyphType type, Segments fromSquares, Segments toSquares) {
@@ -63,7 +67,7 @@ public class PitPanel extends JPanel implements GlyphListener {
 				if (type == null) { type = GlyphType.PIT; }
 				Color color = colorMap.getColorFor(type);
 				g.setColor(color);
-				g.fillRect(getBounds().x + (scale * i), getBounds().y + (scale * j), scale, scale);
+				g.fillRect((scale * i), (scale * j), scale, scale);
 			}
 		}
 	}

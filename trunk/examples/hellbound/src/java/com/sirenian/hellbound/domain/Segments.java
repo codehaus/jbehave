@@ -1,5 +1,7 @@
 package com.sirenian.hellbound.domain;
 
+import com.sirenian.hellbound.util.Logger;
+
 /**
  * This class should be immutable.
  */
@@ -110,6 +112,7 @@ public class Segments {
 	public boolean overlaps(Segments segments) {
 		for (int i = 0; i < segments.size(); i++) {
 			if (contains(segments.get(i))) {
+                Logger.debug(this, "Segments overlap at " + segments.get(i));
 				return true;
 			}
 		}
