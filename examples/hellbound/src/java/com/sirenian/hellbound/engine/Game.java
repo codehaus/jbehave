@@ -76,6 +76,11 @@ public class Game implements GameRequestListener {
 
     private void resetGlyph() {
         glyph = factory.nextGlyph(collisionDetector, glyphListeners);
+        if (glyph.getSegments().overlaps(junk.getSegments())) {
+            setState(GameState.OVER);
+            glyph = glyph.NULL;
+            junk = junk.NULL;
+        }
     }
 
 	private void setState(GameState newState) {
@@ -98,7 +103,7 @@ public class Game implements GameRequestListener {
 
     public void requestGlyphMovement(GlyphMovement movement) {
         if (state == GameState.RUNNING) {
-            Logger.debug(this, "Glyph movement " + movement + "requested");
+            Logger.debug(this, "Glyph movement " + movement + " requested");
             boolean result = movement.performOn(glyph);
             
             if (result == false && movement == GlyphMovement.DOWN) {

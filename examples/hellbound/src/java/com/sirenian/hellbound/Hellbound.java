@@ -55,7 +55,7 @@ public class Hellbound {
         Game game = createEngineForGame(heartbeat, factory);
         
         connectQueues(engineQueue, guiQueue, pitPanel, frame, game);
-        bindQueuesToFrame(engineQueue, guiQueue, frame);
+        bindThreadsToFrame(engineQueue, guiQueue, heartbeat, frame);
         startHellbound(frame);
     }
     
@@ -90,11 +90,13 @@ public class Hellbound {
         
     }
 
-	private void bindQueuesToFrame(final EngineQueue engineQueue, final GuiQueue guiQueue, HellboundFrame frame) {
+	private void bindThreadsToFrame(final EngineQueue engineQueue, final GuiQueue guiQueue, final Heartbeat heartbeat, HellboundFrame frame) {
 		WindowAdapter queueLife = new WindowAdapter() {
-			public void windowClosed(WindowEvent e) {
+            
+			public void windowClosing(WindowEvent e) {
 				engineQueue.stop();
 				guiQueue.stop();
+                heartbeat.stop();
 			}
 		};
 		

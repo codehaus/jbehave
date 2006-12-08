@@ -8,6 +8,7 @@ public interface CollisionDetector {
 		public boolean collides(Segments segments) {
 			return true; // not false, or could get into real trouble.
 		}
+        public String toString() { return CollisionDetector.class.getName() + ".NULL"; }
 	};
 
 	boolean collides(Segments segments);

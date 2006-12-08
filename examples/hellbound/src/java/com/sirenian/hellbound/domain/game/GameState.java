@@ -15,6 +15,7 @@ public class GameState {
 	
 	public static final GameState READY = new GameState("READY");
 	public static final GameState RUNNING = new GameState("RUNNING");
+    public static final GameState OVER = new GameState("OVER");
 	
 	
 }
