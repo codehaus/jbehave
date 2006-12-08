@@ -77,6 +77,6 @@ class StubInvocationHandler implements InvocationHandler {
     }
 
     public String toString() {
-        return "Stub for " + name;
+        return "stub " + name;
     }
 }

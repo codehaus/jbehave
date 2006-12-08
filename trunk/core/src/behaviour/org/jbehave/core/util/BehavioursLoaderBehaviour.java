@@ -9,7 +9,6 @@ import org.jbehave.core.listener.PlainTextListenerBehaviourSupport;
 import org.jbehave.core.minimock.MiniMockObjectBehaviour;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.core.util.BehavioursLoader;
 
 
 public class BehavioursLoaderBehaviour extends UsingMatchers {

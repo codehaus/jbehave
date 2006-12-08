@@ -17,9 +17,6 @@ import javax.swing.text.JTextComponent;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.Mock;
-import org.jbehave.threaded.swing.ComponentFinderException;
-import org.jbehave.threaded.swing.DefaultWindowWrapper;
-import org.jbehave.threaded.swing.HeadlessChecker;
 import org.jbehave.threaded.time.TimeoutException;
 
 

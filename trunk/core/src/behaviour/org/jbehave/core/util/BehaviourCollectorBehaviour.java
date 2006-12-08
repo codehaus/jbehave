@@ -1,15 +1,14 @@
 package org.jbehave.core.util;
 
+import java.util.Collection;
+import java.util.List;
+
 import net.sf.cotta.TDirectory;
 import net.sf.cotta.TFileFactory;
 import net.sf.cotta.memory.InMemoryFileSystem;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.core.util.BehaviourCollector;
 
 public class BehaviourCollectorBehaviour extends UsingMatchers {
     private TDirectory directory;

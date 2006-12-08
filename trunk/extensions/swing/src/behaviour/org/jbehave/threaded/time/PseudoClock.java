@@ -1,6 +1,5 @@
 package org.jbehave.threaded.time;
 
-import org.jbehave.threaded.time.Clock;
 
 public class PseudoClock implements Clock {
 

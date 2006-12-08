@@ -1,11 +1,11 @@
 package org.jbehave.core.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.sf.cotta.TDirectory;
 import net.sf.cotta.TFile;
 import net.sf.cotta.TIoException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BehaviourCollector {
     private TDirectory directory;

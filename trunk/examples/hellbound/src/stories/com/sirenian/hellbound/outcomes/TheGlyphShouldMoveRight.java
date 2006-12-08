@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import org.jbehave.core.story.domain.World;
 
-
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.glyph.GlyphType;

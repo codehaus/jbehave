@@ -113,7 +113,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	private Window getWindow() throws TimeoutException {
 		if (window == null) {
 			idler.waitForIdle();
-			window = grabber.getWindow(windowName);			
+			window = grabber.getWindow(windowName);
 		}
 		return window;
 	}

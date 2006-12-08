@@ -2,14 +2,6 @@ package org.jbehave.core.story.domain;
 
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
-import org.jbehave.core.story.domain.Event;
-import org.jbehave.core.story.domain.Given;
-import org.jbehave.core.story.domain.HasCleanUp;
-import org.jbehave.core.story.domain.HashMapWorld;
-import org.jbehave.core.story.domain.MultiStepScenario;
-import org.jbehave.core.story.domain.Outcome;
-import org.jbehave.core.story.domain.Scenario;
-import org.jbehave.core.story.domain.World;
 import org.jbehave.core.story.renderer.Renderer;
 
 public class MultiStepScenarioBehaviour extends UsingMiniMock {
@@ -105,8 +97,8 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
-    public interface GivenWithCleanUp extends Given, HasCleanUp {}
-    public interface OutcomeWithCleanUp extends Outcome, HasCleanUp {}
+    public interface GivenWithCleanUp extends Given, CleansUpWorld {}
+    public interface OutcomeWithCleanUp extends Outcome, CleansUpWorld {}
 
     public void shouldTellStepsToCleanUpWorldInReverseOrder() throws Exception {
         // given
@@ -247,5 +239,63 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // then
         verifyMocks();
         ensureThat(result, eq(false));
+    }
+    
+    public void shouldCopyOutcomeWithExpectationsAfterLastGiven() throws Exception {
+        // given
+        final Mock given1 = mock(Given.class, "given1");
+        final Mock given2 = mock(Given.class, "given2");
+        final Mock event = mock(Event.class, "event");
+        final Mock outcome = mock(OutcomeWithExpectations.class, "outcome");
+        World world = (World)stub(World.class);
+        
+        Scenario scenario = new MultiStepScenario() {
+            public void specify() {
+                given((Given) given1);
+                given((Given) given2);
+                when((Event) event);
+                then((Outcome) outcome);
+            }
+        };
+        scenario.specify();
+        
+        // expect
+        given1.expects("setUp").with(world);
+        given2.expects("setUp").with(world).after(given1, "setUp");
+        outcome.expects("setExpectationsIn").with(world).after(given2, "setUp");
+        event.expects("occurIn").with(world).after(outcome, "setExpectationsIn");
+        outcome.expects("verify").with(world).after(event, "occurIn");
+        
+        // when
+        scenario.run(world);
+        
+        // then
+        verifyMocks();
+    }
+    
+    public void shouldCopyOutcomeWithExpectationsAtBeginningIfThereAreNoGivens() throws Exception {
+        // given
+        final Mock event = mock(Event.class);
+        final Mock outcome = mock(OutcomeWithExpectations.class, "outcome");
+        World world = (World)stub(World.class);
+        
+        Scenario scenario = new MultiStepScenario() {
+            public void specify() {
+                when((Event) event);
+                then((Outcome) outcome);
+            }
+        };
+        scenario.specify();
+        
+        // expect
+        outcome.expects("setExpectationsIn").with(world);
+        event.expects("occurIn").with(world).after(outcome, "setExpectationsIn");
+        outcome.expects("verify").with(world).after(event, "occurIn");
+        
+        // when
+        scenario.run(world);
+        
+        // then
+        verifyMocks();
     }
 }

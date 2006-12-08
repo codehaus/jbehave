@@ -2,10 +2,9 @@ package com.sirenian.hellbound.givens;
 
 import java.awt.Graphics;
 
-import org.jbehave.core.story.domain.HasCleanUp;
+import org.jbehave.core.story.domain.CleansUpWorld;
 import org.jbehave.core.story.domain.World;
 import org.jbehave.threaded.swing.DefaultWindowWrapper;
-
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.engine.EngineQueue;
@@ -18,7 +17,7 @@ import com.sirenian.hellbound.gui.ThreadedSwingQueue;
 import com.sirenian.hellbound.stories.WorldKey;
 import com.sirenian.hellbound.util.Logger;
 
-public class HellboundIsRunning extends HellboundGiven implements HasCleanUp {
+public class HellboundIsRunning extends HellboundGiven implements CleansUpWorld {
 
 	public void setUpAnyTimeIn(World world) {
 		DefaultWindowWrapper hellboundFrameWrapper = new DefaultWindowWrapper("HellboundFrame");		

@@ -7,7 +7,6 @@
  */
 package org.jbehave.jmock;
 
-import org.jbehave.jmock.UsingJMock;
 
 /**
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>

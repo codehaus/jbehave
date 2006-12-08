@@ -10,7 +10,6 @@ package org.jbehave.core.util;
 import java.text.SimpleDateFormat;
 
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.core.util.CamelCaseConverter;
 
 
 

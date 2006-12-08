@@ -2,7 +2,7 @@ package org.jbehave.core.story.domain;
 
 import org.jbehave.core.story.renderer.Renderer;
 
-public abstract class AbstractStep implements Step, HasCleanUp {
+public abstract class AbstractStep implements Step, CleansUpWorld {
 
     protected final ScenarioComponent component;
 
@@ -25,8 +25,8 @@ public abstract class AbstractStep implements Step, HasCleanUp {
     }
     
     public void cleanUp(World world) {
-        if (component instanceof HasCleanUp) {
-            ((HasCleanUp) component).cleanUp(world);
+        if (component instanceof CleansUpWorld) {
+            ((CleansUpWorld) component).cleanUp(world);
         }
     }
 }

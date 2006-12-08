@@ -11,7 +11,6 @@ import org.jbehave.core.minimock.story.domain.GivenUsingMiniMock;
 import org.jbehave.core.mock.Mock;
 import org.jbehave.core.story.domain.World;
 
-
 import example.domain.Account;
 
 

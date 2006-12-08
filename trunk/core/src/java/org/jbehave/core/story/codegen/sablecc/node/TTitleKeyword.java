@@ -2,7 +2,7 @@
 
 package org.jbehave.core.story.codegen.sablecc.node;
 
-import org.jbehave.core.story.codegen.sablecc.analysis.*;
+import org.jbehave.core.story.codegen.sablecc.analysis.Analysis;
 
 public final class TTitleKeyword extends Token
 {

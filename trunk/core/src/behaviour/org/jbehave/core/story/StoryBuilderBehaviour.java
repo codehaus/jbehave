@@ -1,7 +1,6 @@
 package org.jbehave.core.story;
 
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.core.story.StoryBuilder;
 import org.jbehave.core.story.codegen.domain.ScenarioDetails;
 import org.jbehave.core.story.codegen.domain.StoryDetails;
 import org.jbehave.core.story.domain.Story;

@@ -9,7 +9,6 @@ package org.jbehave.core.minimock;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,20 +32,23 @@ public class UsingMiniMock extends UsingMatchers implements UsingMocks {
     private final Collection mocks = new HashSet();
 
     public Mock mock(Class type) {
-        return mock(type, "mock " + type.getName());
+        return mock(type, mockName(type));
     }
     
     public Mock mock(Class type, String name) {
-        Mock mock = createMock(type, name);
+        Mock mock = MiniMockObject.mock(type, name);
         mocks.add(mock);
         return mock;
     }
+    
+    private String mockName(Class type) {
+        String[] parts = type.getName().split("[\\.$]");
+        String shortName = parts[parts.length-1];
+        String lcfirst = shortName.substring(0, 1).toLowerCase() + shortName.substring(1);
+        return lcfirst;
+    }
 
-	protected Mock createMock(Class type, String name) {
-		return MiniMockObject.mock(type, name);
-	}
-
-    public void verifyMocks() {
+	public void verifyMocks() {
         for (Iterator i = mocks.iterator(); i.hasNext();) {
             ((Mock) i.next()).verify();
         }
@@ -57,11 +59,12 @@ public class UsingMiniMock extends UsingMatchers implements UsingMocks {
     }
     
     public Object stub(Class type) {
-        return stub(type, type.getName());
+        return stub(type, mockName(type));
     }
     
     public Object stub(Class type, String name) {
-        return Proxy.newProxyInstance(type.getClassLoader(), new Class[] {type}, new StubInvocationHandler(name));
+        return mock(type, name);
+//        return Proxy.newProxyInstance(type.getClassLoader(), new Class[] {type}, new StubInvocationHandler(name));
     }
 
 	// will(...)

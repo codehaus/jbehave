@@ -8,7 +8,6 @@
 package org.jbehave.core.util;
 
 import org.jbehave.core.Ensure;
-import org.jbehave.core.util.Timer;
 
 
 /**

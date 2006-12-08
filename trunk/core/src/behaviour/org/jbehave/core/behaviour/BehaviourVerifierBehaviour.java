@@ -1,7 +1,5 @@
 package org.jbehave.core.behaviour;
 
-import org.jbehave.core.behaviour.Behaviour;
-import org.jbehave.core.behaviour.BehaviourVerifier;
 import org.jbehave.core.listener.BehaviourListener;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;

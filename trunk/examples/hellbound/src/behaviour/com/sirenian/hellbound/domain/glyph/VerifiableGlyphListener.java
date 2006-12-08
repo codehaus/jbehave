@@ -1,7 +1,6 @@
 package com.sirenian.hellbound.domain.glyph;
 
 import com.sirenian.hellbound.domain.Segments;
-import com.sirenian.hellbound.util.Logger;
 
 public class VerifiableGlyphListener implements GlyphListener {
     private Segments toSegments;

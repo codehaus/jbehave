@@ -2,8 +2,6 @@ package org.jbehave.classmock;
 
 import java.util.HashMap;
 
-
-import org.jbehave.classmock.ClassMockObject;
 import org.jbehave.core.Ensure;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;

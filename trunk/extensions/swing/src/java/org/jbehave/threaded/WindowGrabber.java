@@ -26,6 +26,7 @@ public class WindowGrabber {
     
     public WindowGrabber(QueuedMiniMap miniMap) {
         this.miniMap = miniMap;
+        
 		Toolkit.getDefaultToolkit().addAWTEventListener(
                 windowWatcher, 
                 AWTEvent.WINDOW_EVENT_MASK);

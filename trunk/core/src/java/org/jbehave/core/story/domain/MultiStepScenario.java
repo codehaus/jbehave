@@ -82,8 +82,8 @@ public abstract class MultiStepScenario implements Scenario {
     public void cleanUp(World world) {
         for (ListIterator i = steps.listIterator(steps.size()); i.hasPrevious();) {
             Object step = i.previous();
-            if (step instanceof HasCleanUp) {
-                ((HasCleanUp)step).cleanUp(world);
+            if (step instanceof CleansUpWorld) {
+                ((CleansUpWorld)step).cleanUp(world);
             }
         }
     }
@@ -121,7 +121,28 @@ public abstract class MultiStepScenario implements Scenario {
         steps.add(new EventStep(event));
     }
     
-    protected void then(Outcome outcome) {
+    protected void then(final Outcome outcome) {
         steps.add(new OutcomeStep(outcome));
+        if (outcome instanceof OutcomeWithExpectations) {
+            injectAfterGivens(new AbstractStep(outcome) {
+                public void perform(World world) {
+                    ((OutcomeWithExpectations)outcome).setExpectationsIn(world);
+                }
+            }
+            );
+        }
+    }
+
+    private void injectAfterGivens(Step step) {
+        ListIterator i = steps.listIterator(steps.size());
+        while (i.hasPrevious()) {
+            Object maybeGiven = i.previous();
+            if (maybeGiven instanceof GivenStep) {
+                steps.add(i.nextIndex() + 1, step);
+                return;
+            }
+        }
+        // if we get here, there weren't any givens
+        steps.add(0, step);
     }
 }

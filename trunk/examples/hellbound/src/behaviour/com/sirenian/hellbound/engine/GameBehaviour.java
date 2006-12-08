@@ -4,7 +4,6 @@ import org.jbehave.classmock.UsingClassMock;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.Mock;
 
-
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.game.GameListener;
 import com.sirenian.hellbound.domain.game.GameState;

@@ -2,8 +2,19 @@
 
 package org.jbehave.core.story.codegen.sablecc.parser;
 
-import org.jbehave.core.story.codegen.sablecc.analysis.*;
-import org.jbehave.core.story.codegen.sablecc.node.*;
+import org.jbehave.core.story.codegen.sablecc.analysis.AnalysisAdapter;
+import org.jbehave.core.story.codegen.sablecc.node.EOF;
+import org.jbehave.core.story.codegen.sablecc.node.TAsA;
+import org.jbehave.core.story.codegen.sablecc.node.TEndl;
+import org.jbehave.core.story.codegen.sablecc.node.TGiven;
+import org.jbehave.core.story.codegen.sablecc.node.TIWant;
+import org.jbehave.core.story.codegen.sablecc.node.TScenarioKeyword;
+import org.jbehave.core.story.codegen.sablecc.node.TSoThat;
+import org.jbehave.core.story.codegen.sablecc.node.TSpace;
+import org.jbehave.core.story.codegen.sablecc.node.TThen;
+import org.jbehave.core.story.codegen.sablecc.node.TTitleKeyword;
+import org.jbehave.core.story.codegen.sablecc.node.TWhen;
+import org.jbehave.core.story.codegen.sablecc.node.TWord;
 
 class TokenIndex extends AnalysisAdapter
 {

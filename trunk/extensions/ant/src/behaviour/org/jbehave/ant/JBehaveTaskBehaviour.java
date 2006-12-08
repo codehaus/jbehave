@@ -8,25 +8,22 @@
 package org.jbehave.ant;
 
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import net.sf.cotta.utils.ClassPath;
+import net.sf.cotta.utils.ClassPathLocator;
+
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
-import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Path;
-import org.jbehave.ant.BehaviourClassDetails;
-import org.jbehave.ant.CommandRunner;
-import org.jbehave.ant.JBehaveTask;
 import org.jbehave.core.Block;
 import org.jbehave.core.Run;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Collection;
-
-import net.sf.cotta.utils.ClassPathLocator;
-import net.sf.cotta.utils.ClassPath;
 
 
 public class JBehaveTaskBehaviour extends UsingMiniMock {

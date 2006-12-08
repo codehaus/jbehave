@@ -5,8 +5,6 @@ package org.jbehave.core;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import org.jbehave.core.Ensure;
-import org.jbehave.core.Run;
 import org.jbehave.core.mock.UsingMatchers;
 
 

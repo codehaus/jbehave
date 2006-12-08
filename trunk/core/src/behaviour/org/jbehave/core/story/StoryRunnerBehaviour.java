@@ -7,7 +7,6 @@ import org.jbehave.core.Ensure;
 import org.jbehave.core.listener.BehaviourListener;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
-import org.jbehave.core.story.StoryRunner;
 import org.jbehave.core.story.domain.Narrative;
 import org.jbehave.core.story.domain.Story;
 import org.jbehave.core.story.domain.World;

@@ -4,11 +4,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import net.sf.cglib.proxy.MethodProxy;
+
 import org.jbehave.core.minimock.MiniMockObject;
 import org.jbehave.core.mock.ExpectationRegistry;
 import org.jbehave.core.mock.Mock;
-
-import net.sf.cglib.proxy.MethodProxy;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;

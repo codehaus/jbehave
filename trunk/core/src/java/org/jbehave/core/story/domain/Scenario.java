@@ -29,7 +29,7 @@ import org.jbehave.core.story.renderer.Renderable;
  * @see ScenarioDrivenStory
  * @see MultiStepScenario
  */
-public interface Scenario extends Renderable, HasCleanUp {
+public interface Scenario extends Renderable, CleansUpWorld {
     void specify();
     void run(World world);
     boolean containsMocks();

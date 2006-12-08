@@ -12,7 +12,6 @@ import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.listener.PlainTextListener;
 import org.jbehave.core.listener.PlainTextListenerBehaviourSupport;
 import org.jbehave.core.result.Result;
-import org.jbehave.core.story.listener.PlainTextScenarioListener;
 import org.jbehave.core.story.result.ScenarioResult;
 
 

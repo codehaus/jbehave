@@ -14,10 +14,6 @@ import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Expectation;
 import org.jbehave.core.mock.Mock;
 import org.jbehave.core.result.Result;
-import org.jbehave.core.story.domain.Narrative;
-import org.jbehave.core.story.domain.Scenario;
-import org.jbehave.core.story.domain.ScenarioDrivenStory;
-import org.jbehave.core.story.domain.World;
 import org.jbehave.core.story.renderer.Renderer;
 import org.jbehave.core.story.result.ScenarioResult;
 

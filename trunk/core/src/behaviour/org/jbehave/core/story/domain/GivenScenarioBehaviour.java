@@ -9,9 +9,6 @@ package org.jbehave.core.story.domain;
 
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
-import org.jbehave.core.story.domain.GivenScenario;
-import org.jbehave.core.story.domain.Scenario;
-import org.jbehave.core.story.domain.World;
 
 
 /**

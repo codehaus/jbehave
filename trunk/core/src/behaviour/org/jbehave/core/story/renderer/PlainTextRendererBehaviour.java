@@ -13,7 +13,6 @@ import java.io.PrintStream;
 import org.jbehave.core.mock.UsingMatchers;
 import org.jbehave.core.story.SimpleStory;
 import org.jbehave.core.story.domain.ScenarioDrivenStory;
-import org.jbehave.core.story.renderer.PlainTextRenderer;
 import org.jbehave.core.util.CamelCaseConverter;
 
 
