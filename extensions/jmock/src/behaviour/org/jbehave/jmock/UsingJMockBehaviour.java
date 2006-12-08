@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 import org.jbehave.core.Block;
 import org.jbehave.core.Ensure;
 import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.jmock.JMockSugar;
-import org.jbehave.jmock.UsingJMock;
 import org.jmock.Mock;
 import org.jmock.core.Verifiable;
 

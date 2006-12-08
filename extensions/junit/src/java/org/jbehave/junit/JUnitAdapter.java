@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.jbehave.core.behaviour.BehaviourClass;
 import org.jbehave.core.behaviour.BehaviourMethod;
 import org.jbehave.core.behaviour.Behaviours;
 import org.jbehave.core.exception.JBehaveFrameworkError;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 
 /**

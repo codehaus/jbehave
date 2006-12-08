@@ -8,7 +8,6 @@
 package org.jbehave.core.minimock;
 
 import org.jbehave.core.Ensure;
-import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.Mock;
 import org.jbehave.core.mock.UsingMatchers;

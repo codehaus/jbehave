@@ -24,7 +24,7 @@ import org.jbehave.core.mock.Mock;
 
 
 /**
- * Minimal implementation of mock object, inspired by <a href="http://www.jmock.org>JMock</a>
+ * Simple implementation of mock object, inspired by <a href="http://www.jmock.org>JMock</a>
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
@@ -94,7 +94,6 @@ public class MiniMockObject implements Mock, ExpectationRegistry {
 			return message.toString();
 		}
 
-
 		private boolean anyExpectationsMatchMethodName(String methodName) {
             for (Iterator i = expectations.iterator(); i.hasNext();) {
                Expectation expectation = (Expectation) i.next();
@@ -109,10 +108,6 @@ public class MiniMockObject implements Mock, ExpectationRegistry {
         this.type = type;
         this.name = name;
         this.fallbackBehaviour = new StubInvocationHandler(name);
-    }
-    
-    protected Class getType() {
-    	return type;
     }
     
     /** get the mocked instance */
@@ -133,14 +128,8 @@ public class MiniMockObject implements Mock, ExpectationRegistry {
     /** verify all expectations on the mock */
     public void verify() {
         for (Iterator i = expectations.iterator(); i.hasNext();) {
-            Expectation expectation = (Expectation) i.next();
-            expectation.verify();
+            ((Expectation) i.next()).verify();
         }
-//        try {
-//        }
-//        catch (VerificationException e) {
-//            throw new MockVerificationException(e, unexpectedInvocations);
-//        }
     }
 
     public Expectation lookup(String id) {
@@ -153,10 +142,14 @@ public class MiniMockObject implements Mock, ExpectationRegistry {
         throw new VerificationException("Unknown expectation id '" + id + "' for " + this);
     }
     
-    public String toString() {
-        return '[' + name + ']';
+    protected Class getType() {
+        return type;
     }
-
+    
+    public String toString() {
+        return name;
+    }
+    
     protected static Mock mock(final Class type, final String name) {
         Mock result = (Mock) Proxy.newProxyInstance(Mock.class.getClassLoader(),
                 new Class[] { type, Mock.class, ExpectationRegistry.class },

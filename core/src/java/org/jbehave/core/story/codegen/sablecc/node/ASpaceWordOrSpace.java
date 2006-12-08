@@ -2,9 +2,7 @@
 
 package org.jbehave.core.story.codegen.sablecc.node;
 
-import java.util.*;
-
-import org.jbehave.core.story.codegen.sablecc.analysis.*;
+import org.jbehave.core.story.codegen.sablecc.analysis.Analysis;
 
 public final class ASpaceWordOrSpace extends PWordOrSpace
 {

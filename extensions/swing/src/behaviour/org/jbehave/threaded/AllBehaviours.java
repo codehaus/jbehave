@@ -3,7 +3,6 @@ package org.jbehave.threaded;
 import org.jbehave.core.behaviour.Behaviours;
 import org.jbehave.threaded.swing.ComponentFinderBehaviour;
 import org.jbehave.threaded.swing.DefaultWindowWrapperBehaviour;
-import org.jbehave.threaded.swing.HeadlessChecker;
 import org.jbehave.threaded.swing.HeadlessCheckerBehaviour;
 import org.jbehave.threaded.swing.NamedComponentFilterBehaviour;
 import org.jbehave.threaded.time.ClockedTimeouterBehaviour;

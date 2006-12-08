@@ -3,7 +3,6 @@ package org.jbehave.threaded.swing;
 import javax.swing.JButton;
 
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.threaded.swing.NamedComponentFilter;
 
 
 

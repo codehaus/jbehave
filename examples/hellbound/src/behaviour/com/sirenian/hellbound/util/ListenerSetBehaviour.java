@@ -3,10 +3,6 @@ package com.sirenian.hellbound.util;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
 
-import com.sirenian.hellbound.util.Listener;
-import com.sirenian.hellbound.util.ListenerNotifier;
-import com.sirenian.hellbound.util.ListenerSet;
-
 public class ListenerSetBehaviour extends UsingMiniMock {
 
 	public void shouldPerformCommandOnAddedListeners() throws Exception {

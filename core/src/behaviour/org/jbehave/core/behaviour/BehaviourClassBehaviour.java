@@ -10,11 +10,6 @@ package org.jbehave.core.behaviour;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jbehave.core.behaviour.Behaviour;
-import org.jbehave.core.behaviour.BehaviourClass;
-import org.jbehave.core.behaviour.BehaviourMethod;
-import org.jbehave.core.behaviour.BehaviourVerifier;
-import org.jbehave.core.behaviour.Behaviours;
 import org.jbehave.core.listener.BehaviourListener;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
@@ -233,20 +228,20 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
-    private static List instantiatedClasses;
+    private static List instances;
     
     public static class CapturesClassInstance {
         public void shouldCaptureInstance() {
-            instantiatedClasses.add(this);
+            instances.add(this);
         }
         public void shouldAlsoCaptureInstance() {
-            instantiatedClasses.add(this);
+            instances.add(this);
         }
     }
     
     public void shouldCreateNewInstanceForEachBehaviourMethod() throws Exception {
         // given
-        instantiatedClasses = new ArrayList();
+        instances = new ArrayList();
         BehaviourListener nullListener = (BehaviourListener) stub(BehaviourListener.class);
         Behaviour behaviour = new BehaviourClass(CapturesClassInstance.class, nullVerifier);
         
@@ -254,7 +249,7 @@ public class BehaviourClassBehaviour extends UsingMiniMock {
         behaviour.verifyTo(nullListener);
         
         // then
-        ensureThat(instantiatedClasses.size(), eq(2));
-        ensureThat(instantiatedClasses.get(0), not(sameInstanceAs(instantiatedClasses.get(1))));
+        ensureThat(instances.size(), eq(2));
+        ensureThat(instances.get(0), not(sameInstanceAs(instances.get(1))));
     }
 }

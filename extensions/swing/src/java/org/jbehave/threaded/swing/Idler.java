@@ -2,7 +2,6 @@ package org.jbehave.threaded.swing;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-import java.awt.event.InvocationEvent;
 
 import javax.swing.SwingUtilities;
 
@@ -19,12 +18,8 @@ public class Idler {
 	}
 	
 	public void waitForIdle() {
-		Object lock = new Object();
-        synchronized(lock) {
-        	sysQueue.postEvent(new InvocationEvent(toolkit, EMPTY_RUNNABLE,
-                                             lock, true));
-            try { lock.wait(); }
-            catch(InterruptedException e) { }
-        }
+        try {
+            SwingUtilities.invokeAndWait(EMPTY_RUNNABLE);
+        } catch (Exception ignored) {}
 	}
 }

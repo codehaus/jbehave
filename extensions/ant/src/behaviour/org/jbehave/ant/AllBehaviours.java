@@ -8,7 +8,6 @@
 package org.jbehave.ant;
 
 import org.jbehave.core.behaviour.Behaviours;
-import org.jbehave.core.util.BehavioursLoader;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

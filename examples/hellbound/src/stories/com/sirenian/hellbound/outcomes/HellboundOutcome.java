@@ -6,7 +6,6 @@ import org.jbehave.core.minimock.story.domain.OutcomeUsingMiniMock;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.story.domain.World;
 
-
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;

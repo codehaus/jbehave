@@ -2,7 +2,34 @@
 
 package org.jbehave.core.story.codegen.sablecc.analysis;
 
-import org.jbehave.core.story.codegen.sablecc.node.*;
+import org.jbehave.core.story.codegen.sablecc.node.ABenefit;
+import org.jbehave.core.story.codegen.sablecc.node.AContext;
+import org.jbehave.core.story.codegen.sablecc.node.AEvent;
+import org.jbehave.core.story.codegen.sablecc.node.AFeature;
+import org.jbehave.core.story.codegen.sablecc.node.AOutcome;
+import org.jbehave.core.story.codegen.sablecc.node.APhrase;
+import org.jbehave.core.story.codegen.sablecc.node.ARole;
+import org.jbehave.core.story.codegen.sablecc.node.AScenario;
+import org.jbehave.core.story.codegen.sablecc.node.AScenarioTitle;
+import org.jbehave.core.story.codegen.sablecc.node.ASpaceWordOrSpace;
+import org.jbehave.core.story.codegen.sablecc.node.AStory;
+import org.jbehave.core.story.codegen.sablecc.node.ATitle;
+import org.jbehave.core.story.codegen.sablecc.node.AWordWordOrSpace;
+import org.jbehave.core.story.codegen.sablecc.node.EOF;
+import org.jbehave.core.story.codegen.sablecc.node.Node;
+import org.jbehave.core.story.codegen.sablecc.node.Start;
+import org.jbehave.core.story.codegen.sablecc.node.Switch;
+import org.jbehave.core.story.codegen.sablecc.node.TAsA;
+import org.jbehave.core.story.codegen.sablecc.node.TEndl;
+import org.jbehave.core.story.codegen.sablecc.node.TGiven;
+import org.jbehave.core.story.codegen.sablecc.node.TIWant;
+import org.jbehave.core.story.codegen.sablecc.node.TScenarioKeyword;
+import org.jbehave.core.story.codegen.sablecc.node.TSoThat;
+import org.jbehave.core.story.codegen.sablecc.node.TSpace;
+import org.jbehave.core.story.codegen.sablecc.node.TThen;
+import org.jbehave.core.story.codegen.sablecc.node.TTitleKeyword;
+import org.jbehave.core.story.codegen.sablecc.node.TWhen;
+import org.jbehave.core.story.codegen.sablecc.node.TWord;
 
 public interface Analysis extends Switch
 {

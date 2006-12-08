@@ -10,7 +10,6 @@ package org.jbehave.core.listener;
 import org.jbehave.core.behaviour.BehaviourMethod;
 import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.exception.VerificationException;
-import org.jbehave.core.listener.PlainTextListener;
 import org.jbehave.core.result.BehaviourMethodResult;
 import org.jbehave.core.result.Result;
 
@@ -19,11 +18,11 @@ import org.jbehave.core.result.Result;
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
  */
 public class PlainTextMethodListenerBehaviour extends PlainTextListenerBehaviourSupport {
-    private BehaviourMethod behaviourMethod;
+    private BehaviourMethod shouldDoSomething;
 
     public void setUp() throws Exception {
         super.setUp();
-        behaviourMethod = new BehaviourMethod(new FooBehaviour(), FooBehaviour.class.getMethod("shouldDoSomething", null));
+        shouldDoSomething = new BehaviourMethod(new FooBehaviour(), FooBehaviour.class.getMethod("shouldDoSomething", null));
     }
 
     protected PlainTextListener newPlainTextListener() {
@@ -31,50 +30,41 @@ public class PlainTextMethodListenerBehaviour extends PlainTextListenerBehaviour
     }
 
     protected Result newSuccessResult() {
-        return new BehaviourMethodResult(behaviourMethod);
+        return new BehaviourMethodResult(shouldDoSomething);
     }
 
     protected Result newFailureResult() {
-        return new BehaviourMethodResult(behaviourMethod, new VerificationException("oops"));
+        return new BehaviourMethodResult(shouldDoSomething, new VerificationException("oops"));
     }
 
     protected Result newPendingResult() {
-        return new BehaviourMethodResult(behaviourMethod, new PendingException());
+        return new BehaviourMethodResult(shouldDoSomething, new PendingException());
     }
 
     public void shouldPrintStackTraceForFailure() throws Exception {
         // given...
         Result failed = newFailureResult();
-
-        // expect...
-        String expectedShortName = "Foo";
-        String expectedFullName = FooBehaviour.class.getName();
+        listener.gotResult(failed);
 
         // when...
-        listener.gotResult(failed);
         listener.printReport();
 
         // then...
         ensureThat(writer, contains("Failures:"));
-        ensureThat(writer, contains(expectedShortName));
-        ensureThat(writer, contains(expectedFullName));
+        ensureThat(writer, contains("Foo"));
         ensureThat(writer, contains("VerificationException"));
     }
 
-    public void shouldPrintBehaviourClassNameForPending() throws Exception {
+    public void shouldPrintShortBehaviourClassNameForPending() throws Exception {
         // given...
-        Result pending = new PendingResult(behaviourMethod);
-
-        // expect
-        String expectedShortName = "Foo";
-        String expectedFullName = FooBehaviour.class.getName();
+        Result pending = new PendingResult(shouldDoSomething);
+        listener.gotResult(pending);
 
         // when...
-        listener.gotResult(pending);
         listener.printReport();
 
         // then...
         ensureThat(writer, contains("Pending:"));
-        ensureThat(writer, contains(FooBehaviour.class.getName()));
+        ensureThat(writer, contains("Foo"));
     }
 }

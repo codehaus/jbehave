@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jbehave.core.behaviour.Behaviour;
-import org.jbehave.core.behaviour.BehaviourMethod;
 import org.jbehave.core.exception.JBehaveFrameworkError;
 import org.jbehave.core.listener.BehaviourListener;
 import org.jbehave.core.minimock.UsingMiniMock;

@@ -25,6 +25,7 @@ import org.jbehave.core.util.Timer;
  */
 public class PlainTextListener implements BehaviourListener {
 
+    private static final String NL = System.getProperty("line.separator");
     protected final PrintWriter out;
     private int methodsVerified = 0;
     private final List failures = new ArrayList();
@@ -68,22 +69,33 @@ public class PlainTextListener implements BehaviourListener {
     }
 
     private void printFailures() {
-        printErrorList("Failures:", failures);
+        if (!failures.isEmpty()) {
+            out.println("Failures: " + failures.size() + ".");
+            out.println();
+            int count = 1;
+            for (Iterator i = failures.iterator(); i.hasNext(); count++) {
+                Result result = (Result) i.next();
+                printResult(count, result);
+                result.cause().printStackTrace(out);
+                out.println();
+            }
+        }
     }
 
     private void printPending() {
         if (!pending.isEmpty()) {
-            out.println("Pending: " + pending.size());
+            out.println("Pending: " + pending.size() + ".");
             out.println();
             int count = 1;
             for (Iterator i = pending.iterator(); i.hasNext(); count++) {
                 Result result =  (Result) i.next();
                 printResult(count, result);
                 out.println("\t" + result.cause().getMessage());
-                StackTraceElement element = findFirstNonJeBehaveStackElement(result.cause());
+                StackTraceElement element = findFirstNonJBehaveStackElement(result.cause());
                 if (element.getLineNumber() >= 0) {
-                    out.println("\tat " + element.toString() + "\n");
+                    out.println("\tat " + element.toString() + NL);
                 }
+                out.println();
             }
         }
     }
@@ -95,17 +107,15 @@ public class PlainTextListener implements BehaviourListener {
         if (shortName.endsWith("Behaviour")) {
             shortName = shortName.substring(0, shortName.length() - "Behaviour".length());
         }
-        out.println(count + ") " + new CamelCaseConverter(result.name()).toPhrase()
-                + " [" + containerName + "]:"
-                );
+        out.println(count + ") " + shortName + " " + new CamelCaseConverter(result.name()).toPhrase() + ":");
     }
 
-    private StackTraceElement findFirstNonJeBehaveStackElement(Throwable throwable) {
+    private StackTraceElement findFirstNonJBehaveStackElement(Throwable throwable) {
         StackTraceElement[] elements = throwable.getStackTrace();
         for (int i = 0; i < elements.length; i++) {
             StackTraceElement element = elements[i];
             String className = element.getClassName();
-            if (!className.startsWith("jbehave.")) {
+            if (!className.startsWith("org.jbehave.")) {
                 return elements[i];
             }
         }
@@ -114,24 +124,16 @@ public class PlainTextListener implements BehaviourListener {
 
     private void printSummaryCounts() {
         out.print("Total: " + methodsVerified + ".");
+        if (pending.size() > 0) {
+            out.print(" Pending: " + pending.size() + ".");
+        }
         if (failures.size() > 0) {
             out.print(" Failures: " + failures.size() + ".");
         }
-        out.println();
-    }
-
-    private void printErrorList(String title, List errorList) {
-        if (!errorList.isEmpty()) {
-            out.println(title);
-            out.println();
-            int count = 1;
-            for (Iterator i = errorList.iterator(); i.hasNext(); count++) {
-                Result result = (Result) i.next();
-                printResult(count, result);
-                result.cause().printStackTrace(out);
-                out.println();
-            }
+        else {
+            out.print(" Success!");
         }
+        out.println();
     }
 
     public boolean hasBehaviourFailures() {
@@ -139,12 +141,8 @@ public class PlainTextListener implements BehaviourListener {
     }
 
     public void before(Behaviour behaviour) {
-        // TODO Auto-generated method stub
-        
     }
 
     public void after(Behaviour behaviour) {
-        // TODO Auto-generated method stub
-        
     }
 }

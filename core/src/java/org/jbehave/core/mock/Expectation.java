@@ -29,6 +29,7 @@ public class Expectation extends UsingMatchers {
     };
     
     private final ExpectationRegistry registry;
+    private final String mockName;
     private final String methodName;
     private Matcher[] matchers = null; // initially we don't care about args
     private int minInvocations = 1;
@@ -49,6 +50,7 @@ public class Expectation extends UsingMatchers {
      */
     public Expectation(ExpectationRegistry registry, String methodName) {
         this.registry = registry;
+        this.mockName = registry.toString();
         this.id = this.methodName = methodName;
     }
 
@@ -56,7 +58,8 @@ public class Expectation extends UsingMatchers {
         if (after != null) {
 			after.verify();
         }
-        Ensure.that(methodName + " called more than " + maxInvocations + " times", invocations < maxInvocations);
+        Ensure.that(mockName + "." + methodName + " called more than "
+                + maxInvocations + " times", invocations < maxInvocations);
         
         if (inOrder) {
             return invokers[invocations++].invoke(proxy, method, args);
@@ -83,7 +86,8 @@ public class Expectation extends UsingMatchers {
     
     public void verify() {
 		if (invocations < minInvocations) {
-            String message = "Expected method not called: " + methodToString();        
+		    String message = "Expected at least " + minInvocations + " calls but got " + invocations
+                + " for " + mockName + "." + methodToString();
             if (!id.equals(methodName)) {
                 message += " id=" + id;
             }

@@ -11,11 +11,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.Test;
+
 import org.jbehave.core.behaviour.BehaviourMethod;
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.junit.JUnitMethodAdapter;
-
-import junit.framework.Test;
 
 
 /**

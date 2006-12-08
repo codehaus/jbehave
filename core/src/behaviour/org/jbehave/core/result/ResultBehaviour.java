@@ -10,7 +10,6 @@ package org.jbehave.core.result;
 import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.core.result.Result;
 
 
 

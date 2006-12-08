@@ -8,15 +8,15 @@ package org.jbehave.junit;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import junit.framework.AssertionFailedError;
+import junit.framework.Test;
+import junit.framework.TestResult;
+
 import org.jbehave.core.behaviour.Behaviour;
 import org.jbehave.core.behaviour.BehaviourMethod;
 import org.jbehave.core.listener.BehaviourListener;
 import org.jbehave.core.result.Result;
 import org.jbehave.core.util.CamelCaseConverter;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.Test;
-import junit.framework.TestResult;
 
 /**
  * Adapter wrapping a BehaviourMethod as a JUnit Test 

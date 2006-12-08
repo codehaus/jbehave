@@ -1,13 +1,13 @@
 package org.jbehave.core.util;
 
-import net.sf.cotta.TDirectory;
-import net.sf.cotta.TIoException;
-import net.sf.cotta.utils.ClassPathLocator;
-import net.sf.cotta.utils.ClassPath;
-
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Modifier;
+
+import net.sf.cotta.TDirectory;
+import net.sf.cotta.TIoException;
+import net.sf.cotta.utils.ClassPath;
+import net.sf.cotta.utils.ClassPathLocator;
 
 /**
  * Loads behaviour classes, using injected ClassLoader.  If none provided,

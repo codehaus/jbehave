@@ -2,9 +2,6 @@ package org.jbehave.threaded.time;
 
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
-import org.jbehave.threaded.time.ClockedTimeouter;
-import org.jbehave.threaded.time.PseudoClock;
-import org.jbehave.threaded.time.TimeoutException;
 
 
 public class ClockedTimeouterBehaviour extends UsingMiniMock {

@@ -5,8 +5,6 @@ import javax.swing.SwingUtilities;
 
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
-import org.jbehave.threaded.QueuedMiniMap;
-import org.jbehave.threaded.WindowGrabber;
 import org.jbehave.threaded.swing.HeadlessChecker;
 import org.jbehave.threaded.time.TimeoutException;
 

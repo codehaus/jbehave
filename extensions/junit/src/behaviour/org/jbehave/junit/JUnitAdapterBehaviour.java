@@ -14,15 +14,14 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import junit.framework.Test;
+import junit.framework.TestResult;
+
 import org.jbehave.core.Ensure;
 import org.jbehave.core.behaviour.Behaviours;
 import org.jbehave.core.exception.JBehaveFrameworkError;
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.junit.JUnitAdapter;
 import org.jbehave.junit.JUnitAdapter.BehavioursAdapter;
-
-import junit.framework.Test;
-import junit.framework.TestResult;
 
 
 /**

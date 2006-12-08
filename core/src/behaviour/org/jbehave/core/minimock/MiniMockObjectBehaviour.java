@@ -9,8 +9,6 @@ package org.jbehave.core.minimock;
 
 import org.jbehave.core.Ensure;
 import org.jbehave.core.exception.VerificationException;
-import org.jbehave.core.minimock.MiniMockObject;
-import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
 
 

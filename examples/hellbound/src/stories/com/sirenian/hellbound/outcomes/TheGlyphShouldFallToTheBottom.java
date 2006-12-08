@@ -5,7 +5,6 @@ import java.awt.Color;
 import org.jbehave.core.Ensure;
 import org.jbehave.core.story.domain.World;
 
-
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;

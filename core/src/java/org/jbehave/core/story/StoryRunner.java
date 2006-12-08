@@ -9,9 +9,7 @@ package org.jbehave.core.story;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 
-import org.jbehave.core.story.domain.HashMapWorld;
 import org.jbehave.core.story.domain.Story;
-import org.jbehave.core.story.domain.World;
 import org.jbehave.core.story.listener.PlainTextScenarioListener;
 
 

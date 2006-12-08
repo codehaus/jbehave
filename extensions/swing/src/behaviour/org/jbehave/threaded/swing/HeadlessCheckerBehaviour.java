@@ -3,7 +3,6 @@ package org.jbehave.threaded.swing;
 import org.jbehave.core.Block;
 import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.mock.UsingMatchers;
-import org.jbehave.threaded.swing.HeadlessChecker;
 
 /**
  * Use this class at the beginning of any Swing behaviours which

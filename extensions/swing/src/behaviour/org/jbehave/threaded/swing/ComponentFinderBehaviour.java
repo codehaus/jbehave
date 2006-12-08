@@ -10,10 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.jbehave.core.minimock.UsingMiniMock;
-import org.jbehave.threaded.swing.ComponentFilter;
-import org.jbehave.threaded.swing.ComponentFinder;
-import org.jbehave.threaded.swing.ComponentFinderException;
-import org.jbehave.threaded.swing.HeadlessChecker;
 
 
 public class ComponentFinderBehaviour extends UsingMiniMock {

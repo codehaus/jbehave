@@ -9,7 +9,6 @@ import org.jbehave.core.mock.Mock;
 import org.jbehave.threaded.swing.DefaultWindowWrapper;
 import org.jbehave.threaded.time.TimeoutException;
 
-
 import com.sirenian.hellbound.domain.game.GameRequestListener;
 import com.sirenian.hellbound.domain.game.GameState;
 import com.sirenian.hellbound.domain.glyph.GlyphMovement;

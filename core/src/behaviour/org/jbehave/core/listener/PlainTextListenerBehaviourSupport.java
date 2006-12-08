@@ -11,7 +11,6 @@ import java.io.StringWriter;
 
 import org.jbehave.core.Ensure;
 import org.jbehave.core.exception.PendingException;
-import org.jbehave.core.listener.PlainTextListener;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.result.Result;
@@ -109,7 +108,8 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         listener.printReport();
         
         // then...
-        ensureThat(writer, contains("\nTotal: 1. Failures: 1"));
+        ensureThat(writer, contains("\nFailures: 1."));
+        ensureThat(writer, contains("\nTotal: 1. Failures: 1."));
     }
     
     public void shouldSummarizePendingResult() throws Exception {
@@ -122,6 +122,7 @@ public abstract class PlainTextListenerBehaviourSupport extends UsingMiniMock {
         
         // then...
         ensureThat(writer, contains("\nPending: 1"));
+        ensureThat(writer, contains("\nTotal: 1. Pending: 1"));
     }
 
     public void shouldStartTimerWhenConstructed() throws Exception {

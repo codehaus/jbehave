@@ -1,7 +1,5 @@
 package org.jbehave.core;
 
-import org.jbehave.core.Block;
-import org.jbehave.core.Ensure;
 import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.mock.UsingMatchers;
 

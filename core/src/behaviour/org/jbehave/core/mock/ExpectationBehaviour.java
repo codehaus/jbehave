@@ -3,7 +3,6 @@ package org.jbehave.core.mock;
 import org.jbehave.core.Ensure;
 import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.minimock.UsingMiniMock;
-import org.jbehave.core.mock.Expectation;
 
 
 /**
@@ -11,9 +10,14 @@ import org.jbehave.core.mock.Expectation;
  * @author <a href="mailto:dguy@thoughtworks.com">Damian Guy </a>
  */
 public class ExpectationBehaviour extends UsingMiniMock {
+    private final ExpectationRegistry nullRegistry = new ExpectationRegistry() {
+        public Expectation lookup(String id) {
+            return null;
+        }
+    };
 
     public void shouldThrowVerificationExceptionOnInvokeIfExpectingNever() throws Throwable {
-        Expectation expectation = new Expectation(null, "test").never();
+        Expectation expectation = new Expectation(nullRegistry, "test").never();
         try {
             expectation.invoke(null, null, null);
             Ensure.impossible("Invoke should have throw VerificationException");
@@ -24,32 +28,32 @@ public class ExpectationBehaviour extends UsingMiniMock {
     }
 
     public void shouldVerifyOKIfExpectingNeverWithoutInvoking() throws Throwable {
-        Expectation expectation = new Expectation(null, "test").never();
+        Expectation expectation = new Expectation(nullRegistry, "test").never();
         expectation.verify();
     }
 
     public void shouldMatchSimpleExpectationCorrectly() {
-        Expectation expectation = new Expectation(null, "method");
+        Expectation expectation = new Expectation(nullRegistry, "method");
         Ensure.that(expectation.matches("method", null));
     }
 
     public void shouldMatchExpectationWithArguments() {
-        Expectation expectation = new Expectation(null, "method").with("hello");
+        Expectation expectation = new Expectation(nullRegistry, "method").with("hello");
         Ensure.that(expectation.matches("method", new Object[] { "hello" }));
     }
 
     public void shouldMatchAnyArgsWhenNoneSpecified() throws Exception {
-        Expectation expectation = new Expectation(null, "method");
+        Expectation expectation = new Expectation(nullRegistry, "method");
         Ensure.that(expectation.matches("method", new Object[] { "blah" }));
     }
 
     public void shouldNotMatchWhenCallingWithArgsWhenNoArgsSet() throws Exception {
-        Expectation expectation = new Expectation(null, "method").withNoArguments();
+        Expectation expectation = new Expectation(nullRegistry, "method").withNoArguments();
         Ensure.not(expectation.matches("method", new Object[] { "blah" }));
     }
 
     public void shouldThrowExceptionWhenInvocationsEqualMaxInvocations() throws Throwable {
-        Expectation expectation = new Expectation(null, "test").once();
+        Expectation expectation = new Expectation(nullRegistry, "test").once();
         expectation.invoke(null, null, null);
         try {
 			expectation.matches("test", null);
@@ -58,7 +62,7 @@ public class ExpectationBehaviour extends UsingMiniMock {
     }
     
     public void shouldThrowVerificationExceptionOnSecondInvokeIfExpectingOnce() throws Throwable {
-        Expectation expectation = new Expectation(null, "test").once();
+        Expectation expectation = new Expectation(nullRegistry, "test").once();
         expectation.invoke(null, null, null);
         try {
             expectation.invoke(null, null, null);
@@ -69,7 +73,7 @@ public class ExpectationBehaviour extends UsingMiniMock {
     }
 
     public void shouldFailVerifyIfExpectingOnceWithoutInvoking() {
-        Expectation expectation = new Expectation(null, "test").once();
+        Expectation expectation = new Expectation(nullRegistry, "test").once();
         try {
             expectation.verify();
             Ensure.impossible("Verify should have throw VerificationException");
@@ -78,13 +82,13 @@ public class ExpectationBehaviour extends UsingMiniMock {
     }
 
     public void shouldVerifyOKIfExpectingOnceAfterInvokingOnce() throws Throwable {
-        Expectation expectation = new Expectation(null, "test").once();
+        Expectation expectation = new Expectation(nullRegistry, "test").once();
         expectation.invoke(null, null, null);
         expectation.verify();
     }
 
     public void shouldVerifyOkWhenNumberOfInvocationsMatchesExpectedNumberOfTimes() throws Throwable {
-        Expectation expecation = new Expectation(null, "method").times(3);
+        Expectation expecation = new Expectation(nullRegistry, "method").times(3);
         expecation.invoke(null, null, null);
         expecation.invoke(null, null, null);
         expecation.invoke(null, null, null);
@@ -93,7 +97,7 @@ public class ExpectationBehaviour extends UsingMiniMock {
     }
 
     public void shouldFailWhenNumberOfInvocationsGreaterThanExpectedNumberOfTimes() throws Throwable {
-        Expectation expecation = new Expectation(null, "method").times(2);
+        Expectation expecation = new Expectation(nullRegistry, "method").times(2);
         expecation.invoke(null, null, null);
         expecation.invoke(null, null, null);
         try {
@@ -104,7 +108,7 @@ public class ExpectationBehaviour extends UsingMiniMock {
 
     public void shouldFailWhenNumberOfInvocationsLessThanExpectedNumberOfTimes()
             throws Throwable {
-        Expectation expecation = new Expectation(null, "method").times(2);
+        Expectation expecation = new Expectation(nullRegistry, "method").times(2);
         expecation.invoke(null, null, null);
         try {
             expecation.verify();
@@ -113,7 +117,7 @@ public class ExpectationBehaviour extends UsingMiniMock {
     }
     
     public void shouldProvideMultipleInvocationsWhenRunningInOrder() throws Throwable {
-        Expectation expectation = new Expectation(null, "method").inOrder().will(returnValue(1), returnValue(2), returnValue(3));
+        Expectation expectation = new Expectation(nullRegistry, "method").inOrder().will(returnValue(1), returnValue(2), returnValue(3));
         
         ensureThat(expectation.invoke(null, null, null), eq(1));
         ensureThat(expectation.invoke(null, null, null), eq(2));

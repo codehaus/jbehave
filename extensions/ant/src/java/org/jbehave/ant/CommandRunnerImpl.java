@@ -1,11 +1,11 @@
 package org.jbehave.ant;
 
+import java.io.IOException;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.Redirector;
-
-import java.io.IOException;
 
 public class CommandRunnerImpl implements CommandRunner {
     public int fork(Task task, String[] command) throws BuildException {

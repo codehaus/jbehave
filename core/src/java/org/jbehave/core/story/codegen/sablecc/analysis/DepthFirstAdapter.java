@@ -2,9 +2,25 @@
 
 package org.jbehave.core.story.codegen.sablecc.analysis;
 
-import java.util.*;
-
-import org.jbehave.core.story.codegen.sablecc.node.*;
+import org.jbehave.core.story.codegen.sablecc.node.ABenefit;
+import org.jbehave.core.story.codegen.sablecc.node.AContext;
+import org.jbehave.core.story.codegen.sablecc.node.AEvent;
+import org.jbehave.core.story.codegen.sablecc.node.AFeature;
+import org.jbehave.core.story.codegen.sablecc.node.AOutcome;
+import org.jbehave.core.story.codegen.sablecc.node.APhrase;
+import org.jbehave.core.story.codegen.sablecc.node.ARole;
+import org.jbehave.core.story.codegen.sablecc.node.AScenario;
+import org.jbehave.core.story.codegen.sablecc.node.AScenarioTitle;
+import org.jbehave.core.story.codegen.sablecc.node.ASpaceWordOrSpace;
+import org.jbehave.core.story.codegen.sablecc.node.AStory;
+import org.jbehave.core.story.codegen.sablecc.node.ATitle;
+import org.jbehave.core.story.codegen.sablecc.node.AWordWordOrSpace;
+import org.jbehave.core.story.codegen.sablecc.node.Node;
+import org.jbehave.core.story.codegen.sablecc.node.PContext;
+import org.jbehave.core.story.codegen.sablecc.node.POutcome;
+import org.jbehave.core.story.codegen.sablecc.node.PScenario;
+import org.jbehave.core.story.codegen.sablecc.node.PWordOrSpace;
+import org.jbehave.core.story.codegen.sablecc.node.Start;
 
 public class DepthFirstAdapter extends AnalysisAdapter
 {

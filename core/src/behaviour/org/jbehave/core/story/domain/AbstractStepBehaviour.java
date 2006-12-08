@@ -2,11 +2,6 @@ package org.jbehave.core.story.domain;
 
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
-import org.jbehave.core.story.domain.AbstractStep;
-import org.jbehave.core.story.domain.HasCleanUp;
-import org.jbehave.core.story.domain.HashMapWorld;
-import org.jbehave.core.story.domain.ScenarioComponent;
-import org.jbehave.core.story.domain.World;
 import org.jbehave.core.story.renderer.Renderer;
 
 public class AbstractStepBehaviour extends UsingMiniMock {
@@ -64,7 +59,7 @@ public class AbstractStepBehaviour extends UsingMiniMock {
         verifyMocks();
     }
     
-    public interface ScenarioComponentWithCleanUp extends ScenarioComponent, HasCleanUp {}
+    public interface ScenarioComponentWithCleanUp extends ScenarioComponent, CleansUpWorld {}
     
     public void shouldTellComponentWithCleanUpToCleanUpWorld() throws Exception {
         // given

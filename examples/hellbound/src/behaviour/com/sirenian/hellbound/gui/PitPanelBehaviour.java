@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.UsingMatchers;
 
-
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;
