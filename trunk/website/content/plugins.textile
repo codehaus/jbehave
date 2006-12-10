@@ -28,7 +28,7 @@ process through a short-cut a predefined run configuration.
 !eclipse.png!
 
 You can use Eclipse's update mechanism by adding a "Remote Site" in your Eclipse Software 
-Update configuration which links to "http://www.jbehave.org/eclipse":jbehave_eclipse_url.
+Update configuration which links to "http://www.org.jbehave.org/eclipse":jbehave_eclipse_url.
 
 !eclipse_install.png!
 
@@ -45,4 +45,4 @@ Coming soon!
 [idea_url]http://www.jetbrains.com/idea/
 [idea_plugins_url]http://www.jetbrains.com/idea/plugins/plugins.html
 [eclipse_url]http://eclipse.org
-[jbehave_eclipse_url]http://www.jbehave.org/eclipse
+[jbehave_eclipse_url]http://www.org.jbehave.org/eclipse
