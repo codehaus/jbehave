@@ -31,5 +31,5 @@ Any mocks created will be auto-magically verified by jBehave.
 
 To run your behaviour you can do it like so:
 <div class="Shaded">
-    	<pre>java -cp jbehave.jar;jmock.jar;your_classpath your.ApplicationBehaviour</pre>
+    	<pre>java -cp org.jbehave.jar;jmock.jar;your_classpath your.ApplicationBehaviour</pre>
 </div>
