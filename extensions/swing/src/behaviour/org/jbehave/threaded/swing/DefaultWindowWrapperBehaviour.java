@@ -52,8 +52,8 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	}
 
 	
-	public void TODOshouldEnterTextIntoTextComponents() throws Exception {
-        todo("not working on linux");
+	public void shouldEnterTextIntoTextComponents() throws Exception {
+        todo("fix race condition on linux");
         checkForHeadless();
         DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
 
@@ -85,7 +85,8 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
         }
 	}
 	
-	public void TODOshouldFindComponent() throws ComponentFinderException, TimeoutException  {
+	public void shouldFindComponent() throws ComponentFinderException, TimeoutException  {
+        todo("not working on linux");
 	    checkForHeadless();
 	    DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
         try {
@@ -125,8 +126,8 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
         return frame;
     }
     
-    public void TODOshouldSimulateKeyPressesForInputMap() throws TimeoutException {
-        todo("not working on linux");
+    public void shouldSimulateKeyPressesForInputMap() throws TimeoutException {
+        todo("fix race condition on linux");
         checkForHeadless();
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
 		
@@ -148,6 +149,7 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     }
     
     public void shouldSimulateKeyPressesForKeyListeners() throws TimeoutException {
+        todo("fix race condition on linux");
         checkForHeadless();
         DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
         

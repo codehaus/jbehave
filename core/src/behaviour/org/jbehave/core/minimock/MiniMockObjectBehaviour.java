@@ -89,4 +89,20 @@ public class MiniMockObjectBehaviour extends UsingMiniMock {
         mock.verify();
     }
     
+    public void shouldCreateStrictMockWithDefaultName() throws Exception {
+        // given
+        Mock strictMock = MiniMockObject.strictMock(Foo.class, "foo");
+        Exception caughtException = null;
+        
+        // when
+        try {
+            ((Foo)strictMock).doSomething();
+        }
+        catch (Exception e) {
+            caughtException = e;
+        }
+        
+        // then
+        ensureThat(caughtException, isA(VerificationException.class));
+    }
 }

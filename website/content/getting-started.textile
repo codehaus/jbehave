@@ -5,27 +5,29 @@ h1(FirstChild). Two minute tutorial
 
 You create a Behaviour Class, which is a plain Java class that by convention
 has the name of the class whose behaviour we are specifying followed
-by the word "Behaviour", so <tt>Foo</tt> has <tt>FooBehaviour</tt>.
+by the word "Behaviour", so @Foo@ has @FooBehaviour@.
 
 Inside the Behaviour Class are a bunch of methods that specify the
 behaviour we expect. These are just public void methods that start with the word "should"
-and describe the specific behaviour (e.g. <tt>CustomerServiceBehaviour</tt>
-might have <tt>shouldFindCustomerBySurname()</tt>).
+and describe the specific behaviour (e.g. @CustomerServiceBehaviour@
+might have @shouldFindCustomerBySurname()@).
 
 These will typically set up a known environment, execute some behaviour and
 then verify that stuff happened. There are some static methods in
-<tt>org.jbehave.core.Ensure</tt> that help with this, for instance
-<tt>Ensure.that(somethingHappened)</tt> and <tt>Ensure.that(actualValue, eq(expectedValue))</tt>.
+@org.jbehave.core.Ensure@ that help with this, for instance
+@Ensure.that(somethingHappened)@ and @Ensure.that(actualValue, eq(expectedValue))@.
 
 Our template behaviour method looks like this:
 
 <div class="Shaded"><pre>
 public void should[DoSomething]() {
-	// setup
+	// given
+	
+	// expect
 
-	// execute
+	// when
 
-	// verify
+	// then
 }
 </pre></div>
 
@@ -33,16 +35,16 @@ The <tt>DoSomething</tt> is highlighted so we know we have to change it to actua
 describe some behaviour.
 
 Behaviour classes can be contained in a behaviour class container (!).
-This is a plain Java class that implements the <tt>org.jbehave.core.util.BehavioursLoader</tt>
-interface. This has a single method: <tt>loadBehaviours()</tt>, which returns an
-array of <tt>Class</tt> objects representing the behaviour classes to run. Naturally
+This is a plain Java class that implements the @org.jbehave.core.behaviour.Behaviours@
+interface. This has a single method: @getBehaviours()@, which returns an
+array of @Class@ objects representing the behaviour classes to run. Naturally
 behaviour class containers can contain other behaviour class containers.
 
 Behaviour is verified by reflecting into the behaviour classes and invoking the methods.
 A Listener is notified whenever something interesting happens.
 
-A single behaviour method is verified by a <tt>MethodVerifier</tt>, a behaviour class
-is verified by a <tt>BehaviourClassVerifier</tt>
+A single behaviour method is represented as a @BehaviourMethod@ and verified by a
+@MethodVerifier@, a behaviour class is verified by a <tt>BehaviourClassVerifier</tt>
 
 So how do we tie this all together? There is a small <tt>main</tt> method inside
 <tt>org.jbehave.core.Run</tt> that takes a behaviour class name as its argument and invokes a

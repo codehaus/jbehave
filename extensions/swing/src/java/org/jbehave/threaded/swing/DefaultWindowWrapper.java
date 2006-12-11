@@ -21,12 +21,13 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	// Use of the DefaultWindowWrapper starts it grabbing windows ASAP.
 	private static final WindowGrabber grabber = new WindowGrabber();
 	
+	private final String windowName;
+	private final ComponentFinder finder;
+	private final EventQueue sysQueue;
 	private Window window;
-	private String windowName;
-	private ComponentFinder finder;
-	private EventQueue sysQueue;
 
 	private Idler idler;
+
 		
 	public DefaultWindowWrapper(String windowName) {
 		this(windowName, new ComponentFinder());
@@ -47,9 +48,10 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	public void clickButton(String componentName) throws ComponentFinderException, TimeoutException {
 		AbstractButton button = (AbstractButton) finder.findExactComponent(
 				getWindow(), new NamedComponentFilter(componentName));
-		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_PRESSED));
-		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_RELEASED));
-		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_CLICKED));
+        button.doClick(200);
+//		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_PRESSED));
+//		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_RELEASED));
+//		sysQueue.postEvent(createMouseEvent(button, MouseEvent.MOUSE_CLICKED));
 		idler.waitForIdle();
 	}
 

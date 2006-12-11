@@ -3,21 +3,22 @@ h1(FirstChild). About JBehave
 h2. JBehave is a framework for Behaviour Driven Development
 
 Behaviour-driven development (BDD) is an evolution of test-driven
-development (TDD) and is designed to make TDD more accessible and
-intuitive to newcomers and experts alike.
+development (TDD) and acceptance-test driven design, and is intended
+to make these practices more accessible and intuitive to newcomers and experts alike.
 
 It shifts the vocabulary from being test-based to behaviour-based,
 and positions itself as a *design* philosophy.
 
 You can find out more about behaviour-driven development on
-"the BDD wiki":http://behaviour-driven.org.
+the "BDD wiki":http://behaviour-driven.org, or in Dan North's
+article, "Introducing Behaviour-Driven Development":http://dannorth.net/introducing-bdd.
 
 h2. Warning
 
 JBehave is currently in heavy development while "the team":team.html
 works towards a stable 1.0 release. We don't currently
 recommend its use in production projects but would be grateful if
-developers try out the latest "development snapshot":download.html#snapshot
+you try out the latest "pre-release version":download.html#prerelease
 or a version straight from the "repository":repository.html
 and send us feedback.
 

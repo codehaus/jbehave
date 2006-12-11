@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import org.jbehave.core.mock.Mock;
 
 
 /**
- * Simple implementation of mock object, inspired by <a href="http://www.jmock.org>JMock</a>
+ * Simple implementation of mock object, inspired by JMock
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
@@ -103,11 +104,10 @@ public class MiniMockObject implements Mock, ExpectationRegistry {
         }
     }
 
-    
-    public MiniMockObject(Class type, String name) {
+    protected MiniMockObject(Class type, String name, InvocationHandler fallbackBehaviour) {
         this.type = type;
         this.name = name;
-        this.fallbackBehaviour = new StubInvocationHandler(name);
+        this.fallbackBehaviour = fallbackBehaviour;
     }
     
     /** get the mocked instance */
@@ -151,10 +151,15 @@ public class MiniMockObject implements Mock, ExpectationRegistry {
     }
     
     protected static Mock mock(final Class type, final String name) {
-        Mock result = (Mock) Proxy.newProxyInstance(Mock.class.getClassLoader(),
+        return mock(type, name, new StubInvocationHandler(name));
+    }
+
+    private static Mock mock(final Class type, final String name, final InvocationHandler fallbackBehaviour) {
+        return (Mock) Proxy.newProxyInstance(
+                Mock.class.getClassLoader(),
                 new Class[] { type, Mock.class, ExpectationRegistry.class },
                 new InvocationHandler() {
-                    private final MiniMockObject mock = new MiniMockObject(type, name);
+                    private final MiniMockObject mock = new MiniMockObject(type, name, fallbackBehaviour);
                     
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         try {
@@ -168,6 +173,15 @@ public class MiniMockObject implements Mock, ExpectationRegistry {
                         }
                     }
                 });
-        return result;
+    }
+
+    protected static Mock strictMock(Class type, String name) {
+        return mock(type, name, new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                throw new VerificationException("Unexpected call to "
+                        + method.getName() + "[" +
+                        Arrays.asList(args) + "]");
+            }
+        });
     }
 }

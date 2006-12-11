@@ -12,7 +12,8 @@ import org.jbehave.core.story.renderer.PlainTextRenderer;
 
 
 /**
- * @todo Introduce StoryLoader
+ * TODO Introduce StoryLoader
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Mauro Talevi
  */

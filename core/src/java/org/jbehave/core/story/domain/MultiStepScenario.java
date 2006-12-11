@@ -45,14 +45,8 @@ import org.jbehave.core.story.renderer.Renderer;
  * <li>In reverse order, tidy up each step</li>
  * </ul>
  * 
- * <p>Multiple contexts, events and outcomes can be bound together
- * using {@link Givens}, {@link Events} and {@link Outcomes}, so that
- * they aggregate to form a single component.</p>
- * 
- * <p>A number of utility constructors are provided to make construction
- * of a ScenarioUsingSteps easier. The annotation methods <code>given</code>,
- * <code>when</code> and <code>then</code> can be used to make the Scenario
- * code easier to read, and to create aggregates simply.</p>
+ * <p>The annotation methods {@link #given(Given)}, {@link #when(Event)} and
+ * {@link #then(Outcome)} are used to make the Scenario code easier to read.</p>
  * 
  * <p>ScenarioUsingSteps also gives you easy access to JBehave's MiniMock
  * framework. This allows you to mock out the bits of the system that you
@@ -136,8 +130,8 @@ public abstract class MultiStepScenario implements Scenario {
     private void injectAfterGivens(Step step) {
         ListIterator i = steps.listIterator(steps.size());
         while (i.hasPrevious()) {
-            Object maybeGiven = i.previous();
-            if (maybeGiven instanceof GivenStep) {
+            Object maybeGivenStep = i.previous();
+            if (maybeGivenStep instanceof GivenStep) {
                 steps.add(i.nextIndex() + 1, step);
                 return;
             }

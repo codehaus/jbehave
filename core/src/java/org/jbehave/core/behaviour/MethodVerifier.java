@@ -3,7 +3,7 @@ package org.jbehave.core.behaviour;
 import org.jbehave.core.listener.BehaviourListener;
 
 
-class MethodVerifier implements MethodHandler{
+class MethodVerifier implements MethodHandler {
 
     private final BehaviourVerifier verifier;
     private final BehaviourListener listener;

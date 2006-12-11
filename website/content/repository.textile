@@ -7,13 +7,12 @@ with the help of the "FishEye":fisheye_url installation on Codehaus.
 
 h2. Subversion
 
-JBehave uses Subversion as the source control manager. See "Subversion":http://subversion.tigris.org 
-website for details and documentation on IDE integration.
+JBehave uses "subversion":http://subversion.tigris.org as its source control manager.
 
 h2. Anonymous Subversion access
 
-This project's Subversion repository can be checked out through anonymous
-Subversion access with the following command:
+The project's current repository can be checked out through anonymous
+subversion access with the following command:
 
 <div class="Shaded"><pre>svn co http://svn.codehaus.org/jbehave/trunk jbehave</pre></div>
 
