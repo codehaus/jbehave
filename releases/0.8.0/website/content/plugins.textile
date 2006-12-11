@@ -1,0 +1,48 @@
+h1(FirstChild). Plugins
+
+h2. Overview
+
+The following are the plugins under development:
+
+* "IntelliJ IDEA":#idea
+* "Eclipse":#eclipse
+* "Apache Ant":#ant
+
+<a name="idea"> </a>
+h2. IntelliJ IDEA
+
+JBehave has an "IDEA":idea_url plug-in that allows developers to launch behaviour verifications.
+
+!idea.png!
+
+It can be downloaded through "IDEA's plugin download site":idea_plugins_url.
+
+!idea_plugins.png!
+
+<a name="eclipse"> </a>
+h2. Eclipse
+
+JBehave plugin for "Eclipse":eclipse_url allows you to launch the behaviour verification 
+process through a short-cut a predefined run configuration.
+
+!eclipse.png!
+
+You can use Eclipse's update mechanism by adding a "Remote Site" in your Eclipse Software 
+Update configuration which links to "http://www.org.jbehave.org/eclipse":jbehave_eclipse_url.
+
+!eclipse_install.png!
+
+After a successful installation, you should be able to see the JBehave feature in your Eclipse about
+dialog:
+
+!eclipse_feature.png!
+
+<a name="ant"> </a>
+h2. Apache ANT
+
+Coming soon!
+
+[idea_url]http://www.jetbrains.com/idea/
+[idea_plugins_url]http://www.jetbrains.com/idea/plugins/plugins.html
+[eclipse_url]http://eclipse.org
+[jbehave_eclipse_url]http://www.org.jbehave.org/eclipse

@@ -1,0 +1,30 @@
+---------------------------------------------------------
+The Team
+---------------------------------------------------------
+h1(FirstChild). The Developers
+
+The following is a list of developers with commit privileges that
+have directly contributed to the project in one way or another.
+
+|_.Name|_.ID|_.Email|_.Organization|
+|Dan North|tastapod|dan.north _at_ thoughtworks.com|ThoughtWorks|
+|Liz Keogh|liz|ekeogh _at_ thoughtworks.com|ThoughtWorks|
+|Mauro Talevi|mauro|mauro.talevi _at_ aquelonia.org|&nbsp;|
+|Shane Duan|wolfdancer|shane.duan _at_ gmail.com|&nbsp;|
+|Li, Chaoqun|cli|&nbsp;|&nbsp;|
+|Manish Shah|manish|mshah _at_ equalexperts.com|EqualExperts|
+|Damian Guy|damian|&nbsp;|&nbsp;|
+|Olav Maassen|olav|olav.maassen _at_ jixaw.com|&nbsp;|
+
+h1. The Contributors
+
+The following additional people have contributed to this project
+through the way of suggestions, code or just old-fashioned encouragement.
+
+|_.Name|
+|Lindsay Terhorst North|
+|Chris "Business Value" Matts|
+|Carlos Villela|
+|Vyvyan Codd|
+|Felix Leipold|
+|Antonio Terreno|

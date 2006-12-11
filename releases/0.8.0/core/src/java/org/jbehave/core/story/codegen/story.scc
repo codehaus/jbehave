@@ -1,0 +1,71 @@
+Package jbehave.core.story.codegen.sablecc;
+
+/*
+
+Title: Joe drinks vodka
+As a drinker
+I want a glass of vodka
+So that I feel tipsy
+
+*/
+
+Helpers
+	letter = [['a'..'z'] + ['A'..'Z']];
+	cr = 13;
+	lf = 10;
+	
+Tokens
+	title_keyword = 'Title:';
+	scenario_keyword = 'Scenario:';
+	as_a = 'As a';
+	i_want = 'I want';
+	so_that = 'So that';
+	given = 'Given';
+	when = 'When';
+	then = 'Then';
+	space = ' ';
+	word = letter+;
+	endl = cr | lf | cr lf;
+	
+Productions
+
+	story =
+		title
+		role?
+		feature?
+		benefit?
+		scenario*;
+		
+	title = 
+		title_keyword space phrase endl;
+		
+	role =
+		as_a space phrase endl;
+		
+	feature =
+		i_want space phrase endl;
+		
+	benefit =
+		so_that space phrase endl;
+		
+	scenario =
+		scenario_title context* event? outcome*;
+		
+	scenario_title =
+		scenario_keyword space phrase endl;
+		
+	context =
+		given space phrase endl;
+		
+	event =
+		when space phrase endl;
+
+	outcome =
+		then space phrase endl;
+
+	phrase = 
+		word_or_space+;
+	
+	word_or_space = 
+		{word} word |
+		{space} space;

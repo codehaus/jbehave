@@ -1,0 +1,45 @@
+h1(FirstChild). Source Repository
+
+h2. Browser
+
+You can "navigate within the sources online":jbehave_fisheye_url
+with the help of the "FishEye":fisheye_url installation on Codehaus.
+
+h2. Subversion
+
+JBehave uses "subversion":http://subversion.tigris.org as its source control manager.
+
+h2. Anonymous Subversion access
+
+The project's current repository can be checked out through anonymous
+subversion access with the following command:
+
+<div class="Shaded"><pre>svn co http://svn.codehaus.org/jbehave/trunk jbehave</pre></div>
+
+You might also use this URL to browse the repository in a simple manner.
+
+h2. Developer Subversion access
+
+Developers of JBehave can check out through HTTPS access with the following command:
+
+<div class="Shaded"><pre>svn co https://<username>@svn.codehaus.org/jbehave/trunk jbehave</pre></div>
+
+This access protocol is available to all, but only developers can commit changes.
+
+Developers require a LDAP password for CodeHaus username (contact Bob at the Haus to get assigned 
+a password if you don't have one).
+
+To test HTTPS commit access, one may eg:
+
+<div class="Shaded"><pre>
+svn co https://svn.codehaus.org/jbehave/trunk jbehave
+cd jbehave
+echo "test" > TEST
+svn add TEST
+svn commit --username username --password your-password --message "Testing HTTPS"
+</pre></div>
+
+_Note_: you only need to specify username and password once per client.
+
+[jbehave_fisheye_url]http://fisheye.codehaus.org/browse/jbehave 
+[fisheye_url]http://www.cenqua.com/fisheye
