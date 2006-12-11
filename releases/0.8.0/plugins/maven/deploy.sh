@@ -1,1 +1,0 @@
-mvn -U deploy:deploy-file  -DgroupId=jbehave -DartifactId=jbehave -Dversion=1.0-SNAPSHOT -Dpackaging=jar  -DrepositoryId=codehaus-jbehave-snapshot-repository -Durl=dav:https://dav.codehaus.org/snapshots.dist/jbehave/ -Dfile=../../delete_me/1.0-SNAPSHOT/jbehave.jar
