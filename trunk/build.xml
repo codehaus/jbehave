@@ -31,8 +31,9 @@
 	<property name="example_behaviour_classes_dir" location="${output_dir}/example-behaviours" />
 	<property name="jbehave_zip" location="${output_dir}/jbehave.zip" />
 	<property name="dist_dir" location="${output_dir}/${version}" />
-	<property name="jbehave_jar" location="${dist_dir}/jbehave.jar" />
-	<property name="jbehave_src_jar" location="${dist_dir}/jbehave-src.jar" />
+	<property name="binaries_dir" location="${output_dir}/${version}/dist" />
+	<property name="jbehave_jar" location="${binaries_dir}/jbehave.jar" />
+	<property name="jbehave_src_jar" location="${binaries_dir}/jbehave-src.jar" />
 	<property name="website_dist_dir" location="${dist_dir}/website"/>
 	<property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
 
@@ -49,18 +50,18 @@
 	<target name="build" depends="verify-behaviour, build-source-jar" 
 		description="build the jbehave binary and source" />
 
-	<target name="dist" depends="build, website" description="assemble distribution">
+	<target name="dist" depends="clean, build, website" description="assemble distribution">
 		<zip taskname="assemble release" destfile="${jbehave_zip}" update="true">
 			<fileset dir="${dist_dir}"/>
 		</zip>
 	</target>
 
 	<!-- build and assemble -->
-	<target name="init">
+	<target name="-init">
 		<mkdir dir="${output_dir}" />
 	</target>
 
-	<target name="build-jar" depends="init" description="Compile and assemble the jar">
+	<target name="build-jar" depends="-init" description="Compile and assemble the jar">
 		<mkdir dir="${classes_dir}" />
 		<unjar taskname="importing cotta classes" src="${lib_dir}/cotta/cotta-1.0.jar" dest="${classes_dir}">
 			<patternset includes="net/**/*.*"/>
@@ -76,17 +77,17 @@
 			<fileset dir="${core_dir}/src/java" excludes="**/*.java"/>
 			<fileset dir="${extensions_dir}/ant/src/java" excludes="**/*.java"/>
 		</copy>
-		<mkdir dir="${dist_dir}" />
+		<mkdir dir="${binaries_dir}" />
 		<jar taskname="jbehave jar" basedir="${classes_dir}" jarfile="${jbehave_jar}" />
 	</target>
 
-	<target name="build-source-jar" depends="init" description="Assemble the source jar">
+	<target name="build-source-jar" depends="-init" description="Assemble the source jar">
 		<property name="cotta-src" location="${output_dir}/cotta-src"/>
 		<mkdir dir="${cotta-src}"/>
 		<unzip taskname="importing cotta source" src="${lib_dir}/cotta/cotta-1.0-src.zip" dest="${cotta-src}">
 			<patternset includes="net/**/*.*"/>
 		</unzip>
-		<mkdir dir="${dist_dir}" />
+		<mkdir dir="${binaries_dir}" />
 		<jar taskname="jbehave source jar" destfile="${jbehave_src_jar}" update="true">
 			<fileset dir="${core_dir}/src"/>
 			<fileset dir="${extensions_dir}/ant/src"/>
@@ -151,14 +152,14 @@
 		</javadoc>
 	</target>
 
-	<target name="website" depends="init, javadoc" description="Generate website">
-		<exec executable="ruby" dir="${website_dir}">
-			<arg value="skinner.rb"/>
+	<target name="website-content" depends="-init" description="Generate website content">
+		<exec executable="ruby" failonerror="true">
+			<arg value="sitespec.rb"/>
+			<arg value="${website_dist_dir}"/>
 		</exec>
-		<copy todir="${website_dist_dir}">
-			<fileset dir="${website_dir}/output" />
-		</copy>
 	</target>
+
+	<target name="website" depends="javadoc, website-content" description="Generate website"/>
 
 	<!-- additional targets -->
 	<target name="sablecc" description="Generate sablecc grammar files">

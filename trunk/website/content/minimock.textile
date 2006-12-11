@@ -9,43 +9,40 @@ also have an extension for "jMock":how-to-use-with-jmock.html
 
 h2. How do I use Minimock
 
-It's easy! Simply create a Behaviour Class that extends <tt>UsingMiniMock</tt>.
-<tt>UsingMiniMock</tt> provides a bunch of "sugar" methods for use when creating mocks
+It's easy! Simply create a Behaviour Class that extends @UsingMiniMock@.
+@UsingMiniMock@ provides a bunch of "sugar" methods for use when creating mocks
 and setting up expectations.
 
-You create a <tt>Mock</tt> by using the <tt>mock(Class)</tt> method. You can then set expectations
+You create a @Mock@ by using the @mock(Class)@ method. You can then set expectations
 on the mock in much the same way as you can with jMock, though minimock does provide some useful shortcuts.
-At the end of your behaviour you call <tt>verifyMocks()</tt> to verify that all expectations have been met.
+At the end of your behaviour you call @verifyMocks()@ to verify that all expectations have been met.
 
 For example:
 
 <div class="Shaded"><pre>
 public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
-	private CurrencyConverter sterlingConverter;
-	private Mock exchangeRateServiceMock;
-
-	public void setUp() {
-		exchangeRateServiceMock = mock(ExchangeRateService.class);
-		sterlingConverter = new SterlingCurrencyConverter((ExchangeRateService)exchangeRateServiceMock);
-	}
 
 	public void shouldConvertToUSD() throws Exception {
+		// given
+		Mock exchangeRateServiceMock = mock(ExchangeRateService.class);
+		CurrencyConverter sterlingConverter = new SterlingCurrencyConverter((ExchangeRateService)exchangeRateServiceMock);
+
 		// expect
-		exchangeRateServiceMock.expects("retrieveRate").
-				with(eq(Currency.USD)).
+		exchangeRateServiceMock.expects("retrieveRate").with(Currency.USD).
 				will(returnValue(new ExchangeRate(1.85, 0.54)));
 
-		// execute
+		// when
 		double convertedAmount = sterlingConverter.convertFromSterling(10.0, Currency.USD);
 
-		// verify
-		Verify.equal(18.50, convertedAmount, 0);
+		// then
 		verifyMocks();
+		ensureThat(convertedAmount, eq(18.50));
 	}
 }
 </pre></div>
 
 h2. Some useful features
 
-* By default minimock stubs all method calls and will return reasonable defaults
-* <tt>mock.expects("fooMethod")</tt> will allow calls to fooMethod with any, or no, arguments.
+* By default minimock stubs all method calls and will return reasonable defaults.
+* @mock.expects("fooMethod")@ will allow calls to fooMethod with any, or no, arguments.
+* You can use @strictMock(Class)@ to create a mock that fails on unexpected calls.

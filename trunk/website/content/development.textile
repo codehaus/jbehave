@@ -2,28 +2,22 @@ h1(FirstChild). Golden Rules
 
 Here are some rules that we follow when developing JBehave:
 
-* **Behaviour Driven:** Never check in a class without an associated Behaviour Class.
-* **Behaviour Always Valid:** Never check any failing behaviour into the repository.
+* *Behaviour Driven:* Never check in a class without an associated Behaviour Class.
+* *Behaviour Always Valid:* Never check any failing behaviour into the repository.
 
 h1. Development Resources
 
-The "team":team.html have written the following documents
-about development of JBehave.
+The "team":team.html have written the following documents about development of JBehave.
 
     <table>
       <tr>
-        <th class="Row"><a href="how-to-contribute.html">How to contribute</a></th>
+        <th class="Row">"How to contribute":how-to-contribute.html</th>
         <td>Instructions on how to contribute to the project.  We welcome
         all sorts of contributions including patches, code, documentation,
         bug reports and feature requests.</td>
       </tr>
       <tr>
-        <th class="Row"><a href="architecture.html">JBehave Architecture</a></th>
-        <td>An overview of the architecture of JBehave that will help
-        you get up to speed for developing or extending the framework.</td>
-      </tr>
-      <tr>
-        <th class="Row"><a href="team.html">The Team</a></th>
+        <th class="Row">"The Team":team.html</th>
         <td>About the people responsible for JBehave.</td>
       </tr>
     </table>

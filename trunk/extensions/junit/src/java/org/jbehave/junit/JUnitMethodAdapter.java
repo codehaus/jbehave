@@ -23,7 +23,7 @@ import org.jbehave.core.util.CamelCaseConverter;
  * 
  * @author Dan North
  * @author Mauro Talevi
- * @see {@link Test}
+ * @see Test
  */
 public class JUnitMethodAdapter implements BehaviourListener, Test {
     private final BehaviourMethod behaviourMethod;

@@ -21,11 +21,10 @@ import org.jbehave.core.exception.JBehaveFrameworkError;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-class StubInvocationHandler implements InvocationHandler {
+public class StubInvocationHandler implements InvocationHandler {
     private final String name;
 
-    StubInvocationHandler(String name) {
-        super();
+    public StubInvocationHandler(String name) {
         this.name = name;
     }
 

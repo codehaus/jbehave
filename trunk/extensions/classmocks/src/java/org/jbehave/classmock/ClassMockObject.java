@@ -7,6 +7,7 @@ import java.lang.reflect.Modifier;
 import net.sf.cglib.proxy.MethodProxy;
 
 import org.jbehave.core.minimock.MiniMockObject;
+import org.jbehave.core.minimock.StubInvocationHandler;
 import org.jbehave.core.mock.ExpectationRegistry;
 import org.jbehave.core.mock.Mock;
 
@@ -21,7 +22,7 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 class ClassMockObject extends MiniMockObject {
 
 	private ClassMockObject(Class type, String name) {
-		super(type, name);
+		super(type, name, new StubInvocationHandler(name));
 	}
 	
     /** get the mocked instance */

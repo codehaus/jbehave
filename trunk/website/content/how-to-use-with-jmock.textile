@@ -12,24 +12,23 @@ You use jMock like so:
 <div class="Shaded"><pre>
 	public class BarBehaviour extends UsingJMock {
 	    public void shouldRequireTheUseOfMocks() {
-	        // setup
-	        Mock foo = new Mock(Foo.class);
-	        Bar bar = new Bar((Foo)foo.proxy());
+	        // given
+	        Mock cheese = new Mock(Cheese.class);
+	        Sheep sheep = new Sheep((Cheese)cheese.proxy());
 
 	        //expect
-	        foo.expects(once()).method("blah").withAnyArguments();
+	        cheese.expects(once()).method("squelch").withAnyArguments();
 
-	        // execute
-	        bar.doBar();
+	        // when
+	        sheep.eatCheese();
 
-	        // verify
+	        // then
+	        verify();
 	    }
 	}
 </pre></div>
 
-Any mocks created will be auto-magically verified by jBehave.
-
-To run your behaviour you can do it like so:
+You can run your behaviour like so:
 <div class="Shaded">
     	<pre>java -cp org.jbehave.jar;jmock.jar;your_classpath your.ApplicationBehaviour</pre>
 </div>

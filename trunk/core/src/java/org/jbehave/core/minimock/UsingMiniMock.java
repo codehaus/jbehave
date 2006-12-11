@@ -40,7 +40,17 @@ public class UsingMiniMock extends UsingMatchers implements UsingMocks {
         mocks.add(mock);
         return mock;
     }
+
+    public Mock strictMock(Class type) {
+        return strictMock(type, mockName(type));
+    }
     
+    public Mock strictMock(Class type, String name) {
+        Mock mock = MiniMockObject.strictMock(type, name);
+        mocks.add(mock);
+        return mock;
+    }
+
     private String mockName(Class type) {
         String[] parts = type.getName().split("[\\.$]");
         String shortName = parts[parts.length-1];
@@ -111,5 +121,4 @@ public class UsingMiniMock extends UsingMatchers implements UsingMocks {
     public InvocationHandler returnValue(boolean result) {
         return returnValue(result ? Boolean.TRUE : Boolean.FALSE);
     }
-
 }

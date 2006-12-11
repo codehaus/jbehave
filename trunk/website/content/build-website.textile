@@ -27,11 +27,15 @@ h3. Install RedCloth
 
 "RedCloth":http://whytheluckystiff.net/ruby/redcloth/ is the "Textile":http://hobix.com/textile/ to HTML converter so that we don't need to use verbose HTML.
 
-<div class="Shaded"><pre>gem install RedCloth</pre></div>
+<div class="Shaded">@gem install RedCloth@</div>
 
 Now you are set!
 
 h2. Update Site
+
+h3. Generate the site
+
+<div class="Shaded">@ruby sitespec.rb@</div>
 
 h3. Launch Local Server
 
