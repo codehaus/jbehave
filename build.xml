@@ -24,16 +24,16 @@
 
 	<!-- build output structure -->
 	<property name="jdk.version" value="1.4" />
-	<property name="output_dir" location="delete_me" />
-	<property name="classes_dir" location="${output_dir}/classes" />
-	<property name="behaviour_classes_dir" location="${output_dir}/behaviour-classes" />
-	<property name="example_classes_dir" location="${output_dir}/example-classes" />
-	<property name="example_behaviour_classes_dir" location="${output_dir}/example-behaviours" />
-	<property name="jbehave_zip" location="${output_dir}/jbehave.zip" />
-	<property name="dist_dir" location="${output_dir}/${version}" />
-	<property name="binaries_dir" location="${output_dir}/${version}/dist" />
-	<property name="jbehave_jar" location="${binaries_dir}/jbehave.jar" />
-	<property name="jbehave_src_jar" location="${binaries_dir}/jbehave-src.jar" />
+	<property name="working_dir" location="delete_me" />
+	<property name="classes_dir" location="${working_dir}/classes" />
+	<property name="behaviour_classes_dir" location="${working_dir}/behaviour-classes" />
+	<property name="example_classes_dir" location="${working_dir}/example-classes" />
+	<property name="example_behaviour_classes_dir" location="${working_dir}/example-behaviours" />
+	<property name="jbehave_zip" location="${working_dir}/jbehave-${version}.zip" />
+	<property name="dist_dir" location="${working_dir}/${version}" />
+	<property name="binaries_dir" location="${working_dir}/${version}/dist/${version}" />
+	<property name="jbehave_jar" location="${binaries_dir}/jbehave-${version}.jar" />
+	<property name="jbehave_src_zip" location="${binaries_dir}/jbehave-${version}-src.zip" />
 	<property name="website_dist_dir" location="${dist_dir}/website"/>
 	<property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
 
@@ -44,21 +44,21 @@
 	
 	<!-- general targets -->
 	<target name="clean" description="Clean out output directory">
-		<delete dir="${output_dir}" />
+		<delete dir="${working_dir}" />
 	</target>
 
-	<target name="build" depends="verify-behaviour, build-source-jar" 
-		description="build the jbehave binary and source" />
+	<target name="build" depends="verify-behaviour, build-source-zip" 
+		description="build the jbehave binary and zip up the project" />
 
 	<target name="dist" depends="clean, build, website" description="assemble distribution">
 		<zip taskname="assemble release" destfile="${jbehave_zip}" update="true">
-			<fileset dir="${dist_dir}"/>
+			<zipfileset prefix="jbehave-${version}" dir="${dist_dir}"/>
 		</zip>
 	</target>
 
 	<!-- build and assemble -->
 	<target name="-init">
-		<mkdir dir="${output_dir}" />
+		<mkdir dir="${working_dir}" />
 	</target>
 
 	<target name="build-jar" depends="-init" description="Compile and assemble the jar">
@@ -81,20 +81,15 @@
 		<jar taskname="jbehave jar" basedir="${classes_dir}" jarfile="${jbehave_jar}" />
 	</target>
 
-	<target name="build-source-jar" depends="-init" description="Assemble the source jar">
-		<property name="cotta-src" location="${output_dir}/cotta-src"/>
-		<mkdir dir="${cotta-src}"/>
-		<unzip taskname="importing cotta source" src="${lib_dir}/cotta/cotta-1.0-src.zip" dest="${cotta-src}">
-			<patternset includes="net/**/*.*"/>
-		</unzip>
+	<target name="build-source-zip" depends="-init" description="Assemble the source jar">
 		<mkdir dir="${binaries_dir}" />
-		<jar taskname="jbehave source jar" destfile="${jbehave_src_jar}" update="true">
-			<fileset dir="${core_dir}/src"/>
-			<fileset dir="${extensions_dir}/ant/src"/>
-			<fileset dir="${extensions_dir}/jmock/src"/>
-			<fileset dir="${extensions_dir}/junit/src"/>
-			<fileset dir="${cotta-src}" includes="net/**/*"/>
-		</jar>
+		<zip taskname="jbehave source jar" destfile="${jbehave_src_zip}" update="true">
+			<zipfileset prefix="jbehave-${version}" dir="${basedir}">
+				<exclude name="delete_me/**" />
+				<exclude name="bin/**" />
+				<exclude name="classes/**" />
+			</zipfileset> excludes="delete_me/**, bin/**, classes/**, website/output/**" />
+		</zip>
 	</target>
 
 	<target name="compile-behaviour" depends="build-jar" description="Compile behaviour">
@@ -198,11 +193,9 @@
 	</target>
 
 	<target name="run-example-behaviours" depends="compile-example-behaviours" description="Runs behaviours for examples">
-		<taskdef name="jbehave" classname="${behaviour.runner.task}" classpath="${classes_dir}" />
-
+		<taskdef name="jbehave" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
 		<jbehave behavioursClassName="${example.behaviours}">
 			<classpath>
-				<pathelement path="${jbehave_jar}" />
 				<path refid="libs" />
 				<pathelement path="${example_classes_dir}" />
 				<pathelement path="${example_behaviour_classes_dir}" />
