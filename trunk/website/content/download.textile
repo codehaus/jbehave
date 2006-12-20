@@ -15,8 +15,8 @@ h1(#prerelease). Prerelease Version
 
 h2. Version 0.8.0
 
-* "jbehave.jar":/dist/0.8.0/jbehave.jar
-* "Everything":/dist/0.8.0/jbehave-src.zip
+* "jbehave-0.8.0.jar":/dist/0.8.0/jbehave-0.8.0.jar
+* "Everything":/dist/0.8.0/jbehave-0.8.0-src.zip
 
 h1(#snapshot). Development Snapshot
 
