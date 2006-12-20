@@ -9,7 +9,7 @@ have directly contributed to the project in one way or another.
 |_.Name|_.ID|_.Email|_.Organization|
 |Dan North|tastapod|dan.north _at_ thoughtworks.com|ThoughtWorks|
 |Liz Keogh|liz|ekeogh _at_ thoughtworks.com|ThoughtWorks|
-|Mauro Talevi|mauro|mauro.talevi _at_ aquelonia.org|&nbsp;|
+|Mauro Talevi|mauro|mauro _at_ codehaus.org|&nbsp;|
 |Shane Duan|wolfdancer|shane.duan _at_ gmail.com|&nbsp;|
 |Li, Chaoqun|cli|&nbsp;|&nbsp;|
 |Manish Shah|manish|mshah _at_ equalexperts.com|EqualExperts|
