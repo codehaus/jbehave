@@ -1,8 +1,5 @@
 package org.jbehave.threaded.swing;
 
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-
 import javax.swing.SwingUtilities;
 
 public class Idler {
