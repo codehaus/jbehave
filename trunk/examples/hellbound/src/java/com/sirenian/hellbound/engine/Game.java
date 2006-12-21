@@ -78,8 +78,8 @@ public class Game implements GameRequestListener {
         glyph = factory.nextGlyph(collisionDetector, glyphListeners);
         if (glyph.getSegments().overlaps(junk.getSegments())) {
             setState(GameState.OVER);
-            glyph = glyph.NULL;
-            junk = junk.NULL;
+            glyph = LivingGlyph.NULL;
+            junk = Junk.NULL;
         }
     }
 
