@@ -35,7 +35,7 @@
 	<property name="jbehave_jar" location="${binaries_dir}/jbehave-${version}.jar" />
 	<property name="jbehave_src_zip" location="${binaries_dir}/jbehave-${version}-src.zip" />
 	<property name="website_dist_dir" location="${dist_dir}/website"/>
-	<property name="javadoc_dist_dir" location="${website_dist_dir}/docs/javadoc"/>
+	<property name="javadoc_dist_dir" location="${website_dist_dir}/javadoc"/>
 
 	<!-- examples -->
 	<property name="example" value="hellbound" />
@@ -50,11 +50,7 @@
 	<target name="build" depends="verify-behaviour, build-source-zip" 
 		description="build the jbehave binary and zip up the project" />
 
-	<target name="dist" depends="clean, build, website" description="assemble distribution">
-		<zip taskname="assemble release" destfile="${jbehave_zip}" update="true">
-			<zipfileset prefix="jbehave-${version}" dir="${dist_dir}"/>
-		</zip>
-	</target>
+	<target name="dist" depends="clean, build, javadoc" description="create distribution" />
 
 	<!-- build and assemble -->
 	<target name="-init">
@@ -83,12 +79,13 @@
 
 	<target name="build-source-zip" depends="-init" description="Assemble the source jar">
 		<mkdir dir="${binaries_dir}" />
-		<zip taskname="jbehave source jar" destfile="${jbehave_src_zip}" update="true">
+		<zip taskname="jbehave source jar" destfile="${jbehave_src_zip}" update="true" filesonly="true">
 			<zipfileset prefix="jbehave-${version}" dir="${basedir}">
 				<exclude name="delete_me/**" />
 				<exclude name="bin/**" />
 				<exclude name="classes/**" />
-			</zipfileset> excludes="delete_me/**, bin/**, classes/**, website/output/**" />
+				<exclude name="website/output/**" />
+			</zipfileset>
 		</zip>
 	</target>
 

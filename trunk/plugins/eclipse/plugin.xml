@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin>
+<plugin
+   id="JBehave"
+   name="JBehave"
+   version="0.9.0"
+   provider-name="jbehave.org">
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
@@ -16,8 +20,8 @@
 		id="jbehave.plugin.eclipse.launchconfigImage"
 		configTypeID="jbehave.plugin.eclipse.launchconfig"
 		icon="icons/behave.gif">
-	</launchConfigurationTypeImage>	
-</extension>
+	</launchConfigurationTypeImage>
+   </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
@@ -126,7 +130,4 @@
          
       </editorContribution>
    </extension>
-   
-   
-
 </plugin>
