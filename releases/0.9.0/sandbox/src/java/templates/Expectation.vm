@@ -1,0 +1,14 @@
+package ${basePackage};
+
+import jbehave.story.domain.ExpectationUsingMiniMock;
+import jbehave.story.domain.World;
+
+public class ${expectation} extends ExpectationUsingMiniMock {
+        public void setExpectationIn(World world) {
+
+        }
+
+        public void verify(World world) {
+
+        }
+}

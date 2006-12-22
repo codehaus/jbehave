@@ -1,0 +1,44 @@
+TITLE	User logs in
+
+As a Customer
+I want to log into an ATM
+So that I can access protected banking services
+
+Scenario 1
+
+Given Scenario "bank card is Valid" from "Validate bank card"
+When Customer inserts bank card into ATM
+Then ATM should request pin
+
+Scenario 2
+
+Given bank card is invalid
+When Customer inserts bank card into ATM
+Then ATM should return bank card
+and ATM should display message
+
+Scenario 3
+
+Given Scenario 1
+When Customer enters valid pin
+Then ATM should display Menu
+
+Scenario 4
+
+Given bank card is valid
+and Customer has inserted bank card into ATM
+and ATM has requested pin
+When Customer enters invalid pin
+Then ATM should display invalid card warning
+and ATM should request pin
+and ATM should increment invalid pin count
+
+Scenario 5
+
+Given bank card is valid
+and Customer has inserted bank card into ATM
+and ATM has requested pin
+and ATM has counted 2 invalid pins
+When Customer enters invalid pin
+Then ATM should display message
+and ATM should retain card
