@@ -46,6 +46,7 @@ h1#title {
 	padding: 0 0 0 0.1em;
 	z-index: 2;
 }
+h1#title img { border: 0; }
 p#description {
 	background: #fff;
 	color: #777;
