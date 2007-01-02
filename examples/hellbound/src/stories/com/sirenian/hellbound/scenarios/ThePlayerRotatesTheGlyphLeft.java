@@ -1,14 +1,12 @@
 package com.sirenian.hellbound.scenarios;
 
-import org.jbehave.core.story.domain.MultiStepScenario;
-
 import com.sirenian.hellbound.events.ThePlayerPressesLeftRotate;
 import com.sirenian.hellbound.outcomes.TheGlyphShouldBeCentredAtTheTopOfThePit;
 import com.sirenian.hellbound.outcomes.TheGlyphShouldTurnToOneQuarter;
 import com.sirenian.hellbound.outcomes.TheGlyphTurnsToThreeQuarters;
 import com.sirenian.hellbound.outcomes.TheGlyphTurnsToTwoQuarters;
 
-public class ThePlayerRotatesTheGlyphLeft extends MultiStepScenario {
+public class ThePlayerRotatesTheGlyphLeft extends HellboundScenario {
 
     public void specifySteps() {
         given(new TheFirstGlyphIsDisplayedOnTheBoard());

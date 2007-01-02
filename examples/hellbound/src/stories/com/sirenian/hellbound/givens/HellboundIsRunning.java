@@ -47,7 +47,6 @@ public class HellboundIsRunning extends HellboundGiven implements CleansUpWorld 
 				super.paint(pg);
 			}
 		};
-		pg.setPitPanel(panel);
 		return panel;
 	}	
 

@@ -42,7 +42,7 @@ public interface Scenario extends Renderable, CleansUpWorld {
     void run(World world) throws IllegalStateException;
     
     /**
-     * @throws IllegalStateException if the scenario has not been run.
+     * May optionally do nothing if the scenario has not been run.
      */
     void cleanUp(World world) throws IllegalStateException;
     

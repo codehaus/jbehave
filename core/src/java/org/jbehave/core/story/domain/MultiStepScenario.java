@@ -61,6 +61,7 @@ public abstract class MultiStepScenario implements Scenario {
     private static final String UNSPECIFIED = "Unspecified";
     private static final String SPECIFIED = "Specified";
     private static final String RUN = "Run";
+    private static final String CLEANED = "Cleaned";
     
     private List steps = new ArrayList();
     private String state;
@@ -79,11 +80,14 @@ public abstract class MultiStepScenario implements Scenario {
 
     public void run(World world) {
         checkState(SPECIFIED);
-        for (Iterator i = steps.iterator(); i.hasNext();) {
-            Step step = (Step) i.next();
-            step.perform(world);
+        try {
+            for (Iterator i = steps.iterator(); i.hasNext();) {
+                Step step = (Step) i.next();
+                step.perform(world);
+            }
+        } finally {
+            state = RUN;
         }
-        state = RUN;
     }
 
     private void checkState(String expected) {
@@ -91,13 +95,16 @@ public abstract class MultiStepScenario implements Scenario {
     }
 
     public void cleanUp(World world) {
-        checkState(RUN);
-        for (ListIterator i = steps.listIterator(steps.size()); i.hasPrevious();) {
-            Object step = i.previous();
-            if (step instanceof CleansUpWorld) {
-                ((CleansUpWorld)step).cleanUp(world);
+        if (shouldCleanUp()) {
+            for (ListIterator i = steps.listIterator(steps.size()); i.hasPrevious();) {
+                ((AbstractStep) i.previous()).cleanUp(world);
             }
         }
+        state = CLEANED;
+    }
+
+    protected boolean shouldCleanUp() {
+        return state == RUN;
     }
 
     public void narrateTo(Renderer renderer) {
@@ -123,21 +130,20 @@ public abstract class MultiStepScenario implements Scenario {
     }
     
     protected void given(Given given) {
-        AbstractStep step = new GivenStep(given);
-        addStep(step);
+        steps.add(new GivenStep(given));
     }
     
     protected void given(Scenario scenario) {
         scenario.specify();
-        addStep(new GivenStep(new GivenScenario(scenario)));
+        steps.add(new GivenStep(new GivenScenario(scenario)));
     }
 
     protected void when(Event event) {
-        addStep(new EventStep(event));
+        steps.add(new EventStep(event));
     }
     
     protected void then(final Outcome outcome) {
-        addStep(new OutcomeStep(outcome));
+        steps.add(new OutcomeStep(outcome));
         if (outcome instanceof OutcomeWithExpectations) {
             injectAfterGivens(new AbstractStep(outcome) {
                 public void perform(World world) {
@@ -159,10 +165,5 @@ public abstract class MultiStepScenario implements Scenario {
         }
         // if we get here, there weren't any givens
         steps.add(0, step);
-    }
-    
-
-    private void addStep(AbstractStep step) {
-        steps.add(step);
     }
 }

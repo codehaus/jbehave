@@ -12,14 +12,11 @@ import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JPanel;
-
 import com.sirenian.hellbound.domain.Segment;
 import com.sirenian.hellbound.domain.Segments;
 
 public class RenderedPit extends Graphics {
 
-	private JPanel pitPanel;
 	private final int scale;
 	private Color color;
 	private Map pitMap;
@@ -37,10 +34,6 @@ public class RenderedPit extends Graphics {
         asciiRepresentation = new char[height][width];
 	}
 
-	public void setPitPanel(JPanel panel) {
-		pitPanel = panel;
-	}
-	
 	public void dispose() {	}
 
 	public void setPaintMode() {}
@@ -126,8 +119,8 @@ public class RenderedPit extends Graphics {
 	}	
 	
 	public void fillRect(int x, int y, int width, int height) {
-		int scaledX = (x - pitPanel.getX()) / scale;
-		int scaledY = (y - pitPanel.getY()) / scale;
+		int scaledX = x / scale;
+		int scaledY = y / scale;
 		
         if (scaledX >= 0 && scaledX < pitWidth && scaledY >=0 && scaledY < pitHeight) { 
             pitMap.put(new Segment(scaledX, scaledY), color);

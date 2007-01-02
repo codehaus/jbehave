@@ -78,6 +78,7 @@ public class Game implements GameRequestListener {
         glyph = factory.nextGlyph(collisionDetector, glyphListeners);
         if (glyph.getSegments().overlaps(junk.getSegments())) {
             setState(GameState.OVER);
+            heartbeat.stop();
             glyph = LivingGlyph.NULL;
             junk = Junk.NULL;
         }

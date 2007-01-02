@@ -127,7 +127,7 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     }
     
     public void shouldSimulateKeyPressesForInputMap() throws TimeoutException {
-        todo("fix race condition on linux");
+//        todo("fix race condition on linux");
         checkForHeadless();
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
 		

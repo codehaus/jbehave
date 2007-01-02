@@ -9,16 +9,21 @@ public abstract class ThreadedQueue implements Queue {
     protected static final Runnable EMPTY_RUNNABLE = new Runnable() {
         public void run() {
         }
+        public String toString() {
+            return "ThreadedQueue.EMPTY_RUNNABLE";
+        }
     };
 
     private ArrayList eventList = new ArrayList();
     private ArrayList afterEmptyEventList = new ArrayList();
 	private boolean shouldRun = true;
     private Throwable throwable;
+
+    private final String queueName;
     
     protected ThreadedQueue(String queueName) {
+        this.queueName = queueName;
         Runnable runnable = new Runnable() {
-
             public void run() {
                 synchronized (eventList) {
                     while (shouldRun && throwable == null) {
@@ -42,10 +47,11 @@ public abstract class ThreadedQueue implements Queue {
     }
     
     public void stop() {
+        Logger.debug(this, "Stopping queue " + queueName);
     	synchronized (eventList) {
     		shouldRun = false;
-    		eventList.notifyAll();
 		}
+        eventList.notifyAll();
     }
 
     private void waitForNextRequest() {
@@ -95,6 +101,9 @@ public abstract class ThreadedQueue implements Queue {
 					localLock.notifyAll();
 				}
 			}
+            public String toString() {
+                return "Idler";
+            }
 		};
 	}
 }
