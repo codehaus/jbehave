@@ -51,16 +51,16 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 public class JBehaveMainTab extends JavaLaunchTab {
-	private static final String BEHAVIOR_CHOOSING_ERROR = "Behavior Choosing Error";
+	private static final String BEHAVIOUR_CHOOSING_ERROR = "Behaviour Choosing Error";
 
-	private final Image behaviorIcon= createImage("icons/behave.gif"); //$NON-NLS-1$
+	private final Image behaviourIcon= createImage("icons/behave.gif"); //$NON-NLS-1$
 	
 	// Project UI widgets
 	protected Text projectText;
 	protected Button projectButton;
 
 	// Main class UI widgets
-	protected Text behaviorText;
+	protected Text behaviourText;
 	protected Button searchButton;
 			
 	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
@@ -82,7 +82,7 @@ public class JBehaveMainTab extends JavaLaunchTab {
 			if (source == projectButton) {
 				handleProjectButtonSelected();
 			} else if (source == searchButton) {
-				handleBehaviorSearchButtonSelected();
+				handleBehaviourSearchButtonSelected();
 			} else {
 				updateLaunchConfigurationDialog();
 			}
@@ -121,7 +121,7 @@ public class JBehaveMainTab extends JavaLaunchTab {
 	private void createBehaviorTypeEditor(Composite parent) {
 		Font font= parent.getFont();
 		Group behaviorGroup= new Group(parent, SWT.NONE);
-		behaviorGroup.setText("Behavior Class"); //$NON-NLS-1$
+		behaviorGroup.setText("Behaviour Class"); //$NON-NLS-1$
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		behaviorGroup.setLayoutData(gd);
 		GridLayout layout = new GridLayout();
@@ -129,11 +129,11 @@ public class JBehaveMainTab extends JavaLaunchTab {
 		behaviorGroup.setLayout(layout);
 		behaviorGroup.setFont(font);
 
-		behaviorText = new Text(behaviorGroup, SWT.SINGLE | SWT.BORDER);
+		behaviourText = new Text(behaviorGroup, SWT.SINGLE | SWT.BORDER);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
-		behaviorText.setLayoutData(gd);
-		behaviorText.setFont(font);
-		behaviorText.addModifyListener(listener);
+		behaviourText.setLayoutData(gd);
+		behaviourText.setFont(font);
+		behaviourText.addModifyListener(listener);
 		
 		searchButton = createPushButton(behaviorGroup, "Search...", null); //$NON-NLS-1$
 		searchButton.addSelectionListener(listener);
@@ -147,7 +147,7 @@ public class JBehaveMainTab extends JavaLaunchTab {
 	private void createProjectEditor(Composite parent) {
 		Font font= parent.getFont();
 		Group group= new Group(parent, SWT.NONE);
-		group.setText("Choose a project to matcher the search for behavior types"); //$NON-NLS-1$
+		group.setText("Choose a project to matcher the search for behaviour types"); //$NON-NLS-1$
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		group.setLayoutData(gd);
 		GridLayout layout = new GridLayout();
@@ -187,11 +187,11 @@ public class JBehaveMainTab extends JavaLaunchTab {
 		String behaviorTypeName = ""; //$NON-NLS-1$
 		try {
 			behaviorTypeName = config.getAttribute(
-					JBehaveLaunchConfiguration.ATTR_BEHAVIOR_CLASS, EMPTY_STRING);
+					JBehaveLaunchConfiguration.ATTR_BEHAVIOUR_CLASS, EMPTY_STRING);
 		} catch (CoreException ce) {
 			JBehavePlugin.log(ce);	
 		}	
-		behaviorText.setText(behaviorTypeName);	
+		behaviourText.setText(behaviorTypeName);	
 	}
 	
 	/**
@@ -200,7 +200,7 @@ public class JBehaveMainTab extends JavaLaunchTab {
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		ConfigurationState state = new ConfigurationState();
 		state.setProjectName(projectText.getText().trim());
-		state.setBehaviorClass(behaviorText.getText().trim());
+		state.setBehaviorClass(behaviourText.getText().trim());
 		state.setAttributes(config);
 	}
 			
@@ -213,7 +213,7 @@ public class JBehaveMainTab extends JavaLaunchTab {
 	/**
 	 * Show a dialog that lists all main types
 	 */
-	protected void handleBehaviorSearchButtonSelected() {
+	protected void handleBehaviourSearchButtonSelected() {
 		Shell shell = getShell();
 		
 		IJavaProject javaProject = getJavaProject();
@@ -222,8 +222,8 @@ public class JBehaveMainTab extends JavaLaunchTab {
 				shell, false, 
 				PlatformUI.getWorkbench().getProgressService(),
 				null, IJavaSearchConstants.TYPE);
-			dialog.setTitle("Search Behavior Class"); 
-			dialog.setMessage("Search for the behavior class to verify"); 
+			dialog.setTitle("Search Behaviour Class"); 
+			dialog.setMessage("Search for the behaviour class to verify"); 
 			
 			int result= dialog.open();
 			if (result != IDialogConstants.OK_ID)
@@ -232,7 +232,7 @@ public class JBehaveMainTab extends JavaLaunchTab {
 			Object[] types= dialog.getResult();
 			if (types != null && types.length > 0) {
 				IType type= (IType)types[0];
-				behaviorText.setText(type.getFullyQualifiedName('.'));
+				behaviourText.setText(type.getFullyQualifiedName('.'));
 				javaProject = type.getJavaProject();
 				projectText.setText(javaProject.getElementName());
 			}
@@ -269,7 +269,7 @@ public class JBehaveMainTab extends JavaLaunchTab {
 		ILabelProvider labelProvider= new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_DEFAULT);
 		ElementListSelectionDialog dialog= new ElementListSelectionDialog(getShell(), labelProvider);
 		dialog.setTitle("Project Select"); //$NON-NLS-1$
-		dialog.setMessage("Choose a project to constrain the search for behavior type"); //$NON-NLS-1$
+		dialog.setMessage("Choose a project to constrain the search for behaviour type"); //$NON-NLS-1$
 		dialog.setElements(projects);
 		
 		IJavaProject javaProject = getJavaProject();
@@ -323,22 +323,22 @@ public class JBehaveMainTab extends JavaLaunchTab {
 			if (status.isOK()) {
 				IProject project= ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 				if (!project.exists()) {
-					setErrorMessage(MessageFormat.format(BEHAVIOR_CHOOSING_ERROR, new String[] {name})); //$NON-NLS-1$
+					setErrorMessage(MessageFormat.format(BEHAVIOUR_CHOOSING_ERROR, new String[] {name})); //$NON-NLS-1$
 					return false;
 				}
 				if (!project.isOpen()) {
-					setErrorMessage(MessageFormat.format(BEHAVIOR_CHOOSING_ERROR, new String[] {name})); //$NON-NLS-1$
+					setErrorMessage(MessageFormat.format(BEHAVIOUR_CHOOSING_ERROR, new String[] {name})); //$NON-NLS-1$
 					return false;
 				}
 			} else {
-				setErrorMessage(MessageFormat.format(BEHAVIOR_CHOOSING_ERROR, new String[]{status.getMessage()})); //$NON-NLS-1$
+				setErrorMessage(MessageFormat.format(BEHAVIOUR_CHOOSING_ERROR, new String[]{status.getMessage()})); //$NON-NLS-1$
 				return false;
 			}
 		}
 
-		name = behaviorText.getText().trim();
+		name = behaviourText.getText().trim();
 		if (name.length() == 0) {
-			setErrorMessage("Behavior type not specified"); //$NON-NLS-1$
+			setErrorMessage("Behaviour type not specified"); //$NON-NLS-1$
 			return false;
 		}
 		
@@ -360,13 +360,13 @@ public class JBehaveMainTab extends JavaLaunchTab {
 			// corresponding text boxes)
 			config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
 		}
-		initializeBehaviorTypeAndName(javaElement, config);
+		initializeBehaviourTypeAndName(javaElement, config);
 	}
 
 	/**
 	 * Set the main type & name attributes on the working copy based on the IJavaElement
 	 */
-	protected void initializeBehaviorTypeAndName(IJavaElement javaElement, ILaunchConfigurationWorkingCopy config) {
+	protected void initializeBehaviourTypeAndName(IJavaElement javaElement, ILaunchConfigurationWorkingCopy config) {
 		String name= null;
 		if (javaElement instanceof IMember) {
 			IMember member = (IMember)javaElement;
@@ -407,14 +407,14 @@ public class JBehaveMainTab extends JavaLaunchTab {
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
 	 */
 	public String getName() {
-		return "Behavior";
+		return "Behaviour";
 	}
 
 	/**
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getImage()
 	 */
 	public Image getImage() {
-		return behaviorIcon;
+		return behaviourIcon;
 	}
 
 	/* (non-Javadoc)

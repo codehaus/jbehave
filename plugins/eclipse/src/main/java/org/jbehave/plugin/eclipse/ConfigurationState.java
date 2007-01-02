@@ -23,8 +23,8 @@ public class ConfigurationState {
 	public ConfigurationState(ILaunchConfiguration config) {
 		try {
 			this.projectName = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
-			this.behaviorClassName = config.getAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOR_CLASS, "");
-			this.behaviorMethodName = config.getAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOR_METHOD, "");
+			this.behaviorClassName = config.getAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOUR_CLASS, "");
+			this.behaviorMethodName = config.getAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOUR_METHOD, "");
 		} catch (CoreException e) {
 		}
 	}
@@ -43,9 +43,9 @@ public class ConfigurationState {
 
 	public void setAttributes(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
-		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "jbehave.core.Run");
-		config.setAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOR_CLASS, behaviorClassName);
-		config.setAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOR_METHOD, behaviorMethodName);
+		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "org.jbehave.core.Run");
+		config.setAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOUR_CLASS, behaviorClassName);
+		config.setAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOUR_METHOD, behaviorMethodName);
 	}
 	
 	public boolean equals(Object object) {
