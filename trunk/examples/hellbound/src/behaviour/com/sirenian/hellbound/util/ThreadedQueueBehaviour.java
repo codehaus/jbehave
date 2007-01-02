@@ -20,10 +20,12 @@ public class ThreadedQueueBehaviour extends UsingMiniMock {
             }
         };
         
-        ensureThrows(Throwable.class, new Block() {
+        Exception exception = runAndCatch(Throwable.class, new Block() {
             public void run() throws Exception {
                 queue.queue(new Runnable(){ public void run() {}});
             }
         });
+        
+        ensureThat(exception, isNotNull());
     }
 }

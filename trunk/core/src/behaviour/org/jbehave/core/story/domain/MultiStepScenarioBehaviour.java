@@ -1,5 +1,6 @@
 package org.jbehave.core.story.domain;
 
+import org.jbehave.core.Block;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
 import org.jbehave.core.story.renderer.Renderer;
@@ -10,7 +11,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // given
         final Mock given = mock(Given.class);
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 given((Given) given);
             }
         };
@@ -31,7 +32,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // given
         final Mock event = mock(Event.class);
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 when((Event)event);
             }
         };
@@ -52,7 +53,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // given
         final Mock outcome = mock(Outcome.class);
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 then((Outcome)outcome);
             }
         };
@@ -77,7 +78,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         World world = new HashMapWorld();
         
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
@@ -108,7 +109,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         World world = new HashMapWorld();
 
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
@@ -123,6 +124,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
 
         // when
         scenario.run(world);
+        scenario.cleanUp(world);
 
         // then
         verifyMocks();
@@ -136,7 +138,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         Mock renderer = mock(Renderer.class);
         
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
@@ -169,7 +171,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         outcome.expects("containsMocks").will(returnValue(true)); // has mocks
 
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
@@ -197,7 +199,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         outcome.expects("containsMocks").never();               // so third step not checked
         
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
@@ -225,7 +227,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         outcome.expects("containsMocks").will(returnValue(false));
         
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 given((Given)given);
                 when((Event)event);
                 then((Outcome)outcome);
@@ -250,7 +252,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         World world = (World)stub(World.class);
         
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 given((Given) given1);
                 given((Given) given2);
                 when((Event) event);
@@ -280,7 +282,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         World world = (World)stub(World.class);
         
         Scenario scenario = new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 when((Event) event);
                 then((Outcome) outcome);
             }
@@ -297,5 +299,74 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         
         // then
         verifyMocks();
+    }
+    
+    public void shouldSpecifyScenarioWhenAddingAsAGiven() {
+        final Mock scenario = mock(Scenario.class);
+        World world = (World)stub(World.class);
+        scenario.expects("specify");
+        
+        Scenario parentScenario = new MultiStepScenario() {
+            public void specifySteps() {
+                given((Scenario)scenario);
+            }
+        };
+        parentScenario.specify();
+        
+        verifyMocks();
+    }
+    
+    public void shouldThrowIllegalStateExceptionIfRunBeforeSpecified() throws Exception {
+        final Scenario scenario = new MultiStepScenario(){
+            public void specifySteps() {}};
+            
+        Exception exception = runAndCatch(IllegalStateException.class, new Block() {
+            public void run() throws Exception {
+                scenario.run((World)stub(World.class));
+            }
+        });
+        
+        ensureThat(exception, isNotNull());
+    }
+
+    public void shouldThrowIllegalStateExceptionIfNarratedBeforeSpecified() throws Exception {
+        final Scenario scenario = new MultiStepScenario(){
+            public void specifySteps() {}};
+            
+        Exception exception = runAndCatch(IllegalStateException.class, new Block() {
+            public void run() throws Exception {
+                scenario.narrateTo((Renderer)stub(Renderer.class));
+            }
+        });
+        
+        ensureThat(exception, isNotNull());
+    }
+    
+    public void shouldFailIfCleanedUpBeforeRun() throws Exception {
+        final Scenario scenario = new MultiStepScenario(){
+            public void specifySteps() {}};
+            
+        Exception exception = runAndCatch(IllegalStateException.class, new Block() {
+            public void run() throws Exception {
+                scenario.specify();
+                scenario.cleanUp((World)stub(World.class));
+            }
+        });
+        
+        ensureThat(exception, isNotNull());
+    }
+    
+    public void shouldFailIfSpecifiedTwice() throws Exception {
+        final Scenario scenario = new MultiStepScenario(){
+            public void specifySteps() {}};
+            
+        Exception exception = runAndCatch(IllegalStateException.class, new Block() {
+            public void run() throws Exception {
+                scenario.specify();
+                scenario.specify();
+            }
+        });
+        
+        ensureThat(exception, isNotNull());
     }
 }

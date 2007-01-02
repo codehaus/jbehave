@@ -7,7 +7,7 @@ import com.sirenian.hellbound.outcomes.TheGlyphShouldMoveDownwards;
 
 public class ThePlayerSeesTheFirstGlyphMove extends MultiStepScenario {
 
-    public void specify() {
+    public void specifySteps() {
         given(new TheFirstGlyphIsDisplayedOnTheBoard());
         when(new TimePasses());
         then(new TheGlyphShouldMoveDownwards());

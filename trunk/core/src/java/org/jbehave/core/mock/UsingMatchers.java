@@ -253,30 +253,21 @@ public abstract class UsingMatchers {
     	ensureThat(arg, matcher, null);
     }
     
-    public void ensureThrows(Class exceptionType, Block block) throws Exception {
+    /**
+     * @return a caught exception assignable from the given type, or null if no such exception was caught
+     */
+    public Exception runAndCatch(Class exceptionType, Block block) throws Exception {
         try {
             block.run();
-            fail("Should have thrown " + exceptionType.getName());
         }
         catch (Exception e) {
-            if (!exceptionType.isAssignableFrom(e.getClass())) {
-                fail("Got exception of wrong type", exceptionType.getName(), e.getClass().getName());
+            if (exceptionType.isAssignableFrom(e.getClass())) {
+                return e;
+            } else {
+                throw e;
             }
         }
-    }
-    
-    /**
-     * This allows checks for eg: PendingExceptions, or anything else which would ordinarily
-     * count as a pass. It can also be used for emphasis, or where an exception should
-     * be interpreted as a misbehaviour rather than an error.
-     */
-    public void ensureDoesNotThrowException(Block block) throws Exception {
-        try {
-            block.run();
-        }
-        catch (Exception e) {
-            fail("Should not have thrown exception", e);
-        }
+        return null;
     }
     
     /** ensure(...) without matchers */

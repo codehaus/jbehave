@@ -19,7 +19,7 @@ public class HeadlessCheckerBehaviour extends UsingMatchers {
         
         final HeadlessChecker headlessChecker = new HeadlessChecker();
         
-        ensureThrowsExceptionOnHeadless(headlessChecker);
+        ensureThrowsPendingExceptionOnHeadless(headlessChecker);
         ensureDoesNotThrowExceptionWhenNotHeadless(headlessChecker);
         
         resetOriginalHeadlessMode();
@@ -27,20 +27,22 @@ public class HeadlessCheckerBehaviour extends UsingMatchers {
 
     private void ensureDoesNotThrowExceptionWhenNotHeadless(final HeadlessChecker headlessChecker) throws Exception {
         System.getProperties().remove("java.awt.headless");
-        ensureDoesNotThrowException(new Block() {
+        Exception exception = runAndCatch(Exception.class, new Block() {
             public void run() throws Exception {
                 headlessChecker.check();
             }
         });
+        ensureThat(exception, isNull());
     }
 
-    private void ensureThrowsExceptionOnHeadless(final HeadlessChecker headlessChecker) throws Exception {
-        System.setProperty("java.awt.headless", "true");
-        ensureThrows(PendingException.class, new Block() {
+    private void ensureThrowsPendingExceptionOnHeadless(final HeadlessChecker headlessChecker) throws Exception {
+        System.getProperties().put("java.awt.headless", "true");
+        Exception exception = runAndCatch(PendingException.class, new Block() {
             public void run() throws Exception {
                 headlessChecker.check();
             }
         });
+        ensureThat(exception, isNotNull());
     }
 
     private void resetOriginalHeadlessMode() {

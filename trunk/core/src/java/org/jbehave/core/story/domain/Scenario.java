@@ -30,7 +30,21 @@ import org.jbehave.core.story.renderer.Renderable;
  * @see MultiStepScenario
  */
 public interface Scenario extends Renderable, CleansUpWorld {
-    void specify();
-    void run(World world);
-    boolean containsMocks();
+    
+    /**
+     * @throws IllegalStateException if the scenario is already specified.
+     */
+    void specify() throws IllegalStateException;
+    
+    /**
+     * @throws IllegalStateException if the scenario has not been specified.
+     */
+    void run(World world) throws IllegalStateException;
+    
+    /**
+     * @throws IllegalStateException if the scenario has not been run.
+     */
+    void cleanUp(World world) throws IllegalStateException;
+    
+    boolean containsMocks() throws IllegalStateException;
 }
