@@ -6,6 +6,8 @@
  * See license.txt for license details
  */
 package org.jbehave.core.story;
+import java.io.PrintStream;
+
 import org.jbehave.core.story.domain.Story;
 import org.jbehave.core.story.renderer.PlainTextRenderer;
 
@@ -20,18 +22,25 @@ import org.jbehave.core.story.renderer.PlainTextRenderer;
 public class StoryPrinter {
 
     private ClassLoader classLoader;
+    private final PrintStream stream;
     
     public StoryPrinter(){
-        this(Thread.currentThread().getContextClassLoader());
+        this(System.out);
+    }
+    
+    public StoryPrinter(PrintStream stream) {
+        this(Thread.currentThread().getContextClassLoader(), stream);
     }
 
-    public StoryPrinter(ClassLoader classLoader) {
+    private StoryPrinter(ClassLoader classLoader, PrintStream stream) {
         this.classLoader = classLoader;
+        this.stream = stream;
     }
     
     public void print(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
         Story story = (Story) classLoader.loadClass(storyClassName).newInstance();
-        story.narrateTo(new PlainTextRenderer(System.out));
+        story.specify();
+        story.narrateTo(new PlainTextRenderer(stream));
     }
 
     public static void main(String[] args) {        
