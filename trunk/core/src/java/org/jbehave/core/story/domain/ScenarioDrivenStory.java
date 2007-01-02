@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jbehave.core.exception.NestedVerificationException;
+import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.listener.BehaviourListener;
 import org.jbehave.core.story.renderer.Renderer;
 import org.jbehave.core.story.result.ScenarioResult;
@@ -85,8 +85,8 @@ public abstract class ScenarioDrivenStory implements Story {
             scenario.run(world);
             result = new ScenarioResult(description, storyDescription, 
                     scenario.containsMocks() ? ScenarioResult.USED_MOCKS : ScenarioResult.SUCCEEDED);
-        } catch (NestedVerificationException nve) {
-            result = new ScenarioResult(description, storyDescription, nve);
+        } catch (VerificationException ve) {
+            result = new ScenarioResult(description, storyDescription, ve);
         } finally {
             scenario.cleanUp(world);
         }        

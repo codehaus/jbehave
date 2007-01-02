@@ -94,6 +94,7 @@ public class Hellbound {
 		WindowAdapter queueLife = new WindowAdapter() {
             
 			public void windowClosing(WindowEvent e) {
+                Logger.debug(this, "Window closing; stopping threads");
 				engineQueue.stop();
 				guiQueue.stop();
                 heartbeat.stop();

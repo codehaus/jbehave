@@ -149,7 +149,7 @@ public class GameBehaviour extends UsingClassMock {
         verifyMocks();        
     }
     
-    public void shouldEndGameWhenTheNewGlyphOverlapsTheJunk() {
+    public void shouldEndGameAndStopHeartbeatWhenTheNewGlyphOverlapsTheJunk() {
         StubHeartbeat heartbeat = new StubHeartbeat();
         Game game = new Game(new PseudoRandomGlyphFactory(42, 7, 2), heartbeat, 7, 2); // pit is only 2 deep!
        
@@ -164,6 +164,8 @@ public class GameBehaviour extends UsingClassMock {
         heartbeat.beat(); // first glyph falls; cannot add second glyph as it overlaps
         
         verifyMocks();
+        
+        ensureThat(!heartbeat.isBeating());
         
     }
     

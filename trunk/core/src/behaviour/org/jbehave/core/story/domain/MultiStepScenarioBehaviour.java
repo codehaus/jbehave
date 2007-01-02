@@ -1,6 +1,7 @@
 package org.jbehave.core.story.domain;
 
 import org.jbehave.core.Block;
+import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
 import org.jbehave.core.story.renderer.Renderer;
@@ -342,18 +343,70 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         ensureThat(exception, isNotNull());
     }
     
-    public void shouldFailIfCleanedUpBeforeRun() throws Exception {
-        final Scenario scenario = new MultiStepScenario(){
-            public void specifySteps() {}};
-            
-        Exception exception = runAndCatch(IllegalStateException.class, new Block() {
-            public void run() throws Exception {
-                scenario.specify();
-                scenario.cleanUp((World)stub(World.class));
-            }
-        });
+    public void shouldNotCleanUpIfNotRun() throws Exception {
+        // given
+        final Mock given = mock(GivenWithCleanUp.class, "given");
+        World world = (World)stub(World.class);
         
-        ensureThat(exception, isNotNull());
+        Scenario scenario = new MultiStepScenario() {
+            public void specifySteps() {
+                given((Given) given);
+                
+            }};
+            
+        given.expects("cleanUp").never();
+            
+        scenario.specify();
+        scenario.cleanUp(world);
+        
+        verifyMocks();
+    }
+    
+    public void shouldNotCleanUpIfAlreadyCleanedUp() throws Exception {
+        // given
+        final Mock given = mock(GivenWithCleanUp.class, "given");
+        World world = (World)stub(World.class);
+        
+        Scenario scenario = new MultiStepScenario() {
+            public void specifySteps() {
+                given((Given) given);
+                
+            }};
+            
+        given.expects("cleanUp").once();
+            
+        scenario.specify();
+        scenario.run(world);
+        scenario.cleanUp(world);
+        scenario.cleanUp(world);
+        
+        verifyMocks();
+    }
+    
+    public void shouldCleanUpEvenIfStepFailed() {
+        // given
+        final Mock given = mock(GivenWithCleanUp.class, "given");
+        World world = (World)stub(World.class);
+        
+        Scenario scenario = new MultiStepScenario() {
+            public void specifySteps() {
+                given((Given) given);
+                
+            }};
+            
+        given.expects("setUp").will(throwException(new VerificationException("")));
+        given.expects("cleanUp").once();
+            
+        scenario.specify();
+        
+        try {
+            scenario.run(world);
+        } catch (VerificationException e) {
+            // expected
+        }
+        
+        scenario.cleanUp(world);
+        verifyMocks();
     }
     
     public void shouldFailIfSpecifiedTwice() throws Exception {

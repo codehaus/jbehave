@@ -19,7 +19,7 @@ import org.jbehave.core.minimock.story.domain.GivenUsingMiniMock;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class GivenScenario extends GivenUsingMiniMock {
+public class GivenScenario extends GivenUsingMiniMock implements CleansUpWorld {
 
     private final Scenario scenario;
 

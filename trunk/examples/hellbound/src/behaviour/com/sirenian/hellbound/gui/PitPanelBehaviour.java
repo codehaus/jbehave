@@ -114,7 +114,6 @@ public class PitPanelBehaviour extends UsingMatchers {
 				super.paint(pg);
 			}
 		};
-		pg.setPitPanel(panel);
 		return panel;
 	}
     
