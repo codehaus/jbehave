@@ -22,7 +22,9 @@ import org.jbehave.core.util.CamelCaseConverter;
  */
 public class PlainTextRendererBehaviour extends UsingMatchers {
 
-	public void shouldRenderStoryWhenNarratingStory() {
+	private static final String NL = System.getProperty("line.separator");
+
+    public void shouldRenderStoryWhenNarratingStory() {
 		
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		PrintStream printStream = new PrintStream(byteStream);
@@ -34,8 +36,6 @@ public class PlainTextRendererBehaviour extends UsingMatchers {
 		story.narrateTo(renderer);
 		
 		String result = byteStream.toString();
-		
-		String NL = System.getProperty("line.separator");
 		
 		StringBuffer expectedResult = new StringBuffer();
 		expectedResult.append("Story: ").append(textOf(story)).append(NL + NL);
@@ -56,6 +56,22 @@ public class PlainTextRendererBehaviour extends UsingMatchers {
 		
 		ensureThat(result, eq(expectedResult.toString()));
 	}
+    
+    public void shouldProvideComponentsWithCustomRenderingUsingStrings() {
+        StringBuffer expectedResult = new StringBuffer();
+        expectedResult.append("Custom renderable" + NL);
+        
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(byteStream);
+        
+        PlainTextRenderer renderer = new PlainTextRenderer(printStream);
+        
+        renderer.render("Custom renderable");
+        
+        String result = byteStream.toString();
+        
+        ensureThat(result, eq(expectedResult.toString()));
+    }
 
     private String textOf(Object obj) {
         return new CamelCaseConverter(obj).toPhrase();

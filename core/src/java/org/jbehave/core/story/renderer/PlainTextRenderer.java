@@ -84,6 +84,9 @@ public class PlainTextRenderer implements Renderer {
         out.println(phrase);
     }
 
+    public void render(Object obj) {
+        out.println(obj.toString());
+    }
 
     private boolean previousComponentWasA(Class clazz) {
         return previousComponent != null && clazz.isAssignableFrom(previousComponent.getClass());
