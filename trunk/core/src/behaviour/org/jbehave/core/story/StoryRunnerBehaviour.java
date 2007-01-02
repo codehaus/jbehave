@@ -17,7 +17,7 @@ import org.jbehave.core.story.result.ScenarioResult;
 
 public class StoryRunnerBehaviour extends UsingMiniMock {
 
-	public void shouldRunStoryAndOutputResults() throws Exception {
+	public void shouldSpecifyAndRunStoryAndOutputResults() throws Exception {
 		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		
 		PrintStream stream = new PrintStream(buffer);

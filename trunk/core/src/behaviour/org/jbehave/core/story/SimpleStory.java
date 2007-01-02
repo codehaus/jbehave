@@ -7,9 +7,13 @@ import org.jbehave.core.story.domain.MultiStepScenario;
 import org.jbehave.core.story.domain.Narrative;
 import org.jbehave.core.story.domain.ScenarioDrivenStory;
 import org.jbehave.core.story.domain.World;
+import org.jbehave.core.util.CamelCaseConverter;
 
 public class SimpleStory extends ScenarioDrivenStory {
 
+
+    private static final String NL = System.getProperty("line.separator");
+    
     public static String ROLE = "behaviour analyst";
 
     public static String FEATURE = "to see the behaviour of PlainTextRenderer";
@@ -80,5 +84,31 @@ public class SimpleStory extends ScenarioDrivenStory {
     public static class BehaviourClassShouldNotFail extends OutcomeUsingMiniMock {
         public void verify(World world) {
         }
+    }
+    
+    public static String expectedDescription() {
+        StringBuffer expectedResult = new StringBuffer();
+        expectedResult.append("Story: ").append(textOf(new SimpleStory())).append(NL + NL);
+        expectedResult.append("As a ").append(SimpleStory.ROLE).append(NL);
+        expectedResult.append("I want ").append(SimpleStory.FEATURE).append(NL);
+        expectedResult.append("So that ").append(SimpleStory.BENEFIT).append(NL + NL);
+        expectedResult.append("Scenario: ").append(textOf(new SimpleStory.PlainTextRendererWorks())).append(NL + NL);
+        expectedResult.append("Given ").append(textOf(new SimpleStory.EverythingCompiles())).append(NL);
+        expectedResult.append("When ").append(textOf(new SimpleStory.ICrossMyFingers())).append(NL);
+        expectedResult.append("Then ").append(textOf(new SimpleStory.PlainTextRendererShouldWork())).append(NL + NL);
+        
+        expectedResult.append("Scenario: ").append(textOf(new SimpleStory.PlainTextRendererStillWorks())).append(NL + NL);
+        expectedResult.append("Given ").append(textOf(new SimpleStory.PlainTextRendererWorks())).append(NL);;
+        expectedResult.append("and ").append(textOf(new SimpleStory.FirstScenarioRanWithoutFallingOver())).append(NL);
+        expectedResult.append("When ").append(textOf(new SimpleStory.IDoNothing())).append(NL);
+        expectedResult.append("Then ").append(textOf(new SimpleStory.PlainTextRendererShouldStillWork())).append(NL);
+        expectedResult.append("and ").append(textOf(new SimpleStory.BehaviourClassShouldNotFail())).append(NL);
+        
+        return expectedResult.toString();
+    }
+    
+    
+    private static String textOf(Object obj) {
+        return new CamelCaseConverter(obj).toPhrase();
     }
 }
