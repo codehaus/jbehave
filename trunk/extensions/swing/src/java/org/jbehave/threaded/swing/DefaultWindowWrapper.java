@@ -7,7 +7,6 @@ import java.awt.TextComponent;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.text.JTextComponent;
@@ -118,18 +117,6 @@ public class DefaultWindowWrapper implements WindowWrapper {
 			window = grabber.getWindow(windowName);
 		}
 		return window;
-	}
-
-
-	private MouseEvent createMouseEvent(AbstractButton button, int id) {
-		return new MouseEvent(button, 
-				id, 
-				System.currentTimeMillis(), 
-				MouseEvent.BUTTON1_MASK,
-				button.getWidth() / 2,
-				button.getHeight() / 2,
-				1,
-				false);
 	}
 	
 	private AWTEvent createKeyPressEvent(Component component, char c, int id) {
