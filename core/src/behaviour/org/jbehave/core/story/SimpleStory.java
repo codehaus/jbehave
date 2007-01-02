@@ -34,7 +34,7 @@ public class SimpleStory extends ScenarioDrivenStory {
     }
     
     public static class PlainTextRendererWorks extends MultiStepScenario {
-        public void specify() {
+        public void specifySteps() {
             given(new EverythingCompiles());
             when(new ICrossMyFingers());
             then(new PlainTextRendererShouldWork());
@@ -42,7 +42,7 @@ public class SimpleStory extends ScenarioDrivenStory {
     }
     
     public static class PlainTextRendererStillWorks extends MultiStepScenario {
-        public void specify() {
+        public void specifySteps() {
              given(new PlainTextRendererWorks());
              given(new FirstScenarioRanWithoutFallingOver());
              when(new IDoNothing());

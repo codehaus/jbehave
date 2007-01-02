@@ -110,11 +110,12 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
         task.createVerify().setName(behaviourClassName);
         runner.valueToReturn = 1;
 
-        ensureThrows(BuildException.class, new Block() {
+        Exception exception = runAndCatch(BuildException.class, new Block() {
             public void run() throws Exception {
                 task.execute();
             }
         });
+        ensureThat(exception, isNotNull());
     }
 
     

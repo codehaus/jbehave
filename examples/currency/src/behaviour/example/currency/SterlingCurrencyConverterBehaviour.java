@@ -53,11 +53,12 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 	public void shouldNotConvertFromNegativeSterlingAmounts() throws Exception {
 		// expects
 		exchangeRateServiceMock.stubs("retrieveRate").will(returnValue(new ExchangeRate(1.85, 0.54)));
-		ensureThrows(InvalidAmountException.class, new Block() {
+		Exception exception = runAndCatch(InvalidAmountException.class, new Block() {
             public void run() throws Exception {
                 sterlingConverter.convertFromSterling(-1, Currency.USD);
             }
         });
+        ensureThat(exception, isNotNull());
 	}
 
 	public void shouldConvertFromEUR() throws Exception {
@@ -75,7 +76,7 @@ public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
 	public void shouldNotConvertFromNegativeAmounts() throws Exception {
 		//expects
 		exchangeRateServiceMock.stubs("retrieveRate").will(returnValue(new ExchangeRate(1.85, 0.54)));
-        ensureThrows(InvalidAmountException.class, new Block() {
+        Exception exception = runAndCatch(InvalidAmountException.class, new Block() {
             public void run() throws Exception {
                 sterlingConverter.convertToSterling(-3, Currency.EUR);
             }

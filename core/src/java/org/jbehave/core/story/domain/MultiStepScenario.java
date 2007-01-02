@@ -57,23 +57,41 @@ import org.jbehave.core.story.renderer.Renderer;
  * @author <a href="mailto:liz@thoughtworks.com">Elizabeth Keogh</a>
  */
 public abstract class MultiStepScenario implements Scenario {
-    private List steps = new ArrayList();
     
-    public abstract void specify();
+    private static final String UNSPECIFIED = "Unspecified";
+    private static final String SPECIFIED = "Specified";
+    private static final String RUN = "Run";
+    
+    private List steps = new ArrayList();
+    private String state;
 
-    public void run(World world) {
-        perform(world);
-        cleanUp(world);
+    public MultiStepScenario() {
+        state = UNSPECIFIED;
     }
 
-    public void perform(World world) {
+    public final void specify() {
+        checkState(UNSPECIFIED);
+        specifySteps();
+        state = SPECIFIED;
+    }
+
+    protected abstract void specifySteps();
+
+    public void run(World world) {
+        checkState(SPECIFIED);
         for (Iterator i = steps.iterator(); i.hasNext();) {
             Step step = (Step) i.next();
             step.perform(world);
         }
+        state = RUN;
+    }
+
+    private void checkState(String expected) {
+        if (state != expected) { throw new IllegalStateException("Current state is " + state + ", should be " + expected); }
     }
 
     public void cleanUp(World world) {
+        checkState(RUN);
         for (ListIterator i = steps.listIterator(steps.size()); i.hasPrevious();) {
             Object step = i.previous();
             if (step instanceof CleansUpWorld) {
@@ -83,6 +101,7 @@ public abstract class MultiStepScenario implements Scenario {
     }
 
     public void narrateTo(Renderer renderer) {
+        checkState(SPECIFIED);
         renderer.renderScenario(this);
         for (Iterator i = steps.iterator(); i.hasNext();) {
             ((Step)i.next()).narrateTo(renderer);
@@ -104,19 +123,21 @@ public abstract class MultiStepScenario implements Scenario {
     }
     
     protected void given(Given given) {
-        steps.add(new GivenStep(given));
+        AbstractStep step = new GivenStep(given);
+        addStep(step);
     }
     
     protected void given(Scenario scenario) {
-        steps.add(new GivenStep(new GivenScenario(scenario)));
+        scenario.specify();
+        addStep(new GivenStep(new GivenScenario(scenario)));
     }
 
     protected void when(Event event) {
-        steps.add(new EventStep(event));
+        addStep(new EventStep(event));
     }
     
     protected void then(final Outcome outcome) {
-        steps.add(new OutcomeStep(outcome));
+        addStep(new OutcomeStep(outcome));
         if (outcome instanceof OutcomeWithExpectations) {
             injectAfterGivens(new AbstractStep(outcome) {
                 public void perform(World world) {
@@ -138,5 +159,10 @@ public abstract class MultiStepScenario implements Scenario {
         }
         // if we get here, there weren't any givens
         steps.add(0, step);
+    }
+    
+
+    private void addStep(AbstractStep step) {
+        steps.add(step);
     }
 }

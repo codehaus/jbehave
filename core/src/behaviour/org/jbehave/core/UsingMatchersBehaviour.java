@@ -1,6 +1,5 @@
 package org.jbehave.core;
 
-import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.mock.UsingMatchers;
 
 public class UsingMatchersBehaviour {
@@ -50,31 +49,28 @@ public class UsingMatchersBehaviour {
         Ensure.that(new Object(), m.isNotNull());
     }
 
-    public void shouldFailWhenBlockThatShouldFailDoesNot() throws Exception {
+    public void shouldCatchAndReturnAThrownException() throws Exception {
+        UsingMatchers m = new UsingMatchers() {};
         
-        Ensure.throwsException(IllegalArgumentException.class, EXCEPTION_BLOCK);
-        
-        boolean succeeded = true;
-        try {
-            Ensure.throwsException(IllegalArgumentException.class, EMPTY_BLOCK);
-            succeeded = false;
-        } catch (VerificationException expected) {}
-        
-        if (!succeeded) {
-            throw new VerificationException("Should have thrown a verification exception");
-        }
+        Exception exception = m.runAndCatch(IllegalArgumentException.class, EXCEPTION_BLOCK);
+        Ensure.that(exception, m.isNotNull());
     }
     
-    public void shouldFailWhenBlockThatShouldSucceedDoesNot() throws Exception {
-        Ensure.doesNotThrowException(EMPTY_BLOCK);
+    public void shouldReturnNullIfNoExceptionThrown() throws Exception {
+        UsingMatchers m = new UsingMatchers() {};
         
-        boolean succeeded = true;
+        Exception exception = m.runAndCatch(IllegalArgumentException.class, EMPTY_BLOCK);
+        Ensure.that(exception, m.isNull());
+    }
+    
+    public void shouldPropagateExceptionOfAnUnexpectedType() throws Exception {
+        UsingMatchers m = new UsingMatchers() {};
+        
         try {
-            Ensure.doesNotThrowException(EXCEPTION_BLOCK);
-            succeeded = false;
-        } catch (VerificationException expected) {}
-        if (!succeeded) {
-            throw new VerificationException("Should have thrown a verification exception");
+            Exception exception = m.runAndCatch(UnsupportedOperationException.class, EXCEPTION_BLOCK);
+            m.fail("Should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // expected
         }
     }
 }

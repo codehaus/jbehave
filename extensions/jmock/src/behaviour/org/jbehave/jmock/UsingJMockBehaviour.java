@@ -105,11 +105,13 @@ public class UsingJMockBehaviour extends UsingMatchers {
         final UsingJMock instance = new HasMockThatFailsVerify();
 
         // when...
-        ensureThrows(VerificationException.class, new Block() {
+        Exception exception = runAndCatch(VerificationException.class, new Block() {
             public void run() throws Exception {
                 instance.verifyMocks();
             }
         });
+        
+        ensureThat(exception, isNotNull());
     }
     
     public static interface AnInterface {}

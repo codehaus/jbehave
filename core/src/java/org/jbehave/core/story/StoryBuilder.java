@@ -53,7 +53,7 @@ public class StoryBuilder {
 
     private Scenario scenario(final ScenarioDetails details, String storyName) {
         return new MultiStepScenario() {
-            public void specify() {
+            public void specifySteps() {
                 // given
                 for (Iterator i = details.context.givens.iterator(); i.hasNext();) {
                     BasicDetails given = (BasicDetails)i.next();
