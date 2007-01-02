@@ -50,8 +50,8 @@ public abstract class ThreadedQueue implements Queue {
         Logger.debug(this, "Stopping queue " + queueName);
     	synchronized (eventList) {
     		shouldRun = false;
+            eventList.notifyAll();
 		}
-        eventList.notifyAll();
     }
 
     private void waitForNextRequest() {

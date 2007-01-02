@@ -42,5 +42,14 @@ public abstract class HellboundEvent extends EventUsingMiniMock {
 			throw new RuntimeException(e);
 		}
 	}
+    
+    protected void pressKey(char keychar, World world) {
+        WindowWrapper wrapper = (WindowWrapper) world.get(WorldKey.WINDOW_WRAPPER, null);
+        try {
+            wrapper.pressKeychar(keychar);
+        } catch (SwingBehaviourException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

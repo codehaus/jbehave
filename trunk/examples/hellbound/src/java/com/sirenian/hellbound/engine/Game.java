@@ -107,10 +107,14 @@ public class Game implements GameRequestListener {
             Logger.debug(this, "Glyph movement " + movement + " requested");
             boolean result = movement.performOn(glyph);
             
-            if (result == false && movement == GlyphMovement.DOWN) {
-                Logger.debug(this, "Could not move glyph down; junking it");
-                junk.absorb(glyph);
-                resetGlyph();
+            if (movement == GlyphMovement.DOWN) {
+                if(!result) {
+                    Logger.debug(this, "Could not move glyph down; junking it");
+                    junk.absorb(glyph);
+                    resetGlyph();
+                } else {
+                    heartbeat.skipNextBeat();
+                }
             }
         }
     }

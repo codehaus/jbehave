@@ -12,9 +12,10 @@ import com.sirenian.hellbound.util.Logger;
 public class ActionFactory {
 
     public Action createAction(final GameRequestListener gameRequestListener, final GlyphMovement movement) {
-        Logger.debug(this, "Creating " + movement + " action ");
+        Logger.debug(this, "Creating " + movement + " action");
         return new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
+                Logger.debug(this, "Performing " + movement + " action");
                 gameRequestListener.requestGlyphMovement(movement);
             }
         };

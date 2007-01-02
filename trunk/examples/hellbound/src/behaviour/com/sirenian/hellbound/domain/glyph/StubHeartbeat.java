@@ -4,6 +4,7 @@ public class StubHeartbeat implements Heartbeat {
 	
 	private HeartbeatListener listener;
     private boolean beating;
+    private boolean skipped;
 
 	public void addListener(HeartbeatListener listener) {
 		this.listener = listener;
@@ -26,6 +27,10 @@ public class StubHeartbeat implements Heartbeat {
     }
 
     public void skipNextBeat() {
-        
+        skipped = true;
+    }
+    
+    public boolean wasSkipped() {
+        return skipped;
     }
 }

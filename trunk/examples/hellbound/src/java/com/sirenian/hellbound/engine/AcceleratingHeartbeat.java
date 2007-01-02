@@ -9,11 +9,16 @@ import com.sirenian.hellbound.util.Logger;
 
 public class AcceleratingHeartbeat implements Heartbeat {
 
+    private static final String RUNNING = "Running";
+    private static final String STOPPED = "Stopped";
+    private static final String SKIPPING = "Skipping";
+    private static final String SKIPPED = "Skipped";
+    
 	private ListenerSet listenerSet;
 	private ListenerNotifier pulse;
 	private long timeBetweenBeats;
 	private boolean beating;
-    private boolean skipping;
+    private String state;
 
 	public AcceleratingHeartbeat() {
 		listenerSet = new ListenerSet();
@@ -38,6 +43,7 @@ public class AcceleratingHeartbeat implements Heartbeat {
 		};
 		
 		new Thread(pulseTimer).start();
+        state = RUNNING;
 	}
     
     private synchronized void waitForTheBeat() {
@@ -45,9 +51,14 @@ public class AcceleratingHeartbeat implements Heartbeat {
             wait(timeBetweenBeats);
         } catch (InterruptedException e) { }
         
-        if (!skipping) {
+        if (state == SKIPPING) {
+            state = SKIPPED;
+        } else {
             Logger.debug(this, "Beating");
             listenerSet.notifyListeners(pulse);
+            if (state == SKIPPED) {
+                state = RUNNING;
+            }
         }
     }       
 
@@ -64,6 +75,7 @@ public class AcceleratingHeartbeat implements Heartbeat {
         synchronized (this) {
             notifyAll();
         }
+        state = STOPPED;
 	}
 
     public boolean isBeating() {
@@ -71,10 +83,9 @@ public class AcceleratingHeartbeat implements Heartbeat {
     }
 
     public void skipNextBeat() {
-        skipping = true;
+        state = SKIPPING;
         synchronized(this) {
             this.notifyAll();
         }
-        skipping = false;
     }
 }
