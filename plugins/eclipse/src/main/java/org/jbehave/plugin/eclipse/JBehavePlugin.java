@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse;
+package org.jbehave.plugin.eclipse;
 
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;

@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse.model;
+package org.jbehave.plugin.eclipse.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

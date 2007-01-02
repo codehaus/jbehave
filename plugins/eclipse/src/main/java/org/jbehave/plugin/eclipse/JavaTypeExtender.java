@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse;
+package org.jbehave.plugin.eclipse;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.runtime.IAdaptable;
@@ -56,7 +56,7 @@ public class JavaTypeExtender extends PropertyTester {
 				testType = ((IMember) element).getDeclaringType();
 			}
 			if (testType != null && testType.exists()
-					&& BehaviorSearchEngine.isBehaviorType(testType)) {
+					&& BehaviourSearchEngine.isBehaviorType(testType)) {
 				return true;
 			}
 		} catch (JavaModelException e) {

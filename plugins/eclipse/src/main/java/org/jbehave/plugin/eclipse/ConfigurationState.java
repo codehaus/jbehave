@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse;
+package org.jbehave.plugin.eclipse;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;

@@ -1,4 +1,4 @@
-package wizzards;
+package org.jbehave.plugin.eclipse.wizards;
 /*******************************************************************************
  * Copyright (c) 2000, 2005 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -9,7 +9,6 @@ package wizzards;
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-import jbehave.plugin.eclipse.model.StoryLine;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -25,6 +24,7 @@ import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.internal.ui.wizards.NewElementWizard;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
+import org.jbehave.plugin.eclipse.model.StoryLine;
 
 public class NewClassWizard extends NewElementWizard {
 

@@ -8,7 +8,7 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="jbehave.plugin.eclipse.JBehaveLaunchConfiguration"
+            delegate="org.jbehave.plugin.eclipse.JBehaveLaunchConfiguration"
             id="jbehave.plugin.eclipse.launchconfig"
             modes="run, debug"
             name="JBehave"
@@ -25,7 +25,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="jbehave.plugin.eclipse.JBehaveLaunchConfigurationTabGroup"
+            class="org.jbehave.plugin.eclipse.JBehaveLaunchConfigurationTabGroup"
             description="Launches behavior verification"
             helpContextId="jbehave.plugin.eclipse.jbehave_tab_group"
             id="jbehave.plugin.eclipse.launchConfigurationTabGroup"
@@ -38,7 +38,7 @@
             properties="isBehaviour"
             namespace="jbehave.plugin.eclipse"
             type="org.eclipse.core.runtime.IAdaptable"
-            class="jbehave.plugin.eclipse.JavaTypeExtender"
+            class="org.jbehave.plugin.eclipse.JavaTypeExtender"
             id="jbehave.plugin.eclipse.ITypeExtender">
       </propertyTester>
    </extension> 
@@ -46,7 +46,7 @@
       <shortcut
             label="Behavior Verification"
             icon="icons/behave.gif"
-            class="jbehave.plugin.eclipse.VerificationLaunchShortcut"
+            class="org.jbehave.plugin.eclipse.VerificationLaunchShortcut"
             modes="run, debug"
             id="jbehave.plugin.eclipse.verificationShortcut">
          <contextualLaunch>
@@ -105,7 +105,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="jbehave.plugin.eclipse.editors.StoryEditor"
+            class="org.jbehave.plugin.eclipse.editors.StoryEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             extensions="story"
             icon="icons/behave.gif"
@@ -120,7 +120,7 @@
             id="jbehave-eclipse.behaviourEditorContribution"
             targetID="jbehave.plugin.eclipse.editors.StoryEditor">
          <action
-               class="jbehave.plugin.eclipse.actions.NavigateToJavaSource"
+               class="org.jbehave.plugin.eclipse.actions.NavigateToJavaSource"
                id="jbehave-eclipse.navigate-source"
                definitionId="org.eclipse.jdt.ui.edit.text.java.open.editor"
                label="Navigate to Source"

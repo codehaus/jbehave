@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse.editors;
+package org.jbehave.plugin.eclipse.editors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class StoryContentOutlinePage  extends ContentOutlinePage{
 					int length=document.getLineLength(line);
 				
 					String text=document.get(offset, length);
-					jbehave.plugin.eclipse.model.StoryLine storyLine = jbehave.plugin.eclipse.model.StoryLine.parseLine(text);
+					org.jbehave.plugin.eclipse.model.StoryLine storyLine = org.jbehave.plugin.eclipse.model.StoryLine.parseLine(text);
 					if ((storyLine!=null)){
 						if (storyLine.getKeyWord().equals("Scenario:")){
 						Position p= new Position(offset, length);

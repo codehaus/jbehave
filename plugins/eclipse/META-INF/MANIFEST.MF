@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: JBehave Plugin
 Bundle-SymbolicName: jbehave.plugin.eclipse; singleton:=true
 Bundle-Version: 0.5.2
-Bundle-Activator: jbehave.plugin.eclipse.JBehavePlugin
+Bundle-Activator: org.jbehave.plugin.eclipse.JBehavePlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

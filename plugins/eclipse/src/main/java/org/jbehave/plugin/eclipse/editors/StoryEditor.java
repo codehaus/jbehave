@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse.editors;
+package org.jbehave.plugin.eclipse.editors;
 
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;

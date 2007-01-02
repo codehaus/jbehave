@@ -1,10 +1,8 @@
-package jbehave.plugin.eclipse.actions;
+package org.jbehave.plugin.eclipse.actions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jbehave.plugin.eclipse.editors.StoryEditor;
-import jbehave.plugin.eclipse.model.StoryLine;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IType;
@@ -36,8 +34,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
+import org.jbehave.plugin.eclipse.editors.StoryEditor;
+import org.jbehave.plugin.eclipse.model.StoryLine;
+import org.jbehave.plugin.eclipse.wizards.NewClassWizard;
 
-import wizzards.NewClassWizard;
 
 public class NavigateToJavaSource implements IEditorActionDelegate {
 
@@ -60,7 +60,7 @@ public class NavigateToJavaSource implements IEditorActionDelegate {
 		int line=selection.getStartLine();
 		try {
 			String text=document.get(document.getLineOffset(line),document.getLineLength(line));
-			jbehave.plugin.eclipse.model.StoryLine storyLine = StoryLine.parseLine(text);
+			org.jbehave.plugin.eclipse.model.StoryLine storyLine = StoryLine.parseLine(text);
 			if (storyLine!=null){
 				findAndOpenClass(storyLine);
 			}
@@ -80,7 +80,6 @@ public class NavigateToJavaSource implements IEditorActionDelegate {
 		    SearchPattern pattern = SearchPattern.createPattern(className, IJavaSearchConstants.TYPE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 		    IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
 		    SearchRequestor requestor = new SearchRequestor(){
-				@Override
 				public void acceptSearchMatch(SearchMatch match) throws CoreException {
 					types.add(match.getElement());
 				}
