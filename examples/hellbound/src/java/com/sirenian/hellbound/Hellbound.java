@@ -36,6 +36,9 @@ public class Hellbound {
                     Color.MAGENTA, Color.GRAY, Color.BLACK });
 
     private HellboundFrame frame;
+    private final EngineQueue engineQueue;
+    private final GuiQueue guiQueue;
+    private final Heartbeat heartbeat;
 
     public Hellbound() {
         this(
@@ -49,14 +52,17 @@ public class Hellbound {
     public Hellbound(EngineQueue engineQueue, GuiQueue guiQueue,
             Heartbeat heartbeat, PitPanel pitPanel, GlyphFactory factory) {
         
+        this.engineQueue = engineQueue;
+        this.guiQueue = guiQueue;
+        this.heartbeat = heartbeat;
         Logger.debug(this, "Creating Hellbound instance...");
 
         frame = createFrameForGui(engineQueue, pitPanel);
         Game game = createEngineForGame(heartbeat, factory);
         
-        connectQueues(engineQueue, guiQueue, pitPanel, frame, game);
-        bindThreadsToFrame(engineQueue, guiQueue, heartbeat, frame);
-        startHellbound(frame);
+        connectQueues(game, pitPanel);
+        bindThreadsToFrame();
+        startHellbound();
     }
     
     public static void main(String[] args) {
@@ -64,22 +70,20 @@ public class Hellbound {
         new Hellbound();
     }
 
-    private void startHellbound(HellboundFrame frame) {
+    private void startHellbound() {
         frame.pack();
         frame.setVisible(true);
     }
 
     public void stopHellbound() {
         frame.dispose();
+        stopThreads(); // Swing cannot be trusted to do this asynchronously
         Logger.debug(this, "Hellbound stopped.");
     }
 
     private void connectQueues(
-            EngineQueue engineQueue,
-            GuiQueue guiQueue, 
-            GlyphListener pitPanel, 
-            HellboundFrame frame,
-            Game game) {
+            Game game,
+            GlyphListener pitPanel) {
         game.addGameListener(guiQueue);
         game.addGlyphListener(guiQueue);
         frame.setGameRequestListener(engineQueue);
@@ -90,19 +94,24 @@ public class Hellbound {
         
     }
 
-	private void bindThreadsToFrame(final EngineQueue engineQueue, final GuiQueue guiQueue, final Heartbeat heartbeat, HellboundFrame frame) {
+	private void bindThreadsToFrame() {
+        Logger.debug(this, "Binding threads to frame");
 		WindowAdapter queueLife = new WindowAdapter() {
             
 			public void windowClosing(WindowEvent e) {
                 Logger.debug(this, "Window closing; stopping threads");
-				engineQueue.stop();
-				guiQueue.stop();
-                heartbeat.stop();
+				stopThreads();
 			}
 		};
 		
 		frame.addWindowListener(queueLife);
 	}
+    
+    private void stopThreads() {
+        engineQueue.stop();
+        guiQueue.stop();
+        heartbeat.stop();
+    }
 
     private Game createEngineForGame(Heartbeat heartbeat, GlyphFactory factory) {
         return new Game(factory, heartbeat, WIDTH, HEIGHT);

@@ -36,6 +36,7 @@ public class GameBehaviour extends UsingClassMock {
         
         verifyMocks();
     }
+
     
 	public void shouldRunOnRequestStartAndStartHeartbeatAndInformListeners() throws Exception {
 		
@@ -117,6 +118,18 @@ public class GameBehaviour extends UsingClassMock {
         latestSegments = latestSegments.movedDown();
         
         verifyMocks();
+    }
+    
+    
+    public void shouldMoveGlyphDownAndSkipNextHeartbeat() {
+        
+        StubHeartbeat stubHeartbeat = new StubHeartbeat();
+        
+        Game game = new Game(new PseudoRandomGlyphFactory(7, 13), stubHeartbeat, 7, 13);
+        game.requestStartGame();
+        game.requestGlyphMovement(GlyphMovement.DOWN);
+        ensureThat(stubHeartbeat.wasSkipped());
+        
     }
     
     public void shouldCauseGlyphSegmentsToBeAddedToPitThenCreateNewGlyphWhenGlyphCannotMoveDown() {
