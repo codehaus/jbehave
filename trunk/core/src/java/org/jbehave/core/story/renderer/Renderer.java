@@ -22,4 +22,10 @@ public interface Renderer {
 	void renderGiven(Given given);
 	void renderOutcome(Outcome outcome);
 	void renderEvent(Event event);
+    
+    /**
+     * This method can be used by scenario components overriding the
+     * narrateTo method in order to render custom descriptions.
+     */
+    void render(Object obj);
 }
