@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse;
+package org.jbehave.plugin.eclipse;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 	private void launchType(Object selection, String mode) throws LaunchCancelledByUserException {
 		ConfigurationState state= null;
 		try {
-			state = new BehaviorSearchEngine().findBehaviors(selection); 
+			state = new BehaviourSearchEngine().findBehaviors(selection); 
 		} catch (InterruptedException e) {
 			JBehavePlugin.log(e);
 			return;
@@ -86,10 +86,10 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 	
 	private ILaunchConfiguration findLaunchConfiguration(String mode, ConfigurationState state, String container, String name) throws LaunchCancelledByUserException {
 		ILaunchConfigurationType configType= getJBehaveLaunchConfigType();
-		List<ILaunchConfiguration> candidateConfigs = Collections.emptyList();
+		List candidateConfigs = Collections.emptyList();
 		try {
 			ILaunchConfiguration[] configs= DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations(configType);
-			candidateConfigs = new ArrayList<ILaunchConfiguration>(configs.length);
+			candidateConfigs = new ArrayList(configs.length);
 			for (int i= 0; i < configs.length; i++) {
 				if (new ConfigurationState(configs[i]).equals(state)) {
 					candidateConfigs.add(configs[i]);

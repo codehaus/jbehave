@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse;
+package org.jbehave.plugin.eclipse;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -21,13 +21,13 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.PlatformUI;
 
-public class BehaviorSearchEngine {
+public class BehaviourSearchEngine {
 
 	private static final String ZHU_VALUE_FOR_VOID = Signature.SIG_VOID;
 
 	public ConfigurationState findBehaviors(final Object selection)
 			throws InterruptedException, InvocationTargetException {
-		final Set<ConfigurationState> result = new HashSet<ConfigurationState>();
+		final Set result = new HashSet();
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 			public void run(IProgressMonitor pm) throws InterruptedException {
 				doFindBehaviours(selection, result, pm);
@@ -41,7 +41,7 @@ public class BehaviorSearchEngine {
 		return ((ConfigurationState[]) result.toArray(new ConfigurationState[result.size()]))[0];
 	}
 
-	public void doFindBehaviours(Object selection, Set<ConfigurationState> result,
+	public void doFindBehaviours(Object selection, Set result,
 			IProgressMonitor pm) throws InterruptedException {
 		pm.beginTask("Searching behavior...", 1);
 		try {
@@ -59,7 +59,7 @@ public class BehaviorSearchEngine {
 	}
 
 	private void collectTypes(Object element, IProgressMonitor pm,
-			Set<ConfigurationState> result) throws CoreException/* , InvocationTargetException */{
+			Set result) throws CoreException/* , InvocationTargetException */{
 		pm.beginTask("Searching behavior...", 10);
 		element = computeScope(element);
 		try {

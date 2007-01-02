@@ -1,4 +1,4 @@
-package jbehave.plugin.eclipse;
+package org.jbehave.plugin.eclipse;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
