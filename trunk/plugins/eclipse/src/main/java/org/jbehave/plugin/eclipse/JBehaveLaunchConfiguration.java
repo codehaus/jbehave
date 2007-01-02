@@ -16,8 +16,8 @@ import org.eclipse.jdt.launching.VMRunnerConfiguration;
 
 public class JBehaveLaunchConfiguration extends AbstractJavaLaunchConfigurationDelegate {
 	public static final String ID = "jbehave.plugin.eclipse.launch";  //$NON_NLS-1$
-	public static final String ATTR_BEHAVIOR_CLASS = ID + ".behaviorClass"; //$NON-NLS-1$
-	public static final String ATTR_BEHAVIOR_METHOD = ID + ".behaviorMethod"; //$NON-NLS-1$
+	public static final String ATTR_BEHAVIOUR_CLASS = ID + ".behaviourClass"; //$NON-NLS-1$
+	public static final String ATTR_BEHAVIOUR_METHOD = ID + ".behaviourMethod"; //$NON-NLS-1$
 	public static final String ID_JBEHAVE_APPLICATION = "jbehave.plugin.eclipse.launchconfig";
 
 	/* (non-Javadoc)
@@ -100,7 +100,7 @@ public class JBehaveLaunchConfiguration extends AbstractJavaLaunchConfigurationD
 
 	private String getBehaviorLocator(ILaunchConfiguration configuration) throws CoreException {
 		return configuration.getAttribute(
-				ATTR_BEHAVIOR_CLASS, ""); //$NON-NLS-1$
+				ATTR_BEHAVIOUR_CLASS, ""); //$NON-NLS-1$
 }
 
 }
