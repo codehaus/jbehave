@@ -128,6 +128,26 @@ public class Segments {
 		}
 		return lowest;
 	}
+    
+    public int leftmost() {
+        int leftmost = rightmost();
+        for (int i = 0; i < segments.size(); i++) {
+            if (segments.get(i).x < leftmost){
+                leftmost = segments.get(i).x;
+            }
+        }
+        return leftmost;
+    }
+
+    public int rightmost() {
+        int rightmost = -1;
+        for (int i = 0; i < segments.size(); i++) {
+            if (segments.get(i).x > rightmost){
+                rightmost = segments.get(i).x;
+            }
+        }
+        return rightmost;
+    }
 
 	public Segments add(Segments segments) {
 		Segment[] allSegments = new Segment[this.segments.size() + segments.size()];
@@ -180,5 +200,7 @@ public class Segments {
         }
         return new Segments(newSegments);
     }
+
+
 
 }
