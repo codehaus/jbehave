@@ -5,9 +5,6 @@
       version="0.9.1"
       provider-name="JBehave"
       plugin="org.jbehave.eclipse"
-      os="win32"
-      ws="win32"
-      arch="x86"
       image="behave.gif">
 
    <description url="http://jbehave.codehaus.org/eclipse">
