@@ -162,6 +162,30 @@ public class GameBehaviour extends UsingClassMock {
         verifyMocks();        
     }
     
+    public void shouldNotMoveGlyphLeftOrRightIfGlyphIsConstrainedByWalls() {
+        Junk junk = new Junk(3, 13);
+        class GlyphHolder {
+            private LivingGlyph glyph;
+        };
+        final GlyphHolder holder = new GlyphHolder();
+        
+        Game game = new Game(new PseudoRandomGlyphFactory(42, 3, 13) {
+            public LivingGlyph nextGlyph(CollisionDetector detector, ListenerSet glyphListeners) {
+                holder.glyph = super.nextGlyph(detector, glyphListeners);
+                return holder.glyph;
+            }
+        }, new StubHeartbeat(), 3, 13);
+        game.requestStartGame();
+        
+        Segments originalSegments = holder.glyph.getSegments();
+        
+        game.requestGlyphMovement(GlyphMovement.RIGHT);
+        ensureThat(holder.glyph.getSegments(), eq(originalSegments));
+        
+        game.requestGlyphMovement(GlyphMovement.LEFT);
+        ensureThat(holder.glyph.getSegments(), eq(originalSegments));
+    }
+    
     public void shouldEndGameAndStopHeartbeatWhenTheNewGlyphOverlapsTheJunk() {
         StubHeartbeat heartbeat = new StubHeartbeat();
         Game game = new Game(new PseudoRandomGlyphFactory(42, 7, 2), heartbeat, 7, 2); // pit is only 2 deep!

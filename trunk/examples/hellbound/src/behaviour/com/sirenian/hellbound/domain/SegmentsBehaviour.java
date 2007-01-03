@@ -157,6 +157,26 @@ public class SegmentsBehaviour extends UsingMatchers {
 		
 		ensureThat(segments.lowest(), eq(4));
 	}
+    
+    public void shouldReturnTheLeftmostXPosition() {
+        Segments segments = new Segments(
+                new Segment(4, 1), 
+                new Segment(3, 4), 
+                new Segment(2, 3), 
+                new Segment(5, 2));
+        
+        ensureThat(segments.leftmost(), eq(2));
+    }
+    
+    public void shouldReturnTheRightmostXPosition() {
+        Segments segments = new Segments(
+                new Segment(4, 1), 
+                new Segment(3, 4), 
+                new Segment(2, 3), 
+                new Segment(5, 2));
+        
+        ensureThat(segments.rightmost(), eq(5));
+    }    
 	
 	public void shouldReturnAddedSegments() {
 		Segments segments1 = new Segments(new Segment[] {

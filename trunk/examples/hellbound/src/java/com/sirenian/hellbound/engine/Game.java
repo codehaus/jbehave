@@ -32,10 +32,12 @@ public class Game implements GameRequestListener {
 
 	private LivingGlyph glyph = LivingGlyph.NULL;
 	private Junk junk = Junk.NULL;
+    private final int width;
 
 	public Game(GlyphFactory factory, Heartbeat heartbeat, int width, int height) {
 		this.factory = factory;
 		this.heartbeat = heartbeat;
+        this.width = width;
 		this.height = height;
 		gameListeners = new ListenerSet();
 		glyphListeners = new ListenerSet();
@@ -50,6 +52,8 @@ public class Game implements GameRequestListener {
 		collisionDetector = new CollisionDetector() {
 			public boolean collides(Segments segments) {
 				if (segments.lowest() >= Game.this.height) { return true; }
+                if (segments.leftmost() < 0) { return true; }
+                if (segments.rightmost() >= Game.this.width) { return true; }
 				if (junk.overlaps(segments)) { return true; }
 				return false;
 			}

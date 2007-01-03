@@ -1,6 +1,6 @@
 package com.sirenian.hellbound.scenarios;
 
-import com.sirenian.hellbound.events.ThePlayerPressesTheDownButton;
+import com.sirenian.hellbound.events.ThePlayerPressesTheDownKey;
 import com.sirenian.hellbound.events.ThePlayerPressesTheLeftKey;
 import com.sirenian.hellbound.events.ThePlayerPressesTheRightKey;
 import com.sirenian.hellbound.outcomes.TheGlyphShouldBeCentredAtTheTopOfThePit;
@@ -16,7 +16,7 @@ public class ThePlayerMovesTheGlyph extends HellboundScenario {
         then(new TheGlyphShouldMoveRight());
         when(new ThePlayerPressesTheLeftKey());
         then(new TheGlyphShouldBeCentredAtTheTopOfThePit());
-        when(new ThePlayerPressesTheDownButton());
+        when(new ThePlayerPressesTheDownKey());
         then(new TheGlyphShouldMoveDownwards());
         then(new TheHeartbeatShouldBeSkipped());
     }
