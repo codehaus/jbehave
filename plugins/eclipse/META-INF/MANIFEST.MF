@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JBehave Plugin
-Bundle-SymbolicName: jbehave.plugin.eclipse; singleton:=true
-Bundle-Version: 0.5.2
+Bundle-SymbolicName: org.jbehave.plugin.eclipse;singleton:=true
+Bundle-Version: 0.9.1
 Bundle-Activator: org.jbehave.plugin.eclipse.JBehavePlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -22,6 +22,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.views
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Bundle-Vendor: JBehave
 Bundle-ClassPath: eclipse-plugin.jar
