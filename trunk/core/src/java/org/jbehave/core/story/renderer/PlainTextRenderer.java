@@ -84,7 +84,7 @@ public class PlainTextRenderer implements Renderer {
         out.println(phrase);
     }
 
-    public void render(Object obj) {
+    public void renderAny(Object obj) {
         out.println(obj.toString());
     }
 

@@ -1,9 +1,9 @@
 package com.sirenian.hellbound.scenarios;
 
 import com.sirenian.hellbound.events.ThePlayerPressesTheDropKey;
-import com.sirenian.hellbound.outcomes.TheGlyphSegmentsShouldBecomeJunk;
+import com.sirenian.hellbound.events.TimePasses;
+import com.sirenian.hellbound.outcomes.TheGlyphShouldBecomeJunkAndTheNextGlyphShouldAppear;
 import com.sirenian.hellbound.outcomes.TheGlyphShouldFallOntoTheJunk;
-import com.sirenian.hellbound.outcomes.TheNextGlyphShouldAppear;
 
 public class ThePlayerDropsTheGlyphOntoJunk extends HellboundScenario {
 
@@ -11,7 +11,20 @@ public class ThePlayerDropsTheGlyphOntoJunk extends HellboundScenario {
         given(new ThePlayerDropsTheGlyphIntoAnEmptyPit());
         when(new ThePlayerPressesTheDropKey());
         then(new TheGlyphShouldFallOntoTheJunk());
-        then(new TheGlyphSegmentsShouldBecomeJunk());
-        then(new TheNextGlyphShouldAppear());
+        when(new TimePasses());
+        then(new TheGlyphShouldBecomeJunkAndTheNextGlyphShouldAppear(
+                "...SS.." + NL +
+                "..SS..." + NL +
+                "......." + NL +
+                "......." + NL +
+                "......." + NL +
+                "......." + NL +
+                "......." + NL +
+                "......." + NL +
+                "......." + NL +
+                "..XX..." + NL +
+                "...XX.." + NL +
+                "..XXX.." + NL +
+                "...X..." + NL));
     }
 }

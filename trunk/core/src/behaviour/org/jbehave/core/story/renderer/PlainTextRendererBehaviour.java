@@ -46,7 +46,7 @@ public class PlainTextRendererBehaviour extends UsingMatchers {
         
         PlainTextRenderer renderer = new PlainTextRenderer(printStream);
         
-        renderer.render("Custom renderable");
+        renderer.renderAny("Custom renderable");
         
         String result = byteStream.toString();
         
