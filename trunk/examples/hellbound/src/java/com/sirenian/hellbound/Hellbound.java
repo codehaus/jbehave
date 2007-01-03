@@ -46,7 +46,7 @@ public class Hellbound {
                 new ThreadedSwingQueue(),
                 new AcceleratingHeartbeat(), 
                 new PitPanel(SCALE, WIDTH, HEIGHT, COLORMAP), 
-                new PseudoRandomGlyphFactory(7, 13));
+                new PseudoRandomGlyphFactory(42, 7, 13));
     }
 
     public Hellbound(EngineQueue engineQueue, GuiQueue guiQueue,
