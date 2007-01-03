@@ -9,7 +9,7 @@
 	 <mkdir dir="build"/>
 	<eclipse.fetch elements="${elements}"		
 			    buildDirectory="."	
-			    configInfo="win32,win32,x86"
+			    
 			    directory="directory.txt"
 			    fetchTag="COPY"/>
 			    
@@ -23,7 +23,7 @@
 	<xmlproperty file="version.xml"/>
 	
 
-	<eclipse.buildScript configInfo="win32,win32,x86 &amp; linux, motif, x86" elements="${elements}" buildDirectory="build" baseLocation="${eclipse.home}" /> 
+	<eclipse.buildScript  elements="${elements}" buildDirectory="build" baseLocation="${eclipse.home}" /> 
 	
 	<ant dir="build/features/${feature}" antfile="build.xml" target="build.jars" /> 
 
