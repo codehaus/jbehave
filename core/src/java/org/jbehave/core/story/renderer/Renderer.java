@@ -27,5 +27,5 @@ public interface Renderer {
      * This method can be used by scenario components overriding the
      * narrateTo method in order to render custom descriptions.
      */
-    void render(Object obj);
+    void renderAny(Object obj);
 }

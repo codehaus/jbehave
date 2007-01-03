@@ -17,6 +17,8 @@ import com.sirenian.hellbound.util.Logger;
 
 public abstract class HellboundOutcome extends OutcomeUsingMiniMock {
 	
+    protected static final String NL = System.getProperty("line.separator");
+    
 	protected static final Segments T_SHAPE_AT_TOP = new Segments(
                 		new Segment(2, 0),
                 		new Segment(3, 0),
@@ -38,6 +40,18 @@ public abstract class HellboundOutcome extends OutcomeUsingMiniMock {
 	
 	protected abstract void verifyAnyTimeIn(World world);
 	
+    public Matcher looksLike(final String asciiRepresentation) {
+        return new Matcher() {
+            public boolean matches(Object arg) {
+                return ((RenderedPit)arg).toString().equals(asciiRepresentation);
+            }
+            
+            public String toString() {
+                return NL + asciiRepresentation;
+            }
+        };
+    }
+    
     public Matcher contains(final Segments segments, final Color color) {
     	
         return new Matcher() {

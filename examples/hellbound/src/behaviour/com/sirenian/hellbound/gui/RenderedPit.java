@@ -17,7 +17,9 @@ import com.sirenian.hellbound.domain.Segments;
 
 public class RenderedPit extends Graphics {
 
-	private final int scale;
+	private static final String NL = System.getProperty("line.separator");
+    
+    private final int scale;
 	private Color color;
 	private Map pitMap;
     private char[][] asciiRepresentation;
@@ -148,9 +150,8 @@ public class RenderedPit extends Graphics {
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(System.getProperty("line.separator"));
         for (int i = 0; i < asciiRepresentation.length; i++) {
-            buffer.append(String.valueOf(asciiRepresentation[i])).append(System.getProperty("line.separator"));
+            buffer.append(String.valueOf(asciiRepresentation[i])).append(NL);
         }
         return buffer.toString();
     }
