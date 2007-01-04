@@ -1,1 +1,1 @@
-mvn -U install:install-file -DgroupId=jbehave -DartifactId=jbehave -Dversion=1.0-SNAPSHOT -Dpackaging=jar -Dfile=../../delete_me/1.0-SNAPSHOT/jbehave.jar                                   
+mvn -U install:install-file -DgroupId=org.jbehave -DartifactId=jbehave -Dversion=1.0-SNAPSHOT -Dpackaging=jar -Dfile=../../delete_me/1.0-SNAPSHOT/dist/1.0-SNAPSHOT/jbehave-1.0-SNAPSHOT.jar                                   

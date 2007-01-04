@@ -1,10 +1,10 @@
-package jbehave.mojo;
+package org.jbehave.mojo;
 
 import java.net.MalformedURLException;
 import java.util.List;
 
-import jbehave.core.Run;
-import jbehave.core.behaviour.Behaviours;
+import org.jbehave.core.Run;
+import org.jbehave.core.behaviour.Behaviours;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

@@ -1,4 +1,4 @@
-package jbehave.it;
+package org.jbehave.it;
 
 public class SampleBehaviour {
 

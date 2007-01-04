@@ -1,4 +1,4 @@
-package jbehave.mojo;
+package org.jbehave.mojo;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import jbehave.core.behaviour.Behaviours;
+import org.jbehave.core.behaviour.Behaviours;
 
 /**
  * Extends URLClassLoader to instantiate Behaviours.
