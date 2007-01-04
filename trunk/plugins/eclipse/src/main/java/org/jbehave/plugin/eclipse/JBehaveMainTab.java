@@ -53,7 +53,7 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 public class JBehaveMainTab extends JavaLaunchTab {
 	private static final String BEHAVIOUR_CHOOSING_ERROR = "Behaviour Choosing Error";
 
-	private final Image behaviourIcon= createImage("icons/behave.gif"); //$NON-NLS-1$
+	private static final Image behaviourIcon= createImage("icons/behave.gif"); //$NON-NLS-1$
 	
 	// Project UI widgets
 	protected Text projectText;
