@@ -23,7 +23,6 @@ import org.jbehave.threaded.time.TimeoutException;
 public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	
 	public void shouldClickAButtonOnAWindow() throws Exception {
-        todo("not working on unix");
 		checkForHeadless();
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
         
@@ -54,7 +53,6 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 
 	
 	public void shouldEnterTextIntoTextComponents() throws Exception {
-        todo("fix race condition on linux");
         checkForHeadless();
         DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
 
@@ -87,7 +85,6 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	}
 	
 	public void shouldFindComponent() throws ComponentFinderException, TimeoutException  {
-        todo("not working on linux");
 	    checkForHeadless();
 	    DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
         try {
@@ -128,7 +125,6 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     }
     
     public void shouldSimulateKeyPressesForInputMap() throws TimeoutException {
-        todo("fix race condition on linux");
         checkForHeadless();
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
 		
@@ -150,7 +146,6 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     }
     
     public void shouldSimulateKeyPressesForKeyListeners() throws TimeoutException {
-        todo("fix race condition on linux");
         checkForHeadless();
         DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
         
