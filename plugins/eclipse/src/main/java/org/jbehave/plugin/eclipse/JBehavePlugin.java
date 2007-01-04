@@ -14,7 +14,7 @@ import org.osgi.framework.BundleContext;
  */
 public class JBehavePlugin extends AbstractUIPlugin {
 
-	private static final String ID = "jbehave.plugin.eclipse";
+	private static final String ID = "org.jbehave.plugin.eclipse";
 	public static final String BEHAVIOR_INTERFACE_NAME = "jbehave.core.behaviour.Behaviours";
 	//The shared instance.
 	private static JBehavePlugin plugin;
