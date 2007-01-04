@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.jbehave.plugin.eclipse.feature"
-      label="JBehave"
-      version="0.9.1"
-      provider-name="JBehave"
-      plugin="org.jbehave.eclipse"
-      image="behave.gif">
+      label="JBehave Feature"
+      version="0.9.1">
 
    <description url="http://jbehave.codehaus.org/eclipse">
       JBehave Plugin
@@ -16,7 +13,6 @@
    </copyright>
 
    <license url="http://jbehave.codehaus.org/license.html">
-      Copyright © 2003-2006 jbehave.org
 All rights reserved.
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -42,19 +38,13 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
 STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 OF THE POSSIBILITY OF SUCH DAMAGE.
-   </license>
-
-   <url>
-      <update label="JBehave Plugin for Eclipse" url="http://jbehave.codehaus.org/eclipse"/>
-   </url>
+</license>
 
    <plugin
          id="org.jbehave.plugin.eclipse"
-         os="linux,macosx,win32"
-         ws="carbon,gtk,motif,win32"
-         arch="ppc,x86"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
 
 </feature>
+

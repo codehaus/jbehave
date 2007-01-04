@@ -14,26 +14,32 @@
 			    fetchTag="COPY"/>
 			    
 	
-	<property name="featureAndPlugins" value="X"/>
-	<property name="featureOnly" value="X"/>
-	<property name="buildDirectory" value="build"/>
-	<ant  antfile="fetch_${feature}.xml"/>		
+	<ant  antfile="fetch_${feature}.xml">	
+		<property name="featureAndPlugins" value="X"/>
+		<property name="featureOnly" value="X"/>
+		<property name="buildDirectory" value="build"/>
+	</ant>
+
 
 	<xslt extension="properties" style="extract-feature-version.xslt" in="build/features/${feature}/feature.xml" out="version.xml"/>
 	<xmlproperty file="version.xml"/>
 	
 
-	<eclipse.buildScript  elements="${elements}" buildDirectory="build" baseLocation="${eclipse.home}" /> 
+	<eclipse.buildScript  elements="${elements}" children="true" buildDirectory="build" baseLocation="${eclipse.home}" /> 
+	<mkdir dir="build/site/features" /> 
+	<mkdir dir="build/site/plugins" /> 
 	
-	<ant dir="build/features/${feature}" antfile="build.xml" target="build.jars" /> 
+	
+	<ant dir="build/features/${feature}" antfile="build.xml" target="build.update.jar" >
+		<property name="feature.destination" value="../../site/features"/>
+		<property name="plugin.destination"   value="../../site/plugins"/>
+	</ant>	
 
 	<ant dir="build/features/${feature}" antfile="build.xml" target="zip.distribution" /> 
   	<!--<ant antfile="build/assemble.${feature}.all.xml"/> -->
-  
 
-		<mkdir dir="build/site" /> 
- 		<unzip dest="build/site" src="build/features/${feature}/${feature}_${feature.version}.bin.dist.zip"/>
-			
+		
+ 			
 		
 		<xslt  style="site.xslt" in="version.xml" out="build/site/site.xml"/>
 		
