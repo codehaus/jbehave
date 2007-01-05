@@ -65,20 +65,20 @@ class JBehaveRunSettingsEditor extends SettingsEditor<JBehaveRunConfiguration> {
     private JComponent createEditorUi() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        panel.add(behaviorClassInput, new GridBagMatchers(
-                0, 0, 1, 1, 1.0, 0.0, GridBagMatchers.CENTER, GridBagMatchers.HORIZONTAL,
+        panel.add(behaviorClassInput, new GridBagConstraints(
+                0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(4, 4, 0, 4), 0, 0
         ));
-        panel.add(new Label("Use classpath and JDK of module:"), new GridBagMatchers(
-                0, 1, 1, 1, 1.0, 0.0, GridBagMatchers.WEST, GridBagMatchers.HORIZONTAL,
+        panel.add(new Label("Use classpath and JDK of module:"), new GridBagConstraints(
+                0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                 new Insets(4, 4, 0, 4), 0, 0
         ));
-        panel.add(moduleComponent, new GridBagMatchers(
-                0, 2, 1, 1, 1.0, 0.0, GridBagMatchers.WEST, GridBagMatchers.HORIZONTAL,
+        panel.add(moduleComponent, new GridBagConstraints(
+                0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                 new Insets(4, 4, 0, 4), 0, 0
         ));
-        panel.add(new JPanel(), new GridBagMatchers(
-                0, 5, 1, 1, 1.0, 1.0, GridBagMatchers.CENTER, GridBagMatchers.BOTH,
+        panel.add(new JPanel(), new GridBagConstraints(
+                0, 5, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0
         ));
         return panel;

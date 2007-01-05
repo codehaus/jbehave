@@ -16,7 +16,7 @@ public class JBehaveCommandLineState extends JavaCommandLineState {
 
     protected JavaParameters createJavaParameters() throws ExecutionException {
         JavaParameters parameters = new JavaParameters();
-        parameters.setMainClass("jbehave.core.Run");
+        parameters.setMainClass("org.jbehave.core.Run");
         String behaviorClass = runConfiguration.getBehaviorClass();
         String behaviourMethod = runConfiguration.getBehaviourMethod();
         String behaviourLocator = behaviorClass;
