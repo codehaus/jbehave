@@ -48,15 +48,40 @@ public class ConfigurationState {
 		config.setAttribute(JBehaveLaunchConfiguration.ATTR_BEHAVIOUR_METHOD, behaviorMethodName);
 	}
 	
-	public boolean equals(Object object) {
-		boolean result = false;
-		if (object instanceof ConfigurationState) {
-			ConfigurationState that = (ConfigurationState) object;
-			result = projectName.equals(that.projectName) &&
-					behaviorClassName.equals(that.behaviorClassName) &&
-					behaviorMethodName.equals(that.behaviorMethodName);
-		}
+	
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((behaviorClassName == null) ? 0 : behaviorClassName.hashCode());
+		result = PRIME * result + ((behaviorMethodName == null) ? 0 : behaviorMethodName.hashCode());
+		result = PRIME * result + ((projectName == null) ? 0 : projectName.hashCode());
 		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final ConfigurationState other = (ConfigurationState) obj;
+		if (behaviorClassName == null) {
+			if (other.behaviorClassName != null)
+				return false;
+		} else if (!behaviorClassName.equals(other.behaviorClassName))
+			return false;
+		if (behaviorMethodName == null) {
+			if (other.behaviorMethodName != null)
+				return false;
+		} else if (!behaviorMethodName.equals(other.behaviorMethodName))
+			return false;
+		if (projectName == null) {
+			if (other.projectName != null)
+				return false;
+		} else if (!projectName.equals(other.projectName))
+			return false;
+		return true;
 	}
 
 	public String getName() {
