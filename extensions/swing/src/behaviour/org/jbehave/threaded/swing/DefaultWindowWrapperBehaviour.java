@@ -176,7 +176,6 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
             wrapper.closeWindow();
         }
     }
-    
 
     private void checkForHeadless() {
         new HeadlessChecker().check();
