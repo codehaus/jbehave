@@ -9,7 +9,7 @@ public class ClockedTimeouter implements Timeouter {
 	}
 
 	public void checkTime() throws TimeoutException {
-		if (endTime < clock.getTimeInMillis()) throw new TimeoutException();
+		if (endTime <= clock.getTimeInMillis()) throw new TimeoutException();
 	}
 
 	public long getTimeLeftIfAny() {

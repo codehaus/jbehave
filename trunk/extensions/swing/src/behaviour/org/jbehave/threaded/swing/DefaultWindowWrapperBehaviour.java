@@ -24,11 +24,11 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	
 	public void shouldClickAButtonOnAWindow() throws Exception {
 		checkForHeadless();
-		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+		DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
         
 		try {
-            JFrame frame = disposeOnCloseFrame();
-    		frame.setName("a.window");
+            AFrame frame = new AFrame();
+    		frame.setName(AFrame.FRAME_NAME);
     		
     		JButton button = new JButton("Press Me!");
     		button.setName("a.button");
@@ -54,11 +54,10 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	
 	public void shouldEnterTextIntoTextComponents() throws Exception {
         checkForHeadless();
-        DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+        DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
 
         try {
-            JFrame frame = disposeOnCloseFrame();
-    		frame.setName("a.window");
+            AFrame frame = new AFrame();
     		
     		JTextComponent textField = new JTextField();
     		textField.setName("a.textfield");
@@ -86,11 +85,10 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	
 	public void shouldFindComponent() throws ComponentFinderException, TimeoutException  {
 	    checkForHeadless();
-	    DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+	    DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
         try {
-    		
-    		JFrame frame = disposeOnCloseFrame();
-    		frame.setName("a.window");
+
+            AFrame frame = new AFrame();
     		
     		JPanel panel = new JPanel();
     		panel.setName("a.panel");
@@ -106,36 +104,27 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     
     public void shouldCloseWindows() throws TimeoutException {
         checkForHeadless();
-        DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
-        
-        JFrame frame = disposeOnCloseFrame();
-        frame.setName("a.window");
-        frame.setVisible(true);
+        DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
+
+        AFrame frame = new AFrame();
         
         wrapper.closeWindow();
         ensureThat(!frame.isShowing());
         frame.dispose();
     }
-
-
-    private JFrame disposeOnCloseFrame() {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        return frame;
-    }
     
     public void shouldSimulateKeyPressesForInputMap() throws TimeoutException {
         checkForHeadless();
-		DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+		DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
 		
         try {
             AFrame frame = new AFrame();            
 
-            Mock action = mock(Action.class);
+            Mock action = mock(Action.class, "Action");
             action.stubs("isEnabled").will(returnValue(true));
             action.expects("actionPerformed").with(anything());
             
-            frame.contentPanel.getActionMap().put("an action", (Action) action);
+            frame.contentPanel.getActionMap().put(AFrame.ACTION_KEY, (Action) action);
             
             wrapper.pressKeychar(' ');
             
@@ -147,15 +136,10 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     
     public void shouldSimulateKeyPressesForKeyListeners() throws TimeoutException {
         checkForHeadless();
-        DefaultWindowWrapper wrapper = new DefaultWindowWrapper("a.window");
+        DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
         
         try {
-            JFrame frame = disposeOnCloseFrame();
-            JPanel panel = new JPanel();
-            frame.setContentPane(panel);
-            frame.setName("a.window");
-            frame.pack();
-            frame.setVisible(true);
+            AFrame frame = new AFrame();
             
             Matcher spaceKeyEvent = new Matcher() {
                 public boolean matches(Object arg) {
@@ -167,7 +151,7 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
             keyListener.stubs("keyTyped").once().with(spaceKeyEvent);
             keyListener.stubs("keyPressed").once().with(spaceKeyEvent);
             keyListener.expects("keyReleased").once().with(spaceKeyEvent);
-            frame.addKeyListener((KeyListener) keyListener);    
+            frame.contentPanel.addKeyListener((KeyListener) keyListener);    
             
             wrapper.pressKeychar(' ');
             
@@ -182,12 +166,16 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     }
 
     public class AFrame extends JFrame {
+        private static final String FRAME_NAME = "a.window";
+        private static final String ACTION_KEY = "AFrame.action";
+        
+        
         private JPanel contentPanel = new JPanel();
         public AFrame() {
-            setName("a.window");
+            setName(FRAME_NAME);
             setContentPane(contentPanel);
 
-            contentPanel.getInputMap().put(KeyStroke.getKeyStroke(' '), "an action");
+            contentPanel.getInputMap().put(KeyStroke.getKeyStroke(' '), ACTION_KEY);
             
             this.pack();
             this.setVisible(true);
