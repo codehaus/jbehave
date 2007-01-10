@@ -8,26 +8,26 @@ public class ClockedTimeouterBehaviour extends UsingMiniMock {
 	
 	private PseudoClock clock = new PseudoClock();
 	
-	public void shouldTimeoutIffTimeoutHasBeenExceeded() {
+	public void shouldTimeoutIffTimeoutHasBeenEqualledOrExceeded() {
 		ClockedTimeouter timeouter = new ClockedTimeouter(clock);
 		clock.setTimeInMillis(0);
 		timeouter.start(20);
 		
-		for (int i = 1; i < 21; i++) {
+		for (int i = 1; i < 20; i++) {
 			try {
 				clock.setTimeInMillis(i);
 				timeouter.checkTime();
-				ensureThat(i, isLessThanOrEq(20));
+				ensureThat(i, isLessThan(20));
 			} catch (TimeoutException e) {
-				ensureThat(i, isGreaterThan(20));
+				ensureThat(i, isGreaterThanOrEq(20));
 			}
 		}
 	}
 
-	private Matcher isLessThanOrEq(final int time) {
+	private Matcher isLessThan(final int time) {
 		return new Matcher() {
 			public boolean matches(Object arg) {
-				return arg instanceof Long && ((Long)arg).longValue() <= time;
+				return arg instanceof Long && ((Long)arg).longValue() < time;
 			}
 				
 			public String toString() {
@@ -36,10 +36,10 @@ public class ClockedTimeouterBehaviour extends UsingMiniMock {
 		};
 	}
 	
-	private Matcher isGreaterThan(final int time) {
+	private Matcher isGreaterThanOrEq(final int time) {
 		return new Matcher() {
 			public boolean matches(Object arg) {
-				return arg instanceof Long && ((Long)arg).longValue() > time;
+				return arg instanceof Long && ((Long)arg).longValue() >= time;
 			}	
 			
 			public String toString() {

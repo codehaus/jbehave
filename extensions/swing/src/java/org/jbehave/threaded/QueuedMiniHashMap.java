@@ -9,8 +9,6 @@ import org.jbehave.threaded.time.TimeoutException;
 import org.jbehave.threaded.time.Timeouter;
 import org.jbehave.threaded.time.TimeouterFactory;
 
-
-
 /**
  * An asynchronous holder implementing some map-like features. If an object is 
  * retrieved using a key and no object is present, this set will wait for a 
