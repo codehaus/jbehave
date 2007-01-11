@@ -25,3 +25,4 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Bundle-Vendor: JBehave
 Bundle-ClassPath: eclipse-plugin.jar
+Export-Package: org.jbehave.plugin.eclipse
