@@ -1,4 +1,4 @@
-require 'rbehave/constraint'
+require 'rbehave/matcher'
 require 'rbehave/mock'
 
 module RBehave
@@ -9,7 +9,7 @@ module RBehave
   
   class Behaviour
 #    include RBehave # all the stuff at RBehave module level
-    include Constraints
+    include Matchers
     include Mocks
     
     def initialize

@@ -1,9 +1,9 @@
-require 'rbehave/constraint'
+require 'rbehave/matcher'
 
 module RBehave
   module Mocks
     class Expectation
-      include Constraints
+      include Matchers
       
       def initialize(type, method)
         @type = type
@@ -15,10 +15,10 @@ module RBehave
             
       def matches(method, *args)
         return false if @method != method
-        return true if @constraints == nil # don't care about args
-        return false if @constraints.length != args.length
-        @constraints.each_index do |i|
-          return false unless @constraints[i].matches(args[i])
+        return true if @matchers == nil # don't care about args
+        return false if @matchers.length != args.length
+        @matchers.each_index do |i|
+          return false unless @matchers[i].matches(args[i])
         end
         return true
       end
@@ -58,12 +58,12 @@ module RBehave
       end
       
       def with(*args)
-        @constraints = args.map { |arg| arg.is_a?(Constraint) ? arg : eq(arg) }
+        @matchers = args.map { |arg| arg.is_a?(Matcher) ? arg : eq(arg) }
         self
       end
       
       def with_no_arguments
-        @constraints = []
+        @matchers = []
         self
       end
       

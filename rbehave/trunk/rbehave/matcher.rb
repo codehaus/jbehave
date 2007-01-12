@@ -1,15 +1,15 @@
 require 'rbehave/exceptions'
 
 module RBehave
-  module Constraints
+  module Matchers
 
-    # superclass for all constraint types
-    class Constraint
+    # superclass for all matcher types
+    class Matcher
       def matches(arg); raise VerificationError, "matches(arg) must be overridden"; end
       def to_s; raise VerificationError, "to_s() must be overridden"; end
     end
     
-    class CustomConstraint < Constraint
+    class CustomMatcher < Matcher
       def initialize(description, &matches)
         @description, @matches = description, matches
       end
@@ -25,24 +25,24 @@ module RBehave
     end
     
     #
-    # Utility method for creating constraints
+    # Utility method for creating matchers
     #
     # Use like:
     #
     # <pre><code>
-    # def my_constraint(arg)
-    #   return constraint("description including #{arg}") do
-    #     # body of constraint goes here
+    # def my_matcher(arg)
+    #   return matcher("description including #{arg}") do
+    #     # body of matcher goes here
     #   end
     # end
-    def constraint(description, &matches)
-      return CustomConstraint.new(description, &matches)
+    def matcher(description, &matches)
+      return CustomMatcher.new(description, &matches)
     end
     
-    #========================= The Constraints ============================
+    #========================= The Matchers ============================
     
     def eq(expected)
-      return constraint("equal to <#{expected.to_s}>") do |arg|
+      return matcher("equal to <#{expected.to_s}>") do |arg|
         expected == arg
       end
     end
@@ -50,27 +50,27 @@ module RBehave
     alias :is :eq
     
     def anything
-      return constraint("anything") do |arg|
+      return matcher("anything") do |arg|
         true
       end
     end
       
     def is_true
-      return constraint("true") do |arg|
+      return matcher("true") do |arg|
         arg
       end
     end
     
     def is_false
-      return constraint("false") do |arg|
+      return matcher("false") do |arg|
         not arg
       end
     end
     
-    # string constraints
+    # string matchers
   
     def contains(fragment)
-      return constraint("string containing <#{fragment}>") do |arg|
+      return matcher("string containing <#{fragment}>") do |arg|
         if arg < Enumerable
           arg.member? fragment
         else
@@ -80,38 +80,35 @@ module RBehave
     end
     
     def starts_with(fragment)
-      return constraint("string starting with <#{fragment}>") do
+      return matcher("string starting with <#{fragment}>") do
         |arg| arg.to_s =~ /^#{fragment}/
       end
     end
     
     def ends_with(fragment)
-      return constraint("string ending with <#{fragment}>") do |arg|
+      return matcher("string ending with <#{fragment}>") do |arg|
         arg.to_s =~ /#{fragment}$/
       end
     end
     
     # logical operators
   
-    def to_constraint(c)
-      c.is_a?(Constraint) ? c : eq(c)
+    def to_matcher(c)
+      c.is_a?(Matcher) ? c : eq(c)
     end
     
     def _not(c)
-      c = to_constraint(c)
-      return constraint("not #{constraint.to_s}") do |arg|
-        result = constraint.matches(arg)
-        puts result
-        raise RuntimeError
-        not result
+      c = to_matcher(c)
+      return matcher("not #{matcher.to_s}") do |arg|
+        not matcher.matches(arg)
       end
     end
     
     alias :is_not :_not
     
     def _and(c1, c2)
-      c1, c2 = to_constraint(c1), to_constraint(c2)
-      return constraint("( #{c1.to_s} and #{c2.to_s} )") do |arg|
+      c1, c2 = to_matcher(c1), to_matcher(c2)
+      return matcher("( #{c1.to_s} and #{c2.to_s} )") do |arg|
         c1.matches(arg) && c2.matches(arg)
       end
     end
@@ -120,8 +117,8 @@ module RBehave
     alias :_both :_and
     
     def _or(c1, c2)
-      c1, c2 = to_constraint(c1), to_constraint(c2)
-      return constraint("( #{c1.to_s} or #{c2.to_s} )") do |arg|
+      c1, c2 = to_matcher(c1), to_matcher(c2)
+      return matcher("( #{c1.to_s} or #{c2.to_s} )") do |arg|
         c1.matches(arg) || c2.matches(arg)
       end
     end
@@ -130,23 +127,23 @@ module RBehave
     alias :_either :_or
     
     def _not(c)
-      c = to_constraint(c)
-      return constraint("not( #{c.to_s} )") do |arg|
+      c = to_matcher(c)
+      return matcher("not( #{c.to_s} )") do |arg|
         not c.matches(arg)
       end
     end
     
-    # add methods to Constraint class
-    class Constraint
-      def _and(constraint); both(self, constraint); end
-      def _or(constraint);  either(self, constraint); end
+    # add methods to Matcher class
+    class Matcher
+      def _and(matcher); both(self, matcher); end
+      def _or(matcher);  either(self, matcher); end
     end
   
     # ensure_that
     
-    def ensure_that arg, constraint = is_true, message = nil
-      unless constraint.matches arg
-        raise VerificationError, "Expected: " + (message ? message : "") + "[" + constraint.to_s + "]" +
+    def ensure_that arg, matcher = is_true, message = nil
+      unless matcher.matches arg
+        raise VerificationError, "Expected: " + (message ? message : "") + "[" + matcher.to_s + "]" +
           "\nbut got:  [" + arg.to_s + "]" #, clean_backtrace(caller)
       end
     end
