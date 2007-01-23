@@ -17,8 +17,10 @@ import net.sf.cotta.utils.ClassPath;
 import net.sf.cotta.utils.ClassPathLocator;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.jbehave.core.Block;
 import org.jbehave.core.Run;
@@ -29,9 +31,10 @@ import org.jbehave.core.mock.Matcher;
 public class JBehaveTaskBehaviour extends UsingMiniMock {
     private JBehaveTask task;
     private StubCommandRunner runner = new StubCommandRunner();
+    private StubFilesetParser filesetParser = new StubFilesetParser();
 
     public void setUp() {
-        task = new JBehaveTask(runner);
+        task = new JBehaveTask(runner, filesetParser);
         Project project = new Project();
         project.setCoreLoader(getClass().getClassLoader());
         task.setProject(project);
@@ -84,6 +87,19 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
         ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
         ensureThat(list, collectionContains(BehaviourClassTwo.class.getName()));
     }
+    
+    public void shouldRunBehavioursFoundInFileSet() {
+        
+        FileSet fileSet = new FileSet();
+        
+        task.addBehaviours(fileSet);
+        task.execute();
+
+        List list = Arrays.asList(runner.commandLineLog);
+        ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
+        ensureThat(list, collectionContains(BehaviourClassTwo.class.getName()));
+        
+    }    
 
     public void shouldUseClasspathFromClasspathElement() throws Exception {
         Path path = task.createClasspath();
@@ -148,6 +164,16 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
             taskLog = task;
             commandLineLog = commandline;
             return valueToReturn;
+        }
+    }
+    
+    private static class StubFilesetParser implements FilesetParser {
+        
+        public String[] getClassNames(FileSet fileset, Project project) {
+            return new String[] {
+                    BehaviourClassOne.class.getName(),
+                    BehaviourClassTwo.class.getName()
+            };
         }
     }
 }

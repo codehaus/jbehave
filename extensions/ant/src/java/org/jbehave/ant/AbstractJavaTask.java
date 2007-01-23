@@ -43,5 +43,4 @@ abstract public class AbstractJavaTask extends Task {
     public void setMaxmemory(int megabyte) {
         createJvmarg().setLine("-Xmx" + megabyte + "m");
     }
-
 }
