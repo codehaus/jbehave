@@ -191,12 +191,13 @@
 
 	<target name="run-example-behaviours" depends="compile-example-behaviours" description="Runs behaviours for examples">
 		<taskdef name="jbehave" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
-		<jbehave behavioursClassName="${example.behaviours}">
+		<jbehave><!-- behavioursClassName="${example.behaviours}"-->
 			<classpath>
 				<path refid="libs" />
 				<pathelement path="${example_classes_dir}" />
 				<pathelement path="${example_behaviour_classes_dir}" />
 			</classpath>
+			<behaviours dir="${example_behaviour_classes_dir}" includes="**/*Behaviour.class" />
 		</jbehave>
 	</target>
 

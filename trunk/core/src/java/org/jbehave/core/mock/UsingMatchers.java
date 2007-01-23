@@ -122,7 +122,7 @@ public abstract class UsingMatchers {
 	}
 
 	public CustomMatcher sameInstanceAs(final Object expectedArg) {
-	    return new CustomMatcher("same instance as <" + expectedArg.toString() + ">") {
+	    return new CustomMatcher("same instance as <" + expectedArg + ">") {
 	        public boolean matches(Object arg) {
 	            return expectedArg == arg;
 	        }
