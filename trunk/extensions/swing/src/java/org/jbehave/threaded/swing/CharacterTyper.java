@@ -21,8 +21,7 @@ import org.jbehave.core.threaded.TimeoutException;
  */
 class CharacterTyper {
 
-    private static final String ACTION_KEY = "CharacterTyper.action";
-    private static final String TEXT_TYPING_UNSUPPORTED = "Text typing not supported for your Swing library.";
+    private static final String TEXT_TYPING_UNSUPPORTED = "Text typing is not supported for your Swing library.";
     
     private EventQueue sysQueue;
     private Idler idler;
