@@ -13,7 +13,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import org.jbehave.core.exception.PendingException;
-import org.jbehave.core.threaded.QueuedMiniHashMap;
+import org.jbehave.core.threaded.QueuedObjectHolder;
 import org.jbehave.core.threaded.TimeoutException;
 
 /**
@@ -87,7 +87,7 @@ class CharacterTyper {
     }
         
     private class QueueingKeyAdapter extends KeyAdapter {
-        private QueuedMiniHashMap map = new QueuedMiniHashMap();
+        private QueuedObjectHolder holder = new QueuedObjectHolder();
         private final Component component;
         
         public QueueingKeyAdapter(Component component) {
@@ -96,11 +96,11 @@ class CharacterTyper {
             component.addKeyListener(this);
         }
         public void keyTyped(KeyEvent e) {
-            map.put("keyTyped", e);
+            holder.set(e);
         }
         public void waitForEvent() {
             try {
-                map.get("keyTyped", 1000);
+                holder.get(1000);
             } catch (TimeoutException e) {
                 throw new PendingException(TEXT_TYPING_UNSUPPORTED);
             }
