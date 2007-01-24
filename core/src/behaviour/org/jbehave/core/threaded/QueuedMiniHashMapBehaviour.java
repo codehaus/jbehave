@@ -1,9 +1,7 @@
-package org.jbehave.threaded;
+package org.jbehave.core.threaded;
 
 import org.jbehave.core.minimock.UsingMiniMock;
-import org.jbehave.threaded.time.ClockedTimeouterFactory;
-import org.jbehave.threaded.time.PseudoClock;
-import org.jbehave.threaded.time.TimeoutException;
+import org.jbehave.core.threaded.QueuedMiniHashMap;
 
 
 

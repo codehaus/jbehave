@@ -2,7 +2,7 @@ package org.jbehave.threaded.swing;
 
 import java.awt.Component;
 
-import org.jbehave.threaded.time.TimeoutException;
+import org.jbehave.core.threaded.TimeoutException;
 
 
 

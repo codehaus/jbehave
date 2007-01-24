@@ -9,7 +9,7 @@ public class AllBehaviours implements Behaviours {
 				org.jbehave.ant.AllBehaviours.class,
 				org.jbehave.jmock.AllBehaviours.class,
 				org.jbehave.junit.AllBehaviours.class,
-                org.jbehave.threaded.AllBehaviours.class
+                org.jbehave.threaded.swing.AllBehaviours.class
 		};
 	}
 }

@@ -11,8 +11,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractButton;
 import javax.swing.text.JTextComponent;
 
-import org.jbehave.threaded.WindowGrabber;
-import org.jbehave.threaded.time.TimeoutException;
+import org.jbehave.core.threaded.TimeoutException;
 
 
 public class DefaultWindowWrapper implements WindowWrapper {

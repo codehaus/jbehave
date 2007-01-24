@@ -1,4 +1,4 @@
-package org.jbehave.threaded.time;
+package org.jbehave.core.threaded;
 
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;

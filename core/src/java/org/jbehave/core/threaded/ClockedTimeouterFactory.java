@@ -1,4 +1,4 @@
-package org.jbehave.threaded.time;
+package org.jbehave.core.threaded;
 
 public class ClockedTimeouterFactory implements TimeouterFactory {
 	

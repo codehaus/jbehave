@@ -1,4 +1,4 @@
-package org.jbehave.threaded;
+package org.jbehave.threaded.swing;
 
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
@@ -6,7 +6,9 @@ import java.awt.Window;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 
-import org.jbehave.threaded.time.TimeoutException;
+import org.jbehave.core.threaded.QueuedMiniHashMap;
+import org.jbehave.core.threaded.QueuedMiniMap;
+import org.jbehave.core.threaded.TimeoutException;
 
 
 

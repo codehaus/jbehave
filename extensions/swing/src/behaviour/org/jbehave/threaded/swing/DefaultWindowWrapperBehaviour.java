@@ -17,7 +17,7 @@ import javax.swing.text.JTextComponent;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.Mock;
-import org.jbehave.threaded.time.TimeoutException;
+import org.jbehave.core.threaded.TimeoutException;
 
 
 public class DefaultWindowWrapperBehaviour extends UsingMiniMock {

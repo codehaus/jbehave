@@ -1,6 +1,5 @@
-package org.jbehave.threaded;
+package org.jbehave.core.threaded;
 
-import org.jbehave.threaded.time.TimeoutException;
 
 public interface QueuedMiniMap {
     
