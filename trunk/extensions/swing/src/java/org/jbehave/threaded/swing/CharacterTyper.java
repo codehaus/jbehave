@@ -13,8 +13,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import org.jbehave.core.exception.PendingException;
-import org.jbehave.threaded.QueuedMiniHashMap;
-import org.jbehave.threaded.time.TimeoutException;
+import org.jbehave.core.threaded.QueuedMiniHashMap;
+import org.jbehave.core.threaded.TimeoutException;
 
 /**
  * Used for pressing or typing all keys which have valid characters associated with them.

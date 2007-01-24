@@ -1,4 +1,4 @@
-package org.jbehave.threaded.time;
+package org.jbehave.core.threaded;
 
 import org.jbehave.threaded.swing.SwingBehaviourException;
 

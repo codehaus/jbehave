@@ -1,12 +1,14 @@
-package org.jbehave.threaded;
+package org.jbehave.threaded.swing;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
+import org.jbehave.core.threaded.QueuedMiniMap;
+import org.jbehave.core.threaded.TimeoutException;
 import org.jbehave.threaded.swing.HeadlessChecker;
-import org.jbehave.threaded.time.TimeoutException;
+import org.jbehave.threaded.swing.WindowGrabber;
 
 
 

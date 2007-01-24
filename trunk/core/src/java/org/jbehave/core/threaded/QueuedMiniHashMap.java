@@ -1,13 +1,9 @@
-package org.jbehave.threaded;
+package org.jbehave.core.threaded;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jbehave.threaded.time.ClockedTimeouterFactory;
-import org.jbehave.threaded.time.TimeoutException;
-import org.jbehave.threaded.time.Timeouter;
-import org.jbehave.threaded.time.TimeouterFactory;
 
 /**
  * An asynchronous holder implementing some map-like features. If an object is 
@@ -15,24 +11,48 @@ import org.jbehave.threaded.time.TimeouterFactory;
  * matching object.
  */
 public class QueuedMiniHashMap implements QueuedMiniMap {
-        
+    public static final long DEFAULT_TIMEOUT = 30000;
+    
     private Map map = Collections.synchronizedMap(new HashMap());
     private Object waitingPlace = new Object();
     private TimeouterFactory timeouterFactory;
+    private long timeout;
     
+    /**
+     * Constructs a map with a default timeout of 30 seconds.
+     */
     public QueuedMiniHashMap() {
     	this(new ClockedTimeouterFactory());
     }
     
-    public QueuedMiniHashMap(TimeouterFactory timeouterFactory) {
-        this.timeouterFactory = timeouterFactory;
+    /**
+     * @param timeoutInMillis overrides the map's timeout value.
+     */
+    public QueuedMiniHashMap(long timeoutInMillis) {
+        this(new ClockedTimeouterFactory(), timeoutInMillis);
     }
     
+    public QueuedMiniHashMap(TimeouterFactory timeouterFactory) {
+        this(timeouterFactory, DEFAULT_TIMEOUT);
+    }
+    
+    /**
+     * @param timeoutInMillis overrides the map's timeout value.
+     */
+    public QueuedMiniHashMap(TimeouterFactory timeouterFactory, long timeoutInMillis) {
+        this.timeouterFactory = timeouterFactory;
+        timeout = timeoutInMillis;
+    }
+
     public void put(Object key, Object value) {
         map.put(key, value);
 		synchronized(waitingPlace) {
 			waitingPlace.notifyAll();
 		}
+    }
+    
+    public Object get(Object key) throws TimeoutException {
+        return get(key, timeout);
     }
     
     public Object get(Object key, long timeout) throws TimeoutException {

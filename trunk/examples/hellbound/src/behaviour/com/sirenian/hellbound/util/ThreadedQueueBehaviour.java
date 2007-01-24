@@ -16,13 +16,16 @@ public class ThreadedQueueBehaviour extends UsingMiniMock {
     public void shouldRethrowCaughtExceptionsInCallingThreadThenTerminate() throws Exception {
         final ThreadedQueue queue = new ThreadedQueue("test queue") {
             protected void perform(Runnable action) {
-                throw new RuntimeException("An exception occurred");
+                action.run();
             }
         };
         
         Exception exception = runAndCatch(Throwable.class, new Block() {
             public void run() throws Exception {
-                queue.queue(new Runnable(){ public void run() {}});
+                queue.queue(new Runnable(){ public void run() {
+                    
+                    throw new RuntimeException("An exception occurred");
+                }});
             }
         });
         

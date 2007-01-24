@@ -7,7 +7,6 @@
  */
 package org.jbehave.ant;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,7 +16,6 @@ import net.sf.cotta.utils.ClassPath;
 import net.sf.cotta.utils.ClassPathLocator;
 
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.jbehave.core.Run;

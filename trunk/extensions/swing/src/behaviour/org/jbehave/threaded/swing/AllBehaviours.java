@@ -1,11 +1,8 @@
-package org.jbehave.threaded;
+package org.jbehave.threaded.swing;
 
 import org.jbehave.core.behaviour.Behaviours;
-import org.jbehave.threaded.swing.ComponentFinderBehaviour;
-import org.jbehave.threaded.swing.DefaultWindowWrapperBehaviour;
-import org.jbehave.threaded.swing.HeadlessCheckerBehaviour;
-import org.jbehave.threaded.swing.NamedComponentFilterBehaviour;
-import org.jbehave.threaded.time.ClockedTimeouterBehaviour;
+import org.jbehave.core.threaded.ClockedTimeouterBehaviour;
+import org.jbehave.core.threaded.QueuedMiniHashMapBehaviour;
 
 
 

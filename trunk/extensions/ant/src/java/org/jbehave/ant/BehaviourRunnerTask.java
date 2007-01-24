@@ -1,9 +1,5 @@
 package org.jbehave.ant;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Path;
 import org.jbehave.core.Run;
@@ -50,6 +46,4 @@ public class BehaviourRunnerTask extends AbstractJavaTask {
         Path classPath = commandLine.createClasspath(getProject());
         return getProject().createClassLoader(classPath);
     }
-
-
 }
