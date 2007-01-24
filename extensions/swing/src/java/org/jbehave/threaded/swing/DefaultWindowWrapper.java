@@ -20,6 +20,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	private static final WindowGrabber grabber = new WindowGrabber();
     
 	private final CharacterTyper typer;
+    private final ButtonClicker clicker;
 	
 	private final String windowName;
 	private final ComponentFinder finder;
@@ -39,6 +40,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 		sysQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
 		idler = new Idler();
         typer = new CharacterTyper();
+        clicker = new ButtonClicker();
 	}
 
 	public void closeWindow() throws TimeoutException {
@@ -49,8 +51,8 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	public void clickButton(String componentName) throws ComponentFinderException, TimeoutException {
 		AbstractButton button = (AbstractButton) finder.findExactComponent(
 				getOpenWindow(), new NamedComponentFilter(componentName));
-        button.doClick(200);
-		idler.waitForIdle();
+        clicker.click(button);
+
 	}
 
 	public void enterText(String componentName, String text) throws ComponentFinderException, TimeoutException {

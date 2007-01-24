@@ -23,7 +23,6 @@ import org.jbehave.core.threaded.TimeoutException;
 public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	
 	public void shouldClickAButtonOnAWindow() throws Exception {
-        todo("Does not work on Mac");
 		checkForHeadless();
 		DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
         
