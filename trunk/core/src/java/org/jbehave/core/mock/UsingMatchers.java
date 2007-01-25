@@ -121,6 +121,10 @@ public abstract class UsingMatchers {
 	    };
 	}
 
+	public CustomMatcher is(Object expectedArg) {
+	    return sameInstanceAs(expectedArg);
+    }
+
 	public CustomMatcher sameInstanceAs(final Object expectedArg) {
 	    return new CustomMatcher("same instance as <" + expectedArg + ">") {
 	        public boolean matches(Object arg) {

@@ -22,6 +22,10 @@ public abstract class ThreadedQueue implements Queue {
     private final String queueName;
     
     protected ThreadedQueue(String queueName) {
+        this(queueName, ErrorHandler.NULL);
+    }
+    
+    protected ThreadedQueue(String queueName, final ErrorHandler handler) {
         this.queueName = queueName;
         Runnable runnable = new Runnable() {
             public void run() {
@@ -32,7 +36,7 @@ public abstract class ThreadedQueue implements Queue {
                             runAllInList(afterEmptyEventList);
                             waitForNextRequest();
                         } catch (Throwable t) {
-                            throwable = t;
+                            handler.handle(t);
                         }
                     }
 
@@ -41,9 +45,6 @@ public abstract class ThreadedQueue implements Queue {
         };
         Logger.debug(this, "Starting thread for " + queueName);
         new Thread(runnable, queueName).start();
-        if (throwable != null) {
-            throw new RuntimeException(throwable);
-        }
     }
     
     public void stop() {
@@ -74,6 +75,9 @@ public abstract class ThreadedQueue implements Queue {
     protected abstract void perform(Runnable action);
 
     protected void queue(Runnable runnable) {
+        if (throwable != null) {
+            throw new RuntimeException("Throwable received in queue: " + throwable);
+        }
         synchronized(eventList) {
             eventList.add(runnable);
             eventList.notifyAll();
