@@ -1,7 +1,11 @@
 package com.sirenian.hellbound.util;
 
-import org.jbehave.core.Block;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
 import org.jbehave.core.minimock.UsingMiniMock;
+import org.jbehave.core.mock.Mock;
+import org.jbehave.core.threaded.QueuedObjectHolder;
 
 public class ThreadedQueueBehaviour extends UsingMiniMock {
     
@@ -13,22 +17,28 @@ public class ThreadedQueueBehaviour extends UsingMiniMock {
     	// Can't think how to test this.
     }
     
-    public void shouldRethrowCaughtExceptionsInCallingThreadThenTerminate() throws Exception {
-        final ThreadedQueue queue = new ThreadedQueue("test queue") {
+    public void shouldPassCaughtExceptionsToHandler() throws Exception {
+        final QueuedObjectHolder exceptionHolder = new QueuedObjectHolder();
+        final RuntimeException exception = new RuntimeException("An exception occurred");
+        
+        Mock handler = mock(ErrorHandler.class);
+        handler.expects("handle").will(new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                exceptionHolder.set(args[0]);
+                return null;
+            }
+        });
+        
+        ThreadedQueue queue = new ThreadedQueue("test queue", (ErrorHandler) handler) {
             protected void perform(Runnable action) {
                 action.run();
             }
         };
         
-        Exception exception = runAndCatch(Throwable.class, new Block() {
-            public void run() throws Exception {
-                queue.queue(new Runnable(){ public void run() {
-                    
-                    throw new RuntimeException("An exception occurred");
-                }});
-            }
-        });
-        
-        ensureThat(exception, isNotNull());
+        queue.queue(new Runnable(){ public void run() {
+            throw exception;
+        }});
+
+        ensureThat(exceptionHolder.get(), is(exception));
     }
 }
