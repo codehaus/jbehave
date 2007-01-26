@@ -12,10 +12,6 @@ abstract public class AbstractJavaTask extends Task {
     protected CommandlineJava commandLine = new CommandlineJava();
     private CommandRunner runner;
 
-    public AbstractJavaTask() {
-        this(new CommandRunnerImpl());
-    }
-
     public AbstractJavaTask(CommandRunner commandRunner) {
         this.runner = commandRunner;
     }

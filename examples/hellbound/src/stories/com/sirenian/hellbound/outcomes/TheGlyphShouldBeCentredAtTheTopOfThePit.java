@@ -9,7 +9,7 @@ import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segments;
 import com.sirenian.hellbound.domain.glyph.GlyphType;
 import com.sirenian.hellbound.gui.RenderedPit;
-import com.sirenian.hellbound.stories.WorldKey;
+import com.sirenian.hellbound.stories.util.WorldKey;
 
 public class TheGlyphShouldBeCentredAtTheTopOfThePit extends HellboundOutcome {
 	public void verifyAnyTimeIn(World world) {

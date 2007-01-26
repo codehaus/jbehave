@@ -12,6 +12,10 @@ import org.jbehave.core.behaviour.Behaviours;
 */
 public class BehaviourRunnerTask extends AbstractJavaTask {
     
+    public BehaviourRunnerTask() {
+        super(new CommandRunnerImpl());
+    }
+
     private String behavioursClassName;
     private Run runner = new Run(System.out);
 

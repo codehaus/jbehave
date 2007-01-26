@@ -1,10 +1,8 @@
-package com.sirenian.hellbound.stories;
+package com.sirenian.hellbound.scenarios;
 
 import com.sirenian.hellbound.events.ThePlayerPressesTheDownKey;
 import com.sirenian.hellbound.events.ThePlayerPressesTheDropKey;
 import com.sirenian.hellbound.outcomes.TheGlyphShouldBecomeJunkAndTheNextGlyphShouldAppear;
-import com.sirenian.hellbound.scenarios.HellboundScenario;
-import com.sirenian.hellbound.scenarios.TheFirstGlyphIsDisplayedOnTheBoard;
 
 public class TheGlyphWillNotMoveDown extends HellboundScenario {
 

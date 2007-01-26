@@ -48,10 +48,8 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
     }
 
     public void shouldRunASingleBehaviourClass() throws Exception {
-        BehaviourClassDetails behaviourClass = task.createVerify();
-        behaviourClass.setName(BehaviourClassOne.class.getName());
+        task.setBehavioursClassName(BehaviourClassOne.class.getName());
         runner.valueToReturn = 0;
-
         task.execute();
 
         ensureThat(runner.taskLog, sameInstanceAs(task));
@@ -71,20 +69,6 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
                 return "Collection that contains <" + item + ">";
             }
         };
-    }
-
-    public void shouldRunMultipleBehaviourClasses() throws Exception {
-        BehaviourClassDetails spec = task.createVerify();
-        spec.setName(BehaviourClassOne.class.getName());
-        BehaviourClassDetails spec2 = task.createVerify();
-        spec2.setName(BehaviourClassTwo.class.getName());
-        runner.valueToReturn = 0;
-
-        task.execute();
-
-        List list = Arrays.asList(runner.commandLineLog);
-        ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
-        ensureThat(list, collectionContains(BehaviourClassTwo.class.getName()));
     }
     
     public void shouldRunBehavioursFoundInFileSet() {
@@ -108,7 +92,7 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
         String pathToRuntimeJar = classPath.path();
         element.setPath(pathToRuntimeJar);
         
-        task.createVerify().setName(BehaviourClassOne.class.getName());
+        task.setBehavioursClassName(BehaviourClassOne.class.getName());
 
         task.execute();
 
@@ -122,7 +106,7 @@ public class JBehaveTaskBehaviour extends UsingMiniMock {
 
     public void shouldFailTheBuildWhenVerificationFails() throws Exception {
         final String behaviourClassName = FailingBehaviourClass.class.getName();
-        task.createVerify().setName(behaviourClassName);
+        task.setBehavioursClassName(behaviourClassName);
         runner.valueToReturn = 1;
 
         Exception exception = runAndCatch(BuildException.class, new Block() {

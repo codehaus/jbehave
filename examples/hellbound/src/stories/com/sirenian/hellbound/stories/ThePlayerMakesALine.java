@@ -3,8 +3,9 @@ package com.sirenian.hellbound.stories;
 import org.jbehave.core.story.domain.Narrative;
 
 import com.sirenian.hellbound.scenarios.ThePlayerDropsTheGlyphToMakeALine;
+import com.sirenian.hellbound.stories.util.HellboundStoryBase;
 
-public class ThePlayerMakesALine extends HellboundStory {
+public class ThePlayerMakesALine extends HellboundStoryBase {
     
     
     public ThePlayerMakesALine() {

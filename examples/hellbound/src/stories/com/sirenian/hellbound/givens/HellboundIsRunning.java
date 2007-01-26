@@ -14,7 +14,7 @@ import com.sirenian.hellbound.engine.ThreadedEngineQueue;
 import com.sirenian.hellbound.gui.PitPanel;
 import com.sirenian.hellbound.gui.RenderedPit;
 import com.sirenian.hellbound.gui.ThreadedSwingQueue;
-import com.sirenian.hellbound.stories.WorldKey;
+import com.sirenian.hellbound.stories.util.WorldKey;
 import com.sirenian.hellbound.util.Logger;
 
 public class HellboundIsRunning extends HellboundGiven implements CleansUpWorld {
