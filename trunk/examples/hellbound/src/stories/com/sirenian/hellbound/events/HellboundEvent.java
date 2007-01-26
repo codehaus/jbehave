@@ -5,8 +5,8 @@ import org.jbehave.core.story.domain.World;
 import org.jbehave.threaded.swing.SwingBehaviourException;
 import org.jbehave.threaded.swing.WindowWrapper;
 
-import com.sirenian.hellbound.stories.Idler;
-import com.sirenian.hellbound.stories.WorldKey;
+import com.sirenian.hellbound.stories.util.Idler;
+import com.sirenian.hellbound.stories.util.WorldKey;
 import com.sirenian.hellbound.util.Logger;
 
 public abstract class HellboundEvent extends EventUsingMiniMock {

@@ -1,4 +1,4 @@
-package com.sirenian.hellbound.stories;
+package com.sirenian.hellbound.stories.util;
 
 import org.jbehave.core.story.domain.World;
 

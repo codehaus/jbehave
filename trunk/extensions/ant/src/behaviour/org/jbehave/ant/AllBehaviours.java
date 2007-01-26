@@ -16,7 +16,8 @@ public class AllBehaviours implements Behaviours {
 
     public Class[] getBehaviours() {
         return new Class[] {
-            JBehaveTaskBehaviour.class
+            JBehaveTaskBehaviour.class,
+            JBehaveStoryTaskBehaviour.class
         };
     }
 }

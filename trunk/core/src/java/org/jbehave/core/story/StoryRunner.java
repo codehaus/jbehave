@@ -56,7 +56,9 @@ public class StoryRunner {
     public static void main(String[] args) {
         try {
             StoryRunner runner = new StoryRunner();
-            runner.run(args[0], System.out);
+            for (int i = 0; i < args.length; i++) {
+                runner.run(args[i], System.out);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

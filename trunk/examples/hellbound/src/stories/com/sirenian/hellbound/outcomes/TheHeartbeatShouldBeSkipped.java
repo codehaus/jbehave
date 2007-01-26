@@ -3,7 +3,7 @@ package com.sirenian.hellbound.outcomes;
 import org.jbehave.core.story.domain.World;
 
 import com.sirenian.hellbound.givens.ForcedHeartbeat;
-import com.sirenian.hellbound.stories.WorldKey;
+import com.sirenian.hellbound.stories.util.WorldKey;
 
 
 public class TheHeartbeatShouldBeSkipped extends HellboundOutcome {

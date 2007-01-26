@@ -8,7 +8,7 @@ import org.jbehave.threaded.swing.WindowWrapper;
 
 import com.sirenian.hellbound.gui.ComponentNames;
 import com.sirenian.hellbound.outcomes.HellboundOutcome;
-import com.sirenian.hellbound.stories.WorldKey;
+import com.sirenian.hellbound.stories.util.WorldKey;
 
 public class TheGameShouldBeOver extends HellboundOutcome {
 
