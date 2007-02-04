@@ -63,13 +63,13 @@
         <repository>
             <id>codehaus-jbehave-repository</id>
             <name>Codehaus jBehave Repository</name>
-            <url>dav:https://dav.codehaus.org/dist/jbehave/</url>
+            <url>dav:https://dav.codehaus.org/repository/jbehave/</url>
         </repository>
         <snapshotRepository>
             <id>codehaus-jbehave-snapshot-repository</id>
             <name>Codehaus jBehave Snapshot Repository</name>
             <url>
-                dav:https://dav.codehaus.org/snapshots.dist/jbehave/
+                dav:https://dav.codehaus.org/snapshots.repository/jbehave/
             </url>
         </snapshotRepository>
         <site>
