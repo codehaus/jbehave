@@ -22,7 +22,7 @@
 	<classpathentry kind="src" path="examples/hellbound/src/java"/>
 	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
-	<classpathentry kind="src" path="sandbox/src/java"/>
+	<classpathentry kind="src" path="sandbox/antlr/src/java"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/fit-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
