@@ -6,8 +6,6 @@
 	<classpathentry kind="src" path="extensions/ant/src/behaviour"/>
     <classpathentry kind="src" path="extensions/classmocks/src/behaviour"/>
     <classpathentry kind="src" path="extensions/classmocks/src/java"/>
-	<classpathentry kind="src" path="extensions/fit/src/java"/>
-	<classpathentry kind="src" path="extensions/fit/src/test"/>
 	<classpathentry kind="src" path="extensions/jmock/src/java"/>
 	<classpathentry kind="src" path="extensions/jmock/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/junit/src/java"/>
@@ -23,6 +21,8 @@
 	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
 	<classpathentry kind="src" path="sandbox/antlr/src/java"/>
+    <classpathentry kind="src" path="sandbox/fit/src/java"/>
+    <classpathentry kind="src" path="sandbox/fit/src/test"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/fit-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
