@@ -11,10 +11,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
- * Mojo to run Behaviours via Main CLI
+ * Mojo to run Behaviours
  * 
  * @author Mauro Talevi
- * @goal run
+ * @goal run-behaviours
  */
 public class BehaviourRunnerMojo  extends AbstractMojo {
     

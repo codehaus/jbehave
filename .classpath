@@ -4,8 +4,8 @@
 	<classpathentry kind="src" path="core/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/ant/src/java"/>
 	<classpathentry kind="src" path="extensions/ant/src/behaviour"/>
-    <classpathentry kind="src" path="extensions/classmocks/src/behaviour"/>
-    <classpathentry kind="src" path="extensions/classmocks/src/java"/>
+	<classpathentry kind="src" path="extensions/classmocks/src/behaviour"/>
+	<classpathentry kind="src" path="extensions/classmocks/src/java"/>
 	<classpathentry kind="src" path="extensions/jmock/src/java"/>
 	<classpathentry kind="src" path="extensions/jmock/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/junit/src/java"/>
@@ -21,8 +21,11 @@
 	<classpathentry kind="src" path="examples/hellbound/src/behaviour"/>
 	<classpathentry kind="src" path="examples/hellbound/src/stories"/>
 	<classpathentry kind="src" path="sandbox/antlr/src/java"/>
-    <classpathentry kind="src" path="sandbox/fit/src/java"/>
-    <classpathentry kind="src" path="sandbox/fit/src/test"/>
+	<classpathentry kind="src" path="sandbox/fit/src/java"/>
+	<classpathentry kind="src" path="sandbox/fit/src/test"/>
+	<classpathentry kind="src" path="plugins/maven/src/main/java"/>
+	<classpathentry kind="src" path="plugins/maven/src/it/src/main/java"/>
+	<classpathentry kind="lib" path="lib/cotta/cotta-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/fit-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
@@ -32,8 +35,9 @@
 	<classpathentry kind="lib" path="lib/extensions/sablecc-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/velocity-dep-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/proxytoys-0.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/cotta/cotta-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/ant-1.6.5.jar"/>
+	<classpathentry kind="lib" path="lib/plugins/maven-plugin-api-2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

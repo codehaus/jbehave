@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.jbehave</groupId>
-	<artifactId>jbehave-maven-plugin-it-test1</artifactId>
+	<artifactId>jbehave-maven-plugin-it-test2</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>jBehave Maven Plugin Integration Test 1</name>
+	<name>jBehave Maven Plugin Integration Test 2</name>
 
 	<dependencies>
 		<dependency>
@@ -19,19 +19,28 @@
 	
 	<build>
 		<sourceDirectory>${basedir}/../src/main</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${basedir}/../src/main/java</directory>
+                <includes>
+                    <include>**/*.story</include>
+                </includes>
+            </resource>
+        </resources>        
 		<plugins>
 			<plugin>
 				<groupId>org.jbehave</groupId>
 				<artifactId>jbehave-maven-plugin</artifactId>
 				<executions>				
 					<execution>
-						<id>run-behaviours</id>
+						<id>run-story</id>
 						<phase>integration-test</phase>
 						<configuration>
-							<behavioursClassName>org.jbehave.it.ItBehaviours</behavioursClassName>
+							<storyPath>org/jbehave/it/stories/it.story</storyPath>
+                            <storyPackage>org.jbehave.it.stories</storyPackage>
 						</configuration>		
 						<goals>
-							<goal>run-behaviours</goal>
+							<goal>run-story</goal>
 						</goals>
 					</execution>
 				</executions>
