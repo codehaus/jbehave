@@ -1,3 +1,10 @@
+/*
+ * Created on 19-Jul-2004
+ * 
+ * (c) 2003-2004 ThoughtWorks
+ * 
+ * See license.txt for licence details
+ */
 package org.jbehave.ant;
 
 
@@ -15,22 +22,42 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.jbehave.core.Block;
+import org.jbehave.core.BehaviourRunner;
+import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
-import org.jbehave.core.mock.UsingMatchers;
 
-public class JBehaveStoryTaskBehaviour extends UsingMatchers {
 
+public class BehaviourRunnerTaskBehaviour extends UsingMiniMock {
+    private BehaviourRunnerTask task;
     private StubCommandRunner runner = new StubCommandRunner();
-    private JBehaveStoryTask task = new JBehaveStoryTask();
     private StubFilesetParser filesetParser = new StubFilesetParser();
-    
+
     public void setUp() {
-        task = new JBehaveStoryTask(runner, filesetParser);
+        task = new BehaviourRunnerTask(runner, filesetParser);
         Project project = new Project();
         project.setCoreLoader(getClass().getClassLoader());
         task.setProject(project);
+        Path path = task.createClasspath();
+        addToPathContains(path, getClass());
+        addToPathContains(path, BehaviourRunner.class);
     }
-    
+
+    private void addToPathContains(Path path, Class aClass) {
+        ClassPathLocator behaviourClassPathLocator = new ClassPathLocator(aClass);
+        path.createPathElement().setLocation(new File(behaviourClassPathLocator.locate().path()));
+    }
+
+    public void shouldRunASingleBehaviourClass() throws Exception {
+        task.setBehavioursClassName(BehaviourClassOne.class.getName());
+        runner.valueToReturn = 0;
+        task.execute();
+
+        ensureThat(runner.taskLog, sameInstanceAs(task));
+        String[] actualCommand = runner.commandLineLog;
+        ensureThat(actualCommand[0].matches(".*java.*"), eq(true));
+        List list = Arrays.asList(actualCommand);
+        ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
+    }
 
     private Matcher collectionContains(final Object item) {
         return new Matcher() {
@@ -44,29 +71,16 @@ public class JBehaveStoryTaskBehaviour extends UsingMatchers {
         };
     }
     
-    public void shouldRunASingleStoryClass() throws Exception {
-        task.setStoryClassName(StoryClassOne.class.getName());
-        runner.valueToReturn = 0;
-
-        task.execute();
-
-        ensureThat(runner.taskLog, sameInstanceAs(task));
-        String[] actualCommand = runner.commandLineLog;
-        ensureThat(actualCommand[0].matches(".*java.*"), eq(true));
-        List list = Arrays.asList(actualCommand);
-        ensureThat(list, collectionContains(StoryClassOne.class.getName()));
-    }
-    
-   public void shouldRunStoriesFoundInFileSet() {
+    public void shouldRunBehavioursFoundInFileSet() {
         
         FileSet fileSet = new FileSet();
         
-        task.addStories(fileSet);
+        task.addBehaviours(fileSet);
         task.execute();
 
         List list = Arrays.asList(runner.commandLineLog);
-        ensureThat(list, collectionContains(StoryClassOne.class.getName()));
-        ensureThat(list, collectionContains(StoryClassTwo.class.getName()));
+        ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
+        ensureThat(list, collectionContains(BehaviourClassTwo.class.getName()));
         
     }    
 
@@ -78,7 +92,7 @@ public class JBehaveStoryTaskBehaviour extends UsingMatchers {
         String pathToRuntimeJar = classPath.path();
         element.setPath(pathToRuntimeJar);
         
-        task.setStoryClassName(BehaviourClassOne.class.getName());
+        task.setBehavioursClassName(BehaviourClassOne.class.getName());
 
         task.execute();
 
@@ -91,8 +105,8 @@ public class JBehaveStoryTaskBehaviour extends UsingMatchers {
     }
 
     public void shouldFailTheBuildWhenVerificationFails() throws Exception {
-        final String storyClassName = FailingStoryClass.class.getName();
-        task.setStoryClassName(storyClassName);
+        final String behaviourClassName = FailingBehaviourClass.class.getName();
+        task.setBehavioursClassName(behaviourClassName);
         runner.valueToReturn = 1;
 
         Exception exception = runAndCatch(BuildException.class, new Block() {
@@ -101,8 +115,29 @@ public class JBehaveStoryTaskBehaviour extends UsingMatchers {
             }
         });
         ensureThat(exception, isNotNull());
-    }    
+    }
+
     
+/* TODO
+    public void shouldFailTheBuildWhenFirstSpecFails() throws Exception {
+        // setup
+        task.createVerify().setName("jbehave.extensions.ant.FailingSpec");
+        task.createVerify().setName("jbehave.extensions.ant.SpecOne");
+        BehaviourClassOne.wasCalled = false; // i hate this!
+
+        // execute
+        ensureThrows(BuildException.class, new Block() {
+            public void run() {
+                task.execute();
+            }
+        });
+
+        // verify
+        Ensure.that("SpecOne should not have been run", !BehaviourClassOne.wasCalled);
+    }
+
+*/
+
     private static class StubCommandRunner implements CommandRunner {
         private int valueToReturn;
         private Task taskLog;
@@ -119,9 +154,9 @@ public class JBehaveStoryTaskBehaviour extends UsingMatchers {
         
         public String[] getClassNames(FileSet fileset, Project project) {
             return new String[] {
-                    StoryClassOne.class.getName(),
-                    StoryClassTwo.class.getName()
+                    BehaviourClassOne.class.getName(),
+                    BehaviourClassTwo.class.getName()
             };
         }
-    }    
+    }
 }

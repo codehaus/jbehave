@@ -43,13 +43,13 @@ public class RunBehaviour extends UsingMatchers {
 	
 	public void shouldRunClassFromArgumentSuccessfully() {
 		runCount = 0;
-		new Run(nullPrintStream).verifyBehaviour(RunnableBehaviour.class);
+		new BehaviourRunner(nullPrintStream).verifyBehaviour(RunnableBehaviour.class);
 		Ensure.that(runCount == 1);
 	}
 	
 	public void shouldRunTwoClassesFromArgumentsSuccessfully() {
 		runCount = 0;
-		Run run = new Run(nullPrintStream);
+		BehaviourRunner run = new BehaviourRunner(nullPrintStream);
         run.verifyBehaviour(RunnableBehaviour.class);
         run.verifyBehaviour(RunnableBehaviour.class);
 		Ensure.that(runCount == 2);
@@ -57,13 +57,13 @@ public class RunBehaviour extends UsingMatchers {
     
     public void shouldRunClassNameFromArgumentSuccessfully() throws ClassNotFoundException {
         runCount = 0;
-        new Run(nullPrintStream).verifyBehaviour(RunnableBehaviour.class.getName());
+        new BehaviourRunner(nullPrintStream).verifyBehaviour(RunnableBehaviour.class.getName());
         Ensure.that(runCount == 1);
     }
 
     public void shouldRunClassNamePlusOneMethodSuccessfully() throws ClassNotFoundException {
         runCount = 0;
-        Run run = new Run(nullPrintStream);
+        BehaviourRunner run = new BehaviourRunner(nullPrintStream);
         run.verifyBehaviour(RunnableBehaviourWithTwoMethods.class.getName() + ":" + "shouldRunNumberOne");
         ensureThat(run.succeeded(), eq(true));
         ensureThat(runCount, eq(1));
@@ -72,13 +72,13 @@ public class RunBehaviour extends UsingMatchers {
 
     public void shouldRunClassNameUsingCustomClassLoader() throws ClassNotFoundException {
         runCount = 0;
-        new Run(nullPrintStream, new CustomClassLoader(false)).verifyBehaviour(RunnableBehaviour.class.getName());
+        new BehaviourRunner(nullPrintStream, new CustomClassLoader(false)).verifyBehaviour(RunnableBehaviour.class.getName());
         Ensure.that(runCount == 1);
     }
 
     public void shouldFailToRunClassNameUsingInvalidClassLoader() throws ClassNotFoundException {
         try {
-            new Run(nullPrintStream, new CustomClassLoader(true))
+            new BehaviourRunner(nullPrintStream, new CustomClassLoader(true))
                     .verifyBehaviour(RunnableBehaviour.class.getName());
         } catch (ClassNotFoundException e) {
             Ensure.that(runCount == 0);
@@ -97,7 +97,7 @@ public class RunBehaviour extends UsingMatchers {
             if ( invalid ){
                 throw new ClassNotFoundException();
             }
-            return Run.class.getClassLoader().loadClass(name);            
+            return BehaviourRunner.class.getClassLoader().loadClass(name);            
         }
     }
 }

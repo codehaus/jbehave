@@ -3,13 +3,13 @@ package org.jbehave.ant;
 import org.apache.tools.ant.types.FileSet;
 import org.jbehave.core.story.StoryRunner;
 
-public class JBehaveStoryTask extends AbstractRunnerTask {
+public class StoryRunnerTask extends AbstractRunnerTask {
     
-    public JBehaveStoryTask() {
+    public StoryRunnerTask() {
         this(new CommandRunnerImpl(), new TrimFilesetParser());
     }
 
-    public JBehaveStoryTask(CommandRunner runner, FilesetParser parser) {
+    public StoryRunnerTask(CommandRunner runner, FilesetParser parser) {
         super(StoryRunner.class, runner, parser);
     }
 
