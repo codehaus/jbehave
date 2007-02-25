@@ -3,12 +3,11 @@ package org.jbehave.mojo;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import org.jbehave.core.Run;
-import org.jbehave.core.behaviour.Behaviours;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.jbehave.core.BehaviourRunner;
+import org.jbehave.core.behaviour.Behaviours;
 
 /**
  * Mojo to run Behaviours
@@ -33,7 +32,7 @@ public class BehaviourRunnerMojo  extends AbstractMojo {
      */
     String behavioursClassName;
     
-    private Run runner = new Run(System.out);
+    private BehaviourRunner runner = new BehaviourRunner(System.out);
     
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
