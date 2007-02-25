@@ -1,53 +1,31 @@
+/*
+ * Created on 19-Jul-2004
+ * 
+ * (c) 2003-2004 ThoughtWorks
+ * 
+ * See license.txt for licence details
+ */
 package org.jbehave.ant;
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.types.Path;
-import org.jbehave.core.Run;
-import org.jbehave.core.behaviour.Behaviours;
+import org.apache.tools.ant.types.FileSet;
+import org.jbehave.core.BehaviourRunner;
 
-/**
-* Ant Task to verify Behaviours
-* 
-* @author Mauro Talevi
-*/
-public class BehaviourRunnerTask extends AbstractJavaTask {
-    
+public class BehaviourRunnerTask extends AbstractRunnerTask {
+
     public BehaviourRunnerTask() {
-        super(new CommandRunnerImpl());
+        this(new CommandRunnerImpl(), new TrimFilesetParser());
     }
 
-    private String behavioursClassName;
-    private Run runner = new Run(System.out);
-
-    public void execute() throws BuildException {
-        try {
-            Behaviours behaviours = loadBehaviours(behavioursClassName);
-            Class[] classes = behaviours.getBehaviours();
-            for (int i = 0; i < classes.length; i++) {
-                runner.verifyBehaviour(classes[i]);
-            }            
-        } catch (Exception e) {
-            String message = "Failed to verify behaviours "+behavioursClassName;
-            log(message, e);
-            throw new BuildException(message, e);
-        }
-    }
-
-    private void log(String message, Exception e) {
-        log(message);
-        e.printStackTrace();
+    public BehaviourRunnerTask(CommandRunner runner, FilesetParser filesetParser) {
+        super(BehaviourRunner.class, runner, filesetParser);
     }
 
     public void setBehavioursClassName(String behavioursClassName) {
-        this.behavioursClassName = behavioursClassName;
-    }
-
-    private Behaviours loadBehaviours(String name) throws InstantiationException, IllegalAccessException, ClassNotFoundException {        
-        return (Behaviours) createClassLoader().loadClass(name).newInstance();
+        super.addTarget(behavioursClassName);
     }
     
-    private ClassLoader createClassLoader() {
-        Path classPath = commandLine.createClasspath(getProject());
-        return getProject().createClassLoader(classPath);
+    public void addBehaviours(FileSet fileset) {
+        super.addFilesetTarget(fileset);
     }
+
 }

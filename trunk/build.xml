@@ -41,8 +41,8 @@
 	<!-- examples -->
 	<property name="example" value="hellbound" />
 	<property name="example.behaviours" value="com.sirenian.hellbound.AllBehaviours" />	
-	<property name="behaviour.runner.task" value="org.jbehave.ant.JBehaveTask"/>
-	<property name="story.runner.task" value="org.jbehave.ant.JBehaveStoryTask"/>
+	<property name="behaviour.runner.task" value="org.jbehave.ant.BehaviourRunnerTask"/>
+	<property name="story.runner.task" value="org.jbehave.ant.StoryRunnerTask"/>
 	
 	<!-- general targets -->
 	<target name="clean" description="Clean out output directory">
