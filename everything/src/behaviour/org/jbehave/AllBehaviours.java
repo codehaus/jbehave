@@ -7,6 +7,7 @@ public class AllBehaviours implements Behaviours {
 		return new Class[] {
 				org.jbehave.core.AllBehaviours.class,
 				org.jbehave.ant.AllBehaviours.class,
+                org.jbehave.classmock.AllBehaviours.class,
 				org.jbehave.jmock.AllBehaviours.class,
 				org.jbehave.junit.AllBehaviours.class,
                 org.jbehave.threaded.swing.AllBehaviours.class

@@ -8,13 +8,9 @@
 package org.jbehave.ant;
 
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import net.sf.cotta.utils.ClassPath;
-import net.sf.cotta.utils.ClassPathLocator;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -22,7 +18,6 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.jbehave.core.Block;
-import org.jbehave.core.BehaviourRunner;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Matcher;
 
@@ -38,13 +33,6 @@ public class BehaviourRunnerTaskBehaviour extends UsingMiniMock {
         project.setCoreLoader(getClass().getClassLoader());
         task.setProject(project);
         Path path = task.createClasspath();
-        addToPathContains(path, getClass());
-        addToPathContains(path, BehaviourRunner.class);
-    }
-
-    private void addToPathContains(Path path, Class aClass) {
-        ClassPathLocator behaviourClassPathLocator = new ClassPathLocator(aClass);
-        path.createPathElement().setLocation(new File(behaviourClassPathLocator.locate().path()));
     }
 
     public void shouldRunASingleBehaviourClass() throws Exception {
@@ -84,26 +72,6 @@ public class BehaviourRunnerTaskBehaviour extends UsingMiniMock {
         
     }    
 
-    public void shouldUseClasspathFromClasspathElement() throws Exception {
-        Path path = task.createClasspath();
-        Path.PathElement element = path.createPathElement();
-        
-        ClassPath classPath = new ClassPathLocator(String.class).locate();
-        String pathToRuntimeJar = classPath.path();
-        element.setPath(pathToRuntimeJar);
-        
-        task.setBehavioursClassName(BehaviourClassOne.class.getName());
-
-        task.execute();
-
-        List list = Arrays.asList(runner.commandLineLog);
-        int classPathSwitchElement = list.indexOf("-classpath");
-        ensureThat(classPathSwitchElement, not(eq(-1)));
-        String classPaths = (String) list.get(classPathSwitchElement + 1);
-        String[] classPathArray = classPaths.split(File.pathSeparator);
-        ensureThat(Arrays.asList(classPathArray), collectionContains(pathToRuntimeJar));
-    }
-
     public void shouldFailTheBuildWhenVerificationFails() throws Exception {
         final String behaviourClassName = FailingBehaviourClass.class.getName();
         task.setBehavioursClassName(behaviourClassName);
@@ -116,27 +84,6 @@ public class BehaviourRunnerTaskBehaviour extends UsingMiniMock {
         });
         ensureThat(exception, isNotNull());
     }
-
-    
-/* TODO
-    public void shouldFailTheBuildWhenFirstSpecFails() throws Exception {
-        // setup
-        task.createVerify().setName("jbehave.extensions.ant.FailingSpec");
-        task.createVerify().setName("jbehave.extensions.ant.SpecOne");
-        BehaviourClassOne.wasCalled = false; // i hate this!
-
-        // execute
-        ensureThrows(BuildException.class, new Block() {
-            public void run() {
-                task.execute();
-            }
-        });
-
-        // verify
-        Ensure.that("SpecOne should not have been run", !BehaviourClassOne.wasCalled);
-    }
-
-*/
 
     private static class StubCommandRunner implements CommandRunner {
         private int valueToReturn;
