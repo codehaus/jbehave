@@ -1,19 +1,14 @@
 package org.jbehave.ant;
 
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import net.sf.cotta.utils.ClassPath;
-import net.sf.cotta.utils.ClassPathLocator;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.Path;
 import org.jbehave.core.Block;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.UsingMatchers;
@@ -67,28 +62,7 @@ public class StoryRunnerTaskBehaviour extends UsingMatchers {
         List list = Arrays.asList(runner.commandLineLog);
         ensureThat(list, collectionContains(StoryClassOne.class.getName()));
         ensureThat(list, collectionContains(StoryClassTwo.class.getName()));
-        
     }    
-
-    public void shouldUseClasspathFromClasspathElement() throws Exception {
-        Path path = task.createClasspath();
-        Path.PathElement element = path.createPathElement();
-        
-        ClassPath classPath = new ClassPathLocator(String.class).locate();
-        String pathToRuntimeJar = classPath.path();
-        element.setPath(pathToRuntimeJar);
-        
-        task.setStoryClassName(BehaviourClassOne.class.getName());
-
-        task.execute();
-
-        List list = Arrays.asList(runner.commandLineLog);
-        int classPathSwitchElement = list.indexOf("-classpath");
-        ensureThat(classPathSwitchElement, not(eq(-1)));
-        String classPaths = (String) list.get(classPathSwitchElement + 1);
-        String[] classPathArray = classPaths.split(File.pathSeparator);
-        ensureThat(Arrays.asList(classPathArray), collectionContains(pathToRuntimeJar));
-    }
 
     public void shouldFailTheBuildWhenVerificationFails() throws Exception {
         final String storyClassName = FailingStoryClass.class.getName();

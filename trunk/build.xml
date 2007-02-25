@@ -17,7 +17,6 @@
 		<fileset dir="${lib_dir}" includes="extensions/jmock-cglib-1.1.0.jar" />
 		<fileset dir="${lib_dir}" includes="extensions/junit-3.8.2.jar" />
 		<fileset dir="${lib_dir}" includes="extensions/fit-1.1.jar" />
-		<fileset dir="${lib_dir}" includes="extensions/cotta-1.0.jar" />
 		<fileset dir="${lib_dir}" includes="extensions/velocity-dep-1.4.jar" />
 		<fileset dir="${lib_dir}" includes="extensions/proxytoys-0.2.1.jar" />
 	</path>
@@ -61,9 +60,6 @@
 
 	<target name="build-jar" depends="-init" description="Compile and assemble the jar">
 		<mkdir dir="${classes_dir}" />
-		<unjar taskname="importing cotta classes" src="${lib_dir}/cotta/cotta-1.0.jar" dest="${classes_dir}">
-			<patternset includes="net/**/*.*"/>
-		</unjar>
 		<javac taskname="build jbehave" srcdir="${core_dir}/src/java" destdir="${classes_dir}" 
 			source="${jdk.version}" target="${jdk.version}" classpathref="libs" debug="true">
 			<src>

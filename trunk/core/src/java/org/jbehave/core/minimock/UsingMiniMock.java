@@ -36,9 +36,19 @@ public class UsingMiniMock extends UsingMatchers implements UsingMocks {
     }
     
     public Mock mock(Class type, String name) {
-        Mock mock = MiniMockObject.mock(type, name);
+        Mock mock = createMock(type, name);
         mocks.add(mock);
         return mock;
+    }
+
+    /**
+     * Can be overridden to allow other kinds of mocks 
+     * to be included in the same framework as MiniMock.
+     *
+     * @see org.jbehave.classmock.UsingClassMock
+     */
+    protected Mock createMock(Class type, String name) {
+        return MiniMockObject.mock(type, name);
     }
 
     public Mock strictMock(Class type) {
