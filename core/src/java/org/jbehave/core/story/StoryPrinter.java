@@ -6,50 +6,37 @@
  * See license.txt for license details
  */
 package org.jbehave.core.story;
-import java.io.PrintStream;
+import java.net.MalformedURLException;
 
 import org.jbehave.core.story.domain.Story;
-import org.jbehave.core.story.renderer.PlainTextRenderer;
-
-
+import org.jbehave.core.story.renderer.Renderer;
 
 /**
- * TODO Introduce StoryLoader
+ * A StoryPrinter loads a story and narrates it to a given renderer.
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Mauro Talevi
  */
 public class StoryPrinter {
 
-    private ClassLoader classLoader;
-    private final PrintStream stream;
+    private StoryLoader storyLoader;
+    private Renderer renderer;
     
-    public StoryPrinter(){
-        this(System.out);
-    }
-    
-    public StoryPrinter(PrintStream stream) {
-        this(Thread.currentThread().getContextClassLoader(), stream);
+    public StoryPrinter(StoryLoader storyLoader,  Renderer renderer) {
+        this.storyLoader = storyLoader;
+        this.renderer = renderer;
     }
 
-    private StoryPrinter(ClassLoader classLoader, PrintStream stream) {
-        this.classLoader = classLoader;
-        this.stream = stream;
-    }
-    
-    public void print(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
-        Story story = (Story) classLoader.loadClass(storyClassName).newInstance();
+    public void print(String storyPath, String storyPackage) throws MalformedURLException {
+        Story story = storyLoader.loadStory(storyPath, storyPackage);
         story.specify();
-        story.narrateTo(new PlainTextRenderer(stream));
+        story.narrateTo(renderer);
     }
 
-    public static void main(String[] args) {        
-        try {
-            StoryPrinter printer = new StoryPrinter();
-            printer.print(args[0]);            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void print(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+        Story story = storyLoader.loadStory(storyClassName);
+        story.specify();
+        story.narrateTo(renderer);
     }
-    
+
 }
