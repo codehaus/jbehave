@@ -3,18 +3,18 @@ package org.jbehave.mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jbehave.core.story.StoryLoader;
-import org.jbehave.core.story.StoryRunner;
+import org.jbehave.core.story.StoryPrinter;
 import org.jbehave.core.story.codegen.parser.StoryParser;
 import org.jbehave.core.story.codegen.parser.TextStoryParser;
-import org.jbehave.core.story.domain.Story;
+import org.jbehave.core.story.renderer.PlainTextRenderer;
 
 /**
- * Mojo to run a story 
+ * Mojo to print a story 
  * 
  * @author Mauro Talevi
- * @goal run-story
+ * @goal print-story
  */
-public class StoryRunnerMojo  extends AbstractJBehaveMojo {
+public class StoryPrinterMojo  extends AbstractJBehaveMojo {
       
     /**
      * @parameter
@@ -31,19 +31,15 @@ public class StoryRunnerMojo  extends AbstractJBehaveMojo {
     /** The story parser */
     private StoryParser storyParser = new TextStoryParser();
 
-    /** The story runner */
-    private StoryRunner storyRunner = new StoryRunner();
-    
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            getLog().debug("Running story "+ storyPath);
+            getLog().debug("Printing story "+ storyPath);
             StoryLoader loader = new StoryLoader(storyParser, new BehavioursClassLoader(classpathElements));
-            Story story = loader.loadStory(storyPath, storyPackage);            
-            storyRunner.run(story);
+            StoryPrinter storyPrinter = new StoryPrinter(loader, new PlainTextRenderer(System.out));            
+            storyPrinter.print(storyPath, storyPackage);
         } catch (Exception e) {
-            throw new MojoExecutionException("Failed to run story "+storyPath+" with package "+storyPackage, e);
+            throw new MojoExecutionException("Failed to print story "+storyPath+" with package "+storyPackage, e);
         }
     }
-
   
 }
