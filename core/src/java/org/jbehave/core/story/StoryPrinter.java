@@ -29,13 +29,11 @@ public class StoryPrinter {
 
     public void print(String storyPath, String storyPackage) throws MalformedURLException {
         Story story = storyLoader.loadStory(storyPath, storyPackage);
-        story.specify();
         story.narrateTo(renderer);
     }
 
     public void print(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
         Story story = storyLoader.loadStory(storyClassName);
-        story.specify();
         story.narrateTo(renderer);
     }
 

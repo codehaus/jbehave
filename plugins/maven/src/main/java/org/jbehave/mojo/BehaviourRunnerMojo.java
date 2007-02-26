@@ -1,9 +1,7 @@
 package org.jbehave.mojo;
 
 import java.net.MalformedURLException;
-import java.util.List;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jbehave.core.BehaviourRunner;
@@ -15,16 +13,7 @@ import org.jbehave.core.behaviour.Behaviours;
  * @author Mauro Talevi
  * @goal run-behaviours
  */
-public class BehaviourRunnerMojo  extends AbstractMojo {
-    
-    /**
-     * Compile classpath.
-     *
-     * @parameter expression="${project.compileClasspathElements}"
-     * @required
-     * @readonly
-     */
-    List classpathElements;
+public class BehaviourRunnerMojo  extends AbstractJBehaveMojo {
     
     /**
      * @parameter
