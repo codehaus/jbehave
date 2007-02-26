@@ -12,6 +12,7 @@
 	<classpathentry kind="src" path="extensions/junit/src/behaviour"/>
 	<classpathentry kind="src" path="extensions/swing/src/java"/>
 	<classpathentry kind="src" path="extensions/swing/src/behaviour"/>
+    <classpathentry kind="src" path="plugins/maven/src/main/java"/>
 	<classpathentry kind="src" path="everything/src/behaviour"/>
 	<classpathentry kind="src" path="examples/atm/src/java"/>
 	<classpathentry kind="src" path="examples/atm/src/stories"/>
@@ -23,16 +24,17 @@
 	<classpathentry kind="src" path="sandbox/antlr/src/java"/>
 	<classpathentry kind="src" path="sandbox/fit/src/java"/>
 	<classpathentry kind="src" path="sandbox/fit/src/test"/>
-	<classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/fit-1.1.jar"/>
+    <classpathentry kind="lib" path="lib/extensions/ant-1.6.5.jar"/>
+    <classpathentry kind="lib" path="lib/extensions/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/cglib-full-2.0.jar"/>
+    <classpathentry kind="lib" path="lib/extensions/fit-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/jmock-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/jmock-cglib-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/junit-3.8.2.jar"/>
+    <classpathentry kind="lib" path="lib/extensions/proxytoys-0.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/sablecc-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/velocity-dep-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/proxytoys-0.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/ant-1.6.5.jar"/>
+    <classpathentry kind="lib" path="lib/plugins/maven-plugin-api-2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
