@@ -4,5 +4,9 @@ ant clean build
 (also the default target - so no need to specify it)
 
 To build a release:
-
 ant clean dist
+
+To build Maven plugin:
+mvn clean install
+
+
