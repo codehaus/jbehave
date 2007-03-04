@@ -18,7 +18,7 @@ public class AbstractRunnerTask extends AbstractJavaTask {
 
     private final Class runnerClass;
     private final FilesetParser filesetParser;
-    private List targetClassList = new LinkedList();
+    private List targetArgumentList = new LinkedList();
     private List filesets =  new ArrayList();
     
     public AbstractRunnerTask(Class runnerClass, CommandRunner runner, FilesetParser filesetParser) {
@@ -28,9 +28,14 @@ public class AbstractRunnerTask extends AbstractJavaTask {
     }
 
     public void addTarget(String targetClass) {
-        targetClassList.add(targetClass);
+        targetArgumentList.add(targetClass);
     }
     
+
+
+    public void addTarget(int index, String dir) {
+        targetArgumentList.add(index, dir);
+    }
     
     public void execute() {
         appendAntTaskJar();
@@ -56,7 +61,7 @@ public class AbstractRunnerTask extends AbstractJavaTask {
         
         commandLine.setClassname(runnerClass.getName());
         
-        for (Iterator iterator = targetClassList.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = targetArgumentList.iterator(); iterator.hasNext();) {
             String className = iterator.next().toString();
             commandLine.createArgument().setLine(className);
         }

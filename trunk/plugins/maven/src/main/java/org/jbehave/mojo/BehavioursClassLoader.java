@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class BehavioursClassLoader extends URLClassLoader {
     public Behaviours newBehaviours(String behavioursName)
             throws InstantiationException, IllegalAccessException {
         String behavioursNotFound = "The behaviours " + behavioursName
-                + " was not found in " + Arrays.toString(getURLs());
+                + " was not found in " + toString(getURLs());
         try {
             Behaviours behavious = (Behaviours) loadClass(behavioursName).newInstance();
             Thread.currentThread().setContextClassLoader(this);
@@ -52,6 +51,17 @@ public class BehavioursClassLoader extends URLClassLoader {
         } catch (NoClassDefFoundError e) {
             throw new RuntimeException(behavioursNotFound, e);
         }
+    }
+
+    private String toString(URL[] urls) {
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < urls.length; i++) {
+            buffer.append(urls[i].toString());
+            if (i < urls.length - 1) {
+                buffer.append(", ");
+            }
+        }
+        return buffer.toString();
     }
 
     protected static URL[] toClasspathURLs(List classpathElements)
