@@ -29,6 +29,8 @@ public class AllBehaviours implements Behaviours {
         return new Class[] {
                 StoryBuilderBehaviour.class,
                 StoryRunnerBehaviour.class,
+                StoryPrinterBehaviour.class,
+                StoryToDirectoryPrinterBehaviour.class,
                 TextStoryParserBehaviour.class,
                 GivenStepBehaviour.class,
                 GivenScenarioBehaviour.class,

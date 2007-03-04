@@ -8,7 +8,9 @@
 package org.jbehave.core.story;
 import java.net.MalformedURLException;
 
+import org.jbehave.core.story.codegen.parser.TextStoryParser;
 import org.jbehave.core.story.domain.Story;
+import org.jbehave.core.story.renderer.PlainTextRenderer;
 import org.jbehave.core.story.renderer.Renderer;
 
 /**
@@ -34,7 +36,20 @@ public class StoryPrinter {
 
     public void print(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
         Story story = storyLoader.loadStory(storyClassName);
+        story.specify();
         story.narrateTo(renderer);
     }
 
+    public static void main(String[] args) {        
+        try {
+            StoryPrinter printer = new StoryPrinter(
+                    new StoryLoader(new TextStoryParser(), StoryPrinter.class.getClassLoader()), 
+                    new PlainTextRenderer(System.out));
+            for (int i = 0; i < args.length; i++) {
+                printer.print(args[i]); 
+            }           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

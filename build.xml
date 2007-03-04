@@ -42,6 +42,7 @@
 	<property name="example.behaviours" value="com.sirenian.hellbound.AllBehaviours" />	
 	<property name="behaviour.runner.task" value="org.jbehave.ant.BehaviourRunnerTask"/>
 	<property name="story.runner.task" value="org.jbehave.ant.StoryRunnerTask"/>
+	<property name="story.printer.task" value="org.jbehave.ant.StoryPrinterTask"/>
 	
 	<!-- general targets -->
 	<target name="clean" description="Clean out output directory">
@@ -188,15 +189,15 @@
 	</target>
 
 	<target name="run-example-behaviours" depends="compile-example-behaviours" description="Runs behaviours for examples">
-		<taskdef name="jbehave" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
-		<jbehave><!-- behavioursClassName="${example.behaviours}"-->
+		<taskdef name="runbehaviours" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
+		<runbehaviours>
 			<classpath>
 				<path refid="libs" />
 				<pathelement path="${example_classes_dir}" />
 				<pathelement path="${example_behaviour_classes_dir}" />
 			</classpath>
 			<behaviours dir="${examples_dir}/${example}/src/behaviour" includes="**/*Behaviour.java" />
-		</jbehave>
+		</runbehaviours>
 	</target>
 	
 	<target name="compile-example-stories" depends="build-jar" description="Compile behaviours for examples">
@@ -226,9 +227,9 @@
 		</javac>
 	</target>
 	
-	<target name="run-example-stories" depends="compile-example-behaviours, compile-example-stories" description="Runs behaviours for examples">
-		<taskdef name="jbehavestory" classname="${story.runner.task}" classpath="${jbehave_jar}" />
-		<jbehavestory>
+	<target name="run-example-stories" depends="compile-example-behaviours, compile-example-stories" description="Runs stories for examples">
+		<taskdef name="runstories" classname="${story.runner.task}" classpath="${jbehave_jar}" />
+		<runstories>
 			<classpath>
 				<path refid="libs" />
 				<pathelement path="${example_classes_dir}" />
@@ -236,8 +237,19 @@
 				<pathelement path="${example_story_classes_dir}" />
 			</classpath>
 			<stories dir="${examples_dir}/${example}/src/stories" includes="**/stories/*" />
-		</jbehavestory>
+		</runstories>
 	</target>
 
-
+	<target name="print-example-stories" depends="compile-example-behaviours, compile-example-stories" description="Prints stories for examples">
+		<taskdef name="printstories" classname="${story.printer.task}" classpath="${jbehave_jar}" />
+		<printstories destdir="${dist_dir}">
+			<classpath>
+				<path refid="libs" />
+				<pathelement path="${example_classes_dir}" />
+				<pathelement path="${example_behaviour_classes_dir}" />
+				<pathelement path="${example_story_classes_dir}" />
+			</classpath>
+			<stories dir="${examples_dir}/${example}/src/stories" includes="**/stories/*" />
+		</printstories>
+	</target>
 </project>
