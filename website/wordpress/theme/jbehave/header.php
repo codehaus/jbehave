@@ -33,7 +33,7 @@
 	<div id="container">
 
 		<div id="header">
-			<h1 id="title"><a href="<?php echo get_settings('home'); ?>/" title="<?php bloginfo('name'); ?>"><img src="/wp-content/themes/jbehave/images/logo.gif" alt="JBehave" /></a></h1>
+			<h1 id="title"><a href="<?php echo get_settings('home'); ?>/" title="<?php bloginfo('name'); ?>"><img src="/wp-content/themes/jbehave/images/logo.png" alt="JBehave" /></a></h1>
 <?php /* IF THIS IS A CATEGORY LISTING */ if ( is_category() ) { ?>
 			<p id="description"><?php single_cat_title(''); ?> &mdash; <?php echo category_description(); ?></p>
 <?php /* IF THIS IS A YEARLY ARCHIVE */ } elseif ( is_day() ) { ?>
