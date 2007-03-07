@@ -44,7 +44,7 @@ public class HellboundFrameBehaviour extends UsingMiniMock {
 	
 	public void shouldDisplayTheFrontPanelWhenTheGameIsReady() {
 		frame.reportGameStateChanged(GameState.READY);		
-		ensureThat(!frontPanel.isShowing());
+		ensureThat(frontPanel.isShowing());
 		ensureThat(!gamePanel.isShowing());
 	}
 	
