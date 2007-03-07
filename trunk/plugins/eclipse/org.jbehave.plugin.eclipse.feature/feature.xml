@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.jbehave.plugin.eclipse.feature"
-      label="JBehave Feature"
-      version="0.9.1">
+      label="JBehave for Eclipse"
+      version="1.0.0"
+      provider-name="JBehave"
+      os="linux,macosx,win32"
+      ws="gtk,motif,win32"
+      nl="en_GB,en"
+      arch="ia64,ia64_32,PA_RISC,ppc,sparc,x86,x86_64">
 
-   <description url="http://jbehave.codehaus.org/eclipse">
-      JBehave Plugin
+   <description url="http://jbehave.org/eclipse">
+      JBehave for Eclipse
    </description>
 
    <copyright url="http://jbehave.codehaus.org/eclipse">
-      Copyright © 2003-2006 jbehave.org
+      Copyright © 2003-2007 jbehave.org
    </copyright>
 
    <license url="http://jbehave.codehaus.org/license.html">
-All rights reserved.
+      All rights reserved.
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
 are met:
@@ -38,7 +43,11 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
 STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 OF THE POSSIBILITY OF SUCH DAMAGE.
-</license>
+   </license>
+
+   <url>
+      <update label="JBehave for Eclipse" url="http://jbehave.org/eclipse"/>
+   </url>
 
    <plugin
          id="org.jbehave.plugin.eclipse"
@@ -47,4 +56,3 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
          version="0.0.0"/>
 
 </feature>
-

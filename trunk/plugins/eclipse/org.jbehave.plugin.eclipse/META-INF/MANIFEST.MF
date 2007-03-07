@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JBehave Plugin
+Bundle-Name: JBehave for Eclipse
 Bundle-SymbolicName: org.jbehave.plugin.eclipse;singleton:=true
-Bundle-Version: 0.9.1
+Bundle-Version: 1.0.0
 Bundle-Activator: org.jbehave.plugin.eclipse.JBehavePlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -26,3 +26,4 @@ Eclipse-LazyStart: true
 Bundle-Vendor: JBehave
 Bundle-ClassPath: eclipse-plugin.jar
 Export-Package: org.jbehave.plugin.eclipse
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
