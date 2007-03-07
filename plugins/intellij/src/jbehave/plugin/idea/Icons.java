@@ -1,4 +1,4 @@
-package jbehave.plugin.idea;
+package org.jbehave.plugin.idea;
 
 import com.intellij.openapi.util.IconLoader;
 

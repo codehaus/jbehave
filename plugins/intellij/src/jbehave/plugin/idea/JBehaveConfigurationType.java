@@ -1,4 +1,4 @@
-package jbehave.plugin.idea;
+package org.jbehave.plugin.idea;
 
 import com.intellij.execution.LocatableConfigurationType;
 import com.intellij.execution.Location;
@@ -44,7 +44,7 @@ public class JBehaveConfigurationType implements LocatableConfigurationType {
 
     @NonNls
     public String getComponentName() {
-        return "#jbehave.plugin.idea.JBehaveConfigurationType";
+        return "#org.jbehave.plugin.idea.JBehaveConfigurationType";
     }
 
     public void initComponent() {

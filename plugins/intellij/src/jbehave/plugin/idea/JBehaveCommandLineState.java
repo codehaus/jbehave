@@ -1,4 +1,4 @@
-package jbehave.plugin.idea;
+package org.jbehave.plugin.idea;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.ConfigurationPerRunnerSettings;
