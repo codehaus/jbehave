@@ -1,0 +1,55 @@
+h1(FirstChild). Plugins
+
+h2. Overview
+
+The following are the plugins under development:
+
+* "Apache Ant":#ant
+* "IntelliJ IDEA":#idea
+* "Eclipse":#eclipse
+
+h2(#ant). Apache ANT
+
+First up, you need to define the jbehave task:
+
+<div class="shaded"><pre><taskdef name="jbehave" classname="org.jbehave.ant.JBehaveTask" classpath="jbehave-VERSION.jar" /></pre></div>
+
+Then you simply use it like you would any other task:
+<div class="shaded"><pre>
+	<target name="run-behaviours" depends="compile" description="Run behaviours">
+		<jbehave behavioursClassName="com.example.AllBehaviours">
+			<classpath ... />
+		</jbehave>
+	</target>
+</pre></div>
+
+The @<jbehave>@ task also supports a classpath attribute.
+
+h2(#idea). IntelliJ IDEA
+
+JBehave has an "IDEA":http://www.jetbrains.com/idea plug-in that allows
+developers to run behaviour classes.
+
+!idea.png!
+
+It can be downloaded through "IDEA's plugin download
+site":http://www.jetbrains.com/idea/plugins/plugins.html.
+
+!idea_plugins.png!
+
+h2(#eclipse). Eclipse
+
+JBehave plugin for "Eclipse":http://eclipse.org allows you to run behaviours
+through a short-cut or a predefined run configuration.
+
+!eclipse.png!
+
+You will soon be able to use Eclipse's update mechanism by adding a "Remote Site"
+in your Eclipse Software Update configuration which links to http://jbehave.org/eclipse.
+
+!eclipse_install.png!
+
+After a successful installation, you should be able to see the JBehave feature
+in your Eclipse "About..." dialog:
+
+!eclipse_feature.png!
