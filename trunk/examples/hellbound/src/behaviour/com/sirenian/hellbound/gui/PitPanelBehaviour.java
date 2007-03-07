@@ -117,7 +117,7 @@ public class PitPanelBehaviour extends UsingMatchers {
 		return panel;
 	}
     
-    public Matcher contains(final Segments segments, final Color color) {
+    private Matcher contains(final Segments segments, final Color color) {
         return new Matcher() {
             public boolean matches(Object arg) {
                 return ((RenderedPit)arg).contains(segments, color);
