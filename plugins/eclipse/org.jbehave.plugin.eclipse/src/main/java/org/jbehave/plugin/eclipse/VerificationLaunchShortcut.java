@@ -86,7 +86,7 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 	
 	private ILaunchConfiguration findLaunchConfiguration(String mode, ConfigurationState state, String container, String name) throws LaunchCancelledByUserException {
 		ILaunchConfigurationType configType= getJBehaveLaunchConfigType();
-		List candidateConfigs = Collections.emptyList();
+		List candidateConfigs = new ArrayList();
 		try {
 			ILaunchConfiguration[] configs= DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations(configType);
 			candidateConfigs = new ArrayList(configs.length);
