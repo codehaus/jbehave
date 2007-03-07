@@ -22,6 +22,7 @@ import org.jbehave.core.story.listener.PlainTextScenarioListener;
 public class StoryRunner {
     
     private ClassLoader classLoader;
+    private boolean succeeded;
     
     public StoryRunner(){
         this(Thread.currentThread().getContextClassLoader());
@@ -47,8 +48,13 @@ public class StoryRunner {
         story.addListener(listener);
         story.run();
         listener.printReport();
+        succeeded = succeeded && !listener.hasBehaviourFailures();
     }
 
+    private boolean succeeded() {
+        return succeeded;
+    }
+    
     private Story loadStory(String className, ClassLoader classLoader) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         return (Story) classLoader.loadClass(className).newInstance();
     }
@@ -59,10 +65,14 @@ public class StoryRunner {
             for (int i = 0; i < args.length; i++) {
                 runner.run(args[i], System.out);
             }
+            System.exit(runner.succeeded() ? 0 : 1);
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(1);
         }
     }
+
+
     
 
 }
