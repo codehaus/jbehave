@@ -1,4 +1,4 @@
-package jbehave.plugin.idea;
+package org.jbehave.plugin.idea;
 
 import com.intellij.execution.ExecutionUtil;
 import com.intellij.execution.Location;

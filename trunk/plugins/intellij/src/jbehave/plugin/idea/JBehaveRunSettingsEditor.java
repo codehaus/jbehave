@@ -1,4 +1,4 @@
-package jbehave.plugin.idea;
+package org.jbehave.plugin.idea;
 
 import com.intellij.execution.junit.SourceScope;
 import com.intellij.execution.junit2.configuration.ClassBrowser;

@@ -11,7 +11,7 @@
 
     <application-components>
         <component>
-            <implementation-class>jbehave.plugin.idea.JBehaveConfigurationType</implementation-class>
+            <implementation-class>org.jbehave.plugin.idea.JBehaveConfigurationType</implementation-class>
         </component>
     </application-components>
 </idea-plugin>
