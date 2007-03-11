@@ -9,14 +9,14 @@ import com.intellij.execution.configurations.RunnerSettings;
 public class JBehaveCommandLineState extends JavaCommandLineState {
     private JBehaveRunConfiguration runConfiguration;
 
-    JBehaveCommandLineState(JBehaveRunConfiguration runConfiguration, RunnerSettings runner, ConfigurationPerRunnerSettings configuration) {
+  JBehaveCommandLineState(JBehaveRunConfiguration runConfiguration, RunnerSettings runner, ConfigurationPerRunnerSettings configuration) {
         super(runner, configuration);
         this.runConfiguration = runConfiguration;
     }
 
     protected JavaParameters createJavaParameters() throws ExecutionException {
         JavaParameters parameters = new JavaParameters();
-        parameters.setMainClass("org.jbehave.core.Run");
+        parameters.setMainClass(Constants.JBEHAVE_RUNNER_CLASS);
         String behaviorClass = runConfiguration.getBehaviorClass();
         String behaviourMethod = runConfiguration.getBehaviourMethod();
         String behaviourLocator = behaviorClass;

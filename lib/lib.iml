@@ -18,16 +18,16 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="jbehave-core" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/extensions/antlr.jar!/" />
+          <root url="jar://$MODULE_DIR$/extensions/antlr-2.7.6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="jbehave-core" />
     <orderEntryProperties />
   </component>
   <component name="VcsManagerConfiguration">
