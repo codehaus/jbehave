@@ -17,7 +17,7 @@ import javax.swing.*;
 public class JBehaveConfigurationType implements LocatableConfigurationType {
     private final ConfigurationFactory factory;
 
-    public JBehaveConfigurationType() {
+  public JBehaveConfigurationType() {
         this.factory = new ConfigurationFactory(this) {
 
             public RunConfiguration createTemplateConfiguration(Project project) {
@@ -132,7 +132,7 @@ public class JBehaveConfigurationType implements LocatableConfigurationType {
         PsiClassType[] interfaces = psiClass.getImplementsListTypes();
         for (int i = 0; i < interfaces.length; i++) {
             PsiClassType anInterface = interfaces[i];
-            if ("jbehave.core.behaviour.Behaviours".equals(anInterface.resolve().getQualifiedName())) {
+            if (Constants.BEHAVIOURS_INTERFACE.equals(anInterface.resolve().getQualifiedName())) {
                 return true;
             }
         }
