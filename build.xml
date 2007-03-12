@@ -104,7 +104,7 @@
 	</target>
 	
 	<target name="verify-behaviour" depends="compile-behaviour" description="Verify behaviour">
-		<java taskname="run behaviours" classname="org.jbehave.core.Run" fork="true" failonerror="true">
+		<java taskname="run behaviours" classname="org.jbehave.core.Run" fork="true" failonerror="true" clonevm="true">
 			<arg value="org.jbehave.AllBehaviours" />
 			<classpath>
 				<pathelement path="${behaviour_classes_dir}" />
