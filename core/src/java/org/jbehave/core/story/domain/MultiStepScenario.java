@@ -65,6 +65,7 @@ public abstract class MultiStepScenario implements Scenario {
     
     private List steps = new ArrayList();
     private String state;
+    private World world;
 
     public MultiStepScenario() {
         state = UNSPECIFIED;
@@ -83,7 +84,7 @@ public abstract class MultiStepScenario implements Scenario {
         try {
             for (Iterator i = steps.iterator(); i.hasNext();) {
                 Step step = (Step) i.next();
-                step.perform(world);
+                step.perform(this.world == null ? world : this.world);
             }
         } finally {
             state = RUN;
@@ -97,7 +98,7 @@ public abstract class MultiStepScenario implements Scenario {
     public void cleanUp(World world) {
         if (shouldCleanUp()) {
             for (ListIterator i = steps.listIterator(steps.size()); i.hasPrevious();) {
-                ((AbstractStep) i.previous()).cleanUp(world);
+                ((AbstractStep) i.previous()).cleanUp(this.world == null ?  world : this.world);
             }
         }
         state = CLEANED;
@@ -128,6 +129,11 @@ public abstract class MultiStepScenario implements Scenario {
     public void verifyMocks() {
         
     }
+    
+
+    protected void given(World world) {
+        this.world = world;
+    }    
     
     protected void given(Given given) {
         steps.add(new GivenStep(given));

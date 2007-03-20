@@ -75,7 +75,7 @@ public class StoryRunnerTaskBehaviour extends UsingMatchers {
             }
         });
         ensureThat(exception, isNotNull());
-    }    
+    }
     
     private static class StubCommandRunner implements CommandRunner {
         private int valueToReturn;

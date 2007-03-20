@@ -22,7 +22,7 @@ import org.jbehave.core.story.listener.PlainTextScenarioListener;
 public class StoryRunner {
     
     private ClassLoader classLoader;
-    private boolean succeeded;
+    private boolean succeeded = true;
     
     public StoryRunner(){
         this(Thread.currentThread().getContextClassLoader());

@@ -422,4 +422,32 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         
         ensureThat(exception, isNotNull());
     }
+    
+    public void shouldPerformStepsInSpecifiedWorldIfGivenWorld() {
+        final Mock world = mock(World.class);
+        final Mock given = mock(Given.class);
+        final Mock event = mock(Event.class);
+        final Mock outcome = mock(Outcome.class);
+        
+        Scenario scenario = new MultiStepScenario() {
+            public void specifySteps() {
+                given((World)world);
+                given((Given)given);
+                when((Event)event);
+                then((Outcome)outcome);
+            }
+        };
+        scenario.specify();
+        
+        // expect
+        given.expects("setUp").with(world);
+        event.expects("occurIn").with(world).after(given, "setUp");
+        outcome.expects("verify").with(world).after(event, "occurIn");
+        
+        // when
+        scenario.run(new HashMapWorld());
+        
+        // then
+        verifyMocks();        
+    }
 }
