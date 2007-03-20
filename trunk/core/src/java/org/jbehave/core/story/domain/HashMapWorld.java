@@ -16,18 +16,18 @@ import java.util.Map;
 public class HashMapWorld implements World {
     private final Map map = new HashMap();
 
-    public Object get(String key, Object defaultValue) {
+    public Object get(Object key, Object defaultValue) {
         if (!map.containsKey(key)) {
             put(key, defaultValue);
         }
         return map.get(key);
     }
 
-    public Object get(String key) {
+    public Object get(Object key) {
         return map.get(key);
     }
     
-    public void put(String key, Object value) {
+    public void put(Object key, Object value) {
         map.put(key, value);
     }
 
