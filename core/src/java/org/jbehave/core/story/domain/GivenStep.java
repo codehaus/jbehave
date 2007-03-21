@@ -7,7 +7,7 @@ public class GivenStep extends AbstractStep {
         super(given);
     }
 
-    public void perform(World world) {
+    public void perform(World world) throws Exception {
         given().setUp(world);
     }
     

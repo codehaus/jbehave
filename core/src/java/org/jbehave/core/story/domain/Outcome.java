@@ -20,5 +20,5 @@ import org.jbehave.core.minimock.story.domain.OutcomeUsingMiniMock;
  * @see OutcomeUsingMiniMock
  */
 public interface Outcome extends ScenarioComponent {
-    void verify(World world);
+    void verify(World world) throws Exception;
 }

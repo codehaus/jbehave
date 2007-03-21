@@ -19,5 +19,5 @@ import org.jbehave.core.minimock.story.domain.GivenUsingMiniMock;
  * @see GivenUsingMiniMock
  */
 public interface Given extends ScenarioComponent {
-    void setUp(World world);
+    void setUp(World world) throws Exception;
 }

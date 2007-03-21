@@ -8,8 +8,17 @@
 package org.jbehave.core.story.domain;
 
 /**
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @see HashMapWorld, CustomWorld
+ * By default, a Scenario takes place in a HashMapWorld.
+ * 
+ * Story.createWorld() can be overridden to provide your own
+ * custom World. We recommend that if you want to provide your
+ * own accessors, you should override CustomWorld which allows
+ * you to ignore the interface below.
+ * 
+ * The methods on this interface are a legacy of JBehave 1.0.
+ * We might remove them from the interface at some point.
+ * 
+ * @see HashMapWorld, CustomWorld, Given, CleansUpWorld
  */
 public interface World {
     /**

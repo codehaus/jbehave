@@ -6,7 +6,7 @@ public class OutcomeStep extends AbstractStep {
         super(outcome);
     }
 
-    public void perform(World world) {
+    public void perform(World world) throws Exception {
         outcome().verify(world);
     }
 

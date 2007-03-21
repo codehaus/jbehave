@@ -4,7 +4,7 @@ import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
 
 public class OutcomeStepBehaviour extends UsingMiniMock {
-    public void shouldTellOutcomeToVerifyWorld() {
+    public void shouldTellOutcomeToVerifyWorld() throws Exception {
         // given
         Mock outcome = mock(Outcome.class);
         AbstractStep step = new OutcomeStep((Outcome)outcome);

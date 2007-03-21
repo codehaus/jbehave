@@ -6,7 +6,7 @@ public abstract class AbstractStep implements Step, CleansUpWorld {
 
     protected final ScenarioComponent component;
 
-    public abstract void perform(World world);
+    public abstract void perform(World world) throws Exception;
 
     public AbstractStep(ScenarioComponent component) {
         this.component = component;
