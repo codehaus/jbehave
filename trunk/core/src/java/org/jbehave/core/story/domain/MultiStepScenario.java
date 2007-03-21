@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.story.renderer.Renderer;
 
 
@@ -65,7 +66,6 @@ public abstract class MultiStepScenario implements Scenario {
     
     private List steps = new ArrayList();
     private String state;
-    private World world;
 
     public MultiStepScenario() {
         state = UNSPECIFIED;
@@ -84,8 +84,12 @@ public abstract class MultiStepScenario implements Scenario {
         try {
             for (Iterator i = steps.iterator(); i.hasNext();) {
                 Step step = (Step) i.next();
-                step.perform(this.world == null ? world : this.world);
+                step.perform(world);
             }
+        } catch (VerificationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new VerificationException("Exception in Scenario", e);
         } finally {
             state = RUN;
         }
@@ -98,7 +102,7 @@ public abstract class MultiStepScenario implements Scenario {
     public void cleanUp(World world) {
         if (shouldCleanUp()) {
             for (ListIterator i = steps.listIterator(steps.size()); i.hasPrevious();) {
-                ((AbstractStep) i.previous()).cleanUp(this.world == null ?  world : this.world);
+                ((AbstractStep) i.previous()).cleanUp(world);
             }
         }
         state = CLEANED;
@@ -129,11 +133,6 @@ public abstract class MultiStepScenario implements Scenario {
     public void verifyMocks() {
         
     }
-    
-
-    protected void given(World world) {
-        this.world = world;
-    }    
     
     protected void given(Given given) {
         steps.add(new GivenStep(given));

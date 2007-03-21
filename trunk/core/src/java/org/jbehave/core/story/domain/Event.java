@@ -20,5 +20,5 @@ import org.jbehave.core.minimock.story.domain.EventUsingMiniMock;
  * @see EventUsingMiniMock
  */
 public interface Event extends ScenarioComponent {
-    void occurIn(World world);
+    void occurIn(World world) throws Exception;
 }

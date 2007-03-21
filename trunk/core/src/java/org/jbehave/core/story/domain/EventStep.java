@@ -6,7 +6,7 @@ public class EventStep extends AbstractStep {
         super(event);
     }
 
-    public void perform(World world) {
+    public void perform(World world) throws Exception {
         ((Event)component).occurIn(world);
     }
 }

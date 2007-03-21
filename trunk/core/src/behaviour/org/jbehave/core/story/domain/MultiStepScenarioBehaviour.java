@@ -7,7 +7,11 @@ import org.jbehave.core.mock.Mock;
 import org.jbehave.core.story.renderer.Renderer;
 
 public class MultiStepScenarioBehaviour extends UsingMiniMock {
-
+    
+    public interface GivenWithCleanUp extends Given, CleansUpWorld {}
+    public interface OutcomeWithCleanUp extends Outcome, CleansUpWorld {}
+    public interface GivenWorld extends Given, CleansUpWorld, World {}
+    
     public void shouldPerformGiven() throws Exception {
         // given
         final Mock given = mock(Given.class);
@@ -98,9 +102,7 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         // then
         verifyMocks();
     }
-    
-    public interface GivenWithCleanUp extends Given, CleansUpWorld {}
-    public interface OutcomeWithCleanUp extends Outcome, CleansUpWorld {}
+
 
     public void shouldTellStepsToCleanUpWorldInReverseOrder() throws Exception {
         // given
@@ -343,6 +345,45 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         ensureThat(exception, isNotNull());
     }
     
+    public void shouldRethrowExceptionsInStepsAsVerificationExceptions() throws Exception {
+        final Mock given = mock(GivenWithCleanUp.class, "given");
+        given.expects("setUp").will(throwException(new Exception()));
+        
+        final Scenario scenario = new MultiStepScenario(){
+            public void specifySteps() {
+                given((Given) given);
+            }};
+            
+        Exception exception = runAndCatch(VerificationException.class, new Block() {
+            public void run() throws Exception {
+                scenario.specify();
+                scenario.run((World)stub(World.class));
+            }
+        });
+        
+        ensureThat(exception, isNotNull());        
+    }
+    
+    public void shouldNotRethrowVerificationExceptionsInSteps() throws Exception {
+        final Mock given = mock(GivenWithCleanUp.class, "given");
+        VerificationException verificationException = new VerificationException("My message");
+        given.expects("setUp").will(throwException(verificationException));
+        
+        final Scenario scenario = new MultiStepScenario(){
+            public void specifySteps() {
+                given((Given) given);
+            }};
+            
+        Exception exception = runAndCatch(VerificationException.class, new Block() {
+            public void run() throws Exception {
+                scenario.specify();
+                scenario.run((World)stub(World.class));
+            }
+        });
+        
+        ensureThat(exception, is(verificationException));        
+    }
+    
     public void shouldNotCleanUpIfNotRun() throws Exception {
         // given
         final Mock given = mock(GivenWithCleanUp.class, "given");
@@ -351,7 +392,6 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         Scenario scenario = new MultiStepScenario() {
             public void specifySteps() {
                 given((Given) given);
-                
             }};
             
         given.expects("cleanUp").never();
@@ -422,32 +462,5 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         
         ensureThat(exception, isNotNull());
     }
-    
-    public void shouldPerformStepsInSpecifiedWorldIfGivenWorld() {
-        final Mock world = mock(World.class);
-        final Mock given = mock(Given.class);
-        final Mock event = mock(Event.class);
-        final Mock outcome = mock(Outcome.class);
-        
-        Scenario scenario = new MultiStepScenario() {
-            public void specifySteps() {
-                given((World)world);
-                given((Given)given);
-                when((Event)event);
-                then((Outcome)outcome);
-            }
-        };
-        scenario.specify();
-        
-        // expect
-        given.expects("setUp").with(world);
-        event.expects("occurIn").with(world).after(given, "setUp");
-        outcome.expects("verify").with(world).after(event, "occurIn");
-        
-        // when
-        scenario.run(new HashMapWorld());
-        
-        // then
-        verifyMocks();        
-    }
+
 }
