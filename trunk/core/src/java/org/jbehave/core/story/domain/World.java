@@ -18,6 +18,10 @@ package org.jbehave.core.story.domain;
  * The methods on this interface are a legacy of JBehave 1.0.
  * We might remove them from the interface at some point.
  * 
+ * World keys should work as HashMap keys, ie: they should
+ * be immutable and their hashCode() should play nice with their
+ * equals().
+ * 
  * @see HashMapWorld, CustomWorld, Given, CleansUpWorld
  */
 public interface World {

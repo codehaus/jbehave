@@ -9,8 +9,7 @@ public class UsingMatchersBehaviour {
             throw new NumberFormatException();
         }
     };
-    
-    
+        
     Block EMPTY_BLOCK = new Block() {
         public void run() throws Exception {}
     };
@@ -89,14 +88,14 @@ public class UsingMatchersBehaviour {
         Ensure.that(exception, m.isNotNull());
     }
     
-    public void shouldReturnNullIfNoExceptionThrown() throws Exception {
+    public void shouldCatchAndReturnNullIfNoExceptionThrown() throws Exception {
         UsingMatchers m = new UsingMatchers() {};
         
         Exception exception = m.runAndCatch(IllegalArgumentException.class, EMPTY_BLOCK);
         Ensure.that(exception, m.isNull());
     }
     
-    public void shouldPropagateExceptionOfAnUnexpectedType() throws Exception {
+    public void shouldCatchAndRethrowExceptionOfAnUnexpectedType() throws Exception {
         UsingMatchers m = new UsingMatchers() {};
         
         try {
