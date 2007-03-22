@@ -142,7 +142,11 @@ public abstract class UsingMatchers {
 	}
     
     public CustomMatcher nothing() {
-        return isNull();
+        return new CustomMatcher("nothing") {
+            public boolean matches(Object arg) {
+                return false;
+            }
+        };
     }
 
 	public CustomMatcher a(final Class type) {
