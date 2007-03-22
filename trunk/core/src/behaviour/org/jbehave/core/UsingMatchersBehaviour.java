@@ -43,12 +43,45 @@ public class UsingMatchersBehaviour {
         Ensure.that(true, m.eq(true), "message");
     }
     
-    public void shouldProvideMatcherToCheckForNull() {
+    public void shouldProvideMatchersToCheckForNull() {
         UsingMatchers m = new UsingMatchers() {};
         Ensure.that(null, m.isNull());
+        Ensure.that(new Object(), m.not(m.isNull()));
         Ensure.that(new Object(), m.isNotNull());
+        Ensure.that(null, m.not(m.isNotNull()));
+    }
+    
+    public void shouldProvideMatchersToCheckForAnything() {
+        UsingMatchers m = new UsingMatchers() {};
+        Ensure.that(null, m.not(m.nothing()));
+        Ensure.that(new Object(), m.not(m.nothing()));
+        Ensure.that(new Object(), m.anything());
+        Ensure.that(null, m.anything());
+    }
+    
+    public void shouldProvideCommonStringMatchers() {
+        UsingMatchers m = new UsingMatchers() {};
+        
+        Ensure.that("octopus", m.contains("top"));
+        Ensure.that("octopus", m.not(m.contains("eight")));
+        Ensure.that("octopus", m.startsWith("octo"));
+        Ensure.that("octopus", m.not(m.startsWith("eight")));
+        Ensure.that("octopus", m.endsWith("pus"));
+        Ensure.that("octopus", m.not(m.endsWith("eight")));
     }
 
+    public void shouldProvideInstanceMatchers() {
+        UsingMatchers m = new UsingMatchers() {};
+        
+        String a = "a";
+        String b = "b";
+        
+        Ensure.that(a, m.is(a));
+        Ensure.that(a, m.not(m.is(b)));
+        Ensure.that(a, m.sameInstanceAs(a));
+        Ensure.that(a, m.not(m.sameInstanceAs(b)));
+    }
+    
     public void shouldCatchAndReturnAThrownException() throws Exception {
         UsingMatchers m = new UsingMatchers() {};
         
