@@ -107,10 +107,16 @@ public class UsingMatchersBehaviour {
         }
     }
     
-    public void shouldProvideMatchersForOneOrAnotherCondition() throws Exception {
+    public void shouldProvideConditionalMatchers() throws Exception {
         UsingMatchers m = new UsingMatchers() {};
         
-        Ensure.that(true, m.or(m.eq(true), m.eq(false)));
-        Ensure.that(false, m.either(m.eq(true), m.eq(false)));
+        String horse = "horse";
+        String cow = "cow";
+        
+        Ensure.that(horse, m.or(m.eq(horse), m.eq(cow)));
+        Ensure.that(cow, m.either(m.eq(horse), m.eq(cow)));
+        
+        Ensure.that(horse, m.and(m.eq(horse), m.contains("ors")));
+        Ensure.that(cow, m.both(m.eq(cow), m.endsWith("ow")));
     }
 }
