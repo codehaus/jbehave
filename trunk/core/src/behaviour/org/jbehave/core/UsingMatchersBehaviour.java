@@ -73,4 +73,11 @@ public class UsingMatchersBehaviour {
             // expected
         }
     }
+    
+    public void shouldProvideMatchersForOneOrAnotherCondition() throws Exception {
+        UsingMatchers m = new UsingMatchers() {};
+        
+        Ensure.that(true, m.or(m.eq(true), m.eq(false)));
+        Ensure.that(false, m.either(m.eq(true), m.eq(false)));
+    }
 }

@@ -140,6 +140,10 @@ public abstract class UsingMatchers {
 	        }
 	    };
 	}
+    
+    public CustomMatcher nothing() {
+        return isNull();
+    }
 
 	public CustomMatcher a(final Class type) {
 	    return isA(type);
@@ -198,7 +202,7 @@ public abstract class UsingMatchers {
 	}
 
 	public CustomMatcher either(final Matcher a, final Matcher b) {
-	    return either(a, b);
+	    return or(a, b);
 	}
 
 	public CustomMatcher not(final Matcher c) {
