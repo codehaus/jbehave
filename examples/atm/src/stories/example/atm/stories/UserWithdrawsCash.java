@@ -17,6 +17,10 @@ import example.atm.scenarios.InLotsOfTrouble;
 import example.atm.scenarios.OverdrawnWithoutPermission;
 
 /**
+ * This story is not functional. It's a good example to use with the
+ * StoryPrinter. If you want a functional story, look at the
+ * Hellbound examples instead.
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
  */
 public class UserWithdrawsCash extends ScenarioDrivenStory {
