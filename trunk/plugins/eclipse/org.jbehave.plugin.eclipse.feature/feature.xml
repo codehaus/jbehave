@@ -5,7 +5,7 @@
       version="1.0.0"
       provider-name="JBehave"
       os="linux,macosx,win32"
-      ws="gtk,motif,win32"
+      ws="carbon,gtk,motif,win32"
       nl="en_GB,en"
       arch="ia64,ia64_32,PA_RISC,ppc,sparc,x86,x86_64">
 
