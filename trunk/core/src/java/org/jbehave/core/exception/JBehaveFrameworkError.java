@@ -37,7 +37,6 @@ public class JBehaveFrameworkError extends Error {
 
     public JBehaveFrameworkError(Throwable nestedException) {
         this(null, nestedException);
-        nestedException.printStackTrace();
     }
     
 	public Throwable getNestedException() {
