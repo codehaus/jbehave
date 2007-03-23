@@ -3,7 +3,7 @@
    <description url="http://jbehave.codehaus.org/eclipse">
       JBehave for Eclipse
    </description>
-   <feature url="features/org.jbehave.plugin.eclipse.feature_1.0.0.jar" id="org.jbehave.plugin.eclipse.feature" version="1.0.0" os="linux,macosx,win32" ws="gtk,motif,win32" nl="en_GB,en" arch="ia64,ia64_32,PA_RISC,ppc,sparc,x86,x86_64">
+   <feature url="features/org.jbehave.plugin.eclipse.feature_1.0.0.jar" id="org.jbehave.plugin.eclipse.feature" version="1.0.0" os="linux,macosx,win32" ws="carbon,gtk,motif,win32" nl="en_GB,en" arch="ia64,ia64_32,PA_RISC,ppc,sparc,x86,x86_64">
       <category name="JBehave for Eclipse"/>
    </feature>
    <category-def name="JBehave for Eclipse" label="JBehave for Eclipse"/>
