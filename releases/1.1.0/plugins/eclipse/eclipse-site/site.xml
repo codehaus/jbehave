@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://jbehave.org/eclipse/">
+      JBehave for Eclipse
+   </description>
+   <feature url="features/org.jbehave.plugin.eclipse.feature_1.1.0.jar" id="org.jbehave.plugin.eclipse.feature" version="1.1.0" os="linux,macosx,win32" ws="carbon,gtk,motif,win32" nl="en_GB,en" arch="ia64,ia64_32,PA_RISC,ppc,sparc,x86,x86_64">
+      <category name="JBehave for Eclipse"/>
+   </feature>
+   <category-def name="JBehave for Eclipse" label="JBehave for Eclipse"/>
+</site>

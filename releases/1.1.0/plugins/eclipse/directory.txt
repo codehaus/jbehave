@@ -1,0 +1,2 @@
+feature@org.jbehave.plugin.eclipse.feature=COPY,.,org.jbehave.plugin.eclipse.feature
+plugin@org.jbehave.plugin.eclipse=COPY,.,org.jbehave.plugin.eclipse
