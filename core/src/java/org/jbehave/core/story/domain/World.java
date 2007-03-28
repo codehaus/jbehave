@@ -22,7 +22,7 @@ package org.jbehave.core.story.domain;
  * be immutable and their hashCode() should play nice with their
  * equals().
  * 
- * @see HashMapWorld, CustomWorld, Given, CleansUpWorld
+ * @see HashMapWorld CustomWorld Given CleansUpWorld
  */
 public interface World {
     /**

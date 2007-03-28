@@ -2,8 +2,8 @@
 <idea-plugin>
     <name>JBehave Plugin</name>
     <description>JBehave Launcher that launches the verification process of the current behavior.</description>
-    <version>1.0.1</version>
-    <vendor logo="/behave.png" url="http://jbehave.codehaus.org/intellij.html">JBehave</vendor>
+    <version>1.1.0</version>
+    <vendor logo="/behave.png" url="http://jbehave.org">JBehave</vendor>
     <change-notes>
         Formal release
     </change-notes>
