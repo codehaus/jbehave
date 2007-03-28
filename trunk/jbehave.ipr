@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="4" relativePaths="false">
+<project version="4" relativePaths="true">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
   </component>
@@ -262,7 +262,7 @@
       <module fileurl="file://$PROJECT_DIR$/website/website.iml" filepath="$PROJECT_DIR$/website/website.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="false" project-jdk-name="1.4" />
+  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="false" project-jdk-name="1.4" project-jdk-type="JavaSDK" />
   <component name="ProjectRunConfigurationManager" />
   <component name="RAILS_PROJECT_VIEW_PANE" />
   <component name="RUBY_DOC_SETTINGS">
