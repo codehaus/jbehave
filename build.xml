@@ -35,7 +35,7 @@
 	<property name="jbehave_jar" location="${binaries_dir}/jbehave-${version}.jar" />
 	<property name="jbehave_src_zip" location="${binaries_dir}/jbehave-${version}-src.zip" />
 	<property name="website_dist_dir" location="${dist_dir}/website"/>
-	<property name="javadoc_dist_dir" location="${website_dist_dir}/javadoc"/>
+	<property name="javadoc_dist_dir" location="${website_dist_dir}/javadoc/${version}"/>
 
 	<!-- examples -->
 	<property name="example" value="hellbound" />
