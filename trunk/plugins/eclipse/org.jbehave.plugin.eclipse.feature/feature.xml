@@ -2,7 +2,7 @@
 <feature
       id="org.jbehave.plugin.eclipse.feature"
       label="JBehave for Eclipse"
-      version="1.1.0"
+      version="1.0.1"
       provider-name="JBehave"
       os="linux,macosx,win32"
       ws="carbon,gtk,motif,win32"
