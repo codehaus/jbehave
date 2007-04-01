@@ -1,5 +1,5 @@
 <project name="jbehave" default="build">
-	<property name="version" value="1.0-SNAPSHOT" />
+	<property name="version" value="1.1-SNAPSHOT" />
 	<echo message="Building version ${version}..." />
 
 	<!-- modules -->

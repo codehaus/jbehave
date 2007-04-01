@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jbehave</groupId>
 		<artifactId>jbehave-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>jbehave</artifactId>
 	<packaging>jar</packaging>
@@ -25,15 +25,11 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <!--  Use with current snapshot/version -->
-                                <ant antfile="build.xml" dir="../" target="build"/>
+                                <!--  Use with snapshot version -->
+                                <ant antfile="build.xml" dir="../" target="build-jar"/>
                                 <copy todir="${project.build.directory}/classes">
                                     <fileset dir="../delete_me/classes"/>
                                 </copy>
-                                <!-- Use with previously built version
-                                <unzip src="../lib/jbehave-${pom.version}.jar" 
-                                      dest="${project.build.directory}/classes"/>
-                                -->
                             </tasks>                                                        
                         </configuration>
                     </execution>
@@ -41,4 +37,43 @@
             </plugin>    
         </plugins>            
     </build>
+  
+    <profiles>
+        <profile>
+            <!-- released profile:  
+                 Downloads released version from http://dist.codehaus.org/jbehave.  
+                 Requires wget installed on system 
+            -->
+            <id>released</id>
+            <build>
+                <plugins>
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.1</version>
+                    <executions>
+                      <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                          <goal>run</goal>
+                        </goals>
+                        <configuration>
+                          <tasks>
+                            <property name="release.version" value="${pom.version}"/>
+                            <exec executable="wget" newenvironment="false" dir="${basedir}" spawn="false"
+                                    failifexecutionfails="true" failonerror="true">
+                              <arg value="http://dist.codehaus.org/jbehave/${release.version}/jbehave-${release.version}.jar" />  
+                              <arg value="--output-document=../lib/jbehave-${release.version}.jar" />  
+                            </exec>    
+                            <unzip src="../lib/jbehave-${release.version}.jar" 
+                                  dest="${project.build.directory}/classes" />
+                          </tasks>
+                        </configuration>
+                      </execution>
+                    </executions>
+                  </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
