@@ -1,8 +1,13 @@
 package org.jbehave.core;
 
+import java.util.ArrayList;
+
+import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.mock.UsingMatchers;
 
 public class UsingMatchersBehaviour {
+
+    private static final String NL = System.getProperty("line.separator");
 
     Block EXCEPTION_BLOCK = new Block() {
         public void run() throws Exception {
@@ -117,5 +122,39 @@ public class UsingMatchersBehaviour {
         
         Ensure.that(horse, m.and(m.eq(horse), m.contains("ors")));
         Ensure.that(cow, m.both(m.eq(cow), m.endsWith("ow")));
+    }
+    
+    public void shouldProvideMatchersForCollectionsContainingAThing() {
+        UsingMatchers m = new UsingMatchers() {};
+        
+        ArrayList list = new ArrayList();
+        list.add(new Integer(3));
+        
+        Ensure.that(list, m.collectionContaining(new Integer(3)));
+        Ensure.that(list, m.collectionContaining(m.eq(new Integer(3))));
+        
+        Ensure.that(list, m.not(m.collectionContaining(new Integer(5))));
+        Ensure.that(list, m.not(m.collectionContaining(m.eq(new Integer(5)))));
+    }
+    
+    public void shouldDescribeMatchersForCollections() {
+        UsingMatchers m = new UsingMatchers() {};
+        
+        ArrayList list = new ArrayList();
+        list.add(new Integer(5));
+        
+        try {
+            Ensure.that(list, m.collectionContaining(new Integer(3)));
+        } catch (VerificationException e) {
+            Ensure.that(e.getMessage(), m.eq("Expected: " + NL + "a collection containing [equal to <3>]" + NL + "but got: " + NL + "[5]"));
+        }
+        
+        list.add(new Integer(6));
+        
+        try {
+            Ensure.that(list, m.collectionContaining(new Integer(4), new Integer(5)));
+        } catch (VerificationException e) {
+            Ensure.that(e.getMessage(), m.eq("Expected: " + NL + "a collection containing [equal to <4>, equal to <5>]" + NL + "but got: " + NL + "[5, 6]"));
+        }
     }
 }

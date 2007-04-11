@@ -1,6 +1,8 @@
 package org.jbehave.core.mock;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.jbehave.core.Block;
 import org.jbehave.core.exception.PendingException;
@@ -29,6 +31,9 @@ import org.jbehave.core.exception.VerificationException;
  * {@link org.jbehave.core.minimock.UsingMiniMock} than to UsingMatchers.
  */
 public abstract class UsingMatchers {
+    
+    private static final String NL = System.getProperty("line.separator");
+    
 	public abstract static class CustomMatcher extends UsingMatchers implements Matcher {
 		private final String description;
 
@@ -43,9 +48,14 @@ public abstract class UsingMatchers {
 		public CustomMatcher and(Matcher that) {
 			return and(this, that);
 		}
+        
 		public CustomMatcher or(Matcher that) {
 			return or(this, that);
 		}
+        
+        public String describe(Object arg) {
+            return "" + arg;
+        }
 	}
 
     /** ensures object is not null */
@@ -184,7 +194,70 @@ public abstract class UsingMatchers {
 			}
 		};
 	}
+    
+    public CustomMatcher collectionContaining(final CustomMatcher[] matchers) {
+        if (matchers.length == 0) {
+            return collectionContaining(nothing());
+        }
+        
+        
+        CustomMatcher matcher = collectionContainingA(matchers[0]);
+        for (int i = 1; i < matchers.length; i++) {
+            matcher = matchers[i].and(collectionContainingA(matcher));
+        }
+        
+        final CustomMatcher finalMatcher = matcher;
+        
+        return new CustomMatcher(""){
+            public boolean matches(Object arg) {
+                return finalMatcher.matches(arg);
+            }
 
+            public String describe(Object arg) {
+                Collection collection = (Collection) arg;
+                StringBuffer buffer = new StringBuffer().append("[");
+                for (Iterator iter = collection.iterator(); iter.hasNext();) {
+                    buffer.append(iter.next());
+                    if(iter.hasNext()) {
+                        buffer.append(", ");
+                    }                    
+                }
+                buffer.append("]");
+                return buffer.toString();
+            }
+            
+            public String toString() {
+                return "a collection containing " + describe(Arrays.asList(matchers));
+            }
+        };
+    }
+    
+    public CustomMatcher collectionContaining(final CustomMatcher matcher) {
+        return collectionContaining(new CustomMatcher[] {matcher});
+    }
+
+    private CustomMatcher collectionContainingA(final CustomMatcher matcher) {
+        return new CustomMatcher("" + matcher) {
+            public boolean matches(Object arg) {
+                Collection collection = (Collection) arg;
+                for (Iterator iter = collection.iterator(); iter.hasNext();) {
+                    if (matcher.matches(iter.next())) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+    }
+    
+    public CustomMatcher collectionContaining(final Object object) {
+        return collectionContaining(eq(object));
+    }
+    
+    public CustomMatcher collectionContaining(final Object object1, final Object object2) {
+        return collectionContaining(new CustomMatcher[] {eq(object1), eq(object2)});
+    }
+    
 	public CustomMatcher and(final Matcher a, final Matcher b) {
 	    return new CustomMatcher("(" + a + " and " + b + ")") {
 	        public boolean matches(Object arg) {
@@ -223,13 +296,23 @@ public abstract class UsingMatchers {
                 return collection.contains(arg);
             }
         };
-    }    
+    }
+    
+    public void ensureThat(Object arg, CustomMatcher matcher, String message) {
+        if (!matcher.matches(arg)) {
+            fail("Expected: " +
+                    (message != null ? "[" + message + "] ": "") + NL +
+                    matcher + NL +
+                    "but got: " + NL + matcher.describe(arg));
+        }
+    }
+    
     public void ensureThat(Object arg, Matcher matcher, String message) {
     	if (!matcher.matches(arg)) {
-    		fail("\nExpected: " +
-    				(message != null ? "[" + message + "] " : "") +
-    				matcher +
-    				"\nbut got:  <" + arg + ">");
+    		fail("Expected: " +
+    				(message != null ? "[" + message + "] " : "") + NL + 
+    				matcher + NL +
+    				"but got: " + NL + arg);
     	}
 	}
     
@@ -318,4 +401,8 @@ public abstract class UsingMatchers {
     
     public void todo() { pending(); }
     public void todo(String message) { pending(message); }
+
+
+
+
 }
