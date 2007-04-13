@@ -16,6 +16,7 @@ import org.jbehave.core.listener.PlainTextMethodListenerBehaviour;
 import org.jbehave.core.minimock.MiniMockObjectBehaviour;
 import org.jbehave.core.minimock.UsingMiniMockBehaviour;
 import org.jbehave.core.mock.ExpectationBehaviour;
+import org.jbehave.core.mock.UsingMatchersBehaviour;
 import org.jbehave.core.result.ResultBehaviour;
 
 
@@ -33,6 +34,7 @@ public class AllBehaviours implements Behaviours {
                 ExpectationBehaviour.class,
                 ResultBehaviour.class,
                 org.jbehave.core.story.AllBehaviours.class,
+                org.jbehave.core.matchers.AllBehaviours.class,
                 JBehaveFrameworkErrorBehaviour.class
         };
     }
