@@ -1,12 +1,13 @@
 package org.jbehave.core.mock;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.jbehave.core.Block;
-import org.jbehave.core.exception.PendingException;
-import org.jbehave.core.exception.VerificationException;
+import org.jbehave.core.matchers.UsingCollectionMatchers;
+import org.jbehave.core.matchers.UsingEqualityMatchers;
+import org.jbehave.core.matchers.UsingExceptions;
+import org.jbehave.core.matchers.UsingLogicalMatchers;
+import org.jbehave.core.matchers.UsingStringMatchers;
 
 
 /**
@@ -33,269 +34,127 @@ import org.jbehave.core.exception.VerificationException;
 public abstract class UsingMatchers {
     
     private static final String NL = System.getProperty("line.separator");
+
     
-	public abstract static class CustomMatcher extends UsingMatchers implements Matcher {
-		private final String description;
-
-		public CustomMatcher(String description) {
-			this.description = description;
-		}
-
-		public String toString() {
-			return description;
-		}
-		
-		public CustomMatcher and(Matcher that) {
-			return and(this, that);
-		}
-        
-		public CustomMatcher or(Matcher that) {
-			return or(this, that);
-		}
-        
-        public String describe(Object arg) {
-            return "" + arg;
+    public static abstract class CustomMatcher extends org.jbehave.core.matchers.CustomMatcher {
+        public CustomMatcher(String description) {
+            super(description);
         }
-	}
-
-    /** ensures object is not null */
-    public CustomMatcher isNotNull() {
-        return new CustomMatcher("object not null") {
-            public boolean matches(Object arg) {
-                return arg != null;
-            }
-        };
     }
     
-
+	/** ensures object is not null */
+    public CustomMatcher isNotNull() {
+        return UsingEqualityMatchers.isNotNull();
+    }
     
     public CustomMatcher isNull() {
-        return new CustomMatcher("object is null") {
-            public boolean matches(Object arg) {
-                return arg == null;
-            }
-        };
+        return UsingEqualityMatchers.isNull();
     }
     
-	/** ensures object equals expected value */
-	public CustomMatcher eq(final Object expectedArg) {
-	    return new CustomMatcher("equal to <" + expectedArg + ">") {
-	        public boolean matches(Object arg) {
-	            return arg == null ? expectedArg == null : arg.equals(expectedArg);
-	        }
-	    };
+	/** ensures object equals expected value */    
+	public CustomMatcher eq(Object expectedArg) {
+	    return UsingEqualityMatchers.eq(expectedArg);
 	}
 
 	/** eq(primitive) for float and double */
-	public CustomMatcher eq(final double expectedArg, final double delta) {
-	    return new CustomMatcher("floating point number equal to " + expectedArg) {
-	        public boolean matches(Object arg) {
-	            double value = ((Number) arg).doubleValue();
-				return Math.abs(expectedArg - value) <= delta;
-	        }
-	    };
+	public CustomMatcher eq(double expectedArg, double delta) {
+	    return UsingEqualityMatchers.eq(expectedArg, delta);
 	}
 
 	/** eq(primitive) for float and double */
-	public CustomMatcher eq(final double expectedArg) {
-		return eq(expectedArg, 0.0);
+	public CustomMatcher eq(double expectedArg) {
+		return UsingEqualityMatchers.eq(expectedArg);
 	}
-	
-	/** eq(primitive) for byte, short, integer and long */
-	public CustomMatcher eq(final long expectedArg) {
-	    return new CustomMatcher("integer type equal to " + expectedArg) {
-	        public boolean matches(Object arg) {
-	            Number n = (Number)arg;
-	            return n.longValue() == expectedArg;
-	        }          
-	    };
+
+	/** eq(primitive) for byte, short, integer and long */	
+	public CustomMatcher eq(long expectedArg) {
+	    return UsingEqualityMatchers.eq(expectedArg);
 	}
 
 	/** eq(primitive) for char - note {@link Character} is not a {@link Number} */
-	public CustomMatcher eq(final char expectedArg) {
-	    return new CustomMatcher("character equal to '" + expectedArg + "'") {
-	        public boolean matches(Object arg) {
-	            Character n = (Character)arg;
-	            return n.charValue() == expectedArg;
-	        }          
-	    };
+	public CustomMatcher eq(char expectedArg) {
+	    return UsingEqualityMatchers.eq(expectedArg);
 	}
 
 	/** eq(primitive) for boolean */
-	public CustomMatcher eq(final boolean expectedArg) {
-	    return new CustomMatcher("boolean " + expectedArg) {
-	        public boolean matches(Object arg) {
-	            Boolean n = (Boolean)arg;
-	            return n.booleanValue() == expectedArg;
-	        }          
-	    };
+	public CustomMatcher eq(boolean expectedArg) {
+	    return UsingEqualityMatchers.eq(expectedArg);
 	}
 
 	public CustomMatcher is(Object expectedArg) {
-	    return sameInstanceAs(expectedArg);
+	    return UsingEqualityMatchers.is(expectedArg);
     }
 
 	public CustomMatcher sameInstanceAs(final Object expectedArg) {
-	    return new CustomMatcher("same instance as <" + expectedArg + ">") {
-	        public boolean matches(Object arg) {
-	            return expectedArg == arg;
-	        }
-	    };
+	    return UsingEqualityMatchers.sameInstanceAs(expectedArg);
 	}
 
 	public CustomMatcher anything() {
-	    return new CustomMatcher("anything") {
-	        public boolean matches(Object arg) {
-	            return true;
-	        }
-	    };
+	    return UsingEqualityMatchers.anything();
 	}
     
     public CustomMatcher nothing() {
-        return new CustomMatcher("nothing") {
-            public boolean matches(Object arg) {
-                return false;
-            }
-        };
+        return UsingEqualityMatchers.nothing();
     }
 
-	public CustomMatcher a(final Class type) {
-	    return isA(type);
+	public CustomMatcher a(Class type) {
+	    return UsingEqualityMatchers.a(type);
 	}
 
 	public CustomMatcher isA(final Class type) {
-	    return new CustomMatcher("object of type " + type.getName()) {
-	        public boolean matches(Object arg) {
-	            return type.isInstance(arg);
-	        }
-	    };
+	    return UsingEqualityMatchers.isA(type);
 	}
 	
-	public CustomMatcher startsWith(final String fragment) {
-	    return new CustomMatcher("string starting with <" + fragment + ">") {
-	        public boolean matches(Object arg) {
-	            return ((String)arg).startsWith(fragment);
-	        }
-	    };
+	public CustomMatcher startsWith(String fragment) {
+	    return UsingStringMatchers.startsWith(fragment);
 	}
 	
-	public CustomMatcher endsWith(final String fragment) {
-		return new CustomMatcher("string ending with <" + fragment + ">") {
-			public boolean matches(Object arg) {
-				return ((String)arg).endsWith(fragment);
-			}
-		};
+	public CustomMatcher endsWith(String fragment) {
+	    return UsingStringMatchers.endsWith(fragment);
 	}
 	
-	public CustomMatcher contains(final String fragment) {
-		return new CustomMatcher("string containing <" + fragment + ">") {
-			public boolean matches(Object arg) {
-				return arg.toString().indexOf(fragment) != -1;
-			}
-		};
+	public CustomMatcher contains(String fragment) {
+	    return UsingStringMatchers.contains(fragment);
 	}
     
-    public CustomMatcher collectionContaining(final CustomMatcher[] matchers) {
-        if (matchers.length == 0) {
-            return collectionContaining(nothing());
-        }
-        
-        
-        CustomMatcher matcher = collectionContainingA(matchers[0]);
-        for (int i = 1; i < matchers.length; i++) {
-            matcher = matchers[i].and(collectionContainingA(matcher));
-        }
-        
-        final CustomMatcher finalMatcher = matcher;
-        
-        return new CustomMatcher(""){
-            public boolean matches(Object arg) {
-                return finalMatcher.matches(arg);
-            }
-
-            public String describe(Object arg) {
-                Collection collection = (Collection) arg;
-                StringBuffer buffer = new StringBuffer().append("[");
-                for (Iterator iter = collection.iterator(); iter.hasNext();) {
-                    buffer.append(iter.next());
-                    if(iter.hasNext()) {
-                        buffer.append(", ");
-                    }                    
-                }
-                buffer.append("]");
-                return buffer.toString();
-            }
-            
-            public String toString() {
-                return "a collection containing " + describe(Arrays.asList(matchers));
-            }
-        };
+    public CustomMatcher collectionContaining(CustomMatcher[] matchers) {
+        return UsingCollectionMatchers.collectionContaining(matchers);
     }
     
     public CustomMatcher collectionContaining(final CustomMatcher matcher) {
-        return collectionContaining(new CustomMatcher[] {matcher});
-    }
-
-    private CustomMatcher collectionContainingA(final CustomMatcher matcher) {
-        return new CustomMatcher("" + matcher) {
-            public boolean matches(Object arg) {
-                Collection collection = (Collection) arg;
-                for (Iterator iter = collection.iterator(); iter.hasNext();) {
-                    if (matcher.matches(iter.next())) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
+        return UsingCollectionMatchers.collectionContaining(matcher);
     }
     
-    public CustomMatcher collectionContaining(final Object object) {
-        return collectionContaining(eq(object));
+    public CustomMatcher collectionContaining(Object object) {
+        return UsingCollectionMatchers.collectionContaining(object);
     }
     
-    public CustomMatcher collectionContaining(final Object object1, final Object object2) {
-        return collectionContaining(new CustomMatcher[] {eq(object1), eq(object2)});
+    public CustomMatcher collectionContaining(Object object1, Object object2) {
+        return UsingCollectionMatchers.collectionContaining(object1, object2);
     }
     
-	public CustomMatcher and(final Matcher a, final Matcher b) {
-	    return new CustomMatcher("(" + a + " and " + b + ")") {
-	        public boolean matches(Object arg) {
-	            return a.matches(arg) && b.matches(arg);
-	        }
-	    };
+	public CustomMatcher and(Matcher a, Matcher b) {
+	    return UsingLogicalMatchers.and(a, b);
 	}
 
-	public CustomMatcher both(final Matcher a, final Matcher b) {
-	    return and(a, b);
+	public CustomMatcher both(Matcher a, Matcher b) {
+	    return UsingLogicalMatchers.both(a, b);
 	}
 
-	public CustomMatcher or(final Matcher a, final Matcher b) {
-	    return new CustomMatcher("(" + a + " or " + b + ")") {
-	        public boolean matches(Object arg) {
-	            return a.matches(arg) || b.matches(arg);
-	        }
-	    };
+	public CustomMatcher or(Matcher a, Matcher b) {
+	    return UsingLogicalMatchers.or(a, b);
 	}
 
-	public CustomMatcher either(final Matcher a, final Matcher b) {
-	    return or(a, b);
+	public CustomMatcher either(Matcher a, Matcher b) {
+	    return UsingLogicalMatchers.either(a, b);
 	}
 
-	public CustomMatcher not(final Matcher c) {
-	    return new CustomMatcher("not (" + c + ")") {
-	        public boolean matches(Object arg) {
-	            return !c.matches(arg);
-	        }
-	    };
+	public CustomMatcher not(Matcher c) {
+	    return UsingLogicalMatchers.not(c);
 	}
 	
     public CustomMatcher isContainedIn(final Collection collection) {
-        return new CustomMatcher("is contained in " + collection) {
-            public boolean matches(Object arg) {
-                return collection.contains(arg);
-            }
-        };
+        return UsingCollectionMatchers.isContainedIn(collection);
     }
     
     public void ensureThat(Object arg, CustomMatcher matcher, String message) {
@@ -352,17 +211,7 @@ public abstract class UsingMatchers {
      * @return a caught exception assignable from the given type, or null if no such exception was caught
      */
     public Exception runAndCatch(Class exceptionType, Block block) throws Exception {
-        try {
-            block.run();
-        }
-        catch (Exception e) {
-            if (exceptionType.isAssignableFrom(e.getClass())) {
-                return e;
-            } else {
-                throw e;
-            }
-        }
-        return null;
+        return UsingExceptions.runAndCatch(exceptionType, block);
     }
     
     /** ensure(...) without matchers */
@@ -380,29 +229,30 @@ public abstract class UsingMatchers {
     }
 
     public void fail(String message) {
-        throw new VerificationException(message);
+        UsingExceptions.fail(message);
     }
     
     public void fail(String message, Exception e) {
-        throw new VerificationException(message, e);
+        UsingExceptions.fail(message, e);
     }
 
     public void fail(String message, Object expected, Object actual) {
-        throw new VerificationException(message, expected, actual);
+        UsingExceptions.fail(message, expected, actual);
     }
 
 	public void pending(String message) {
-		throw new PendingException(message);
+	    UsingExceptions.pending(message);
 	}
 	
 	public void pending() {
-		pending("TODO");
+	    UsingExceptions.pending();
 	}
     
-    public void todo() { pending(); }
-    public void todo(String message) { pending(message); }
-
-
-
-
+    public void todo() {
+        UsingExceptions.todo(); 
+    }
+    
+    public void todo(String message) {
+        UsingExceptions.todo(message);
+    }
 }
