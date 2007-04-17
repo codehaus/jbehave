@@ -9,8 +9,11 @@ package org.jbehave.core;
 
 import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.exception.VerificationException;
+import org.jbehave.core.matchers.UsingEqualityMatchers;
+import org.jbehave.core.matchers.UsingExceptions;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.UsingMatchers;
+import org.jbehave.core.mock.UsingMatchers.CustomMatcher;
 
 
 /**
@@ -20,186 +23,184 @@ import org.jbehave.core.mock.UsingMatchers;
  * @author <a href="mailto:steve@m3p.co.uk">Steve Freeman</a>
  */
 public class Ensure {
-	private static final UsingMatchers matchers = new UsingMatchers() {};
+	private static final String NL = System.getProperty("line.separator");
 	
     /** should not be subclassed for behaviour classes but can be extended to add methods to namespace */
     protected Ensure() {}
 
     /** Ensure.that(something, isBlah()) */
     public static void that(Object arg, Matcher matcher) {
-    	matchers.ensureThat(arg, matcher);
+    	that(arg, matcher, null);
     }
     
-    public static void that(Object arg, Matcher matcher, String message) {
-    	matchers.ensureThat(arg, matcher, message);
+
+	public static void that(Object arg, Matcher matcher, String message) {
+		if (!matcher.matches(arg)) {
+    		UsingExceptions.fail("Expected: " +
+    				(message != null ? "[" + message + "] " : "") + NL + 
+    				matcher + NL +
+    				"but got: " + NL + arg);
+    	}
+	}
+    
+    public static void that(Object arg, CustomMatcher matcher, String message) {
+    	if (!matcher.matches(arg)) {
+    		UsingExceptions.fail("Expected: " +
+                    (message != null ? "[" + message + "] ": "") + NL +
+                    matcher + NL +
+                    "but got: " + NL + matcher.describe(arg));
+        }
 	}
 
 	public static void that(long arg, Matcher matcher) {
-		matchers.ensureThat(arg, matcher, null);
+		that(arg, matcher, null);
     }
 	public static void that(long arg, Matcher matcher, String message) {
-		matchers.ensureThat(arg, matcher, message);
+		that(new Long(arg), matcher, message);
 	}
     
     public static void that(double arg, Matcher matcher) {
-    	matchers.ensureThat(arg, matcher, null);
+    	that(arg, matcher, null);
     }
     public static void that(double arg, Matcher matcher, String message) {
-    	matchers.ensureThat(arg, matcher, message);
+    	that(new Double(arg), matcher, message);
     }
     
     public static void that(char arg, Matcher matcher) {
-    	matchers.ensureThat(arg, matcher, null);
+    	that(arg, matcher, null);
     }
     public static void that(char arg, Matcher matcher, String message) {
-    	matchers.ensureThat(arg, matcher, message);
+    	that(new Character(arg), matcher, message);
     }
     
     public static void that(boolean arg, Matcher matcher) {
-    	matchers.ensureThat(arg, matcher);
+    	that(arg, matcher, null);
     }
     public static void that(boolean arg, Matcher matcher, String message) {
-    	matchers.ensureThat(arg, matcher, message);
+    	that(Boolean.valueOf(arg), matcher, message);
     }
 
-    /** Ensure.that(...) without matchers */
     public static void that(String message, boolean condition) {
-    	matchers.ensureThat(condition, message);
+    	that(condition, message);
     }
 
     /** Ensure.that(...) without matchers */
     public static void that(boolean condition) {
-        matchers.ensureThat(condition, (String)null);
+        that(condition, "Expected condition was not met");
     }
 
+	public static void that(boolean condition, String message) {
+    	if (!condition) {
+    		UsingExceptions.fail(message);
+    	}
+	}    
+    
     public static void not(String message, boolean condition) {
-        Ensure.that(message, !condition);
+        that(message, !condition);
     }
     
     public static void not(boolean condition) {
-        Ensure.that(null, !condition);
+        that(!condition);
     }
 
     /** like junit fail() */
 	public static void impossible(String message) {
-		matchers.fail(("\"Impossible\" behaviour: " + message));
+		UsingExceptions.fail(("\"Impossible\" behaviour: " + message));
 	}
     
-    // Verify.pending("...")
     public static void pending(String message) {
-    	matchers.todo(message);
+    	UsingExceptions.todo(message);
     }
     
     public static void pending() {
-        throw new PendingException();
+        UsingExceptions.pending();
     }
     
     // throws exception
     public static void throwsException(Class exceptionType, Block block) throws Exception {
-        try {
-            block.run();
-            matchers.fail("should have thrown " + exceptionType.getName());
-        }
-        catch (Exception e) {
-            if (!exceptionType.isAssignableFrom(e.getClass())) {
-                throw e;
-            }
-        }
+        Exception exception = UsingExceptions.runAndCatch(exceptionType, block);
+        that(exception, UsingEqualityMatchers.isNotNull());
     }
     
     public static void doesNotThrowException(Block block) throws Exception {
-        try {
-            block.run();
-        } catch (Exception e) {
-            throw new VerificationException("Expected no exception", e);
-        }
+        Exception exception = UsingExceptions.runAndCatch(Exception.class, block);
+        that(exception, UsingEqualityMatchers.isNull());
     }
     
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.isA */
     public static void instanceOf(Class type, Object instance) {
-    	String message = "should be instance of " + type.getName()
-    	+ " but it is " + (instance == null ? "null" : instance.getClass().getName());
-    	that(message, type.isInstance(instance));
+    	that(instance, UsingEqualityMatchers.isA(type));
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.eq */
     public static void equal(String message, boolean expected, boolean actual) {
-        equal(message, Boolean.valueOf(expected), Boolean.valueOf(actual));
+    	that(actual, UsingEqualityMatchers.eq(expected), message);
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.eq */
     public static void equal(boolean expected, boolean actual) {
-        equal(null, expected, actual);
+    	that(actual, UsingEqualityMatchers.eq(expected));
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.eq */
     public static void equal(String message, long expected, long actual) {
-        if (expected != actual) {
-            matchers.fail(message, new Long(expected), new Long(actual));
-        }
+        that(actual, UsingEqualityMatchers.eq(expected), message);
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.eq */
     public static void equal(long expected, long actual) {
-        equal(null, expected, actual);
+    	that(actual, UsingEqualityMatchers.eq(expected));
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.eq */
     public static void equal(String message, double expected, double actual, double delta) {
-        if (Math.abs(expected - actual) > delta) {
-            matchers.fail(message, new Double(expected), new Double(actual));
-        }
+    	that(actual, UsingEqualityMatchers.eq(expected, delta), message);
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.eq */
     public static void equal(double expected, double actual, double delta) {
-        equal(null, expected, actual, delta);
+    	that(actual, UsingEqualityMatchers.eq(expected));
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.eq */
     public static void equal(String message, Object expected, Object actual) {
-        if (expected == null) {
-            if (actual != null) {
-            	matchers.fail(message, expected, actual);
-            }
-        }
-        else if (!expected.equals(actual)) {
-            matchers.fail(message, expected, actual);
-        }
+    	that(actual, UsingEqualityMatchers.eq(expected), message);
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.eq */
     public static void equal(Object expected, Object actual) {
-        equal(null, expected, actual);
+    	that(actual, UsingEqualityMatchers.eq(expected));
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.is */
 	public static void sameInstance(String message, Object expected, Object actual) {
-        if (expected != actual) matchers.fail(message, expected, actual);
+		that(actual, UsingEqualityMatchers.is(expected), message);
 	}
     
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.is */
 	public static void sameInstance(Object expected, Object actual) {
-        sameInstance(null, expected, actual);
+		that(actual, UsingEqualityMatchers.is(expected));
 	}
     
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.is */
 	public static void identical(String message, Object expected, Object actual) {
-        sameInstance(message, expected, actual);
+		that(actual, UsingEqualityMatchers.is(expected), message);
 	}
     
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.is */
 	public static void identical(Object expected, Object actual) {
-        sameInstance(null, expected, actual);
+		that(actual, UsingEqualityMatchers.is(expected));
 	}
     
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.isNotNull */
     public static void notNull(String message, Object actual) {
-        not(message, actual == null);
+		that(actual, UsingEqualityMatchers.isNotNull(), message);
     }
 
-    /** @deprecated use matchers */
+    /** @deprecated use UsingMatchers or UsingEqualityMatchers.isNotNull */
     public static void notNull(Object actual) {
-        notNull(null, actual);
+		that(actual, UsingEqualityMatchers.isNotNull());
     }
+
+
 }

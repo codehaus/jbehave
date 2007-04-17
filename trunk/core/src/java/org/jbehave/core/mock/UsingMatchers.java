@@ -3,6 +3,7 @@ package org.jbehave.core.mock;
 import java.util.Collection;
 
 import org.jbehave.core.Block;
+import org.jbehave.core.Ensure;
 import org.jbehave.core.matchers.UsingCollectionMatchers;
 import org.jbehave.core.matchers.UsingEqualityMatchers;
 import org.jbehave.core.matchers.UsingExceptions;
@@ -35,15 +36,33 @@ public abstract class UsingMatchers {
     
     private static final String NL = System.getProperty("line.separator");
 
-    
-    public static abstract class CustomMatcher extends org.jbehave.core.matchers.CustomMatcher {
-        public CustomMatcher(String description) {
-            super(description);
+    /** @deprecated Use org.jbehave.core.matchers.CustomMatcher instead */
+    public static abstract class CustomMatcher extends UsingMatchers implements Matcher {
+        private final String description;
+
+		public CustomMatcher(String description) {
+			this.description = description;
         }
+
+        public String toString() {
+            return description;
+        }
+        
+        public CustomMatcher and(Matcher that) {
+            return UsingLogicalMatchers.and(this, that);
+        }
+        
+        public CustomMatcher or(Matcher that) {
+            return UsingLogicalMatchers.or(this, that);
+        }
+        
+        public String describe(Object arg) {
+            return "" + arg;
+        }        
     }
     
 	/** ensures object is not null */
-    public CustomMatcher isNotNull() {
+    public org.jbehave.core.matchers.CustomMatcher isNotNull() {
         return UsingEqualityMatchers.isNotNull();
     }
     
@@ -158,53 +177,45 @@ public abstract class UsingMatchers {
     }
     
     public void ensureThat(Object arg, CustomMatcher matcher, String message) {
-        if (!matcher.matches(arg)) {
-            fail("Expected: " +
-                    (message != null ? "[" + message + "] ": "") + NL +
-                    matcher + NL +
-                    "but got: " + NL + matcher.describe(arg));
-        }
+        Ensure.that(arg, matcher, message);
     }
     
     public void ensureThat(Object arg, Matcher matcher, String message) {
-    	if (!matcher.matches(arg)) {
-    		fail("Expected: " +
-    				(message != null ? "[" + message + "] " : "") + NL + 
-    				matcher + NL +
-    				"but got: " + NL + arg);
-    	}
+    	Ensure.that(arg, matcher, message);
 	}
     
 	public void ensureThat(Object arg, Matcher matcher) {
-		ensureThat(arg, matcher, null);
+		Ensure.that(arg, matcher);
 	}
 	
 	public void ensureThat(long arg, Matcher matcher, String message) {
-		ensureThat(new Long(arg), matcher, message);
+		Ensure.that(arg, matcher, message);
 	}
 	public void ensureThat(long arg, Matcher matcher) {
-		ensureThat(new Long(arg), matcher, null);
+		Ensure.that(arg, matcher);
 	}
     
     public void ensureThat(double arg, Matcher matcher, String message) {
-    	ensureThat(new Double(arg), matcher, message);
+    	Ensure.that(arg, matcher, message);
     }
+    
     public void ensureThat(double arg, Matcher matcher) {
-    	ensureThat(arg, matcher, null);
+    	Ensure.that(arg, matcher);
     }
     
     public void ensureThat(char arg, Matcher matcher, String message) {
-    	ensureThat(new Character(arg), matcher, message);
+    	Ensure.that(arg, matcher, message);
     }
     public void ensureThat(char arg, Matcher matcher) {
-    	ensureThat(arg, matcher, null);
+    	Ensure.that(arg, matcher);
     }
     
     public void ensureThat(boolean arg, Matcher matcher, String message) {
-    	ensureThat(Boolean.valueOf(arg), matcher, message);
+    	Ensure.that(arg, matcher, message);
     }
+    
     public void ensureThat(boolean arg, Matcher matcher) {
-    	ensureThat(arg, matcher, null);
+    	Ensure.that(arg, matcher);
     }
     
     /**
@@ -214,18 +225,17 @@ public abstract class UsingMatchers {
         return UsingExceptions.runAndCatch(exceptionType, block);
     }
     
-    /** ensure(...) without matchers */
     public void ensureThat(boolean condition, String message) {
-    	if (!condition) {
-    		fail(message + ": expected condition was not met");
-    	}
+    	Ensure.that(condition, message);
+    }
+    
+    public void that(String message, boolean condition) {
+    	Ensure.that(message, condition);
     }
 
     /** ensure(...) without matchers */
     public void ensureThat(boolean condition) {
-        if (!condition) {
-        	fail("Expected condition was not met");
-        }
+    	Ensure.that(condition);
     }
 
     public void fail(String message) {
