@@ -39,41 +39,22 @@
 
     <distributionManagement>
         <!--  
-            The servers here defined must also appear in ~/.m2/settings.xml
-            <settings>
-            <servers>
-            <server>
-            <id>codehaus-jbehave-repository</id>
-            <username></username>
-            <password></password>
-            </server>
-            <server>
-            <id>codehaus-jbehave-snapshot-repository</id>
-            <username></username>
-            <password></password>
-            </server>
-            <server>
-            <id>codehaus-jbehave-site</id>
-            <username></username>
-            <password></password>
-            </server>
-            </servers>
-            </settings>		  
+            The id used must match a server id defined in ~/.m2/settings.xml
         -->
         <repository>
-            <id>codehaus-jbehave-repository</id>
+            <id>codehaus.org</id>
             <name>Codehaus jBehave Repository</name>
             <url>dav:https://dav.codehaus.org/repository/jbehave/</url>
         </repository>
         <snapshotRepository>
-            <id>codehaus-jbehave-snapshot-repository</id>
+            <id>codehaus.org</id>
             <name>Codehaus jBehave Snapshot Repository</name>
             <url>
                 dav:https://dav.codehaus.org/snapshots.repository/jbehave/
             </url>
         </snapshotRepository>
         <site>
-            <id>codehaus-jbehave-site</id>
+            <id>codehaus.org</id>
             <name>Codehaus jBehave Site</name>
             <url>dav:https://dav.codehaus.org/jbehave/</url>
         </site>
@@ -94,12 +75,6 @@
             <id>codehaus-repository</id>
             <name>Codehaus Repository</name>
             <url>http://repository.codehaus.org</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </repository>
         <repository>
             <id>codehaus-snapshots-repository</id>
