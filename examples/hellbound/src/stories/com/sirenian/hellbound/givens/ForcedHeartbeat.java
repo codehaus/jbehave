@@ -30,6 +30,15 @@ public class ForcedHeartbeat implements Heartbeat {
 	}
 	
 	public void causeBeat() {
+		if (System.getProperty("SLOW") != null) {
+			synchronized(this) {
+				try {
+					wait(700);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		listeners.notifyListeners(pulse);
         skipped = false;
 	}
