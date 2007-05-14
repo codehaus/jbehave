@@ -34,9 +34,6 @@ import org.jbehave.core.matchers.UsingStringMatchers;
  */
 public abstract class UsingMatchers {
     
-    private static final String NL = System.getProperty("line.separator");
-
-    /** @deprecated Use org.jbehave.core.matchers.CustomMatcher instead */
     public static abstract class CustomMatcher extends UsingMatchers implements Matcher {
         private final String description;
 
@@ -62,7 +59,7 @@ public abstract class UsingMatchers {
     }
     
 	/** ensures object is not null */
-    public org.jbehave.core.matchers.CustomMatcher isNotNull() {
+    public CustomMatcher isNotNull() {
         return UsingEqualityMatchers.isNotNull();
     }
     

@@ -7,14 +7,10 @@
  */
 package org.jbehave.core;
 
-import org.jbehave.core.exception.PendingException;
-import org.jbehave.core.exception.VerificationException;
 import org.jbehave.core.matchers.UsingEqualityMatchers;
 import org.jbehave.core.matchers.UsingExceptions;
 import org.jbehave.core.mock.Matcher;
-import org.jbehave.core.mock.UsingMatchers;
 import org.jbehave.core.mock.UsingMatchers.CustomMatcher;
-
 
 /**
  * @author <a href="mailto:dan@jbehave.org">Dan North</a>
