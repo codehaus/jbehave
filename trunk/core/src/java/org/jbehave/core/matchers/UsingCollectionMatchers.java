@@ -4,11 +4,20 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.UsingMatchers.CustomMatcher;
 
 public class UsingCollectionMatchers {
 
-    public static CustomMatcher collectionContaining(final CustomMatcher[] matchers) {
+    public static CustomMatcher isContainedIn(final Collection collection) {
+        return new CustomMatcher("is contained in " + collection) {
+            public boolean matches(Object arg) {
+                return collection.contains(arg);
+            }
+        };
+    }
+	
+    public static CustomMatcher collectionContaining(final Matcher[] matchers) {
         if (matchers.length == 0) {
             return collectionContaining(UsingEqualityMatchers.nothing());
         }
@@ -16,7 +25,7 @@ public class UsingCollectionMatchers {
         
         CustomMatcher matcher = collectionContainingA(matchers[0]);
         for (int i = 1; i < matchers.length; i++) {
-            matcher = matchers[i].and(collectionContainingA(matcher));
+            matcher = UsingLogicalMatchers.and(matcher, collectionContainingA(matchers[i]));
         }
         
         final CustomMatcher finalMatcher = matcher;
@@ -28,7 +37,12 @@ public class UsingCollectionMatchers {
 
             public String describe(Object arg) {
                 Collection collection = (Collection) arg;
-                StringBuffer buffer = new StringBuffer().append("[");
+                StringBuffer buffer = describe(collection);
+                return buffer.toString();
+            }
+
+			private StringBuffer describe(Collection collection) {
+				StringBuffer buffer = new StringBuffer().append("[");
                 for (Iterator iter = collection.iterator(); iter.hasNext();) {
                     buffer.append(iter.next());
                     if(iter.hasNext()) {
@@ -36,8 +50,8 @@ public class UsingCollectionMatchers {
                     }                    
                 }
                 buffer.append("]");
-                return buffer.toString();
-            }
+				return buffer;
+			}
             
             public String toString() {
                 return "a collection containing " + describe(Arrays.asList(matchers));
@@ -46,7 +60,7 @@ public class UsingCollectionMatchers {
     }
     
 
-    private static CustomMatcher collectionContainingA(final CustomMatcher matcher) {
+    private static CustomMatcher collectionContainingA(final Matcher matcher) {
         return new CustomMatcher("" + matcher) {
             public boolean matches(Object arg) {
                 Collection collection = (Collection) arg;
@@ -61,27 +75,47 @@ public class UsingCollectionMatchers {
     }
 
 
-    public static CustomMatcher collectionContaining(CustomMatcher matcher) {
-        return collectionContaining(new CustomMatcher[] {matcher});
+    public static CustomMatcher collectionContaining(Matcher matcher) {
+        return collectionContaining(new Matcher[] {matcher});
     }
 
 
     public static CustomMatcher collectionContaining(Object object) {
-        return collectionContaining(UsingEqualityMatchers.eq(object));
+        return collectionContaining(new Object[]{object});
     }
 
 
-    public static CustomMatcher collectionContaining(Object object1, Object object2) {
-        return collectionContaining(new CustomMatcher[] {UsingEqualityMatchers.eq(object1), UsingEqualityMatchers.eq(object2)});
+    public static CustomMatcher collectionContaining(Object a, Object b) {
+        return collectionContaining(new Object[]{a, b});
     }
 
+	public static CustomMatcher collectionContaining(Object a, Object b, Object c) {
+		return collectionContaining(new Object[]{a, b, c});
+	}
 
-    public static CustomMatcher isContainedIn(final Collection collection) {
-        return new CustomMatcher("is contained in " + collection) {
-            public boolean matches(Object arg) {
-                return collection.contains(arg);
-            }
-        };
-    }    
+	public static CustomMatcher collectionContaining(Matcher a, Matcher b) {
+		return collectionContaining(new Matcher[] {a, b});
+	} 
+
+	public static CustomMatcher collectionContaining(Matcher a, Matcher b, Matcher c) {
+		return collectionContaining(new Matcher[] {a, b, c});
+	}    
+	
+	public static CustomMatcher collectionContaining(Object[] objects) {
+		Matcher[] matchers = new Matcher[objects.length];
+		for (int i = 0; i < objects.length; i++) {
+			matchers[i] = UsingEqualityMatchers.eq(objects[i]);
+		}
+		return collectionContaining(matchers);
+	}
+	
+	public static CustomMatcher collectionContainingOnly(final Matcher[] matchers) {
+		CustomMatcher lengthMatcher = new CustomMatcher("nothing else"){
+			public boolean matches(Object arg) {
+				return ((Collection)arg).size() == matchers.length;
+			}};
+			
+		return collectionContaining(matchers).and(lengthMatcher);
+	}
 
 }
