@@ -1,6 +1,6 @@
 package org.jbehave.core.matchers;
 
-import org.jbehave.core.matchers.CustomMatcher;
+import org.jbehave.core.mock.UsingMatchers.CustomMatcher;
 
 public class UsingEqualityMatchers {
 
