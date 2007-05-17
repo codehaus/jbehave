@@ -133,20 +133,36 @@ public abstract class UsingMatchers {
 	    return UsingStringMatchers.contains(fragment);
 	}
     
-    public CustomMatcher collectionContaining(CustomMatcher[] matchers) {
-        return UsingCollectionMatchers.collectionContaining(matchers);
+    public CustomMatcher collectionContaining(Matcher[] matchers) {
+        return UsingCollectionMatchers.contains(matchers);
     }
     
-    public CustomMatcher collectionContaining(final CustomMatcher matcher) {
-        return UsingCollectionMatchers.collectionContaining(matcher);
+    public CustomMatcher collectionContaining(Object[] objects) {
+        return UsingCollectionMatchers.contains(objects);
     }
     
-    public CustomMatcher collectionContaining(Object object) {
-        return UsingCollectionMatchers.collectionContaining(object);
+    public CustomMatcher collectionContaining(Matcher a) {
+        return UsingCollectionMatchers.contains(a);
     }
     
-    public CustomMatcher collectionContaining(Object object1, Object object2) {
-        return UsingCollectionMatchers.collectionContaining(object1, object2);
+    public CustomMatcher collectionContaining(Matcher a, Matcher b) {
+        return UsingCollectionMatchers.contains(a, b);
+    }
+    
+    public CustomMatcher collectionContaining(Matcher a, Matcher b, Matcher c) {
+        return UsingCollectionMatchers.contains(a, b, c);
+    }
+    
+    public CustomMatcher collectionContaining(Object a) {
+        return UsingCollectionMatchers.contains(a);
+    }
+    
+    public CustomMatcher collectionContaining(Object a, Object b) {
+        return UsingCollectionMatchers.contains(a, b);
+    }
+    
+    public CustomMatcher collectionContaining(Object a, Object b, Object c) {
+        return UsingCollectionMatchers.contains(a, b, c);
     }
     
 	public CustomMatcher and(Matcher a, Matcher b) {

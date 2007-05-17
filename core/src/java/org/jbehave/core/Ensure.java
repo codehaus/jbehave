@@ -27,25 +27,22 @@ public class Ensure {
     /** Ensure.that(something, isBlah()) */
     public static void that(Object arg, Matcher matcher) {
     	that(arg, matcher, null);
-    }
+    }  
     
-
 	public static void that(Object arg, Matcher matcher, String message) {
-		if (!matcher.matches(arg)) {
+		if (matcher instanceof CustomMatcher) {
+	    	if (!matcher.matches(arg)) {
+	    		UsingExceptions.fail("Expected: " +
+	                    (message != null ? "[" + message + "] ": "") + NL +
+	                    matcher + NL +
+	                    "but got: " + NL + ((CustomMatcher)matcher).describe(arg));
+	        }
+		} else if (!matcher.matches(arg)) {
     		UsingExceptions.fail("Expected: " +
     				(message != null ? "[" + message + "] " : "") + NL + 
     				matcher + NL +
     				"but got: " + NL + arg);
     	}
-	}
-    
-    public static void that(Object arg, CustomMatcher matcher, String message) {
-    	if (!matcher.matches(arg)) {
-    		UsingExceptions.fail("Expected: " +
-                    (message != null ? "[" + message + "] ": "") + NL +
-                    matcher + NL +
-                    "but got: " + NL + matcher.describe(arg));
-        }
 	}
 
 	public static void that(long arg, Matcher matcher) {
