@@ -21,16 +21,17 @@ public class UsingCollectionMatchers {
         if (matchers.length == 0) {
             return contains(UsingEqualityMatchers.nothing());
         }
-        
-        
+                
         CustomMatcher matcher = containsA(matchers[0]);
         for (int i = 1; i < matchers.length; i++) {
             matcher = UsingLogicalMatchers.and(matcher, containsA(matchers[i]));
         }
         
-        final CustomMatcher finalMatcher = matcher;
-        
-        return new CustomMatcher(""){
+        return suitablyDescriptiveMatcher(matchers, matcher);
+    }
+
+	private static CustomMatcher suitablyDescriptiveMatcher(final Matcher[] matchers, final CustomMatcher finalMatcher) {
+		return new CustomMatcher(""){
             public boolean matches(Object arg) {
                 return finalMatcher.matches(arg);
             }
@@ -60,7 +61,7 @@ public class UsingCollectionMatchers {
 				return "a collection containing " + buffer;
             }
         };
-    }
+	}
     
 
     private static CustomMatcher containsA(final Matcher matcher) {
@@ -153,5 +154,60 @@ public class UsingCollectionMatchers {
 		return matchers;
 	}
 	
+	public static CustomMatcher containsInOrder(Object a) {
+		return containsInOrder(new Object[] {a});
+	}
+	
+	public static CustomMatcher containsInOrder(Object a, Object b) {
+		return containsInOrder(new Object[] {a, b});
+	}
+	
+	public static CustomMatcher containsInOrder(Object a, Object b, Object c) {
+		return containsInOrder(new Object[] {a, b, c});
+	}
+	
+	public static CustomMatcher containsInOrder(Object[] objects) {
+		return containsInOrder(allEq(objects));
+	}
 
+	public static CustomMatcher containsInOrder(Matcher a) {
+		return containsInOrder(new Matcher[] {a});
+	}
+	
+	public static CustomMatcher containsInOrder(Matcher a, Matcher b) {
+		return containsInOrder(new Matcher[] {a, b});
+	}
+	
+	public static CustomMatcher containsInOrder(Matcher a, Matcher b, Matcher c) {
+		return containsInOrder(new Matcher[] {a, b, c});
+	}
+	
+	public static CustomMatcher containsInOrder(final Matcher[] matchers) {
+        if (matchers.length == 0) {
+            return contains(UsingEqualityMatchers.nothing());
+        }
+                
+        CustomMatcher aggregateMatcher = containsAt(matchers[0], 0);
+        
+        for (int i = 1; i < matchers.length; i++) {
+            aggregateMatcher = UsingLogicalMatchers.and(aggregateMatcher, containsAt(matchers[i], i));
+        }
+        
+        Matcher inOrderDescription = new Matcher() {
+			public boolean matches(Object arg) { return true; }
+			public String toString() { return "in order"; }
+        };
+        
+        return suitablyDescriptiveMatcher(matchers, aggregateMatcher).and(inOrderDescription);
+	}
+
+	private static CustomMatcher containsAt(final Matcher matcher, final int i) {
+        return new CustomMatcher("" + matcher) {
+            public boolean matches(Object arg) {
+                Collection collection = (Collection) arg;
+                return matcher.matches(collection.toArray()[i]);
+            }
+        };
+	}	
 }
+

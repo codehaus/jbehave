@@ -32,8 +32,11 @@ import org.jbehave.core.matchers.UsingStringMatchers;
  * <p>You may find it more useful to extend or delegate to 
  * {@link org.jbehave.core.minimock.UsingMiniMock} than to UsingMatchers.
  */
+/* TODO 2.0 : Move this into org.jbehave.core.matchers Liz 20070520 */
 public abstract class UsingMatchers {
     
+	/* TODO 2.0 : This shouldn't extend UsingMatchers. Liz 20070520 */
+	/* TODO 2.0 : Move this into a top-level class under org.jbehave.core.matchers Liz 20070520 */
     public static abstract class CustomMatcher extends UsingMatchers implements Matcher {
         private final String description;
 
