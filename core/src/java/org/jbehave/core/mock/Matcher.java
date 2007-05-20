@@ -13,6 +13,8 @@ package org.jbehave.core.mock;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
+/* TODO 2.0 Move this to org.jbehave.core.matchers */
+/* TODO 2.0 Add the describe(arg) method and remove all CustomMatcher ifs / casts */
 public interface Matcher {
     boolean matches(Object arg);
 }
