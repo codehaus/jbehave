@@ -120,6 +120,7 @@ public class Ensure {
         that(exception, UsingEqualityMatchers.isNull());
     }
     
+    /* TODO 2.0 remove deprecated Ensure methods. */
     /** @deprecated use UsingMatchers or UsingEqualityMatchers.isA */
     public static void instanceOf(Class type, Object instance) {
     	that(instance, UsingEqualityMatchers.isA(type));
