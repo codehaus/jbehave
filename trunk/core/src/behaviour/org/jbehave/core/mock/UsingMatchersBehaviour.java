@@ -1,5 +1,8 @@
 package org.jbehave.core.mock;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jbehave.core.Block;
 import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.exception.VerificationException;
@@ -39,5 +42,16 @@ public class UsingMatchersBehaviour {
 			}
         });
         m.ensureThat(e, m.isNotNull());
+        
+        String[] array = new String[]{"cow", "horse"};
+        List list = Arrays.asList(array);
+		m.ensureThat(array, m.arrayContaining("cow"));
+		m.ensureThat(array, m.arrayContainingOnly("horse", "cow"));
+		m.ensureThat(array, m.arrayContainingInOrder("cow", "horse"));		
+		m.ensureThat(list, m.collectionContaining("cow"));
+		m.ensureThat(list, m.collectionContainingOnly("horse", "cow"));
+		m.ensureThat(list, m.collectionContainingInOrder("cow", "horse"));
+		m.ensureThat(array, m.arrayContaining(m.endsWith("ow")));
+		m.ensureThat(list, m.collectionContaining(m.startsWith("hor")));
     }  
 }

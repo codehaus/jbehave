@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.jbehave.core.Block;
 import org.jbehave.core.Ensure;
+import org.jbehave.core.matchers.UsingArrayMatchers;
 import org.jbehave.core.matchers.UsingCollectionMatchers;
 import org.jbehave.core.matchers.UsingEqualityMatchers;
 import org.jbehave.core.matchers.UsingExceptions;
@@ -136,38 +137,6 @@ public abstract class UsingMatchers {
 	    return UsingStringMatchers.contains(fragment);
 	}
     
-    public CustomMatcher collectionContaining(Matcher[] matchers) {
-        return UsingCollectionMatchers.contains(matchers);
-    }
-    
-    public CustomMatcher collectionContaining(Object[] objects) {
-        return UsingCollectionMatchers.contains(objects);
-    }
-    
-    public CustomMatcher collectionContaining(Matcher a) {
-        return UsingCollectionMatchers.contains(a);
-    }
-    
-    public CustomMatcher collectionContaining(Matcher a, Matcher b) {
-        return UsingCollectionMatchers.contains(a, b);
-    }
-    
-    public CustomMatcher collectionContaining(Matcher a, Matcher b, Matcher c) {
-        return UsingCollectionMatchers.contains(a, b, c);
-    }
-    
-    public CustomMatcher collectionContaining(Object a) {
-        return UsingCollectionMatchers.contains(a);
-    }
-    
-    public CustomMatcher collectionContaining(Object a, Object b) {
-        return UsingCollectionMatchers.contains(a, b);
-    }
-    
-    public CustomMatcher collectionContaining(Object a, Object b, Object c) {
-        return UsingCollectionMatchers.contains(a, b, c);
-    }
-    
 	public CustomMatcher and(Matcher a, Matcher b) {
 	    return UsingLogicalMatchers.and(a, b);
 	}
@@ -281,4 +250,200 @@ public abstract class UsingMatchers {
     public void todo(String message) {
         UsingExceptions.todo(message);
     }
+    
+    public CustomMatcher collectionContaining(Matcher[] matchers) {
+        return UsingCollectionMatchers.contains(matchers);
+    }
+    
+    public CustomMatcher collectionContaining(Object[] objects) {
+        return UsingCollectionMatchers.contains(objects);
+    }
+    
+    public CustomMatcher collectionContaining(Matcher a) {
+        return UsingCollectionMatchers.contains(a);
+    }
+    
+    public CustomMatcher collectionContaining(Matcher a, Matcher b) {
+        return UsingCollectionMatchers.contains(a, b);
+    }
+    
+    public CustomMatcher collectionContaining(Matcher a, Matcher b, Matcher c) {
+        return UsingCollectionMatchers.contains(a, b, c);
+    }
+    
+    public CustomMatcher collectionContaining(Object a) {
+        return UsingCollectionMatchers.contains(a);
+    }
+    
+    public CustomMatcher collectionContaining(Object a, Object b) {
+        return UsingCollectionMatchers.contains(a, b);
+    }
+    
+    public CustomMatcher collectionContaining(Object a, Object b, Object c) {
+        return UsingCollectionMatchers.contains(a, b, c);
+    }    
+
+    
+    public CustomMatcher collectionContainingOnly(Object a) {
+        return UsingCollectionMatchers.contains(a);
+    }
+    
+    public CustomMatcher collectionContainingOnly(Object a, Object b) {
+        return UsingCollectionMatchers.contains(a, b);
+    }
+    
+    public CustomMatcher collectionContainingOnly(Object a, Object b, Object c) {
+        return UsingCollectionMatchers.contains(a, b, c);
+    }
+    
+    public CustomMatcher collectionContainingOnly(Matcher[] matchers) {
+        return UsingCollectionMatchers.containsOnly(matchers);
+    }
+    
+    public CustomMatcher collectionContainingOnly(Object[] objects) {
+        return UsingCollectionMatchers.containsOnly(objects);
+    }
+    
+    public CustomMatcher collectionContainingOnly(Matcher a) {
+        return UsingCollectionMatchers.containsOnly(a);
+    }
+    
+    public CustomMatcher collectionContainingOnly(Matcher a, Matcher b) {
+        return UsingCollectionMatchers.containsOnly(a, b);
+    }
+    
+    public CustomMatcher collectionContainingOnly(Matcher a, Matcher b, Matcher c) {
+        return UsingCollectionMatchers.containsOnly(a, b, c);
+    }
+    
+    
+    public CustomMatcher collectionContainingInOrder(Object a) {
+        return UsingCollectionMatchers.containsInOrder(a);
+    }
+    
+    public CustomMatcher collectionContainingInOrder(Object a, Object b) {
+        return UsingCollectionMatchers.containsInOrder(a, b);
+    }
+    
+    public CustomMatcher collectionContainingInOrder(Object a, Object b, Object c) {
+        return UsingCollectionMatchers.containsInOrder(a, b, c);
+    }
+    
+    public CustomMatcher collectionContainingInOrder(Matcher[] matchers) {
+        return UsingCollectionMatchers.containsInOrder(matchers);
+    }
+    
+    public CustomMatcher collectionContainingInOrder(Object[] objects) {
+        return UsingCollectionMatchers.containsInOrder(objects);
+    }
+    
+    public CustomMatcher collectionContainingInOrder(Matcher a) {
+        return UsingCollectionMatchers.containsInOrder(a);
+    }
+    
+    public CustomMatcher collectionContainingInOrder(Matcher a, Matcher b) {
+        return UsingCollectionMatchers.containsInOrder(a, b);
+    }
+    
+    public CustomMatcher collectionContainingInOrder(Matcher a, Matcher b, Matcher c) {
+        return UsingCollectionMatchers.containsInOrder(a, b, c);
+    }
+    
+    public CustomMatcher arrayContaining(Matcher[] matchers) {
+        return UsingArrayMatchers.contains(matchers);
+    }
+    
+    public CustomMatcher arrayContaining(Object[] objects) {
+        return UsingArrayMatchers.contains(objects);
+    }
+    
+    public CustomMatcher arrayContaining(Matcher a) {
+        return UsingArrayMatchers.contains(a);
+    }
+    
+    public CustomMatcher arrayContaining(Matcher a, Matcher b) {
+        return UsingArrayMatchers.contains(a, b);
+    }
+    
+    public CustomMatcher arrayContaining(Matcher a, Matcher b, Matcher c) {
+        return UsingArrayMatchers.contains(a, b, c);
+    }
+    
+    public CustomMatcher arrayContaining(Object a) {
+        return UsingArrayMatchers.contains(a);
+    }
+    
+    public CustomMatcher arrayContaining(Object a, Object b) {
+        return UsingArrayMatchers.contains(a, b);
+    }
+    
+    public CustomMatcher arrayContaining(Object a, Object b, Object c) {
+        return UsingArrayMatchers.contains(a, b, c);
+    }
+    
+    
+    public CustomMatcher arrayContainingOnly(Object a) {
+        return UsingArrayMatchers.contains(a);
+    }
+    
+    public CustomMatcher arrayContainingOnly(Object a, Object b) {
+        return UsingArrayMatchers.contains(a, b);
+    }
+    
+    public CustomMatcher arrayContainingOnly(Object a, Object b, Object c) {
+        return UsingArrayMatchers.contains(a, b, c);
+    }
+    
+    public CustomMatcher arrayContainingOnly(Matcher[] matchers) {
+        return UsingArrayMatchers.containsOnly(matchers);
+    }
+    
+    public CustomMatcher arrayContainingOnly(Object[] objects) {
+        return UsingArrayMatchers.containsOnly(objects);
+    }
+    
+    public CustomMatcher arrayContainingOnly(Matcher a) {
+        return UsingArrayMatchers.containsOnly(a);
+    }
+    
+    public CustomMatcher arrayContainingOnly(Matcher a, Matcher b) {
+        return UsingArrayMatchers.containsOnly(a, b);
+    }
+    
+    public CustomMatcher arrayContainingOnly(Matcher a, Matcher b, Matcher c) {
+        return UsingArrayMatchers.containsOnly(a, b, c);
+    }
+    
+    
+    public CustomMatcher arrayContainingInOrder(Object a) {
+        return UsingArrayMatchers.containsInOrder(a);
+    }
+    
+    public CustomMatcher arrayContainingInOrder(Object a, Object b) {
+        return UsingArrayMatchers.containsInOrder(a, b);
+    }
+    
+    public CustomMatcher arrayContainingInOrder(Object a, Object b, Object c) {
+        return UsingArrayMatchers.containsInOrder(a, b, c);
+    }
+    
+    public CustomMatcher arrayContainingInOrder(Matcher[] matchers) {
+        return UsingArrayMatchers.containsInOrder(matchers);
+    }
+    
+    public CustomMatcher arrayContainingInOrder(Object[] objects) {
+        return UsingArrayMatchers.containsInOrder(objects);
+    }
+    
+    public CustomMatcher arrayContainingInOrder(Matcher a) {
+        return UsingArrayMatchers.containsInOrder(a);
+    }
+    
+    public CustomMatcher arrayContainingInOrder(Matcher a, Matcher b) {
+        return UsingArrayMatchers.containsInOrder(a, b);
+    }
+    
+    public CustomMatcher arrayContainingInOrder(Matcher a, Matcher b, Matcher c) {
+        return UsingArrayMatchers.containsInOrder(a, b, c);
+    }    
 }
