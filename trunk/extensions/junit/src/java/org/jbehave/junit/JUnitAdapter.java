@@ -89,10 +89,14 @@ public class JUnitAdapter {
     }
 
     private static TestSuite createBehavioursTestSuite(Behaviours behaviours) {
-        TestSuite suite = new TestSuite(behaviours.toString());         
-        Class[] behaviourClasses = behaviours.getBehaviours();
-        for ( int i = 0; i < behaviourClasses.length; i++ ){
-            suite.addTest(createBehaviourTestSuite(new BehaviourClass(behaviourClasses[i])));
+        TestSuite suite = new TestSuite(behaviours.toString());        
+        Class[] behaviourClasses = behaviours.getBehaviours ();  
+        for ( int i = 0; i < behaviourClasses.length; i++ ) {
+            if (isBehavioursType(behaviourClasses[i])) {
+                suite.addTest(createBehavioursTestSuite((Behaviours)newInstance(behaviourClasses[i])));
+            } else {
+                suite.addTest(createBehaviourTestSuite(new BehaviourClass(behaviourClasses[i])));
+            }
         }
         return suite;
     }
@@ -106,6 +110,18 @@ public class JUnitAdapter {
         return suite;
     }
 
+    
+    private static boolean isBehavioursType(Class clazz) {
+        Class[] interfaces = clazz.getInterfaces();
+        for ( int i = 0; i < interfaces.length; i++ ) {
+            if (interfaces[i].equals(Behaviours.class)) {
+                return true;
+            }
+        }
+        return false;
+    }
+            
+    
     private static Behaviours getBehaviours() {
         if ( behaviours != null ){
             return behaviours;

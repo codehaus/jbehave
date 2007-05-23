@@ -77,6 +77,42 @@ public class JUnitAdapterBehaviour extends UsingMatchers {
         }
     }
     
+    public void shouldCountMultipleBehaviourMethodsAsTestsRecursively() {
+        // setup
+        JUnitAdapter.setBehaviours (new BehavioursWithOneBehavioursClass());
+        Test suite = JUnitAdapter.suite();
+        // execute
+        int testCaseCount = suite.countTestCases();
+       
+        // verify
+        ensureThat(testCaseCount, eq(3));
+    }
+   
+    public static class BehavioursWithOneBehavioursClass implements Behaviours {
+        public Class[] getBehaviours() {   
+            return new Class[] {
+                new AnotherBehavioursWithOneBehavioursClass().getClass()
+            };
+        }
+    }
+
+    public static class AnotherBehavioursWithOneBehavioursClass implements Behaviours {
+        public Class[] getBehaviours() {   
+            return new Class[] {
+                new BehavioursWithTwoBehaviourClasses().getClass()
+            };
+        }
+    }
+   
+    public static class BehavioursWithTwoBehaviourClasses implements Behaviours {
+        public Class[] getBehaviours() {
+            return new Class[] {
+                HasTwoMethods.class,
+                HasSingleMethod.class
+            };
+        }
+    }    
+
     public void shouldNotExecuteBehaviourMethodsWhileCountingThem() throws Exception {
         // setup
         JUnitAdapter.setBehaviours(new BehavioursAdapter(HasFailingMethod.class));
