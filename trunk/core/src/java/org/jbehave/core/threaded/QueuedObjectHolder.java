@@ -53,4 +53,10 @@ public class QueuedObjectHolder {
         return object;
     }
 
+    public void clear() {
+        synchronized(waitingPlace) {
+            object = null;
+        }
+    }
+
 }

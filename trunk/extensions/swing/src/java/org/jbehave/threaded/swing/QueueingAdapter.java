@@ -24,6 +24,7 @@ abstract class QueueingAdapter {
         } catch (TimeoutException e) {
             throw new RuntimeException("Expected " + eventType + " on component " + component.getName() + " was not received");
         }
+        holder.clear();
         idler.waitForIdle();
     }
 
