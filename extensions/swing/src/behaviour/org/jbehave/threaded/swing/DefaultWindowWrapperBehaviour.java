@@ -85,14 +85,6 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
 	}
     
     public void shouldEnterTextIntoAComboBox() throws Exception {
-        shouldEnterTextIntoComboBox(false);
-    }
-    
-//    public void shouldEnterTextIntoAnEditableComboBox() throws Exception {
-//        shouldEnterTextIntoComboBox(true);
-//    }
-
-    private void shouldEnterTextIntoComboBox(boolean editable) throws ComponentFinderException, TimeoutException {
         checkForHeadless();
         DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
         
@@ -101,7 +93,6 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
             
             JComboBox comboBox = new JComboBox(new Object[] {"horse", "cow", "sheep"});
             comboBox.setName("a.combobox");
-            comboBox.setEditable(editable);
             frame.getContentPane().setLayout(new FlowLayout());
             frame.getContentPane().add(comboBox);
             frame.pack();
@@ -111,13 +102,36 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
             
             ensureThat(comboBox.getSelectedItem(), eq("cow"));
             
+        } finally {
+            wrapper.closeWindow();
+        }
+    }
+    
+    public void shouldEnterTextIntoAnEditableComboBox() throws Exception {
+        checkForHeadless();
+        DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
+        
+        try {
+            AFrame frame = new AFrame();
+            
+            JComboBox comboBox = new JComboBox(new Object[] {"horse", "cow", "sheep"});
+            comboBox.setName("a.combobox");
+            comboBox.setEditable(true);
+            frame.getContentPane().setLayout(new FlowLayout());
+            frame.getContentPane().add(comboBox);
+            frame.pack();
+            frame.setVisible(true);
+            
+            wrapper.enterText("a.combobox", "cow");
+            
+            ensureThat(comboBox.getEditor().getItem(), eq("cowhorse")); // because we didn't delete the previous value
             
         } finally {
             wrapper.closeWindow();
         }
     }
-	
-	public void shouldFindComponent() throws ComponentFinderException, TimeoutException  {
+
+    public void shouldFindComponent() throws ComponentFinderException, TimeoutException  {
 	    checkForHeadless();
 	    DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
         try {

@@ -4,13 +4,18 @@ import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.EventQueue;
+import java.awt.ItemSelectable;
+import java.awt.TextComponent;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 
 import org.jbehave.core.threaded.TimeoutException;
 
@@ -31,7 +36,15 @@ class CharacterTyper {
     }
     
     public void typeIntoComponent(Component component, String text) {
-        QueueingKeyAdapter queuer = new QueueingKeyAdapter(component);
+        focuser.requestFocusOn(component);
+        QueueingAdapter queuer;
+        
+        if (component instanceof JComboBox && ((JComboBox)component).isEditable()) {
+            queuer = new QueueingKeyAdapter(((JComboBox)component).getEditor().getEditorComponent());
+        } else {
+            queuer = new QueueingKeyAdapter(component);
+        }
+        
         try {
             for (int i = 0; i < text.length(); i++) {
                 postKeyEvent(component, text.charAt(i));
@@ -110,5 +123,5 @@ class CharacterTyper {
             // TODO Auto-generated method stub
             
         }
-    }       
+    }
 }

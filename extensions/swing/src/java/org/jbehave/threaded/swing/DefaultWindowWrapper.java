@@ -60,7 +60,6 @@ public class DefaultWindowWrapper implements WindowWrapper {
 
 	public void enterText(String componentName, String text) throws ComponentFinderException, TimeoutException {
 		Component component = findComponent(componentName);
-		focuser.requestFocusOn(component);
 		typer.typeIntoComponent(component, text);
 	}
 		
