@@ -6,14 +6,12 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import org.jbehave.core.exception.PendingException;
-import org.jbehave.core.threaded.QueuedObjectHolder;
 import org.jbehave.core.threaded.TimeoutException;
 
 /**
@@ -21,15 +19,15 @@ import org.jbehave.core.threaded.TimeoutException;
  */
 class CharacterTyper {
 
-    private static final String TEXT_TYPING_UNSUPPORTED = "Text typing is not supported for your Swing library.";
-    
     private EventQueue sysQueue;
     private Idler idler;
+    private Focuser focuser;
 
 
     CharacterTyper() {
         sysQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
         idler = new Idler();
+        focuser = new Focuser();
     }
     
     public void typeIntoComponent(Component component, String text) {
@@ -40,7 +38,7 @@ class CharacterTyper {
                 queuer.waitForEvent();
             }
         } finally {
-            queuer.removeSelf();
+            queuer.removeSelfFromComponent();
         }
     }
     
@@ -55,9 +53,11 @@ class CharacterTyper {
             Container contentPane = ((JFrame)window).getContentPane();
             if (contentPane instanceof JComponent) {
                 queuer = new QueueingKeyAdapter(contentPane);
+                focuser.requestFocusOn(contentPane);
             }
         } else {
             queuer = new QueueingKeyAdapter(window.getFocusOwner());
+            focuser.requestFocusOn(window.getFocusOwner());
         }
         
         postKeyEvent(window, key);
@@ -65,7 +65,7 @@ class CharacterTyper {
         try {
             queuer.waitForEvent();
         } finally {
-            queuer.removeSelf();
+            queuer.removeSelfFromComponent();
         }
     }
 
@@ -85,29 +85,30 @@ class CharacterTyper {
                 c);
     }
         
-    private class QueueingKeyAdapter extends KeyAdapter {
-        private QueuedObjectHolder holder = new QueuedObjectHolder();
-        private final Component component;
+    private class QueueingKeyAdapter extends QueueingAdapter implements KeyListener {
         
         public QueueingKeyAdapter(Component component) {
-            this.component = component;
-            component.requestFocus();
-            component.addKeyListener(this);
-        }
-        public void keyTyped(KeyEvent e) {
-            holder.set(e);
-        }
-        public void waitForEvent() {
-            try {
-                holder.get(1000);
-            } catch (TimeoutException e) {
-                throw new PendingException(TEXT_TYPING_UNSUPPORTED);
-            }
-            idler.waitForIdle();
+            super(component, "KeyEvent");
         }
         
-        public void removeSelf() {
+        public void keyTyped(KeyEvent e) {
+            eventOccurred();
+        }
+        
+        protected void addSelfToComponent() {
+            component.addKeyListener(this);
+        }
+        protected void removeSelfFromComponent() {
             component.removeKeyListener(this);
+        }
+        
+        public void keyPressed(KeyEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+        public void keyReleased(KeyEvent e) {
+            // TODO Auto-generated method stub
+            
         }
     }       
 }
