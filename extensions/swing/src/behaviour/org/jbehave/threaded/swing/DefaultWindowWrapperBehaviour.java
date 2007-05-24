@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -77,10 +78,44 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
     		
     		ensureThat(textField.getText(), eq("Text1"));
     		ensureThat(textArea.getText(), eq("Text2"));
+            
         } finally {
             wrapper.closeWindow();
         }
 	}
+    
+    public void shouldEnterTextIntoAComboBox() throws Exception {
+        shouldEnterTextIntoComboBox(false);
+    }
+    
+//    public void shouldEnterTextIntoAnEditableComboBox() throws Exception {
+//        shouldEnterTextIntoComboBox(true);
+//    }
+
+    private void shouldEnterTextIntoComboBox(boolean editable) throws ComponentFinderException, TimeoutException {
+        checkForHeadless();
+        DefaultWindowWrapper wrapper = new DefaultWindowWrapper(AFrame.FRAME_NAME);
+        
+        try {
+            AFrame frame = new AFrame();
+            
+            JComboBox comboBox = new JComboBox(new Object[] {"horse", "cow", "sheep"});
+            comboBox.setName("a.combobox");
+            comboBox.setEditable(editable);
+            frame.getContentPane().setLayout(new FlowLayout());
+            frame.getContentPane().add(comboBox);
+            frame.pack();
+            frame.setVisible(true);
+            
+            wrapper.enterText("a.combobox", "cow");
+            
+            ensureThat(comboBox.getSelectedItem(), eq("cow"));
+            
+            
+        } finally {
+            wrapper.closeWindow();
+        }
+    }
 	
 	public void shouldFindComponent() throws ComponentFinderException, TimeoutException  {
 	    checkForHeadless();
@@ -164,7 +199,7 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
         new HeadlessChecker().check();
     }
 
-    public class AFrame extends JFrame {
+    public static class AFrame extends JFrame {
         private static final String FRAME_NAME = "a.window";
         private static final String ACTION_KEY = "AFrame.action";
         
@@ -181,5 +216,21 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
             
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
+    }
+    
+    public static void main(String[] args) {
+            AFrame frame = new AFrame();
+            
+            JComboBox comboBox = new JComboBox(new Object[] {"horse", "cow", "sheep"});
+            comboBox.setName("a.combobox");
+            comboBox.setEditable(true);
+            
+            frame.getContentPane().setLayout(new FlowLayout());
+            
+            frame.getContentPane().add(comboBox);
+            frame.pack();
+            
+            
+            frame.setVisible(true);
     }
 }
