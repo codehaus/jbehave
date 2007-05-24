@@ -4,8 +4,6 @@ import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.EventQueue;
-import java.awt.ItemSelectable;
-import java.awt.TextComponent;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
@@ -14,8 +12,6 @@ import java.awt.event.KeyListener;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.text.JTextComponent;
 
 import org.jbehave.core.threaded.TimeoutException;
 

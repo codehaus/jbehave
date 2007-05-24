@@ -317,10 +317,6 @@ public abstract class UsingMatchers {
     }
     
     
-    public CustomMatcher collectionContainingInOrder(Object a) {
-        return UsingCollectionMatchers.containsInOrder(a);
-    }
-    
     public CustomMatcher collectionContainingInOrder(Object a, Object b) {
         return UsingCollectionMatchers.containsInOrder(a, b);
     }
@@ -335,10 +331,6 @@ public abstract class UsingMatchers {
     
     public CustomMatcher collectionContainingInOrder(Object[] objects) {
         return UsingCollectionMatchers.containsInOrder(objects);
-    }
-    
-    public CustomMatcher collectionContainingInOrder(Matcher a) {
-        return UsingCollectionMatchers.containsInOrder(a);
     }
     
     public CustomMatcher collectionContainingInOrder(Matcher a, Matcher b) {
@@ -414,11 +406,6 @@ public abstract class UsingMatchers {
         return UsingArrayMatchers.containsOnly(a, b, c);
     }
     
-    
-    public CustomMatcher arrayContainingInOrder(Object a) {
-        return UsingArrayMatchers.containsInOrder(a);
-    }
-    
     public CustomMatcher arrayContainingInOrder(Object a, Object b) {
         return UsingArrayMatchers.containsInOrder(a, b);
     }
@@ -433,10 +420,6 @@ public abstract class UsingMatchers {
     
     public CustomMatcher arrayContainingInOrder(Object[] objects) {
         return UsingArrayMatchers.containsInOrder(objects);
-    }
-    
-    public CustomMatcher arrayContainingInOrder(Matcher a) {
-        return UsingArrayMatchers.containsInOrder(a);
     }
     
     public CustomMatcher arrayContainingInOrder(Matcher a, Matcher b) {
