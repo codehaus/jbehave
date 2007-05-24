@@ -152,10 +152,6 @@ public class UsingArrayMatchers {
         return matchers;
     }
     
-    public static CustomMatcher containsInOrder(Object a) {
-        return containsInOrder(new Object[] {a});
-    }
-    
     public static CustomMatcher containsInOrder(Object a, Object b) {
         return containsInOrder(new Object[] {a, b});
     }
@@ -168,10 +164,6 @@ public class UsingArrayMatchers {
         return containsInOrder(allEq(objects));
     }
 
-    public static CustomMatcher containsInOrder(Matcher a) {
-        return containsInOrder(new Matcher[] {a});
-    }
-    
     public static CustomMatcher containsInOrder(Matcher a, Matcher b) {
         return containsInOrder(new Matcher[] {a, b});
     }
