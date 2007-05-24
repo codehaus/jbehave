@@ -29,6 +29,8 @@ public class DefaultWindowWrapper implements WindowWrapper {
 
 	private Idler idler;
 
+    private Focuser focuser;
+
 		
 	public DefaultWindowWrapper(String windowName) {
 		this(windowName, new ComponentFinder());
@@ -41,6 +43,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 		idler = new Idler();
         typer = new CharacterTyper();
         clicker = new ButtonClicker();
+        focuser = new Focuser();
 	}
 
 	public void closeWindow() throws TimeoutException {
@@ -57,7 +60,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 
 	public void enterText(String componentName, String text) throws ComponentFinderException, TimeoutException {
 		Component component = findComponent(componentName);
-		component.requestFocus();
+		focuser.requestFocusOn(component);
 		typer.typeIntoComponent(component, text);
 	}
 		
@@ -112,7 +115,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
     }
 
     public void requestWindowFocus() throws TimeoutException {
-        getOpenWindow().requestFocus();
+        focuser.requestFocusOn(getOpenWindow());
         idler.waitForIdle();
     }
     
