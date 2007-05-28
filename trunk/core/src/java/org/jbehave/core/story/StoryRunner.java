@@ -9,8 +9,11 @@ package org.jbehave.core.story;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 
+import org.jbehave.core.exception.PendingException;
+import org.jbehave.core.result.Result;
 import org.jbehave.core.story.domain.Story;
 import org.jbehave.core.story.listener.PlainTextScenarioListener;
+import org.jbehave.core.util.CamelCaseConverter;
 
 
 
@@ -46,7 +49,14 @@ public class StoryRunner {
     public void run(Story story, PrintStream printStream) {
 		PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(printStream));
         story.addListener(listener);
-        story.run();
+        try {
+        	story.run();
+        } catch (PendingException pe) {
+        	listener.gotResult(
+        			new Result("",
+        			new CamelCaseConverter(story.getClass()).toPhrase(),
+        			pe));
+        }
         listener.printReport();
         succeeded = succeeded && !listener.hasBehaviourFailures();
     }

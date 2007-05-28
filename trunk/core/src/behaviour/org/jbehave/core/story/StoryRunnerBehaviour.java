@@ -3,16 +3,16 @@ package org.jbehave.core.story;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import org.jbehave.core.Block;
 import org.jbehave.core.Ensure;
+import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.listener.BehaviourListener;
 import org.jbehave.core.minimock.UsingMiniMock;
 import org.jbehave.core.mock.Mock;
 import org.jbehave.core.story.domain.Narrative;
 import org.jbehave.core.story.domain.Story;
-import org.jbehave.core.story.domain.World;
 import org.jbehave.core.story.listener.PlainTextScenarioListener;
 import org.jbehave.core.story.renderer.Renderer;
-import org.jbehave.core.story.result.ScenarioResult;
 
 
 public class StoryRunnerBehaviour extends UsingMiniMock {
@@ -29,17 +29,31 @@ public class StoryRunnerBehaviour extends UsingMiniMock {
 		
 		verifyMocks();
 	}
+	
+	public void shouldOutputPendingExeptionsWithoutFailingTheStory() throws Exception {
+		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		final PrintStream stream = new PrintStream(buffer);
+		
+		Exception exception = runAndCatch(Exception.class, new Block() {
+			public void run() throws Exception {
+				new StoryRunner().run(PendingStory.class.getName(), stream);
+			}
+		});
+
+		Ensure.that(exception, isNull());
+        Ensure.that(buffer.toString(), contains("P"));
+		Ensure.that(buffer.toString(), contains("Total: 1. Pending: 1."));
+		
+		verifyMocks();
+	}
     
-    public static class MyStory extends UsingMiniMock implements Story  {
+    public static class PendingStory extends UsingMiniMock implements Story  {
 		private Mock mock;
 		
-		public MyStory() {
-            ScenarioResult resultA = new ScenarioResult("scenarioA", "MyStory", ScenarioResult.SUCCEEDED);
-            ScenarioResult resultB = new ScenarioResult("scenarioB", "MyStory", ScenarioResult.SUCCEEDED);
-            
+		public PendingStory() {
 			mock = mock(Story.class);
             mock.expects("addListener").with(isA(PlainTextScenarioListener.class));
-			mock.expects("run").with(a(World.class)).will(returnValue(new ScenarioResult[] {resultA, resultB}));
+			mock.expects("run").will(throwException(new PendingException("TODO")));
 		}
 
 		public Narrative narrative() {
