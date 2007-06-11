@@ -5,9 +5,9 @@
     <version>1.0.1</version>
     <vendor logo="/behave.png" url="http://jbehave.org" email="user-subscribe@jbehave.codehaus.org">JBehave</vendor>
     <change-notes>
-        First formal release
+        Update to Selena
     </change-notes>
-    <idea-version since-build="5784"/>
+    <idea-version since-build="6951"/>
 
     <application-components>
         <component>
