@@ -39,7 +39,7 @@ public class UsingCollectionMatchers {
             public String describe(Object arg) {
                 Collection collection = (Collection) arg;
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("a " + arg.getClass().getSimpleName() + " containing ");
+                buffer.append("a " + arg.getClass().getName() + " containing ");
 				describe(collection, buffer);               
                 return buffer.toString();
             }
