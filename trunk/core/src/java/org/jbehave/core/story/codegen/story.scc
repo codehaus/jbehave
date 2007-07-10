@@ -1,4 +1,4 @@
-Package jbehave.core.story.codegen.sablecc;
+Package org.jbehave.core.story.codegen.sablecc;
 
 /*
 
@@ -11,8 +11,16 @@ So that I feel tipsy
 
 Helpers
 	letter = [['a'..'z'] + ['A'..'Z']];
+	digit = ['0'..'9'];
+	space = ' ';
+	tab = 9;
 	cr = 13;
 	lf = 10;
+	endl = cr | lf | cr lf;
+	commentchar = '#';
+	specialchar = '/' | '?' | '-' | '.' | '*' | '(' | ')';
+	norwegianchar = 'æ'|'ø'|'å'|'Æ'|'Ø'|'Å';
+	commentchars = space | tab | letter | digit | specialchar | norwegianchar;
 	
 Tokens
 	title_keyword = 'Title:';
@@ -23,19 +31,22 @@ Tokens
 	given = 'Given';
 	when = 'When';
 	then = 'Then';
-	space = ' ';
+	space = space;
 	word = letter+;
-	endl = cr | lf | cr lf;
+	endl = endl;
+	commentline = commentchar commentchars* endl;
+
+Ignored Tokens
+	commentline;
 	
 Productions
-
 	story =
 		title
 		role?
 		feature?
 		benefit?
 		scenario*;
-		
+
 	title = 
 		title_keyword space phrase endl;
 		

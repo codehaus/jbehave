@@ -4,27 +4,27 @@ package org.jbehave.core.story.codegen.sablecc.node;
 
 import org.jbehave.core.story.codegen.sablecc.analysis.*;
 
-public final class EOF extends Token
+public final class TCommentline extends Token
 {
-    public EOF()
+    public TCommentline(String text)
     {
-        setText("");
+        setText(text);
     }
 
-    public EOF(int line, int pos)
+    public TCommentline(String text, int line, int pos)
     {
-        setText("");
+        setText(text);
         setLine(line);
         setPos(pos);
     }
 
     public Object clone()
     {
-        return new EOF(getLine(), getPos());
+      return new TCommentline(getText(), getLine(), getPos());
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseEOF(this);
+        ((Analysis) sw).caseTCommentline(this);
     }
 }

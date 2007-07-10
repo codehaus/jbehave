@@ -82,7 +82,6 @@ public class TextStoryParserBehaviour extends UsingMatchers {
 		ensureThat(result, eq(expectedStory));
 	}
 
-
     public void shouldBuildStoryDetailsWithFullScenario() throws Exception {
         // given
         String text =
@@ -124,4 +123,16 @@ public class TextStoryParserBehaviour extends UsingMatchers {
         ensureThat(result, eq(expectedStory));
     }
     
+    public void shouldBuildStoryWithComments() throws Exception {
+        // given
+        String text = "# This is a comment line\n" // comment
+            + "#\n"                                 // empty comment 
+            + "Title: Joe drinks vodka\n";
+        StoryDetails expectedStory = new StoryDetails("Joe drinks vodka", "", "", "");
+        // when
+        StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
+        // then
+        ensureThat(result, eq(expectedStory));
+    }
+
 }
