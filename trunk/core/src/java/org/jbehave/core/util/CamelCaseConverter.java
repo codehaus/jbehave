@@ -7,6 +7,8 @@
  */
 package org.jbehave.core.util;
 
+import org.jbehave.core.story.domain.Named;
+
 
 /**
  * Method object to convert to and from CamelCase
@@ -23,14 +25,16 @@ public class CamelCaseConverter {
         chars = words.toCharArray();
     }
 
+
     public CamelCaseConverter(Class type) {
         this(type.getName());
     }
 
     public CamelCaseConverter(Object obj) {
-        this(obj.getClass());
+        this(obj instanceof Named ? ((Named) obj).getName() : obj.getClass().getName());
     }
     
+
     public String toCamelCase() {
         StringBuffer buf = new StringBuffer();
         while (pos < chars.length) {

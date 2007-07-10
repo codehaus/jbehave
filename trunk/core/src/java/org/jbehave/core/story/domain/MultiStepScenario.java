@@ -57,7 +57,7 @@ import org.jbehave.core.story.renderer.Renderer;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:liz@thoughtworks.com">Elizabeth Keogh</a>
  */
-public abstract class MultiStepScenario implements Scenario {
+public abstract class MultiStepScenario implements Scenario, Named {
     
     private static final String UNSPECIFIED = "Unspecified";
     private static final String SPECIFIED = "Specified";
@@ -75,6 +75,10 @@ public abstract class MultiStepScenario implements Scenario {
         checkState(UNSPECIFIED);
         specifySteps();
         state = SPECIFIED;
+    }
+
+    public String getName() {
+        return this.getClass().getName();
     }
 
     protected abstract void specifySteps();

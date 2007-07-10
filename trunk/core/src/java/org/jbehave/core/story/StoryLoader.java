@@ -28,7 +28,7 @@ public class StoryLoader {
 
     public Story loadStory(String storyPath, String storyPackage) throws MalformedURLException {
         StoryDetails storyDetails = storyParser.parseStory(getReader(storyPath, classLoader));
-        return new StoryBuilder(storyDetails, storyPackage).story();
+        return new StoryBuilder(storyDetails, storyPackage, classLoader).story();
     }
 
     public Story loadStory(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {

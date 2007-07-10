@@ -34,7 +34,7 @@ import org.jbehave.core.util.CamelCaseConverter;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:liz@thoughtworks.com">Elizabeth Keogh</a>
  */
-public abstract class ScenarioDrivenStory implements Story {
+public abstract class ScenarioDrivenStory implements Story, Named {
     private final Narrative narrative;
     private final List scenarios;
     private final List listeners;
@@ -53,7 +53,11 @@ public abstract class ScenarioDrivenStory implements Story {
     public List scenarios() {
         return scenarios;
     }
-    
+
+    public String getName() {
+        return this.getClass().getName();
+    }
+
     public Narrative narrative() {
         return narrative;
     }
@@ -61,7 +65,7 @@ public abstract class ScenarioDrivenStory implements Story {
     public void run() {
         for (Iterator i = scenarios.iterator(); i.hasNext();) {
             Scenario scenario = (Scenario) i.next();
-            informListeners(runScenario(createWorld(), this.getClass(), scenario));
+            informListeners(runScenario(createWorld(), this, scenario));
         }
     }
 
@@ -76,9 +80,9 @@ public abstract class ScenarioDrivenStory implements Story {
         return new HashMapWorld();
     }
 
-    private ScenarioResult runScenario(World world, Class storyClass, Scenario scenario) {
+    private ScenarioResult runScenario(World world, Story story, Scenario scenario) {
         ScenarioResult result;
-        String storyDescription = new CamelCaseConverter(storyClass).toPhrase();
+        String storyDescription = new CamelCaseConverter(story).toPhrase();
         String description = new CamelCaseConverter(scenario).toPhrase();
         
         try {                
@@ -109,7 +113,7 @@ public abstract class ScenarioDrivenStory implements Story {
         for ( Iterator i = scenarios.iterator(); i.hasNext(); ){
             ((Scenario) i.next()).narrateTo(renderer);
         }
-    }    
+    }
 
     public String toString() {
         StringBuffer buffer = new StringBuffer();

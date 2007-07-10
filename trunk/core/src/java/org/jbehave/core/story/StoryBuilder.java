@@ -3,7 +3,6 @@ package org.jbehave.core.story;
 import java.text.MessageFormat;
 import java.util.Iterator;
 
-import org.jbehave.core.story.codegen.domain.BasicDetails;
 import org.jbehave.core.story.codegen.domain.ScenarioDetails;
 import org.jbehave.core.story.codegen.domain.StoryDetails;
 import org.jbehave.core.story.domain.Event;
@@ -27,7 +26,7 @@ public class StoryBuilder {
 
     private StoryDetails details;
     private final String rootPackageName;
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
     private final ClassBuilder builder = new ClassBuilder();
 
     public StoryBuilder(StoryDetails details, String rootPackageName) {
@@ -41,23 +40,25 @@ public class StoryBuilder {
         }    
 
     public Story story(){
-        ScenarioDrivenStory story = new ScenarioDrivenStory(new Narrative(details.role, details.feature, details.benefit)) {
+        return new ScenarioDrivenStory(new Narrative(details.role, details.feature, details.benefit)) {
             public void specify() {
                 for ( Iterator i = details.scenarios.iterator(); i.hasNext(); ){
-                    addScenario(scenario((ScenarioDetails)i.next(), details.name));
+                    addScenario(scenario((ScenarioDetails)i.next()));
                 }
             }
+
+            public String getName() {
+                return details.name;
+            }
         };
-        return story;        
     }
 
-    private Scenario scenario(final ScenarioDetails details, String storyName) {
+    private Scenario scenario(final ScenarioDetails details) {
         return new MultiStepScenario() {
             public void specifySteps() {
                 // given
                 for (Iterator i = details.context.givens.iterator(); i.hasNext();) {
-                    BasicDetails given = (BasicDetails)i.next();
-                    given((Given)builder.newGiven(given.name));
+                    given((Given)builder.newGiven((String) i.next()));
                 }
                 
                 // when
@@ -65,9 +66,12 @@ public class StoryBuilder {
                 
                 // then
                 for (Iterator i = details.outcome.outcomes.iterator(); i.hasNext();) {
-                    BasicDetails outcome = (BasicDetails)i.next();
-                    then((Outcome)builder.newOutcome(outcome.name));
+                    then((Outcome)builder.newOutcome((String) i.next()));
                 }
+            }
+
+            public String getName() {
+                return details.name;
             }
         };
     }
@@ -95,7 +99,7 @@ public class StoryBuilder {
         private Object newInstance(String name, String packageName) {
             try {
                 String fullName = buildFullClassName(name, packageName);
-                return classLoader.loadClass(name).newInstance();
+                return classLoader.loadClass(fullName).newInstance();
             } catch ( Exception e) {
                 throw new RuntimeException("Failed to create instance for name "+name, e);
             }
