@@ -1,15 +1,13 @@
 <project name="cc-build-jbehave-eclipse" default="build" basedir="">
 	<!-- 
 	Usage:
-		ant -DeclipseDir=<yourEclipseFolder>
+		ant -DeclipseDir=<eclipseInstallDir>
 	-->
+    <!-- Load build.properties -->
+    <property file="build.properties"/>
+	
  	<target name="build" >
-		<condition property="eclipseDir" value="C:/Program Files/eclipse">
-			<not>
-				<isset property="eclipseDir"></isset>
-			</not>
-		</condition>
- 		<java fork="true" classname="org.eclipse.core.launcher.Main" classpath="${eclipseDir}/startup.jar" failonerror="true">
+ 		<java fork="true" classname="${eclipseLauncherMain}" classpath="${eclipseLauncherCP}" failonerror="true">
 			<arg line="-application org.eclipse.ant.core.antRunner -buildfile build-eclipse.xml  -DjavacFailOnError=true -DbuildLabel=${label}" /> 
 		</java>
 	</target>
