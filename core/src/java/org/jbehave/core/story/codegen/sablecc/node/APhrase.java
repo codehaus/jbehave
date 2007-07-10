@@ -2,11 +2,8 @@
 
 package org.jbehave.core.story.codegen.sablecc.node;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
-import org.jbehave.core.story.codegen.sablecc.analysis.Analysis;
+import java.util.*;
+import org.jbehave.core.story.codegen.sablecc.analysis.*;
 
 public final class APhrase extends PPhrase
 {

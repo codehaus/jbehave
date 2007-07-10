@@ -2,7 +2,8 @@
 
 package org.jbehave.core.story.codegen.sablecc.node;
 
-import org.jbehave.core.story.codegen.sablecc.analysis.Analysis;
+import java.util.*;
+import org.jbehave.core.story.codegen.sablecc.analysis.*;
 
 public final class AScenarioTitle extends PScenarioTitle
 {

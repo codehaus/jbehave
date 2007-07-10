@@ -152,12 +152,12 @@
 
 	<target name="website" depends="javadoc, website-content" description="Generate website"/>
 
-	<!-- additional targets -->
+	<!-- SableCC code generator - Note: must use 3.1 for JDK 1.4 compatibility -->
 	<target name="sablecc" description="Generate sablecc grammar files">
-		<java fork="true" jar="${lib_dir}/extensions/sablecc-3.2.jar">
+		<java fork="true" jar="${lib_dir}/extensions/sablecc-3.1.jar">
 			<arg value="-d" />
 			<arg file="${core_dir}/src/java" />
-			<arg file="${core_dir}/src/java/jbehave/core/story/codegen/story.scc" />
+			<arg file="${core_dir}/src/java/org/jbehave/core/story/codegen/story.scc" />
 		</java>
 	</target>
 

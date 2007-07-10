@@ -32,7 +32,7 @@
 	<classpathentry kind="lib" path="lib/extensions/jmock-cglib-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/junit-3.8.2.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/proxytoys-0.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/extensions/sablecc-3.2.jar"/>
+	<classpathentry kind="lib" path="lib/extensions/sablecc-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/extensions/velocity-dep-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/plugins/maven-plugin-api-2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

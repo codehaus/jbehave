@@ -2,60 +2,14 @@
 
 package org.jbehave.core.story.codegen.sablecc.parser;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import org.jbehave.core.story.codegen.sablecc.lexer.*;
+import org.jbehave.core.story.codegen.sablecc.node.*;
+import org.jbehave.core.story.codegen.sablecc.analysis.*;
+import java.util.*;
 
-import org.jbehave.core.story.codegen.sablecc.analysis.Analysis;
-import org.jbehave.core.story.codegen.sablecc.analysis.AnalysisAdapter;
-import org.jbehave.core.story.codegen.sablecc.lexer.Lexer;
-import org.jbehave.core.story.codegen.sablecc.lexer.LexerException;
-import org.jbehave.core.story.codegen.sablecc.node.ABenefit;
-import org.jbehave.core.story.codegen.sablecc.node.AContext;
-import org.jbehave.core.story.codegen.sablecc.node.AEvent;
-import org.jbehave.core.story.codegen.sablecc.node.AFeature;
-import org.jbehave.core.story.codegen.sablecc.node.AOutcome;
-import org.jbehave.core.story.codegen.sablecc.node.APhrase;
-import org.jbehave.core.story.codegen.sablecc.node.ARole;
-import org.jbehave.core.story.codegen.sablecc.node.AScenario;
-import org.jbehave.core.story.codegen.sablecc.node.AScenarioTitle;
-import org.jbehave.core.story.codegen.sablecc.node.ASpaceWordOrSpace;
-import org.jbehave.core.story.codegen.sablecc.node.AStory;
-import org.jbehave.core.story.codegen.sablecc.node.ATitle;
-import org.jbehave.core.story.codegen.sablecc.node.AWordWordOrSpace;
-import org.jbehave.core.story.codegen.sablecc.node.EOF;
-import org.jbehave.core.story.codegen.sablecc.node.NodeCast;
-import org.jbehave.core.story.codegen.sablecc.node.PBenefit;
-import org.jbehave.core.story.codegen.sablecc.node.PContext;
-import org.jbehave.core.story.codegen.sablecc.node.PEvent;
-import org.jbehave.core.story.codegen.sablecc.node.PFeature;
-import org.jbehave.core.story.codegen.sablecc.node.POutcome;
-import org.jbehave.core.story.codegen.sablecc.node.PPhrase;
-import org.jbehave.core.story.codegen.sablecc.node.PRole;
-import org.jbehave.core.story.codegen.sablecc.node.PScenario;
-import org.jbehave.core.story.codegen.sablecc.node.PScenarioTitle;
-import org.jbehave.core.story.codegen.sablecc.node.PStory;
-import org.jbehave.core.story.codegen.sablecc.node.PTitle;
-import org.jbehave.core.story.codegen.sablecc.node.PWordOrSpace;
-import org.jbehave.core.story.codegen.sablecc.node.Start;
-import org.jbehave.core.story.codegen.sablecc.node.Switchable;
-import org.jbehave.core.story.codegen.sablecc.node.TAsA;
-import org.jbehave.core.story.codegen.sablecc.node.TEndl;
-import org.jbehave.core.story.codegen.sablecc.node.TGiven;
-import org.jbehave.core.story.codegen.sablecc.node.TIWant;
-import org.jbehave.core.story.codegen.sablecc.node.TScenarioKeyword;
-import org.jbehave.core.story.codegen.sablecc.node.TSoThat;
-import org.jbehave.core.story.codegen.sablecc.node.TSpace;
-import org.jbehave.core.story.codegen.sablecc.node.TThen;
-import org.jbehave.core.story.codegen.sablecc.node.TTitleKeyword;
-import org.jbehave.core.story.codegen.sablecc.node.TWhen;
-import org.jbehave.core.story.codegen.sablecc.node.TWord;
-import org.jbehave.core.story.codegen.sablecc.node.Token;
-import org.jbehave.core.story.codegen.sablecc.node.TypedLinkedList;
+import java.io.DataInputStream;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 
 public class Parser
 {
@@ -1808,15 +1762,15 @@ public class Parser
     private static String[] errorMessages;
 /*      {
 			"expecting: 'Title:'",
-			"expecting: ' '",
+			"expecting: space",
 			"expecting: EOF",
 			"expecting: 'Scenario:', 'As a', 'I want', 'So that', EOF",
-			"expecting: ' ', word",
+			"expecting: space, word",
 			"expecting: 'Scenario:', 'I want', 'So that', EOF",
 			"expecting: 'Scenario:', 'So that', EOF",
 			"expecting: 'Scenario:', EOF",
 			"expecting: 'Scenario:', 'Given', 'When', 'Then', EOF",
-			"expecting: ' ', word, endl",
+			"expecting: space, word, endl",
 			"expecting: endl",
 			"expecting: 'Scenario:', 'Then', EOF",
         };*/
