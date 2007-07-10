@@ -80,8 +80,8 @@ public class UsingCollectionMatchersBehaviour {
         Ensure.that(containsInOrder.toString(), eq("a collection containing [equal to <4>, equal to <5>] and in order"));
         
         // Describe what we got
-		Ensure.that(contains.describe(list), eq("a ArrayList containing [5, 6]"));
-		Ensure.that(containsOnly.describe(list), eq("a ArrayList containing [5, 6]"));
-		Ensure.that(containsInOrder.describe(list), eq("a ArrayList containing [5, 6]"));
+		Ensure.that(contains.describe(list), eq("a java.util.ArrayList containing [5, 6]"));
+		Ensure.that(containsOnly.describe(list), eq("a java.util.ArrayList containing [5, 6]"));
+		Ensure.that(containsInOrder.describe(list), eq("a java.util.ArrayList containing [5, 6]"));
     }
 }
