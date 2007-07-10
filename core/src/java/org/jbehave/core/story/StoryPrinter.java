@@ -31,6 +31,7 @@ public class StoryPrinter {
 
     public void print(String storyPath, String storyPackage) throws MalformedURLException {
         Story story = storyLoader.loadStory(storyPath, storyPackage);
+        story.specify();
         story.narrateTo(renderer);
     }
 
