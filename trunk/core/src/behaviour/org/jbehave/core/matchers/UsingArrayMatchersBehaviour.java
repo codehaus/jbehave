@@ -75,8 +75,8 @@ public class UsingArrayMatchersBehaviour {
         Ensure.that(containsInOrder.toString(), eq("an array containing [equal to <4>, equal to <5>] and in order"));
         
         // Describe what we got
-		Ensure.that(contains.describe(array), eq("a " + Integer[].class.getSimpleName()  + " containing [5, 6]"));
-		Ensure.that(containsOnly.describe(array), eq("a " + Integer[].class.getSimpleName()  + " containing [5, 6]"));
-		Ensure.that(containsInOrder.describe(array), eq("a " + Integer[].class.getSimpleName()  + " containing [5, 6]"));
+		Ensure.that(contains.describe(array), eq("a " + Integer[].class.getName()  + " containing [5, 6]"));
+		Ensure.that(containsOnly.describe(array), eq("a " + Integer[].class.getName()  + " containing [5, 6]"));
+		Ensure.that(containsInOrder.describe(array), eq("a " + Integer[].class.getName()  + " containing [5, 6]"));
     }
 }

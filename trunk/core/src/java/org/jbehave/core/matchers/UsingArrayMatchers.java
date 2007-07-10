@@ -37,7 +37,7 @@ public class UsingArrayMatchers {
             public String describe(Object arg) {
                 Object[] array = (Object[]) arg;
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("a " + arg.getClass().getSimpleName() + " containing ");
+                buffer.append("a " + arg.getClass().getName() + " containing ");
                 describe(array, buffer);               
                 return buffer.toString();
             }
