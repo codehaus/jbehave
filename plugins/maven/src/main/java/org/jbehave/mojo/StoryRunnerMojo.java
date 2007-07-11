@@ -36,7 +36,7 @@ public class StoryRunnerMojo extends AbstractStoryMojo {
     }
 
     private void runStory(String storyPackage, String storyPath) throws MalformedURLException {
-        getLog().debug("Running story "+ storyPath+" using package "+storyPackage);
+        getLog().info("Running story "+ storyPath+" using package "+storyPackage);
         StoryLoader loader = getStoryLoader();
         Story story = loader.loadStory(storyPath, storyPackage);
         story.specify();

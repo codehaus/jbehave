@@ -24,7 +24,7 @@
 	</dependencies>
 	
 	<build>
-		<testSourceDirectory>${basedir}/../src/test</testSourceDirectory>
+		<testSourceDirectory>${basedir}/../src/test/java</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.jbehave</groupId>
