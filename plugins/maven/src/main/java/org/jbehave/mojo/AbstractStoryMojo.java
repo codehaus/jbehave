@@ -1,6 +1,8 @@
 package org.jbehave.mojo;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jbehave.core.story.StoryLoader;
 import org.jbehave.core.story.codegen.parser.StoryParser;
@@ -17,13 +19,13 @@ public abstract class AbstractStoryMojo  extends AbstractJBehaveMojo {
      * @parameter
      * @required true
      */
-    protected String storyPath;
+    private String storyPath;
 
     /**
      * @parameter
      * @required true
      */
-    protected String storyPackage;
+    private String storyPackage;
 
     /**
      * @parameter default-value="org.jbehave.core.story.codegen.parser.TextStoryParser" 
@@ -60,10 +62,25 @@ public abstract class AbstractStoryMojo  extends AbstractJBehaveMojo {
         return new StoryLoader(getStoryParser(), createBehavioursClassLoader());
     }
 
+    protected String getStoryPackage() {
+        return storyPackage;
+    }
+
+    protected List getStoryPaths() {
+        List storyPaths = new ArrayList();
+        // a single story path is specified
+        if ( storyPath != null ){
+            storyPaths.add(storyPath);
+            return storyPaths;
+        }        
+        return storyPaths;
+    }
+    
     public static class InvalidClassNameException extends RuntimeException {
         public InvalidClassNameException(String message, Throwable cause) {
             super(message, cause);
         }        
     }
+
 
 }

@@ -1,11 +1,15 @@
 package org.jbehave.mojo;
 
+import java.net.MalformedURLException;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jbehave.core.story.StoryPrinter;
 
 /**
- * Mojo to print a story 
+ * Mojo to print stories 
  * 
  * @author Mauro Talevi
  * @goal print-story
@@ -13,13 +17,22 @@ import org.jbehave.core.story.StoryPrinter;
 public class StoryPrinterMojo extends AbstractStoryMojo {
       
     public void execute() throws MojoExecutionException, MojoFailureException {
+        String storyPackage = getStoryPackage();
+        List storyPaths = getStoryPaths();
         try {
-            getLog().debug("Printing story "+ storyPath);
-            StoryPrinter storyPrinter = new StoryPrinter(getStoryLoader(), getStoryRenderer());            
-            storyPrinter.print(storyPath, storyPackage);
+            for ( Iterator i = storyPaths.iterator(); i.hasNext(); ){
+                String storyPath = (String)i.next();
+                printStory(storyPackage, storyPath);
+            }
         } catch (Exception e) {
-            throw new MojoExecutionException("Failed to print story "+storyPath+" with package "+storyPackage, e);
+            throw new MojoExecutionException("Failed to print stories "+storyPaths+" with package "+storyPackage, e);
         }
+    }
+
+    private void printStory(String storyPackage, String storyPath) throws MalformedURLException {
+        getLog().debug("Printing story "+ storyPath+" using package "+storyPackage);
+        StoryPrinter storyPrinter = new StoryPrinter(getStoryLoader(), getStoryRenderer());            
+        storyPrinter.print(storyPath, storyPackage);
     }
   
 }
