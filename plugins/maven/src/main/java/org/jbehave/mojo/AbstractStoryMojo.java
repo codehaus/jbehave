@@ -46,13 +46,13 @@ public abstract class AbstractStoryMojo  extends AbstractJBehaveMojo {
         
     protected StoryParser getStoryParser() {
         StoryParser storyParser = (StoryParser) createInstance(storyParserClassName);       
-        getLog().info("Using story parser "+storyParser.getClass().getName());
+        getLog().debug("Using story parser "+storyParser.getClass().getName());
         return storyParser;
     }
 
     protected Renderer getStoryRenderer() {
         Renderer storyRenderer = (Renderer) createInstance(storyRendererClassName);       
-        getLog().info("Using story renderer "+storyRenderer.getClass().getName());
+        getLog().debug("Using story renderer "+storyRenderer.getClass().getName());
         return storyRenderer;
     }
 
