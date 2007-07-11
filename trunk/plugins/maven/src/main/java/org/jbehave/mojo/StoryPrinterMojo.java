@@ -30,7 +30,7 @@ public class StoryPrinterMojo extends AbstractStoryMojo {
     }
 
     private void printStory(String storyPackage, String storyPath) throws MalformedURLException {
-        getLog().debug("Printing story "+ storyPath+" using package "+storyPackage);
+        getLog().info("Printing story "+ storyPath+" using package "+storyPackage);
         StoryPrinter storyPrinter = new StoryPrinter(getStoryLoader(), getStoryRenderer());            
         storyPrinter.print(storyPath, storyPackage);
     }

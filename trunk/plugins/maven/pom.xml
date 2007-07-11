@@ -22,6 +22,11 @@
             <artifactId>maven-plugin-api</artifactId>
             <version>2.0</version>
         </dependency>
+        <dependency> <!-- Only used for DirectoryScanner -->      
+            <groupId>ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.6.5</version>
+        </dependency>
 	</dependencies>
     
 </project>

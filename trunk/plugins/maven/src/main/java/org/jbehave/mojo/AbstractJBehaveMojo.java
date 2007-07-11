@@ -46,10 +46,18 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
      */
     protected BehavioursClassLoader createBehavioursClassLoader() throws MalformedURLException {
         List classpathElements = compileClasspathElements;
-        if ( TEST_SCOPE.equals(scope) ){
+        if ( isTestScope() ){
             classpathElements = testClasspathElements;
         } 
         return new BehavioursClassLoader(classpathElements);
+    }
+    
+    /**
+     * Determines if the scope of the mojo classpath is "test"
+     * @return A boolean <code>true</code> if test scoped
+     */
+    protected boolean isTestScope(){
+        return TEST_SCOPE.equals(scope);
     }
 
 }

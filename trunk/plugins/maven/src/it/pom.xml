@@ -15,6 +15,7 @@
         <module>test3</module>
         <module>test4</module>
         <module>test5</module>
+        <module>test6</module>        
 	</modules>
 
 </project>

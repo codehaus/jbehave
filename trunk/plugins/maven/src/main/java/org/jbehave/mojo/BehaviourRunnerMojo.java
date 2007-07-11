@@ -25,7 +25,7 @@ public class BehaviourRunnerMojo  extends AbstractJBehaveMojo {
     
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            getLog().debug("Running behaviours "+ behavioursClassName);
+            getLog().info("Running behaviours "+ behavioursClassName);
             Behaviours behaviours = loadBehaviours(behavioursClassName);
             Class[] classes = behaviours.getBehaviours();
             for (int i = 0; i < classes.length; i++) {
