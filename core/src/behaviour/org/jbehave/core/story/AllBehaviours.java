@@ -9,6 +9,7 @@ package org.jbehave.core.story;
 
 import org.jbehave.core.behaviour.Behaviours;
 import org.jbehave.core.story.codegen.parser.TextStoryParserBehaviour;
+import org.jbehave.core.story.codegen.velocity.VelocityCodeGeneratorBehaviour;
 import org.jbehave.core.story.domain.AbstractStepBehaviour;
 import org.jbehave.core.story.domain.GivenScenarioBehaviour;
 import org.jbehave.core.story.domain.GivenStepBehaviour;
@@ -41,6 +42,7 @@ public class AllBehaviours implements Behaviours {
                 AbstractStepBehaviour.class,
                 PlainTextScenarioListenerBehaviour.class,
 				PlainTextRendererBehaviour.class,
+				VelocityCodeGeneratorBehaviour.class
         };
     }
 }
