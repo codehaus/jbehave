@@ -37,7 +37,7 @@ public class StoryRunnerMojo  extends AbstractJBehaveMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
             getLog().debug("Running story "+ storyPath);
-            StoryLoader loader = new StoryLoader(storyParser, new BehavioursClassLoader(getClasspathElements()));
+            StoryLoader loader = new StoryLoader(storyParser, createBehavioursClassLoader());
             Story story = loader.loadStory(storyPath, storyPackage);
 			story.specify();
             storyRunner.run(story);
