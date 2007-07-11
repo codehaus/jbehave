@@ -37,7 +37,7 @@ public class BehaviourRunnerMojo  extends AbstractJBehaveMojo {
     }
 
     private Behaviours loadBehaviours(String name) throws MalformedURLException, InstantiationException, IllegalAccessException {        
-        BehavioursClassLoader cl = new BehavioursClassLoader(getClasspathElements());
+        BehavioursClassLoader cl = createBehavioursClassLoader();
         return cl.newBehaviours(name);
     }
 

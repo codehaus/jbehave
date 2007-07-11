@@ -34,7 +34,7 @@ public class StoryPrinterMojo  extends AbstractJBehaveMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
             getLog().debug("Printing story "+ storyPath);
-            StoryLoader loader = new StoryLoader(storyParser, new BehavioursClassLoader(getClasspathElements()));
+            StoryLoader loader = new StoryLoader(storyParser, createBehavioursClassLoader());
             StoryPrinter storyPrinter = new StoryPrinter(loader, new PlainTextRenderer(System.out));            
             storyPrinter.print(storyPath, storyPackage);
         } catch (Exception e) {

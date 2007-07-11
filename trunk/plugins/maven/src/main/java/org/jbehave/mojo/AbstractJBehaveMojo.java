@@ -1,5 +1,6 @@
 package org.jbehave.mojo;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -37,15 +38,18 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
      * @parameter default-value="compile" 
      */
     protected String scope;
-    
+
     /**
-     * Returns the compile or test classpath elements based on the scope
-     * @return A List of classpath elements
+     * Creates the Behaviours ClassLoader with the classpath element of the selected scope
+     * @return A BehavioursClassLoader
+     * @throws MalformedURLException
      */
-    protected List getClasspathElements(){
+    protected BehavioursClassLoader createBehavioursClassLoader() throws MalformedURLException {
+        List classpathElements = compileClasspathElements;
         if ( TEST_SCOPE.equals(scope) ){
-            return testClasspathElements;
-        }
-        return compileClasspathElements;
+            classpathElements = testClasspathElements;
+        } 
+        return new BehavioursClassLoader(classpathElements);
     }
+
 }
