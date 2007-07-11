@@ -11,6 +11,8 @@ import org.apache.maven.plugin.AbstractMojo;
  */
 public abstract class AbstractJBehaveMojo extends AbstractMojo {
     
+    private static final String TEST_SCOPE = "test";
+
     /**
      * Compile classpath.
      *
@@ -18,7 +20,32 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
      * @required
      * @readonly
      */
-    List classpathElements;
+    protected List compileClasspathElements;
     
+    /**
+     * Test classpath.
+     *
+     * @parameter expression="${project.testClasspathElements}"
+     * @required
+     * @readonly
+     */
+    protected List testClasspathElements;
    
+    /**
+     * The scope of the mojo classpath
+     *
+     * @parameter default-value="compile" 
+     */
+    protected String scope;
+    
+    /**
+     * Returns the compile or test classpath elements based on the scope
+     * @return A List of classpath elements
+     */
+    protected List getClasspathElements(){
+        if ( TEST_SCOPE.equals(scope) ){
+            return testClasspathElements;
+        }
+        return compileClasspathElements;
+    }
 }
