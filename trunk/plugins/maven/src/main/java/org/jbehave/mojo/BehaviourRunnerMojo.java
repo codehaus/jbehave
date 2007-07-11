@@ -19,7 +19,7 @@ public class BehaviourRunnerMojo  extends AbstractJBehaveMojo {
      * @parameter
      * @required true
      */
-    String behavioursClassName;
+    private String behavioursClassName;
     
     private BehaviourRunner runner = new BehaviourRunner(System.out);
     
@@ -37,7 +37,7 @@ public class BehaviourRunnerMojo  extends AbstractJBehaveMojo {
     }
 
     private Behaviours loadBehaviours(String name) throws MalformedURLException, InstantiationException, IllegalAccessException {        
-        BehavioursClassLoader cl = new BehavioursClassLoader(classpathElements);
+        BehavioursClassLoader cl = new BehavioursClassLoader(getClasspathElements());
         return cl.newBehaviours(name);
     }
 

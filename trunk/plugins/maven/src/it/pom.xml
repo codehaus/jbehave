@@ -7,12 +7,13 @@
 	<artifactId>jbehave-maven-plugin-it</artifactId>
 	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>jBehave Maven Plugin Integration Test Reactor</name>
+	<name>jBehave Maven Plugin Integration Tests</name>
 
 	<modules>
         <module>test1</module>
         <module>test2</module>
         <module>test3</module>
+        <module>test4</module>
 	</modules>
 
 </project>

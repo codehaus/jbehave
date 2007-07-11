@@ -20,13 +20,13 @@ public class StoryPrinterMojo  extends AbstractJBehaveMojo {
      * @parameter
      * @required true
      */
-    String storyPath;
+    private String storyPath;
 
     /**
      * @parameter
      * @required true
      */
-    String storyPackage;
+    private String storyPackage;
 
     /** The story parser */
     private StoryParser storyParser = new TextStoryParser();
@@ -34,7 +34,7 @@ public class StoryPrinterMojo  extends AbstractJBehaveMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
             getLog().debug("Printing story "+ storyPath);
-            StoryLoader loader = new StoryLoader(storyParser, new BehavioursClassLoader(classpathElements));
+            StoryLoader loader = new StoryLoader(storyParser, new BehavioursClassLoader(getClasspathElements()));
             StoryPrinter storyPrinter = new StoryPrinter(loader, new PlainTextRenderer(System.out));            
             storyPrinter.print(storyPath, storyPackage);
         } catch (Exception e) {
