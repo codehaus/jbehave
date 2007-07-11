@@ -21,7 +21,7 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
      * @required
      * @readonly
      */
-    protected List compileClasspathElements;
+    private List compileClasspathElements;
     
     /**
      * Test classpath.
@@ -30,14 +30,14 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
      * @required
      * @readonly
      */
-    protected List testClasspathElements;
+    private List testClasspathElements;
    
     /**
      * The scope of the mojo classpath
      *
      * @parameter default-value="compile" 
      */
-    protected String scope;
+    private String scope;
 
     /**
      * Creates the Behaviours ClassLoader with the classpath element of the selected scope
