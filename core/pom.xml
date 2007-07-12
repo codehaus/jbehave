@@ -14,45 +14,38 @@
     <dependency>
       <groupId>ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.6.5</version>
       <scope>provided</scope>
-    </dependency>  
+    </dependency>
     <dependency>
       <groupId>jmock</groupId>
       <artifactId>jmock</artifactId>
-      <version>1.1.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>jmock</groupId>
       <artifactId>jmock-cglib</artifactId>
-      <version>1.1.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib-full</artifactId>
-      <version>2.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>proxytoys</groupId>
       <artifactId>proxytoys</artifactId>
-      <version>0.2.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.2</version>
       <scope>provided</scope>
-    </dependency>        
+    </dependency>
     <dependency>
       <groupId>velocity</groupId>
       <artifactId>velocity-dep</artifactId>
-      <version>1.4</version>
       <scope>provided</scope>
-    </dependency>        
+    </dependency>
   </dependencies>
 
   <build>
