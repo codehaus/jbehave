@@ -118,7 +118,7 @@ public abstract class AbstractStoryMojo extends AbstractJBehaveMojo {
     }
     
     private List listStoryPaths() {        
-        scanner.setBasedir( new File( getStorySourceDirectory(), storyDirectory ) );
+        scanner.setBasedir( getStorySourceDirectory() );
         getLog().debug( "Listing story paths from directory " + storyDirectory );
         if ( storyIncludes != null )
         {
@@ -142,11 +142,15 @@ public abstract class AbstractStoryMojo extends AbstractJBehaveMojo {
         return storyPaths;
     }
 
-    private String getStorySourceDirectory() {
+    private String getRootSourceDirectory() {
         if ( isTestScope() ){
             return testSourceDirectory;
         } 
         return sourceDirectory;
+    }
+    
+    protected File getStorySourceDirectory() {
+       return new File( getRootSourceDirectory(), storyDirectory );
     }
 
     public static class InvalidClassNameException extends RuntimeException {
