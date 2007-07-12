@@ -26,8 +26,12 @@ public class StoryLoader {
         this.storyParser = storyParser;
     }
 
+    public StoryDetails loadStoryDetails(String storyPath, String storyPackage) throws MalformedURLException {
+        return storyParser.parseStory(getReader(storyPath, classLoader));
+    }
+    
     public Story loadStory(String storyPath, String storyPackage) throws MalformedURLException {
-        StoryDetails storyDetails = storyParser.parseStory(getReader(storyPath, classLoader));
+        StoryDetails storyDetails = loadStoryDetails(storyPath, storyPackage);
         return new StoryBuilder(storyDetails, storyPackage, classLoader).story();
     }
 
