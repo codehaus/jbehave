@@ -18,15 +18,15 @@ import org.jbehave.core.story.codegen.domain.StoryDetails;
 import org.jbehave.core.util.CamelCaseConverter;
 
 /**
- * Velocity-based code generator
+ * Velocity-based code generator.  Generates java source for the events, givens and outcomes of a story.
  * 
  * @author Mauro Talevi
  */
 public class VelocityCodeGenerator implements CodeGenerator {
 
     private static final String SOURCE_PATH = "{0}/{1}s/{2}.java";
-    private static final String TEMPLATE_PATH = "org/jbehave/core/story/codegen/velocity/templates/{0}.template";
     private static final String PACKAGE_NAME = "{0}.{1}s";
+    private static final String TEMPLATE_PATH = "org/jbehave/core/story/codegen/velocity/templates/{0}.template";
 
     private String rootSourceDirectory;
     private String rootPackageName;
@@ -68,8 +68,8 @@ public class VelocityCodeGenerator implements CodeGenerator {
     private void generateSource(String name, String type) {
         String className = toCamelCase(name);
         String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { rootSourceDirectory, type, className });
-        String templatePath = MessageFormat.format(TEMPLATE_PATH, new Object[] { type });
         String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, type });
+        String templatePath = MessageFormat.format(TEMPLATE_PATH, new Object[] { type });
         generateSource(sourcePath, templatePath, className, packageName);
     }
 
@@ -81,10 +81,10 @@ public class VelocityCodeGenerator implements CodeGenerator {
             File file = new File(sourcePath);
             file.getParentFile().mkdirs();
             Writer writer = new FileWriter(file);
-            process(templatePath, context, writer);
+            processTemplate(templatePath, context, writer);
             writer.close();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to generate source", e);
+            throw new CodeGenerationFailedException("Failed to generate source", e);
         }
     }
 
@@ -101,24 +101,29 @@ public class VelocityCodeGenerator implements CodeGenerator {
                     ClasspathResourceLoader.class.getName());
             engine.init(properties);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to initialise VelocityEngine " + engine, e);
+            throw new CodeGenerationFailedException("Failed to initialise VelocityEngine " + engine, e);
         }
     }
 
     /**
-     * Processes a template with context
+     * Processes a velocity template and writes output to writer
      * 
-     * @param resource the template resource
+     * @param templatePath the template resource path
      * @param context the VelocityContext
-     * @param writer the Writer to merge into
+     * @param writer the Writer to write output to
      */
-    private void process(String resource, VelocityContext context, Writer writer) {
+    private void processTemplate(String templatePath, VelocityContext context, Writer writer) {
         try {
-            Template template = engine.getTemplate(resource);
+            Template template = engine.getTemplate(templatePath);
             template.merge(context, writer);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to process template " + resource + " with context " + context, e);
+            throw new CodeGenerationFailedException("Failed to process template " + templatePath + " with context " + context, e);
         }
     }
 
+    public static class CodeGenerationFailedException extends RuntimeException {
+        public CodeGenerationFailedException(String message, Throwable cause) {
+            super(message, cause);
+        }        
+    }
 }
