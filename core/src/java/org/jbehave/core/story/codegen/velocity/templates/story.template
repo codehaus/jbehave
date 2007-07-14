@@ -1,5 +1,6 @@
 package ${packageName};
 
+import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.story.domain.Narrative;
 import org.jbehave.core.story.domain.ScenarioDrivenStory;
 
@@ -10,7 +11,7 @@ public class ${className} extends ScenarioDrivenStory {
     }
     
     public void specify() {
-    	//TODO
+		throw new PendingException("Auto-generated stub");
     }
 
 }
