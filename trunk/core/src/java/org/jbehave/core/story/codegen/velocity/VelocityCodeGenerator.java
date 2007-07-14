@@ -5,7 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.velocity.Template;
@@ -15,6 +17,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.jbehave.core.story.codegen.CodeGenerator;
 import org.jbehave.core.story.codegen.domain.ScenarioDetails;
 import org.jbehave.core.story.codegen.domain.StoryDetails;
+import org.jbehave.core.story.domain.Narrative;
 import org.jbehave.core.util.CamelCaseConverter;
 
 /**
@@ -24,8 +27,8 @@ import org.jbehave.core.util.CamelCaseConverter;
  */
 public class VelocityCodeGenerator implements CodeGenerator {
 
-    private static final String SOURCE_PATH = "{0}/{1}s/{2}.java";
-    private static final String PACKAGE_NAME = "{0}.{1}s";
+    private static final String SOURCE_PATH = "{0}/{1}/{2}.java";
+    private static final String PACKAGE_NAME = "{0}.{1}";
     private static final String TEMPLATE_PATH = "org/jbehave/core/story/codegen/velocity/templates/{0}.template";
 
     private String rootSourceDirectory;
@@ -49,35 +52,56 @@ public class VelocityCodeGenerator implements CodeGenerator {
     }
 
     public void generateStory(StoryDetails storyDetails) {
+        generateSource(storyDetails.name, "story", narrativeProperties(storyDetails));
         for (Iterator i = storyDetails.scenarios.iterator(); i.hasNext();) {
             ScenarioDetails scenario = (ScenarioDetails) i.next();
-            generateSource(scenario.event.name, "event");
+            generateSource(scenario.name, "scenario", null);
+            generateSource(scenario.event.name, "event", null);
             for (Iterator j = scenario.context.givens.iterator(); j.hasNext();) {
-                generateSource((String) j.next(), "given");
+                generateSource((String) j.next(), "given", null);
             }
             for (Iterator j = scenario.outcome.outcomes.iterator(); j.hasNext();) {
-                generateSource((String) j.next(), "outcome");
+                generateSource((String) j.next(), "outcome", null);
             }
         }
+    }
+
+    private Map narrativeProperties(StoryDetails storyDetails) {
+        Map map = new HashMap();
+        map.put("narrative", new Narrative(storyDetails.name, storyDetails.feature, storyDetails.benefit));
+        return map;
     }
 
     private String toCamelCase(String name) {
         return new CamelCaseConverter(name).toCamelCase();
     }
 
-    private void generateSource(String name, String type) {
+    private void generateSource(String name, String type, Map properties) {
         String className = toCamelCase(name);
-        String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { rootSourceDirectory, type, className });
-        String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, type });
+        String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { rootSourceDirectory, toPlural(type), className });
+        String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, toPlural(type) });
         String templatePath = MessageFormat.format(TEMPLATE_PATH, new Object[] { type });
-        generateSource(sourcePath, templatePath, className, packageName);
+        generateSource(sourcePath, templatePath, className, packageName, properties);
     }
 
-    private void generateSource(String sourcePath, String templatePath, String className, String packageName) {
+    private String toPlural(String type) {
+        if ( type.endsWith("y") ){
+            return type.replaceFirst("y", "ies");
+        }
+        return type.concat("s");
+    }
+
+    private void generateSource(String sourcePath, String templatePath, String className, String packageName, Map properties) {
         try {
             VelocityContext context = new VelocityContext();
             context.put("className", className);
             context.put("packageName", packageName);
+            if ( properties != null ){
+                for ( Iterator i = properties.keySet().iterator(); i.hasNext(); ){
+                    String key = (String)i.next();
+                    context.put(key, properties.get(key));
+                }
+            }
             File file = new File(sourcePath);
             file.getParentFile().mkdirs();
             Writer writer = new FileWriter(file);

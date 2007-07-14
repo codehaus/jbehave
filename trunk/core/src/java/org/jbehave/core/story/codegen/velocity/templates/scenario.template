@@ -1,0 +1,11 @@
+package ${packageName};
+
+import org.jbehave.core.story.domain.MultiStepScenario;
+
+public class ${className} extends MultiStepScenario {
+
+    public void specifySteps() {
+    	//TODO
+	}    
+
+}
