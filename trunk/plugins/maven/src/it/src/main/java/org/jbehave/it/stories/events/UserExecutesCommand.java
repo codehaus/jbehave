@@ -6,7 +6,7 @@ import org.jbehave.core.story.domain.World;
 public class UserExecutesCommand extends EventUsingMiniMock {
 
     public void occurIn(World world) {
-		// TODO     
+		org.jbehave.core.Ensure.pending("Auto-generated stub");    
     }
 
 }
