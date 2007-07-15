@@ -10,7 +10,9 @@ public class ${className} extends ScenarioDrivenStory {
     }
     
     public void specify() {
-		org.jbehave.core.Ensure.pending("Auto-generated stub");
+        #foreach( $scenarioClassName in $scenarioClassNames )
+	      addScenario(new $scenarioClassName());
+    	#end
     }
 
 }

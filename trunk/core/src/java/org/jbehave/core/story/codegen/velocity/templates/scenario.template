@@ -5,7 +5,13 @@ import org.jbehave.core.story.domain.MultiStepScenario;
 public class ${className} extends MultiStepScenario {
 
     public void specifySteps() {
-		org.jbehave.core.Ensure.pending("Auto-generated stub");
+    	when(new ${eventClassName}());
+     	#foreach( $givenClassName in $givenClassNames )
+	      given(new $givenClassName());
+    	#end
+     	#foreach( $outcomeClassName in $outcomeClassNames )
+	      then(new $outcomeClassName());
+    	#end
 	}    
 
 }
