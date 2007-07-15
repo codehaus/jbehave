@@ -35,9 +35,8 @@ public class StoryCodeGeneratorMojo extends AbstractStoryMojo {
         }
     }
 
-    //TODO  make code generator configurable 
     private CodeGenerator createCodeGenerator() {
-        return new VelocityCodeGenerator(getStorySourceDirectory().getPath());
+        return new VelocityCodeGenerator(getRootSourceDirectory());
     }
 
     private void generateStoryCode(String storyPath) throws MalformedURLException {

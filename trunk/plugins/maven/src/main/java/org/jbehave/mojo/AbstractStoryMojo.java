@@ -1,6 +1,5 @@
 package org.jbehave.mojo;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +36,6 @@ public abstract class AbstractStoryMojo extends AbstractJBehaveMojo {
      * @parameter
      */
     private String storyPath;
-
-    /**
-     * Directory containing multiple stories, relative to the sourceDirectory
-     * 
-     * @parameter
-     */
-    private String storyDirectory;
 
     /**
      * Story include filters, relative to the storyDirectory
@@ -110,21 +102,17 @@ public abstract class AbstractStoryMojo extends AbstractJBehaveMojo {
     }
 
     private List listStoryPaths() {
-        List storyPaths = pathFinder.listPaths(getStorySourceDirectory().getPath(), storyDirectory, storyIncludes,
+        List storyPaths = pathFinder.listPaths(getRootSourceDirectory(), null, storyIncludes,
                 storyExcludes);
         getLog().debug("Listed story paths " + storyPaths);
         return storyPaths;
     }
 
-    private String getRootSourceDirectory() {
+    protected String getRootSourceDirectory() {
         if (isTestScope()) {
             return testSourceDirectory;
         }
         return sourceDirectory;
-    }
-
-    protected File getStorySourceDirectory() {
-        return new File(getRootSourceDirectory(), storyDirectory);
     }
 
     public static class InvalidClassNameException extends RuntimeException {
