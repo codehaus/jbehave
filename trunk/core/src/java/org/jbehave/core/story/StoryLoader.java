@@ -26,17 +26,17 @@ public class StoryLoader {
         this.storyParser = storyParser;
     }
 
-    public StoryDetails loadStoryDetails(String storyPath, String storyPackage) throws MalformedURLException {
+    public StoryDetails loadStoryDetails(String storyPath) throws MalformedURLException {
         return storyParser.parseStory(getReader(storyPath, classLoader));
     }
     
-    public Story loadStory(String storyPath, String storyPackage) throws MalformedURLException {
-        StoryDetails storyDetails = loadStoryDetails(storyPath, storyPackage);
-        return new StoryBuilder(storyDetails, storyPackage, classLoader).story();
+    public Story loadStory(String storyPath) throws MalformedURLException {
+        StoryDetails storyDetails = loadStoryDetails(storyPath);
+        return new StoryBuilder(storyDetails, classLoader).story();
     }
 
-    public Story loadStory(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        return (Story) classLoader.loadClass(storyClassName).newInstance();        
+    public Story loadStory(Class storyClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        return (Story) classLoader.loadClass(storyClass.getName()).newInstance();        
     }
     
     protected Reader getReader(String resource, ClassLoader classLoader) {

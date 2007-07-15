@@ -78,6 +78,11 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAPackage(APackage node)
+    {
+        defaultCase(node);
+    }
+
     public void caseARole(ARole node)
     {
         defaultCase(node);
@@ -138,6 +143,11 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseTPackageKeyword(TPackageKeyword node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTScenarioKeyword(TScenarioKeyword node)
     {
         defaultCase(node);
@@ -179,6 +189,11 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseTWord(TWord node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTPackageName(TPackageName node)
     {
         defaultCase(node);
     }

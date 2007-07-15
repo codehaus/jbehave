@@ -15,6 +15,7 @@ import java.util.List;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North </a>
  */
 public class StoryDetails extends BasicDetails {
+    public String rootPackage = "";
     public String role = "";
     public String feature = "";
     public String benefit = "";
@@ -23,8 +24,9 @@ public class StoryDetails extends BasicDetails {
 	public StoryDetails() {
 	}
 	
-    public StoryDetails(String name, String role, String feature, String benefit) {
+    public StoryDetails(String name, String rootPackage, String role, String feature, String benefit) {
 		this.name = name;
+        this.rootPackage = rootPackage;
         this.role = role;
         this.feature = feature;
         this.benefit = benefit;
@@ -49,6 +51,7 @@ public class StoryDetails extends BasicDetails {
         }
         StoryDetails that = (StoryDetails) obj;
         return super.equals(obj)
+            && this.rootPackage.equals(that.rootPackage)
 			&& this.role.equals(that.role)
 	        && this.feature.equals(that.feature)
 	        && this.benefit.equals(that.benefit)
@@ -60,6 +63,7 @@ public class StoryDetails extends BasicDetails {
      */
     public int hashCode() {
         int hashCode = 1;
+        hashCode = 31 * hashCode + (rootPackage == null ? 0 : rootPackage.hashCode());
         hashCode = 31 * hashCode + (role == null ? 0 : role.hashCode());
         hashCode = 31 * hashCode + (feature == null ? 0 : feature.hashCode());
         hashCode = 31 * hashCode + (benefit == null ? 0 : benefit.hashCode());
@@ -71,6 +75,8 @@ public class StoryDetails extends BasicDetails {
         StringBuffer buffer = new StringBuffer();
         buffer.append("[StoryDetails name=");
         buffer.append(name);
+        buffer.append(", rootPackage=");
+        buffer.append(rootPackage);
         buffer.append(", role=");
         buffer.append(role);
         buffer.append(", feature=");

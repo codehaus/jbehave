@@ -50,6 +50,10 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getTitle().apply(this);
         }
+        if(node.getPackage() != null)
+        {
+            node.getPackage().apply(this);
+        }
         if(node.getRole() != null)
         {
             node.getRole().apply(this);
@@ -102,6 +106,38 @@ public class DepthFirstAdapter extends AnalysisAdapter
             node.getEndl().apply(this);
         }
         outATitle(node);
+    }
+
+    public void inAPackage(APackage node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAPackage(APackage node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAPackage(APackage node)
+    {
+        inAPackage(node);
+        if(node.getPackageKeyword() != null)
+        {
+            node.getPackageKeyword().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getPackageName() != null)
+        {
+            node.getPackageName().apply(this);
+        }
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        outAPackage(node);
     }
 
     public void inARole(ARole node)

@@ -33,27 +33,24 @@ public class VelocityCodeGenerator implements CodeGenerator {
     private static final String PACKAGE_NAME = "{0}.{1}";
     private static final String TEMPLATE_PATH = "org/jbehave/core/story/codegen/velocity/templates/{0}.template";
 
-    private String rootSourceDirectory;
+    private String generatedSourceDirectory;
     private String rootPackageName;
 
     /** The velocity engine */
     private VelocityEngine engine;
-
+       
     /**
      * Creates a VelocityCodeGenerator
-     * 
-     * @param rootSourceDirectory the root source directory of the generated
-     *            story code
-     * @param rootPackageName the root package name of the story
+     * @param generatedSourceDirectory the root directory of the generated source
      */
-    public VelocityCodeGenerator(String rootSourceDirectory, String rootPackageName) {
-        this.rootSourceDirectory = rootSourceDirectory;
-        this.rootPackageName = rootPackageName;
+    public VelocityCodeGenerator(String generatedSourceDirectory) {
         this.engine = new VelocityEngine();
         initialiseEngine(engine);
+        this.generatedSourceDirectory = generatedSourceDirectory;
     }
 
     public void generateStory(StoryDetails story) {
+        rootPackageName = story.rootPackage;
         generateSource(story.name, "story", storyProperties(story));
         for (Iterator i = story.scenarios.iterator(); i.hasNext();) {
             ScenarioDetails scenario = (ScenarioDetails) i.next();
@@ -118,7 +115,7 @@ public class VelocityCodeGenerator implements CodeGenerator {
 
     private void generateSource(String name, String type, Map properties) {
         String className = camelise(name);
-        String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { rootSourceDirectory, pluralise(type), className });
+        String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { generatedSourceDirectory, pluralise(type), className });
         String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, pluralise(type) });
         String templatePath = MessageFormat.format(TEMPLATE_PATH, new Object[] { type });
         generateSource(sourcePath, templatePath, className, packageName, properties);

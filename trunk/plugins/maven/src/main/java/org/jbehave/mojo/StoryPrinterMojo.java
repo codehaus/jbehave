@@ -17,22 +17,21 @@ import org.jbehave.core.story.StoryPrinter;
 public class StoryPrinterMojo extends AbstractStoryMojo {
       
     public void execute() throws MojoExecutionException, MojoFailureException {
-        String storyPackage = getStoryPackage();
         List storyPaths = getStoryPaths();
         try {
             for ( Iterator i = storyPaths.iterator(); i.hasNext(); ){
                 String storyPath = (String)i.next();
-                printStory(storyPackage, storyPath);
+                printStory(storyPath);
             }
         } catch (Exception e) {
-            throw new MojoExecutionException("Failed to print stories "+storyPaths+" with package "+storyPackage, e);
+            throw new MojoExecutionException("Failed to print stories "+storyPaths, e);
         }
     }
 
-    private void printStory(String storyPackage, String storyPath) throws MalformedURLException {
-        getLog().info("Printing story "+ storyPath+" using package "+storyPackage);
+    private void printStory(String storyPath) throws MalformedURLException {
+        getLog().info("Printing story "+ storyPath);
         StoryPrinter storyPrinter = new StoryPrinter(getStoryLoader(), getStoryRenderer());            
-        storyPrinter.print(storyPath, storyPackage);
+        storyPrinter.print(storyPath);
     }
   
 }

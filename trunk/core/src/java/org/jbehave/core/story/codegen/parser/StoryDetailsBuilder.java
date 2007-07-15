@@ -11,6 +11,7 @@ import org.jbehave.core.story.codegen.sablecc.node.AContext;
 import org.jbehave.core.story.codegen.sablecc.node.AEvent;
 import org.jbehave.core.story.codegen.sablecc.node.AFeature;
 import org.jbehave.core.story.codegen.sablecc.node.AOutcome;
+import org.jbehave.core.story.codegen.sablecc.node.APackage;
 import org.jbehave.core.story.codegen.sablecc.node.APhrase;
 import org.jbehave.core.story.codegen.sablecc.node.ARole;
 import org.jbehave.core.story.codegen.sablecc.node.AScenario;
@@ -25,14 +26,17 @@ class StoryDetailsBuilder extends DepthFirstAdapter {
 	private StringBuffer phrase;
 	private ScenarioDetails scenario;
 	
-	// the story 
-	
-	// summary stuff
+	// the story 	
 
+	// summary stuff
 	public void outATitle(ATitle node) {
 		story.name = phrase.toString();
 	}
 
+    public void outAPackage(APackage node) {
+        story.rootPackage = node.getPackageName().getText();
+    }
+    
 	public void outARole(ARole node) {
 		story.role = phrase.toString();
 	}
@@ -46,7 +50,6 @@ class StoryDetailsBuilder extends DepthFirstAdapter {
 	}
 	
 	// scenarios
-
 	public void inAScenario(AScenario node) {
 		scenario = new ScenarioDetails();
 		story.addScenario(scenario);
@@ -69,7 +72,6 @@ class StoryDetailsBuilder extends DepthFirstAdapter {
     }
 
 	// phrase processing
-
 	public void inAPhrase(APhrase node) {
 		phrase = new StringBuffer();
 	}
@@ -81,6 +83,7 @@ class StoryDetailsBuilder extends DepthFirstAdapter {
 	public void outAWordWordOrSpace(AWordWordOrSpace node) {
 		phrase.append(node.getWord().getText());
 	}
+	
 
 	public StoryDetails getStoryDetails() {
 		return story;
