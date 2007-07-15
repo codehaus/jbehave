@@ -14,7 +14,7 @@ public class VelocityCodeGeneratorBehaviour extends UsingMatchers {
 
     public void shouldGenerateCodeForStoryWithFullScenario() throws Exception {
         // given
-        StoryDetails storyDetails = new StoryDetails("Joe drinks vodka", "", "", "");
+        StoryDetails story = new StoryDetails("Joe drinks vodka", "", "", "");
         ScenarioDetails scenario1 = new ScenarioDetails();
         scenario1.name = "Happy path";
         scenario1.context.givens.add("a bar downtown");
@@ -22,7 +22,7 @@ public class VelocityCodeGeneratorBehaviour extends UsingMatchers {
         scenario1.event.name = "Joe asks for a Smirnov";
         scenario1.outcome.outcomes.add("bartender serves Joe");
         scenario1.outcome.outcomes.add("Joe is happy");
-        storyDetails.addScenario(scenario1);
+        story.addScenario(scenario1);
         ScenarioDetails scenario2 = new ScenarioDetails();
         scenario2.name = "Unhappy path";
         scenario2.context.givens.add("a pub uptown");
@@ -30,16 +30,19 @@ public class VelocityCodeGeneratorBehaviour extends UsingMatchers {
         scenario2.event.name = "Joe asks for an Absolut";
         scenario2.outcome.outcomes.add("bartender tells Joe it is sold out");
         scenario2.outcome.outcomes.add("Joe is unhappy");
-        storyDetails.addScenario(scenario2);
+        story.addScenario(scenario2);
 
         // when
-        String generatedSourceDir = "delete_me/generated-src";
-        VelocityCodeGenerator generator = new VelocityCodeGenerator(generatedSourceDir,
-                "generated.stories");
-        generator.generateStory(storyDetails);
+        String rootSourceDirectory = "delete_me/generated-src";
+        String rootPackageName = "generated.code";
+        VelocityCodeGenerator generator = new VelocityCodeGenerator(rootSourceDirectory, rootPackageName);
+        generator.generateStory(story);
 
         // then
         String[] generatedPaths = new String[]{
+           "stories/JoeDrinksVodka.java",
+           "scenarios/HappyPath.java",
+           "scenarios/UnhappyPath.java",
            "events/JoeAsksForASmirnov.java",      
            "events/JoeAsksForAnAbsolut.java",      
            "givens/ABarDowntown.java",      
@@ -53,7 +56,7 @@ public class VelocityCodeGeneratorBehaviour extends UsingMatchers {
         };
         
         for ( int i = 0; i < generatedPaths.length; i++ ){
-            ensureThat(new File(generatedSourceDir+File.separator+generatedPaths[i]).exists() );           
+            ensureThat(new File(rootSourceDirectory+File.separator+generatedPaths[i]).exists() );           
         }
     }
 
