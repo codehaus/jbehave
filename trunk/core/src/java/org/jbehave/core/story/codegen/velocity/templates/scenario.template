@@ -1,12 +1,11 @@
 package ${packageName};
 
-import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.story.domain.MultiStepScenario;
 
 public class ${className} extends MultiStepScenario {
 
     public void specifySteps() {
-		throw new PendingException("Auto-generated stub");
+		org.jbehave.core.Ensure.pending("Auto-generated stub");
 	}    
 
 }
