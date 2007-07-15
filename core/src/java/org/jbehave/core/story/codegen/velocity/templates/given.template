@@ -1,13 +1,12 @@
 package ${packageName};
 
-import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.minimock.story.domain.GivenUsingMiniMock;
 import org.jbehave.core.story.domain.World;
 
 public class ${className} extends GivenUsingMiniMock {
 
     public void setUp(World world) {
-		throw new PendingException("Auto-generated stub");    
+		org.jbehave.core.Ensure.pending("Auto-generated stub");    
     }
 
 }
