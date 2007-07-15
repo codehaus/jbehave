@@ -14,7 +14,7 @@ public class VelocityCodeGeneratorBehaviour extends UsingMatchers {
 
     public void shouldGenerateCodeForStoryWithFullScenario() throws Exception {
         // given
-        StoryDetails story = new StoryDetails("Joe drinks vodka", "", "", "", "");
+        StoryDetails story = new StoryDetails("Joe drinks vodka", "org.jbehave.story", "", "", "");
         ScenarioDetails scenario1 = new ScenarioDetails();
         scenario1.name = "Happy path";
         scenario1.context.givens.add("a bar downtown");
