@@ -5,8 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -51,11 +53,11 @@ public class VelocityCodeGenerator implements CodeGenerator {
         initialiseEngine(engine);
     }
 
-    public void generateStory(StoryDetails storyDetails) {
-        generateSource(storyDetails.name, "story", narrativeProperties(storyDetails));
-        for (Iterator i = storyDetails.scenarios.iterator(); i.hasNext();) {
+    public void generateStory(StoryDetails story) {
+        generateSource(story.name, "story", storyProperties(story));
+        for (Iterator i = story.scenarios.iterator(); i.hasNext();) {
             ScenarioDetails scenario = (ScenarioDetails) i.next();
-            generateSource(scenario.name, "scenario", null);
+            generateSource(scenario.name, "scenario", scenarioProperties(scenario));
             generateSource(scenario.event.name, "event", null);
             for (Iterator j = scenario.context.givens.iterator(); j.hasNext();) {
                 generateSource((String) j.next(), "given", null);
@@ -66,29 +68,60 @@ public class VelocityCodeGenerator implements CodeGenerator {
         }
     }
 
-    private Map narrativeProperties(StoryDetails storyDetails) {
+    private Map storyProperties(StoryDetails story) {
         Map map = new HashMap();
-        map.put("narrative", new Narrative(storyDetails.name, storyDetails.feature, storyDetails.benefit));
+        map.put("narrative", new Narrative(story.name, story.feature, story.benefit));
+        map.put("scenarioClassNames", scenarioClassNames(story));
         return map;
     }
 
-    private String toCamelCase(String name) {
+    private List scenarioClassNames(StoryDetails story) {
+        List names = new ArrayList();
+        for (Iterator i = story.scenarios.iterator(); i.hasNext();) {
+            ScenarioDetails scenario = (ScenarioDetails) i.next();
+            names.add(className("scenario", scenario.name));
+        }
+        return names;
+    }
+
+    private Map scenarioProperties(ScenarioDetails scenario) {
+        Map map = new HashMap();
+        map.put("eventClassName", className("event", scenario.event.name));
+        List givenClassNames = new ArrayList();
+        for (Iterator j = scenario.context.givens.iterator(); j.hasNext();) {
+            givenClassNames.add(className("given", (String) j.next()));
+        }
+        map.put("givenClassNames", givenClassNames);
+        List outcomeClassNames = new ArrayList();
+        for (Iterator j = scenario.outcome.outcomes.iterator(); j.hasNext();) {
+            outcomeClassNames.add(className("outcome", (String) j.next()));
+        }
+        map.put("outcomeClassNames", outcomeClassNames);
+        return map;
+    }
+
+    private String className(String type, String name){
+        String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, pluralise(type) });
+        return packageName+"."+camelise(name);
+    }
+
+    private String camelise(String name) {
         return new CamelCaseConverter(name).toCamelCase();
     }
 
-    private void generateSource(String name, String type, Map properties) {
-        String className = toCamelCase(name);
-        String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { rootSourceDirectory, toPlural(type), className });
-        String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, toPlural(type) });
-        String templatePath = MessageFormat.format(TEMPLATE_PATH, new Object[] { type });
-        generateSource(sourcePath, templatePath, className, packageName, properties);
-    }
-
-    private String toPlural(String type) {
-        if ( type.endsWith("y") ){
+    private String pluralise(String type) {
+        if ( type.contains("y") ){
             return type.replaceFirst("y", "ies");
         }
         return type.concat("s");
+    }
+
+    private void generateSource(String name, String type, Map properties) {
+        String className = camelise(name);
+        String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { rootSourceDirectory, pluralise(type), className });
+        String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, pluralise(type) });
+        String templatePath = MessageFormat.format(TEMPLATE_PATH, new Object[] { type });
+        generateSource(sourcePath, templatePath, className, packageName, properties);
     }
 
     private void generateSource(String sourcePath, String templatePath, String className, String packageName, Map properties) {
