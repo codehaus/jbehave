@@ -1,14 +1,5 @@
 Package org.jbehave.core.story.codegen.sablecc;
 
-/*
-
-Title: Joe drinks vodka
-As a drinker
-I want a glass of vodka
-So that I feel tipsy
-
-*/
-
 Helpers
 	letter = [['a'..'z'] + ['A'..'Z']];
 	digit = ['0'..'9'];
@@ -17,6 +8,7 @@ Helpers
 	cr = 13;
 	lf = 10;
 	endl = cr | lf | cr lf;
+	packagechar = letter | digit | '.' | '-';
 	commentchar = '#';
 	specialchar = '/' | '?' | '-' | '.' | '*' | '(' | ')';
 	norwegianchar = 'æ'|'ø'|'å'|'Æ'|'Ø'|'Å';
@@ -24,6 +16,7 @@ Helpers
 	
 Tokens
 	title_keyword = 'Title:';
+	package_keyword = 'Package:';
 	scenario_keyword = 'Scenario:';
 	as_a = 'As a';
 	i_want = 'I want';
@@ -33,6 +26,7 @@ Tokens
 	then = 'Then';
 	space = space;
 	word = letter+;
+	package_name = packagechar+;
 	endl = endl;
 	commentline = commentchar commentchars* endl;
 
@@ -42,6 +36,7 @@ Ignored Tokens
 Productions
 	story =
 		title
+		package?
 		role?
 		feature?
 		benefit?
@@ -50,6 +45,9 @@ Productions
 	title = 
 		title_keyword space phrase endl;
 		
+	package = 
+		package_keyword space package_name endl;
+
 	role =
 		as_a space phrase endl;
 		
@@ -58,7 +56,7 @@ Productions
 		
 	benefit =
 		so_that space phrase endl;
-		
+			
 	scenario =
 		scenario_title context* event? outcome*;
 		
@@ -80,3 +78,5 @@ Productions
 	word_or_space = 
 		{word} word |
 		{space} space;
+
+		

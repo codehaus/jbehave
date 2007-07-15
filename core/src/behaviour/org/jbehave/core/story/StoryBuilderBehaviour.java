@@ -9,24 +9,24 @@ public class StoryBuilderBehaviour extends UsingMatchers {
 
     public void shouldBuildStoryFromStoryDetails() throws Exception {
         // given
-        StoryDetails storyDetails = new StoryDetails("Joe drinks vodka", "", "", "");
-        ScenarioDetails expectedScenario1 = new ScenarioDetails();
-        expectedScenario1.name = "Happy path";
-        expectedScenario1.context.givens.add("Joe is thirsty");
-        expectedScenario1.event.name = "Joe asks for a Smirnov";
-        expectedScenario1.outcome.outcomes.add("bartender serves Joe");
-        expectedScenario1.outcome.outcomes.add("Joe is happy");
-        storyDetails.addScenario(expectedScenario1);
-        ScenarioDetails expectedScenario2 = new ScenarioDetails();
-        expectedScenario2.name = "Unhappy path";
-        expectedScenario2.context.givens.add("Joe is thirsty");
-        expectedScenario2.event.name = "Joe asks for an Absolut";
-        expectedScenario2.outcome.outcomes.add("bartender denies Joe");
-        expectedScenario2.outcome.outcomes.add("Joe is unhappy");
-        storyDetails.addScenario(expectedScenario2);
+        StoryDetails storyDetails = new StoryDetails("Joe drinks vodka", "org.jbehave.core.story.stories", "", "", "");
+        ScenarioDetails scenario1 = new ScenarioDetails();
+        scenario1.name = "Happy path";
+        scenario1.context.givens.add("Joe is thirsty");
+        scenario1.event.name = "Joe asks for a Smirnov";
+        scenario1.outcome.outcomes.add("bartender serves Joe");
+        scenario1.outcome.outcomes.add("Joe is happy");
+        storyDetails.addScenario(scenario1);
+        ScenarioDetails scenario2 = new ScenarioDetails();
+        scenario2.name = "Unhappy path";
+        scenario2.context.givens.add("Joe is thirsty");
+        scenario2.event.name = "Joe asks for an Absolut";
+        scenario2.outcome.outcomes.add("bartender denies Joe");
+        scenario2.outcome.outcomes.add("Joe is unhappy");
+        storyDetails.addScenario(scenario2);
 
         // when
-        Story story = new StoryBuilder(storyDetails, "jbehave.core.story.stories").story();
+        Story story = new StoryBuilder(storyDetails).story();
         
         // then
         ensureThat(story, isNotNull());

@@ -24,28 +24,26 @@ public class StoryCodeGeneratorMojo extends AbstractStoryMojo {
     
     public void execute() throws MojoExecutionException, MojoFailureException {
         generator = createCodeGenerator();
-        String storyPackage = getStoryPackage();
         List storyPaths = getStoryPaths();
         try {
             for ( Iterator i = storyPaths.iterator(); i.hasNext(); ){
                 String storyPath = (String)i.next();
-                generateStoryCode(storyPackage, storyPath);
+                generateStoryCode(storyPath);
             }
         } catch (Exception e) {
-            throw new MojoExecutionException("Failed to generate code for stories "+storyPaths+" with package "+storyPackage, e);
+            throw new MojoExecutionException("Failed to generate code for stories "+storyPaths, e);
         }
     }
 
-    //TODO  To make code generator configurable the story source directory and package need to 
-    //      added to the StoryDetails parsed from the story representation
+    //TODO  make code generator configurable 
     private CodeGenerator createCodeGenerator() {
-        return new VelocityCodeGenerator(getStorySourceDirectory().getPath(), getStoryPackage());
+        return new VelocityCodeGenerator(getStorySourceDirectory().getPath());
     }
 
-    private void generateStoryCode(String storyPackage, String storyPath) throws MalformedURLException {
-        getLog().info("Generate code for story "+ storyPath+" using package "+storyPackage);
+    private void generateStoryCode(String storyPath) throws MalformedURLException {
+        getLog().info("Generate code for story "+ storyPath);
         StoryLoader loader = getStoryLoader();
-        StoryDetails storyDetails = loader.loadStoryDetails(storyPath, storyPackage);
+        StoryDetails storyDetails = loader.loadStoryDetails(storyPath);
         generator.generateStory(storyDetails);
     }
   

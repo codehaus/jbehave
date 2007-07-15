@@ -64,6 +64,10 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getRole().apply(this);
         }
+        if(node.getPackage() != null)
+        {
+            node.getPackage().apply(this);
+        }
         if(node.getTitle() != null)
         {
             node.getTitle().apply(this);
@@ -101,6 +105,38 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getTitleKeyword().apply(this);
         }
         outATitle(node);
+    }
+
+    public void inAPackage(APackage node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAPackage(APackage node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAPackage(APackage node)
+    {
+        inAPackage(node);
+        if(node.getEndl() != null)
+        {
+            node.getEndl().apply(this);
+        }
+        if(node.getPackageName() != null)
+        {
+            node.getPackageName().apply(this);
+        }
+        if(node.getSpace() != null)
+        {
+            node.getSpace().apply(this);
+        }
+        if(node.getPackageKeyword() != null)
+        {
+            node.getPackageKeyword().apply(this);
+        }
+        outAPackage(node);
     }
 
     public void inARole(ARole node)

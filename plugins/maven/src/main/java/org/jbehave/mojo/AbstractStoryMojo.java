@@ -60,12 +60,6 @@ public abstract class AbstractStoryMojo extends AbstractJBehaveMojo {
     private List storyExcludes;
 
     /**
-     * @parameter
-     * @required true
-     */
-    private String storyPackage;
-
-    /**
      * @parameter default-value="org.jbehave.core.story.codegen.parser.TextStoryParser"
      */
     private String storyParserClassName;
@@ -103,10 +97,6 @@ public abstract class AbstractStoryMojo extends AbstractJBehaveMojo {
 
     protected StoryLoader getStoryLoader() throws MalformedURLException {
         return new StoryLoader(getStoryParser(), createBehavioursClassLoader());
-    }
-
-    protected String getStoryPackage() {
-        return storyPackage;
     }
 
     protected List getStoryPaths() {

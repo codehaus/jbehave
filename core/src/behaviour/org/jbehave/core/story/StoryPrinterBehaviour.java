@@ -17,7 +17,7 @@ public class StoryPrinterBehaviour extends UsingMatchers {
         StoryPrinter printer = new StoryPrinter(
                 new StoryLoader(new TextStoryParser(), Thread.currentThread().getContextClassLoader()),
                 new PlainTextRenderer(printStream));
-        printer.print(SimpleStory.class.getName());
+        printer.print(SimpleStory.class);
         String result = byteStream.toString();
         
         ensureThat(result, eq(SimpleStory.expectedDescription()));

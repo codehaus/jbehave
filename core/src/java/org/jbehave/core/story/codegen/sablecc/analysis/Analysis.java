@@ -14,6 +14,7 @@ public interface Analysis extends Switch
     void caseStart(Start node);
     void caseAStory(AStory node);
     void caseATitle(ATitle node);
+    void caseAPackage(APackage node);
     void caseARole(ARole node);
     void caseAFeature(AFeature node);
     void caseABenefit(ABenefit node);
@@ -27,6 +28,7 @@ public interface Analysis extends Switch
     void caseASpaceWordOrSpace(ASpaceWordOrSpace node);
 
     void caseTTitleKeyword(TTitleKeyword node);
+    void caseTPackageKeyword(TPackageKeyword node);
     void caseTScenarioKeyword(TScenarioKeyword node);
     void caseTAsA(TAsA node);
     void caseTIWant(TIWant node);
@@ -36,6 +38,7 @@ public interface Analysis extends Switch
     void caseTThen(TThen node);
     void caseTSpace(TSpace node);
     void caseTWord(TWord node);
+    void caseTPackageName(TPackageName node);
     void caseTEndl(TEndl node);
     void caseTCommentline(TCommentline node);
     void caseEOF(EOF node);

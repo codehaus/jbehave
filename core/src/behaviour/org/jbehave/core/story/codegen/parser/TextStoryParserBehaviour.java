@@ -10,28 +10,41 @@ import org.jbehave.core.story.codegen.domain.StoryDetails;
 
 public class TextStoryParserBehaviour extends UsingMatchers {
 
-	public void shouldBuildStoryDetailsWithTitle() throws Exception {
+	private StoryParser storyParser = new TextStoryParser();
+
+    public void shouldBuildStoryDetailsWithTitle() throws Exception {
 		// given
 		String text = "Title: Joe drinks vodka\n";
-		StoryDetails expectedStory = new StoryDetails("Joe drinks vodka", "", "", "");
+		StoryDetails story = new StoryDetails("Joe drinks vodka", "", "", "", "");
 		// when
-		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
+		StoryDetails result = storyParser.parseStory(new StringReader(text));
 		// then
-		ensureThat(result, eq(expectedStory));
+		ensureThat(result, eq(story));
 	}
 	
+	public void shouldBuildStoryDetailsWithTitleAndPackage() throws Exception {
+        // given
+        String text = "Title: Joe drinks vodka\n"
+                     + "Package: com.stories\n";
+        StoryDetails story = new StoryDetails("Joe drinks vodka", "com.stories", "", "", "");
+        // when
+        StoryDetails result = storyParser.parseStory(new StringReader(text));
+        // then
+        ensureThat(result, eq(story));
+    }
+    	
 	public void shouldBuildStoryDetailsWithTitleAndRole() throws Exception {
 		// given
 		String text =
 			"Title: Joe drinks vodka\n"
 			+ "As a drinker\n";
-		StoryDetails expectedStory = new StoryDetails(
+		StoryDetails story = new StoryDetails(
 				"Joe drinks vodka",
-				"drinker", "", "");
+				"", "drinker", "", "");
 		// when
-		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
+		StoryDetails result = storyParser.parseStory(new StringReader(text));
 		// then
-		ensureThat(result, eq(expectedStory));
+		ensureThat(result, eq(story));
 	}
 	
 	public void shouldBuildStoryDetailsWithTitleAndRoleAndFeature() throws Exception {
@@ -40,13 +53,13 @@ public class TextStoryParserBehaviour extends UsingMatchers {
 			"Title: Joe drinks vodka\n"
 			+ "As a drinker\n"
 			+ "I want a glass of vodka\n";
-		StoryDetails expectedStory = new StoryDetails(
+		StoryDetails story = new StoryDetails(
 				"Joe drinks vodka",
-				"drinker", "a glass of vodka", "");
+				"", "drinker", "a glass of vodka", "");
 		// when
-		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
+		StoryDetails result = storyParser.parseStory(new StringReader(text));
 		// then
-		ensureThat(result, eq(expectedStory));
+		ensureThat(result, eq(story));
 	}
 	
 	public void shouldBuildStoryDetailsWithTitleAndFullNarrative() throws Exception {
@@ -56,13 +69,13 @@ public class TextStoryParserBehaviour extends UsingMatchers {
 			+ "As a drinker\n"
 			+ "I want a glass of vodka\n"
 			+ "So that I feel tipsy\n";
-		StoryDetails expectedStory = new StoryDetails(
+		StoryDetails story = new StoryDetails(
 				"Joe drinks vodka",
-				"drinker", "a glass of vodka", "I feel tipsy");
+				"", "drinker", "a glass of vodka", "I feel tipsy");
 		// when
-		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
+		StoryDetails result = storyParser.parseStory(new StringReader(text));
 		// then
-		ensureThat(result, eq(expectedStory));
+		ensureThat(result, eq(story));
 	}
 	
 	public void shouldBuildStoryDetailsWithEmptyScenario() throws Exception {
@@ -70,22 +83,23 @@ public class TextStoryParserBehaviour extends UsingMatchers {
 		String text =
 			"Title: Joe drinks vodka\n"
 			+ "Scenario: Happy path\n";
-		ScenarioDetails expectedScenario = new ScenarioDetails();
-		expectedScenario.name = "Happy path";
-		StoryDetails expectedStory = new StoryDetails("Joe drinks vodka", "", "", "");
-		expectedStory.addScenario(expectedScenario);
+		ScenarioDetails scenario = new ScenarioDetails();
+		scenario.name = "Happy path";
+		StoryDetails story = new StoryDetails("Joe drinks vodka", "", "", "", "");
+		story.addScenario(scenario);
 
 		// when
-		StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
+		StoryDetails result = storyParser.parseStory(new StringReader(text));
 		
 		// then
-		ensureThat(result, eq(expectedStory));
+		ensureThat(result, eq(story));
 	}
 
     public void shouldBuildStoryDetailsWithFullScenario() throws Exception {
         // given
         String text =
             "Title: Joe drinks vodka\n"
+            + "Package: org.jbehave.stories\n"
             + "Scenario: Happy path\n"
             + "Given a bar downtown\n"
             + "Given a thirsty Joe\n"
@@ -98,29 +112,28 @@ public class TextStoryParserBehaviour extends UsingMatchers {
             + "When Joe asks for an Absolut\n"
             + "Then bartender tells Joe it is sold out\n"
             + "Then Joe is unhappy\n";
-        StoryDetails expectedStory = new StoryDetails("Joe drinks vodka", "", "", "");
-        ScenarioDetails expectedScenario1 = new ScenarioDetails();
-        expectedScenario1.name = "Happy path";
-        expectedScenario1.context.givens.add("a bar downtown");
-        expectedScenario1.context.givens.add("a thirsty Joe");
-        expectedScenario1.event.name = "Joe asks for a Smirnov";
-        expectedScenario1.outcome.outcomes.add("bartender serves Joe");
-        expectedScenario1.outcome.outcomes.add("Joe is happy");
-        expectedStory.addScenario(expectedScenario1);
-        ScenarioDetails expectedScenario2 = new ScenarioDetails();
-        expectedScenario2.name = "Unhappy path";
-        expectedScenario2.context.givens.add("a pub uptown");
-        expectedScenario2.context.givens.add("an equally thirsty Joe");
-        expectedScenario2.event.name = "Joe asks for an Absolut";
-        expectedScenario2.outcome.outcomes.add("bartender tells Joe it is sold out");
-        expectedScenario2.outcome.outcomes.add("Joe is unhappy");
-        expectedStory.addScenario(expectedScenario2);
+        StoryDetails story = new StoryDetails("Joe drinks vodka", "org.jbehave.stories", "", "", "");
+        ScenarioDetails scenario1 = new ScenarioDetails();
+        scenario1.name = "Happy path";
+        scenario1.context.givens.add("a bar downtown");
+        scenario1.context.givens.add("a thirsty Joe");
+        scenario1.event.name = "Joe asks for a Smirnov";
+        scenario1.outcome.outcomes.add("bartender serves Joe");
+        scenario1.outcome.outcomes.add("Joe is happy");
+        story.addScenario(scenario1);
+        ScenarioDetails scenario2 = new ScenarioDetails();
+        scenario2.name = "Unhappy path";
+        scenario2.context.givens.add("a pub uptown");
+        scenario2.context.givens.add("an equally thirsty Joe");
+        scenario2.event.name = "Joe asks for an Absolut";
+        scenario2.outcome.outcomes.add("bartender tells Joe it is sold out");
+        scenario2.outcome.outcomes.add("Joe is unhappy");
+        story.addScenario(scenario2);
 
         // when
-        StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
-        
+        StoryDetails result = storyParser.parseStory(new StringReader(text));
         // then
-        ensureThat(result, eq(expectedStory));
+        ensureThat(result, eq(story));
     }
     
     public void shouldBuildStoryWithComments() throws Exception {
@@ -128,11 +141,11 @@ public class TextStoryParserBehaviour extends UsingMatchers {
         String text = "# This is a comment line\n" // comment
             + "#\n"                                 // empty comment 
             + "Title: Joe drinks vodka\n";
-        StoryDetails expectedStory = new StoryDetails("Joe drinks vodka", "", "", "");
+        StoryDetails story = new StoryDetails("Joe drinks vodka", "", "", "", "");
         // when
-        StoryDetails result = new TextStoryParser().parseStory(new StringReader(text));
+        StoryDetails result = storyParser.parseStory(new StringReader(text));
         // then
-        ensureThat(result, eq(expectedStory));
+        ensureThat(result, eq(story));
     }
 
 }

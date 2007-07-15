@@ -37,13 +37,12 @@
 						<phase>integration-test</phase>
 						<configuration>
 							<storyDirectory>org/jbehave/it/stories</storyDirectory>
-                            <storyIncludes>
+							<storyIncludes>
                               <storyInclude>it*.story</storyInclude>
                             </storyIncludes>
                             <storyExcludes>
                               <storyExclude>it.story</storyExclude>
                             </storyExcludes>
-                            <storyPackage>org.jbehave.it.stories</storyPackage>                            
 						</configuration>		
 						<goals>
 							<goal>run-story</goal>
@@ -57,7 +56,6 @@
                             <storyIncludes>
                               <storyInclude>it*.story</storyInclude>
                             </storyIncludes>
-                            <storyPackage>org.jbehave.it.stories</storyPackage>                            
                         </configuration>    
                         <goals>
                           <goal>run-story</goal>

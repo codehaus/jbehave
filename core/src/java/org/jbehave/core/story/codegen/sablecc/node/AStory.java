@@ -8,6 +8,7 @@ import org.jbehave.core.story.codegen.sablecc.analysis.*;
 public final class AStory extends PStory
 {
     private PTitle _title_;
+    private PPackage _package_;
     private PRole _role_;
     private PFeature _feature_;
     private PBenefit _benefit_;
@@ -19,12 +20,15 @@ public final class AStory extends PStory
 
     public AStory(
         PTitle _title_,
+        PPackage _package_,
         PRole _role_,
         PFeature _feature_,
         PBenefit _benefit_,
         List _scenario_)
     {
         setTitle(_title_);
+
+        setPackage(_package_);
 
         setRole(_role_);
 
@@ -42,6 +46,7 @@ public final class AStory extends PStory
     {
         return new AStory(
             (PTitle) cloneNode(_title_),
+            (PPackage) cloneNode(_package_),
             (PRole) cloneNode(_role_),
             (PFeature) cloneNode(_feature_),
             (PBenefit) cloneNode(_benefit_),
@@ -76,6 +81,31 @@ public final class AStory extends PStory
         }
 
         _title_ = node;
+    }
+
+    public PPackage getPackage()
+    {
+        return _package_;
+    }
+
+    public void setPackage(PPackage node)
+    {
+        if(_package_ != null)
+        {
+            _package_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        _package_ = node;
     }
 
     public PRole getRole()
@@ -168,6 +198,7 @@ public final class AStory extends PStory
     {
         return ""
             + toString(_title_)
+            + toString(_package_)
             + toString(_role_)
             + toString(_feature_)
             + toString(_benefit_)
@@ -179,6 +210,12 @@ public final class AStory extends PStory
         if(_title_ == child)
         {
             _title_ = null;
+            return;
+        }
+
+        if(_package_ == child)
+        {
+            _package_ = null;
             return;
         }
 
@@ -212,6 +249,12 @@ public final class AStory extends PStory
         if(_title_ == oldChild)
         {
             setTitle((PTitle) newChild);
+            return;
+        }
+
+        if(_package_ == oldChild)
+        {
+            setPackage((PPackage) newChild);
             return;
         }
 

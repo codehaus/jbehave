@@ -23,22 +23,21 @@ public class StoryRunnerMojo extends AbstractStoryMojo {
     private StoryRunner storyRunner = new StoryRunner();
     
     public void execute() throws MojoExecutionException, MojoFailureException {
-        String storyPackage = getStoryPackage();
         List storyPaths = getStoryPaths();
         try {
             for ( Iterator i = storyPaths.iterator(); i.hasNext(); ){
                 String storyPath = (String)i.next();
-                runStory(storyPackage, storyPath);
+                runStory(storyPath);
             }
         } catch (Exception e) {
-            throw new MojoExecutionException("Failed to run stories "+storyPaths+" with package "+storyPackage, e);
+            throw new MojoExecutionException("Failed to run stories "+storyPaths, e);
         }
     }
 
-    private void runStory(String storyPackage, String storyPath) throws MalformedURLException {
-        getLog().info("Running story "+ storyPath+" using package "+storyPackage);
+    private void runStory(String storyPath) throws MalformedURLException {
+        getLog().info("Running story "+ storyPath);
         StoryLoader loader = getStoryLoader();
-        Story story = loader.loadStory(storyPath, storyPackage);
+        Story story = loader.loadStory(storyPath);
         story.specify();
         storyRunner.run(story);
     }

@@ -14,58 +14,68 @@ class TokenIndex extends AnalysisAdapter
         index = 0;
     }
 
-    public void caseTScenarioKeyword(TScenarioKeyword node)
+    public void caseTPackageKeyword(TPackageKeyword node)
     {
         index = 1;
     }
 
-    public void caseTAsA(TAsA node)
+    public void caseTScenarioKeyword(TScenarioKeyword node)
     {
         index = 2;
     }
 
-    public void caseTIWant(TIWant node)
+    public void caseTAsA(TAsA node)
     {
         index = 3;
     }
 
-    public void caseTSoThat(TSoThat node)
+    public void caseTIWant(TIWant node)
     {
         index = 4;
     }
 
-    public void caseTGiven(TGiven node)
+    public void caseTSoThat(TSoThat node)
     {
         index = 5;
     }
 
-    public void caseTWhen(TWhen node)
+    public void caseTGiven(TGiven node)
     {
         index = 6;
     }
 
-    public void caseTThen(TThen node)
+    public void caseTWhen(TWhen node)
     {
         index = 7;
     }
 
-    public void caseTSpace(TSpace node)
+    public void caseTThen(TThen node)
     {
         index = 8;
     }
 
-    public void caseTWord(TWord node)
+    public void caseTSpace(TSpace node)
     {
         index = 9;
     }
 
-    public void caseTEndl(TEndl node)
+    public void caseTWord(TWord node)
     {
         index = 10;
     }
 
-    public void caseEOF(EOF node)
+    public void caseTPackageName(TPackageName node)
     {
         index = 11;
+    }
+
+    public void caseTEndl(TEndl node)
+    {
+        index = 12;
+    }
+
+    public void caseEOF(EOF node)
+    {
+        index = 13;
     }
 }

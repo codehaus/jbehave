@@ -14,7 +14,7 @@ public class VelocityCodeGeneratorBehaviour extends UsingMatchers {
 
     public void shouldGenerateCodeForStoryWithFullScenario() throws Exception {
         // given
-        StoryDetails story = new StoryDetails("Joe drinks vodka", "", "", "");
+        StoryDetails story = new StoryDetails("Joe drinks vodka", "", "", "", "");
         ScenarioDetails scenario1 = new ScenarioDetails();
         scenario1.name = "Happy path";
         scenario1.context.givens.add("a bar downtown");
@@ -33,9 +33,8 @@ public class VelocityCodeGeneratorBehaviour extends UsingMatchers {
         story.addScenario(scenario2);
 
         // when
-        String rootSourceDirectory = "delete_me/generated-src";
-        String rootPackageName = "generated.code";
-        VelocityCodeGenerator generator = new VelocityCodeGenerator(rootSourceDirectory, rootPackageName);
+        String generatedSourceDirectory = "delete_me/generated-src";
+        VelocityCodeGenerator generator = new VelocityCodeGenerator(generatedSourceDirectory);
         generator.generateStory(story);
 
         // then
@@ -56,7 +55,7 @@ public class VelocityCodeGeneratorBehaviour extends UsingMatchers {
         };
         
         for ( int i = 0; i < generatedPaths.length; i++ ){
-            ensureThat(new File(rootSourceDirectory+File.separator+generatedPaths[i]).exists() );           
+            ensureThat(new File(generatedSourceDirectory+File.separator+generatedPaths[i]).exists() );           
         }
     }
 
