@@ -35,9 +35,8 @@
             <id>generate-code</id>
             <phase>integration-test</phase>
             <configuration>
-              <storyDirectory>org/jbehave/it/stories</storyDirectory>
               <storyIncludes>
-                <storyInclude>generated.story</storyInclude>
+                <storyInclude>**/generated.story</storyInclude>
               </storyIncludes>
             </configuration>
             <goals>
