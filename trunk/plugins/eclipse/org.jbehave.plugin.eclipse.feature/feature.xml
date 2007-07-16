@@ -4,10 +4,7 @@
       label="JBehave for Eclipse"
       version="1.0.1"
       provider-name="JBehave"
-      os="linux,macosx,win32"
-      ws="carbon,gtk,motif,win32"
-      nl="en_GB,en"
-      arch="ia64,ia64_32,PA_RISC,ppc,sparc,x86,x86_64">
+      nl="en_GB,en">
 
    <description url="http://jbehave.org/eclipse">
       JBehave for Eclipse
