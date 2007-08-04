@@ -1,8 +1,15 @@
 package org.jbehave.plugin.idea;
 
-public class Constants {
-  static final String BEHAVIOURS_INTERFACE = "org.jbehave.core.behaviour.Behaviours";
-  static final String JBEHAVE_RUNNER_CLASS = "org.jbehave.core.BehaviourRunner";
+import javax.swing.*;
 
-  private Constants(){}
+import com.intellij.openapi.util.IconLoader;
+
+public class Constants
+{
+  public static final String BEHAVIOURS_INTERFACE = "org.jbehave.core.behaviour.Behaviours";
+  public static final String JBEHAVE_RUNNER_CLASS = "org.jbehave.core.BehaviourRunner";
+  public static final Icon LOGO = IconLoader.getIcon("/behave.png");
+
+  private Constants() {
+  }
 }
