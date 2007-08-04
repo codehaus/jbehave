@@ -1,4 +1,4 @@
-package org.jbehave.plugin.idea;
+package org.jbehave.plugin.idea.selena;
 
 import com.intellij.execution.ExecutionUtil;
 import com.intellij.execution.Location;
@@ -30,18 +30,15 @@ public class JBehaveConfigurationProducer extends RuntimeConfigurationProducer i
     if (aClass == null) return null;
     PsiMethod currentMethod = configurationType.getBehaviourMethodElement(location.getPsiElement());
     RunnerAndConfigurationSettingsImpl settings = cloneTemplateConfiguration(location.getProject(), configurationContext);
-    JBehaveRunConfiguration configuration = (JBehaveRunConfiguration) settings.getConfiguration();
-    configuration.setBehaviorClass(ClassUtil.fullName(aClass));
+    JBehaveConfiguration configuration = (JBehaveConfiguration) settings.getConfiguration();
+    ConfigurationData data = configuration.getData();
+    data.setBehaviorClass(aClass.getQualifiedName());
     if (currentMethod != null) {
-      configuration.setBehaviorMethod(currentMethod.getName());
+      data.setBehaviorMethod(currentMethod.getName());
     }
     configuration.setModule(ExecutionUtil.findModule(aClass));
-    configuration.setName(createName(aClass, currentMethod));
+    configuration.setName(data.suggestName());
     return settings;
-  }
-
-  private String createName(PsiClass aClass, PsiMethod currentMethod) {
-    return currentMethod == null ? ClassUtil.shortName(aClass) : currentMethod.getName();
   }
 
   public int compareTo(Object o) {
