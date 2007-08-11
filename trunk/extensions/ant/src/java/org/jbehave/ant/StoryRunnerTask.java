@@ -21,5 +21,9 @@ public class StoryRunnerTask extends AbstractRunnerTask {
     public void addStories(FileSet fileset) {
         super.addFilesetTarget(fileset);
     }
+    
+    public void setCloneVm(boolean cloneVm) {
+        super.setCloneVm(cloneVm);
+    }    
 
 }

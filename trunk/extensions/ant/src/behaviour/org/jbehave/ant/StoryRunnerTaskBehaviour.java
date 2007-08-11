@@ -77,6 +77,19 @@ public class StoryRunnerTaskBehaviour extends UsingMatchers {
         ensureThat(exception, isNotNull());
     }
     
+    public void shouldSupportCloningTheVm() throws Exception {
+        
+        FileSet fileSet = new FileSet();
+        
+        task.addStories(fileSet);
+        task.setCloneVm(true);
+        task.execute();
+
+        List list = Arrays.asList(runner.commandLineLog);
+        ensureThat(list, collectionContains(StoryClassOne.class.getName()));
+        ensureThat(list, collectionContains(StoryClassTwo.class.getName()));
+    }    
+    
     private static class StubCommandRunner implements CommandRunner {
         private int valueToReturn;
         private Task taskLog;

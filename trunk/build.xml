@@ -10,7 +10,7 @@
 	<property name="website_dir" location="website" />
 	<property name="lib_dir" location="lib" />
 	<path id="libs">
-		<fileset dir="${lib_dir}" includes="extensions/ant-1.6.5.jar"/>
+		<fileset dir="${lib_dir}" includes="extensions/ant-1.7.0.jar"/>
 		<fileset dir="${lib_dir}" includes="extensions/antlr-2.7.6.jar"/>
 		<fileset dir="${lib_dir}" includes="extensions/cglib-full-2.0.jar" />
 		<fileset dir="${lib_dir}" includes="extensions/jmock-1.1.0.jar" />
@@ -49,7 +49,7 @@
 		<delete dir="${working_dir}" />
 	</target>
 
-	<target name="build" depends="verify-behaviour, build-source-zip" 
+	<target name="build" depends="verify-behaviour, run-example-behaviours, run-example-stories, build-source-zip" 
 		description="build the jbehave binary and zip up the project" />
 
 	<target name="dist" depends="clean, build, javadoc" description="create distribution" />
@@ -190,7 +190,7 @@
 
 	<target name="run-example-behaviours" depends="compile-example-behaviours" description="Runs behaviours for examples">
 		<taskdef name="runbehaviours" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
-		<runbehaviours>
+		<runbehaviours clonevm="true">
 			<classpath>
 				<path refid="libs" />
 				<pathelement path="${example_classes_dir}" />
@@ -229,7 +229,7 @@
 	
 	<target name="run-example-stories" depends="compile-example-behaviours, compile-example-stories" description="Runs stories for examples">
 		<taskdef name="runstories" classname="${story.runner.task}" classpath="${jbehave_jar}" />
-		<runstories>
+		<runstories clonevm="true">
 			<classpath>
 				<path refid="libs" />
 				<pathelement path="${example_classes_dir}" />
