@@ -84,6 +84,18 @@ public class BehaviourRunnerTaskBehaviour extends UsingMiniMock {
         });
         ensureThat(exception, isNotNull());
     }
+    
+    public void shouldSupportCloningTheVm() throws Exception {
+        FileSet fileSet = new FileSet();
+        
+        task.addBehaviours(fileSet);
+        task.setCloneVm(true);
+        task.execute();
+
+        List list = Arrays.asList(runner.commandLineLog);
+        ensureThat(list, collectionContains(BehaviourClassOne.class.getName()));
+        ensureThat(list, collectionContains(BehaviourClassTwo.class.getName()));
+    }
 
     private static class StubCommandRunner implements CommandRunner {
         private int valueToReturn;

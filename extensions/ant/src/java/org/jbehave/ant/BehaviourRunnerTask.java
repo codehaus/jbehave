@@ -27,5 +27,9 @@ public class BehaviourRunnerTask extends AbstractRunnerTask {
     public void addBehaviours(FileSet fileset) {
         super.addFilesetTarget(fileset);
     }
+    
+    public void setCloneVm(boolean cloneVm) {
+        super.setCloneVm(cloneVm);
+    }
 
 }

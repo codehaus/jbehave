@@ -42,6 +42,9 @@ public class AbstractRunnerTask extends AbstractJavaTask {
         invoke();
     }
     
+	public void setCloneVm(boolean cloneVm) {
+		commandLine.setCloneVm(cloneVm);
+	}
 
     private void appendAntTaskJar() {
         createClasspath().append(new Path(getProject(), locate()));

@@ -35,6 +35,8 @@ abstract public class AbstractJavaTask extends Task {
     public Commandline.Argument createJvmarg() {
         return commandLine.createVmArgument();
     }
+    
+    
 
     public void setMaxmemory(int megabyte) {
         createJvmarg().setLine("-Xmx" + megabyte + "m");
