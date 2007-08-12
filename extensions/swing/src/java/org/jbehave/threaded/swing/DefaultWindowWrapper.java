@@ -37,6 +37,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	}
 	
 	public DefaultWindowWrapper(String windowName, ComponentFinder finder) {
+		new HeadlessChecker().check();
 		this.windowName = windowName;
 		this.finder = finder;
 		sysQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();

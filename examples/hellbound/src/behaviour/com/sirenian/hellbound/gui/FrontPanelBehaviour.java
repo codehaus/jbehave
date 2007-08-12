@@ -15,8 +15,6 @@ import com.sirenian.hellbound.domain.game.GameRequestListener;
 public class FrontPanelBehaviour extends UsingMiniMock {
 	
 	public void shouldContainTheButtonToStartTheGame() throws Exception {
-		new HeadlessChecker().check();
-		
 		WindowWrapper wrapper = new DefaultWindowWrapper("TestFrame");
 		
 		Mock gameStarter = mock(GameRequestListener.class);
