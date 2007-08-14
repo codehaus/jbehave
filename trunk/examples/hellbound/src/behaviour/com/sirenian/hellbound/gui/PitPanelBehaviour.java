@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.UsingMatchers;
+import org.jbehave.threaded.swing.HeadlessChecker;
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.domain.Segment;
@@ -38,6 +39,7 @@ public class PitPanelBehaviour extends UsingMatchers {
 	);
 	
 	public void shouldBeScaledToFitThePit() {
+		new HeadlessChecker().check();
 		JFrame frame = new JFrame();
 		PitPanel panel = new PitPanel(SCALE, WIDTH, HEIGHT, Hellbound.COLORMAP);		
 		frame.getContentPane().add(panel);
@@ -47,6 +49,7 @@ public class PitPanelBehaviour extends UsingMatchers {
 	}
 	
 	public void shouldDrawGlyphsAndRepaintWithNoError() {
+		new HeadlessChecker().check();
 		
 		final RenderedPit renderedPit = new RenderedPit(SCALE, WIDTH, HEIGHT, COLORMAP);
 		
@@ -63,6 +66,7 @@ public class PitPanelBehaviour extends UsingMatchers {
 	}
 
 	public void shouldCleanGlyphsAfterMovement() {
+		new HeadlessChecker().check();
 		
 		RenderedPit renderedPit = new RenderedPit(SCALE, WIDTH, HEIGHT, COLORMAP);
 		PitPanel panel = createPitPanelWithDoublePaint(renderedPit);
@@ -81,6 +85,7 @@ public class PitPanelBehaviour extends UsingMatchers {
 	}
     
     public void shouldNotCleanGlyphsOfOtherTypesAfterMovement() {
+		new HeadlessChecker().check();
         
         RenderedPit renderedPit = new RenderedPit(SCALE, WIDTH, HEIGHT, COLORMAP);
         PitPanel panel = createPitPanelWithDoublePaint(renderedPit);
@@ -97,6 +102,7 @@ public class PitPanelBehaviour extends UsingMatchers {
     }    
 
 	private JFrame createFrameAndDisplay(PitPanel panel) {
+		new HeadlessChecker().check();
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(panel);
 		frame.pack();
@@ -105,6 +111,7 @@ public class PitPanelBehaviour extends UsingMatchers {
 	}
 
 	private PitPanel createPitPanelWithDoublePaint(final RenderedPit pg) {
+		new HeadlessChecker().check();
 		PitPanel panel = new PitPanel(SCALE, WIDTH, HEIGHT, Hellbound.COLORMAP) {
 
 			private static final long serialVersionUID = 1L;
