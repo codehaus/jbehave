@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import org.jbehave.core.story.domain.CleansUpWorld;
 import org.jbehave.core.story.domain.World;
 import org.jbehave.threaded.swing.DefaultWindowWrapper;
+import org.jbehave.threaded.swing.HeadlessChecker;
 
 import com.sirenian.hellbound.Hellbound;
 import com.sirenian.hellbound.engine.EngineQueue;
@@ -52,7 +53,9 @@ public class HellboundIsRunning extends HellboundGiven implements CleansUpWorld 
 
     public void cleanUp(World world) {
         Logger.debug(this, "tidyUp Given");
-        Hellbound hellbound = (Hellbound) world.get(WorldKey.HELLBOUND);
-        hellbound.stopHellbound();
+        if (!new HeadlessChecker().isHeadless()) {
+            Hellbound hellbound = (Hellbound) world.get(WorldKey.HELLBOUND);
+            hellbound.stopHellbound();
+        }
     }
 }
