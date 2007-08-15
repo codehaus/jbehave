@@ -36,7 +36,11 @@ public class StoryLoader {
     }
 
     public Story loadStory(Class storyClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        return (Story) classLoader.loadClass(storyClass.getName()).newInstance();        
+        return loadStoryClass(storyClass.getName());        
+    }
+
+    public Story loadStoryClass(String storyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        return (Story) classLoader.loadClass(storyClassName).newInstance();
     }
     
     protected Reader getReader(String resource, ClassLoader classLoader) {

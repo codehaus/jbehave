@@ -29,8 +29,8 @@ public class StoryPrinter {
         this.renderer = renderer;
     }
 
-    public void print(String storyPath) throws MalformedURLException {
-        Story story = storyLoader.loadStory(storyPath);
+    public void print(String storyPath) throws MalformedURLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        Story story = storyLoader.loadStoryClass(storyPath);
         story.specify();
         story.narrateTo(renderer);
     }

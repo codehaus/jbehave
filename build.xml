@@ -49,7 +49,7 @@
 		<delete dir="${working_dir}" />
 	</target>
 
-	<target name="build" depends="verify-behaviour, run-example-behaviours, run-example-stories, build-source-zip" 
+	<target name="build" depends="verify-behaviour, run-example-behaviours, run-example-stories, print-example-stories, build-source-zip" 
 		description="build the jbehave binary and zip up the project" />
 
 	<target name="dist" depends="clean, build, javadoc" description="create distribution" />
@@ -242,7 +242,7 @@
 
 	<target name="print-example-stories" depends="compile-example-behaviours, compile-example-stories" description="Prints stories for examples">
 		<taskdef name="printstories" classname="${story.printer.task}" classpath="${jbehave_jar}" />
-		<printstories destdir="${dist_dir}">
+		<printstories destdir="${examples_dir}/${example}/src/stories">
 			<classpath>
 				<path refid="libs" />
 				<pathelement path="${example_classes_dir}" />

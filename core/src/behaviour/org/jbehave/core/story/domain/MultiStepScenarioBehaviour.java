@@ -463,4 +463,10 @@ public class MultiStepScenarioBehaviour extends UsingMiniMock {
         ensureThat(exception, isNotNull());
     }
 
+    public void shouldAllowNameToBeSpecified() throws Exception {
+        Named scenario = new MultiStepScenario("My scenario"){
+            protected void specifySteps() {}};
+        
+        ensureThat(scenario.getName(), eq("My scenario"));
+    }
 }

@@ -29,7 +29,7 @@ public class StoryToDirectoryPrinter {
 
 
     private void print(String storyClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
-        Story story = loader.loadStory(storyClass);
+        Story story = loader.loadStoryClass(storyClass);
         String[] storyNameParts = story.getClass().getName().split("\\.");
         String simpleStoryName = storyNameParts[storyNameParts.length - 1];
         
@@ -43,12 +43,13 @@ public class StoryToDirectoryPrinter {
         outputStream.close();
     }
 
-    public static void main(String[] args) {
-        File directory = new File(args[0]);
+    public static void main(String[] args) throws ClassNotFoundException {
+        File directory = new File(args[0]);                      
+        Thread.currentThread().getContextClassLoader().loadClass("com.sirenian.hellbound.stories.TheGlyphIsConstrainedByThePit");
         
         try {
             StoryToDirectoryPrinter printer = new StoryToDirectoryPrinter(
-                    new StoryLoader(new TextStoryParser(), StoryPrinter.class.getClassLoader()),
+                    new StoryLoader(new TextStoryParser(), Thread.currentThread().getContextClassLoader()),
                     directory);
                     
             for (int i = 1; i < args.length; i++) {

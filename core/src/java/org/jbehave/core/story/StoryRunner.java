@@ -69,7 +69,8 @@ public class StoryRunner {
         return (Story) classLoader.loadClass(className).newInstance();
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
+        Thread.currentThread().getContextClassLoader().loadClass("com.sirenian.hellbound.stories.TheGlyphIsConstrainedByThePit");
         try {
             StoryRunner runner = new StoryRunner();
             for (int i = 0; i < args.length; i++) {
