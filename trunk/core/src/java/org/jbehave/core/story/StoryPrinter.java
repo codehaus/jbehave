@@ -51,6 +51,7 @@ public class StoryPrinter {
             }           
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(1);
         }
     }
 }
