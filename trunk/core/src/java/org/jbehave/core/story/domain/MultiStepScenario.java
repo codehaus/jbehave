@@ -66,8 +66,14 @@ public abstract class MultiStepScenario implements Scenario, Named {
     
     private List steps = new ArrayList();
     private String state;
+    private final String name;
 
     public MultiStepScenario() {
+        this(null);
+    }
+    
+    public MultiStepScenario(String name) {
+        this.name = name;
         state = UNSPECIFIED;
     }
 
@@ -78,7 +84,7 @@ public abstract class MultiStepScenario implements Scenario, Named {
     }
 
     public String getName() {
-        return this.getClass().getName();
+        return name == null ? this.getClass().getName() : name;
     }
 
     protected abstract void specifySteps();
