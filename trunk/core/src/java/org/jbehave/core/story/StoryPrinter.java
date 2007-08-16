@@ -41,17 +41,12 @@ public class StoryPrinter {
         story.narrateTo(renderer);
     }
 
-    public static void main(String[] args) {        
-        try {
-            StoryPrinter printer = new StoryPrinter(
-                    new StoryLoader(new TextStoryParser(), StoryPrinter.class.getClassLoader()), 
-                    new PlainTextRenderer(System.out));
-            for (int i = 0; i < args.length; i++) {
-                printer.print(args[i]); 
-            }           
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+    public static void main(String[] args) throws MalformedURLException, InstantiationException, IllegalAccessException, ClassNotFoundException {        
+        StoryPrinter printer = new StoryPrinter(
+                new StoryLoader(new TextStoryParser(), StoryPrinter.class.getClassLoader()), 
+                new PlainTextRenderer(System.out));
+        for (int i = 0; i < args.length; i++) {
+            printer.print(args[i]); 
+        }           
     }
 }
