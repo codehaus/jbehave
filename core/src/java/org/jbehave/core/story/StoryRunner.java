@@ -69,18 +69,12 @@ public class StoryRunner {
         return (Story) classLoader.loadClass(className).newInstance();
     }
     
-    public static void main(String[] args) throws ClassNotFoundException {
-        Thread.currentThread().getContextClassLoader().loadClass("com.sirenian.hellbound.stories.TheGlyphIsConstrainedByThePit");
-        try {
-            StoryRunner runner = new StoryRunner();
-            for (int i = 0; i < args.length; i++) {
-                runner.run(args[i], System.out);
-            }
-            System.exit(runner.succeeded() ? 0 : 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        StoryRunner runner = new StoryRunner();
+        for (int i = 0; i < args.length; i++) {
+            runner.run(args[i], System.out);
         }
+        System.exit(runner.succeeded() ? 0 : 1);
     }
 
 
