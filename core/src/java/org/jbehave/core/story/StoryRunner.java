@@ -1,61 +1,61 @@
 /*
- * Created on 25-Aug-2004
- * 
- * (c) 2003-2004 ThoughtWorks Ltd
- *
- * See license.txt for license details
+ * Created on 25-Aug-2004 (c) 2003-2004 ThoughtWorks Ltd See license.txt for
+ * license details
  */
 package org.jbehave.core.story;
+
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 
 import org.jbehave.core.exception.PendingException;
 import org.jbehave.core.result.Result;
+import org.jbehave.core.story.codegen.parser.TextStoryParser;
 import org.jbehave.core.story.domain.Story;
 import org.jbehave.core.story.listener.PlainTextScenarioListener;
 import org.jbehave.core.util.CamelCaseConverter;
-
-
-
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Mauro Talevi
  */
 public class StoryRunner {
-    
-    private ClassLoader classLoader;
+
+    private StoryLoader storyLoader;
     private boolean succeeded = true;
-    
-    public StoryRunner(){
-        this(Thread.currentThread().getContextClassLoader());
-    }
 
-    public StoryRunner(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-    }
-
-    public void run(String storyClassName, PrintStream printStream) 
-        throws InstantiationException, IllegalAccessException, ClassNotFoundException {    
-        Story story = loadStory(storyClassName, classLoader);
-        story.specify();
-        run(story, printStream);
+    /**
+     * Creates a story runner with default story loader
+     */
+    public StoryRunner() {
+        this(new StoryLoader(new TextStoryParser()));
     }
     
+    /**
+     * Creates a story runner with a given story loader
+     * 
+     * @param storyLoader the StoryLoader
+     */
+    public StoryRunner(StoryLoader storyLoader) {
+        this.storyLoader = storyLoader;
+    }
+
     public void run(Story story) {
         run(story, System.out);
     }
 
-    public void run(Story story, PrintStream printStream) {
-		PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(printStream));
+    public void run(String storyClassName, OutputStream outputStream) {
+        Story story = storyLoader.loadStoryClass(storyClassName);
+        story.specify();
+        run(story, outputStream);
+    }
+
+    public void run(Story story, OutputStream outputStream) {
+        PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(outputStream));
         story.addListener(listener);
         try {
-        	story.run();
-        } catch (PendingException pe) {
-        	listener.gotResult(
-        			new Result("",
-        			new CamelCaseConverter(story.getClass()).toPhrase(),
-        			pe));
+            story.run();
+        } catch (PendingException e) {
+            listener.gotResult(new Result("Pending", new CamelCaseConverter(story.getClass()).toPhrase(), e));
         }
         listener.printReport();
         succeeded = succeeded && !listener.hasBehaviourFailures();
@@ -64,12 +64,8 @@ public class StoryRunner {
     private boolean succeeded() {
         return succeeded;
     }
-    
-    private Story loadStory(String className, ClassLoader classLoader) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        return (Story) classLoader.loadClass(className).newInstance();
-    }
-    
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+    public static void main(String[] args) {
         StoryRunner runner = new StoryRunner();
         for (int i = 0; i < args.length; i++) {
             runner.run(args[i], System.out);
@@ -77,8 +73,4 @@ public class StoryRunner {
         System.exit(runner.succeeded() ? 0 : 1);
     }
 
-
-    
-
 }
- 
