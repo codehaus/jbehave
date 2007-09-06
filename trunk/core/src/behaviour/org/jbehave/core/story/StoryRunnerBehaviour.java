@@ -1,6 +1,7 @@
 package org.jbehave.core.story;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 
 import org.jbehave.core.Block;
@@ -17,11 +18,9 @@ import org.jbehave.core.story.renderer.Renderer;
 public class StoryRunnerBehaviour extends UsingMiniMock {
 
     public void shouldSpecifyAndRunStoryAndOutputResults() throws Exception {
-        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-        PrintStream stream = new PrintStream(buffer);
-
-        new StoryRunner().run(SimpleStory.class.getName(), stream);
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        BehaviourListener listener = new PlainTextScenarioListener(new OutputStreamWriter(new PrintStream(buffer)));
+        new StoryRunner().run(SimpleStory.class.getName(), listener);
 
         Ensure.that(buffer.toString(), contains(".."));
         Ensure.that(buffer.toString(), contains("Total: 2."));
@@ -31,11 +30,11 @@ public class StoryRunnerBehaviour extends UsingMiniMock {
 
     public void shouldOutputPendingExeptionsWithoutFailingTheStory() throws Exception {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        final PrintStream stream = new PrintStream(buffer);
+        final BehaviourListener listener = new PlainTextScenarioListener(new OutputStreamWriter(new PrintStream(buffer)));
 
         Exception exception = runAndCatch(Exception.class, new Block() {
             public void run() throws Exception {
-                new StoryRunner().run(PendingStory.class.getName(), stream);
+                new StoryRunner().run(PendingStory.class.getName(), listener);
             }
         });
 

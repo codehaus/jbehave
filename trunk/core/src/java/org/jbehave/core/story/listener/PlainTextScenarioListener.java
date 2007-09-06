@@ -7,6 +7,7 @@
  */
 package org.jbehave.core.story.listener;
 
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +27,10 @@ import org.jbehave.core.util.Timer;
  */
 public class PlainTextScenarioListener extends PlainTextListener implements BehaviourListener {
     private final List usedMocks = new ArrayList();
+    
+    public PlainTextScenarioListener() {
+        this(new OutputStreamWriter(System.out));
+    }
     
     public PlainTextScenarioListener(Writer writer) {
         super(writer, new Timer());
@@ -71,4 +76,5 @@ public class PlainTextScenarioListener extends PlainTextListener implements Beha
             out.println();
         }
     }
+
 }

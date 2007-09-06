@@ -1,9 +1,6 @@
 /*
- * Created on 23-Nov-2004
- * 
- * (c) 2003-2004 ThoughtWorks Ltd
- *
- * See license.txt for license details
+ * Created on 23-Nov-2004 (c) 2003-2004 ThoughtWorks Ltd See license.txt for
+ * license details
  */
 package org.jbehave.core.listener;
 
@@ -17,8 +14,6 @@ import org.jbehave.core.behaviour.Behaviour;
 import org.jbehave.core.result.Result;
 import org.jbehave.core.util.CamelCaseConverter;
 import org.jbehave.core.util.Timer;
-
-
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -42,8 +37,7 @@ public class PlainTextListener implements BehaviourListener {
         methodsVerified++;
         if (result.failed()) {
             failures.add(result);
-        }
-        else if (result.isPending()) {
+        } else if (result.isPending()) {
             pending.add(result);
         }
         out.print(result.status().symbol());
@@ -59,8 +53,8 @@ public class PlainTextListener implements BehaviourListener {
         out.flush();
     }
 
-    private void printElapsedTime() {
-        out.println("Time: " + timer.elapsedTimeMillis()/1000.0 + "s\n");
+    void printElapsedTime() {
+        out.println("Time: " + timer.elapsedTimeMillis() / 1000.0 + "s\n");
     }
 
     protected void printDetails() {
@@ -88,7 +82,7 @@ public class PlainTextListener implements BehaviourListener {
             out.println();
             int count = 1;
             for (Iterator i = pending.iterator(); i.hasNext(); count++) {
-                Result result =  (Result) i.next();
+                Result result = (Result) i.next();
                 printResult(count, result);
                 out.println("\t" + result.cause().getMessage());
                 StackTraceElement element = findFirstNonJBehaveStackElement(result.cause());
@@ -122,15 +116,14 @@ public class PlainTextListener implements BehaviourListener {
         return null;
     }
 
-    private void printSummaryCounts() {
+    void printSummaryCounts() {
         out.print("Total: " + methodsVerified + ".");
         if (pending.size() > 0) {
             out.print(" Pending: " + pending.size() + ".");
         }
         if (failures.size() > 0) {
             out.print(" Failures: " + failures.size() + ".");
-        }
-        else {
+        } else {
             out.print(" Success!");
         }
         out.println();

@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import org.jbehave.core.exception.PendingException;
+import org.jbehave.core.listener.BehaviourListener;
 import org.jbehave.core.result.Result;
 import org.jbehave.core.story.codegen.parser.TextStoryParser;
 import org.jbehave.core.story.domain.Story;
@@ -39,18 +40,39 @@ public class StoryRunner {
         this.storyLoader = storyLoader;
     }
 
-    public void run(Story story) {
-        run(story, System.out);
+    public void run(String storyClassName) {
+        Story story = storyLoader.loadStoryClass(storyClassName);
+        story.specify();
+        run(story);
     }
 
+    public void run(Story story) {
+        run(story, new PlainTextScenarioListener());
+    }
+
+    /**
+     * @deprecated Use #run(String,BehaviourListener) instead
+     */
     public void run(String storyClassName, OutputStream outputStream) {
         Story story = storyLoader.loadStoryClass(storyClassName);
         story.specify();
         run(story, outputStream);
     }
 
+    /**
+     * @deprecated Use #run(Story,BehaviourListener) instead
+     */
     public void run(Story story, OutputStream outputStream) {
-        PlainTextScenarioListener listener = new PlainTextScenarioListener(new OutputStreamWriter(outputStream));
+        run(story, new PlainTextScenarioListener(new OutputStreamWriter(outputStream)));
+    }
+
+    public void run(String storyClassName, BehaviourListener listener) {
+        Story story = storyLoader.loadStoryClass(storyClassName);
+        story.specify();
+        run(story, listener);
+    }
+    
+    public void run(Story story, BehaviourListener listener) {
         story.addListener(listener);
         try {
             story.run();
@@ -60,15 +82,16 @@ public class StoryRunner {
         listener.printReport();
         succeeded = succeeded && !listener.hasBehaviourFailures();
     }
-
+    
     private boolean succeeded() {
         return succeeded;
     }
 
     public static void main(String[] args) {
         StoryRunner runner = new StoryRunner();
+        BehaviourListener listener = new PlainTextScenarioListener();
         for (int i = 0; i < args.length; i++) {
-            runner.run(args[i], System.out);
+            runner.run(args[i]);
         }
         System.exit(runner.succeeded() ? 0 : 1);
     }
