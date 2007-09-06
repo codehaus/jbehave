@@ -25,7 +25,7 @@ import org.jbehave.core.story.renderer.PlainTextRendererBehaviour;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class AllBehaviours implements Behaviours {
+public class StoryBehaviours implements Behaviours {
     public Class[] getBehaviours() {
         return new Class[] {
                 StoryBuilderBehaviour.class,
