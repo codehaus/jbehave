@@ -19,7 +19,7 @@ import org.jbehave.core.result.Result;
 import org.jbehave.core.util.CamelCaseConverter;
 
 /**
- * Adapter wrapping a BehaviourMethod as a JUnit Test 
+ * Adapter decorating a BehaviourMethod as a JUnit Test 
  * 
  * @author Dan North
  * @author Mauro Talevi
@@ -90,6 +90,17 @@ public class JUnitMethodAdapter implements BehaviourListener, Test {
 
     public void after(Behaviour behaviour) {
         // no-op
+    }
+
+    public void printReport() {
+        // no-op
+    }
+
+    public boolean hasBehaviourFailures() {
+        if (result != null) {
+            return !result.succeeded();
+        }
+        return false;
     }
 
     public String toString() {

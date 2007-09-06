@@ -10,7 +10,7 @@ import org.jbehave.core.result.Result;
 
 
 /**
- * A decorator of a listener to allows to check if the verification succeded or failed.
+ * A listener decorating another listener to check if the verification succeded or failed.
  * 
  * @author <a href="mailto:damian.guy@thoughtworks.com">Damian Guy</a>
  * @author Mauro Talevi
@@ -40,6 +40,14 @@ public class ValidatingListener implements BehaviourListener {
 
     public void before(Behaviour behaviour) {
         delegate.before(behaviour);
+    }
+
+    public void printReport() {
+        delegate.printReport();
+    }
+
+    public boolean hasBehaviourFailures() {
+        return delegate.hasBehaviourFailures();
     }
 
 }

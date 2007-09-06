@@ -40,4 +40,12 @@ public class BehaviourVerifier implements BehaviourListener {
     public void after(Behaviour behaviour) {
         listener.after(behaviour);
     }
+
+    public void printReport() {
+        listener.printReport();
+    }
+
+    public boolean hasBehaviourFailures() {
+        return listener.hasBehaviourFailures();
+    }
 }
