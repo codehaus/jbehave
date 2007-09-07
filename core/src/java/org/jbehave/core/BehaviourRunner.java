@@ -74,7 +74,7 @@ public class BehaviourRunner {
     public void verifyBehaviour(Class classToVerify, String methodName) {
         BehaviourListener listener = new PlainTextListener(writer, new Timer());
         BehaviourVerifier verifier = new BehaviourVerifier(listener);
-        verifier.verifyBehaviour(new BehaviourClass(classToVerify, methodName));
+        verifier.verifyBehaviour(new BehaviourClass(classToVerify, methodName, verifier));
         listener.printReport();
         succeeded = succeeded && !listener.hasBehaviourFailures();
     }
