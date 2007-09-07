@@ -24,6 +24,7 @@ public class BehaviourClass implements Behaviour {
 
     private static final String BEHAVIOUR_METHOD_PREFIX = "should";
     private final Class classToVerify;
+    private final BehaviourVerifier verifier;
     private Matcher methodFilter;
     public static final Matcher ALL_METHODS = new Matcher() {
         public boolean matches(Object arg) {
@@ -35,14 +36,19 @@ public class BehaviourClass implements Behaviour {
             return ((Method) arg).getName().startsWith(BEHAVIOUR_METHOD_PREFIX);
         }
     };
-
+    
     public BehaviourClass(Class classToVerify) {
-        this(classToVerify, "");
+        this(classToVerify, new BehaviourVerifier());
     }
 
-    public BehaviourClass(Class classToVerify, final String methodName) {
-        this.classToVerify = classToVerify;
+    public BehaviourClass(Class classToVerify, BehaviourVerifier verifier) {
+        this(classToVerify,  "", verifier);
+    }
 
+    public BehaviourClass(Class classToVerify, final String methodName, BehaviourVerifier verifier) {
+        this.classToVerify = classToVerify;
+        this.verifier = verifier;
+        
         if (methodName.length() == 0) {
             this.methodFilter = ALL_METHODS;
         } else {
@@ -59,7 +65,7 @@ public class BehaviourClass implements Behaviour {
     }
 
     public void verifyTo(BehaviourListener listener) {
-        traverseMethodsWith(new MethodVerifier(listener));
+        traverseMethodsWith(new MethodVerifier(verifier, listener));
     }
 
     public int countBehaviours() {
@@ -69,36 +75,36 @@ public class BehaviourClass implements Behaviour {
     }
 
     public BehaviourMethod[] getBehaviourMethods(){
-        Set<BehaviourMethod> set = new HashSet<BehaviourMethod>();
+        Set set = new HashSet();
         Method[] methods = getMethods(BEHAVIOUR_METHODS);
         for (int i = 0; i < methods.length; i++) {
             set.add(createBehaviourMethod(methods[i]));
-        }
-        return set.toArray(new BehaviourMethod[set.size()]);
+        }        
+        return (BehaviourMethod[]) set.toArray(new BehaviourMethod[set.size()]);
     }
-
+    
     public BehaviourMethod createBehaviourMethod(Method method) {
         return new BehaviourMethod(createInstance(), method);
     }
-
+    
     private Method[] getMethods(Matcher methodFilter){
-        Set<Method> set = new HashSet<Method>();
+        Set set = new HashSet();
         Method[] classMethods = classToVerify.getMethods();
         for (int i = 0; i < classMethods.length; i++) {
             Method method = classMethods[i];
             if ( methodFilter.matches(method)) {
                 set.add(method);
             }
-        }
-        return set.toArray(new Method[set.size()]);
+        }        
+        return (Method[]) set.toArray(new Method[set.size()]);
     }
-
+    
     private void traverseMethodsWith(MethodHandler methodHandler) {
         if (Behaviours.class.isAssignableFrom(classToVerify)) {
             Behaviours behaviours = (Behaviours) createInstance();
             Class[] nestedClasses = behaviours.getBehaviours();
             for (int i = 0; i < nestedClasses.length; i++) {
-                methodHandler.handleClass(new BehaviourClass(nestedClasses[i]));
+                methodHandler.handleClass(new BehaviourClass(nestedClasses[i], verifier));
             }
         }
         Method[] methods = getMethods(BEHAVIOUR_METHODS);
@@ -129,10 +135,10 @@ public class BehaviourClass implements Behaviour {
     public Class classToVerify() {
         return classToVerify;
     }
-
+    
     private static class MethodCounter implements MethodHandler {
         int total = 0;
-
+        
         public void handleClass(BehaviourClass behaviourClass) {
             total += behaviourClass.countBehaviours();
         }
@@ -144,5 +150,5 @@ public class BehaviourClass implements Behaviour {
         public int total() {
             return total;
         }
-    }
+    }    
 }
