@@ -21,7 +21,7 @@ public class BehaviourRunnerMojo  extends AbstractJBehaveMojo {
      */
     private String behavioursClassName;
     
-    private BehaviourRunner runner = new BehaviourRunner(System.out);
+    private BehaviourRunner runner = new BehaviourRunner();
     
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
