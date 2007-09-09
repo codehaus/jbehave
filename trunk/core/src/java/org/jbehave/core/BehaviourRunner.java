@@ -87,8 +87,7 @@ public class BehaviourRunner {
             }
             System.exit(runner.succeeded() ? 0 : 1);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.exit(1);
+            throw new RuntimeException(e);
         }
     }
 

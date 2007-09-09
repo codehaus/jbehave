@@ -24,18 +24,19 @@ public class TrimFilesetParser implements FilesetParser {
                     base.getAbsolutePath().length() + 1).replace('\\', '/')
                     .replace('/', '.');
 
-            int classnameIndex = classname.indexOf(".class");
-            if (classnameIndex != -1) {
-                classname = classname.substring(0, classnameIndex);
-            }
-
-            classnameIndex = classname.indexOf(".java");
-            if (classnameIndex != -1) {
-                classname = classname.substring(0, classnameIndex);
-            }
+            classname = stripJavaOrClassFromEndOfFile(classname);
             classnames.add(classname);
         }
         return (String[]) classnames.toArray(new String[classnames.size()]);
     }
+
+	private String stripJavaOrClassFromEndOfFile(String classname) {
+		if (classname.length() > 6 && classname.substring(classname.length() - 6, classname.length()).equals(".class")) {
+		    classname = classname.substring(0, classname.length() - 6);
+		} else if (classname.length() > 5 && classname.substring(classname.length() - 5, classname.length()).equals(".java")) {
+		    classname = classname.substring(0, classname.length() -5);
+		}
+		return classname;
+	}
 
 }

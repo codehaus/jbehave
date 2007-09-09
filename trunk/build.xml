@@ -104,14 +104,25 @@
 	</target>
 	
 	<target name="verify-behaviour" depends="compile-behaviour" description="Verify behaviour">
+		<taskdef name="runbehaviours" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
+		<!-- Verify the Ant task behaviour -->
 		<java taskname="run behaviours" classname="org.jbehave.core.Run" fork="true" failonerror="true" clonevm="true">
-			<arg value="org.jbehave.AllBehaviours" />
+			<arg value="org.jbehave.ant.BehaviourRunnerTaskBehaviour" />
 			<classpath>
-				<pathelement path="${behaviour_classes_dir}" />
 				<pathelement path="${jbehave_jar}" />
+				<pathelement path="${behaviour_classes_dir}" />
 				<path refid="libs" />
 			</classpath>
 		</java>
+		<!-- Now we know the Ant task is working, we can use it to verify everything else -->
+		<runbehaviours clonevm="true">
+			<classpath>
+				<pathelement path="${jbehave_jar}" />
+				<pathelement path="${behaviour_classes_dir}" />
+				<path refid="libs" />
+			</classpath>
+			<behaviours dir="${behaviour_classes_dir}" includes="**/*Behaviour.class" />
+		</runbehaviours>
 	</target>
 
 	<!-- create website -->
