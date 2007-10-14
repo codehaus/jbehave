@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +26,8 @@ import org.jbehave.core.story.domain.Narrative;
 import org.jbehave.core.util.CamelCaseConverter;
 
 /**
- * Velocity-based code generator.  Generates java source for the events, givens and outcomes of a story.
+ * Velocity-based code generator. Generates java source for the events, givens
+ * and outcomes of a story.
  * 
  * @author Mauro Talevi
  */
@@ -40,10 +42,12 @@ public class VelocityCodeGenerator implements CodeGenerator {
 
     /** The velocity engine */
     private VelocityEngine engine;
-       
+
     /**
      * Creates a VelocityCodeGenerator
-     * @param generatedSourceDirectory the root directory of the generated source
+     * 
+     * @param generatedSourceDirectory the root directory of the generated
+     *            source
      */
     public VelocityCodeGenerator(String generatedSourceDirectory) {
         this.engine = new VelocityEngine();
@@ -99,9 +103,9 @@ public class VelocityCodeGenerator implements CodeGenerator {
         return map;
     }
 
-    private String className(String type, String name){
+    private String className(String type, String name) {
         String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, pluralise(type) });
-        return packageName+"."+camelise(name);
+        return packageName + "." + camelise(name);
     }
 
     private String camelise(String name) {
@@ -109,7 +113,7 @@ public class VelocityCodeGenerator implements CodeGenerator {
     }
 
     private String pluralise(String type) {
-        if ( type.contains("y") ){
+        if (type.contains("y")) {
             return type.replaceFirst("y", "ies");
         }
         return type.concat("s");
@@ -117,20 +121,22 @@ public class VelocityCodeGenerator implements CodeGenerator {
 
     private void generateSource(String name, String type, Map properties) {
         String className = camelise(name);
-        String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { generatedSourceDirectory, pluralise(type), className });
+        String sourcePath = MessageFormat.format(SOURCE_PATH, new Object[] { generatedSourceDirectory, pluralise(type),
+                className });
         String packageName = MessageFormat.format(PACKAGE_NAME, new Object[] { rootPackageName, pluralise(type) });
         String templatePath = MessageFormat.format(TEMPLATE_PATH, new Object[] { type });
         generateSource(sourcePath, templatePath, className, packageName, properties);
     }
 
-    private void generateSource(String sourcePath, String templatePath, String className, String packageName, Map properties) {
+    private void generateSource(String sourcePath, String templatePath, String className, String packageName,
+            Map properties) {
         try {
             VelocityContext context = new VelocityContext();
             context.put("className", className);
             context.put("packageName", packageName);
-            if ( properties != null ){
-                for ( Iterator i = properties.keySet().iterator(); i.hasNext(); ){
-                    String key = (String)i.next();
+            if (properties != null) {
+                for (Iterator i = properties.keySet().iterator(); i.hasNext();) {
+                    String key = (String) i.next();
                     context.put(key, properties.get(key));
                 }
             }
@@ -173,24 +179,26 @@ public class VelocityCodeGenerator implements CodeGenerator {
             Template template = engine.getTemplate(templatePath);
             template.merge(context, writer);
         } catch (Exception e) {
-            throw new CodeGenerationFailedException("Failed to process template " + templatePath + " with context " + context, e);
+            throw new CodeGenerationFailedException("Failed to process template " + templatePath + " with context "
+                    + context, e);
         }
     }
 
     public static class CodeGenerationFailedException extends RuntimeException {
         public CodeGenerationFailedException(String message, Throwable cause) {
             super(message, cause);
-        }        
+        }
     }
-    
-    public static void main(String[] args) {        
-        if ( args.length < 2 ) {
-            throw new IllegalArgumentException("VelocityCodeGenerator usage: <generatedSourceDirectory> <storyPaths>");
+
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            throw new IllegalArgumentException("Invalid args for VelocityCodeGenerator: " + Arrays.asList(args)
+                    + ".  Usage: <generated-source-directory> <storyPaths>");
         }
         VelocityCodeGenerator generator = new VelocityCodeGenerator(args[0]);
-        StoryLoader loader = new StoryLoader(new TextStoryParser(), VelocityCodeGenerator.class.getClassLoader());
+        StoryLoader loader = new StoryLoader(new TextStoryParser(), Thread.currentThread().getContextClassLoader());
         for (int i = 1; i < args.length; i++) {
-            generator.generateStory(loader.loadStoryDetails(args[i])); 
-        }           
+            generator.generateStory(loader.loadStoryDetails(args[i]));
+        }
     }
 }

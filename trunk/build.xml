@@ -1,266 +1,289 @@
 <project name="jbehave" default="build">
-	<property name="version" value="1.1-SNAPSHOT" />
-	<echo message="Building version ${version}..." />
+  <property name="version" value="1.1-SNAPSHOT" />
+  <echo message="Building version ${version}..." />
 
-	<!-- modules -->
-	<property name="core_dir" location="core" />
-	<property name="everything_dir" location="everything" />
-	<property name="examples_dir" location="examples" />
-	<property name="extensions_dir" location="extensions" />
-	<property name="website_dir" location="website" />
-	<property name="lib_dir" location="lib" />
-	<path id="libs">
-		<fileset dir="${lib_dir}" includes="extensions/ant-1.7.0.jar"/>
-		<fileset dir="${lib_dir}" includes="extensions/antlr-2.7.6.jar"/>
-		<fileset dir="${lib_dir}" includes="extensions/cglib-full-2.0.jar" />
-		<fileset dir="${lib_dir}" includes="extensions/jmock-1.1.0.jar" />
-		<fileset dir="${lib_dir}" includes="extensions/jmock-cglib-1.1.0.jar" />
-		<fileset dir="${lib_dir}" includes="extensions/junit-3.8.2.jar" />
-		<fileset dir="${lib_dir}" includes="extensions/fit-1.1.jar" />
-		<fileset dir="${lib_dir}" includes="extensions/velocity-dep-1.4.jar" />
-		<fileset dir="${lib_dir}" includes="extensions/proxytoys-0.2.1.jar" />
-	</path>
+  <!-- modules -->
+  <property name="core_dir" location="core" />
+  <property name="everything_dir" location="everything" />
+  <property name="examples_dir" location="examples" />
+  <property name="extensions_dir" location="extensions" />
+  <property name="website_dir" location="website" />
+  <property name="lib_dir" location="lib" />
+  <path id="libs">
+    <fileset dir="${lib_dir}" includes="extensions/ant-1.7.0.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/antlr-2.7.6.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/cglib-full-2.0.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/jmock-1.1.0.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/jmock-cglib-1.1.0.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/junit-3.8.2.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/fit-1.1.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/velocity-dep-1.4.jar" />
+    <fileset dir="${lib_dir}" includes="extensions/proxytoys-0.2.1.jar" />
+  </path>
 
-	<!-- build output structure -->
-	<property name="jdk.version" value="1.4" />
-	<property name="working_dir" location="delete_me" />
-	<property name="classes_dir" location="${working_dir}/classes" />
-	<property name="behaviour_classes_dir" location="${working_dir}/behaviour-classes" />
-	<property name="example_classes_dir" location="${working_dir}/example-classes" />
-	<property name="example_behaviour_classes_dir" location="${working_dir}/example-behaviours" />
-	<property name="example_story_classes_dir" location="${working_dir}/example-stories" />
-	<property name="jbehave_zip" location="${working_dir}/jbehave-${version}.zip" />
-	<property name="dist_dir" location="${working_dir}/${version}" />
-	<property name="binaries_dir" location="${working_dir}/${version}/dist/${version}" />
-	<property name="jbehave_jar" location="${binaries_dir}/jbehave-${version}.jar" />
-	<property name="jbehave_src_zip" location="${binaries_dir}/jbehave-${version}-src.zip" />
-	<property name="website_dist_dir" location="${dist_dir}/website"/>
-	<property name="javadoc_dist_dir" location="${website_dist_dir}/javadoc/${version}"/>
+  <!-- build output structure -->
+  <property name="jdk.version" value="1.4" />
+  <property name="working_dir" location="delete_me" />
+  <property name="classes_dir" location="${working_dir}/classes" />
+  <property name="behaviour_classes_dir" location="${working_dir}/behaviour-classes" />
+  <property name="example_classes_dir" location="${working_dir}/example-classes" />
+  <property name="example_behaviour_classes_dir" location="${working_dir}/example-behaviours" />
+  <property name="example_story_classes_dir" location="${working_dir}/example-stories" />
+  <property name="jbehave_zip" location="${working_dir}/jbehave-${version}.zip" />
+  <property name="dist_dir" location="${working_dir}/${version}" />
+  <property name="binaries_dir" location="${working_dir}/${version}/dist/${version}" />
+  <property name="jbehave_jar" location="${binaries_dir}/jbehave-${version}.jar" />
+  <property name="jbehave_src_zip" location="${binaries_dir}/jbehave-${version}-src.zip" />
+  <property name="website_dist_dir" location="${dist_dir}/website" />
+  <property name="javadoc_dist_dir" location="${website_dist_dir}/javadoc/${version}" />
 
-	<!-- examples -->
-	<property name="example" value="hellbound" />
-	<property name="example.behaviours" value="com.sirenian.hellbound.AllBehaviours" />	
-	<property name="behaviour.runner.task" value="org.jbehave.ant.BehaviourRunnerTask"/>
-	<property name="story.runner.task" value="org.jbehave.ant.StoryRunnerTask"/>
-	<property name="story.printer.task" value="org.jbehave.ant.StoryPrinterTask"/>
-	
-	<!-- general targets -->
-	<target name="clean" description="Clean out output directory">
-		<delete dir="${working_dir}" />
-	</target>
+  <!-- examples -->
+  <property name="example" value="hellbound" />
+  <property name="example.behaviours" value="com.sirenian.hellbound.AllBehaviours" />
+  <property name="behaviour.runner.task" value="org.jbehave.ant.BehaviourRunnerTask" />
+  <property name="story.runner.task" value="org.jbehave.ant.StoryRunnerTask" />
+  <property name="story.printer.task" value="org.jbehave.ant.StoryPrinterTask" />
+  <property name="story.generator.task" value="org.jbehave.ant.StoryCodeGeneratorTask" />
 
-	<target name="build" depends="clean, verify-behaviour, run-example-behaviours, run-example-stories, print-example-stories, build-source-zip" 
-		description="build the jbehave binary and zip up the project" />
+  <!-- general targets -->
+  <target name="clean" description="Clean out output directory">
+    <delete dir="${working_dir}" />
+  </target>
 
-	<target name="dist" depends="clean, build, javadoc" description="create distribution" />
+  <target name="build"
+    depends="clean, verify-behaviour, run-example-behaviours, run-example-stories, print-example-stories, build-source-zip"
+    description="build the jbehave binary and zip up the project" />
 
-	<!-- build and assemble -->
-	<target name="-init">
-		<mkdir dir="${working_dir}" />
-	</target>
+  <target name="dist" depends="clean, build, javadoc" description="create distribution" />
 
-	<target name="build-jar" depends="-init" description="Compile and assemble the jar">
-		<mkdir dir="${classes_dir}" />
-		<javac taskname="build jbehave" srcdir="${core_dir}/src/java" destdir="${classes_dir}" 
-			source="${jdk.version}" target="${jdk.version}" classpathref="libs" debug="true">
-			<src>
-				<pathelement path="${core_dir}/src/java" />
-				<dirset dir="${extensions_dir}" includes="**/src/java" />
-			</src>
-		</javac>
-		<copy taskname="copying resource" todir="${classes_dir}">
-			<fileset dir="${core_dir}/src/java" excludes="**/*.java"/>
-			<fileset dir="${extensions_dir}/ant/src/java" excludes="**/*.java"/>
-		</copy>
-		<mkdir dir="${binaries_dir}" />
-		<jar taskname="jbehave jar" basedir="${classes_dir}" jarfile="${jbehave_jar}" />
-	</target>
+  <!-- build and assemble -->
+  <target name="-init">
+    <mkdir dir="${working_dir}" />
+  </target>
 
-	<target name="build-source-zip" depends="-init" description="Assemble the source jar">
-		<mkdir dir="${binaries_dir}" />
-		<zip taskname="jbehave source jar" destfile="${jbehave_src_zip}" update="true" filesonly="true">
-			<zipfileset prefix="jbehave-${version}" dir="${basedir}">
-				<exclude name="delete_me/**" />
-				<exclude name="bin/**" />
-				<exclude name="classes/**" />
-				<exclude name="website/output/**" />
-			</zipfileset>
-		</zip>
-	</target>
+  <target name="build-jar" depends="-init" description="Compile and assemble the jar">
+    <mkdir dir="${classes_dir}" />
+    <javac taskname="build jbehave" srcdir="${core_dir}/src/java" destdir="${classes_dir}" source="${jdk.version}"
+      target="${jdk.version}" classpathref="libs" debug="true">
+      <src>
+        <pathelement path="${core_dir}/src/java" />
+        <dirset dir="${extensions_dir}" includes="**/src/java" />
+      </src>
+    </javac>
+    <copy taskname="copying resource" todir="${classes_dir}">
+      <fileset dir="${core_dir}/src/java" excludes="**/*.java" />
+      <fileset dir="${extensions_dir}/ant/src/java" excludes="**/*.java" />
+    </copy>
+    <mkdir dir="${binaries_dir}" />
+    <jar taskname="jbehave jar" basedir="${classes_dir}" jarfile="${jbehave_jar}" />
+  </target>
 
-	<target name="compile-behaviour" depends="build-jar" description="Compile behaviour">
-		<mkdir dir="${behaviour_classes_dir}" />
-		<javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="${jdk.version}" target="${jdk.version}" debug="true">
-			<src>
-				<pathelement path="${core_dir}/src/behaviour" />
-				<pathelement path="${everything_dir}/src/behaviour" />
-				<dirset dir="${extensions_dir}" includes="**/src/behaviour"/>
-			</src>
-			<classpath>
-				<pathelement path="${jbehave_jar}" />
-				<path refid="libs"/>
-			</classpath>
-		</javac>
-	</target>
-	
-	<target name="verify-behaviour" depends="compile-behaviour" description="Verify behaviour">
-		<taskdef name="runbehaviours" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
-		<!-- Verify the Ant task behaviour -->
-		<java taskname="run behaviours" classname="org.jbehave.core.Run" fork="true" failonerror="true" clonevm="true">
-			<arg value="org.jbehave.ant.BehaviourRunnerTaskBehaviour" />
-			<classpath>
-				<pathelement path="${jbehave_jar}" />
-				<pathelement path="${behaviour_classes_dir}" />
-				<path refid="libs" />
-			</classpath>
-		</java>
-		<!-- Now we know the Ant task is working, we can use it to verify everything else -->
-		<runbehaviours clonevm="true">
-			<classpath>
-				<pathelement path="${jbehave_jar}" />
-				<pathelement path="${behaviour_classes_dir}" />
-				<path refid="libs" />
-			</classpath>
-			<behaviours dir="${behaviour_classes_dir}" includes="**/*Behaviour.class" />
-		</runbehaviours>
-	</target>
+  <target name="build-source-zip" depends="-init" description="Assemble the source jar">
+    <mkdir dir="${binaries_dir}" />
+    <zip taskname="jbehave source jar" destfile="${jbehave_src_zip}" update="true" filesonly="true">
+      <zipfileset prefix="jbehave-${version}" dir="${basedir}">
+        <exclude name="delete_me/**" />
+        <exclude name="bin/**" />
+        <exclude name="classes/**" />
+        <exclude name="website/output/**" />
+      </zipfileset>
+    </zip>
+  </target>
 
-	<!-- create website -->
-	<target name="javadoc" description="Generate javadocs">
-		<mkdir dir="${javadoc_dist_dir}" />
-		<javadoc
-      destdir="${javadoc_dist_dir}"
-      windowtitle="JBehave API Documentation"
-      verbose="false"
+  <target name="compile-behaviour" depends="build-jar" description="Compile behaviour">
+    <mkdir dir="${behaviour_classes_dir}" />
+    <javac taskname="compile behaviours" destdir="${behaviour_classes_dir}" source="${jdk.version}"
+      target="${jdk.version}" debug="true">
+      <src>
+        <pathelement path="${core_dir}/src/behaviour" />
+        <pathelement path="${everything_dir}/src/behaviour" />
+        <dirset dir="${extensions_dir}" includes="**/src/behaviour" />
+      </src>
+      <classpath>
+        <pathelement path="${jbehave_jar}" />
+        <path refid="libs" />
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="verify-behaviour" depends="compile-behaviour" description="Verify behaviour">
+    <taskdef name="runbehaviours" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
+    <!-- Verify the Ant task behaviour -->
+    <java taskname="run behaviours" classname="org.jbehave.core.Run" fork="true" failonerror="true" clonevm="true">
+      <arg value="org.jbehave.ant.BehaviourRunnerTaskBehaviour" />
+      <classpath>
+        <pathelement path="${jbehave_jar}" />
+        <pathelement path="${behaviour_classes_dir}" />
+        <path refid="libs" />
+      </classpath>
+    </java>
+    <!-- Now we know the Ant task is working, we can use it to verify everything else -->
+    <runbehaviours clonevm="true">
+      <classpath>
+        <pathelement path="${jbehave_jar}" />
+        <pathelement path="${behaviour_classes_dir}" />
+        <path refid="libs" />
+      </classpath>
+      <behaviours dir="${behaviour_classes_dir}" includes="**/*Behaviour.class" />
+    </runbehaviours>
+  </target>
+
+  <!-- create website -->
+  <target name="javadoc" description="Generate javadocs">
+    <mkdir dir="${javadoc_dist_dir}" />
+    <javadoc destdir="${javadoc_dist_dir}" windowtitle="JBehave API Documentation" verbose="false"
       useexternalfile="true">
-			<fileset dir="${extensions_dir}">
-				<include name="*/src/java/**/*.java" />
-				<exclude name="**/codegen/**" />
-			</fileset>
-			<fileset dir="${core_dir}">
-				<include name="src/java/**/*.java" />
-			</fileset>
-			<classpath refid="libs" />
-			<group title="Core API" packages="org.jbehave.core*" />
-			<group title="Story Runner" packages="org.jbehave.core.story*" />
-			<group title="Ant Task Extension" packages="org.jbehave.ant*" />
-			<group title="JMock Extension" packages="org.jbehave.jmock*" />
-			<group title="JUnit Extension" packages="org.jbehave.junit*" />
-			<classpath>
-				<fileset dir="${lib_dir}">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javadoc>
-	</target>
+      <fileset dir="${extensions_dir}">
+        <include name="*/src/java/**/*.java" />
+        <exclude name="**/codegen/**" />
+      </fileset>
+      <fileset dir="${core_dir}">
+        <include name="src/java/**/*.java" />
+      </fileset>
+      <classpath refid="libs" />
+      <group title="Core API" packages="org.jbehave.core*" />
+      <group title="Story Runner" packages="org.jbehave.core.story*" />
+      <group title="Ant Task Extension" packages="org.jbehave.ant*" />
+      <group title="JMock Extension" packages="org.jbehave.jmock*" />
+      <group title="JUnit Extension" packages="org.jbehave.junit*" />
+      <classpath>
+        <fileset dir="${lib_dir}">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javadoc>
+  </target>
 
-	<target name="website-content" depends="-init" description="Generate website content">
-		<exec executable="ruby" failonerror="true">
-			<arg value="sitespec.rb"/>
-			<arg value="${website_dist_dir}"/>
-		</exec>
-	</target>
+  <target name="website-content" depends="-init" description="Generate website content">
+    <exec executable="ruby" failonerror="true">
+      <arg value="sitespec.rb" />
+      <arg value="${website_dist_dir}" />
+    </exec>
+  </target>
 
-	<target name="website" depends="javadoc, website-content" description="Generate website"/>
+  <target name="website" depends="javadoc, website-content" description="Generate website" />
 
-	<!-- SableCC code generator - Note: must use 3.1 for JDK 1.4 compatibility -->
-	<target name="sablecc" description="Generate sablecc grammar files">
-		<java fork="true" jar="${lib_dir}/extensions/sablecc-3.1.jar">
-			<arg value="-d" />
-			<arg file="${core_dir}/src/java" />
-			<arg file="${core_dir}/src/java/org/jbehave/core/story/codegen/story.scc" />
-		</java>
-	</target>
+  <!-- SableCC code generator - Note: must use 3.1 for JDK 1.4 compatibility -->
+  <target name="sablecc" description="Generate sablecc grammar files">
+    <java fork="true" jar="${lib_dir}/extensions/sablecc-3.1.jar">
+      <arg value="-d" />
+      <arg file="${core_dir}/src/java" />
+      <arg file="${core_dir}/src/java/org/jbehave/core/story/codegen/story.scc" />
+    </java>
+  </target>
 
-	<!-- Examples -->	
-	<target name="compile-example-behaviours" depends="build-jar" description="Compile behaviours for examples">
-		<mkdir dir="${example_classes_dir}" />
-		<javac taskname="compile example" destdir="${example_classes_dir}" 
-			source="${jdk.version}" target="${jdk.version}" debug="true">
-			<src>
-				<pathelement path="${examples_dir}/${example}/src/java" />
-			</src>
-			<classpath>
-				<pathelement path="${jbehave_jar}" />
-				<path refid="libs"/>
-			</classpath>
-		</javac>
-		<mkdir dir="${example_behaviour_classes_dir}" />
-		<javac taskname="compile example behaviours" destdir="${example_behaviour_classes_dir}" 
-			source="${jdk.version}" target="${jdk.version}" debug="true">
-			<src>
-				<pathelement path="${examples_dir}/${example}/src/behaviour" />
-			</src>
-			<classpath>
-				<pathelement path="${jbehave_jar}" />
-				<path refid="libs"/>
-				<pathelement path="${example_classes_dir}"/>
-			</classpath>
-		</javac>
-	</target>
+  <!-- Examples -->
+  <target name="compile-example-behaviours" depends="build-jar" description="Compile behaviours for examples">
+    <mkdir dir="${example_classes_dir}" />
+    <javac taskname="compile example" destdir="${example_classes_dir}" source="${jdk.version}" target="${jdk.version}"
+      debug="true">
+      <src>
+        <pathelement path="${examples_dir}/${example}/src/java" />
+      </src>
+      <classpath>
+        <pathelement path="${jbehave_jar}" />
+        <path refid="libs" />
+      </classpath>
+    </javac>
+    <mkdir dir="${example_behaviour_classes_dir}" />
+    <javac taskname="compile example behaviours" destdir="${example_behaviour_classes_dir}" source="${jdk.version}"
+      target="${jdk.version}" debug="true">
+      <src>
+        <pathelement path="${examples_dir}/${example}/src/behaviour" />
+      </src>
+      <classpath>
+        <pathelement path="${jbehave_jar}" />
+        <path refid="libs" />
+        <pathelement path="${example_classes_dir}" />
+      </classpath>
+    </javac>
+  </target>
 
-	<target name="run-example-behaviours" depends="compile-example-behaviours" description="Runs behaviours for examples">
-		<taskdef name="runbehaviours" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
-		<runbehaviours clonevm="true">
-			<classpath>
-				<path refid="libs" />
-				<pathelement path="${example_classes_dir}" />
-				<pathelement path="${example_behaviour_classes_dir}" />
-			</classpath>
-			<behaviours dir="${examples_dir}/${example}/src/behaviour" includes="**/*Behaviour.java" />
-		</runbehaviours>
-	</target>
-	
-	<target name="compile-example-stories" depends="build-jar" description="Compile behaviours for examples">
-		<mkdir dir="${example_classes_dir}" />
-		<javac taskname="compile example" destdir="${example_classes_dir}" 
-			source="${jdk.version}" target="${jdk.version}" debug="true">
-			<src>
-				<pathelement path="${examples_dir}/${example}/src/java" />
-			</src>
-			<classpath>
-				<pathelement path="${jbehave_jar}" />
-				<path refid="libs"/>
-			</classpath>
-		</javac>
-		<mkdir dir="${example_story_classes_dir}" />
-		<javac taskname="compile example stories" destdir="${example_story_classes_dir}" 
-			source="${jdk.version}" target="${jdk.version}" debug="true">
-			<src>
-				<pathelement path="${examples_dir}/${example}/src/stories" />
-			</src>
-			<classpath>
-				<pathelement path="${jbehave_jar}" />
-				<path refid="libs"/>
-				<pathelement path="${example_classes_dir}"/>
-				<pathelement path="${example_behaviour_classes_dir}" />
-			</classpath>
-		</javac>
-	</target>
-	
-	<target name="run-example-stories" depends="compile-example-behaviours, compile-example-stories" description="Runs stories for examples">
-		<taskdef name="runstories" classname="${story.runner.task}" classpath="${jbehave_jar}" />
-		<runstories clonevm="true">
-			<classpath>
-				<path refid="libs" />
-				<pathelement path="${example_classes_dir}" />
-				<pathelement path="${example_behaviour_classes_dir}" />
-				<pathelement path="${example_story_classes_dir}" />
-			</classpath>
-			<stories dir="${examples_dir}/${example}/src/stories" includes="**/stories/*" />
-		</runstories>
-	</target>
+  <target name="run-example-behaviours" depends="compile-example-behaviours"
+    description="Runs behaviours for examples">
+    <taskdef name="runbehaviours" classname="${behaviour.runner.task}" classpath="${jbehave_jar}" />
+    <runbehaviours clonevm="true">
+      <classpath>
+        <path refid="libs" />
+        <pathelement path="${example_classes_dir}" />
+        <pathelement path="${example_behaviour_classes_dir}" />
+      </classpath>
+      <behaviours dir="${examples_dir}/${example}/src/behaviour" includes="**/*Behaviour.java" />
+    </runbehaviours>
+  </target>
 
-	<target name="print-example-stories" depends="compile-example-behaviours, compile-example-stories" description="Prints stories for examples">
-		<taskdef name="printstories" classname="${story.printer.task}" classpath="${jbehave_jar}" />
-		<printstories destdir="${examples_dir}/${example}/src/stories">
-			<classpath>
-				<path refid="libs" />
-				<pathelement path="${example_classes_dir}" />
-				<pathelement path="${example_behaviour_classes_dir}" />
-				<pathelement path="${example_story_classes_dir}" />
-			</classpath>
-			<stories dir="${examples_dir}/${example}/src/stories" includes="**/stories/*" />
-		</printstories>
-	</target>
+  <target name="compile-example-stories" depends="build-jar" description="Compile behaviours for examples">
+    <mkdir dir="${example_classes_dir}" />
+    <javac taskname="compile example" destdir="${example_classes_dir}" source="${jdk.version}" target="${jdk.version}"
+      debug="true">
+      <src>
+        <pathelement path="${examples_dir}/${example}/src/java" />
+      </src>
+      <classpath>
+        <pathelement path="${jbehave_jar}" />
+        <path refid="libs" />
+      </classpath>
+    </javac>
+    <mkdir dir="${example_story_classes_dir}" />
+    <javac taskname="compile example stories" destdir="${example_story_classes_dir}" source="${jdk.version}"
+      target="${jdk.version}" debug="true">
+      <src>
+        <pathelement path="${examples_dir}/${example}/src/stories" />
+      </src>
+      <classpath>
+        <pathelement path="${jbehave_jar}" />
+        <path refid="libs" />
+        <pathelement path="${example_classes_dir}" />
+        <pathelement path="${example_behaviour_classes_dir}" />
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="run-example-stories" depends="compile-example-behaviours, compile-example-stories"
+    description="Runs stories for examples">
+    <taskdef name="runstories" classname="${story.runner.task}" classpath="${jbehave_jar}" />
+    <runstories clonevm="true">
+      <classpath>
+        <path refid="libs" />
+        <pathelement path="${example_classes_dir}" />
+        <pathelement path="${example_behaviour_classes_dir}" />
+        <pathelement path="${example_story_classes_dir}" />
+      </classpath>
+      <stories dir="${examples_dir}/${example}/src/stories" includes="**/stories/*" />
+    </runstories>
+  </target>
+
+  <target name="print-example-stories" depends="compile-example-behaviours, compile-example-stories"
+    description="Prints stories for examples">
+    <taskdef name="printstories" classname="${story.printer.task}" classpath="${jbehave_jar}" />
+    <printstories destdir="${examples_dir}/${example}/src/stories">
+      <classpath>
+        <path refid="libs" />
+        <pathelement path="${example_classes_dir}" />
+        <pathelement path="${example_behaviour_classes_dir}" />
+        <pathelement path="${example_story_classes_dir}" />
+      </classpath>
+      <stories dir="${examples_dir}/${example}/src/stories" includes="**/stories/*" />
+    </printstories>
+  </target>
+
+  <target name="generate-example-stories" depends="compile-example-behaviours, compile-example-stories"
+    description="Generates stories for examples">
+    <taskdef name="generatestories" classname="${story.generator.task}">
+      <classpath>
+        <path refid="libs" />
+        <pathelement path="${jbehave_jar}" />
+      </classpath>
+    </taskdef>
+    <generatestories generatedsourcedirectory="${examples_dir}/${example}/src/stories">
+      <classpath>
+        <path refid="libs" />
+        <pathelement path="${example_classes_dir}" />
+        <pathelement path="${example_behaviour_classes_dir}" />
+        <pathelement path="${example_story_classes_dir}" />
+        <pathelement path="${examples_dir}/${example}/src/stories" />
+      </classpath>
+      <stories dir="${examples_dir}/${example}/src/stories" includes="*.story" />
+    </generatestories>
+  </target>
 </project>
