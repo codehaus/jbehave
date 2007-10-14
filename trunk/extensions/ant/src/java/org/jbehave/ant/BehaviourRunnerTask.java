@@ -10,7 +10,7 @@ package org.jbehave.ant;
 import org.apache.tools.ant.types.FileSet;
 import org.jbehave.core.BehaviourRunner;
 
-public class BehaviourRunnerTask extends AbstractRunnerTask {
+public class BehaviourRunnerTask extends AbstractStoryTask {
 
     public BehaviourRunnerTask() {
         this(new CommandRunnerImpl(), new TrimFilesetParser());

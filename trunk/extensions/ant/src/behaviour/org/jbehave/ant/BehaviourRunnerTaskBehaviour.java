@@ -117,5 +117,9 @@ public class BehaviourRunnerTaskBehaviour extends UsingMiniMock {
                     BehaviourClassTwo.class.getName()
             };
         }
+
+        public String[] getRelativePaths(FileSet fileset, Project project) {
+            return new String[] {};
+        }
     }
 }

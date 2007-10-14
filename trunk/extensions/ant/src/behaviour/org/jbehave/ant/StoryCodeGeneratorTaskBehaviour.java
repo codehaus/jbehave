@@ -13,14 +13,14 @@ import org.jbehave.core.Block;
 import org.jbehave.core.mock.Matcher;
 import org.jbehave.core.mock.UsingMatchers;
 
-public class StoryRunnerTaskBehaviour extends UsingMatchers {
+public class StoryCodeGeneratorTaskBehaviour extends UsingMatchers {
 
     private StubCommandRunner runner = new StubCommandRunner();
-    private StoryRunnerTask task = new StoryRunnerTask();
+    private StoryCodeGeneratorTask task = new StoryCodeGeneratorTask();
     private StubFilesetParser filesetParser = new StubFilesetParser();
     
     public void setUp() {
-        task = new StoryRunnerTask(runner, filesetParser);
+        task = new StoryCodeGeneratorTask(runner, filesetParser);
         Project project = new Project();
         project.setCoreLoader(getClass().getClassLoader());
         task.setProject(project);
@@ -38,35 +38,25 @@ public class StoryRunnerTaskBehaviour extends UsingMatchers {
             }
         };
     }
-    
-    public void shouldRunASingleStoryClass() throws Exception {
-        task.setStoryClassName(StoryClassOne.class.getName());
-        runner.valueToReturn = 0;
-
-        task.execute();
-
-        ensureThat(runner.taskLog, sameInstanceAs(task));
-        String[] actualCommand = runner.commandLineLog;
-        ensureThat(actualCommand[0].matches(".*java.*"), eq(true));
-        List list = Arrays.asList(actualCommand);
-        ensureThat(list, collectionContains(StoryClassOne.class.getName()));
-    }
-    
-   public void shouldRunStoriesFoundInFileSet() {
+       
+   public void shouldGenerateCodeForStoriesFoundInFileSet() {
         
         FileSet fileSet = new FileSet();
-        
+
+        task.setGeneratedSourceDirectory("stories");
         task.addStories(fileSet);
         task.execute();
-
+        ensureThat(runner.taskLog, sameInstanceAs(task));
+        
         List list = Arrays.asList(runner.commandLineLog);
-        ensureThat(list, collectionContains(StoryClassOne.class.getName()));
-        ensureThat(list, collectionContains(StoryClassTwo.class.getName()));
+        ensureThat(list, collectionContains("stories"));
+        ensureThat(list, collectionContains("one.story"));
+        ensureThat(list, collectionContains("two.story"));
     }    
 
     public void shouldFailTheBuildWhenVerificationFails() throws Exception {
-        final String storyClassName = FailingStoryClass.class.getName();
-        task.setStoryClassName(storyClassName);
+        final String generatedSourceDirectory = "stories";
+        task.setGeneratedSourceDirectory(generatedSourceDirectory);
         runner.valueToReturn = 1;
 
         Exception exception = runAndCatch(BuildException.class, new Block() {
@@ -76,19 +66,6 @@ public class StoryRunnerTaskBehaviour extends UsingMatchers {
         });
         ensureThat(exception, isNotNull());
     }
-    
-    public void shouldSupportCloningTheVm() throws Exception {
-        
-        FileSet fileSet = new FileSet();
-        
-        task.addStories(fileSet);
-        task.setCloneVm(true);
-        task.execute();
-
-        List list = Arrays.asList(runner.commandLineLog);
-        ensureThat(list, collectionContains(StoryClassOne.class.getName()));
-        ensureThat(list, collectionContains(StoryClassTwo.class.getName()));
-    }    
     
     private static class StubCommandRunner implements CommandRunner {
         private int valueToReturn;
@@ -105,14 +82,11 @@ public class StoryRunnerTaskBehaviour extends UsingMatchers {
     private static class StubFilesetParser implements FilesetParser {
         
         public String[] getClassNames(FileSet fileset, Project project) {
-            return new String[] {
-                    StoryClassOne.class.getName(),
-                    StoryClassTwo.class.getName()
-            };
+            return new String[] {};
         }
         
         public String[] getRelativePaths(FileSet fileset, Project project) {
-            return new String[] {};
+            return new String[] {"one.story", "two.story"};
         }            
     }    
 }

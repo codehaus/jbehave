@@ -7,4 +7,6 @@ public interface FilesetParser {
 
     String[] getClassNames(FileSet fileset, Project project);
 
+    String[] getRelativePaths(FileSet fileset, Project project);
+
 }

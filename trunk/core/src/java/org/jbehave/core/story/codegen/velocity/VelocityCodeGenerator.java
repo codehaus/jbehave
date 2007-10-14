@@ -16,9 +16,11 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.jbehave.core.story.StoryLoader;
 import org.jbehave.core.story.codegen.CodeGenerator;
 import org.jbehave.core.story.codegen.domain.ScenarioDetails;
 import org.jbehave.core.story.codegen.domain.StoryDetails;
+import org.jbehave.core.story.codegen.parser.TextStoryParser;
 import org.jbehave.core.story.domain.Narrative;
 import org.jbehave.core.util.CamelCaseConverter;
 
@@ -179,5 +181,16 @@ public class VelocityCodeGenerator implements CodeGenerator {
         public CodeGenerationFailedException(String message, Throwable cause) {
             super(message, cause);
         }        
+    }
+    
+    public static void main(String[] args) {        
+        if ( args.length < 2 ) {
+            throw new IllegalArgumentException("VelocityCodeGenerator usage: <generatedSourceDirectory> <storyPaths>");
+        }
+        VelocityCodeGenerator generator = new VelocityCodeGenerator(args[0]);
+        StoryLoader loader = new StoryLoader(new TextStoryParser(), VelocityCodeGenerator.class.getClassLoader());
+        for (int i = 1; i < args.length; i++) {
+            generator.generateStory(loader.loadStoryDetails(args[i])); 
+        }           
     }
 }

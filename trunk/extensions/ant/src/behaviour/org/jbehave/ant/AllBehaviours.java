@@ -17,7 +17,8 @@ public class AllBehaviours implements Behaviours {
     public Class[] getBehaviours() {
         return new Class[] {
             BehaviourRunnerTaskBehaviour.class,
-            StoryRunnerTaskBehaviour.class
+            StoryRunnerTaskBehaviour.class,
+            StoryCodeGeneratorTaskBehaviour.class
         };
     }
 }
