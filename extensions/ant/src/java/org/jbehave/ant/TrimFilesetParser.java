@@ -38,5 +38,24 @@ public class TrimFilesetParser implements FilesetParser {
 		}
 		return classname;
 	}
+	
+    public String[] getRelativePaths(FileSet fileset, Project project) {
+        DirectoryScanner ds = fileset.getDirectoryScanner(project);
+        String[] includedFiles = ds.getIncludedFiles();
+        List paths = new ArrayList();
+        for (int i = 0; i < includedFiles.length; i++) {
+            String filename = includedFiles[i].replace('\\', '/');
+
+            File base = ds.getBasedir();
+            File found = new File(base, filename);
+
+            String relativePath = found.getAbsolutePath().substring(
+                    base.getAbsolutePath().length() + 1).replace('\\', '/');
+            
+            paths.add(relativePath);
+        }        
+        return (String[]) paths.toArray(new String[paths.size()]);
+    }
+
 
 }

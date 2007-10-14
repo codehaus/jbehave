@@ -3,7 +3,7 @@ package org.jbehave.ant;
 import org.apache.tools.ant.types.FileSet;
 import org.jbehave.core.story.StoryRunner;
 
-public class StoryRunnerTask extends AbstractRunnerTask {
+public class StoryRunnerTask extends AbstractStoryTask {
     
     public StoryRunnerTask() {
         this(new CommandRunnerImpl(), new TrimFilesetParser());
@@ -16,8 +16,7 @@ public class StoryRunnerTask extends AbstractRunnerTask {
     public void setStoryClassName(String storyClassName) {
         super.addTarget(storyClassName);
     }
-    
-    
+        
     public void addStories(FileSet fileset) {
         super.addFilesetTarget(fileset);
     }
