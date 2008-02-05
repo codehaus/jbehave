@@ -1,12 +1,8 @@
 package org.jbehave.threaded.swing;
 
-import java.awt.AWTEvent;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.TextComponent;
-import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.text.JTextComponent;
@@ -24,7 +20,6 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	
 	private final String windowName;
 	private final ComponentFinder finder;
-	private final EventQueue sysQueue;
 	private Window window;
 
 	private Idler idler;
@@ -40,7 +35,6 @@ public class DefaultWindowWrapper implements WindowWrapper {
 		new HeadlessChecker().check();
 		this.windowName = windowName;
 		this.finder = finder;
-		sysQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
 		idler = new Idler();
         typer = new CharacterTyper();
         clicker = new ButtonClicker();
@@ -78,10 +72,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
      * If the key has a character, listeners will not always detect this mimicry.
      */
 	public void pressKeycode(int keycode) throws TimeoutException {
-	    sysQueue.postEvent(createKeyPressEvent(getOpenWindow(), keycode, KeyEvent.KEY_PRESSED));
-	    sysQueue.postEvent(createKeyPressEvent(getOpenWindow(), keycode, KeyEvent.KEY_RELEASED));
-            
-		idler.waitForIdle();
+		typer.pressKeycode(getOpenWindow(), keycode);
 	}
 
     /**
@@ -105,14 +96,7 @@ public class DefaultWindowWrapper implements WindowWrapper {
 	}
 	
 
-    private AWTEvent createKeyPressEvent(Component component, int keycode, int id) {
-        return new KeyEvent(component, 
-                id, 
-                System.currentTimeMillis(),
-                0,
-                keycode,
-                KeyEvent.CHAR_UNDEFINED);
-    }
+
 
     public void requestWindowFocus() throws TimeoutException {
         focuser.requestFocusOn(getOpenWindow());

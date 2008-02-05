@@ -78,7 +78,36 @@ class CharacterTyper {
         }
     }
 
-    private void postKeyEvent(final Component component, final char key) {
+	public void pressKeycode(Window window, int keycode) {
+        QueueingKeyAdapter queuer = null;
+        
+        if(window instanceof JFrame) {
+            Container contentPane = ((JFrame)window).getContentPane();
+            if (contentPane instanceof JComponent) {
+                queuer = new QueueingKeyAdapter(contentPane);
+                focuser.requestFocusOn(contentPane);
+            }
+        } else {
+            queuer = new QueueingKeyAdapter(window.getFocusOwner());
+            focuser.requestFocusOn(window.getFocusOwner());
+        }
+        
+        postKeycodeEvent(window, keycode);
+        
+        try {
+            queuer.waitForEvent();
+        } finally {
+            queuer.removeSelfFromComponent();
+        }
+	}
+
+    private void postKeycodeEvent(Window window, int keycode) {
+        sysQueue.postEvent(createKeyPressEvent(window, keycode, KeyEvent.KEY_PRESSED));
+        sysQueue.postEvent(createKeyPressEvent(window, keycode, KeyEvent.KEY_RELEASED));  
+        idler.waitForIdle();
+	}
+
+	private void postKeyEvent(final Component component, final char key) {
         sysQueue.postEvent(createKeyPressEvent(component, key, KeyEvent.KEY_PRESSED));
         sysQueue.postEvent(createKeyPressEvent(component, key, KeyEvent.KEY_RELEASED));
         sysQueue.postEvent(createKeyPressEvent(component, key, KeyEvent.KEY_TYPED));    
@@ -92,6 +121,15 @@ class CharacterTyper {
                 0,
                 KeyEvent.VK_UNDEFINED,
                 c);
+    }
+    
+    private AWTEvent createKeyPressEvent(Component component, int keycode, int id) {
+        return new KeyEvent(component, 
+                id, 
+                System.currentTimeMillis(),
+                0,
+                keycode,
+                KeyEvent.CHAR_UNDEFINED);
     }
         
     private class QueueingKeyAdapter extends QueueingAdapter implements KeyListener {
@@ -116,8 +154,7 @@ class CharacterTyper {
             
         }
         public void keyReleased(KeyEvent e) {
-            // TODO Auto-generated method stub
-            
+            eventOccurred();
         }
     }
 }
