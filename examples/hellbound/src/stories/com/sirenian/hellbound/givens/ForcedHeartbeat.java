@@ -30,7 +30,7 @@ public class ForcedHeartbeat implements Heartbeat {
 	}
 	
 	public void causeBeat() {
-		if (System.getProperty("SLOW") != null) {
+		if (System.getProperty("com.sirenian.hellbound.SLOW") != null) {
 			synchronized(this) {
 				try {
 					wait(700);

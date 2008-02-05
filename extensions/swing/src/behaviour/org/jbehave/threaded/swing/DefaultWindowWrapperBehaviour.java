@@ -117,14 +117,17 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
             JComboBox comboBox = new JComboBox(new Object[] {"horse", "cow", "sheep"});
             comboBox.setName("a.combobox");
             comboBox.setEditable(true);
+            comboBox.setSelectedItem("horse");
             frame.getContentPane().setLayout(new FlowLayout());
             frame.getContentPane().add(comboBox);
             frame.pack();
             frame.setVisible(true);
-            
+
             wrapper.enterText("a.combobox", "cow");
             
-            ensureThat(comboBox.getEditor().getItem(), eq("cowhorse")); // because we didn't delete the previous value
+            // Due to the different focusing behaviour of eg: macs, PCs, this could say
+            // "cow" or "cowhorse"
+            ensureThat(comboBox.getEditor().getItem().toString(), contains("cow"));
             
         } finally {
             wrapper.closeWindow();
@@ -230,21 +233,5 @@ public class DefaultWindowWrapperBehaviour extends UsingMiniMock {
             
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
-    }
-    
-    public static void main(String[] args) {
-            AFrame frame = new AFrame();
-            
-            JComboBox comboBox = new JComboBox(new Object[] {"horse", "cow", "sheep"});
-            comboBox.setName("a.combobox");
-            comboBox.setEditable(true);
-            
-            frame.getContentPane().setLayout(new FlowLayout());
-            
-            frame.getContentPane().add(comboBox);
-            frame.pack();
-            
-            
-            frame.setVisible(true);
     }
 }

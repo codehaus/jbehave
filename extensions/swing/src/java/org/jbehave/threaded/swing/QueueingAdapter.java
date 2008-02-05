@@ -5,7 +5,7 @@ import java.awt.Component;
 import org.jbehave.core.threaded.QueuedObjectHolder;
 import org.jbehave.core.threaded.TimeoutException;
 
-abstract class QueueingAdapter {
+public abstract class QueueingAdapter {
 
     private QueuedObjectHolder holder = new QueuedObjectHolder();
     private Idler idler = new Idler();
