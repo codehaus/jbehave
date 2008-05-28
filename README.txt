@@ -1,0 +1,21 @@
+Build system: 
+
+JDK required: 1.5+
+Maven (http://maven.apache.org) required: 2.0.8+
+ 
+Build profiles:  
+
+- default: builds all releasable modules
+- reporting:  builds reports
+- distribution:  builds distribution
+- examples:  builds examples
+- nb: no-behaviour, builds skipping behaviours 
+
+Note:  profiles are additive and the default profile is always active.
+Eg, build with behaviour, reporting and distribution:
+
+mvn -Preporting,distribution install
+
+IDE integration:
+
+Maven Eclipse (http://m2eclipse.sonatype.org/update):  builds classpath based on the dependencies declared in the POM.
