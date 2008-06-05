@@ -15,7 +15,7 @@ public class StockSteps extends Steps {
 	private Stock stock;
 
 	@Given("a stock of price $price")
-	public void aStock(double price) {
+	public void aStockOfPrice(double price) {
 		stock = new Stock(price, 10.0);
 	}
 	
