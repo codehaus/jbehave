@@ -6,29 +6,25 @@
     <artifactId>jbehave</artifactId>
     <version>2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>jbehave-examples</artifactId>
-  <packaging>pom</packaging>
-  <name>JBehave Examples</name>
-
-  <modules>
-    <module>gameoflife</module>
-    <module>trader</module>
-  </modules>
+  <artifactId>jbehave-maven-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+  <name>JBehave Maven Plugin</name>
 
   <dependencies>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>org.jbehave</groupId>
       <artifactId>jbehave-core</artifactId>
       <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>2.0</version>
     </dependency>
   </dependencies>
 
   <build>
-    <!-- Resources that are packaged in the JAR file -->
-    <resources>
-      <resource>
-        <directory>${basedir}/src/scenario</directory>
-      </resource>
-    </resources>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/behaviour/java</testSourceDirectory>
   </build>
 </project>

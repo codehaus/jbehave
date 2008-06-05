@@ -6,16 +6,21 @@
 			<attribute name="maven.type" value="test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" output="target-eclipse/classes" path="jbehave-maven-plugin/src/main/java"/>
+	<classpathentry kind="src" output="target-eclipse/test-classes" path="jbehave-maven-plugin/src/behaviour/java">
+		<attributes>
+			<attribute name="maven.type" value="test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" output="target-eclipse/classes" path="examples/gameoflife/src/java"/>
-	<classpathentry kind="src" output="target-eclipse/classes" path="examples/gameoflife/src/scenario"/>
 	<classpathentry kind="src" output="target-eclipse/test-classes" path="examples/gameoflife/src/behaviour">
 		<attributes>
 			<attribute name="maven.type" value="test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="examples/gameoflife/src/scenario" path="examples/gameoflife/src/scenario"/>
+	<classpathentry kind="src" output="target-eclipse/classes" path="examples/trader/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER/modules/profiles[examples]"/>
-	<classpathentry kind="lib" path="lib/production/junit-4.4.jar"/>
-	<classpathentry kind="lib" path="lib/build/mockito-all-1.2.jar"/>
 	<classpathentry kind="output" path="target-eclipse/classes"/>
 </classpath>

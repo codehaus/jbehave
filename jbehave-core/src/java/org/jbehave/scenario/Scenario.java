@@ -24,6 +24,10 @@ public abstract class Scenario {
 	public Scenario(Steps... candidateSteps) {
 		this(new FileFinder(), new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter(System.out)), candidateSteps);
 	}
+	
+	public Scenario(FileFinder fileFinder, Steps... candidateSteps) {
+        this(fileFinder, new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter(System.out)), candidateSteps);
+    }
 
 	public Scenario(FileFinder fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner, Steps... candidateSteps) {
 		this.fileFinder = fileFinder;
