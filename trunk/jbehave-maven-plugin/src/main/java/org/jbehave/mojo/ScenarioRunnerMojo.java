@@ -24,7 +24,6 @@ public class ScenarioRunnerMojo extends AbstractJBehaveMojo {
         try {
             createScenarioClassLoader().newScenario(scenarioClassName).runUsingSteps();
         } catch (Throwable e) {
-            e.printStackTrace();
             throw new MojoExecutionException("Failed to run scenario "+scenarioClassName, e);
         }
     }
