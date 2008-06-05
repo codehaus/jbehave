@@ -16,6 +16,7 @@ import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.FileFinder;
 import org.jbehave.scenario.parser.StepParser;
+import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
 

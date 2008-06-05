@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.jbehave.scenario.parser.FileFinder;
 import org.jbehave.scenario.parser.StepParser;
+import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.PendingStep;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.Steps;
