@@ -10,14 +10,14 @@ import org.jbehave.scenario.annotations.When;
 
 public class Steps {
 	
-	private final StepRegexpBuilder argToRegExp;
+	private final StepPatternBuilder patternBuilder;
 	
 	public Steps() {
-		this(new DollarToCaptureRegexpBuilder());
+		this(new DollarStepPatternBuilder());
 	}
 
-	public Steps(StepRegexpBuilder argToRegExp) {
-		this.argToRegExp = argToRegExp;
+	public Steps(StepPatternBuilder patternConverter) {
+		this.patternBuilder = patternConverter;
 	}
 
 	/**
@@ -40,12 +40,12 @@ public class Steps {
 	}
 	
 	private org.jbehave.scenario.steps.Given given(String value, Method method) {
-		return new org.jbehave.scenario.steps.Given(value, method, this, argToRegExp);
+		return new org.jbehave.scenario.steps.Given(value, method, this, patternBuilder);
 	}
 	private org.jbehave.scenario.steps.When when(String value, Method method) {
-		return new org.jbehave.scenario.steps.When(value, method, this, argToRegExp);
+		return new org.jbehave.scenario.steps.When(value, method, this, patternBuilder);
 	}
 	private org.jbehave.scenario.steps.Then then(String value, Method method) {
-		return new org.jbehave.scenario.steps.Then(value, method, this, argToRegExp);
+		return new org.jbehave.scenario.steps.Then(value, method, this, patternBuilder);
 	}
 }

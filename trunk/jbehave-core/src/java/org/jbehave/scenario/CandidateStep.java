@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jbehave.scenario.steps.StepRegexpBuilder;
+import org.jbehave.scenario.steps.StepPatternBuilder;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepResult;
 import org.jbehave.scenario.steps.Steps;
@@ -16,10 +16,10 @@ public abstract class CandidateStep {
 	private final Steps steps;
 	private Pattern pattern;
 	
-	public CandidateStep(String matchThis, Method method, Steps steps, StepRegexpBuilder argToRegExp) {
+	public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter) {
 		this.method = method;
 		this.steps = steps;
-		pattern = argToRegExp.replaceArgsWithCapture(matchThis);
+		pattern = patternConverter.buildPattern(matchThis);
 	}
 
 	public boolean matches(String string) {
