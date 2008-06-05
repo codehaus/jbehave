@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.jbehave.scenario.parser.FileFinder;
+import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.StepParser;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.PendingStep;
@@ -17,20 +17,20 @@ import org.junit.Test;
 public abstract class Scenario {
 
 	private final Steps[] candidateSteps;
-	private final FileFinder fileFinder;
+	private final ScenarioFileLoader fileLoader;
 	private final StepParser stepParser;
 	private final ScenarioRunner scenarioRunner;
 
 	public Scenario(Steps... candidateSteps) {
-		this(new FileFinder(), new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter(System.out)), candidateSteps);
+		this(new ScenarioFileLoader(), new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter(System.out)), candidateSteps);
 	}
 	
-	public Scenario(FileFinder fileFinder, Steps... candidateSteps) {
-        this(fileFinder, new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter(System.out)), candidateSteps);
+	public Scenario(ScenarioFileLoader fileLoader, Steps... candidateSteps) {
+        this(fileLoader, new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter(System.out)), candidateSteps);
     }
 
-	public Scenario(FileFinder fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner, Steps... candidateSteps) {
-		this.fileFinder = fileFinder;
+	public Scenario(ScenarioFileLoader fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner, Steps... candidateSteps) {
+		this.fileLoader = fileFinder;
 		this.stepParser = stepParser;
 		this.scenarioRunner = scenarioRunner;
 		this.candidateSteps = candidateSteps;
@@ -57,8 +57,8 @@ public abstract class Scenario {
 	}
 
 	private String convertToString() {
-		InputStream stream = fileFinder.findFileMatching(this.getClass());
 		try {
+	        InputStream stream = fileLoader.loadScenarioFor(this.getClass());
 			byte[] bytes = new byte[stream.available()];
 			stream.read(bytes);
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
