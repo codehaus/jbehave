@@ -1,0 +1,18 @@
+<project name="cc-build-jbehave-eclipse" default="build" basedir="">
+	<!-- 
+	Usage:
+		ant -DeclipseDir=<eclipseInstallDir>
+	-->
+    <!-- Load build.properties -->
+    <property file="build.properties"/>
+	
+ 	<target name="build" >
+ 		<java fork="true" classname="${eclipseLauncherMain}" classpath="${eclipseLauncherCP}" failonerror="true">
+			<arg line="-application org.eclipse.ant.core.antRunner -buildfile build-eclipse.xml  -DjavacFailOnError=true -DbuildLabel=${label}" /> 
+		</java>
+	</target>
+	
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+</project>

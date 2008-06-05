@@ -1,0 +1,12 @@
+package ${packageName};
+
+import org.jbehave.core.minimock.story.domain.EventUsingMiniMock;
+import org.jbehave.core.story.domain.World;
+
+public class ${className} extends EventUsingMiniMock {
+
+    public void occurIn(World world) {
+		org.jbehave.core.Ensure.pending("Auto-generated stub");    
+    }
+
+}

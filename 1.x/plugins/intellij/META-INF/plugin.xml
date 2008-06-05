@@ -1,0 +1,18 @@
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin>
+  <name>JBehave Plugin</name>
+  <description>JBehave Launcher that launches the verification process of the current behavior.</description>
+  <version>1.5</version>
+  <vendor logo="/behave.png" url="http://jbehave.org" email="user-subscribe@jbehave.codehaus.org">JBehave</vendor>
+  <change-notes>
+    GUI runner
+  </change-notes>
+  <idea-version since-build="7065"/>
+
+  <application-components>
+    <component>
+      <implementation-class>org.jbehave.plugin.idea.selena.JBehaveConfigurationType</implementation-class>
+      <option name="workspace" value="true"/>
+    </component>
+  </application-components>
+</idea-plugin>
