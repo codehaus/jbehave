@@ -6,14 +6,13 @@ import org.jbehave.scenario.CandidateStep;
 
 public class Given extends CandidateStep {
 
+    public Given(String matchThis, Method method, Steps steps, StepPatternBuilder patternBuilder) {
+        super(matchThis, method, steps, patternBuilder);
+    }
 
-	public Given(String matchThis, Method method, Steps steps, StepRegexpBuilder argToRegExp) {
-		super(matchThis, method, steps, argToRegExp);
-	}
-
-	@Override
-	protected String precursor() {
-		return "Given ";
-	}
+    @Override
+    protected String precursor() {
+        return "Given ";
+    }
 
 }

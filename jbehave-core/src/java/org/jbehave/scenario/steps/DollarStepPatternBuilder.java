@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DollarToCaptureRegexpBuilder implements StepRegexpBuilder {
+public class DollarStepPatternBuilder implements StepPatternBuilder {
 
-	public Pattern replaceArgsWithCapture(String matchThis) {
+	public Pattern buildPattern(String matchThis) {
 		String escapedMatch = escapeBrackets(matchThis);
 		Matcher replacingArgsWithCapture = Pattern.compile("(\\$\\w*)(\\W|\\Z)", Pattern.DOTALL).matcher(escapedMatch);
 		List<Replacement> replacements = new ArrayList<Replacement>();

@@ -6,8 +6,8 @@ import org.jbehave.scenario.CandidateStep;
 
 public class When extends CandidateStep {
 
-	public When(String value, Method method, Steps steps, StepRegexpBuilder argToRegExp) {
-		super(value, method, steps, argToRegExp);
+	public When(String value, Method method, Steps steps, StepPatternBuilder patternBuilder) {
+		super(value, method, steps, patternBuilder);
 	}
 
 	@Override
