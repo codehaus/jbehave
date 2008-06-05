@@ -14,7 +14,7 @@ import java.util.Arrays;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
-import org.jbehave.scenario.parser.FileFinder;
+import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.StepParser;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
@@ -32,19 +32,19 @@ public class ScenarioBehaviour {
 	@Test
 	public void shouldPerformStepsInFileAssociatedWithNameUsingGivenStepsClasses() throws Throwable {
 		
-		FileFinder fileFinder = mock(FileFinder.class);
+		ScenarioFileLoader fileLoader = mock(ScenarioFileLoader.class);
 		StepParser stepParser = mock(StepParser.class);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		ScenarioRunner runner = new ScenarioRunner(new PrintStreamScenarioReporter(new PrintStream(output)));
 		MySteps steps = new MySteps();
 		
- 		stub(fileFinder.findFileMatching(MyScenario.class)).toReturn(new ByteArrayInputStream("my_scenario".getBytes()));
+ 		stub(fileLoader.loadScenarioFor(MyScenario.class)).toReturn(new ByteArrayInputStream("my_scenario".getBytes()));
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I leave them over the winter",
 				"Then I have 2 cows"}));
 
-		new MyScenario(fileFinder, stepParser, runner, steps).runUsingSteps();
+		new MyScenario(fileLoader, stepParser, runner, steps).runUsingSteps();
 		
 		ensureThat(steps.numberOfCows, equalTo(2));
 		ensureThat(output.toString(), equalTo(
@@ -56,13 +56,13 @@ public class ScenarioBehaviour {
 	@Test
 	public void shouldRethrowErrorsInTheEventOfAScenarioFailure() throws Throwable {
 		
-		FileFinder fileFinder = mock(FileFinder.class);
+		ScenarioFileLoader fileLoader = mock(ScenarioFileLoader.class);
 		StepParser stepParser = mock(StepParser.class);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		ScenarioRunner runner = new ScenarioRunner(new PrintStreamScenarioReporter(new PrintStream(output)));
 		MySteps steps = new MySteps();
 		
-		stub(fileFinder.findFileMatching(MyScenario.class)).toReturn(new ByteArrayInputStream("my_scenario".getBytes()));
+		stub(fileLoader.loadScenarioFor(MyScenario.class)).toReturn(new ByteArrayInputStream("my_scenario".getBytes()));
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I put them in a field",
@@ -71,7 +71,7 @@ public class ScenarioBehaviour {
 		
 
 		try {
-			new MyScenario(fileFinder, stepParser, runner, steps).runUsingSteps();
+			new MyScenario(fileLoader, stepParser, runner, steps).runUsingSteps();
 			fail("Excpected the error to be rethrown");
 		} catch (IllegalAccessError e) {
 			ensureThat(e, equalTo(steps.error));
@@ -86,7 +86,7 @@ public class ScenarioBehaviour {
 
 	
 	private static class MyScenario extends Scenario {
-		public MyScenario(FileFinder fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner, Steps steps) {
+		public MyScenario(ScenarioFileLoader fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner, Steps steps) {
 			super(fileFinder, stepParser, scenarioRunner, steps);
 		}
 	}
