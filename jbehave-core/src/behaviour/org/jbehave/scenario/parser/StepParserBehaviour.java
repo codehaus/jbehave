@@ -1,4 +1,4 @@
-package org.jbehave.scenario.fromtext;
+package org.jbehave.scenario.parser;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;

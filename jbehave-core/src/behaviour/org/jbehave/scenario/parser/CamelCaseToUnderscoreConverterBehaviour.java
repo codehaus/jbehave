@@ -1,4 +1,4 @@
-package org.jbehave.scenario.fromtext;
+package org.jbehave.scenario.parser;
 
 import static org.jbehave.Ensure.ensureThat;
 
@@ -11,7 +11,7 @@ public class CamelCaseToUnderscoreConverterBehaviour {
 	@Test
 	public void shouldConvertCamelCasedScenarioNameToUnderscore() {
 		CamelCaseToUnderscoreConverter converter = new CamelCaseToUnderscoreConverter();
-		ensureThat(converter.convert(CamelCaseToUnderscoreConverterBehaviour.class), CoreMatchers.equalTo("org/jbehave/scenario/fromtext/camel_case_to_underscore_converter_behaviour"));
+		ensureThat(converter.convert(CamelCaseToUnderscoreConverterBehaviour.class), CoreMatchers.equalTo("org/jbehave/scenario/parser/camel_case_to_underscore_converter_behaviour"));
 		
 	}
 }
