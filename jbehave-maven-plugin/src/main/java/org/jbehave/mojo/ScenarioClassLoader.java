@@ -1,7 +1,5 @@
 package org.jbehave.mojo;
 
-import static java.util.Arrays.asList;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,11 +17,11 @@ import org.jbehave.scenario.Scenario;
 public class ScenarioClassLoader extends URLClassLoader {
 
     public ScenarioClassLoader(List<String> classpathElements) throws MalformedURLException {
-        super(toClasspathURLs(classpathElements), Scenario.class.getClassLoader());
+        super(classpathURLs(classpathElements), Scenario.class.getClassLoader());
     }
 
     public ScenarioClassLoader(List<String> classpathElements, ClassLoader parent) throws MalformedURLException {
-        super(toClasspathURLs(classpathElements), parent);
+        super(classpathURLs(classpathElements), parent);
     }
 
     /**
@@ -33,27 +31,39 @@ public class ScenarioClassLoader extends URLClassLoader {
      * @return A Scenario instance
      */
     public Scenario newScenario(String scenarioClassName) {
-        String scenarioInstantiationFailed = "The Scenario " + scenarioClassName
-                + " could not be instantiated with classpath elements " + asList(getURLs());
         try {
             Scenario scenario = (Scenario) loadClass(scenarioClassName).getConstructor(ClassLoader.class).newInstance(
                     this);
             Thread.currentThread().setContextClassLoader(this);
             return scenario;
         } catch (ClassCastException e) {
-            throw new RuntimeException(scenarioClassName + " is not a " + Scenario.class.getName(), e);
+            String message = "The scenario " + scenarioClassName + " must be of type " + Scenario.class.getName();
+            throw new RuntimeException(message, e);
         } catch (Exception e) {
-            throw new RuntimeException(scenarioInstantiationFailed, e);
-        } catch (NoClassDefFoundError e) {
-            throw new RuntimeException(scenarioInstantiationFailed, e);
+            String message = "The Scenario " + scenarioClassName
+                    + " could not be instantiated with classpath elements " + asShortPaths(getURLs());
+            throw new RuntimeException(message, e);
         }
     }
 
-    protected static URL[] toClasspathURLs(List<String> classpathElements) throws MalformedURLException {
+    private List<String> asShortPaths(URL[] urls) {
+        List<String> names = new ArrayList<String>();
+        for (URL url : urls) {
+            String path = url.getPath();
+            if (path.endsWith(".jar")) {
+                names.add(path.substring(path.lastIndexOf("/") + 1));
+            } else {
+                names.add(path);
+            }
+        }
+        return names;
+    }
+
+    private static URL[] classpathURLs(List<String> elements) throws MalformedURLException {
         List<URL> urls = new ArrayList<URL>();
-        if (classpathElements != null) {
-            for (String classpathElement : classpathElements) {
-                urls.add(new File(classpathElement).toURL());
+        if (elements != null) {
+            for (String element : elements) {
+                urls.add(new File(element).toURL());
             }
         }
         return urls.toArray(new URL[urls.size()]);
