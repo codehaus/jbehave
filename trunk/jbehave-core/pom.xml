@@ -9,6 +9,13 @@
   <packaging>jar</packaging>
   <artifactId>jbehave-core</artifactId>
   <name>JBehave Core</name>
-  <description>The core JBehave module</description>
+  <description>The JBehave core module</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

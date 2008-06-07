@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
+import org.jbehave.scenario.parser.ScenarioClassNameFinder;
 
 /**
  * Abstract base class containing common functionality for all JBehave Mojos.
@@ -13,6 +14,20 @@ import org.apache.maven.plugin.AbstractMojo;
 public abstract class AbstractJBehaveMojo extends AbstractMojo {
 
     private static final String TEST_SCOPE = "test";
+
+    /**
+     * @parameter expression="${project.build.sourceDirectory}"
+     * @required
+     * @readonly
+     */
+    private String sourceDirectory;
+
+    /**
+     * @parameter expression="${project.build.testSourceDirectory}"
+     * @required
+     * @readonly
+     */
+    private String testSourceDirectory;
 
     /**
      * Compile classpath.
@@ -33,11 +48,32 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
     private List<String> testClasspathElements;
 
     /**
-     * The scope of the mojo classpath
+     * The scope of the mojo classpath, either "compile" or "test"
      * 
      * @parameter default-value="compile"
      */
     private String scope;
+
+    /**
+     * Scenario include filters, relative to the root source directory
+     * determined by the scope
+     * 
+     * @parameter
+     */
+    private List<String> scenarioIncludes;
+
+    /**
+     * Scenario exclude filters, relative to the root source directory
+     * determined by the scope
+     * 
+     * @parameter
+     */
+    private List<String> scenarioExcludes;
+
+    /**
+     * Used to find scenario class names
+     */
+    private ScenarioClassNameFinder finder = new ScenarioClassNameFinder();
 
     /**
      * Determines if the scope of the mojo classpath is "test"
@@ -46,6 +82,20 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
      */
     protected boolean isTestScope() {
         return TEST_SCOPE.equals(scope);
+    }
+
+    private String rootSourceDirectory() {
+        if (isTestScope()) {
+            return testSourceDirectory;
+        }
+        return sourceDirectory;
+    }
+
+    protected List<String> findScenarioClassNames() {
+        List<String> scenarioClassNames = finder.listScenarioClassNames(rootSourceDirectory(), null,
+                scenarioIncludes, scenarioExcludes);
+        getLog().debug("Found scenario class names: " + scenarioClassNames);
+        return scenarioClassNames;
     }
 
     /**

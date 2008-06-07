@@ -29,13 +29,28 @@
         <version>${pom.version}</version>
         <executions>
           <execution>
-            <id>run-scenarios</id>
+            <id>run-scenarios-listed</id>
             <phase>integration-test</phase>
             <configuration>
               <scenarioClassNames>
                 <scenarioClassName>org.jbehave.examples.trader.scenarios.StatusAlertCanBeActivated</scenarioClassName>
                 <scenarioClassName>org.jbehave.examples.trader.scenarios.StatusAlertIsNeverActivated</scenarioClassName>
               </scenarioClassNames>
+            </configuration>
+            <goals>
+              <goal>run-scenarios</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>run-scenarios-found</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <scenarioIncludes>
+                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
+              </scenarioIncludes>
+              <scenarioExcludes>
+                <scenarioExclude>**/*Steps.java</scenarioExclude>
+              </scenarioExcludes>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>
