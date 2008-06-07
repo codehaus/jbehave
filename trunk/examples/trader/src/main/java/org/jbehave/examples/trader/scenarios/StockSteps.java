@@ -1,4 +1,4 @@
-package org.jbehave.examples.trader.steps;
+package org.jbehave.examples.trader.scenarios;
 
 
 import static org.hamcrest.CoreMatchers.equalTo;

@@ -1,6 +1,5 @@
-package org.jbehave.examples.trader;
+package org.jbehave.examples.trader.scenarios;
 
-import org.jbehave.examples.trader.steps.StockSteps;
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.ScenarioFileLoader;
 

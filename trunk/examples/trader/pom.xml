@@ -32,7 +32,7 @@
             <id>run-scenario</id>
             <phase>integration-test</phase>
             <configuration>
-              <scenarioClassName>org.jbehave.examples.trader.AlertStatusCanBeActivated</scenarioClassName>
+              <scenarioClassName>org.jbehave.examples.trader.scenarios.AlertStatusCanBeActivated</scenarioClassName>
             </configuration>
             <goals>
               <goal>run-scenario</goal>
