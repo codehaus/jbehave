@@ -41,7 +41,7 @@ public class ScenarioClassLoader extends URLClassLoader {
             throw new RuntimeException(message, e);
         } catch (Exception e) {
             String message = "The Scenario '" + scenarioClassName
-                    + "' could not be instantiated with classpath element:s " + asShortPaths(getURLs());
+                    + "' could not be instantiated with classpath elements: " + asShortPaths(getURLs());
             throw new RuntimeException(message, e);
         }
     }
