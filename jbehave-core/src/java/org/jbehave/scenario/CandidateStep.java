@@ -12,77 +12,75 @@ import org.jbehave.scenario.steps.Steps;
 
 public abstract class CandidateStep {
 
-	private final Method method;
-	private final Steps steps;
-	private Pattern pattern;
-	
-	public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter) {
-		this.method = method;
-		this.steps = steps;
-		pattern = patternConverter.buildPattern(matchThis);
-	}
+    private final Method method;
+    private final Steps steps;
+    private Pattern pattern;
 
-	public boolean matches(String string) {
-		if (string.startsWith(precursor())) {
-			String trimmed = trimPrecursor(string);
-			Matcher matcher = pattern.matcher(trimmed);
-			return matcher.matches();
-		}
-		return false;
-	}
+    public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter) {
+        this.method = method;
+        this.steps = steps;
+        pattern = patternConverter.buildPattern(matchThis);
+    }
 
-	private String trimPrecursor(String string) {
-		return string.substring(precursor().length());
-	}
+    public boolean matches(String string) {
+        if (string.startsWith(precursor())) {
+            String trimmed = trimPrecursor(string);
+            Matcher matcher = pattern.matcher(trimmed);
+            return matcher.matches();
+        }
+        return false;
+    }
 
-	public Step createFrom(final String stepAsString) {
-		Matcher matcher = pattern.matcher(trimPrecursor(stepAsString));
-		matcher.find();
-		final Object[] args = new Object[matcher.groupCount()];
-		for (int group = 0; group < args.length; group++) {
-			String arg = matcher.group(group + 1);
-			Object converted = convert(arg, method.getParameterTypes()[group]);
-			args[group] = converted;
-		}
-		return new Step() {
-			public StepResult perform() {
-				try {
-					method.invoke(steps, args);
-					return StepResult.success(stepAsString);
-				} catch (Throwable t) {
-					return failureWithOriginalException(stepAsString, t);
-				}
-			}
+    private String trimPrecursor(String string) {
+        return string.substring(precursor().length());
+    }
 
-			private StepResult failureWithOriginalException(
-					final String stepAsString, Throwable t) {
-				if (t instanceof InvocationTargetException && t.getCause() != null) {
-					return StepResult.failure(stepAsString, t.getCause());
-				}
-				return StepResult.failure(stepAsString, t);
-			}
+    public Step createFrom(final String stepAsString) {
+        Matcher matcher = pattern.matcher(trimPrecursor(stepAsString));
+        matcher.find();
+        final Object[] args = new Object[matcher.groupCount()];
+        for (int group = 0; group < args.length; group++) {
+            String arg = matcher.group(group + 1);
+            Object converted = convert(arg, method.getParameterTypes()[group]);
+            args[group] = converted;
+        }
+        return new Step() {
+            public StepResult perform() {
+                try {
+                    method.invoke(steps, args);
+                    return StepResult.success(stepAsString);
+                } catch (Throwable t) {
+                    return failureWithOriginalException(stepAsString, t);
+                }
+            }
 
-			public StepResult doNotPerform() {
-				return StepResult.notPerformed(stepAsString);
-			}
+            private StepResult failureWithOriginalException(final String stepAsString, Throwable t) {
+                if (t instanceof InvocationTargetException && t.getCause() != null) {
+                    return StepResult.failure(stepAsString, t.getCause());
+                }
+                return StepResult.failure(stepAsString, t);
+            }
 
-		};
-	}
-	
-	private Object convert(String arg, Class<?> clazz) {
-		if (clazz == Integer.class || clazz == int.class) {
-			return Integer.valueOf(arg);
-		} else if (clazz == Long.class || clazz == long.class) {
-			return Long.valueOf(arg);
-		} else if (clazz == Double.class || clazz == double.class) {
-			return Double.valueOf(arg);
-		} else if (clazz == Float.class || clazz == float.class) {
-			return Float.valueOf(arg);
-		}
-		return arg;
-	}
+            public StepResult doNotPerform() {
+                return StepResult.notPerformed(stepAsString);
+            }
 
-	protected abstract String precursor();
+        };
+    }
 
+    private Object convert(String value, Class<?> clazz) {
+        if (clazz == Integer.class || clazz == int.class) {
+            return Integer.valueOf(value);
+        } else if (clazz == Long.class || clazz == long.class) {
+            return Long.valueOf(value);
+        } else if (clazz == Double.class || clazz == double.class) {
+            return Double.valueOf(value);
+        } else if (clazz == Float.class || clazz == float.class) {
+            return Float.valueOf(value);
+        }
+        return value;
+    }
+
+    protected abstract String precursor();
 
 }

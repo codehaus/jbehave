@@ -8,6 +8,10 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 
 	private final PrintStream output;
 	
+	public PrintStreamScenarioReporter(){
+	    this(System.out);
+    }
+	
 	public PrintStreamScenarioReporter(PrintStream output) {
 		this.output = output;
 	}
