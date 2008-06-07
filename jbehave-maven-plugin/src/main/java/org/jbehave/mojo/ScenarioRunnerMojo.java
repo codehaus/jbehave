@@ -17,17 +17,20 @@ public class ScenarioRunnerMojo extends AbstractJBehaveMojo {
      * Scenario class names
      * 
      * @parameter
-     * @required
      */
     private List<String> scenarioClassNames;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        for (String scenarioClassName : scenarioClassNames) {
+        List<String> scenarios = scenarioClassNames;
+        if ( scenarios == null || scenarios.isEmpty() ){
+            scenarios = findScenarioClassNames();
+        }
+        for (String scenario : scenarios) {
             try {
-                System.out.println("Running scenario "+scenarioClassName);
-                createScenarioClassLoader().newScenario(scenarioClassName).runUsingSteps();
+                getLog().info("Running scenario "+scenario);
+                createScenarioClassLoader().newScenario(scenario).runUsingSteps();
             } catch (Throwable e) {
-                throw new MojoExecutionException("Failed to run scenario " + scenarioClassName, e);
+                throw new MojoExecutionException("Failed to run scenario " + scenario, e);
             }
         }
     }
