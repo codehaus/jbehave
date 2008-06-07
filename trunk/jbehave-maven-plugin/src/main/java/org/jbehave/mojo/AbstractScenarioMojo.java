@@ -1,9 +1,12 @@
 package org.jbehave.mojo;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.ScenarioClassNameFinder;
 
 /**
@@ -11,7 +14,7 @@ import org.jbehave.scenario.parser.ScenarioClassNameFinder;
  * 
  * @author Mauro Talevi
  */
-public abstract class AbstractJBehaveMojo extends AbstractMojo {
+public abstract class AbstractScenarioMojo extends AbstractMojo {
 
     private static final String TEST_SCOPE = "test";
 
@@ -55,6 +58,14 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
     private String scope;
 
     /**
+     * Scenario class names, if specified take precedence over the names
+     * specificed via the "scenarioIncludes" and "scenarioExcludes" parameters
+     * 
+     * @parameter
+     */
+    private List<String> scenarioClassNames;
+
+    /**
      * Scenario include filters, relative to the root source directory
      * determined by the scope
      * 
@@ -80,7 +91,7 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
      * 
      * @return A boolean <code>true</code> if test scoped
      */
-    protected boolean isTestScope() {
+    private boolean isTestScope() {
         return TEST_SCOPE.equals(scope);
     }
 
@@ -91,9 +102,9 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
         return sourceDirectory;
     }
 
-    protected List<String> findScenarioClassNames() {
-        List<String> scenarioClassNames = finder.listScenarioClassNames(rootSourceDirectory(), null,
-                scenarioIncludes, scenarioExcludes);
+    private List<String> findScenarioClassNames() {
+        List<String> scenarioClassNames = finder.listScenarioClassNames(rootSourceDirectory(), null, scenarioIncludes,
+                scenarioExcludes);
         getLog().debug("Found scenario class names: " + scenarioClassNames);
         return scenarioClassNames;
     }
@@ -105,11 +116,39 @@ public abstract class AbstractJBehaveMojo extends AbstractMojo {
      * @return A ScenarioClassLoader
      * @throws MalformedURLException
      */
-    protected ScenarioClassLoader createScenarioClassLoader() throws MalformedURLException {
+    private ScenarioClassLoader createScenarioClassLoader() throws MalformedURLException {
         List<String> classpathElements = compileClasspathElements;
         if (isTestScope()) {
             classpathElements = testClasspathElements;
         }
         return new ScenarioClassLoader(classpathElements);
+    }
+
+    /**
+     * Returns the list of scenario instances, whose class names are either
+     * specified via the parameter "scenarioClassNames" (which takes precedence)
+     * or found using the parameters "scenarioIncludes" and "scenarioExcludes".
+     * 
+     * @return A List of Scenarios
+     * @throws MojoExecutionException
+     */
+    protected List<Scenario> scenarios() throws MojoExecutionException {
+        List<String> names = scenarioClassNames;
+        if (names == null || names.isEmpty()) {
+            names = findScenarioClassNames();
+        }
+        if (names.isEmpty()) {
+            getLog().info("No scenarios to run.");
+        }
+        try {
+            ScenarioClassLoader classLoader = createScenarioClassLoader();
+            List<Scenario> scenarios = new ArrayList<Scenario>();
+            for (String name : names) {
+                scenarios.add(classLoader.newScenario(name));
+            }
+            return scenarios;
+        } catch (Exception e) {
+            throw new MojoExecutionException("Failed to instantiate scenarios " + names, e);
+        }
     }
 }

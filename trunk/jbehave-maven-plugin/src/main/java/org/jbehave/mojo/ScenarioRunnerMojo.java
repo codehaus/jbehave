@@ -1,9 +1,8 @@
 package org.jbehave.mojo;
 
-import java.util.List;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.jbehave.scenario.Scenario;
 
 /**
  * Mojo to run scenarios
@@ -11,30 +10,15 @@ import org.apache.maven.plugin.MojoFailureException;
  * @author Mauro Talevi
  * @goal run-scenarios
  */
-public class ScenarioRunnerMojo extends AbstractJBehaveMojo {
-
-    /**
-     * Scenario class names
-     * 
-     * @parameter
-     */
-    private List<String> scenarioClassNames;
+public class ScenarioRunnerMojo extends AbstractScenarioMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        List<String> scenarios = scenarioClassNames;
-        if (scenarios == null || scenarios.isEmpty()) {
-            scenarios = findScenarioClassNames();
-        }
-        if (scenarios.isEmpty()) {
-            getLog().info("No scenarios to run.");
-        } else {
-            for (String scenario : scenarios) {
-                try {
-                    getLog().info("Running scenario " + scenario);
-                    createScenarioClassLoader().newScenario(scenario).runUsingSteps();
-                } catch (Throwable e) {
-                    throw new MojoExecutionException("Failed to run scenario " + scenario, e);
-                }
+        for (Scenario scenario : scenarios()) {
+            try {
+                getLog().info("Running scenario " + scenario.getClass().getName());
+                scenario.runUsingSteps();
+            } catch (Throwable e) {
+                throw new MojoExecutionException("Failed to run scenario " + scenario.getClass().getName(), e);
             }
         }
     }
