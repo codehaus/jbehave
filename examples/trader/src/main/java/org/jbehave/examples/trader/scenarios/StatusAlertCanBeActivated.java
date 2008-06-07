@@ -10,7 +10,7 @@ public class StatusAlertCanBeActivated extends Scenario {
     }
 
     public StatusAlertCanBeActivated(ClassLoader classLoader) {
-        super(new ScenarioFileLoader(classLoader), new StockSteps());
+        super(new ScenarioFileLoader(classLoader), new StockSteps(10.0));
     }
 
 }

@@ -15,10 +15,6 @@ public class StockSteps extends Steps {
 	private double threshold;
 	private Stock stock;
 	
-	public StockSteps(){
-	    this(10.0);
-	}
-    
 	public StockSteps(double threshold){
 	    this.threshold = threshold;
 	}
