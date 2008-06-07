@@ -6,7 +6,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.stub;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -38,7 +37,7 @@ public class ScenarioBehaviour {
 		ScenarioRunner runner = new ScenarioRunner(new PrintStreamScenarioReporter(new PrintStream(output)));
 		MySteps steps = new MySteps();
 		
- 		stub(fileLoader.loadScenarioFor(MyScenario.class)).toReturn(new ByteArrayInputStream("my_scenario".getBytes()));
+ 		stub(fileLoader.loadScenarioAsString(MyScenario.class)).toReturn("my_scenario");
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I leave them over the winter",
@@ -62,7 +61,7 @@ public class ScenarioBehaviour {
 		ScenarioRunner runner = new ScenarioRunner(new PrintStreamScenarioReporter(new PrintStream(output)));
 		MySteps steps = new MySteps();
 		
-		stub(fileLoader.loadScenarioFor(MyScenario.class)).toReturn(new ByteArrayInputStream("my_scenario".getBytes()));
+        stub(fileLoader.loadScenarioAsString(MyScenario.class)).toReturn("my_scenario");
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I put them in a field",
