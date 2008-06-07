@@ -1,8 +1,5 @@
 package org.jbehave.scenario;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import org.jbehave.scenario.parser.ScenarioFileLoader;
@@ -21,13 +18,12 @@ public abstract class Scenario {
     private final ScenarioRunner scenarioRunner;
 
     public Scenario(Steps... candidateSteps) {
-        this(new ScenarioFileLoader(), new StepParser(),
-                new ScenarioRunner(new PrintStreamScenarioReporter()), candidateSteps);
+        this(new ScenarioFileLoader(), new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter()),
+                candidateSteps);
     }
 
     public Scenario(ScenarioFileLoader fileLoader, Steps... candidateSteps) {
-        this(fileLoader, new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter()),
-                candidateSteps);
+        this(fileLoader, new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter()), candidateSteps);
     }
 
     public Scenario(ScenarioFileLoader fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner,
@@ -40,7 +36,7 @@ public abstract class Scenario {
 
     @Test
     public void runUsingSteps() throws Throwable {
-        List<String> stringSteps = stepParser.findSteps(convertToString());
+        List<String> stringSteps = stepParser.findSteps(fileLoader.loadScenarioAsString(this.getClass()));
         Step[] steps = new Step[stringSteps.size()];
         for (int i = 0; i < steps.length; i++) {
             String stringStep = stringSteps.get(i);
@@ -56,18 +52,5 @@ public abstract class Scenario {
             }
         }
         scenarioRunner.run(steps);
-    }
-
-    private String convertToString() {
-        try {
-            InputStream stream = fileLoader.loadScenarioFor(this.getClass());
-            byte[] bytes = new byte[stream.available()];
-            stream.read(bytes);
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            output.write(bytes);
-            return output.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
