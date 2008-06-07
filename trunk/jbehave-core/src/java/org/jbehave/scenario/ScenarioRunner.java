@@ -5,6 +5,20 @@ import org.jbehave.scenario.steps.StepResult;
 
 public class ScenarioRunner {
 
+    private State state = new FineSoFar();
+    private final ScenarioReporter reporter;
+
+    public ScenarioRunner(ScenarioReporter reporter) {
+        this.reporter = reporter;
+    }
+
+    public void run(Step... steps) throws Throwable {
+        for (Step step : steps) {
+            state.run(step);            
+        }
+        if (throwable != null) { throw throwable; }
+    }
+
 	private class SomethingHappened extends State {
 		@Override
 		protected void run(Step step) {
@@ -32,18 +46,5 @@ public class ScenarioRunner {
 		protected abstract void run(Step step);
 	};
 	
-	private State state = new FineSoFar();
-	private final ScenarioReporter reporter;
-
-	public ScenarioRunner(ScenarioReporter reporter) {
-		this.reporter = reporter;
-	}
-
-	public void run(Step... steps) throws Throwable {
-		for (Step step : steps) {
-			state.run(step);			
-		}
-		if (throwable != null) { throw throwable; }
-	}
-
+	
 }
