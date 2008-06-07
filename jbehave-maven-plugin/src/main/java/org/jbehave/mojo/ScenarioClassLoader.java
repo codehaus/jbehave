@@ -37,11 +37,11 @@ public class ScenarioClassLoader extends URLClassLoader {
             Thread.currentThread().setContextClassLoader(this);
             return scenario;
         } catch (ClassCastException e) {
-            String message = "The scenario " + scenarioClassName + " must be of type " + Scenario.class.getName();
+            String message = "The scenario '" + scenarioClassName + "' must be of type '" + Scenario.class.getName() +"'";
             throw new RuntimeException(message, e);
         } catch (Exception e) {
-            String message = "The Scenario " + scenarioClassName
-                    + " could not be instantiated with classpath elements " + asShortPaths(getURLs());
+            String message = "The Scenario '" + scenarioClassName
+                    + "' could not be instantiated with classpath element:s " + asShortPaths(getURLs());
             throw new RuntimeException(message, e);
         }
     }
@@ -50,13 +50,21 @@ public class ScenarioClassLoader extends URLClassLoader {
         List<String> names = new ArrayList<String>();
         for (URL url : urls) {
             String path = url.getPath();
-            if (path.endsWith(".jar")) {
-                names.add(path.substring(path.lastIndexOf("/") + 1));
+            if (isJar(path)) {
+                names.add(shortPath(path));
             } else {
                 names.add(path);
             }
         }
         return names;
+    }
+
+    private static String shortPath(String path) {
+        return path.substring(path.lastIndexOf("/") + 1);
+    }
+
+    private static boolean isJar(String path) {
+        return path.endsWith(".jar");
     }
 
     private static URL[] classpathURLs(List<String> elements) throws MalformedURLException {
