@@ -12,11 +12,20 @@ import org.jbehave.scenario.steps.Steps;
 
 public class StockSteps extends Steps {
 	
+	private double threshold;
 	private Stock stock;
-
+	
+	public StockSteps(){
+	    this(10.0);
+	}
+    
+	public StockSteps(double threshold){
+	    this.threshold = threshold;
+	}
+	
 	@Given("a stock of price $price")
 	public void aStockOfPrice(double price) {
-		stock = new Stock(price, 10.0);
+		stock = new Stock(price, threshold);
 	}
 	
 	@When("the stock is traded at $price")
