@@ -5,7 +5,7 @@ import static org.jbehave.Ensure.ensureThat;
 
 import java.util.List;
 
-import org.jbehave.scenario.parser.StepParser;
+import org.jbehave.scenario.parser.PatternStepParser;
 import org.junit.Test;
 
 
@@ -15,7 +15,7 @@ public class StepParserBehaviour {
 
 	@Test
 	public void shouldExtractGivensWhensAndThensFromSimpleScenarios() {
-		StepParser parser = new StepParser();
+		PatternStepParser parser = new PatternStepParser();
 		List<String> stringSteps = parser.findSteps(
 				"Given a scenario" + NL + 
 				"When I parse it" + NL + 
@@ -28,7 +28,7 @@ public class StepParserBehaviour {
 	
 	@Test
 	public void shouldExtractGivensWhensAndThensFromMultilineScenarios() {
-		StepParser parser = new StepParser();
+		PatternStepParser parser = new PatternStepParser();
 		List<String> stringSteps = parser.findSteps(
 				"Given a scenario" + NL +
 				"with this line" + NL +

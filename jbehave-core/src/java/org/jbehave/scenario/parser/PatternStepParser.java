@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 
 
-public class StepParser {
+public class PatternStepParser {
 
 	public List<String> findSteps(String scenarioAsString) {
 		Matcher matcher = Pattern.compile("((Given|When|Then) (.|\\s)*?)\\s*(\\Z|Given|When|Then)").matcher(scenarioAsString);

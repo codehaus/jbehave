@@ -3,7 +3,7 @@ package org.jbehave.scenario;
 import java.util.List;
 
 import org.jbehave.scenario.parser.ScenarioFileLoader;
-import org.jbehave.scenario.parser.StepParser;
+import org.jbehave.scenario.parser.PatternStepParser;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.PendingStep;
 import org.jbehave.scenario.steps.Step;
@@ -14,19 +14,22 @@ public abstract class Scenario {
 
     private final Steps[] candidateSteps;
     private final ScenarioFileLoader fileLoader;
-    private final StepParser stepParser;
+    private final PatternStepParser stepParser;
     private final ScenarioRunner scenarioRunner;
 
     public Scenario(Steps... candidateSteps) {
-        this(new ScenarioFileLoader(), new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter()),
-                candidateSteps);
+        this(new ScenarioFileLoader(), candidateSteps);
     }
 
     public Scenario(ScenarioFileLoader fileLoader, Steps... candidateSteps) {
-        this(fileLoader, new StepParser(), new ScenarioRunner(new PrintStreamScenarioReporter()), candidateSteps);
+        this(fileLoader, new PrintStreamScenarioReporter(), candidateSteps);
     }
 
-    public Scenario(ScenarioFileLoader fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner,
+    public Scenario(ScenarioFileLoader fileLoader, ScenarioReporter reporter, Steps... candidateSteps) {
+        this(fileLoader, new PatternStepParser(), new ScenarioRunner(reporter), candidateSteps);
+    }
+
+    public Scenario(ScenarioFileLoader fileFinder, PatternStepParser stepParser, ScenarioRunner scenarioRunner,
             Steps... candidateSteps) {
         this.fileLoader = fileFinder;
         this.stepParser = stepParser;

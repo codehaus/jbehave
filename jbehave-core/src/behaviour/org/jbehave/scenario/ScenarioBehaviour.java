@@ -14,7 +14,7 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.ScenarioFileLoader;
-import org.jbehave.scenario.parser.StepParser;
+import org.jbehave.scenario.parser.PatternStepParser;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class ScenarioBehaviour {
 	public void shouldPerformStepsInFileAssociatedWithNameUsingGivenStepsClasses() throws Throwable {
 		
 		ScenarioFileLoader fileLoader = mock(ScenarioFileLoader.class);
-		StepParser stepParser = mock(StepParser.class);
+		PatternStepParser stepParser = mock(PatternStepParser.class);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		ScenarioRunner runner = new ScenarioRunner(new PrintStreamScenarioReporter(new PrintStream(output)));
 		MySteps steps = new MySteps();
@@ -53,10 +53,34 @@ public class ScenarioBehaviour {
 	}
 	
 	@Test
+    public void shouldPerformStepsUsingACustomReporter() throws Throwable {
+        
+        ScenarioFileLoader fileLoader = mock(ScenarioFileLoader.class);
+        PatternStepParser stepParser = mock(PatternStepParser.class);
+        StringBuffer buffer = new StringBuffer();
+        ScenarioRunner runner = new ScenarioRunner(new BufferScenarioReporter(buffer));
+        MySteps steps = new MySteps();
+        
+        stub(fileLoader.loadScenarioAsString(MyScenario.class)).toReturn("my_scenario");
+        stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
+                "Given I have 2 cows",
+                "When I leave them over the winter",
+                "Then I have 2 cows"}));
+
+        new MyScenario(fileLoader, stepParser, runner, steps).runUsingSteps();
+        
+        ensureThat(steps.numberOfCows, equalTo(2));
+        ensureThat(buffer.toString(), equalTo(
+                "Given I have 2 cows" + NL + 
+                "When I leave them over the winter (PENDING)" + NL +
+                "Then I have 2 cows (NOT PERFORMED)" + NL));
+    }
+	
+	@Test
 	public void shouldRethrowErrorsInTheEventOfAScenarioFailure() throws Throwable {
 		
 		ScenarioFileLoader fileLoader = mock(ScenarioFileLoader.class);
-		StepParser stepParser = mock(StepParser.class);
+		PatternStepParser stepParser = mock(PatternStepParser.class);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		ScenarioRunner runner = new ScenarioRunner(new PrintStreamScenarioReporter(new PrintStream(output)));
 		MySteps steps = new MySteps();
@@ -85,7 +109,7 @@ public class ScenarioBehaviour {
 
 	
 	private static class MyScenario extends Scenario {
-		public MyScenario(ScenarioFileLoader fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner, Steps steps) {
+		public MyScenario(ScenarioFileLoader fileFinder, PatternStepParser stepParser, ScenarioRunner scenarioRunner, Steps steps) {
 			super(fileFinder, stepParser, scenarioRunner, steps);
 		}
 	}
@@ -114,5 +138,31 @@ public class ScenarioBehaviour {
 			error = new IllegalAccessError("Leave my cows alone!");
 			throw error;
 		}
+	}
+	
+	public static class BufferScenarioReporter implements ScenarioReporter {
+
+        private final StringBuffer buffer;
+
+        public BufferScenarioReporter(StringBuffer buffer) {
+            this.buffer = buffer;
+        }
+
+        public void failed(String step, Throwable e) {
+            buffer.append(step+ " (FAILED)\n");
+        }
+
+        public void notPerformed(String step) {
+            buffer.append(step+ " (NOT PERFORMED)\n");
+        }
+
+        public void pending(String step) {
+            buffer.append(step+ " (PENDING)\n");
+        }
+
+        public void successful(String step) {
+            buffer.append(step+"\n");
+        }
+	    
 	}
 }
