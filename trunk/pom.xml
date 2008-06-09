@@ -174,7 +174,6 @@
         <plugin>
           <groupId>org.codehaus.xsite</groupId>
           <artifactId>xsite-maven-plugin</artifactId>
-          <version>1.0-beta-9</version>
         </plugin>
       </plugins>
     </pluginManagement>
