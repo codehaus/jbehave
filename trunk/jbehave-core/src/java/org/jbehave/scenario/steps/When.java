@@ -2,7 +2,6 @@ package org.jbehave.scenario.steps;
 
 import java.lang.reflect.Method;
 
-import org.jbehave.scenario.CandidateStep;
 
 public class When extends CandidateStep {
 

@@ -6,7 +6,6 @@ import static org.jbehave.Ensure.not;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.jbehave.scenario.CandidateStep;
 import org.jbehave.scenario.ScenarioReporter;
 import org.junit.Test;
 

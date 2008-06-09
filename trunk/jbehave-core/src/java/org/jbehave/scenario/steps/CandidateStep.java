@@ -1,14 +1,10 @@
-package org.jbehave.scenario;
+package org.jbehave.scenario.steps;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jbehave.scenario.steps.StepPatternBuilder;
-import org.jbehave.scenario.steps.Step;
-import org.jbehave.scenario.steps.StepResult;
-import org.jbehave.scenario.steps.Steps;
 
 public abstract class CandidateStep {
 
