@@ -8,28 +8,28 @@ import org.jbehave.scenario.Scenario;
 
 public class ScenarioFileLoader {
 
-    private final ClassToFilenameConverter converter;
+    private final ScenarioFileNameResolver converter;
     private final ClassLoader classLoader;
 
     public ScenarioFileLoader() {
-        this(new CamelCaseToUnderscoreConverter(), Thread.currentThread().getContextClassLoader());
+        this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader());
     }
 
-    public ScenarioFileLoader(ClassToFilenameConverter converter) {
+    public ScenarioFileLoader(ScenarioFileNameResolver converter) {
         this(converter, Thread.currentThread().getContextClassLoader());
     }
 
     public ScenarioFileLoader(ClassLoader classLoader) {
-        this(new CamelCaseToUnderscoreConverter(), classLoader);
+        this(new UnderscoredCamelCaseResolver(), classLoader);
     }
 
-    public ScenarioFileLoader(ClassToFilenameConverter converter, ClassLoader classLoader) {
+    public ScenarioFileLoader(ScenarioFileNameResolver converter, ClassLoader classLoader) {
         this.converter = converter;
         this.classLoader = classLoader;
     }
 
     public InputStream loadScenarioFor(Class<? extends Scenario> scenarioClass) {
-        return classLoader.getResourceAsStream(converter.convert(scenarioClass));
+        return classLoader.getResourceAsStream(converter.resolve(scenarioClass));
     }
 
     public String loadScenarioAsString(Class<? extends Scenario> scenarioClass) {

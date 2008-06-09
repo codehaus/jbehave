@@ -3,11 +3,13 @@ package org.jbehave.scenario.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CamelCaseToUnderscoreConverter implements ClassToFilenameConverter {
+import org.jbehave.scenario.Scenario;
+
+public class UnderscoredCamelCaseResolver implements ScenarioFileNameResolver {
 
 	private static final String UNDERSCORE = "_";
 
-    public String convert(Class<?> scenarioClass) {
+    public String resolve(Class<? extends Scenario> scenarioClass) {
 
 		String packageDir = scenarioClass.getPackage().getName().replaceAll("\\.", "/");
 		
