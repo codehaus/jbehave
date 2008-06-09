@@ -9,13 +9,13 @@ import org.jbehave.scenario.parser.PatternStepParser;
 import org.junit.Test;
 
 
-public class StepParserBehaviour {
+public class PatternStepParserBehaviour {
 
 	private static final String NL = System.getProperty("line.separator");
 
 	@Test
 	public void shouldExtractGivensWhensAndThensFromSimpleScenarios() {
-		PatternStepParser parser = new PatternStepParser();
+		StepParser parser = new PatternStepParser();
 		List<String> stringSteps = parser.findSteps(
 				"Given a scenario" + NL + 
 				"When I parse it" + NL + 
@@ -28,7 +28,7 @@ public class StepParserBehaviour {
 	
 	@Test
 	public void shouldExtractGivensWhensAndThensFromMultilineScenarios() {
-		PatternStepParser parser = new PatternStepParser();
+		StepParser parser = new PatternStepParser();
 		List<String> stringSteps = parser.findSteps(
 				"Given a scenario" + NL +
 				"with this line" + NL +
