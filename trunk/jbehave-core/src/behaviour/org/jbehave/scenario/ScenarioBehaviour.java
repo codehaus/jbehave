@@ -15,6 +15,7 @@ import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.PatternStepParser;
+import org.jbehave.scenario.parser.StepParser;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class ScenarioBehaviour {
 	public void shouldPerformStepsInFileAssociatedWithNameUsingGivenStepsClasses() throws Throwable {
 		
 		ScenarioFileLoader fileLoader = mock(ScenarioFileLoader.class);
-		PatternStepParser stepParser = mock(PatternStepParser.class);
+		StepParser stepParser = mock(PatternStepParser.class);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		ScenarioRunner runner = new ScenarioRunner(new PrintStreamScenarioReporter(new PrintStream(output)));
 		MySteps steps = new MySteps();
@@ -56,7 +57,7 @@ public class ScenarioBehaviour {
     public void shouldPerformStepsUsingACustomReporter() throws Throwable {
         
         ScenarioFileLoader fileLoader = mock(ScenarioFileLoader.class);
-        PatternStepParser stepParser = mock(PatternStepParser.class);
+        StepParser stepParser = mock(PatternStepParser.class);
         StringBuffer buffer = new StringBuffer();
         ScenarioRunner runner = new ScenarioRunner(new BufferScenarioReporter(buffer));
         MySteps steps = new MySteps();
@@ -80,7 +81,7 @@ public class ScenarioBehaviour {
 	public void shouldRethrowErrorsInTheEventOfAScenarioFailure() throws Throwable {
 		
 		ScenarioFileLoader fileLoader = mock(ScenarioFileLoader.class);
-		PatternStepParser stepParser = mock(PatternStepParser.class);
+		StepParser stepParser = mock(PatternStepParser.class);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		ScenarioRunner runner = new ScenarioRunner(new PrintStreamScenarioReporter(new PrintStream(output)));
 		MySteps steps = new MySteps();
@@ -109,7 +110,7 @@ public class ScenarioBehaviour {
 
 	
 	private static class MyScenario extends Scenario {
-		public MyScenario(ScenarioFileLoader fileFinder, PatternStepParser stepParser, ScenarioRunner scenarioRunner, Steps steps) {
+		public MyScenario(ScenarioFileLoader fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner, Steps steps) {
 			super(fileFinder, stepParser, scenarioRunner, steps);
 		}
 	}
