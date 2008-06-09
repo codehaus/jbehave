@@ -3,7 +3,6 @@ package org.jbehave.scenario.steps;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 
-import org.jbehave.scenario.CandidateStep;
 import org.junit.Test;
 
 public class StepsBehaviour {

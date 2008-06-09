@@ -3,7 +3,6 @@ package org.jbehave.scenario.steps;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import org.jbehave.scenario.CandidateStep;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;

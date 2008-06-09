@@ -3,6 +3,11 @@ package org.jbehave;
 import org.hamcrest.Matcher;
 import org.junit.Assert;
 
+/**
+ * Collection of static utility methods that use Hamcrest matchers.
+ * 
+ * @author Elizabeth Keogh
+ */
 public class Ensure {
 
 	public static void ensureThat(boolean matches) {

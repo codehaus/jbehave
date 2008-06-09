@@ -10,7 +10,8 @@ import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.ScenarioClassNameFinder;
 
 /**
- * Abstract base class containing common functionality for all JBehave Mojos.
+ * Abstract mojo that holds all the configuration parameters to specify and load
+ * scenarios.
  * 
  * @author Mauro Talevi
  */
