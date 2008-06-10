@@ -91,7 +91,7 @@ body {
   color: #555;
   text-align: left;
   padding: 0 0 10px 0;
-  background-color: #3d3e44;
+  background-color: #cccccc;
 }
 
 h2 {
@@ -229,7 +229,7 @@ table.bodyTable tr.b {
 .MFile a:hover, .MFile a:active, .MIndex a:hover, .MIndex a:active {
   background-color: #3E4043;
   border-right: 4px solid #303234;
-  color: #FAEC8F;
+  color: red;
   text-shadow: #303234 2px 2px 1px;
 }
 
