@@ -7,7 +7,7 @@
   </parent>
   <artifactId>jbehave-distribution</artifactId>
   <packaging>pom</packaging>
-  <name>jBehave Distribution</name>
+  <name>JBehave Distribution</name>
 
   <dependencies>
     <dependency>
