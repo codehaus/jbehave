@@ -40,8 +40,12 @@ public class ScenarioClassNameFinder {
     }
 
     private String classNameFor(String path) {
-        String className = path.substring(0, path.indexOf(".java"));
-        return className.replaceAll("/", "\\.");
+        int javaPath = path.indexOf(".java");
+        if ( javaPath != -1 ){
+            String className = path.substring(0, javaPath);
+            return className.replaceAll("/", "\\.");            
+        }
+        throw new InvalidScenarioClassPathException("Invalid scenario class path "+path);
     }
 
     private List<String> listPaths(String basedir, String rootPath, List<String> includes, List<String> excludes) {
