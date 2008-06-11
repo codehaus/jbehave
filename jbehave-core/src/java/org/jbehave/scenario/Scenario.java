@@ -60,9 +60,9 @@ public abstract class Scenario {
                         steps[i] = candidate.createFrom(stringStep);
                     }
                 }
-                if (steps[i] == null) {
-                    steps[i] = new PendingStep(stringStep);
-                }
+            }
+            if (steps[i] == null) {
+                steps[i] = new PendingStep(stringStep);
             }
         }
         scenarioRunner.run(steps);

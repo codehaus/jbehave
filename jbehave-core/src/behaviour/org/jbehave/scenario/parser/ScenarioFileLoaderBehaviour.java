@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.jbehave.scenario.Scenario;
-import org.jbehave.scenario.parser.scenarios.MyScenario;
+import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
 import org.junit.Test;
 
 public class ScenarioFileLoaderBehaviour {
@@ -15,13 +15,13 @@ public class ScenarioFileLoaderBehaviour {
     @Test
     public void canLoadScenario() {
         ScenarioFileLoader loader = new ScenarioFileLoader();
-        ensureThat(loader.loadScenarioAsString(MyScenario.class), equalTo("Given my scenario"));
+        ensureThat(loader.loadScenarioAsString(MyPendingScenario.class), equalTo("Given my scenario"));
     }
 
     @Test
     public void canLoadScenarioWithCustomFilenameResolver() {
         ScenarioFileLoader loader = new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"));
-        ensureThat(loader.loadScenarioAsString(MyScenario.class), equalTo("Given my scenario"));
+        ensureThat(loader.loadScenarioAsString(MyPendingScenario.class), equalTo("Given my scenario"));
 
     }
 
@@ -34,7 +34,7 @@ public class ScenarioFileLoaderBehaviour {
     @Test(expected = InvalidScenarioResourceException.class)
     public void cannotLoadScenarioForInvalidResource() {
         ScenarioFileLoader loader = new ScenarioFileLoader(new InvalidClassLoader());
-        loader.loadScenarioAsString(MyScenario.class);
+        loader.loadScenarioAsString(MyPendingScenario.class);
     }
 
     static class InexistentScenario extends Scenario {

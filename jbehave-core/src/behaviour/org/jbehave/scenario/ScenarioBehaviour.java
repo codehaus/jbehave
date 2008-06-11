@@ -16,6 +16,7 @@ import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PatternStepParser;
 import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.StepParser;
+import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
@@ -78,8 +79,8 @@ public class ScenarioBehaviour {
     }
 	
     @Test
-    public void shouldPerformStepsUsingDefaultScenario() throws Throwable {        
-        new MyDefaultScenario(new MySteps()).runUsingSteps();
+    public void shouldPerformStepsUsingScenarioWithDefaults() throws Throwable {        
+        new MyPendingScenario().runUsingSteps();
     }
 	
 	@Test
