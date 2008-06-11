@@ -10,16 +10,16 @@ public class UnderscoredCamelCaseResolverBehaviour {
 
     @Test
     public void shouldResolveCamelCasedClassNameToUnderscoredName() {
-        UnderscoredCamelCaseResolver converter = new UnderscoredCamelCaseResolver();
-        ensureThat(converter.resolve(CamelCaseScenario.class),
+        UnderscoredCamelCaseResolver resolver = new UnderscoredCamelCaseResolver();
+        ensureThat(resolver.resolve(CamelCaseScenario.class),
                 equalTo("org/jbehave/scenario/parser/camel_case_scenario"));
 
     }
     
     @Test
     public void shouldResolveCamelCasedClassNameToUnderscoredNameWithExtension() {
-        UnderscoredCamelCaseResolver converter = new UnderscoredCamelCaseResolver(".scenario");
-        ensureThat(converter.resolve(CamelCase.class),
+        UnderscoredCamelCaseResolver resolver = new UnderscoredCamelCaseResolver(".scenario");
+        ensureThat(resolver.resolve(CamelCase.class),
                 equalTo("org/jbehave/scenario/parser/camel_case.scenario"));
 
     }

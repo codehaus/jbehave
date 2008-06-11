@@ -20,11 +20,10 @@ public class ScenarioFileLoaderBehaviour {
 
     @Test
     public void canLoadScenarioWithCustomFilenameResolver() {
-        ScenarioFileLoader loader = new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"));
+        ScenarioFileLoader loader = new ScenarioFileLoader(new CasePreservingResolver(".scenario"));
         ensureThat(loader.loadScenarioAsString(MyPendingScenario.class), equalTo("Given my scenario"));
-
     }
-
+    
     @Test(expected = ScenarioNotFoundException.class)
     public void cannotLoadScenarioForInexistentResource() {
         ScenarioFileLoader loader = new ScenarioFileLoader();
