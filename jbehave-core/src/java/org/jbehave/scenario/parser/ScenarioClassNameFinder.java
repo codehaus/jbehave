@@ -1,5 +1,6 @@
 package org.jbehave.scenario.parser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,10 @@ public class ScenarioClassNameFinder {
     }
 
     private List<String> listPaths(String basedir, String rootPath, List<String> includes, List<String> excludes) {
+        List<String> paths = new ArrayList<String>();
+        if ( !new File(basedir).exists() ){
+            return paths;
+        }
         scanner.setBasedir(basedir);
         if (includes != null) {
             scanner.setIncludes(includes.toArray(new String[includes.size()]));
@@ -52,7 +57,6 @@ public class ScenarioClassNameFinder {
             scanner.setExcludes(excludes.toArray(new String[excludes.size()]));
         }
         scanner.scan();
-        List<String> paths = new ArrayList<String>();
         String basePath = (rootPath != null ? rootPath + "/" : "");
         for (String relativePath : scanner.getIncludedFiles()) {
             String path = basePath + relativePath;
