@@ -13,7 +13,7 @@ public class ScenarioClassNameFinderBehaviour {
     @Test
     public void canListScenarioNames() {
         ScenarioClassNameFinder finder = new ScenarioClassNameFinder();
-        ensureThat(finder.listScenarioClassNames(".", null, asList("**/scenarios/*.java"), asList("")).size() > 0);
+        ensureThat(finder.listScenarioClassNames(".", ".", asList("**/scenarios/*.java"), asList("")).size() > 0);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class ScenarioClassNameFinderBehaviour {
     }
 
     @Test(expected=InvalidScenarioClassPathException.class)
-    public void cannotListScenarioForPathsThatAreInvalid() {
+    public void cannotListScenarioNamesForPathsThatAreInvalid() {
         ScenarioClassNameFinder finder = new ScenarioClassNameFinder();
         finder.listScenarioClassNames(".", null, null, null);
     }

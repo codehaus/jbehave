@@ -13,8 +13,8 @@ import java.util.Arrays;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
-import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.PatternStepParser;
+import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.StepParser;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
@@ -75,6 +75,11 @@ public class ScenarioBehaviour {
                 "Given I have 2 cows" + NL + 
                 "When I leave them over the winter (PENDING)" + NL +
                 "Then I have 2 cows (NOT PERFORMED)" + NL));
+    }
+	
+    @Test
+    public void shouldPerformStepsUsingDefaultScenario() throws Throwable {        
+        new MyDefaultScenario(new MySteps()).runUsingSteps();
     }
 	
 	@Test
