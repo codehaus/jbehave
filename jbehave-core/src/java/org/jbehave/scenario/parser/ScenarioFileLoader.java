@@ -8,7 +8,7 @@ import org.jbehave.scenario.Scenario;
 
 public class ScenarioFileLoader {
 
-    private final ScenarioFileNameResolver converter;
+    private final ScenarioFileNameResolver resolver;
     private final ClassLoader classLoader;
 
     public ScenarioFileLoader() {
@@ -23,13 +23,13 @@ public class ScenarioFileLoader {
         this(new UnderscoredCamelCaseResolver(), classLoader);
     }
 
-    public ScenarioFileLoader(ScenarioFileNameResolver converter, ClassLoader classLoader) {
-        this.converter = converter;
+    public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader) {
+        this.resolver = resolver;
         this.classLoader = classLoader;
     }
 
     public InputStream loadScenarioFor(Class<? extends Scenario> scenarioClass) {
-        return classLoader.getResourceAsStream(converter.resolve(scenarioClass));
+        return classLoader.getResourceAsStream(resolver.resolve(scenarioClass));
     }
 
     public String loadScenarioAsString(Class<? extends Scenario> scenarioClass) {
