@@ -22,8 +22,8 @@
         <artifactId>junit</artifactId>
         <version>4.4</version>
       </dependency>
-      <dependency> 
-        <!-- Optional as only used by scenario class name finder -->      
+      <dependency>
+        <!-- Optional as only used by scenario class name finder -->
         <groupId>org.apache.ant</groupId>
         <artifactId>ant</artifactId>
         <version>1.7.0</version>
@@ -53,6 +53,15 @@
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/behaviour</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>${project.build.testSourceDirectory}</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
@@ -133,7 +142,7 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
           <version>2.2</version>
-        </plugin>       
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
@@ -157,7 +166,7 @@
         <plugin>
           <groupId>org.codehaus.xsite</groupId>
           <artifactId>xsite-maven-plugin</artifactId>
-          <version>1.0-beta-9</version>          
+          <version>1.0-beta-9</version>
         </plugin>
       </plugins>
     </pluginManagement>
