@@ -29,7 +29,12 @@ public class ScenarioFileLoader {
     }
 
     public InputStream loadScenarioFor(Class<? extends Scenario> scenarioClass) {
-        return classLoader.getResourceAsStream(resolver.resolve(scenarioClass));
+        String scenarioFileName = resolver.resolve(scenarioClass);
+        InputStream stream = classLoader.getResourceAsStream(scenarioFileName);
+        if ( stream == null ){
+            throw new ScenarioNotFoundException("Scenario file "+scenarioFileName+" could not be found by classloader "+classLoader);
+        }
+        return stream;
     }
 
     public String loadScenarioAsString(Class<? extends Scenario> scenarioClass) {
@@ -37,14 +42,14 @@ public class ScenarioFileLoader {
     }
 
     private String asString(InputStream stream) {
-        try {
+        try {            
             byte[] bytes = new byte[stream.available()];
             stream.read(bytes);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             output.write(bytes);
             return output.toString();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new InvalidScenarioResourceException("Failed to convert scenario resouce to string", e);
         }
     }
 
