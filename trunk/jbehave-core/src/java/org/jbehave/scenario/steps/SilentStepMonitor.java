@@ -1,9 +1,11 @@
 package org.jbehave.scenario.steps;
 
-public class SilentStepMonitor implements StepMonitor {
+import java.io.PrintStream;
 
-    public void stepMatchesPattern(String string, boolean matches, String pattern) {
+public class SilentStepMonitor extends PrintStreamStepMonitor {
 
+    protected void print(PrintStream output, String message) {
+        // print nothing
     }
 
 }
