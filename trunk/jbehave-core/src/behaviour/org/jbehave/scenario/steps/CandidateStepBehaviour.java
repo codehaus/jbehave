@@ -12,12 +12,13 @@ import org.junit.Test;
 public class CandidateStepBehaviour {
 
     private static final StepPatternBuilder PATTERN_BUILDER = new DollarStepPatternBuilder();
+    private static final StepMonitor MONITOR = new SilentStepMonitor();
     private static final String NL = System.getProperty("line.separator");
 
     @Test
     public void shouldMatchASimpleString() throws Exception {
         CandidateStep candidateStep = new Given("I laugh", SomeSteps.class.getMethod("aMethod"), null,
-                PATTERN_BUILDER);
+                PATTERN_BUILDER, MONITOR);
 
         ensureThat(candidateStep.matches("Given I laugh"));
         ensureThat(not(candidateStep.matches("When I laugh")));
@@ -27,7 +28,7 @@ public class CandidateStepBehaviour {
     @Test
     public void shouldMatchAStringWithArguments() throws Exception {
         CandidateStep candidateStep = new When("windows on the $nth floor", SomeSteps.class.getMethod("aMethod"), null,
-                PATTERN_BUILDER);
+                PATTERN_BUILDER, MONITOR);
         ensureThat(candidateStep.matches("When windows on the 1st floor"));
         ensureThat(not(candidateStep.matches("When windows on the 1st floor are open")));
     }
@@ -36,7 +37,7 @@ public class CandidateStepBehaviour {
     public void shouldProvideARealStepUsingTheMatchedString() throws Exception {
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new Then("I live on the $nth floor", SomeSteps.class.getMethod("aMethodWith",
-                String.class), someSteps, PATTERN_BUILDER);
+                String.class), someSteps, PATTERN_BUILDER, MONITOR);
         Step step = candidateStep.createFrom("Then I live on the 1st floor");
         step.perform();
         ensureThat((String) someSteps.args, equalTo("1st"));
@@ -45,7 +46,7 @@ public class CandidateStepBehaviour {
     @Test
     public void shouldMatchMultilineStrings() throws Exception {
         CandidateStep candidateStep = new Then("the grid should look like $grid", SomeSteps.class.getMethod("aMethod"),
-                null, PATTERN_BUILDER);
+                null, PATTERN_BUILDER, MONITOR);
         ensureThat(candidateStep.matches("Then the grid should look like " + NL + "...." + NL + "...." + NL));
     }
 
@@ -53,22 +54,22 @@ public class CandidateStepBehaviour {
     public void shouldConvertArgsToAppropriateNumbers() throws Exception {
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new Then("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith",
-                int.class), someSteps, PATTERN_BUILDER);
+                int.class), someSteps, PATTERN_BUILDER, MONITOR);
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Integer) someSteps.args, equalTo(14));
 
         candidateStep = new Then("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", long.class),
-                someSteps, PATTERN_BUILDER);
+                someSteps, PATTERN_BUILDER, MONITOR);
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Long) someSteps.args, equalTo(14L));
 
         candidateStep = new Then("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", double.class),
-                someSteps, PATTERN_BUILDER);
+                someSteps, PATTERN_BUILDER, MONITOR);
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Double) someSteps.args, equalTo(14.0));
 
         candidateStep = new Then("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", float.class),
-                someSteps, PATTERN_BUILDER);
+                someSteps, PATTERN_BUILDER, MONITOR);
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Float) someSteps.args, equalTo(14.0f));
     }
@@ -78,7 +79,7 @@ public class CandidateStepBehaviour {
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new Then("I live on the $nth floor", SomeSteps.class.getMethod("aMethodWith",
-                String.class), someSteps, PATTERN_BUILDER);
+                String.class), someSteps, PATTERN_BUILDER, MONITOR);
         Step step = candidateStep.createFrom("Then I live on the 1st floor");
 
         StepResult result = step.perform();

@@ -10,19 +10,23 @@ public abstract class CandidateStep {
 
     private final Method method;
     private final Steps steps;
+    private final StepMonitor monitor;
     private Pattern pattern;
 
-    public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter) {
+    public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter, StepMonitor monitor) {
         this.method = method;
         this.steps = steps;
+        this.monitor = monitor;
         pattern = patternConverter.buildPattern(matchThis);
     }
 
-    public boolean matches(String string) {
-        if (string.startsWith(precursor())) {
-            String trimmed = trimPrecursor(string);
+    public boolean matches(String step) {
+        if (step.startsWith(precursor())) {
+            String trimmed = trimPrecursor(step);
             Matcher matcher = pattern.matcher(trimmed);
-            return matcher.matches();
+            boolean matches = matcher.matches();
+            monitor.stepMatchesPattern(step, matches, pattern.pattern());
+            return matches;
         }
         return false;
     }
