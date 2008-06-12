@@ -6,13 +6,15 @@ import java.util.ArrayList;
 public class Steps {
 	
 	private final StepPatternBuilder patternBuilder;
+    private final StepMonitor monitor;
 	
 	public Steps() {
-		this(new DollarStepPatternBuilder());
+		this(new DollarStepPatternBuilder(), new SilentStepMonitor());
 	}
 
-	public Steps(StepPatternBuilder patternConverter) {
+	public Steps(StepPatternBuilder patternConverter, StepMonitor monitor) {
 		this.patternBuilder = patternConverter;
+		this.monitor = monitor;
 	}
 
 	/**
@@ -35,12 +37,12 @@ public class Steps {
 	}
 	
 	private Given given(String value, Method method) {
-		return new Given(value, method, this, patternBuilder);
+		return new Given(value, method, this, patternBuilder, monitor);
 	}
 	private When when(String value, Method method) {
-		return new When(value, method, this, patternBuilder);
+		return new When(value, method, this, patternBuilder, monitor);
 	}
 	private Then then(String value, Method method) {
-		return new Then(value, method, this, patternBuilder);
+		return new Then(value, method, this, patternBuilder, monitor);
 	}
 }
