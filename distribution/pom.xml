@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.jbehave</groupId>
@@ -13,6 +14,11 @@
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>jbehave-core</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>jbehave-maven-plugin</artifactId>
       <version>${pom.version}</version>
     </dependency>
   </dependencies>
@@ -36,7 +42,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>    
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>dependency-maven-plugin</artifactId>
@@ -61,6 +67,26 @@
               </artifactItems>
             </configuration>
           </execution>
+          <execution>
+            <id>unpack-javadoc-maven-plugin</id>
+            <phase>install</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/site/javadoc/maven-plugin</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${pom.groupId}</groupId>
+                  <artifactId>jbehave-maven-plugin</artifactId>
+                  <version>${pom.version}</version>
+                  <classifier>javadoc</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -75,14 +101,10 @@
             </goals>
             <configuration>
               <descriptors>
-                <descriptor>
-                  ${basedir}/src/assembly/assembly-bin.xml
-                </descriptor>
+                <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
               </descriptors>
               <finalName>jbehave-${pom.version}</finalName>
-              <workDirectory>
-                ${project.build.directory}/assembly/bin
-              </workDirectory>
+              <workDirectory>${project.build.directory}/assembly/bin</workDirectory>
             </configuration>
           </execution>
           <execution>
@@ -93,14 +115,10 @@
             </goals>
             <configuration>
               <descriptors>
-                <descriptor>
-                  ${basedir}/src/assembly/assembly-src.xml
-                </descriptor>
+                <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
               </descriptors>
               <finalName>jbehave-${pom.version}</finalName>
-              <workDirectory>
-                ${project.build.directory}/assembly/src
-              </workDirectory>
+              <workDirectory>${project.build.directory}/assembly/src</workDirectory>
             </configuration>
           </execution>
         </executions>
