@@ -2,6 +2,7 @@
   <section>
     <name>About jBehave</name>
     <page>index.html</page>
+    <page>getting-started.html</page>
     <page>license.html</page>
     <page>download.html</page>
     <page>release-notes.html</page>

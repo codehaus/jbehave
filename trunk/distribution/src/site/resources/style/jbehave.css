@@ -93,15 +93,15 @@ a {
 }
 
 a:link {
-  color: #669;
+  color: #009900;
 }
 
 a:visited {
-  color: #669;
+  color: #009900;
 }
 
 a:active, a:hover {
-  color: #66665c;
+  color: #009900;
 }
 
 table.bodyTable th {
