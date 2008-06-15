@@ -1,18 +1,32 @@
 <project xmlns:artifact="urn:maven-artifact-ant" name="jbehave" default="good-distribution">
 
-	<!-- Maven POM for dependencies -->
-	<path id="maven-ant-tasks.classpath" path="lib/build/maven-ant-tasks-2.0.9.jar" />
-	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant" classpathref="maven-ant-tasks.classpath" />
-	<artifact:pom id="pom" file="jbehave-core/pom.xml" />
-
 	<!-- version -->
 	<property name="version" value="2.0-SNAPSHOT" />
 	<echo message="Building version ${version}..." />
 
 	<!-- modules -->
 	<property name="core.dir" location="jbehave-core" />
+
+	<!-- Maven POM for dependencies -->
+	<path id="maven-ant-tasks.classpath" path="lib/build/maven-ant-tasks-2.0.9.jar" />
+	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant" classpathref="maven-ant-tasks.classpath" />
+	<artifact:pom id="pom" file="jbehave-maven-plugin/pom.xml" />
+
+	<!-- libs -->
+	<!-- Note: these are not used ATM, replaced by pom dependencies which retrieves them from remote/local repo and 
+	avoids the need the check them in.  The dependencies used are in any case copied to ${working.dir}/lib for sake of clarity
+	and to use in IDE   It is also easy to distinguish between compile and test scope although not done at the moment.
+	-->
 	<property name="build.libs.dir" location="lib/build" />
 	<property name="production.libs.dir" location="lib/production" />
+	<path id="production.libs">
+		<fileset dir="${production.libs.dir}" includes="**/*.jar" />
+	</path>
+
+	<path id="build.libs">
+		<path refid="production.libs" />
+		<fileset dir="${build.libs.dir}" includes="**/*.jar" />
+	</path>
 
 	<!-- build output structure -->
 	<property name="working.dir" location="target" />
@@ -33,27 +47,8 @@
 	<property name="website.dist.dir" location="${dist.dir}/website" />
 	<property name="javadoc.dist.dir" location="${website.dist.dir}/javadoc/${version}" />
 
-	<path id="production.libs">
-		<fileset dir="${production.libs.dir}" includes="**/*.jar" />
-	</path>
-
-	<path id="build.libs">
-		<path refid="production.libs" />
-		<fileset dir="${build.libs.dir}" includes="**/*.jar" />
-	</path>
-
-    <target name="copy-dependencies">
-        <artifact:dependencies filesetId="pom.dependencies" useScope="test">
-            <pom refid="pom" />
-        </artifact:dependencies>
-        <copy todir="target/lib">
-            <fileset refid="pom.dependencies" />
-            <mapper type="flatten" />
-        </copy>
-    </target>
-
-  	<!-- general targets -->
-	<target name="good-distribution" depends="clean, working-jbehave, working-examples, jbehave-jar" description="Checks that JBehave works, builds the JBehave binary and zips up the project." />
+	<!-- general targets -->
+	<target name="good-distribution" depends="clean, pom-dependencies, working-jbehave, working-examples, jbehave-jar" description="Checks that JBehave works, builds the JBehave binary and zips up the project." />
 
 	<target name="clean">
 		<clean dir="${working.dir}" />
@@ -68,10 +63,21 @@
 		</sequential>
 	</macrodef>
 
+	<target name="pom-dependencies">
+		<artifact:dependencies pathId="pom.classpath" filesetId="pom.dependencies" useScope="test">
+			<pom refid="pom" />
+		</artifact:dependencies>
+		<copy todir="${working.dir}/lib">
+			<fileset refid="pom.dependencies" />
+			<mapper type="flatten" />
+		</copy>
+	</target>
+
 	<!-- JBehave itself -->
-	<target name="working-jbehave" depends="jbehave-classes, jbehave-behaviour-classes" description="Ensures that you have a working version of JBehave.">
-		<junit failureproperty="misbehaving" showoutput="true">
-			<classpath refid="build.libs" />
+	<target name="working-jbehave" depends="pom-dependencies, jbehave-classes, jbehave-behaviour-classes" description="Ensures that you have a working version of JBehave.">
+		<junit failureproperty="misbehaving" showoutput="true" outputtoformatters="true">
+			<formatter type="plain" />
+			<classpath refid="pom.classpath" />
 			<classpath>
 				<pathelement path="${jbehave.classes}" />
 				<pathelement path="${jbehave.behaviour.classes}" />
@@ -85,25 +91,28 @@
 		<fail if="${misbehaving}" />
 	</target>
 
+	<target name="jbehave-classes" depends="pom-dependencies" description="Ensures compiled classes for JBehave.">
+		<delete dir="${jbehave.classes}" />
+		<mkdir dir="${jbehave.classes}" />
+		<javac srcdir="${jbehave.source}" destdir="${jbehave.classes}">
+			<classpath refid="pom.classpath" />
+		</javac>
+		<copy todir="${jbehave.classes}">
+			<fileset dir="${jbehave.source}" excludes="**/*.java" />
+		</copy>
+	</target>
+
 	<target name="jbehave-behaviour-classes" depends="jbehave-classes" description="Ensures compiled behaviour classes for JBehave.">
 		<delete dir="${jbehave.behaviour.classes}" />
 		<mkdir dir="${jbehave.behaviour.classes}" />
 		<javac srcdir="${jbehave.behaviour}" destdir="${jbehave.behaviour.classes}">
-			<classpath refid="build.libs" />
+			<classpath refid="pom.classpath" />
 			<classpath>
 				<pathelement path="${jbehave.classes}" />
 			</classpath>
 		</javac>
-	</target>
-
-	<target name="jbehave-classes" description="Ensures compiled classes for JBehave.">
-		<delete dir="${jbehave.classes}" />
-		<mkdir dir="${jbehave.classes}" />
-		<javac srcdir="${jbehave.source}" destdir="${jbehave.classes}">
-			<classpath refid="production.libs" />
-		</javac>
-		<copy todir="${jbehave.classes}">
-			<fileset dir="${jbehave.source}" excludes="**/*.java" />
+		<copy todir="${jbehave.behaviour.classes}">
+			<fileset dir="${jbehave.behaviour}" excludes="**/*.java" />
 		</copy>
 	</target>
 
@@ -113,7 +122,7 @@
 	<target name="working-example-behaviours" depends="compiled-examples, compiled-example-behaviours, jbehave-jar" description="Ensures that examples behave.">
 		<junit failureproperty="misbehaving" showoutput="true">
 			<formatter type="plain" />
-			<classpath refid="build.libs" />
+			<classpath refid="pom.classpath" />
 			<classpath>
 				<pathelement path="${example.classes}" />
 				<pathelement path="${example.behaviour.classes}" />
@@ -128,6 +137,17 @@
 		<fail if="misbehaving" />
 	</target>
 
+	<target name="compiled-examples" description="Ensures compiled example classes." depends="pom-dependencies, jbehave-jar">
+		<delete dir="${example.classes}" />
+		<mkdir dir="${example.classes}" />
+		<javac srcdir="${gameoflife.source}" destdir="${example.classes}">
+			<classpath>
+				<pathelement location="${jbehave.jar}" />
+			</classpath>
+			<classpath refid="pom.classpath" />
+		</javac>
+	</target>
+
 	<target name="compiled-example-behaviours" depends="compiled-examples, jbehave-jar" description="Ensures compiled example behaviour classes.">
 		<delete dir="${example.behaviour.classes}" />
 		<mkdir dir="${example.behaviour.classes}" />
@@ -136,24 +156,14 @@
 				<pathelement path="${jbehave.jar}" />
 				<pathelement path="${example.classes}" />
 			</classpath>
-			<classpath refid="build.libs" />
-		</javac>
-	</target>
-
-	<target name="compiled-examples" description="Ensures compiled example classes." depends="jbehave-jar">
-		<delete dir="${example.classes}" />
-		<mkdir dir="${example.classes}" />
-		<javac srcdir="${gameoflife.source}" destdir="${example.classes}">
-			<classpath>
-				<pathelement location="${jbehave.jar}" />
-			</classpath>
-			<classpath refid="build.libs" />
+			<classpath refid="pom.classpath" />
 		</javac>
 	</target>
 
 	<target name="working-example-scenarios" depends="compiled-example-behaviours, compiled-examples, compiled-example-scenarios, jbehave-jar" description="Ensures that the scenarios for the examples work.">
 		<junit failureproperty="misbehaving" showoutput="true">
-			<classpath refid="build.libs" />
+			<formatter type="plain" />
+			<classpath refid="pom.classpath" />
 			<classpath>
 				<pathelement path="${example.classes}" />
 				<pathelement path="${example.behaviour.classes}" />
@@ -173,7 +183,7 @@
 		<delete dir="${example.scenario.classes}" />
 		<mkdir dir="${example.scenario.classes}" />
 		<javac srcdir="${gameoflife.scenarios}" destdir="${example.scenario.classes}">
-			<classpath refid="build.libs" />
+			<classpath refid="pom.classpath" />
 			<classpath>
 				<pathelement path="${example.classes}" />
 				<pathelement path="${example.behaviour.classes}" />
@@ -193,13 +203,13 @@
 	</target>
 
 	<!-- create website -->
-	<target name="javadoc" description="Generates javadocs.">
+	<target name="javadoc" depends="pom-dependencies" description="Generates javadocs.">
 		<mkdir dir="${javadoc.dist.dir}" />
 		<javadoc destdir="${javadoc.dist.dir}" windowtitle="JBehave API Documentation" verbose="false" useexternalfile="true">
 			<fileset dir="${jbehave.source}">
 				<include name="*.java" />
 			</fileset>
-			<classpath refid="production.libs" />
+			<classpath refid="pom.classpath" />
 		</javadoc>
 	</target>
 
