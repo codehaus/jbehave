@@ -1,4 +1,11 @@
-<project name="jbehave" default="good-distribution">
+<project xmlns:artifact="urn:maven-artifact-ant" name="jbehave" default="good-distribution">
+
+	<!-- Maven POM for dependencies -->
+	<path id="maven-ant-tasks.classpath" path="lib/build/maven-ant-tasks-2.0.9.jar" />
+	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant" classpathref="maven-ant-tasks.classpath" />
+	<artifact:pom id="pom" file="jbehave-core/pom.xml" />
+
+	<!-- version -->
 	<property name="version" value="2.0-SNAPSHOT" />
 	<echo message="Building version ${version}..." />
 
@@ -35,7 +42,17 @@
 		<fileset dir="${build.libs.dir}" includes="**/*.jar" />
 	</path>
 
-	<!-- general targets -->
+    <target name="copy-dependencies">
+        <artifact:dependencies filesetId="pom.dependencies" useScope="test">
+            <pom refid="pom" />
+        </artifact:dependencies>
+        <copy todir="target/lib">
+            <fileset refid="pom.dependencies" />
+            <mapper type="flatten" />
+        </copy>
+    </target>
+
+  	<!-- general targets -->
 	<target name="good-distribution" depends="clean, working-jbehave, working-examples, jbehave-jar" description="Checks that JBehave works, builds the JBehave binary and zips up the project." />
 
 	<target name="clean">
