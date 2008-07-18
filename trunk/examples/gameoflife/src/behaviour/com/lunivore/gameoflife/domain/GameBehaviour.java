@@ -16,7 +16,7 @@ public class GameBehaviour {
 		StringRenderer renderer = new StringRenderer();
 		Game game = new Game(6, 4);
 		game.setObserver(renderer);
-		ensureThat(renderer.asString(), CoreMatchers.equalTo(NL +
+		ensureThat(renderer.asString(), CoreMatchers.equalTo(
 		"......" + NL +
 		"......" + NL +
 		"......" + NL +
@@ -29,19 +29,19 @@ public class GameBehaviour {
 		Game game = new Game(6, 4);
 		game.setObserver(renderer);
 		game.toggleCellAt(2, 1);
-		ensureThat(renderer.asString(), CoreMatchers.equalTo(NL +
+		ensureThat(renderer.asString(), CoreMatchers.equalTo(
 		"......" + NL +
 		"..X..." + NL +
 		"......" + NL +
 		"......"));
 		game.toggleCellAt(2, 2);
-		ensureThat(renderer.asString(), CoreMatchers.equalTo(NL +
+		ensureThat(renderer.asString(), CoreMatchers.equalTo(
 		"......" + NL +
 		"..X..." + NL +
 		"..X..." + NL +
 		"......"));
 		game.toggleCellAt(2, 1);
-		ensureThat(renderer.asString(), CoreMatchers.equalTo(NL +
+		ensureThat(renderer.asString(), CoreMatchers.equalTo(
 		"......" + NL +
 		"......" + NL +
 		"..X..." + NL +
