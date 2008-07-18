@@ -22,7 +22,7 @@ public class StringRendererBehaviour {
 		stub(grid.hasLife(3, 4)).toReturn(true);
 		renderer.gridChanged(grid);
 		
-		ensureThat(renderer.asString(), equalTo(NL +
+		ensureThat(renderer.asString(), equalTo(
 				"....." + NL +
 				"....." + NL +
 				"....." + NL +

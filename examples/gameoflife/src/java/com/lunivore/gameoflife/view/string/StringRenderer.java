@@ -10,7 +10,6 @@ public class StringRenderer implements GameObserver {
 
 	public String asString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(NL);
 		for (int row = 0; row < grid.getHeight(); row++) {
 			for (int column = 0; column < grid.getWidth(); column++) {
 				builder.append(grid.hasLife(column, row) ? "X" : ".");

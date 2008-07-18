@@ -7,13 +7,32 @@ import java.util.regex.Pattern;
 
 public class DollarStepPatternBuilder implements StepPatternBuilder {
 
+	private static final String ANY_WORD_BEGINNING_WITH_DOLLAR = "(\\$\\w*)(\\W|\\Z)";
+
 	public Pattern buildPattern(String matchThis) {
-		String escapedMatch = escapeBrackets(matchThis);
-		Matcher replacingArgsWithCapture = Pattern.compile("(\\$\\w*)(\\W|\\Z)", Pattern.DOTALL).matcher(escapedMatch);
+		String matchThisButLeaveBrackets = escapeBrackets(matchThis);
+		List<Replacement> replacements = findArgumentsToReplace(matchThisButLeaveBrackets);
+		String patternToMatchAgainst = replaceIdentifiedArgsWithCapture(matchThisButLeaveBrackets, replacements);
+		String matchThisButIgnoreWhitespace = anyWhitespaceWillDo(patternToMatchAgainst);
+		return Pattern.compile(matchThisButIgnoreWhitespace, Pattern.DOTALL);
+	}
+
+	private String anyWhitespaceWillDo(String matchThis) {
+		return matchThis.replaceAll("\\s+", "\\\\s+");
+	}
+
+	private List<Replacement> findArgumentsToReplace(
+			String matchThisButLeaveBrackets) {
+		Matcher findingAllTheDollarWords = Pattern.compile(ANY_WORD_BEGINNING_WITH_DOLLAR, Pattern.DOTALL).matcher(matchThisButLeaveBrackets);
 		List<Replacement> replacements = new ArrayList<Replacement>();
-		while(replacingArgsWithCapture.find()) {
-			replacements.add(new Replacement(replacingArgsWithCapture.start(), replacingArgsWithCapture.end(), replacingArgsWithCapture.group(2)));
+		while(findingAllTheDollarWords.find()) {
+			replacements.add(new Replacement(findingAllTheDollarWords.start(), findingAllTheDollarWords.end(), findingAllTheDollarWords.group(2)));
 		}
+		return replacements;
+	}
+
+	private String replaceIdentifiedArgsWithCapture(String escapedMatch,
+			List<Replacement> replacements) {
 		String matchTemp = escapedMatch;
 		for (int i = replacements.size(); i > 0; i--) {
 			String start = matchTemp.substring(0, replacements.get(i - 1).start);
@@ -21,7 +40,7 @@ public class DollarStepPatternBuilder implements StepPatternBuilder {
 			String whitespaceIfAny = replacements.get(i - 1).whitespaceIfAny;
 			matchTemp = start + "(.*)" + whitespaceIfAny + end;
 		}
-		return Pattern.compile(matchTemp, Pattern.DOTALL);
+		return matchTemp;
 	}
 	
 	private String escapeBrackets(String matchThis) {
