@@ -3,18 +3,27 @@ package org.jbehave.scenario.steps;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import org.jbehave.scenario.annotations.Given;
+import org.jbehave.scenario.annotations.Then;
+import org.jbehave.scenario.annotations.When;
+
 public class Steps {
 	
 	private final StepPatternBuilder patternBuilder;
     private final StepMonitor monitor;
+    @SuppressWarnings("unchecked")
+    private final String[] startingWords;
 	
 	public Steps() {
-		this(new DollarStepPatternBuilder(), new SilentStepMonitor());
+		this(new DollarStepPatternBuilder(), new SilentStepMonitor(),
+		"Given", "When", "Then", "And");
 	}
 
-	public Steps(StepPatternBuilder patternConverter, StepMonitor monitor) {
+	public Steps(StepPatternBuilder patternConverter, StepMonitor monitor, 
+			String... startingWords) {
 		this.patternBuilder = patternConverter;
 		this.monitor = monitor;
+		this.startingWords = startingWords;
 	}
 
 	/**
@@ -23,26 +32,27 @@ public class Steps {
 	public CandidateStep[] getSteps() {
 		ArrayList<CandidateStep> steps = new ArrayList<CandidateStep>();
 		for (Method method : this.getClass().getMethods()) {
-			if (method.isAnnotationPresent(org.jbehave.scenario.annotations.Given.class)) {
-				steps.add(given(method.getAnnotation(org.jbehave.scenario.annotations.Given.class).value(), method));
+			if (method.isAnnotationPresent(Given.class)) {
+				createCandidateStep(steps, method, method.getAnnotation(Given.class).value());
 			}
-			if (method.isAnnotationPresent(org.jbehave.scenario.annotations.When.class)) {
-				steps.add(when(method.getAnnotation(org.jbehave.scenario.annotations.When.class).value(), method));
+			if (method.isAnnotationPresent(When.class)) {
+				createCandidateStep(steps, method, method.getAnnotation(When.class).value());
 			}
-			if (method.isAnnotationPresent(org.jbehave.scenario.annotations.Then.class)) {
-				steps.add(then(method.getAnnotation(org.jbehave.scenario.annotations.Then.class).value(), method));
+			if (method.isAnnotationPresent(Then.class)) {
+				createCandidateStep(steps, method, method.getAnnotation(Then.class).value());
 			}
 		}
 		return steps.toArray(new CandidateStep[steps.size()]);
 	}
-	
-	private Given given(String value, Method method) {
-		return new Given(value, method, this, patternBuilder, monitor);
-	}
-	private When when(String value, Method method) {
-		return new When(value, method, this, patternBuilder, monitor);
-	}
-	private Then then(String value, Method method) {
-		return new Then(value, method, this, patternBuilder, monitor);
+
+	private void createCandidateStep(ArrayList<CandidateStep> steps,
+			Method method, String stepAsString) {
+		steps.add(new CandidateStep(
+				stepAsString, 
+				method, 
+				this, 
+				patternBuilder, 
+				monitor, 
+				startingWords));
 	}
 }

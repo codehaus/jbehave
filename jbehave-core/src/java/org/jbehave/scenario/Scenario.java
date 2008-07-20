@@ -16,7 +16,7 @@ import org.junit.Test;
  * <p>
  * A scenario is a collection of candidate steps that need to be run using a scenario runner.
  * </p>
- * <p>Users extend Scenario by providing condidate steps appropriate for the behaviour</p>
+ * <p>Users extend Scenario by providing candidate steps appropriate for the behaviour</p>
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi

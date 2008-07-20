@@ -6,37 +6,39 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public abstract class CandidateStep {
+public class CandidateStep {
 
     private final Method method;
     private final Steps steps;
     private final StepMonitor monitor;
     private Pattern pattern;
+	private String[] startingWords;
 
-    public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter, StepMonitor monitor) {
+    public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter, StepMonitor monitor, String... startingWords) {
         this.method = method;
         this.steps = steps;
         this.monitor = monitor;
+        this.startingWords = startingWords;
         pattern = patternConverter.buildPattern(matchThis);
     }
 
     public boolean matches(String step) {
-        if (step.startsWith(precursor())) {
-            String trimmed = trimPrecursor(step);
-            Matcher matcher = pattern.matcher(trimmed);
-            boolean matches = matcher.matches();
-            monitor.stepMatchesPattern(step, matches, pattern.pattern());
-            return matches;
-        }
-        return false;
+    	String word = findStartingWord(step);
+    	if (word == null) { return false; }
+        String trimmed = trimStartingWord(word, step);
+        Matcher matcher = pattern.matcher(trimmed);
+        boolean matches = matcher.matches();
+        monitor.stepMatchesPattern(step, matches, pattern.pattern());
+        return matches;
     }
 
-    private String trimPrecursor(String string) {
-        return string.substring(precursor().length());
+    private String trimStartingWord(String word, String step) {
+        return step.substring(word.length() + 1); // 1 for the space after
     }
 
     public Step createFrom(final String stepAsString) {
-        Matcher matcher = pattern.matcher(trimPrecursor(stepAsString));
+    	String startingWord = findStartingWord(stepAsString);
+        Matcher matcher = pattern.matcher(trimStartingWord(startingWord, stepAsString));
         matcher.find();
         final Object[] args = new Object[matcher.groupCount()];
         for (int group = 0; group < args.length; group++) {
@@ -46,6 +48,15 @@ public abstract class CandidateStep {
         }
         return createStep(stepAsString, args);
     }
+
+	private String findStartingWord(final String stepAsString) {
+    	for (String word : startingWords) {
+            if (stepAsString.startsWith(word)) {
+            	return word;
+            }
+    	}
+    	return null;
+	}
 
 	private Step createStep(final String stepAsString, final Object[] args) {
 		return new Step() {
@@ -90,7 +101,4 @@ public abstract class CandidateStep {
     private Object replaceNewlinesWithSystemNewlines(String value) {
 		return value.replaceAll("(\n)|(\r\n)", System.getProperty("line.separator"));
 	}
-
-	protected abstract String precursor();
-
 }

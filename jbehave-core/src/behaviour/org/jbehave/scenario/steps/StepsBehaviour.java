@@ -13,11 +13,10 @@ public class StepsBehaviour {
 		CandidateStep[] candidateSteps = steps.getSteps();
 		ensureThat(candidateSteps.length, equalTo(3));
 		
-		for (CandidateStep candidateStep : candidateSteps) {
-			String stepType = candidateStep.getClass().getSimpleName();
-			candidateStep.createFrom(stepType + " a " + stepType).perform();
-		}
-		
+		candidateSteps[0].createFrom("Given a given").perform();
+		candidateSteps[1].createFrom("When a when").perform();
+		candidateSteps[2].createFrom("Then a then").perform();
+
 		ensureThat(steps.given);
 		ensureThat(steps.when);
 		ensureThat(steps.then);
