@@ -43,7 +43,7 @@ public class ScenarioBehaviour {
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I leave them over the winter",
-				"Then I have 2 cows"}));
+				"Then I should have 2 cows"}));
 
 		new MyScenario(fileLoader, stepParser, runner, steps).runUsingSteps();
 		
@@ -51,7 +51,7 @@ public class ScenarioBehaviour {
 		ensureThat(output.toString(), equalTo(
 				"Given I have 2 cows" + NL + 
 				"When I leave them over the winter (PENDING)" + NL +
-				"Then I have 2 cows (NOT PERFORMED)" + NL));
+				"Then I should have 2 cows (NOT PERFORMED)" + NL));
 	}
 	
 	@Test
@@ -67,7 +67,7 @@ public class ScenarioBehaviour {
         stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
                 "Given I have 2 cows",
                 "When I leave them over the winter",
-                "Then I have 2 cows"}));
+                "Then I should have 2 cows"}));
 
         new MyScenario(fileLoader, stepParser, runner, steps).runUsingSteps();
         
@@ -75,7 +75,7 @@ public class ScenarioBehaviour {
         ensureThat(buffer.toString(), equalTo(
                 "Given I have 2 cows" + NL + 
                 "When I leave them over the winter (PENDING)" + NL +
-                "Then I have 2 cows (NOT PERFORMED)" + NL));
+                "Then I should have 2 cows (NOT PERFORMED)" + NL));
     }
 	
     @Test
@@ -97,12 +97,12 @@ public class ScenarioBehaviour {
 				"Given I have 2 cows",
 				"When I put them in a field",
 				"Then my cows should not die",
-				"Then I have 2 cows"}));
+				"Then I should have 2 cows"}));
 		
 
 		try {
 			new MyScenario(fileLoader, stepParser, runner, steps).runUsingSteps();
-			fail("Excpected the error to be rethrown");
+			fail("Expected the error to be rethrown");
 		} catch (IllegalAccessError e) {
 			ensureThat(e, equalTo(steps.error));
 		}
@@ -111,7 +111,7 @@ public class ScenarioBehaviour {
 				"Given I have 2 cows" + NL + 
 				"When I put them in a field" + NL +
 				"Then my cows should not die (FAILED)" + NL +
-				"Then I have 2 cows (NOT PERFORMED)" + NL));
+				"Then I should have 2 cows (NOT PERFORMED)" + NL));
 	}
 
 	
@@ -134,7 +134,7 @@ public class ScenarioBehaviour {
 		@When("I put them in a field")
 		public void ignoreCows() {}
 		
-		@Then("I have $n cows")
+		@Then("I should have $n cows")
 		public void checkCows(int numberOfCows) {
 			ensureThat(this.numberOfCows, equalTo(numberOfCows));
 		}

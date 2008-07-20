@@ -17,18 +17,16 @@ public class CandidateStepBehaviour {
 
     @Test
     public void shouldMatchASimpleString() throws Exception {
-        CandidateStep candidateStep = new Given("I laugh", SomeSteps.class.getMethod("aMethod"), null,
-                PATTERN_BUILDER, MONITOR);
+        CandidateStep candidateStep = new CandidateStep("I laugh", SomeSteps.class.getMethod("aMethod"), null,
+                PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
 
         ensureThat(candidateStep.matches("Given I laugh"));
-        ensureThat(not(candidateStep.matches("When I laugh")));
-        ensureThat(not(candidateStep.matches("Then I laugh")));
     }
 
     @Test
     public void shouldMatchAStringWithArguments() throws Exception {
-        CandidateStep candidateStep = new When("windows on the $nth floor", SomeSteps.class.getMethod("aMethod"), null,
-                PATTERN_BUILDER, MONITOR);
+        CandidateStep candidateStep = new CandidateStep("windows on the $nth floor", SomeSteps.class.getMethod("aMethod"), null,
+                PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         ensureThat(candidateStep.matches("When windows on the 1st floor"));
         ensureThat(not(candidateStep.matches("When windows on the 1st floor are open")));
     }
@@ -36,8 +34,8 @@ public class CandidateStepBehaviour {
     @Test
     public void shouldProvideARealStepUsingTheMatchedString() throws Exception {
         SomeSteps someSteps = new SomeSteps();
-        CandidateStep candidateStep = new Then("I live on the $nth floor", SomeSteps.class.getMethod("aMethodWith",
-                String.class), someSteps, PATTERN_BUILDER, MONITOR);
+        CandidateStep candidateStep = new CandidateStep("I live on the $nth floor", SomeSteps.class.getMethod("aMethodWith",
+                String.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         Step step = candidateStep.createFrom("Then I live on the 1st floor");
         step.perform();
         ensureThat((String) someSteps.args, equalTo("1st"));
@@ -45,31 +43,31 @@ public class CandidateStepBehaviour {
 
     @Test
     public void shouldMatchMultilineStrings() throws Exception {
-        CandidateStep candidateStep = new Then("the grid should look like $grid", SomeSteps.class.getMethod("aMethod"),
-                null, PATTERN_BUILDER, MONITOR);
+        CandidateStep candidateStep = new CandidateStep("the grid should look like $grid", SomeSteps.class.getMethod("aMethod"),
+                null, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         ensureThat(candidateStep.matches("Then the grid should look like " + NL + "...." + NL + "...." + NL));
     }
 
     @Test
     public void shouldConvertArgsToAppropriateNumbers() throws Exception {
         SomeSteps someSteps = new SomeSteps();
-        CandidateStep candidateStep = new Then("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith",
-                int.class), someSteps, PATTERN_BUILDER, MONITOR);
+        CandidateStep candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith",
+                int.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Integer) someSteps.args, equalTo(14));
 
-        candidateStep = new Then("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", long.class),
-                someSteps, PATTERN_BUILDER, MONITOR);
+        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", long.class),
+                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Long) someSteps.args, equalTo(14L));
 
-        candidateStep = new Then("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", double.class),
-                someSteps, PATTERN_BUILDER, MONITOR);
+        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", double.class),
+                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Double) someSteps.args, equalTo(14.0));
 
-        candidateStep = new Then("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", float.class),
-                someSteps, PATTERN_BUILDER, MONITOR);
+        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", float.class),
+                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Float) someSteps.args, equalTo(14.0f));
     }
@@ -78,8 +76,8 @@ public class CandidateStepBehaviour {
     public void shouldProvideAStepWithADescriptionThatMatchesTheCandidateStep() throws Exception {
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         SomeSteps someSteps = new SomeSteps();
-        CandidateStep candidateStep = new Then("I live on the $nth floor", SomeSteps.class.getMethod("aMethodWith",
-                String.class), someSteps, PATTERN_BUILDER, MONITOR);
+        CandidateStep candidateStep = new CandidateStep("I live on the $nth floor", SomeSteps.class.getMethod("aMethodWith",
+                String.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         Step step = candidateStep.createFrom("Then I live on the 1st floor");
 
         StepResult result = step.perform();
@@ -95,10 +93,10 @@ public class CandidateStepBehaviour {
     	String systemNewline = System.getProperty("line.separator");
     	
         SomeSteps someSteps = new SomeSteps();
-        CandidateStep candidateStep = new Then(
+        CandidateStep candidateStep = new CandidateStep(
         		"the grid should look like $grid", 
         		SomeSteps.class.getMethod("aMethodWith", String.class), 
-        		someSteps, PATTERN_BUILDER, MONITOR);
+        		someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         Step step = candidateStep.createFrom(
         		"Then the grid should look like" + windowsNewline +
         		".." + unixNewline +
