@@ -87,6 +87,28 @@ public class CandidateStepBehaviour {
 
         verify(reporter).successful("Then I live on the 1st floor");
     }
+    
+    @Test
+    public void shouldNotFailJustBecauseWeHaveDifferentNewlinesToTheOneTheScenarioWasWrittenIn() throws Exception {
+    	String windowsNewline = "\r\n";
+    	String unixNewline = "\n";
+    	String systemNewline = System.getProperty("line.separator");
+    	
+        SomeSteps someSteps = new SomeSteps();
+        CandidateStep candidateStep = new Then(
+        		"the grid should look like $grid", 
+        		SomeSteps.class.getMethod("aMethodWith", String.class), 
+        		someSteps, PATTERN_BUILDER, MONITOR);
+        Step step = candidateStep.createFrom(
+        		"Then the grid should look like" + windowsNewline +
+        		".." + unixNewline +
+        		".." + windowsNewline);
+        
+        step.perform();
+        ensureThat((String) someSteps.args, equalTo(
+        		".." + systemNewline +
+        		".." + systemNewline));
+    }
 
     public class SomeSteps extends Steps {
         private Object args;

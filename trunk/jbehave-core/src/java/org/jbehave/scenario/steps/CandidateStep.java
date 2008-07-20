@@ -44,7 +44,11 @@ public abstract class CandidateStep {
             Object converted = convert(arg, method.getParameterTypes()[group]);
             args[group] = converted;
         }
-        return new Step() {
+        return createStep(stepAsString, args);
+    }
+
+	private Step createStep(final String stepAsString, final Object[] args) {
+		return new Step() {
             public StepResult perform() {
                 try {
                     method.invoke(steps, args);
@@ -66,7 +70,7 @@ public abstract class CandidateStep {
             }
 
         };
-    }
+	}
 
     private Object convert(String value, Class<?> clazz) {
         if (clazz == Integer.class || clazz == int.class) {
@@ -77,10 +81,16 @@ public abstract class CandidateStep {
             return Double.valueOf(value);
         } else if (clazz == Float.class || clazz == float.class) {
             return Float.valueOf(value);
+        } else if (clazz == String.class) {
+        	return replaceNewlinesWithSystemNewlines(value);
         }
         return value;
     }
 
-    protected abstract String precursor();
+    private Object replaceNewlinesWithSystemNewlines(String value) {
+		return value.replaceAll("(\n)|(\r\n)", System.getProperty("line.separator"));
+	}
+
+	protected abstract String precursor();
 
 }

@@ -156,19 +156,19 @@ public class ScenarioBehaviour {
         }
 
         public void failed(String step, Throwable e) {
-            buffer.append(step+ " (FAILED)\n");
+            buffer.append(step+ " (FAILED)" + NL);
         }
 
         public void notPerformed(String step) {
-            buffer.append(step+ " (NOT PERFORMED)\n");
+            buffer.append(step+ " (NOT PERFORMED)" + NL);
         }
 
         public void pending(String step) {
-            buffer.append(step+ " (PENDING)\n");
+            buffer.append(step+ " (PENDING)" + NL);
         }
 
         public void successful(String step) {
-            buffer.append(step+"\n");
+            buffer.append(step+NL);
         }
 	    
 	}
