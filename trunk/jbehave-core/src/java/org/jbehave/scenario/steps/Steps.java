@@ -14,7 +14,7 @@ public class Steps {
     private final String[] startingWords;
 
     public Steps() {
-        this(new DollarStepPatternBuilder(), new SilentStepMonitor(), "Given", "When", "Then", "And");
+        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), "Given", "When", "Then", "And");
     }
 
     public Steps(StepPatternBuilder patternBuilder, StepMonitor monitor, String... startingWords) {

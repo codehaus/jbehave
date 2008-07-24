@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class CandidateStepBehaviour {
 
-    private static final StepPatternBuilder PATTERN_BUILDER = new DollarStepPatternBuilder();
+    private static final StepPatternBuilder PATTERN_BUILDER = new PrefixCapturingPatternBuilder();
     private static final StepMonitor MONITOR = new SilentStepMonitor();
     private static final String NL = System.getProperty("line.separator");
 

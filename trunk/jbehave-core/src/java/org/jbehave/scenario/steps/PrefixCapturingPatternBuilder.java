@@ -5,12 +5,34 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DollarStepPatternBuilder implements StepPatternBuilder {
+/**
+ * Provides a pattern which will capture arguments starting with the given
+ * prefix in any matching step. Default prefix is $.
+ * 
+ * @author Elizabeth Keogh
+ */
+public class PrefixCapturingPatternBuilder implements StepPatternBuilder {
 
-	private static final String ANY_WORD_BEGINNING_WITH_DOLLAR = "(\\$\\w*)(\\W|\\Z)";
+	private String anyWordBeginningWithThePrefix = "(\\$\\w*)(\\W|\\Z)";
+
+	/**
+	 * Creates a pattern which captures arguments starting with $ in
+	 * a matching step.
+	 */
+	public PrefixCapturingPatternBuilder() {
+		this("$");
+	}
+
+	/**
+	 * Creates a pattern which captures arguments starting with a given
+	 * prefix in a matching step.
+	 */
+	public PrefixCapturingPatternBuilder(String prefix) {
+		anyWordBeginningWithThePrefix = "(\\" + prefix + "\\w*)(\\W|\\Z)";
+	}
 
 	public Pattern buildPattern(String matchThis) {
-		String matchThisButLeaveBrackets = escapeBrackets(matchThis);
+		String matchThisButLeaveBrackets = escapeRegexpPunctuation(matchThis);
 		List<Replacement> replacements = findArgumentsToReplace(matchThisButLeaveBrackets);
 		String patternToMatchAgainst = replaceIdentifiedArgsWithCapture(matchThisButLeaveBrackets, replacements);
 		String matchThisButIgnoreWhitespace = anyWhitespaceWillDo(patternToMatchAgainst);
@@ -23,7 +45,7 @@ public class DollarStepPatternBuilder implements StepPatternBuilder {
 
 	private List<Replacement> findArgumentsToReplace(
 			String matchThisButLeaveBrackets) {
-		Matcher findingAllTheDollarWords = Pattern.compile(ANY_WORD_BEGINNING_WITH_DOLLAR, Pattern.DOTALL).matcher(matchThisButLeaveBrackets);
+		Matcher findingAllTheDollarWords = Pattern.compile(anyWordBeginningWithThePrefix, Pattern.DOTALL).matcher(matchThisButLeaveBrackets);
 		List<Replacement> replacements = new ArrayList<Replacement>();
 		while(findingAllTheDollarWords.find()) {
 			replacements.add(new Replacement(findingAllTheDollarWords.start(), findingAllTheDollarWords.end(), findingAllTheDollarWords.group(2)));
@@ -43,9 +65,8 @@ public class DollarStepPatternBuilder implements StepPatternBuilder {
 		return matchTemp;
 	}
 	
-	private String escapeBrackets(String matchThis) {
-		String escapedMatch = matchThis.replace("(", "\\(");
-		escapedMatch = escapedMatch.replace(")", "\\)");
+	private String escapeRegexpPunctuation(String matchThis) {
+		String escapedMatch = matchThis.replaceAll("([\\[\\]\\{\\}\\?\\^\\.\\*\\(\\)\\+\\\\])", "\\\\$1");
 		return escapedMatch;
 	}
 
