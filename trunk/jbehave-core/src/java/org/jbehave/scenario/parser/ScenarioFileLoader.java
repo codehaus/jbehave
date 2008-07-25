@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 import org.jbehave.scenario.Scenario;
 
-public class ScenarioFileLoader {
+public class ScenarioFileLoader implements ScenarioDefiner {
 
     private final ScenarioFileNameResolver resolver;
     private final ClassLoader classLoader;
@@ -28,7 +28,7 @@ public class ScenarioFileLoader {
         this.classLoader = classLoader;
     }
 
-    public InputStream loadScenarioFor(Class<? extends Scenario> scenarioClass) {
+    private InputStream loadStepsAsStreamFor(Class<? extends Scenario> scenarioClass) {
         String scenarioFileName = resolver.resolve(scenarioClass);
         InputStream stream = classLoader.getResourceAsStream(scenarioFileName);
         if ( stream == null ){
@@ -37,8 +37,8 @@ public class ScenarioFileLoader {
         return stream;
     }
 
-    public String loadScenarioAsString(Class<? extends Scenario> scenarioClass) {
-        return asString(loadScenarioFor(scenarioClass));
+    public String loadStepsFor(Class<? extends Scenario> scenarioClass) {
+        return asString(loadStepsAsStreamFor(scenarioClass));
     }
 
     private String asString(InputStream stream) {
