@@ -2,10 +2,10 @@ package org.jbehave.scenario;
 
 import java.util.List;
 
-import org.jbehave.scenario.parser.ScenarioFileLoader;
-import org.jbehave.scenario.parser.PatternStepParser;
+import org.jbehave.OurTechnique;
+import org.jbehave.Technique;
+import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.parser.StepParser;
-import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.CandidateStep;
 import org.jbehave.scenario.steps.PendingStep;
 import org.jbehave.scenario.steps.Step;
@@ -24,34 +24,30 @@ import org.junit.Test;
 public abstract class Scenario {
 
     private final Steps[] candidateSteps;
-    private final ScenarioFileLoader fileLoader;
+    private final ScenarioDefiner scenarioDefiner;
     private final StepParser stepParser;
     private final ScenarioRunner scenarioRunner;
 
     public Scenario(Steps... candidateSteps) {
-        this(new ScenarioFileLoader(), candidateSteps);
+        this(new OurTechnique(), candidateSteps);
     }
 
-    public Scenario(ScenarioFileLoader fileLoader, Steps... candidateSteps) {
-        this(fileLoader, new PrintStreamScenarioReporter(), candidateSteps);
-    }
-
-    public Scenario(ScenarioFileLoader fileLoader, ScenarioReporter reporter, Steps... candidateSteps) {
-        this(fileLoader, new PatternStepParser(), new ScenarioRunner(reporter), candidateSteps);
-    }
-
-    public Scenario(ScenarioFileLoader fileFinder, StepParser stepParser, ScenarioRunner scenarioRunner,
-            Steps... candidateSteps) {
-        this.fileLoader = fileFinder;
-        this.stepParser = stepParser;
-        this.scenarioRunner = scenarioRunner;
+    public Scenario(Technique technique, Steps... candidateSteps) {
         this.candidateSteps = candidateSteps;
+		this.scenarioDefiner = technique.forDefiningScenarios();
+        this.stepParser = technique.forParsingSteps();
+        this.scenarioRunner = new ScenarioRunner(technique.forReportingScenarios());
     }
 
     @Test
     public void runUsingSteps() throws Throwable {
-        List<String> stringSteps = stepParser.findSteps(fileLoader.loadScenarioAsString(this.getClass()));
-        Step[] steps = new Step[stringSteps.size()];
+        List<String> stringSteps = stepParser.findSteps(scenarioDefiner.loadStepsFor(this.getClass()));
+        Step[] steps = createRealStepsFromCandidates(stringSteps);
+        scenarioRunner.run(steps);
+    }
+
+	private Step[] createRealStepsFromCandidates(List<String> stringSteps) {
+		Step[] steps = new Step[stringSteps.size()];
         for (int i = 0; i < steps.length; i++) {
             String stringStep = stringSteps.get(i);
             for (Steps candidates : candidateSteps) {
@@ -65,6 +61,6 @@ public abstract class Scenario {
                 steps[i] = new PendingStep(stringStep);
             }
         }
-        scenarioRunner.run(steps);
-    }
+		return steps;
+	}
 }

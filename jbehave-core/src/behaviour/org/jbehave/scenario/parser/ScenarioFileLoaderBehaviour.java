@@ -15,25 +15,25 @@ public class ScenarioFileLoaderBehaviour {
     @Test
     public void canLoadScenario() {
         ScenarioFileLoader loader = new ScenarioFileLoader();
-        ensureThat(loader.loadScenarioAsString(MyPendingScenario.class), equalTo("Given my scenario"));
+        ensureThat(loader.loadStepsFor(MyPendingScenario.class), equalTo("Given my scenario"));
     }
 
     @Test
     public void canLoadScenarioWithCustomFilenameResolver() {
         ScenarioFileLoader loader = new ScenarioFileLoader(new CasePreservingResolver(".scenario"));
-        ensureThat(loader.loadScenarioAsString(MyPendingScenario.class), equalTo("Given my scenario"));
+        ensureThat(loader.loadStepsFor(MyPendingScenario.class), equalTo("Given my scenario"));
     }
     
     @Test(expected = ScenarioNotFoundException.class)
     public void cannotLoadScenarioForInexistentResource() {
         ScenarioFileLoader loader = new ScenarioFileLoader();
-        loader.loadScenarioAsString(InexistentScenario.class);
+        loader.loadStepsFor(InexistentScenario.class);
     }
 
     @Test(expected = InvalidScenarioResourceException.class)
     public void cannotLoadScenarioForInvalidResource() {
         ScenarioFileLoader loader = new ScenarioFileLoader(new InvalidClassLoader());
-        loader.loadScenarioAsString(MyPendingScenario.class);
+        loader.loadStepsFor(MyPendingScenario.class);
     }
 
     static class InexistentScenario extends Scenario {
