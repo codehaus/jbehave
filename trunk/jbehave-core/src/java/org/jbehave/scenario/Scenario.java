@@ -5,7 +5,7 @@ import java.util.List;
 import org.jbehave.OurTechnique;
 import org.jbehave.Technique;
 import org.jbehave.scenario.parser.ScenarioDefiner;
-import org.jbehave.scenario.parser.StepParser;
+import org.jbehave.scenario.parser.ScenarioDefinition;
 import org.jbehave.scenario.steps.CandidateStep;
 import org.jbehave.scenario.steps.PendingStep;
 import org.jbehave.scenario.steps.Step;
@@ -25,7 +25,6 @@ public abstract class Scenario {
 
     private final Steps[] candidateSteps;
     private final ScenarioDefiner scenarioDefiner;
-    private final StepParser stepParser;
     private final ScenarioRunner scenarioRunner;
 
     public Scenario(Steps... candidateSteps) {
@@ -35,14 +34,13 @@ public abstract class Scenario {
     public Scenario(Technique technique, Steps... candidateSteps) {
         this.candidateSteps = candidateSteps;
 		this.scenarioDefiner = technique.forDefiningScenarios();
-        this.stepParser = technique.forParsingSteps();
         this.scenarioRunner = new ScenarioRunner(technique.forReportingScenarios());
     }
 
     @Test
     public void runUsingSteps() throws Throwable {
-        List<String> stringSteps = stepParser.findSteps(scenarioDefiner.loadStepsFor(this.getClass()));
-        Step[] steps = createRealStepsFromCandidates(stringSteps);
+        ScenarioDefinition definition = scenarioDefiner.loadStepsFor(this.getClass());
+        Step[] steps = createRealStepsFromCandidates(definition.getSteps());
         scenarioRunner.run(steps);
     }
 
