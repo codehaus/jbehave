@@ -4,6 +4,6 @@ import org.jbehave.scenario.Scenario;
 
 public interface ScenarioDefiner {
 
-	String loadStepsFor(Class<? extends Scenario> clazz);
+	ScenarioDefinition loadStepsFor(Class<? extends Scenario> clazz);
 
 }

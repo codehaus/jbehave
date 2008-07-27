@@ -16,6 +16,7 @@ import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PatternStepParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
+import org.jbehave.scenario.parser.ScenarioDefinition;
 import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.StepParser;
 import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
@@ -41,7 +42,7 @@ public class ScenarioBehaviour {
 		PrintStreamScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(output));
 		MySteps steps = new MySteps();
 		
- 		stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn("my_scenario");
+ 		stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(new ScenarioDefinition(stepParser, "my_scenario"));
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I leave them over the winter",
@@ -65,7 +66,7 @@ public class ScenarioBehaviour {
         ScenarioReporter reporter = new BufferScenarioReporter(buffer);
         MySteps steps = new MySteps();
         
-        stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn("my_scenario");
+        stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(new ScenarioDefinition(stepParser, "my_scenario"));
         stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
                 "Given I have 2 cows",
                 "When I leave them over the winter",
@@ -94,7 +95,7 @@ public class ScenarioBehaviour {
 		ScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(output));
 		MySteps steps = new MySteps();
 		
-        stub(scenarioDefiner.loadStepsFor(MyScenario.class)).toReturn("my_scenario");
+        stub(scenarioDefiner.loadStepsFor(MyScenario.class)).toReturn(new ScenarioDefinition(stepParser, "my_scenario"));
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I put them in a field",
@@ -122,8 +123,6 @@ public class ScenarioBehaviour {
 			super(new Technique() {
 
 				public ScenarioDefiner forDefiningScenarios() { return scenarioDefiner; }
-
-				public StepParser forParsingSteps() { return stepParser; }
 
 				public ScenarioReporter forReportingScenarios() { return scenarioReporter; }
 				

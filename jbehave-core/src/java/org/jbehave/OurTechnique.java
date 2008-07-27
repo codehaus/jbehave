@@ -7,15 +7,11 @@ import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 
 public class OurTechnique implements Technique {
 
-	public PatternStepParser forParsingSteps() {
-		return new PatternStepParser();
-	}
-
 	public PrintStreamScenarioReporter forReportingScenarios() {
 		return new PrintStreamScenarioReporter();
 	}
 
 	public ScenarioFileLoader forDefiningScenarios() {
-		return new ScenarioFileLoader(new UnderscoredCamelCaseResolver());
+		return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternStepParser());
 	}	
 }

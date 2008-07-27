@@ -10,25 +10,31 @@ public class ScenarioFileLoader implements ScenarioDefiner {
 
     private final ScenarioFileNameResolver resolver;
     private final ClassLoader classLoader;
+	private final StepParser stepParser;
 
     public ScenarioFileLoader() {
-        this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader());
+        this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), new PatternStepParser());
     }
 
-    public ScenarioFileLoader(ScenarioFileNameResolver converter) {
-        this(converter, Thread.currentThread().getContextClassLoader());
+    public ScenarioFileLoader(StepParser stepParser) {
+		this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), stepParser);
+	}
+
+    public ScenarioFileLoader(ScenarioFileNameResolver converter, StepParser parser) {
+        this(converter, Thread.currentThread().getContextClassLoader(), parser);
     }
 
     public ScenarioFileLoader(ClassLoader classLoader) {
-        this(new UnderscoredCamelCaseResolver(), classLoader);
+        this(new UnderscoredCamelCaseResolver(), classLoader, new PatternStepParser());
     }
 
-    public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader) {
+    public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader, StepParser stepParser) {
         this.resolver = resolver;
         this.classLoader = classLoader;
+		this.stepParser = stepParser;
     }
 
-    private InputStream loadStepsAsStreamFor(Class<? extends Scenario> scenarioClass) {
+	private InputStream loadStepsAsStreamFor(Class<? extends Scenario> scenarioClass) {
         String scenarioFileName = resolver.resolve(scenarioClass);
         InputStream stream = classLoader.getResourceAsStream(scenarioFileName);
         if ( stream == null ){
@@ -37,8 +43,8 @@ public class ScenarioFileLoader implements ScenarioDefiner {
         return stream;
     }
 
-    public String loadStepsFor(Class<? extends Scenario> scenarioClass) {
-        return asString(loadStepsAsStreamFor(scenarioClass));
+    public ScenarioDefinition loadStepsFor(Class<? extends Scenario> scenarioClass) {
+        return new ScenarioDefinition(stepParser, asString(loadStepsAsStreamFor(scenarioClass)));
     }
 
     private String asString(InputStream stream) {

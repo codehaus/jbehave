@@ -1,10 +1,11 @@
 package org.jbehave.scenario.parser;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.Ensure.ensureThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
@@ -14,14 +15,19 @@ public class ScenarioFileLoaderBehaviour {
 
     @Test
     public void canLoadScenario() {
-        ScenarioFileLoader loader = new ScenarioFileLoader();
-        ensureThat(loader.loadStepsFor(MyPendingScenario.class), equalTo("Given my scenario"));
+    	StepParser parser = mock(StepParser.class);
+        ScenarioFileLoader loader = new ScenarioFileLoader(parser);
+        ScenarioDefinition definition = loader.loadStepsFor(MyPendingScenario.class);
+        definition.getSteps();
+        verify(parser).findSteps("Given my scenario");
     }
 
     @Test
     public void canLoadScenarioWithCustomFilenameResolver() {
-        ScenarioFileLoader loader = new ScenarioFileLoader(new CasePreservingResolver(".scenario"));
-        ensureThat(loader.loadStepsFor(MyPendingScenario.class), equalTo("Given my scenario"));
+    	StepParser parser = mock(StepParser.class);
+        ScenarioFileLoader loader = new ScenarioFileLoader(new CasePreservingResolver(".scenario"), parser);
+        loader.loadStepsFor(MyPendingScenario.class).getSteps();
+        verify(parser).findSteps("Given my scenario");
     }
     
     @Test(expected = ScenarioNotFoundException.class)
@@ -57,7 +63,5 @@ public class ScenarioFileLoaderBehaviour {
 
             };
         }
-
     }
-
 }
