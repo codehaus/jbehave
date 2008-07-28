@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class PatternStepParser implements StepParser {
 
-    public static final String DEFAULT_PARSE_REGEX = "((Given|When|Then) (.|\\s)*?)\\s*(\\Z|Given|When|Then)";
+    public static final String DEFAULT_PARSE_REGEX = "((Given|When|Then) (.|\\s)*?)\\s*(\\Z|Given|When|Then|Scenario:)";
 
     private final Pattern pattern;
 

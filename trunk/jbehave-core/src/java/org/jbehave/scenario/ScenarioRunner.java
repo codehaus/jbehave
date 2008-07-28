@@ -11,7 +11,7 @@ import org.jbehave.scenario.steps.StepResult;
  */
 public class ScenarioRunner {
 
-    private State state = new FineSoFar();
+    private State state;
     private final ScenarioReporter reporter;
 
     public ScenarioRunner(ScenarioReporter reporter) {
@@ -19,6 +19,7 @@ public class ScenarioRunner {
     }
 
     public void run(Step... steps) throws Throwable {
+    	state = new FineSoFar();
         for (Step step : steps) {
             state.run(step);
         }

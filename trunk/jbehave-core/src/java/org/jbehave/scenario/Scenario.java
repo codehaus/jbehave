@@ -39,9 +39,11 @@ public abstract class Scenario {
 
     @Test
     public void runUsingSteps() throws Throwable {
-        ScenarioDefinition definition = scenarioDefiner.loadStepsFor(this.getClass());
-        Step[] steps = createRealStepsFromCandidates(definition.getSteps());
-        scenarioRunner.run(steps);
+        List<ScenarioDefinition> definitions = scenarioDefiner.loadStepsFor(this.getClass());
+        for (ScenarioDefinition definition : definitions) {
+            Step[] steps = createRealStepsFromCandidates(definition.getSteps());
+            scenarioRunner.run(steps);
+		}
     }
 
 	private Step[] createRealStepsFromCandidates(List<String> stringSteps) {

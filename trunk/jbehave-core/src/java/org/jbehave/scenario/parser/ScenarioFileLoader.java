@@ -3,6 +3,10 @@ package org.jbehave.scenario.parser;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jbehave.scenario.Scenario;
 
@@ -43,20 +47,43 @@ public class ScenarioFileLoader implements ScenarioDefiner {
         return stream;
     }
 
-    public ScenarioDefinition loadStepsFor(Class<? extends Scenario> scenarioClass) {
-        return new ScenarioDefinition(stepParser, asString(loadStepsAsStreamFor(scenarioClass)));
+    public List<ScenarioDefinition>loadStepsFor(Class<? extends Scenario> scenarioClass) {
+    	List<String> scenarios = asString(loadStepsAsStreamFor(scenarioClass));
+    	List<ScenarioDefinition> scenarioDefinitions = new ArrayList<ScenarioDefinition>();
+    	for (String string : scenarios) {
+			scenarioDefinitions.add(new ScenarioDefinition(stepParser, string));
+		}
+        return scenarioDefinitions;
     }
 
-    private String asString(InputStream stream) {
+    private List<String> asString(InputStream stream) {
         try {            
             byte[] bytes = new byte[stream.available()];
             stream.read(bytes);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             output.write(bytes);
-            return output.toString();
+            String allScenariosInFile = output.toString();
+    		return splitScenarios(allScenariosInFile);
         } catch (IOException e) {
             throw new InvalidScenarioResourceException("Failed to convert scenario resouce to string", e);
         }
     }
+
+	private List<String> splitScenarios(String allScenariosInFile) {
+    	Pattern scenarioSplitter = Pattern.compile("((Scenario:) (.|\\s)*?)\\s*(\\Z|Scenario:).*", Pattern.DOTALL);
+    	Matcher matcher = scenarioSplitter.matcher(allScenariosInFile);
+    	int startAt = 0;
+    	List<String> scenarios = new ArrayList<String>();
+    	if (matcher.matches()) {
+			while(matcher.find(startAt)) {
+				scenarios.add(matcher.group(1));
+				startAt = matcher.start(4);
+			}
+    	} else {
+    		String loneScenario = allScenariosInFile;
+			scenarios.add(loneScenario);
+    	}
+    	return scenarios;
+	}
 
 }
