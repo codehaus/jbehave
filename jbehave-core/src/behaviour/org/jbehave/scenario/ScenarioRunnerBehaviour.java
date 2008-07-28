@@ -5,6 +5,7 @@ import static org.jbehave.Ensure.ensureThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import org.jbehave.scenario.steps.Step;
@@ -102,6 +103,25 @@ public class ScenarioRunnerBehaviour {
 		verify(secondStepNotPerformed).doNotPerform();
 		verify(notRunResult).describeTo(reporter);
 		
+	}
+	
+	@Test
+	public void shouldResetStateForEachSetOfSteps() throws Throwable {
+
+		ScenarioReporter reporter = mock(ScenarioReporter.class);
+		Step pendingStep = mock(Step.class);
+		Step secondStep = mock(Step.class);
+		stub(pendingStep.perform()).toReturn(StepResult.pending("pendingStep"));
+		stub(secondStep.perform()).toReturn(StepResult.success("secondStep"));
+		
+		ScenarioRunner runner = new ScenarioRunner(reporter);
+		
+		runner.run(pendingStep);
+		runner.run(secondStep); // should reset state for this one
+		
+		verify(pendingStep).perform();
+		verify(secondStep).perform();
+		verify(secondStep, never()).doNotPerform();
 	}
 	
 }

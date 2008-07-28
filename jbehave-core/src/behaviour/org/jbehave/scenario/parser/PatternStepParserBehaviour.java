@@ -5,7 +5,6 @@ import static org.jbehave.Ensure.ensureThat;
 
 import java.util.List;
 
-import org.jbehave.scenario.parser.PatternStepParser;
 import org.junit.Test;
 
 

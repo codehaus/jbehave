@@ -42,7 +42,8 @@ public class ScenarioBehaviour {
 		PrintStreamScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(output));
 		MySteps steps = new MySteps();
 		
- 		stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(new ScenarioDefinition(stepParser, "my_scenario"));
+ 		stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(Arrays.asList(
+ 				new ScenarioDefinition(stepParser, "my_scenario")));
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I leave them over the winter",
@@ -66,7 +67,8 @@ public class ScenarioBehaviour {
         ScenarioReporter reporter = new BufferScenarioReporter(buffer);
         MySteps steps = new MySteps();
         
-        stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(new ScenarioDefinition(stepParser, "my_scenario"));
+        stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(Arrays.asList(
+        		new ScenarioDefinition(stepParser, "my_scenario")));
         stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
                 "Given I have 2 cows",
                 "When I leave them over the winter",
@@ -95,7 +97,8 @@ public class ScenarioBehaviour {
 		ScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(output));
 		MySteps steps = new MySteps();
 		
-        stub(scenarioDefiner.loadStepsFor(MyScenario.class)).toReturn(new ScenarioDefinition(stepParser, "my_scenario"));
+        stub(scenarioDefiner.loadStepsFor(MyScenario.class)).toReturn(Arrays.asList(
+        		new ScenarioDefinition(stepParser, "my_scenario")));
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
 				"Given I have 2 cows",
 				"When I put them in a field",

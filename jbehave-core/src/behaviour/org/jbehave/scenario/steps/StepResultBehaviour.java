@@ -1,11 +1,10 @@
 package org.jbehave.scenario.steps;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import static org.jbehave.Ensure.ensureThat;
 import static org.jbehave.Ensure.not;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.jbehave.scenario.ScenarioReporter;
 import org.junit.Test;
