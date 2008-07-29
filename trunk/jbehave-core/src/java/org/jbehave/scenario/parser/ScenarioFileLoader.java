@@ -31,6 +31,10 @@ public class ScenarioFileLoader implements ScenarioDefiner {
     public ScenarioFileLoader(ClassLoader classLoader) {
         this(new UnderscoredCamelCaseResolver(), classLoader, new PatternStepParser());
     }
+    
+    public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader) {
+        this(resolver, classLoader, new PatternStepParser());
+    }
 
     public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader, StepParser stepParser) {
         this.resolver = resolver;
