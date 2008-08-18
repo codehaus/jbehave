@@ -1,8 +1,5 @@
 package org.jbehave.scenario.steps;
 
-import static org.jbehave.Ensure.ensureThat;
-import static org.jbehave.Ensure.not;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -11,22 +8,6 @@ import org.junit.Test;
 
 
 public class StepResultBehaviour {
-
-	@Test
-	public void shouldNotContinueUnlessSuccessful() {
-		ensureThat(StepResult.success("").shouldContinue());
-		ensureThat(not(StepResult.pending("").shouldContinue()));
-	}
-	
-	@Test
-	public void shouldDecideWhatYouWantNotPerformedResultsToDoIfYouNeedToAskThemWhetherToContinue() {
-		try {
-			StepResult.notPerformed("").shouldContinue();
-			fail("What do you want unperformed results to do here? Change the behaviour!");
-		} catch (UnsupportedOperationException e) {
-			// Expected
-		}
-	}
 	
 	@Test
 	public void shouldDescribeItselfToAReporter() {

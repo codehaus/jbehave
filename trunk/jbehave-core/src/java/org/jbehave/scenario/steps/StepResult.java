@@ -7,30 +7,15 @@ public abstract class StepResult {
 
 	public static class Failed extends StepResult {
 
-		private final Throwable e;
-
-		public Failed(String step, Throwable e) {
-			super(step);
-			this.e = e;
+		public Failed(String step, Throwable throwable) {
+			super(step, throwable);
 		}
 
 		@Override
 		public void describeTo(ScenarioReporter reporter) {
-			reporter.failed(step, e);
+			reporter.failed(step, throwable);
 		}
-
-		@Override
-		public boolean shouldContinue() {
-			return false;
-		}
-		
-		@Override
-		public Throwable getThrowable() {
-			return e;
-		}
-
 	}
-
 
 	public static class NotPerformed extends StepResult {
 
@@ -42,35 +27,23 @@ public abstract class StepResult {
 		public void describeTo(ScenarioReporter reporter) {
 			reporter.notPerformed(step);
 		}
-
-		
-		@Override
-		public boolean shouldContinue() {
-			throw new UnsupportedOperationException(
-					"I have no idea whether 'notPerformed' results should continue. ScenarioRunners " +
-					"should not need to check whether to continue if they've already decided not to continue.");
-		}
-
 	}
 
 
 	public static class Pending extends StepResult {
-
 		public Pending(String step) {
-			super(step);
+			this(step, new PendingError("Pending: " + step));
+		}
+
+		public Pending(String stepAsString, PendingError e) {
+			super(stepAsString, e);
 		}
 
 		@Override
 		public void describeTo(ScenarioReporter reporter) {
 			reporter.pending(step);
 		}
-
-		@Override
-		public boolean shouldContinue() {
-			return false;
-		}
 	}
-
 
 	public static class Success extends StepResult {
 		public Success(String string) {
@@ -81,17 +54,18 @@ public abstract class StepResult {
 		public void describeTo(ScenarioReporter reporter) {
 			reporter.successful(step);
 		}
-
-		@Override
-		public boolean shouldContinue() {
-			return true;
-		}
 	}
 
 	protected final String step;
+	protected final Throwable throwable;
 
 	public StepResult(String step) {
+		this(step, null);
+	}
+
+	public StepResult(String step, Throwable throwable) {
 		this.step = step;
+		this.throwable = throwable;
 	}
 
 	public static StepResult success(String step) {
@@ -102,6 +76,9 @@ public abstract class StepResult {
 		return new Pending(step);
 	}
 	
+	public static StepResult pending(String stepAsString, PendingError e) {
+		return new Pending(stepAsString, e);
+	}
 
 	public static StepResult notPerformed(String step) {
 		return new NotPerformed(step);
@@ -113,9 +90,8 @@ public abstract class StepResult {
 
 	public abstract void describeTo(ScenarioReporter reporter);
 	
-	public abstract boolean shouldContinue();
 
 	public Throwable getThrowable() {
-		return null;
+		return throwable;
 	}
 }

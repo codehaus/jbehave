@@ -9,7 +9,6 @@ public class PendingStep implements Step {
 		this.step = step;
 	}
 
-
 	public StepResult perform() {
 		return StepResult.pending(getDescription());
 	}

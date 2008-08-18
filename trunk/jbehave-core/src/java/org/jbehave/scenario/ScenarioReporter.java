@@ -1,7 +1,7 @@
 package org.jbehave.scenario;
 
 /**
- * Allows to report the state of running scenario steps.
+ * Allows the runner to report the state of running scenario steps.
  * 
  * @author Elizabeth Keogh
  */

@@ -2,8 +2,7 @@ package org.jbehave.scenario;
 
 import java.util.List;
 
-import org.jbehave.OurTechnique;
-import org.jbehave.Technique;
+import org.jbehave.Configuration;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.parser.ScenarioDefinition;
 import org.jbehave.scenario.steps.CandidateStep;
@@ -28,13 +27,13 @@ public abstract class Scenario {
     private final ScenarioRunner scenarioRunner;
 
     public Scenario(Steps... candidateSteps) {
-        this(new OurTechnique(), candidateSteps);
+        this(new PropertyBasedConfiguration(), candidateSteps);
     }
 
-    public Scenario(Technique technique, Steps... candidateSteps) {
-        this.candidateSteps = candidateSteps;
-		this.scenarioDefiner = technique.forDefiningScenarios();
-        this.scenarioRunner = new ScenarioRunner(technique.forReportingScenarios());
+    public Scenario(Configuration configuration, Steps... candidateSteps) {
+		this.candidateSteps = candidateSteps;
+		this.scenarioDefiner = configuration.forDefiningScenarios();
+        this.scenarioRunner = new ScenarioRunner(configuration.forReportingScenarios(), configuration.forPendingSteps());
     }
 
     @Test

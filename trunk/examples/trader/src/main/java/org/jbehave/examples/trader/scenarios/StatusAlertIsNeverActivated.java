@@ -1,6 +1,6 @@
 package org.jbehave.examples.trader.scenarios;
 
-import org.jbehave.OurTechnique;
+import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.PatternStepParser;
 import org.jbehave.scenario.parser.ScenarioFileLoader;
@@ -14,7 +14,7 @@ public class StatusAlertIsNeverActivated extends Scenario {
     }
 
     public StatusAlertIsNeverActivated(final ClassLoader classLoader) {
-        super(new OurTechnique() {
+        super(new PropertyBasedConfiguration() {
         	@Override
         	public ScenarioFileLoader forDefiningScenarios() {
         		return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), classLoader, new PatternStepParser());

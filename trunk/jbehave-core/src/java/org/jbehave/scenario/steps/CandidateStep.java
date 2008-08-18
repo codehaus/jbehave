@@ -64,14 +64,19 @@ public class CandidateStep {
                 try {
                     method.invoke(steps, args);
                     return StepResult.success(stepAsString);
-                } catch (Throwable t) {
+                }
+                catch (Throwable t) {
                     return failureWithOriginalException(stepAsString, t);
                 }
             }
 
-            private StepResult failureWithOriginalException(final String stepAsString, Throwable t) {
+			private StepResult failureWithOriginalException(final String stepAsString, Throwable t) {
                 if (t instanceof InvocationTargetException && t.getCause() != null) {
-                    return StepResult.failure(stepAsString, t.getCause());
+                	if (t.getCause() instanceof PendingError) {
+                		return StepResult.pending(stepAsString, (PendingError) t.getCause());
+                	} else {
+                		return StepResult.failure(stepAsString, t.getCause());
+                	}
                 }
                 return StepResult.failure(stepAsString, t);
             }
