@@ -1,5 +1,8 @@
 package org.jbehave.scenario;
 
+import org.jbehave.scenario.steps.ErrorStrategy;
+import org.jbehave.scenario.steps.PendingError;
+import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepResult;
 
@@ -13,9 +16,19 @@ public class ScenarioRunner {
 
     private State state;
     private final ScenarioReporter reporter;
+	private final PendingStepStrategy pendingStepStrategy;
+	private ErrorStrategy errorStrategy;
+	private ErrorStrategy currentStrategy;
 
-    public ScenarioRunner(ScenarioReporter reporter) {
+    public ScenarioRunner(ScenarioReporter reporter, PendingStepStrategy pendingStepStrategy) {
+    	this(reporter, pendingStepStrategy, ErrorStrategy.RETHROW);
+    }
+    
+    public ScenarioRunner(ScenarioReporter reporter, PendingStepStrategy pendingStepStrategy, ErrorStrategy errorStrategy) {
         this.reporter = reporter;
+		this.pendingStepStrategy = pendingStepStrategy;
+		this.errorStrategy = errorStrategy;
+		this.currentStrategy = ErrorStrategy.SILENT;
     }
 
     public void run(Step... steps) throws Throwable {
@@ -23,9 +36,7 @@ public class ScenarioRunner {
         for (Step step : steps) {
             state.run(step);
         }
-        if (throwable != null) {
-            throw throwable;
-        }
+        currentStrategy.handleError(throwable);
     }
 
     private class SomethingHappened extends State {
@@ -40,19 +51,28 @@ public class ScenarioRunner {
     public Throwable throwable;
 
     private final class FineSoFar extends State {
-        @Override
+
+		@Override
         protected void run(Step step) {
             StepResult result = step.perform();
             result.describeTo(reporter);
-            if (!result.shouldContinue()) {
+            throwable = result.getThrowable();
+            if (throwable != null) {
                 state = new SomethingHappened();
-                throwable = result.getThrowable();
+                currentStrategy = strategyFor(throwable);
             }
         }
+
+		private ErrorStrategy strategyFor(Throwable throwable) {
+			if (throwable instanceof PendingError) {
+				return pendingStepStrategy;
+			} else {
+				return errorStrategy;
+			}
+		}
     }
 
     private abstract class State {
         protected abstract void run(Step step);
     };
-
 }

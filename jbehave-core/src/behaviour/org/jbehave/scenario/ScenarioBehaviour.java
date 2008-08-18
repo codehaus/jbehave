@@ -1,6 +1,7 @@
 package org.jbehave.scenario;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.jbehave.Ensure.ensureThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -10,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-import org.jbehave.Technique;
+import org.jbehave.Configuration;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
@@ -21,7 +22,11 @@ import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.StepParser;
 import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
+import org.jbehave.scenario.steps.PendingError;
+import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.Steps;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -32,7 +37,22 @@ import org.junit.Test;
 public class ScenarioBehaviour {
 
 	private static final String NL = System.getProperty("line.separator");
+	private String originalFailOnPending;
 
+	@Before
+	public void captureExistingEnvironment() {
+		originalFailOnPending = System.getProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
+	}
+	
+	@After
+	public void resetEnvironment() {
+		if (originalFailOnPending != null) {
+			System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, originalFailOnPending);
+		} else {
+			System.clearProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
+		}
+	}
+	
 	@Test
 	public void shouldPerformStepsInFileAssociatedWithNameUsingGivenStepsClasses() throws Throwable {
 		
@@ -87,6 +107,48 @@ public class ScenarioBehaviour {
     public void shouldPerformStepsUsingScenarioWithDefaults() throws Throwable {        
         new MyPendingScenario().runUsingSteps();
     }
+    
+    @Test
+    public void shouldAllowPendingStepsToFailTheBuild() throws Throwable {
+    	System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, "true");
+		try {
+			new MyPendingScenario().runUsingSteps();
+			fail("Should not have run successfully");
+		} catch (AssertionError e) {
+			ensureThat(e, is(PendingError.class));
+		}
+		
+		try {
+			new MyPendingScenario().runUsingSteps();
+			fail("Should not have run successfully");
+		} catch (AssertionError e) {
+			ensureThat(e, is(PendingError.class));
+		}
+    }
+    
+    @Test
+    public void shouldAllowPartlyDefinedStepsToExplicitlyThrowPendingErrors() throws Throwable {
+        ScenarioDefiner fileLoader = mock(ScenarioDefiner.class);
+        StepParser stepParser = mock(PatternStepParser.class);
+        StringBuffer buffer = new StringBuffer();
+        ScenarioReporter reporter = new BufferScenarioReporter(buffer);
+        MySteps steps = new MySteps();
+        
+        stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(Arrays.asList(
+        		new ScenarioDefinition(stepParser, "my_scenario")));
+        stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
+                "Given I have 2 cows",
+                "When I put them in a field",
+                "Then my cows should still be waiting for the spring"}));
+
+        new MyScenario(fileLoader, stepParser, reporter, steps).runUsingSteps();
+        
+        ensureThat(steps.numberOfCows, equalTo(2));
+        ensureThat(buffer.toString(), equalTo(
+                "Given I have 2 cows" + NL + 
+                "When I put them in a field" + NL +
+                "Then my cows should still be waiting for the spring (PENDING)" + NL));
+    }
 	
 	@Test
 	public void shouldRethrowErrorsInTheEventOfAScenarioFailure() throws Throwable {
@@ -105,7 +167,6 @@ public class ScenarioBehaviour {
 				"Then my cows should not die",
 				"Then I should have 2 cows"}));
 		
-
 		try {
 			new MyScenario(scenarioDefiner, stepParser, reporter, steps).runUsingSteps();
 			fail("Expected the error to be rethrown");
@@ -123,11 +184,13 @@ public class ScenarioBehaviour {
 	
 	private static class MyScenario extends Scenario {
 		public MyScenario(final ScenarioDefiner scenarioDefiner, final StepParser stepParser, final ScenarioReporter scenarioReporter, Steps steps) {
-			super(new Technique() {
+			super(new Configuration() {
 
 				public ScenarioDefiner forDefiningScenarios() { return scenarioDefiner; }
 
 				public ScenarioReporter forReportingScenarios() { return scenarioReporter; }
+
+				public PendingStepStrategy forPendingSteps() { return PendingStepStrategy.PASSING; }
 				
 			}, steps);
 		}
@@ -153,9 +216,13 @@ public class ScenarioBehaviour {
 		
 		@Then("my cows should not die")
 		public void keepCowsAlive() {
-			
 			error = new IllegalAccessError("Leave my cows alone!");
 			throw error;
+		}
+		
+		@Then("my cows should still be waiting for the spring")
+		public void keepCowsWaiting() {
+			throw new PendingError("Cows are waiting");
 		}
 	}
 	

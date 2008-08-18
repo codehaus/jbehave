@@ -22,7 +22,7 @@
   <property name="jbehave.zip" location="${working.dir}/jbehave-${version}.zip" />
   <property name="dist.dir" location="${working.dir}/${version}" />
   <property name="jbehave.jar" location="${dist.dir}/jbehave-${version}.jar" />
-  <property name="jbehave.src.zip" location="${dist.dir}/jbehave-${version}-src.zip" />
+  <property name="jbehave.src.jar" location="${dist.dir}/jbehave-${version}-src.jar" />
   <property name="website.dist.dir" location="${dist.dir}/website" />
   <property name="javadoc.dist.dir" location="${website.dist.dir}/javadoc/${version}" />
 
@@ -191,6 +191,7 @@
   	description="Produces a jar file in the distribution directory."
   	depends="jbehave-classes">
     <jar basedir="${jbehave.classes}" jarfile="${jbehave.jar}" />
+    <jar basedir="${jbehave.source}" jarfile="${jbehave.src.jar}" />
   </target>
 
   <target name="jbehave-src-zip" description="Assembles the source jar.">
