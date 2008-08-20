@@ -136,13 +136,17 @@ public class ScenarioBehaviour {
     }
     
     @Test
-    public void shouldAllowPassingScenariosToBeSilent() throws Throwable {
+    public void shouldAllowAllScenariosToBeReportedToOutput() throws Throwable {
     	System.setProperty(PropertyBasedConfiguration.OUTPUT_ALL, "true");
         
     	// The only way to test this would be to replace the reporter in the configuration.
+    	//
     	// As a JBehave user, I want to change reporters so that the reporter I specify 
-    	// is the one that's used. Doing anything which would allow this to be testable
-    	// would conflict with that intuitive use! So, 
+    	// is the one that's used.
+    	//
+    	// Doing anything which would allow this to be testable - such as allowing
+    	// dependency injection of a delegate reporter - would conflict with that 
+    	// intuitive use! So, I'm not writing an automated example for this.
     }
     
     @Test
