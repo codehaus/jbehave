@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
-import org.jbehave.scenario.steps.PendingError;
 import org.jbehave.scenario.steps.Steps;
 import org.lunivore.tyburn.WindowControl;
 

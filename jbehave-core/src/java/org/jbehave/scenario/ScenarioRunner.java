@@ -32,12 +32,18 @@ public class ScenarioRunner {
     }
 
     public void run(Step... steps) throws Throwable {
+    	run("", steps);
+    }
+
+	public void run(String title, Step... steps) throws Throwable {
+		reporter.beforeScenario(title);
     	state = new FineSoFar();
         for (Step step : steps) {
             state.run(step);
         }
+        reporter.afterScenario();
         currentStrategy.handleError(throwable);
-    }
+	};
 
     private class SomethingHappened extends State {
         @Override
@@ -74,5 +80,5 @@ public class ScenarioRunner {
 
     private abstract class State {
         protected abstract void run(Step step);
-    };
+    }
 }
