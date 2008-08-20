@@ -3,6 +3,8 @@ package org.jbehave.scenario;
 import static org.hamcrest.CoreMatchers.is;
 import static org.jbehave.Ensure.ensureThat;
 
+import org.jbehave.scenario.reporters.PassSilentlyDecorator;
+import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.junit.After;
 import org.junit.Before;
@@ -36,5 +38,17 @@ public class PropertyBasedConfigurationBehaviour {
 	public void shouldUseFailingPendingStepStrategyWhenConfiguredToDoSo() {
 		System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, "true");
 		ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingStepStrategy.FAILING));
+	}
+	
+	@Test
+	public void shouldSwallowOutputFromPassingScenariosByDefault() {
+		System.clearProperty(PropertyBasedConfiguration.OUTPUT_ALL);
+		ensureThat(new PropertyBasedConfiguration().forReportingScenarios(), is(PassSilentlyDecorator.class));
+	}
+	
+	@Test
+	public void shouldOutputAllWhenConfiguredToDoSo() {
+		System.setProperty(PropertyBasedConfiguration.OUTPUT_ALL, "true");
+		ensureThat(new PropertyBasedConfiguration().forReportingScenarios(), is(PrintStreamScenarioReporter.class));
 	}
 }

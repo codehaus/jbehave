@@ -38,10 +38,14 @@ public class ScenarioBehaviour {
 
 	private static final String NL = System.getProperty("line.separator");
 	private String originalFailOnPending;
+	private String originalPassSilently;
 
 	@Before
-	public void captureExistingEnvironment() {
+	public void captureExistingEnvironmentAndMakeTheseExamplesWork() {
 		originalFailOnPending = System.getProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
+		originalPassSilently = System.getProperty(PropertyBasedConfiguration.OUTPUT_ALL);
+		System.clearProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
+		System.clearProperty(PropertyBasedConfiguration.OUTPUT_ALL);
 	}
 	
 	@After
@@ -50,6 +54,11 @@ public class ScenarioBehaviour {
 			System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, originalFailOnPending);
 		} else {
 			System.clearProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
+		}
+		if (originalPassSilently != null) {
+			System.setProperty(PropertyBasedConfiguration.OUTPUT_ALL, originalPassSilently);
+		} else {
+			System.clearProperty(PropertyBasedConfiguration.OUTPUT_ALL);
 		}
 	}
 	
@@ -65,17 +74,17 @@ public class ScenarioBehaviour {
  		stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(Arrays.asList(
  				new ScenarioDefinition(stepParser, "my_scenario")));
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
-				"Given I have 2 cows",
-				"When I leave them over the winter",
-				"Then I should have 2 cows"}));
+				"Given I have 2 scenarios",
+				"When I do something unexpected",
+				"Then I should have 2 scenarios"}));
 
 		new MyScenario(fileLoader, stepParser, reporter, steps).runUsingSteps();
 		
-		ensureThat(steps.numberOfCows, equalTo(2));
+		ensureThat(steps.numberOfScenarios, equalTo(2));
 		ensureThat(output.toString(), equalTo(
-				"Given I have 2 cows" + NL + 
-				"When I leave them over the winter (PENDING)" + NL +
-				"Then I should have 2 cows (NOT PERFORMED)" + NL));
+				"Given I have 2 scenarios" + NL + 
+				"When I do something unexpected (PENDING)" + NL +
+				"Then I should have 2 scenarios (NOT PERFORMED)" + NL));
 	}
 	
 	@Test
@@ -90,17 +99,17 @@ public class ScenarioBehaviour {
         stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(Arrays.asList(
         		new ScenarioDefinition(stepParser, "my_scenario")));
         stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
-                "Given I have 2 cows",
-                "When I leave them over the winter",
-                "Then I should have 2 cows"}));
+                "Given I have 2 scenarios",
+                "When I do something unexpected",
+                "Then I should have 2 scenarios"}));
 
         new MyScenario(fileLoader, stepParser, reporter, steps).runUsingSteps();
         
-        ensureThat(steps.numberOfCows, equalTo(2));
+        ensureThat(steps.numberOfScenarios, equalTo(2));
         ensureThat(buffer.toString(), equalTo(
-                "Given I have 2 cows" + NL + 
-                "When I leave them over the winter (PENDING)" + NL +
-                "Then I should have 2 cows (NOT PERFORMED)" + NL));
+                "Given I have 2 scenarios" + NL + 
+                "When I do something unexpected (PENDING)" + NL +
+                "Then I should have 2 scenarios (NOT PERFORMED)" + NL));
     }
 	
     @Test
@@ -127,6 +136,16 @@ public class ScenarioBehaviour {
     }
     
     @Test
+    public void shouldAllowPassingScenariosToBeSilent() throws Throwable {
+    	System.setProperty(PropertyBasedConfiguration.OUTPUT_ALL, "true");
+        
+    	// The only way to test this would be to replace the reporter in the configuration.
+    	// As a JBehave user, I want to change reporters so that the reporter I specify 
+    	// is the one that's used. Doing anything which would allow this to be testable
+    	// would conflict with that intuitive use! So, 
+    }
+    
+    @Test
     public void shouldAllowPartlyDefinedStepsToExplicitlyThrowPendingErrors() throws Throwable {
         ScenarioDefiner fileLoader = mock(ScenarioDefiner.class);
         StepParser stepParser = mock(PatternStepParser.class);
@@ -137,17 +156,17 @@ public class ScenarioBehaviour {
         stub(fileLoader.loadStepsFor(MyScenario.class)).toReturn(Arrays.asList(
         		new ScenarioDefinition(stepParser, "my_scenario")));
         stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
-                "Given I have 2 cows",
-                "When I put them in a field",
-                "Then my cows should still be waiting for the spring"}));
+                "Given I have 2 scenarios",
+                "When I read my scenarios",
+                "Then my scenario should be pending"}));
 
         new MyScenario(fileLoader, stepParser, reporter, steps).runUsingSteps();
         
-        ensureThat(steps.numberOfCows, equalTo(2));
+        ensureThat(steps.numberOfScenarios, equalTo(2));
         ensureThat(buffer.toString(), equalTo(
-                "Given I have 2 cows" + NL + 
-                "When I put them in a field" + NL +
-                "Then my cows should still be waiting for the spring (PENDING)" + NL));
+                "Given I have 2 scenarios" + NL + 
+                "When I read my scenarios" + NL +
+                "Then my scenario should be pending (PENDING)" + NL));
     }
 	
 	@Test
@@ -162,10 +181,10 @@ public class ScenarioBehaviour {
         stub(scenarioDefiner.loadStepsFor(MyScenario.class)).toReturn(Arrays.asList(
         		new ScenarioDefinition(stepParser, "my_scenario")));
 		stub(stepParser.findSteps("my_scenario")).toReturn(Arrays.asList(new String[] {
-				"Given I have 2 cows",
-				"When I put them in a field",
-				"Then my cows should not die",
-				"Then I should have 2 cows"}));
+				"Given I have 2 scenarios",
+				"When I read my scenarios",
+				"Then my scenario should fail",
+				"Then I should have 2 scenarios"}));
 		
 		try {
 			new MyScenario(scenarioDefiner, stepParser, reporter, steps).runUsingSteps();
@@ -175,10 +194,10 @@ public class ScenarioBehaviour {
 		}
 		
 		ensureThat(output.toString(), equalTo(
-				"Given I have 2 cows" + NL + 
-				"When I put them in a field" + NL +
-				"Then my cows should not die (FAILED)" + NL +
-				"Then I should have 2 cows (NOT PERFORMED)" + NL));
+				"Given I have 2 scenarios" + NL + 
+				"When I read my scenarios" + NL +
+				"Then my scenario should fail (FAILED)" + NL +
+				"Then I should have 2 scenarios (NOT PERFORMED)" + NL));
 	}
 
 	
@@ -198,30 +217,30 @@ public class ScenarioBehaviour {
 	
 	public static class MySteps extends Steps {
 		
-		private int numberOfCows;
+		private int numberOfScenarios;
 		private IllegalAccessError error;
 
-		@Given("I have $n cows")
-		public void makeCows(int numberOfCows) {
-			this.numberOfCows = numberOfCows;
+		@Given("I have $n scenarios")
+		public void makeSomeScenarios(int numberOfScenarios) {
+			this.numberOfScenarios = numberOfScenarios;
 		}
 		
-		@When("I put them in a field")
-		public void ignoreCows() {}
+		@When("I read my scenarios")
+		public void readScenarios() {}
 		
-		@Then("I should have $n cows")
-		public void checkCows(int numberOfCows) {
-			ensureThat(this.numberOfCows, equalTo(numberOfCows));
+		@Then("I should have $n scenarios")
+		public void checkNumberOfScenarios(int numberOfCows) {
+			ensureThat(this.numberOfScenarios, equalTo(numberOfCows));
 		}
 		
-		@Then("my cows should not die")
-		public void keepCowsAlive() {
-			error = new IllegalAccessError("Leave my cows alone!");
+		@Then("my scenario should fail")
+		public void makeTheScenarioFail() {
+			error = new IllegalAccessError("Die, Scenario, Die!");
 			throw error;
 		}
 		
-		@Then("my cows should still be waiting for the spring")
-		public void keepCowsWaiting() {
+		@Then("my scenario should be pending")
+		public void pending() {
 			throw new PendingError("Cows are waiting");
 		}
 	}
@@ -249,6 +268,16 @@ public class ScenarioBehaviour {
         public void successful(String step) {
             buffer.append(step+NL);
         }
+
+		public void afterScenario() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void beforeScenario(String blurb) {
+			// TODO Auto-generated method stub
+			
+		}
 	    
 	}
 }

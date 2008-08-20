@@ -7,11 +7,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.inOrder;
 
 import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepResult;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 public class ScenarioRunnerBehaviour {
 
@@ -111,6 +113,41 @@ public class ScenarioRunnerBehaviour {
 		verify(pendingStep).perform();
 		verify(secondStep).perform();
 		verify(secondStep, never()).doNotPerform();
+	}
+	
+	@Test
+	public void shouldInformReporterOfChangeInScenarioForEachSetOfSteps() throws Throwable {
+		IllegalArgumentException anException = new IllegalArgumentException();
+
+		ScenarioReporter reporter = mock(ScenarioReporter.class);
+		Step pendingStep = mock(Step.class);
+		Step secondStep = mock(Step.class);
+		Step failingStep = mock(Step.class);
+		stub(pendingStep.perform()).toReturn(StepResult.pending("pendingStep"));
+		stub(secondStep.perform()).toReturn(StepResult.success("secondStep"));
+		stub(failingStep.perform()).toReturn(StepResult.failure("failingStep", anException));
+		
+		ScenarioRunner runner = new ScenarioRunner(reporter, PendingStepStrategy.PASSING);
+		
+		runner.run("header for pending scenario", pendingStep);
+		runner.run("header for second scenario", secondStep);
+		try {
+			runner.run("header for failing scenario", failingStep);
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
+		
+		InOrder inOrder = inOrder(reporter);
+		
+		inOrder.verify(reporter).beforeScenario("header for pending scenario");
+		inOrder.verify(reporter).pending("pendingStep");
+		inOrder.verify(reporter).afterScenario();
+		inOrder.verify(reporter).beforeScenario("header for second scenario");
+		inOrder.verify(reporter).successful("secondStep");
+		inOrder.verify(reporter).afterScenario();
+		inOrder.verify(reporter).beforeScenario("header for failing scenario");
+		inOrder.verify(reporter).failed("failingStep", anException);
+		inOrder.verify(reporter).afterScenario();
 	}
 	
 	@Test

@@ -7,6 +7,10 @@ package org.jbehave.scenario;
  */
 public interface ScenarioReporter {
 
+	void beforeScenario(String title);
+	
+	void afterScenario();
+	
     void successful(String step);
 
     void pending(String step);
@@ -14,5 +18,6 @@ public interface ScenarioReporter {
     void notPerformed(String step);
 
     void failed(String step, Throwable e);
+
 
 }

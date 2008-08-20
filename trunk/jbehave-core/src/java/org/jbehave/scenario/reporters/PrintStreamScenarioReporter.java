@@ -32,4 +32,14 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 		output.println(step + " (FAILED)");
 	}
 
+	public void afterScenario() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void beforeScenario(String blurb) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
