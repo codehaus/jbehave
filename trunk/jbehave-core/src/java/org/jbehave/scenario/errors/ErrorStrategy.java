@@ -1,4 +1,4 @@
-package org.jbehave.scenario.steps;
+package org.jbehave.scenario.errors;
 
 public interface ErrorStrategy {
 

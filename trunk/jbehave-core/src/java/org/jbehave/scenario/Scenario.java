@@ -1,13 +1,6 @@
 package org.jbehave.scenario;
 
-import java.util.List;
-
 import org.jbehave.Configuration;
-import org.jbehave.scenario.parser.ScenarioDefiner;
-import org.jbehave.scenario.parser.ScenarioDefinition;
-import org.jbehave.scenario.steps.CandidateStep;
-import org.jbehave.scenario.steps.PendingStep;
-import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
 
@@ -23,43 +16,27 @@ import org.junit.Test;
 public abstract class Scenario {
 
     private final Steps[] candidateSteps;
-    private final ScenarioDefiner scenarioDefiner;
     private final ScenarioRunner scenarioRunner;
+	private final Configuration configuration;
 
     public Scenario(Steps... candidateSteps) {
         this(new PropertyBasedConfiguration(), candidateSteps);
     }
 
     public Scenario(Configuration configuration, Steps... candidateSteps) {
-		this.candidateSteps = candidateSteps;
-		this.scenarioDefiner = configuration.forDefiningScenarios();
-        this.scenarioRunner = new ScenarioRunner(configuration.forReportingScenarios(), configuration.forPendingSteps());
+    	this(new ScenarioRunner(), configuration, candidateSteps);
     }
+    
+    
+    public Scenario(ScenarioRunner scenarioRunner, Configuration configuration, Steps... candidateSteps) {
+    	this.configuration = configuration;
+		this.scenarioRunner = scenarioRunner;
+		this.candidateSteps = candidateSteps;
+	}
 
     @Test
     public void runUsingSteps() throws Throwable {
-        List<ScenarioDefinition> definitions = scenarioDefiner.loadStepsFor(this.getClass());
-        for (ScenarioDefinition definition : definitions) {
-            Step[] steps = createRealStepsFromCandidates(definition.getSteps());
-            scenarioRunner.run(steps);
-		}
+        StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(this.getClass());
+        scenarioRunner.run(story, configuration, candidateSteps);
     }
-
-	private Step[] createRealStepsFromCandidates(List<String> stringSteps) {
-		Step[] steps = new Step[stringSteps.size()];
-        for (int i = 0; i < steps.length; i++) {
-            String stringStep = stringSteps.get(i);
-            for (Steps candidates : candidateSteps) {
-                for (CandidateStep candidate : candidates.getSteps()) {
-                    if (candidate.matches(stringStep)) {
-                        steps[i] = candidate.createFrom(stringStep);
-                    }
-                }
-            }
-            if (steps[i] == null) {
-                steps[i] = new PendingStep(stringStep);
-            }
-        }
-		return steps;
-	}
 }

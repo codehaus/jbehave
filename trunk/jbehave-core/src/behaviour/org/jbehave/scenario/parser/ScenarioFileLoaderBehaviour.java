@@ -5,53 +5,39 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.jbehave.scenario.Scenario;
-import org.jbehave.scenario.parser.scenarios.MyMultipleScenario;
 import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
 import org.junit.Test;
 
 public class ScenarioFileLoaderBehaviour {
 
-    private static final String NL = System.getProperty("line.separator");
-
 	@Test
     public void canLoadScenario() {
-    	StepParser parser = mock(StepParser.class);
+    	ScenarioParser parser = mock(ScenarioParser.class);
         ScenarioFileLoader loader = new ScenarioFileLoader(parser);
-        List<ScenarioDefinition> definitions = loader.loadStepsFor(MyPendingScenario.class);
-        definitions.get(0).getSteps();
-        verify(parser).findSteps("Given my scenario");
+        loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
+        verify(parser).defineStoryFrom("Given my scenario");
     }
 
     @Test
     public void canLoadScenarioWithCustomFilenameResolver() {
-    	StepParser parser = mock(StepParser.class);
+    	ScenarioParser parser = mock(ScenarioParser.class);
         ScenarioFileLoader loader = new ScenarioFileLoader(new CasePreservingResolver(".scenario"), parser);
-        loader.loadStepsFor(MyPendingScenario.class).get(0).getSteps();
-        verify(parser).findSteps("Given my scenario");
+        loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
+        verify(parser).defineStoryFrom("Given my scenario");
     }
     
     @Test(expected = ScenarioNotFoundException.class)
     public void cannotLoadScenarioForInexistentResource() {
         ScenarioFileLoader loader = new ScenarioFileLoader();
-        loader.loadStepsFor(InexistentScenario.class);
+        loader.loadScenarioDefinitionsFor(InexistentScenario.class);
     }
 
     @Test(expected = InvalidScenarioResourceException.class)
     public void cannotLoadScenarioForInvalidResource() {
         ScenarioFileLoader loader = new ScenarioFileLoader(new InvalidClassLoader());
-        loader.loadStepsFor(MyPendingScenario.class);
-    }
-    
-    @Test
-    public void canLoadMultipleScenariosInTheSameFile() {
-    	StepParser parser = mock(StepParser.class);
-        ScenarioFileLoader loader = new ScenarioFileLoader(parser);
-        List<ScenarioDefinition> definitions = loader.loadStepsFor(MyMultipleScenario.class);
-        definitions.get(1).getSteps();
-        verify(parser).findSteps("Scenario: the second scenario" + NL + NL + "Given my second scenario");
+        loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
     }
 
     static class InexistentScenario extends Scenario {

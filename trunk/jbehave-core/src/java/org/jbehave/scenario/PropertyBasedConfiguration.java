@@ -1,13 +1,16 @@
 package org.jbehave.scenario;
 
 import org.jbehave.Configuration;
-import org.jbehave.scenario.parser.PatternStepParser;
+import org.jbehave.scenario.errors.ErrorStrategy;
+import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.PassSilentlyDecorator;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.steps.PendingStepStrategy;
+import org.jbehave.scenario.steps.StepCreator;
+import org.jbehave.scenario.steps.UnmatchedToPendingStepCreator;
 
 public class PropertyBasedConfiguration implements Configuration {
 
@@ -23,7 +26,7 @@ public class PropertyBasedConfiguration implements Configuration {
 	}
 
 	public ScenarioDefiner forDefiningScenarios() {
-		return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternStepParser());
+		return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser());
 	}
 
 	public PendingStepStrategy forPendingSteps() {
@@ -31,5 +34,13 @@ public class PropertyBasedConfiguration implements Configuration {
 			return PendingStepStrategy.PASSING;
 		}
 		return PendingStepStrategy.FAILING;
+	}
+
+	public StepCreator forCreatingSteps() {
+		return new UnmatchedToPendingStepCreator();
+	}
+
+	public ErrorStrategy forHandlingErrors() {
+		return ErrorStrategy.RETHROW;
 	}	
 }

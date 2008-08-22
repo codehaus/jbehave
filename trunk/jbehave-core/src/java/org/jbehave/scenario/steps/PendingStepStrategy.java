@@ -1,5 +1,7 @@
 package org.jbehave.scenario.steps;
 
+import org.jbehave.scenario.errors.ErrorStrategy;
+
 public interface PendingStepStrategy extends ErrorStrategy {
 
 	PendingStepStrategy PASSING = new PendingStepStrategy() { 

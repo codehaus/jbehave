@@ -5,6 +5,9 @@ import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jbehave.scenario.errors.PendingError;
+import org.jbehave.scenario.parser.StepPatternBuilder;
+
 
 public class CandidateStep {
 

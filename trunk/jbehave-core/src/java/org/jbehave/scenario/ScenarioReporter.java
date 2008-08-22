@@ -1,5 +1,7 @@
 package org.jbehave.scenario;
 
+import org.jbehave.scenario.definition.Blurb;
+
 /**
  * Allows the runner to report the state of running scenario steps.
  * 
@@ -18,6 +20,10 @@ public interface ScenarioReporter {
     void notPerformed(String step);
 
     void failed(String step, Throwable e);
+
+	void beforeStory(Blurb blurb);
+
+	void afterStory();
 
 
 }

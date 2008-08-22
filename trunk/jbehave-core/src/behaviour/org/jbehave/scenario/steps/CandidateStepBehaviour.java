@@ -7,6 +7,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.jbehave.scenario.ScenarioReporter;
+import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
+import org.jbehave.scenario.parser.StepPatternBuilder;
 import org.junit.Test;
 
 public class CandidateStepBehaviour {

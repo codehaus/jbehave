@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
+import org.jbehave.scenario.parser.StepPatternBuilder;
 
 public class Steps {
 

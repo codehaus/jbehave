@@ -1,4 +1,4 @@
-package org.jbehave.scenario.steps;
+package org.jbehave.scenario.parser;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
@@ -6,6 +6,7 @@ import static org.jbehave.Ensure.ensureThat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.junit.Test;
 
 

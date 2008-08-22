@@ -1,9 +1,10 @@
-package org.jbehave.scenario.steps;
+package org.jbehave.scenario.parser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * Provides a pattern which will capture arguments starting with the given
