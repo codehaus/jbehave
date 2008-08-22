@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jbehave.scenario.ScenarioReporter;
+import org.jbehave.scenario.definition.Blurb;
 
 /**
  * Swallows the reports from all scenarios that pass, providing output
@@ -15,12 +16,27 @@ public class PassSilentlyDecorator implements ScenarioReporter {
 
 	private final ScenarioReporter delegate;
 	private List<Todo> currentScenario;
-	private State state = State.SILENT;
+	private State scenarioState = State.SILENT;
+	private State beforeStoryState = State.SILENT;
+	private State afterStoryState = State.SILENT;
 
 	public PassSilentlyDecorator(ScenarioReporter delegate) {
 		this.delegate = delegate;
 	}
 
+	public void afterStory() {
+		afterStoryState.report();
+	}
+
+	public void beforeStory(final Blurb blurb) {
+		beforeStoryState = new State() {
+			public void report() {
+				delegate.beforeStory(blurb);
+				beforeStoryState = State.SILENT;
+			}
+		};
+	};
+	
 	public void failed(final String step, final Throwable e) {
 		currentScenario.add(new Todo() {
 			public void doNow() {
@@ -48,12 +64,21 @@ public class PassSilentlyDecorator implements ScenarioReporter {
 	}
 
 	private void setStateToNoisy() {
-		state = new State(){
+		scenarioState = new State(){
 			public void report() {
+				beforeStoryState.report();
 				for (Todo todo : currentScenario) {
 					todo.doNow();
 				}
-			}};
+				afterStoryState = new State() {
+					public void report() {
+						delegate.afterStory();
+						afterStoryState = State.SILENT;
+					}
+				};
+				scenarioState = State.SILENT;
+			}
+		};
 	}
 
 	public void successful(final String step) {
@@ -70,8 +95,7 @@ public class PassSilentlyDecorator implements ScenarioReporter {
 				delegate.afterScenario();
 			}
 		});
-		state.report();
-		state = State.SILENT;
+		scenarioState.report();
 	}
 
 	public void beforeScenario(final String title) {
@@ -93,5 +117,5 @@ public class PassSilentlyDecorator implements ScenarioReporter {
 		State SILENT = new State(){public void report() {}};
 		
 		void report();
-	};
+	}
 }

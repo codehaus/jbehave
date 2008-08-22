@@ -6,6 +6,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import org.jbehave.scenario.ScenarioReporter;
+import org.jbehave.scenario.definition.Blurb;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -16,7 +17,9 @@ public class PassSilentlyDecoratorBehaviour {
 		ScenarioReporter delegate = mock(ScenarioReporter.class);
 		PassSilentlyDecorator decorator = new PassSilentlyDecorator(delegate);
 		IllegalArgumentException anException = new IllegalArgumentException();
+		Blurb blurb = new Blurb("Some blurb");
 		
+		decorator.beforeStory(blurb);
 		decorator.beforeScenario("My scenario 1");
 		decorator.successful("Given step 1.1");
 		decorator.successful("When step 1.2");
@@ -40,6 +43,7 @@ public class PassSilentlyDecoratorBehaviour {
 		decorator.successful("When step 4.2");
 		decorator.successful("Then step 4.3");
 		decorator.afterScenario();
+		decorator.afterStory();
 		
 		InOrder inOrder = inOrder(delegate);
 		
@@ -53,6 +57,7 @@ public class PassSilentlyDecoratorBehaviour {
 		verify(delegate, never()).successful("When step 4.2");
 		verify(delegate, never()).successful("Then step 4.3");
 		
+		inOrder.verify(delegate).beforeStory(blurb);
 		inOrder.verify(delegate).beforeScenario("My scenario 2");
 		inOrder.verify(delegate).successful("Given step 2.1");
 		inOrder.verify(delegate).pending("When step 2.2");
@@ -64,6 +69,7 @@ public class PassSilentlyDecoratorBehaviour {
 		inOrder.verify(delegate).successful("When step 3.2");
 		inOrder.verify(delegate).failed("Then step 3.3", anException);
 		inOrder.verify(delegate).afterScenario();
+		inOrder.verify(delegate).afterStory();
 		
 	}
 }

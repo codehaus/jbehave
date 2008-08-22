@@ -3,46 +3,42 @@ package org.jbehave.scenario.parser;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.jbehave.scenario.Scenario;
+import org.jbehave.scenario.StoryDefinition;
 
 public class ScenarioFileLoader implements ScenarioDefiner {
-
-    private final ScenarioFileNameResolver resolver;
+	private final ScenarioFileNameResolver resolver;
     private final ClassLoader classLoader;
-	private final StepParser stepParser;
+	private final ScenarioParser stepParser;
 
     public ScenarioFileLoader() {
-        this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), new PatternStepParser());
+        this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), new PatternScenarioParser());
     }
 
-    public ScenarioFileLoader(StepParser stepParser) {
+    public ScenarioFileLoader(ScenarioParser stepParser) {
 		this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), stepParser);
 	}
 
-    public ScenarioFileLoader(ScenarioFileNameResolver converter, StepParser parser) {
+    public ScenarioFileLoader(ScenarioFileNameResolver converter, ScenarioParser parser) {
         this(converter, Thread.currentThread().getContextClassLoader(), parser);
     }
 
     public ScenarioFileLoader(ClassLoader classLoader) {
-        this(new UnderscoredCamelCaseResolver(), classLoader, new PatternStepParser());
+        this(new UnderscoredCamelCaseResolver(), classLoader, new PatternScenarioParser());
     }
     
     public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader) {
-        this(resolver, classLoader, new PatternStepParser());
+        this(resolver, classLoader, new PatternScenarioParser());
     }
 
-    public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader, StepParser stepParser) {
+    public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader, ScenarioParser stepParser) {
         this.resolver = resolver;
         this.classLoader = classLoader;
 		this.stepParser = stepParser;
     }
 
-	private InputStream loadStepsAsStreamFor(Class<? extends Scenario> scenarioClass) {
+	private InputStream loadInputStreamFor(Class<? extends Scenario> scenarioClass) {
         String scenarioFileName = resolver.resolve(scenarioClass);
         InputStream stream = classLoader.getResourceAsStream(scenarioFileName);
         if ( stream == null ){
@@ -51,43 +47,20 @@ public class ScenarioFileLoader implements ScenarioDefiner {
         return stream;
     }
 
-    public List<ScenarioDefinition>loadStepsFor(Class<? extends Scenario> scenarioClass) {
-    	List<String> scenarios = asString(loadStepsAsStreamFor(scenarioClass));
-    	List<ScenarioDefinition> scenarioDefinitions = new ArrayList<ScenarioDefinition>();
-    	for (String string : scenarios) {
-			scenarioDefinitions.add(new ScenarioDefinition(stepParser, string));
-		}
-        return scenarioDefinitions;
+    public StoryDefinition loadScenarioDefinitionsFor(Class<? extends Scenario> scenarioClass) {
+    	String wholeFileAsString = asString(loadInputStreamFor(scenarioClass));
+    	return stepParser.defineStoryFrom(wholeFileAsString);
     }
-
-    private List<String> asString(InputStream stream) {
+  
+	private String asString(InputStream stream) {
         try {            
             byte[] bytes = new byte[stream.available()];
             stream.read(bytes);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             output.write(bytes);
-            String allScenariosInFile = output.toString();
-    		return splitScenarios(allScenariosInFile);
+            return output.toString();
         } catch (IOException e) {
             throw new InvalidScenarioResourceException("Failed to convert scenario resouce to string", e);
         }
     }
-
-	private List<String> splitScenarios(String allScenariosInFile) {
-    	Pattern scenarioSplitter = Pattern.compile("((Scenario:) (.|\\s)*?)\\s*(\\Z|Scenario:).*", Pattern.DOTALL);
-    	Matcher matcher = scenarioSplitter.matcher(allScenariosInFile);
-    	int startAt = 0;
-    	List<String> scenarios = new ArrayList<String>();
-    	if (matcher.matches()) {
-			while(matcher.find(startAt)) {
-				scenarios.add(matcher.group(1));
-				startAt = matcher.start(4);
-			}
-    	} else {
-    		String loneScenario = allScenariosInFile;
-			scenarios.add(loneScenario);
-    	}
-    	return scenarios;
-	}
-
 }
