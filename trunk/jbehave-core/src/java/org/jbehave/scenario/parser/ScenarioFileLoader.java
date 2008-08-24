@@ -10,17 +10,17 @@ import org.jbehave.scenario.errors.InvalidScenarioResourceException;
 import org.jbehave.scenario.errors.ScenarioNotFoundException;
 
 public class ScenarioFileLoader implements ScenarioDefiner {
-	private final ScenarioFileNameResolver resolver;
+    private final ScenarioFileNameResolver resolver;
     private final ClassLoader classLoader;
-	private final ScenarioParser stepParser;
+    private final ScenarioParser stepParser;
 
     public ScenarioFileLoader() {
         this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), new PatternScenarioParser());
     }
 
     public ScenarioFileLoader(ScenarioParser stepParser) {
-		this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), stepParser);
-	}
+        this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), stepParser);
+    }
 
     public ScenarioFileLoader(ScenarioFileNameResolver converter, ScenarioParser parser) {
         this(converter, Thread.currentThread().getContextClassLoader(), parser);
@@ -37,10 +37,10 @@ public class ScenarioFileLoader implements ScenarioDefiner {
     public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader, ScenarioParser stepParser) {
         this.resolver = resolver;
         this.classLoader = classLoader;
-		this.stepParser = stepParser;
+        this.stepParser = stepParser;
     }
 
-	private InputStream loadInputStreamFor(Class<? extends Scenario> scenarioClass) {
+    private InputStream loadInputStreamFor(Class<? extends Scenario> scenarioClass) {
         String scenarioFileName = resolver.resolve(scenarioClass);
         InputStream stream = classLoader.getResourceAsStream(scenarioFileName);
         if ( stream == null ){
@@ -50,11 +50,11 @@ public class ScenarioFileLoader implements ScenarioDefiner {
     }
 
     public StoryDefinition loadScenarioDefinitionsFor(Class<? extends Scenario> scenarioClass) {
-    	String wholeFileAsString = asString(loadInputStreamFor(scenarioClass));
-    	return stepParser.defineStoryFrom(wholeFileAsString);
+        String wholeFileAsString = asString(loadInputStreamFor(scenarioClass));
+        return stepParser.defineStoryFrom(wholeFileAsString);
     }
   
-	private String asString(InputStream stream) {
+    private String asString(InputStream stream) {
         try {            
             byte[] bytes = new byte[stream.available()];
             stream.read(bytes);

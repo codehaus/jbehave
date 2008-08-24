@@ -16,11 +16,11 @@ import java.util.regex.Pattern;
  */
 public interface StepPatternBuilder {
 
-	/**
-	 * Builds a regexp pattern from a template step.
-	 * @param matchThis the template step
-	 * @return a regexp pattern which will capture the arguments associated with a matching real step
-	 */
+    /**
+     * Builds a regexp pattern from a template step.
+     * @param matchThis the template step
+     * @return a regexp pattern which will capture the arguments associated with a matching real step
+     */
     Pattern buildPattern(String matchThis);
 
 }

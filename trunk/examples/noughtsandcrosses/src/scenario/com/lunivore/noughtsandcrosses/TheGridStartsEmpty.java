@@ -6,7 +6,7 @@ import com.lunivore.noughtsandcrosses.steps.GridSteps;
 
 
 public class TheGridStartsEmpty extends Scenario {
-	public TheGridStartsEmpty() {
-		super(new GridSteps());
-	}
+    public TheGridStartsEmpty() {
+        super(new GridSteps());
+    }
 }

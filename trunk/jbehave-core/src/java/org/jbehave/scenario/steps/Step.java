@@ -4,7 +4,7 @@ package org.jbehave.scenario.steps;
 
 public interface Step {
 
-	StepResult perform();
+    StepResult perform();
 
-	StepResult doNotPerform();
+    StepResult doNotPerform();
 }

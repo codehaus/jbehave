@@ -22,44 +22,44 @@ import org.junit.Test;
  */
 public class ScenarioBehaviour {
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void shouldLoadStoryDefinitionAndRunUsingTheScenarioRunner() throws Throwable {
-		ScenarioRunner runner = mock(ScenarioRunner.class);
-		MockedConfiguration configuration = new MockedConfiguration();
-		Steps steps = mock(Steps.class);
-		Scenario scenario = new MyScenario(runner, configuration, steps);
-		
-		StoryDefinition storyDefinition = new StoryDefinition(Blurb.EMPTY, Collections.EMPTY_LIST);
-		stub(configuration.scenarioDefiner.loadScenarioDefinitionsFor(MyScenario.class)).toReturn(storyDefinition);
-		
-		scenario.runUsingSteps();
-		
-		verify(runner).run(storyDefinition, configuration, steps);
-	}
+    @SuppressWarnings("unchecked")
+    @Test
+    public void shouldLoadStoryDefinitionAndRunUsingTheScenarioRunner() throws Throwable {
+        ScenarioRunner runner = mock(ScenarioRunner.class);
+        MockedConfiguration configuration = new MockedConfiguration();
+        Steps steps = mock(Steps.class);
+        Scenario scenario = new MyScenario(runner, configuration, steps);
+        
+        StoryDefinition storyDefinition = new StoryDefinition(Blurb.EMPTY, Collections.EMPTY_LIST);
+        stub(configuration.scenarioDefiner.loadScenarioDefinitionsFor(MyScenario.class)).toReturn(storyDefinition);
+        
+        scenario.runUsingSteps();
+        
+        verify(runner).run(storyDefinition, configuration, steps);
+    }
 
-	private class MyScenario extends Scenario {
+    private class MyScenario extends Scenario {
 
-		public MyScenario(ScenarioRunner runner,
-				MockedConfiguration configuration, Steps steps) {
-			super(runner, configuration, steps);
-		}
+        public MyScenario(ScenarioRunner runner,
+                MockedConfiguration configuration, Steps steps) {
+            super(runner, configuration, steps);
+        }
 
-	}
+    }
 
-	private static class MockedConfiguration implements Configuration {
+    private static class MockedConfiguration implements Configuration {
 
-		private ScenarioDefiner scenarioDefiner = mock(ScenarioDefiner.class);
+        private ScenarioDefiner scenarioDefiner = mock(ScenarioDefiner.class);
 
-		public StepCreator forCreatingSteps() { return null; }
+        public StepCreator forCreatingSteps() { return null; }
 
-		public ScenarioDefiner forDefiningScenarios() { return scenarioDefiner; }
+        public ScenarioDefiner forDefiningScenarios() { return scenarioDefiner; }
 
-		public ErrorStrategy forHandlingErrors() { return null; }
+        public ErrorStrategy forHandlingErrors() { return null; }
 
-		public PendingStepStrategy forPendingSteps() { return null; }
+        public PendingStepStrategy forPendingSteps() { return null; }
 
-		public ScenarioReporter forReportingScenarios() { return null; }
-		
-	}
+        public ScenarioReporter forReportingScenarios() { return null; }
+        
+    }
 }

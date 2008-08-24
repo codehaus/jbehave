@@ -90,24 +90,24 @@ public class CandidateStepBehaviour {
     
     @Test
     public void shouldNotFailJustBecauseWeHaveDifferentNewlinesToTheOneTheScenarioWasWrittenIn() throws Exception {
-    	String windowsNewline = "\r\n";
-    	String unixNewline = "\n";
-    	String systemNewline = System.getProperty("line.separator");
-    	
+        String windowsNewline = "\r\n";
+        String unixNewline = "\n";
+        String systemNewline = System.getProperty("line.separator");
+        
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new CandidateStep(
-        		"the grid should look like $grid", 
-        		SomeSteps.class.getMethod("aMethodWith", String.class), 
-        		someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+                "the grid should look like $grid", 
+                SomeSteps.class.getMethod("aMethodWith", String.class), 
+                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         Step step = candidateStep.createFrom(
-        		"Then the grid should look like" + windowsNewline +
-        		".." + unixNewline +
-        		".." + windowsNewline);
+                "Then the grid should look like" + windowsNewline +
+                ".." + unixNewline +
+                ".." + windowsNewline);
         
         step.perform();
         ensureThat((String) someSteps.args, equalTo(
-        		".." + systemNewline +
-        		".." + systemNewline));
+                ".." + systemNewline +
+                ".." + systemNewline));
     }
 
     public class SomeSteps extends Steps {

@@ -16,9 +16,9 @@ public class StatusAlertCanBeActivated extends Scenario {
 
     public StatusAlertCanBeActivated(final ClassLoader classLoader) {
         super(new PropertyBasedConfiguration() {
-			public ScenarioDefiner forDefiningScenarios() {
-				return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), classLoader, new PatternScenarioParser());
-			}
+            public ScenarioDefiner forDefiningScenarios() {
+                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), classLoader, new PatternScenarioParser());
+            }
         }, new StockSteps(10.0));
     }
 

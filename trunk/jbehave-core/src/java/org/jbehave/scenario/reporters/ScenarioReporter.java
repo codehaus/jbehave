@@ -9,10 +9,10 @@ import org.jbehave.scenario.definition.Blurb;
  */
 public interface ScenarioReporter {
 
-	void beforeScenario(String title);
-	
-	void afterScenario();
-	
+    void beforeScenario(String title);
+    
+    void afterScenario();
+    
     void successful(String step);
 
     void pending(String step);
@@ -21,9 +21,9 @@ public interface ScenarioReporter {
 
     void failed(String step, Throwable e);
 
-	void beforeStory(Blurb blurb);
+    void beforeStory(Blurb blurb);
 
-	void afterStory();
+    void afterStory();
 
 
 }

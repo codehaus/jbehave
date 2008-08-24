@@ -6,8 +6,8 @@ import com.lunivore.noughtsandcrosses.steps.GridSteps;
 
 public class PlayersCanTakeTurns extends Scenario {
 
-	public PlayersCanTakeTurns() {
-		super(new GridSteps());
-	}
+    public PlayersCanTakeTurns() {
+        super(new GridSteps());
+    }
 
 }

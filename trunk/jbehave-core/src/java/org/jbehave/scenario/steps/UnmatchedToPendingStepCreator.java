@@ -5,9 +5,9 @@ import org.jbehave.scenario.ScenarioDefinition;
 public class UnmatchedToPendingStepCreator implements StepCreator {
 
 
-	public Step[] createStepsFrom(ScenarioDefinition scenario,
-			Steps... candidateSteps) {
-		Step[] steps = new Step[scenario.getSteps().size()];
+    public Step[] createStepsFrom(ScenarioDefinition scenario,
+            Steps... candidateSteps) {
+        Step[] steps = new Step[scenario.getSteps().size()];
         for (int i = 0; i < steps.length; i++) {
             String stringStep = scenario.getSteps().get(i);
             for (Steps candidates : candidateSteps) {
@@ -21,6 +21,6 @@ public class UnmatchedToPendingStepCreator implements StepCreator {
                 steps[i] = new PendingStep(stringStep);
             }
         }
-		return steps;
-	}
+        return steps;
+    }
 }

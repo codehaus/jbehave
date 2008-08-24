@@ -4,13 +4,13 @@ import org.jbehave.scenario.errors.ErrorStrategy;
 
 public interface PendingStepStrategy extends ErrorStrategy {
 
-	PendingStepStrategy PASSING = new PendingStepStrategy() { 
-		public void handleError(Throwable throwable) {}
-	};
-	
-	PendingStepStrategy FAILING = new PendingStepStrategy() {
-		public void handleError(Throwable throwable) throws Throwable {
-			throw throwable;
-		} 
-	};
+    PendingStepStrategy PASSING = new PendingStepStrategy() { 
+        public void handleError(Throwable throwable) {}
+    };
+    
+    PendingStepStrategy FAILING = new PendingStepStrategy() {
+        public void handleError(Throwable throwable) throws Throwable {
+            throw throwable;
+        } 
+    };
 }

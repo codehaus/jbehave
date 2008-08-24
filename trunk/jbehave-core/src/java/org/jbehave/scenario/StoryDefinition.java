@@ -8,31 +8,31 @@ import org.jbehave.scenario.definition.Blurb;
 
 public class StoryDefinition {
 
-	private final Blurb blurb;
-	private final List<ScenarioDefinition> scenarioDefinitions;
+    private final Blurb blurb;
+    private final List<ScenarioDefinition> scenarioDefinitions;
 
-	public StoryDefinition(Blurb blurb, List<ScenarioDefinition> scenarioDefinitions) {
-		this.blurb = blurb;
-		this.scenarioDefinitions = scenarioDefinitions;
-	}
+    public StoryDefinition(Blurb blurb, List<ScenarioDefinition> scenarioDefinitions) {
+        this.blurb = blurb;
+        this.scenarioDefinitions = scenarioDefinitions;
+    }
 
-	public StoryDefinition(List<ScenarioDefinition> scenarioDefinitions) {
-		this(Blurb.EMPTY, scenarioDefinitions);
-	}
-	
-	public StoryDefinition(Blurb blurb, ScenarioDefinition... scenarioDefinitions) {
-		this(blurb, Arrays.asList(scenarioDefinitions));
-	}
-	
-	public StoryDefinition(ScenarioDefinition... scenarioDefinitions) {
-		this(Arrays.asList(scenarioDefinitions));
-	}
+    public StoryDefinition(List<ScenarioDefinition> scenarioDefinitions) {
+        this(Blurb.EMPTY, scenarioDefinitions);
+    }
+    
+    public StoryDefinition(Blurb blurb, ScenarioDefinition... scenarioDefinitions) {
+        this(blurb, Arrays.asList(scenarioDefinitions));
+    }
+    
+    public StoryDefinition(ScenarioDefinition... scenarioDefinitions) {
+        this(Arrays.asList(scenarioDefinitions));
+    }
 
-	public Blurb getBlurb() {
-		return blurb;
-	}
+    public Blurb getBlurb() {
+        return blurb;
+    }
 
-	public List<ScenarioDefinition> getScenarios() {
-		return Collections.unmodifiableList(scenarioDefinitions);
-	}
+    public List<ScenarioDefinition> getScenarios() {
+        return Collections.unmodifiableList(scenarioDefinitions);
+    }
 }

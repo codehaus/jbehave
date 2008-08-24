@@ -14,9 +14,9 @@ import org.junit.Test;
 
 public class ScenarioFileLoaderBehaviour {
 
-	@Test
+    @Test
     public void canLoadScenario() {
-    	ScenarioParser parser = mock(ScenarioParser.class);
+        ScenarioParser parser = mock(ScenarioParser.class);
         ScenarioFileLoader loader = new ScenarioFileLoader(parser);
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
         verify(parser).defineStoryFrom("Given my scenario");
@@ -24,7 +24,7 @@ public class ScenarioFileLoaderBehaviour {
 
     @Test
     public void canLoadScenarioWithCustomFilenameResolver() {
-    	ScenarioParser parser = mock(ScenarioParser.class);
+        ScenarioParser parser = mock(ScenarioParser.class);
         ScenarioFileLoader loader = new ScenarioFileLoader(new CasePreservingResolver(".scenario"), parser);
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
         verify(parser).defineStoryFrom("Given my scenario");
