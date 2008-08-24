@@ -14,9 +14,11 @@ import org.jbehave.scenario.errors.InvalidScenarioClassPathException;
  */
 public class ScenarioClassNameFinder {
 
-    /**
-     * Scanner used to list paths
-     */
+    private static final String JAVA = ".java";
+    private static final String EMPTY = "";
+    private static final String DOT_REGEX = "\\.";
+    private static final String SLASH = "/";
+
     private DirectoryScanner scanner = new DirectoryScanner();
 
     /**
@@ -41,10 +43,10 @@ public class ScenarioClassNameFinder {
     }
 
     private String classNameFor(String path) {
-        int javaPath = path.indexOf(".java");
+        int javaPath = path.indexOf(JAVA);
         if ( javaPath != -1 ){
             String className = path.substring(0, javaPath);
-            return className.replaceAll("/", "\\.");            
+            return className.replaceAll(SLASH, DOT_REGEX);            
         }
         throw new InvalidScenarioClassPathException("Invalid scenario class path "+path);
     }
@@ -62,7 +64,7 @@ public class ScenarioClassNameFinder {
             scanner.setExcludes(excludes.toArray(new String[excludes.size()]));
         }
         scanner.scan();
-        String basePath = (rootPath != null ? rootPath + "/" : "");
+        String basePath = (rootPath != null ? rootPath + SLASH : EMPTY);
         for (String relativePath : scanner.getIncludedFiles()) {
             String path = basePath + relativePath;
             paths.add(path);
