@@ -5,6 +5,6 @@ import org.jbehave.scenario.StoryDefinition;
 
 public interface ScenarioDefiner {
 
-    StoryDefinition loadScenarioDefinitionsFor(Class<? extends Scenario> clazz);
+    StoryDefinition loadScenarioDefinitionsFor(Class<? extends Scenario> scenarioClass);
 
 }

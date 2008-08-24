@@ -14,7 +14,7 @@ public class PatternScenarioParser implements ScenarioParser {
     private static final String PATTERN_TO_PULL_SCENARIOS_INTO_GROUP_4 = ".*?((Scenario:) (.|\\s)*?)\\s*(\\Z|Scenario:).*";
     private static final String PATTERN_TO_PULL_STORY_BLURB_INTO_GROUP_1 = "(.*?)(Scenario:|Given).*";
     private static final String PATTERN_TO_PULL_SCENARIO_TITLE_INTO_GROUP_1 = "Scenario:(.*?)\\s*(Given|When|Then).*";
-    public static final String PATTERN_TO_PULL_OUT_STEPS = "((Given|When|Then) (.|\\s)*?)\\s*(\\Z|Given|When|Then|Scenario:)";
+    private static final String PATTERN_TO_PULL_OUT_STEPS = "((Given|When|Then) (.|\\s)*?)\\s*(\\Z|Given|When|Then|Scenario:)";
 
     private final Pattern pattern;
 
@@ -26,8 +26,7 @@ public class PatternScenarioParser implements ScenarioParser {
         this.pattern = Pattern.compile(parseRegex);
     }
 
-    public StoryDefinition defineStoryFrom(String wholeStoryAsString) {
-         
+    public StoryDefinition defineStoryFrom(String wholeStoryAsString) {         
         Blurb blurb = parseBlurbFrom(wholeStoryAsString);
         List<ScenarioDefinition> scenarioDefinitions = parseScenariosFrom(wholeStoryAsString);
         return new StoryDefinition(blurb, scenarioDefinitions);
@@ -35,7 +34,6 @@ public class PatternScenarioParser implements ScenarioParser {
 
     private List<ScenarioDefinition> parseScenariosFrom(String wholeStoryAsString) {
         List<ScenarioDefinition> scenarioDefinitions = new ArrayList<ScenarioDefinition>();
-
         List<String> scenarios = splitScenarios(wholeStoryAsString);
         for (String scenario : scenarios) {
             Matcher findingTitle = Pattern.compile(PATTERN_TO_PULL_SCENARIO_TITLE_INTO_GROUP_1, Pattern.DOTALL).matcher(scenario);
@@ -65,8 +63,6 @@ public class PatternScenarioParser implements ScenarioParser {
             return Blurb.EMPTY;
         }
     }
-
-
 
     private List<String> splitScenarios(String allScenariosInFile) {
         Pattern scenarioSplitter = Pattern.compile(PATTERN_TO_PULL_SCENARIOS_INTO_GROUP_4, Pattern.DOTALL);

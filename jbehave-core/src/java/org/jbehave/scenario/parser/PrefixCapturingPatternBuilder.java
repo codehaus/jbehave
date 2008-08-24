@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class PrefixCapturingPatternBuilder implements StepPatternBuilder {
 
-    private String anyWordBeginningWithThePrefix = "(\\$\\w*)(\\W|\\Z)";
+    private final String anyWordBeginningWithThePrefix;
 
     /**
      * Creates a pattern which captures arguments starting with $ in

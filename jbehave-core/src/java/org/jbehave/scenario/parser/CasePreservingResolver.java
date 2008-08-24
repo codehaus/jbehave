@@ -4,6 +4,8 @@ import org.jbehave.scenario.Scenario;
 
 public class CasePreservingResolver implements ScenarioFileNameResolver {
 
+    private static final String DOT_REGEX = "\\.";
+    private static final String SLASH = "/";
     private final String extension;
 
     public CasePreservingResolver(String extension) {
@@ -11,8 +13,8 @@ public class CasePreservingResolver implements ScenarioFileNameResolver {
     }
 
     public String resolve(Class<? extends Scenario> scenarioClass) {
-        String packageDir = scenarioClass.getPackage().getName().replaceAll("\\.", "/");        
-        return packageDir + "/" + scenarioClass.getSimpleName() + extension;
+        String packageDir = scenarioClass.getPackage().getName().replaceAll(DOT_REGEX, SLASH);        
+        return packageDir + SLASH + scenarioClass.getSimpleName() + extension;
     }
 
 }
