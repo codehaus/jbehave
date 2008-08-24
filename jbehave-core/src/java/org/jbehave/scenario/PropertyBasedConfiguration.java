@@ -15,33 +15,33 @@ import org.jbehave.scenario.steps.UnmatchedToPendingStepCreator;
 
 public class PropertyBasedConfiguration implements Configuration {
 
-	public static final String FAIL_ON_PENDING = "org.jbehave.failonpending";
-	public static String OUTPUT_ALL = "org.jbehave.outputall";
+    public static final String FAIL_ON_PENDING = "org.jbehave.failonpending";
+    public static String OUTPUT_ALL = "org.jbehave.outputall";
 
-	public ScenarioReporter forReportingScenarios() {
-		if (System.getProperty(OUTPUT_ALL) == null) {
-			return new PassSilentlyDecorator(new PrintStreamScenarioReporter());
-		} else {
-			return new PrintStreamScenarioReporter();
-		}
-	}
+    public ScenarioReporter forReportingScenarios() {
+        if (System.getProperty(OUTPUT_ALL) == null) {
+            return new PassSilentlyDecorator(new PrintStreamScenarioReporter());
+        } else {
+            return new PrintStreamScenarioReporter();
+        }
+    }
 
-	public ScenarioDefiner forDefiningScenarios() {
-		return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser());
-	}
+    public ScenarioDefiner forDefiningScenarios() {
+        return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser());
+    }
 
-	public PendingStepStrategy forPendingSteps() {
-		if (System.getProperty(FAIL_ON_PENDING) == null) {
-			return PendingStepStrategy.PASSING;
-		}
-		return PendingStepStrategy.FAILING;
-	}
+    public PendingStepStrategy forPendingSteps() {
+        if (System.getProperty(FAIL_ON_PENDING) == null) {
+            return PendingStepStrategy.PASSING;
+        }
+        return PendingStepStrategy.FAILING;
+    }
 
-	public StepCreator forCreatingSteps() {
-		return new UnmatchedToPendingStepCreator();
-	}
+    public StepCreator forCreatingSteps() {
+        return new UnmatchedToPendingStepCreator();
+    }
 
-	public ErrorStrategy forHandlingErrors() {
-		return ErrorStrategy.RETHROW;
-	}	
+    public ErrorStrategy forHandlingErrors() {
+        return ErrorStrategy.RETHROW;
+    }    
 }

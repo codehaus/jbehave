@@ -11,25 +11,25 @@ import com.lunivore.gameoflife.domain.Grid;
 
 public class StringRendererBehaviour {
 
-	private static final String NL = System.getProperty("line.separator");
+    private static final String NL = System.getProperty("line.separator");
 
-	@Test
-	public void shouldRenderCellsAsCrosses() {
-		StringRenderer renderer = new StringRenderer();
-		Grid grid = mock(Grid.class);
-		stub(grid.getWidth()).toReturn(5);
-		stub(grid.getHeight()).toReturn(6);
-		stub(grid.hasLife(3, 4)).toReturn(true);
-		renderer.gridChanged(grid);
-		
-		ensureThat(renderer.asString(), equalTo(
-				"....." + NL +
-				"....." + NL +
-				"....." + NL +
-				"....." + NL +
-				"...X." + NL +
-				"....."
-				));
-	}
-	
+    @Test
+    public void shouldRenderCellsAsCrosses() {
+        StringRenderer renderer = new StringRenderer();
+        Grid grid = mock(Grid.class);
+        stub(grid.getWidth()).toReturn(5);
+        stub(grid.getHeight()).toReturn(6);
+        stub(grid.hasLife(3, 4)).toReturn(true);
+        renderer.gridChanged(grid);
+        
+        ensureThat(renderer.asString(), equalTo(
+                "....." + NL +
+                "....." + NL +
+                "....." + NL +
+                "....." + NL +
+                "...X." + NL +
+                "....."
+                ));
+    }
+    
 }

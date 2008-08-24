@@ -5,8 +5,8 @@ import com.lunivore.gameoflife.domain.Grid;
 
 public class SwingRenderer implements GameObserver {
 
-	public void gridChanged(Grid grid) {
-		
-	}
+    public void gridChanged(Grid grid) {
+        
+    }
 
 }

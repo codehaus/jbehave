@@ -76,7 +76,7 @@ public class GameFrame extends JFrame implements GameObserver {
     }
     
     public static void main(String[] args) {
-		
-		new GameFrame(new Game(40, 30)) ;
-	}
+        
+        new GameFrame(new Game(40, 30)) ;
+    }
 }

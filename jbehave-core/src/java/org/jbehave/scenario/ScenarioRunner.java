@@ -18,37 +18,37 @@ import org.jbehave.scenario.steps.Steps;
 public class ScenarioRunner {
 
     private State state = new FineSoFar();
-	private ErrorStrategy currentStrategy;
-	private PendingStepStrategy pendingStepStrategy;
-	private ScenarioReporter reporter;
-	private ErrorStrategy errorStrategy;
+    private ErrorStrategy currentStrategy;
+    private PendingStepStrategy pendingStepStrategy;
+    private ScenarioReporter reporter;
+    private ErrorStrategy errorStrategy;
     private Throwable throwable;
 
-	public ScenarioRunner() {
-	}
+    public ScenarioRunner() {
+    }
 
-	public void run(StoryDefinition story, Configuration configuration, Steps... candidateSteps) throws Throwable {
-		reporter = configuration.forReportingScenarios();
-		pendingStepStrategy = configuration.forPendingSteps();
-		errorStrategy = configuration.forHandlingErrors();
-		currentStrategy = ErrorStrategy.SILENT;
-		throwable = null;
-		
-		reporter.beforeStory(story.getBlurb());
-    	for (ScenarioDefinition scenario : story.getScenarios()) {
-			Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, candidateSteps);
-	
-			reporter.beforeScenario(scenario.getTitle());
-	    	state = new FineSoFar();
-	        for (Step step : steps) {
-	            state.run(step);
-	        }
-	        reporter.afterScenario();
-	        
-    	}
-    	reporter.afterStory();
-    	currentStrategy.handleError(throwable);
-	};
+    public void run(StoryDefinition story, Configuration configuration, Steps... candidateSteps) throws Throwable {
+        reporter = configuration.forReportingScenarios();
+        pendingStepStrategy = configuration.forPendingSteps();
+        errorStrategy = configuration.forHandlingErrors();
+        currentStrategy = ErrorStrategy.SILENT;
+        throwable = null;
+        
+        reporter.beforeStory(story.getBlurb());
+        for (ScenarioDefinition scenario : story.getScenarios()) {
+            Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, candidateSteps);
+    
+            reporter.beforeScenario(scenario.getTitle());
+            state = new FineSoFar();
+            for (Step step : steps) {
+                state.run(step);
+            }
+            reporter.afterScenario();
+            
+        }
+        reporter.afterStory();
+        currentStrategy.handleError(throwable);
+    };
 
     private class SomethingHappened implements State {
         public void run(Step step) {
@@ -70,21 +70,21 @@ public class ScenarioRunner {
             }
         }
 
-		private Throwable mostImportantOf(
-				Throwable throwable1,
-				Throwable throwable2) {
-			return throwable1 == null ? throwable2 : 
-				throwable1 instanceof PendingError ? (throwable2 == null ? throwable1 : throwable2) :
-					throwable1;
-		}
+        private Throwable mostImportantOf(
+                Throwable throwable1,
+                Throwable throwable2) {
+            return throwable1 == null ? throwable2 : 
+                throwable1 instanceof PendingError ? (throwable2 == null ? throwable1 : throwable2) :
+                    throwable1;
+        }
 
-		private ErrorStrategy strategyFor(Throwable throwable) {
-			if (throwable instanceof PendingError) {
-				return pendingStepStrategy;
-			} else {
-				return errorStrategy;
-			}
-		}
+        private ErrorStrategy strategyFor(Throwable throwable) {
+            if (throwable instanceof PendingError) {
+                return pendingStepStrategy;
+            } else {
+                return errorStrategy;
+            }
+        }
     }
 
     private interface State {

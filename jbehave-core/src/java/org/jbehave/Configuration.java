@@ -13,14 +13,14 @@ import org.jbehave.scenario.steps.StepCreator;
  */
 public interface Configuration {
 
-	ScenarioDefiner forDefiningScenarios();
+    ScenarioDefiner forDefiningScenarios();
 
-	ScenarioReporter forReportingScenarios();
+    ScenarioReporter forReportingScenarios();
 
-	PendingStepStrategy forPendingSteps();
+    PendingStepStrategy forPendingSteps();
 
-	StepCreator forCreatingSteps();
+    StepCreator forCreatingSteps();
 
-	ErrorStrategy forHandlingErrors();
+    ErrorStrategy forHandlingErrors();
 
 }

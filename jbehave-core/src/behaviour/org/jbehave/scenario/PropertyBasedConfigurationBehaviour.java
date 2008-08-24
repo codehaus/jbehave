@@ -14,55 +14,55 @@ import org.junit.Test;
 
 public class PropertyBasedConfigurationBehaviour {
 
-	private String originalFailOnPending;
-	private String originalOutputAll;
+    private String originalFailOnPending;
+    private String originalOutputAll;
 
-	@Before
-	public void captureExistingEnvironment() {
-		originalFailOnPending = System.getProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
-		originalOutputAll = System.getProperty(PropertyBasedConfiguration.OUTPUT_ALL);
-	}
-	
-	@After
-	public void resetEnvironment() {
-		if (originalFailOnPending != null) {
-			System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, originalFailOnPending);
-		} else {
-			System.clearProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
-		}
-		if (originalOutputAll != null) {
-			System.setProperty(PropertyBasedConfiguration.OUTPUT_ALL, originalOutputAll);
-		} else {
-			System.clearProperty(PropertyBasedConfiguration.OUTPUT_ALL);
-		}
-	}
-	
-	@Test
-	public void shouldUsePassingPendingStepStrategyByDefault() {
-		System.clearProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
-		ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingStepStrategy.PASSING));
-	}
-	
-	@Test
-	public void shouldUseFailingPendingStepStrategyWhenConfiguredToDoSo() {
-		System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, "true");
-		ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingStepStrategy.FAILING));
-	}
-	
-	@Test
-	public void shouldSwallowOutputFromPassingScenariosByDefault() {
-		System.clearProperty(PropertyBasedConfiguration.OUTPUT_ALL);
-		ensureThat(new PropertyBasedConfiguration().forReportingScenarios(), is(PassSilentlyDecorator.class));
-	}
-	
-	@Test
-	public void shouldOutputAllWhenConfiguredToDoSo() {
-		System.setProperty(PropertyBasedConfiguration.OUTPUT_ALL, "true");
-		ensureThat(new PropertyBasedConfiguration().forReportingScenarios(), is(PrintStreamScenarioReporter.class));
-	}
-	
-	@Test
-	public void shouldRethrowErrrors() {
-		ensureThat(new PropertyBasedConfiguration().forHandlingErrors(), equalTo(ErrorStrategy.RETHROW));
-	}
+    @Before
+    public void captureExistingEnvironment() {
+        originalFailOnPending = System.getProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
+        originalOutputAll = System.getProperty(PropertyBasedConfiguration.OUTPUT_ALL);
+    }
+    
+    @After
+    public void resetEnvironment() {
+        if (originalFailOnPending != null) {
+            System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, originalFailOnPending);
+        } else {
+            System.clearProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
+        }
+        if (originalOutputAll != null) {
+            System.setProperty(PropertyBasedConfiguration.OUTPUT_ALL, originalOutputAll);
+        } else {
+            System.clearProperty(PropertyBasedConfiguration.OUTPUT_ALL);
+        }
+    }
+    
+    @Test
+    public void shouldUsePassingPendingStepStrategyByDefault() {
+        System.clearProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
+        ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingStepStrategy.PASSING));
+    }
+    
+    @Test
+    public void shouldUseFailingPendingStepStrategyWhenConfiguredToDoSo() {
+        System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, "true");
+        ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingStepStrategy.FAILING));
+    }
+    
+    @Test
+    public void shouldSwallowOutputFromPassingScenariosByDefault() {
+        System.clearProperty(PropertyBasedConfiguration.OUTPUT_ALL);
+        ensureThat(new PropertyBasedConfiguration().forReportingScenarios(), is(PassSilentlyDecorator.class));
+    }
+    
+    @Test
+    public void shouldOutputAllWhenConfiguredToDoSo() {
+        System.setProperty(PropertyBasedConfiguration.OUTPUT_ALL, "true");
+        ensureThat(new PropertyBasedConfiguration().forReportingScenarios(), is(PrintStreamScenarioReporter.class));
+    }
+    
+    @Test
+    public void shouldRethrowErrrors() {
+        ensureThat(new PropertyBasedConfiguration().forHandlingErrors(), equalTo(ErrorStrategy.RETHROW));
+    }
 }

@@ -15,7 +15,7 @@ public class CandidateStep {
     private final Steps steps;
     private final StepMonitor monitor;
     private Pattern pattern;
-	private String[] startingWords;
+    private String[] startingWords;
 
     public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter, StepMonitor monitor, String... startingWords) {
         this.method = method;
@@ -26,8 +26,8 @@ public class CandidateStep {
     }
 
     public boolean matches(String step) {
-    	String word = findStartingWord(step);
-    	if (word == null) { return false; }
+        String word = findStartingWord(step);
+        if (word == null) { return false; }
         String trimmed = trimStartingWord(word, step);
         Matcher matcher = pattern.matcher(trimmed);
         boolean matches = matcher.matches();
@@ -40,7 +40,7 @@ public class CandidateStep {
     }
 
     public Step createFrom(final String stepAsString) {
-    	String startingWord = findStartingWord(stepAsString);
+        String startingWord = findStartingWord(stepAsString);
         Matcher matcher = pattern.matcher(trimStartingWord(startingWord, stepAsString));
         matcher.find();
         final Object[] args = new Object[matcher.groupCount()];
@@ -52,17 +52,17 @@ public class CandidateStep {
         return createStep(stepAsString, args);
     }
 
-	private String findStartingWord(final String stepAsString) {
-    	for (String word : startingWords) {
+    private String findStartingWord(final String stepAsString) {
+        for (String word : startingWords) {
             if (stepAsString.startsWith(word)) {
-            	return word;
+                return word;
             }
-    	}
-    	return null;
-	}
+        }
+        return null;
+    }
 
-	private Step createStep(final String stepAsString, final Object[] args) {
-		return new Step() {
+    private Step createStep(final String stepAsString, final Object[] args) {
+        return new Step() {
             public StepResult perform() {
                 try {
                     method.invoke(steps, args);
@@ -73,13 +73,13 @@ public class CandidateStep {
                 }
             }
 
-			private StepResult failureWithOriginalException(final String stepAsString, Throwable t) {
+            private StepResult failureWithOriginalException(final String stepAsString, Throwable t) {
                 if (t instanceof InvocationTargetException && t.getCause() != null) {
-                	if (t.getCause() instanceof PendingError) {
-                		return StepResult.pending(stepAsString, (PendingError) t.getCause());
-                	} else {
-                		return StepResult.failure(stepAsString, t.getCause());
-                	}
+                    if (t.getCause() instanceof PendingError) {
+                        return StepResult.pending(stepAsString, (PendingError) t.getCause());
+                    } else {
+                        return StepResult.failure(stepAsString, t.getCause());
+                    }
                 }
                 return StepResult.failure(stepAsString, t);
             }
@@ -89,7 +89,7 @@ public class CandidateStep {
             }
 
         };
-	}
+    }
 
     private Object convert(String value, Class<?> clazz) {
         if (clazz == Integer.class || clazz == int.class) {
@@ -101,12 +101,12 @@ public class CandidateStep {
         } else if (clazz == Float.class || clazz == float.class) {
             return Float.valueOf(value);
         } else if (clazz == String.class) {
-        	return replaceNewlinesWithSystemNewlines(value);
+            return replaceNewlinesWithSystemNewlines(value);
         }
         return value;
     }
 
     private Object replaceNewlinesWithSystemNewlines(String value) {
-		return value.replaceAll("(\n)|(\r\n)", System.getProperty("line.separator"));
-	}
+        return value.replaceAll("(\n)|(\r\n)", System.getProperty("line.separator"));
+    }
 }

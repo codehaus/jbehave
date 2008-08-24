@@ -2,12 +2,12 @@ package com.lunivore.gameoflife.domain;
 
 public interface GameObserver {
 
-	GameObserver NULL = new GameObserver() {
+    GameObserver NULL = new GameObserver() {
 
-		public void gridChanged(Grid grid) {}
-		
-	};
+        public void gridChanged(Grid grid) {}
+        
+    };
 
-	void gridChanged(Grid grid);
+    void gridChanged(Grid grid);
 
 }
