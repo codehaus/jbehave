@@ -1,12 +1,11 @@
 package org.jbehave.scenario.steps;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.stub;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.stub;
 
 import org.jbehave.scenario.ScenarioDefinition;
-import org.jbehave.scenario.errors.PendingError;
 import org.junit.Test;
 
 public class UnmatchedToPendingStepCreatorBehaviour {
