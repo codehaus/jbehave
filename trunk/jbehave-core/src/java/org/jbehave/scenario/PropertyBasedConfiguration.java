@@ -8,6 +8,7 @@ import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.PassSilentlyDecorator;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.UnmatchedToPendingStepCreator;

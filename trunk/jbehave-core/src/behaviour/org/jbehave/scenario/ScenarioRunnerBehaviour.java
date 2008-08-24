@@ -12,6 +12,7 @@ import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.ErrorStrategyInWhichWeTrustTheReporter;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.CandidateStep;
 import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.Step;

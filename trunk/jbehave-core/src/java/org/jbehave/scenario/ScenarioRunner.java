@@ -3,6 +3,7 @@ package org.jbehave.scenario;
 import org.jbehave.Configuration;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingError;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepResult;

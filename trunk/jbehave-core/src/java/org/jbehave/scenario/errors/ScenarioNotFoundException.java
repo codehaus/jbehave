@@ -1,4 +1,4 @@
-package org.jbehave.scenario.parser;
+package org.jbehave.scenario.errors;
 
 /**
  * Thrown when a scenario is not found by the classloader

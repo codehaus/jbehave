@@ -1,4 +1,4 @@
-package org.jbehave.scenario.parser;
+package org.jbehave.scenario.errors;
 
 /**
  * Thrown when a scenario class path is not valid

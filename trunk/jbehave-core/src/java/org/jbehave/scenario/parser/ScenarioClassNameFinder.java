@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tools.ant.DirectoryScanner;
+import org.jbehave.scenario.errors.InvalidScenarioClassPathException;
 
 /**
  * Finds scenario class names from a base directory

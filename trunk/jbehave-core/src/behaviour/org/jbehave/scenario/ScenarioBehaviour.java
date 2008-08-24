@@ -10,6 +10,7 @@ import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.Steps;

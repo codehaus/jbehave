@@ -6,6 +6,7 @@ import static org.jbehave.Ensure.ensureThat;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.jbehave.scenario.errors.InvalidScenarioClassPathException;
 import org.junit.Test;
 
 public class ScenarioClassNameFinderBehaviour {

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.jbehave.scenario.Scenario;
+import org.jbehave.scenario.errors.InvalidScenarioResourceException;
+import org.jbehave.scenario.errors.ScenarioNotFoundException;
 import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
 import org.junit.Test;
 

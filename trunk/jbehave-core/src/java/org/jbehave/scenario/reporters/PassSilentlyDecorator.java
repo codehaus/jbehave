@@ -3,7 +3,6 @@ package org.jbehave.scenario.reporters;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jbehave.scenario.ScenarioReporter;
 import org.jbehave.scenario.definition.Blurb;
 
 /**

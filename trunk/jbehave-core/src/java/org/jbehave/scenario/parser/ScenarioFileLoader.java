@@ -6,6 +6,8 @@ import java.io.InputStream;
 
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.StoryDefinition;
+import org.jbehave.scenario.errors.InvalidScenarioResourceException;
+import org.jbehave.scenario.errors.ScenarioNotFoundException;
 
 public class ScenarioFileLoader implements ScenarioDefiner {
 	private final ScenarioFileNameResolver resolver;
