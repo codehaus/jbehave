@@ -3,6 +3,7 @@ package org.jbehave.scenario.steps;
 import static java.text.MessageFormat.format;
 
 import java.io.PrintStream;
+import java.lang.reflect.Type;
 
 public class PrintStreamStepMonitor implements StepMonitor {
     private final PrintStream output;
@@ -21,7 +22,13 @@ public class PrintStreamStepMonitor implements StepMonitor {
         print(output, message);
     }
 
+    public void convertingValueOfType(String value, Type type) {
+        String message = format("Converting value ''{0}'' of type ''{1}''", value, type);
+        print(output,message);
+    }
+    
     protected void print(PrintStream output, String message) {
         output.println(message);
     }
+
 }
