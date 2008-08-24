@@ -1,10 +1,18 @@
 package org.jbehave.scenario.steps;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 import static org.jbehave.Ensure.not;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.MethodDescriptor;
+import java.lang.reflect.Method;
+import java.util.List;
 
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
@@ -21,14 +29,13 @@ public class CandidateStepBehaviour {
     public void shouldMatchASimpleString() throws Exception {
         CandidateStep candidateStep = new CandidateStep("I laugh", SomeSteps.class.getMethod("aMethod"), null,
                 PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
-
         ensureThat(candidateStep.matches("Given I laugh"));
     }
 
     @Test
     public void shouldMatchAStringWithArguments() throws Exception {
-        CandidateStep candidateStep = new CandidateStep("windows on the $nth floor", SomeSteps.class.getMethod("aMethod"), null,
-                PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        CandidateStep candidateStep = new CandidateStep("windows on the $nth floor", SomeSteps.class
+                .getMethod("aMethod"), null, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         ensureThat(candidateStep.matches("When windows on the 1st floor"));
         ensureThat(not(candidateStep.matches("When windows on the 1st floor are open")));
     }
@@ -36,8 +43,8 @@ public class CandidateStepBehaviour {
     @Test
     public void shouldProvideARealStepUsingTheMatchedString() throws Exception {
         SomeSteps someSteps = new SomeSteps();
-        CandidateStep candidateStep = new CandidateStep("I live on the $nth floor", SomeSteps.class.getMethod("aMethodWith",
-                String.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        CandidateStep candidateStep = new CandidateStep("I live on the $nth floor", SomeSteps.class.getMethod(
+                "aMethodWith", String.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         Step step = candidateStep.createFrom("Then I live on the 1st floor");
         step.perform();
         ensureThat((String) someSteps.args, equalTo("1st"));
@@ -45,31 +52,31 @@ public class CandidateStepBehaviour {
 
     @Test
     public void shouldMatchMultilineStrings() throws Exception {
-        CandidateStep candidateStep = new CandidateStep("the grid should look like $grid", SomeSteps.class.getMethod("aMethod"),
-                null, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        CandidateStep candidateStep = new CandidateStep("the grid should look like $grid", SomeSteps.class
+                .getMethod("aMethod"), null, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         ensureThat(candidateStep.matches("Then the grid should look like " + NL + "...." + NL + "...." + NL));
     }
 
     @Test
     public void shouldConvertArgsToAppropriateNumbers() throws Exception {
         SomeSteps someSteps = new SomeSteps();
-        CandidateStep candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith",
-                int.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        CandidateStep candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod(
+                "aMethodWith", int.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Integer) someSteps.args, equalTo(14));
 
-        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", long.class),
-                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith",
+                long.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Long) someSteps.args, equalTo(14L));
 
-        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", double.class),
-                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith",
+                double.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Double) someSteps.args, equalTo(14.0));
 
-        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith", float.class),
-                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        candidateStep = new CandidateStep("I should live in no. $no", SomeSteps.class.getMethod("aMethodWith",
+                float.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("Then I should live in no. 14").perform();
         ensureThat((Float) someSteps.args, equalTo(14.0f));
     }
@@ -78,36 +85,46 @@ public class CandidateStepBehaviour {
     public void shouldProvideAStepWithADescriptionThatMatchesTheCandidateStep() throws Exception {
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         SomeSteps someSteps = new SomeSteps();
-        CandidateStep candidateStep = new CandidateStep("I live on the $nth floor", SomeSteps.class.getMethod("aMethodWith",
-                String.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        CandidateStep candidateStep = new CandidateStep("I live on the $nth floor", SomeSteps.class.getMethod(
+                "aMethodWith", String.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         Step step = candidateStep.createFrom("Then I live on the 1st floor");
 
         StepResult result = step.perform();
         result.describeTo(reporter);
-
         verify(reporter).successful("Then I live on the 1st floor");
     }
-    
+
     @Test
     public void shouldNotFailJustBecauseWeHaveDifferentNewlinesToTheOneTheScenarioWasWrittenIn() throws Exception {
         String windowsNewline = "\r\n";
         String unixNewline = "\n";
         String systemNewline = System.getProperty("line.separator");
-        
         SomeSteps someSteps = new SomeSteps();
-        CandidateStep candidateStep = new CandidateStep(
-                "the grid should look like $grid", 
-                SomeSteps.class.getMethod("aMethodWith", String.class), 
-                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
-        Step step = candidateStep.createFrom(
-                "Then the grid should look like" + windowsNewline +
-                ".." + unixNewline +
-                ".." + windowsNewline);
-        
+        CandidateStep candidateStep = new CandidateStep("the grid should look like $grid", SomeSteps.class.getMethod(
+                "aMethodWith", String.class), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        Step step = candidateStep.createFrom("Then the grid should look like" + windowsNewline + ".." + unixNewline
+                + ".." + windowsNewline);
         step.perform();
-        ensureThat((String) someSteps.args, equalTo(
-                ".." + systemNewline +
-                ".." + systemNewline));
+        ensureThat((String) someSteps.args, equalTo(".." + systemNewline + ".." + systemNewline));
+    }
+
+    @Test
+    public void shouldConvertArgsToListOfStrings() throws Exception {
+        SomeSteps someSteps = new SomeSteps();
+        CandidateStep candidateStep = new CandidateStep("windows on the $nth floors",
+                methodFor("aMethodWithListOfStrings"), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        candidateStep.createFrom("When windows on the 1,2,3 floors").perform();
+        ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList("1","2","3").toString()));
+    }
+
+    public static Method methodFor(String methodName) throws IntrospectionException {
+        BeanInfo beanInfo = Introspector.getBeanInfo(SomeSteps.class);
+        for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
+            if (md.getMethod().getName().equals(methodName)) {
+                return md.getMethod();
+            }
+        }
+        return null;
     }
 
     public class SomeSteps extends Steps {
@@ -134,6 +151,10 @@ public class CandidateStepBehaviour {
         }
 
         public void aMethodWith(float args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfStrings(List<String> args) {
             this.args = args;
         }
     }

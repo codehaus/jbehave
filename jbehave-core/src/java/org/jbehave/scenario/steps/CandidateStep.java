@@ -1,7 +1,12 @@
 package org.jbehave.scenario.steps;
 
+import static java.util.Arrays.asList;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,18 +16,20 @@ import org.jbehave.scenario.parser.StepPatternBuilder;
 
 public class CandidateStep {
 
+    private static final String NL = System.getProperty("line.separator");
+    private static final String COMMA = ",";
     private final Method method;
     private final Steps steps;
     private final StepMonitor monitor;
     private Pattern pattern;
     private String[] startingWords;
 
-    public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patternConverter, StepMonitor monitor, String... startingWords) {
+    public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patterBuilder, StepMonitor monitor, String... startingWords) {
         this.method = method;
         this.steps = steps;
         this.monitor = monitor;
         this.startingWords = startingWords;
-        pattern = patternConverter.buildPattern(matchThis);
+        pattern = patterBuilder.buildPattern(matchThis);
     }
 
     public boolean matches(String step) {
@@ -46,7 +53,7 @@ public class CandidateStep {
         final Object[] args = new Object[matcher.groupCount()];
         for (int group = 0; group < args.length; group++) {
             String arg = matcher.group(group + 1);
-            Object converted = convert(arg, method.getParameterTypes()[group]);
+            Object converted = convert(arg, method.getGenericParameterTypes()[group]);
             args[group] = converted;
         }
         return createStep(stepAsString, args);
@@ -91,22 +98,32 @@ public class CandidateStep {
         };
     }
 
-    private Object convert(String value, Class<?> clazz) {
-        if (clazz == Integer.class || clazz == int.class) {
+    private Object convert(String value, Type type) {
+        monitor.convertingValueOfType(value, type);
+        if (type == Integer.class || type == int.class) {
             return Integer.valueOf(value);
-        } else if (clazz == Long.class || clazz == long.class) {
+        } else if (type == Long.class || type == long.class) {
             return Long.valueOf(value);
-        } else if (clazz == Double.class || clazz == double.class) {
+        } else if (type == Double.class || type == double.class) {
             return Double.valueOf(value);
-        } else if (clazz == Float.class || clazz == float.class) {
+        } else if (type == Float.class || type == float.class) {
             return Float.valueOf(value);
-        } else if (clazz == String.class) {
+        } else if (type instanceof ParameterizedType ){
+            return listFor(value, (ParameterizedType)type);
+        } else if (type == String.class) {
             return replaceNewlinesWithSystemNewlines(value);
         }
         return value;
     }
 
+    private Object listFor(String value, ParameterizedType type) {
+        if ( List.class.isAssignableFrom((Class<?>)type.getRawType()) ){
+            return asList(value.split(COMMA));
+        }
+        return replaceNewlinesWithSystemNewlines(value);
+    }
+
     private Object replaceNewlinesWithSystemNewlines(String value) {
-        return value.replaceAll("(\n)|(\r\n)", System.getProperty("line.separator"));
+        return value.replaceAll("(\n)|(\r\n)", NL);
     }
 }
