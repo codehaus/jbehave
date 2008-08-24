@@ -6,7 +6,6 @@ import static org.jbehave.Ensure.ensureThat;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import org.jbehave.scenario.ScenarioReporter;
 import org.junit.Test;
 
 

@@ -1,7 +1,7 @@
 package org.jbehave.scenario.steps;
 
-import org.jbehave.scenario.ScenarioReporter;
 import org.jbehave.scenario.errors.PendingError;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 
 
 public abstract class StepResult {

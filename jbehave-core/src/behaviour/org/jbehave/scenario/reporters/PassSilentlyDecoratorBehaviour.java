@@ -1,11 +1,10 @@
 package org.jbehave.scenario.reporters;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import org.jbehave.scenario.ScenarioReporter;
 import org.jbehave.scenario.definition.Blurb;
 import org.junit.Test;
 import org.mockito.InOrder;

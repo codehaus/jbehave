@@ -1,4 +1,4 @@
-package org.jbehave.scenario;
+package org.jbehave.scenario.reporters;
 
 import org.jbehave.scenario.definition.Blurb;
 

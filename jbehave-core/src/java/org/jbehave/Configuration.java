@@ -1,8 +1,8 @@
 package org.jbehave;
 
-import org.jbehave.scenario.ScenarioReporter;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.StepCreator;
 

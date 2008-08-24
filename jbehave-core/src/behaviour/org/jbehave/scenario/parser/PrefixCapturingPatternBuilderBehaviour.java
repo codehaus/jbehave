@@ -6,7 +6,6 @@ import static org.jbehave.Ensure.ensureThat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.junit.Test;
 
 

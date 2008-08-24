@@ -2,7 +2,6 @@ package org.jbehave.scenario.reporters;
 
 import java.io.PrintStream;
 
-import org.jbehave.scenario.ScenarioReporter;
 import org.jbehave.scenario.definition.Blurb;
 
 public class PrintStreamScenarioReporter implements ScenarioReporter {
