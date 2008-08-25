@@ -109,12 +109,37 @@ public class CandidateStepBehaviour {
     }
 
     @Test
+    public void shouldConvertArgsToListOfNumbers() throws Exception {
+        SomeSteps someSteps = new SomeSteps();
+        CandidateStep candidateStep = new CandidateStep("windows on the $nth floors",
+                methodFor("aMethodWithListOfLongs"), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        candidateStep.createFrom("When windows on the 1L,2L,3L floors").perform();
+        ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1L, 2L, 3L).toString()));
+
+        candidateStep = new CandidateStep("windows on the $nth floors", methodFor("aMethodWithListOfIntegers"),
+                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        candidateStep.createFrom("When windows on the 1,2,3 floors").perform();
+        ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1, 2, 3).toString()));
+
+        candidateStep = new CandidateStep("windows on the $nth floors", methodFor("aMethodWithListOfDoubles"),
+                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        candidateStep.createFrom("When windows on the 1.1,2.2,3.3 floors").perform();
+        ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1.1, 2.2, 3.3).toString()));
+
+        candidateStep = new CandidateStep("windows on the $nth floors", methodFor("aMethodWithListOfFloats"),
+                someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
+        candidateStep.createFrom("When windows on the 1.1f,2.2f,3.3f floors").perform();
+        ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1.1f, 2.2f, 3.3f).toString()));
+
+    }
+
+    @Test
     public void shouldConvertArgsToListOfStrings() throws Exception {
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new CandidateStep("windows on the $nth floors",
                 methodFor("aMethodWithListOfStrings"), someSteps, PATTERN_BUILDER, MONITOR, "Given", "When", "Then");
         candidateStep.createFrom("When windows on the 1,2,3 floors").perform();
-        ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList("1","2","3").toString()));
+        ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList("1", "2", "3").toString()));
     }
 
     public static Method methodFor(String methodName) throws IntrospectionException {
@@ -157,5 +182,22 @@ public class CandidateStepBehaviour {
         public void aMethodWithListOfStrings(List<String> args) {
             this.args = args;
         }
+
+        public void aMethodWithListOfLongs(List<Long> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfIntegers(List<Integer> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfDoubles(List<Double> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfFloats(List<Float> args) {
+            this.args = args;
+        }
+
     }
 }
