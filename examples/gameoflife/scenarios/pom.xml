@@ -6,16 +6,22 @@
     <artifactId>jbehave-examples</artifactId>
     <version>2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>jbehave-trader-example</artifactId>
-  <name>JBehave Trader Example</name>
+  <artifactId>jbehave-gameoflife-example-scenarios</artifactId>
+  <name>JBehave Game of Life Example Scenarios</name>
 
-  <dependencies></dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.jbehave</groupId>
+      <artifactId>jbehave-gameoflife-example</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+  </dependencies>
+
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/behaviour/java</testSourceDirectory>
+    <sourceDirectory>${basedir}/../src/scenario</sourceDirectory>
     <resources>
       <resource>
-        <directory>${basedir}/src/main/java</directory>
+        <directory>${basedir}/../src/scenario</directory>
         <filtering>false</filtering>
         <excludes>
           <exclude>**/*.java</exclude>
@@ -26,18 +32,15 @@
       <plugin>
         <groupId>org.jbehave</groupId>
         <artifactId>jbehave-maven-plugin</artifactId>
-        <version>${pom.version}</version>
         <executions>
           <execution>
-            <id>run-scenarios-found</id>
+            <id>run-scenarios-listed</id>
             <phase>integration-test</phase>
             <configuration>
-              <scenarioIncludes>
-                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
-              </scenarioIncludes>
-              <scenarioExcludes>
-                <scenarioExclude>**/*Steps.java</scenarioExclude>
-              </scenarioExcludes>
+              <scenarioClassNames>
+                <scenarioClassName>com.lunivore.gameoflife.ICanToggleACell</scenarioClassName>
+                <scenarioClassName>com.lunivore.gameoflife.TheGridStartsEmpty</scenarioClassName>
+              </scenarioClassNames>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>

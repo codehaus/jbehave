@@ -3,27 +3,29 @@ package org.jbehave.examples.trader.model;
 import static org.jbehave.examples.trader.model.Stock.AlertStatus.OFF;
 import static org.jbehave.examples.trader.model.Stock.AlertStatus.ON;
 
+import java.util.List;
+
 public class Stock {
 
     public enum AlertStatus {
         ON, OFF
     };
 
-    private double price;
+    private List<Double> prices;
     private double alertPrice;
     private AlertStatus status = OFF;
 
-    public Stock(double price, double alertPrice) {
-        this.price = price;
+    public Stock(List<Double> prices, double alertPrice) {
+        this.prices = prices;
         this.alertPrice = alertPrice;
     }
 
-    public double getPrice() {
-        return price;
+    public List<Double> getPrices() {
+        return prices;
     }
 
     public void tradeAt(double price) {
-        this.price = price;
+        this.prices.add(price);
         if (price > alertPrice) {
             status = ON;
         }
