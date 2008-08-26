@@ -15,14 +15,14 @@ import java.util.List;
  * @author Elizabeth Keogh
  * @author Mauro Talevi
  */
-public class ArgumentConverters {
+public class ArgumentConversion {
 
     private static final String NL = System.getProperty("line.separator");
     private static final String COMMA = ",";
     private final StepMonitor monitor;
     private final List<? extends ArgumentConverter> converters;
 
-    public ArgumentConverters(StepMonitor monitor) {
+    public ArgumentConversion(StepMonitor monitor) {
         this.monitor = monitor;
         this.converters = asList(new NumberConverter(), new NumberListConverter(), new StringListConverter());
     }

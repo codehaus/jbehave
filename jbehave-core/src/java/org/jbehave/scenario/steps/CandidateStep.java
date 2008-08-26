@@ -22,7 +22,7 @@ public class CandidateStep {
     private final StepMonitor monitor;
     private final String[] startingWords;
     private final Pattern pattern;
-    private final ArgumentConverters converters;
+    private final ArgumentConversion converters;
 
     public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patterBuilder,
             StepMonitor monitor, String... startingWords) {
@@ -31,7 +31,7 @@ public class CandidateStep {
         this.monitor = monitor;
         this.startingWords = startingWords;
         this.pattern = patterBuilder.buildPattern(matchThis);
-        this.converters = new ArgumentConverters(monitor);
+        this.converters = new ArgumentConversion(monitor);
     }
 
     public boolean matches(String step) {
