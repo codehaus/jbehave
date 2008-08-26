@@ -6,7 +6,7 @@ import static org.jbehave.Ensure.ensureThat;
 
 import java.util.List;
 
-import org.jbehave.examples.trader.converters.TraderArgumentConverter;
+import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
 import org.jbehave.examples.trader.persistence.TraderPersister;
@@ -14,7 +14,7 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
-import org.jbehave.scenario.steps.ArgumentConversion;
+import org.jbehave.scenario.steps.ParameterConverters;
 import org.jbehave.scenario.steps.PrintStreamStepMonitor;
 import org.jbehave.scenario.steps.SilentStepMonitor;
 import org.jbehave.scenario.steps.Steps;
@@ -27,7 +27,7 @@ public class StockSteps extends Steps {
     private Trader trader;
 
     public StockSteps(double threshold) {
-        super(new PrefixCapturingPatternBuilder(), MONITOR, new ArgumentConversion(new SilentStepMonitor(), new TraderArgumentConverter(mockTradePersister())), "Given", "When", "Then", "And");
+        super(new PrefixCapturingPatternBuilder(), MONITOR, new ParameterConverters(new SilentStepMonitor(), new TraderConverter(mockTradePersister())), "Given", "When", "Then", "And");
         this.threshold = threshold;
     }
 

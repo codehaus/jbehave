@@ -19,17 +19,17 @@ public class CandidateStep {
 
     private final Method method;
     private final Steps steps;
-    private final StepMonitor monitor;
+    private final StepMonitor stepMonitor;
+    private final ParameterConverters parameterConverters;
     private final String[] startingWords;
     private final Pattern pattern;
-    private final ArgumentConversion conversion;
 
     public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patterBuilder,
-            StepMonitor monitor, ArgumentConversion argumentConversion, String... startingWords) {
+            StepMonitor stepMonitor, ParameterConverters parameterConverters, String... startingWords) {
         this.method = method;
         this.steps = steps;
-        this.monitor = monitor;
-        this.conversion = argumentConversion;
+        this.stepMonitor = stepMonitor;
+        this.parameterConverters = parameterConverters;
         this.startingWords = startingWords;
         this.pattern = patterBuilder.buildPattern(matchThis);
     }
@@ -42,7 +42,7 @@ public class CandidateStep {
         String trimmed = trimStartingWord(word, step);
         Matcher matcher = pattern.matcher(trimmed);
         boolean matches = matcher.matches();
-        monitor.stepMatchesPattern(step, matches, pattern.pattern());
+        stepMonitor.stepMatchesPattern(step, matches, pattern.pattern());
         return matches;
     }
 
@@ -58,7 +58,7 @@ public class CandidateStep {
         final Object[] args = new Object[matcher.groupCount()];
         for (int group = 0; group < args.length; group++) {
             String arg = matcher.group(group + 1);
-            Object converted = conversion.convert(arg, types[group]);
+            Object converted = parameterConverters.convert(arg, types[group]);
             args[group] = converted;
         }
         return createStep(stepAsString, args);
