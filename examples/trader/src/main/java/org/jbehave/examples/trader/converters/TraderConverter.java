@@ -4,13 +4,13 @@ import java.lang.reflect.Type;
 
 import org.jbehave.examples.trader.model.Trader;
 import org.jbehave.examples.trader.persistence.TraderPersister;
-import org.jbehave.scenario.steps.ArgumentConversion.ArgumentConverter;
-import org.jbehave.scenario.steps.ArgumentConversion.InvalidArgumentException;
+import org.jbehave.scenario.steps.ParameterConverters.ParameterConverter;
+import org.jbehave.scenario.steps.ParameterConverters.InvalidParameterException;
 
-public class TraderArgumentConverter implements ArgumentConverter {
+public class TraderConverter implements ParameterConverter {
     private TraderPersister persister;
 
-    public TraderArgumentConverter(TraderPersister persister) {
+    public TraderConverter(TraderPersister persister) {
         this.persister = persister;
     }
 
@@ -23,8 +23,8 @@ public class TraderArgumentConverter implements ArgumentConverter {
 
     public Object convertValue(String value, Type type) {
         Trader trader = persister.retrieveTrader(value);
-        if ( trader == null ){
-            throw new InvalidArgumentException("Trader not found for name "+value, null);
+        if (trader == null) {
+            throw new InvalidParameterException("Trader not found for name " + value, null);
         }
         return trader;
     }

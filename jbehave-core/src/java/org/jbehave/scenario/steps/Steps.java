@@ -13,17 +13,19 @@ public class Steps {
 
     private final StepPatternBuilder patternBuilder;
     private final StepMonitor stepMonitor;
-    private final ArgumentConversion argumentConversion;
+    private final ParameterConverters parameterConverters;
     private final String[] startingWords;
 
     public Steps() {
-        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ArgumentConversion(), "Given", "When", "Then", "And");
+        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ParameterConverters(), "Given", "When",
+                "Then", "And");
     }
 
-    public Steps(StepPatternBuilder patternBuilder, StepMonitor stepMonitor, ArgumentConversion argumentConversion, String... startingWords) {
+    public Steps(StepPatternBuilder patternBuilder, StepMonitor stepMonitor, ParameterConverters parameterConverters,
+            String... startingWords) {
         this.patternBuilder = patternBuilder;
         this.stepMonitor = stepMonitor;
-        this.argumentConversion = argumentConversion;
+        this.parameterConverters = parameterConverters;
         this.startingWords = startingWords;
     }
 
@@ -47,6 +49,7 @@ public class Steps {
     }
 
     private void createCandidateStep(ArrayList<CandidateStep> steps, Method method, String stepAsString) {
-        steps.add(new CandidateStep(stepAsString, method, this, patternBuilder, stepMonitor, argumentConversion, startingWords));
+        steps.add(new CandidateStep(stepAsString, method, this, patternBuilder, stepMonitor, parameterConverters,
+                startingWords));
     }
 }

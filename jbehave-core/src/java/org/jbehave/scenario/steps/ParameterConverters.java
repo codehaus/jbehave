@@ -10,24 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Responsible for converting argument values to Java objects.
+ * Facade responsible for converting parameter values to Java objects.
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi
  */
-public class ArgumentConversion {
+public class ParameterConverters {
 
     private static final String NL = System.getProperty("line.separator");
     private static final String COMMA = ",";
-    private static final List<ArgumentConverter> DEFAULT_CONVERTERS = asList(new NumberConverter(), new NumberListConverter(), new StringListConverter());
+    private static final List<ParameterConverter> DEFAULT_CONVERTERS = asList(new NumberConverter(), new NumberListConverter(), new StringListConverter());
     private final StepMonitor monitor;
-    private final List<ArgumentConverter> converters = new ArrayList<ArgumentConverter>();
+    private final List<ParameterConverter> converters = new ArrayList<ParameterConverter>();
 
-    public ArgumentConversion() {
+    public ParameterConverters() {
         this(new SilentStepMonitor());
     }
 
-    public ArgumentConversion(StepMonitor monitor, ArgumentConverter... customConverters) {
+    public ParameterConverters(StepMonitor monitor, ParameterConverter... customConverters) {
         this.monitor = monitor;
         this.converters.addAll(asList(customConverters));
         this.converters.addAll(DEFAULT_CONVERTERS);
@@ -35,7 +35,7 @@ public class ArgumentConversion {
 
     public Object convert(String value, Type type) {
         // check if any converters accepts type
-        for (ArgumentConverter converter : converters) {
+        for (ParameterConverter converter : converters) {
             if (converter.accept(type)) {
                 Object converted = converter.convertValue(value, type);
                 monitor.convertedValueOfType(value, type, converted, converter.getClass());
@@ -50,7 +50,7 @@ public class ArgumentConversion {
         return value.replaceAll("(\n)|(\r\n)", NL);
     }
 
-    public static interface ArgumentConverter {
+    public static interface ParameterConverter {
 
         boolean accept(Type type);
 
@@ -59,15 +59,15 @@ public class ArgumentConversion {
     }
 
     @SuppressWarnings("serial")
-    public static class InvalidArgumentException extends RuntimeException {
+    public static class InvalidParameterException extends RuntimeException {
 
-        public InvalidArgumentException(String message, Throwable cause) {
+        public InvalidParameterException(String message, Throwable cause) {
             super(message, cause);
         }
 
     }
 
-    private static class NumberConverter implements ArgumentConverter {
+    private static class NumberConverter implements ParameterConverter {
 
         public boolean accept(Type type) {
             if (type instanceof Class) {
@@ -92,7 +92,7 @@ public class ArgumentConversion {
 
     }
 
-    private static class NumberListConverter implements ArgumentConverter {
+    private static class NumberListConverter implements ParameterConverter {
 
         public boolean accept(Type type) {
             if (type instanceof ParameterizedType) {
@@ -113,7 +113,7 @@ public class ArgumentConversion {
                 try {
                     numbers.add(numberFormat.parse(numberValue));
                 } catch (ParseException e) {
-                    throw new InvalidArgumentException(numberValue, e);
+                    throw new InvalidParameterException(numberValue, e);
                 }
             }
             return numbers;
@@ -121,7 +121,7 @@ public class ArgumentConversion {
 
     }
 
-    private static class StringListConverter implements ArgumentConverter {
+    private static class StringListConverter implements ParameterConverter {
 
         public boolean accept(Type type) {
             if (type instanceof ParameterizedType) {
