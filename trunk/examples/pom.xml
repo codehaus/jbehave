@@ -12,6 +12,7 @@
 
   <modules>
     <module>gameoflife</module>
+    <module>gameoflife/scenarios</module>
     <module>trader</module>
   </modules>
 
@@ -30,5 +31,37 @@
         <directory>${basedir}/src/scenario</directory>
       </resource>
     </resources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.jbehave</groupId>
+          <artifactId>jbehave-maven-plugin</artifactId>
+          <version>${pom.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.jbehave</groupId>
+        <artifactId>jbehave-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>run-scenarios-found</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <scenarioIncludes>
+                <scenarioInclude>**/scenario/*.java</scenarioInclude>
+              </scenarioIncludes>
+              <scenarioExcludes>
+                <scenarioExclude>**/*Steps.java</scenarioExclude>
+              </scenarioExcludes>
+            </configuration>
+            <goals>
+              <goal>run-scenarios</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>
