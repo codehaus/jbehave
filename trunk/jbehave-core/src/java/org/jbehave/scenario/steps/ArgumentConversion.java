@@ -27,8 +27,9 @@ public class ArgumentConversion {
         this(new SilentStepMonitor());
     }
 
-    public ArgumentConversion(StepMonitor monitor) {
+    public ArgumentConversion(StepMonitor monitor, ArgumentConverter... customConverters) {
         this.monitor = monitor;
+        this.converters.addAll(asList(customConverters));
         this.converters.addAll(DEFAULT_CONVERTERS);
     }
 
@@ -49,7 +50,7 @@ public class ArgumentConversion {
         return value.replaceAll("(\n)|(\r\n)", NL);
     }
 
-    private static interface ArgumentConverter {
+    public static interface ArgumentConverter {
 
         boolean accept(Type type);
 
@@ -58,7 +59,7 @@ public class ArgumentConversion {
     }
 
     @SuppressWarnings("serial")
-    private static class InvalidArgumentException extends RuntimeException {
+    public static class InvalidArgumentException extends RuntimeException {
 
         public InvalidArgumentException(String message, Throwable cause) {
             super(message, cause);
