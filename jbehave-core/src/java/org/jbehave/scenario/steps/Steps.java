@@ -12,16 +12,18 @@ import org.jbehave.scenario.parser.StepPatternBuilder;
 public class Steps {
 
     private final StepPatternBuilder patternBuilder;
-    private final StepMonitor monitor;
+    private final StepMonitor stepMonitor;
+    private final ArgumentConversion argumentConversion;
     private final String[] startingWords;
 
     public Steps() {
-        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), "Given", "When", "Then", "And");
+        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ArgumentConversion(), "Given", "When", "Then", "And");
     }
 
-    public Steps(StepPatternBuilder patternBuilder, StepMonitor monitor, String... startingWords) {
+    public Steps(StepPatternBuilder patternBuilder, StepMonitor stepMonitor, ArgumentConversion argumentConversion, String... startingWords) {
         this.patternBuilder = patternBuilder;
-        this.monitor = monitor;
+        this.stepMonitor = stepMonitor;
+        this.argumentConversion = argumentConversion;
         this.startingWords = startingWords;
     }
 
@@ -45,6 +47,6 @@ public class Steps {
     }
 
     private void createCandidateStep(ArrayList<CandidateStep> steps, Method method, String stepAsString) {
-        steps.add(new CandidateStep(stepAsString, method, this, patternBuilder, monitor, startingWords));
+        steps.add(new CandidateStep(stepAsString, method, this, patternBuilder, stepMonitor, argumentConversion, startingWords));
     }
 }

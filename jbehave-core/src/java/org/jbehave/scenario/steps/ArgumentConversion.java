@@ -19,12 +19,17 @@ public class ArgumentConversion {
 
     private static final String NL = System.getProperty("line.separator");
     private static final String COMMA = ",";
+    private static final List<ArgumentConverter> DEFAULT_CONVERTERS = asList(new NumberConverter(), new NumberListConverter(), new StringListConverter());
     private final StepMonitor monitor;
-    private final List<? extends ArgumentConverter> converters;
+    private final List<ArgumentConverter> converters = new ArrayList<ArgumentConverter>();
+
+    public ArgumentConversion() {
+        this(new SilentStepMonitor());
+    }
 
     public ArgumentConversion(StepMonitor monitor) {
         this.monitor = monitor;
-        this.converters = asList(new NumberConverter(), new NumberListConverter(), new StringListConverter());
+        this.converters.addAll(DEFAULT_CONVERTERS);
     }
 
     public Object convert(String value, Type type) {
