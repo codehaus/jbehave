@@ -11,6 +11,6 @@ public interface StepMonitor {
 
     void stepMatchesPattern(String string, boolean matches, String pattern);
 
-    void convertingValueOfType(String value, Type type, Class<?> converterClass);
+    void convertedValueOfType(String value, Type type, Object converted, Class<?> converterClass);
 
 }

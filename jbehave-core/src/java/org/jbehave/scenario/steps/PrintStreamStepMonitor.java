@@ -22,8 +22,9 @@ public class PrintStreamStepMonitor implements StepMonitor {
         print(output, message);
     }
 
-    public void convertingValueOfType(String value, Type type, Class<?> converterClass) {
-        String message = format("Converting value ''{0}'' of type ''{1}'' with converter ''{2}''", value, type, converterClass);
+    public void convertedValueOfType(String value, Type type, Object converted, Class<?> converterClass) {
+        String message = format("Converted value ''{0}'' of type ''{1}'' to ''{2}'' with converter ''{3}''", value,
+                type, converted, converterClass);
         print(output, message);
     }
 
