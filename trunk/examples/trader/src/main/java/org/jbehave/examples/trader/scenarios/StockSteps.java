@@ -10,16 +10,18 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
+import org.jbehave.scenario.steps.ArgumentConversion;
 import org.jbehave.scenario.steps.PrintStreamStepMonitor;
 import org.jbehave.scenario.steps.Steps;
 
 public class StockSteps extends Steps {
 
+    private static final PrintStreamStepMonitor MONITOR = new PrintStreamStepMonitor();
     private double threshold;
     private Stock stock;
 
     public StockSteps(double threshold) {
-        super(new PrefixCapturingPatternBuilder(), new PrintStreamStepMonitor(), "Given", "When", "Then", "And");
+        super(new PrefixCapturingPatternBuilder(), MONITOR, new ArgumentConversion(), "Given", "When", "Then", "And");
         this.threshold = threshold;
     }
 
