@@ -1,31 +1,28 @@
 package org.jbehave.scenario.steps;
 
-import static java.util.Arrays.asList;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 
+/**
+ * Creates steps from candidate string representations
+ * 
+ * @author Elizabeth Keogh
+ * @author Mauro Talevi
+ */
 public class CandidateStep {
 
-    private static final String NL = System.getProperty("line.separator");
-    private static final String COMMA = ",";
     private final Method method;
     private final Steps steps;
     private final StepMonitor monitor;
     private final String[] startingWords;
     private final Pattern pattern;
-    private final List<? extends ArgumentConverter> converters;
+    private final ArgumentConverters converters;
 
     public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patterBuilder,
             StepMonitor monitor, String... startingWords) {
@@ -34,7 +31,7 @@ public class CandidateStep {
         this.monitor = monitor;
         this.startingWords = startingWords;
         this.pattern = patterBuilder.buildPattern(matchThis);
-        this.converters = asList(new NumberConverter(), new NumberListConverter(), new StringListConverter());
+        this.converters = new ArgumentConverters(monitor);
     }
 
     public boolean matches(String step) {
@@ -106,109 +103,7 @@ public class CandidateStep {
     }
 
     private Object convert(String value, Type type) {
-        // check if any converters accepts type
-        for (ArgumentConverter converter : converters) {
-            if (converter.accept(type)) {
-                monitor.convertingValueOfType(value, type, converter.getClass());
-                return converter.convertValue(value, type);
-            }
-        }
-        // default to String
-        return replaceNewlinesWithSystemNewlines(value);
-    }
-
-    private Object replaceNewlinesWithSystemNewlines(String value) {
-        return value.replaceAll("(\n)|(\r\n)", NL);
-    }
-
-    private static interface ArgumentConverter {
-
-        boolean accept(Type type);
-
-        Object convertValue(String value, Type type);
-
-    }
-
-    @SuppressWarnings("serial")
-    private static class InvalidArgumentException extends RuntimeException {
-
-        public InvalidArgumentException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-    }
-
-    private static class NumberConverter implements ArgumentConverter {
-
-        public boolean accept(Type type) {
-            if (type instanceof Class) {
-                return (type == Integer.class || type == int.class || type == Long.class || type == long.class
-                        || type == Double.class || type == double.class || type == Float.class || type == float.class);
-            }
-            return false;
-        }
-
-        public Object convertValue(String value, Type type) {
-            if (type == Integer.class || type == int.class) {
-                return Integer.valueOf(value);
-            } else if (type == Long.class || type == long.class) {
-                return Long.valueOf(value);
-            } else if (type == Double.class || type == double.class) {
-                return Double.valueOf(value);
-            } else if (type == Float.class || type == float.class) {
-                return Float.valueOf(value);
-            }
-            return value;
-        }
-
-    }
-
-    private static class NumberListConverter implements ArgumentConverter {
-
-        public boolean accept(Type type) {
-            if (type instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType) type;
-                Type rawType = parameterizedType.getRawType();
-                Type argumentType = parameterizedType.getActualTypeArguments()[0];
-                return List.class.isAssignableFrom((Class<?>) rawType)
-                        && Number.class.isAssignableFrom((Class<?>) argumentType);
-            }
-            return false;
-        }
-
-        public Object convertValue(String value, Type type) {
-            List<String> values = asList(value.split(COMMA));
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            List<Number> numbers = new ArrayList<Number>();
-            for (String numberValue : values) {
-                try {
-                    numbers.add(numberFormat.parse(numberValue));
-                } catch (ParseException e) {
-                    throw new InvalidArgumentException(numberValue, e);
-                }
-            }
-            return numbers;
-        }
-
-    }
-
-    private static class StringListConverter implements ArgumentConverter {
-
-        public boolean accept(Type type) {
-            if (type instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType) type;
-                Type rawType = parameterizedType.getRawType();
-                Type argumentType = parameterizedType.getActualTypeArguments()[0];
-                return List.class.isAssignableFrom((Class<?>) rawType)
-                        && String.class.isAssignableFrom((Class<?>) argumentType);
-            }
-            return false;
-        }
-
-        public Object convertValue(String value, Type type) {
-            return asList(value.split(COMMA));
-        }
-
+        return converters.convert(value, type);
     }
 
 }
