@@ -16,7 +16,7 @@ import org.jbehave.scenario.steps.StepCreator;
 public class PropertyBasedConfiguration implements Configuration {
 
     public static final String FAIL_ON_PENDING = "org.jbehave.failonpending";
-    public static String OUTPUT_ALL = "org.jbehave.outputall";
+    public static final String OUTPUT_ALL = "org.jbehave.outputall";
     private final Configuration defaults;
     
     public PropertyBasedConfiguration() {
