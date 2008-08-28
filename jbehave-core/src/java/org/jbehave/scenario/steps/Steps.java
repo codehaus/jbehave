@@ -21,6 +21,10 @@ public class Steps {
                 "Then", "And");
     }
 
+    public Steps(String... startingWords) {
+       this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ParameterConverters(), startingWords);
+    }
+
     public Steps(StepPatternBuilder patternBuilder, StepMonitor stepMonitor, ParameterConverters parameterConverters,
             String... startingWords) {
         this.patternBuilder = patternBuilder;

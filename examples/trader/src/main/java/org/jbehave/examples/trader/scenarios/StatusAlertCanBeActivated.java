@@ -1,5 +1,6 @@
 package org.jbehave.examples.trader.scenarios;
 
+import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.PatternScenarioParser;
@@ -15,9 +16,9 @@ public class StatusAlertCanBeActivated extends Scenario {
     }
 
     public StatusAlertCanBeActivated(final ClassLoader classLoader) {
-        super(new PropertyBasedConfiguration() {
+        super(new MostUsefulConfiguration() {
             public ScenarioDefiner forDefiningScenarios() {
-                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), classLoader, new PatternScenarioParser());
+                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), classLoader, new PatternScenarioParser(new PropertyBasedConfiguration()));
             }
         }, new StockSteps(10.0));
     }

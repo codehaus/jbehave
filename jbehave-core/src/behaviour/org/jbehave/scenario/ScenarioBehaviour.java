@@ -8,6 +8,7 @@ import java.util.Collections;
 
 import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.Blurb;
+import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.reporters.ScenarioReporter;
@@ -60,6 +61,8 @@ public class ScenarioBehaviour {
         public PendingStepStrategy forPendingSteps() { return null; }
 
         public ScenarioReporter forReportingScenarios() { return null; }
+
+        public KeyWords keywords() { return null; }
         
     }
 }

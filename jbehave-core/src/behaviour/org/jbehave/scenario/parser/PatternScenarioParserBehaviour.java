@@ -6,6 +6,7 @@ import static org.jbehave.Ensure.ensureThat;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.StoryDefinition;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class PatternScenarioParserBehaviour {
 
     @Test
     public void shouldExtractGivensWhensAndThensFromSimpleScenarios() {
-        ScenarioParser parser = new PatternScenarioParser();
+        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
         StoryDefinition story = parser.defineStoryFrom(
                 "Given a scenario" + NL + 
                 "When I parse it" + NL + 
@@ -30,7 +31,7 @@ public class PatternScenarioParserBehaviour {
     
     @Test
     public void shouldExtractGivensWhensAndThensFromMultilineScenarios() {
-        ScenarioParser parser = new PatternScenarioParser();
+        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
         StoryDefinition story = parser.defineStoryFrom(
                 "Given a scenario" + NL +
                 "with this line" + NL +
@@ -58,7 +59,7 @@ public class PatternScenarioParserBehaviour {
             "Given my scenario" + NL + NL +
             "Scenario: the second scenario" + NL + NL +
             "Given my second scenario";
-        PatternScenarioParser parser = new PatternScenarioParser();
+        PatternScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
         StoryDefinition story = parser.defineStoryFrom(wholeStory);
         
         ensureThat(story.getScenarios().get(0).getTitle(), equalTo("the first scenario"));
@@ -91,9 +92,10 @@ public class PatternScenarioParserBehaviour {
     
             "Given a step that fails" + NL +
             "When I run the scenario" + NL +
-            "Then I should see this in the output" + NL;
+            "Then I should see this in the output" + NL +
+            "And I should see this in the output" + NL;
         
-        StoryDefinition story = new PatternScenarioParser().defineStoryFrom(wholeStory);
+        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory);
         
         ensureThat(story.getBlurb().asString(), equalTo("Story: I can output narratives" + NL + NL +
                     "As a developer" + NL +
@@ -118,7 +120,8 @@ public class PatternScenarioParserBehaviour {
         ensureThat(story.getScenarios().get(2).getSteps(), equalTo(Arrays.asList(new String[]{
                 "Given a step that fails",
                 "When I run the scenario",
-                "Then I should see this in the output"
+                "Then I should see this in the output",
+                "And I should see this in the output"
         })));
     }
     
