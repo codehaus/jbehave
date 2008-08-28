@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.StoryDefinition;
 import org.jbehave.scenario.errors.InvalidScenarioResourceException;
@@ -16,7 +15,7 @@ public class ScenarioFileLoader implements ScenarioDefiner {
     private final ScenarioParser stepParser;
 
     public ScenarioFileLoader() {
-        this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), new PatternScenarioParser(new PropertyBasedConfiguration()));
+        this(new UnderscoredCamelCaseResolver(), Thread.currentThread().getContextClassLoader(), new PatternScenarioParser());
     }
 
     public ScenarioFileLoader(ScenarioParser stepParser) {
@@ -25,6 +24,10 @@ public class ScenarioFileLoader implements ScenarioDefiner {
 
     public ScenarioFileLoader(ScenarioFileNameResolver converter, ScenarioParser parser) {
         this(converter, Thread.currentThread().getContextClassLoader(), parser);
+    }
+
+    public ScenarioFileLoader(ScenarioFileNameResolver converter, ClassLoader classLoader) {
+        this(converter, classLoader, new PatternScenarioParser());
     }
 
     public ScenarioFileLoader(ScenarioFileNameResolver resolver, ClassLoader classLoader, ScenarioParser stepParser) {
