@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.jbehave.Ensure.ensureThat;
 
+import org.jbehave.scenario.definition.ScenarioGivenWhenThenAnd;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.reporters.PassSilentlyDecorator;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
@@ -64,5 +65,10 @@ public class PropertyBasedConfigurationBehaviour {
     @Test
     public void shouldRethrowErrrors() {
         ensureThat(new PropertyBasedConfiguration().forHandlingErrors(), equalTo(ErrorStrategy.RETHROW));
+    }
+    
+    @Test
+    public void shouldProvideGivenWhenThenKeywordsByDefault() {
+        ensureThat(new PropertyBasedConfiguration().keywords(), is(ScenarioGivenWhenThenAnd.class));
     }
 }

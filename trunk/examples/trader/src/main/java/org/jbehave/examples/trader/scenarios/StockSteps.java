@@ -15,13 +15,13 @@ import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.steps.ParameterConverters;
-import org.jbehave.scenario.steps.PrintStreamStepMonitor;
 import org.jbehave.scenario.steps.SilentStepMonitor;
+import org.jbehave.scenario.steps.StepMonitor;
 import org.jbehave.scenario.steps.Steps;
 
 public class StockSteps extends Steps {
 
-    private static final PrintStreamStepMonitor MONITOR = new PrintStreamStepMonitor();
+    private static final StepMonitor MONITOR = new SilentStepMonitor();
     private double threshold;
     private Stock stock;
     private Trader trader;

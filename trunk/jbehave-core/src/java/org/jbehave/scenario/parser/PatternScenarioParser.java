@@ -5,25 +5,17 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jbehave.Configuration;
 import org.jbehave.scenario.ScenarioDefinition;
 import org.jbehave.scenario.StoryDefinition;
 import org.jbehave.scenario.definition.Blurb;
 
 public class PatternScenarioParser implements ScenarioParser {
 
-    private static final String PATTERN_TO_PULL_SCENARIOS_INTO_GROUP_4 = ".*?((Scenario:) (.|\\s)*?)\\s*(\\Z|Scenario:).*";
-    private static final String PATTERN_TO_PULL_STORY_BLURB_INTO_GROUP_1 = "(.*?)(Scenario:|Given).*";
-    private static final String PATTERN_TO_PULL_SCENARIO_TITLE_INTO_GROUP_1 = "Scenario:(.*?)\\s*(Given|When|Then).*";
-    private static final String PATTERN_TO_PULL_OUT_STEPS = "((Given|When|Then) (.|\\s)*?)\\s*(\\Z|Given|When|Then|Scenario:)";
+    private final Configuration configuration;
 
-    private final Pattern pattern;
-
-    public PatternScenarioParser() {
-        this(PATTERN_TO_PULL_OUT_STEPS);
-    }
-
-    public PatternScenarioParser(String parseRegex) {
-        this.pattern = Pattern.compile(parseRegex);
+    public PatternScenarioParser(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     public StoryDefinition defineStoryFrom(String wholeStoryAsString) {         
@@ -36,14 +28,14 @@ public class PatternScenarioParser implements ScenarioParser {
         List<ScenarioDefinition> scenarioDefinitions = new ArrayList<ScenarioDefinition>();
         List<String> scenarios = splitScenarios(wholeStoryAsString);
         for (String scenario : scenarios) {
-            Matcher findingTitle = Pattern.compile(PATTERN_TO_PULL_SCENARIO_TITLE_INTO_GROUP_1, Pattern.DOTALL).matcher(scenario);
+            Matcher findingTitle = patternToPullScenarioTitlesIntoGroupOne().matcher(scenario);
             scenarioDefinitions.add(new ScenarioDefinition(findingTitle.find() ? findingTitle.group(1).trim() : "", findSteps(scenario)));
         }
         return scenarioDefinitions;
     }
-
+    
     private List<String> findSteps(String scenarioAsString) {
-        Matcher matcher = pattern.matcher(scenarioAsString);
+        Matcher matcher = patternToPullOutSteps().matcher(scenarioAsString);
         List<String> steps = new ArrayList<String>();
         int startAt = 0;
         while (matcher.find(startAt)) {
@@ -55,7 +47,7 @@ public class PatternScenarioParser implements ScenarioParser {
     }
 
     private Blurb parseBlurbFrom(String wholeStoryAsString) {
-        Pattern findStoryBlurb = Pattern.compile(PATTERN_TO_PULL_STORY_BLURB_INTO_GROUP_1, Pattern.DOTALL);
+        Pattern findStoryBlurb = Pattern.compile("(.*?)(" + configuration.keywords().scenario() + ":).*", Pattern.DOTALL);
         Matcher matcher = findStoryBlurb.matcher(wholeStoryAsString);
         if (matcher.find()) {
             return new Blurb(matcher.group(1).trim());
@@ -65,7 +57,7 @@ public class PatternScenarioParser implements ScenarioParser {
     }
 
     private List<String> splitScenarios(String allScenariosInFile) {
-        Pattern scenarioSplitter = Pattern.compile(PATTERN_TO_PULL_SCENARIOS_INTO_GROUP_4, Pattern.DOTALL);
+        Pattern scenarioSplitter = patternToPullScenariosIntoGroupFour();
         Matcher matcher = scenarioSplitter.matcher(allScenariosInFile);
         int startAt = 0;
         List<String> scenarios = new ArrayList<String>();
@@ -81,4 +73,40 @@ public class PatternScenarioParser implements ScenarioParser {
         return scenarios;
     }
 
+    private Pattern patternToPullScenariosIntoGroupFour() {
+        return Pattern.compile(".*?((Scenario:) (.|\\s)*?)\\s*(\\Z|Scenario:).*".replace("Scenario", configuration.keywords().scenario()), Pattern.DOTALL);
+    }
+
+    private Pattern patternToPullScenarioTitlesIntoGroupOne() {
+        String concatenatedKeywords = concatenateWithOr(configuration.keywords().given(), configuration.keywords().when(), configuration.keywords().then(), configuration.keywords().others());
+        return Pattern.compile(configuration.keywords().scenario() + ":(.*?)\\s*(" + concatenatedKeywords + ").*");
+    }
+
+
+    private String concatenateWithOr(String given, String when, String then,
+            String[] others) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(given).append("|");
+        builder.append(when).append("|");
+        builder.append(then).append("|");
+        return builder.append(concatenateWithOr(others)).toString();
+    }
+
+    private String concatenateWithOr(String... keywords) {
+        return concatenateWithOr(new StringBuilder(), keywords);
+    }
+    
+    private String concatenateWithOr(StringBuilder builder,
+            String[] keywords) {
+        for (String other : keywords) {
+            builder.append(other).append("|");
+        }
+        String result = builder.toString();
+        return result.substring(0, result.length() - 1); // chop off the last |
+    }
+
+    private Pattern patternToPullOutSteps() {
+        String givenWhenThen = concatenateWithOr(configuration.keywords().given(), configuration.keywords().when(), configuration.keywords().then(), configuration.keywords().others());
+        return Pattern.compile("((" + givenWhenThen + ") (.|\\s)*?)\\s*(\\Z|" + givenWhenThen + "|" + configuration.keywords().scenario()+ ":)");
+    }
 }
