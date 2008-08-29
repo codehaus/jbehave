@@ -11,7 +11,7 @@ import com.lunivore.gameoflife.steps.GridSteps;
 public class ICanToggleACell extends Scenario {
 
     public ICanToggleACell() {
-        super(new GridSteps());
+        this(Thread.currentThread().getContextClassLoader());
     }
 
     public ICanToggleACell(final ClassLoader classLoader) {

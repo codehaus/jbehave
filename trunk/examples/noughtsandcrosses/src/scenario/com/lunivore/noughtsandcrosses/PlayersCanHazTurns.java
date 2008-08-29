@@ -16,11 +16,7 @@ import com.lunivore.noughtsandcrosses.steps.LolCatzSteps;
 public class PlayersCanHazTurns extends Scenario {
 
     public PlayersCanHazTurns() {
-        super(new MostUsefulConfiguration() {
-            public KeyWords keywords() {
-                return new KeyWords("I can haz", "Gief", "Wen", "Den", "And");
-            }
-        }, new LolCatzSteps());
+        this(Thread.currentThread().getContextClassLoader());
     }
 
     public PlayersCanHazTurns(final ClassLoader classLoader) {
