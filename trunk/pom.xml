@@ -272,7 +272,7 @@
       <!-- Examples profile -->
       <id>examples</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
       </activation>
       <modules>
         <module>examples</module>
