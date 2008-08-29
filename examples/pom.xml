@@ -13,6 +13,8 @@
   <modules>
     <module>gameoflife</module>
     <module>gameoflife/scenarios</module>
+    <module>noughtsandcrosses</module>
+    <module>noughtsandcrosses/scenarios</module>
     <module>trader</module>
   </modules>
 
