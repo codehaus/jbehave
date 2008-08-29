@@ -11,7 +11,7 @@ import com.lunivore.noughtsandcrosses.steps.GridSteps;
 public class PlayersCanTakeTurns extends Scenario {
 
     public PlayersCanTakeTurns() {
-        super(new GridSteps());
+        this(Thread.currentThread().getContextClassLoader());
     }
 
     public PlayersCanTakeTurns(final ClassLoader classLoader) {

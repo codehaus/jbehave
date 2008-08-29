@@ -11,7 +11,7 @@ import com.lunivore.gameoflife.steps.GridSteps;
 public class TheGridStartsEmpty extends Scenario {
 
     public TheGridStartsEmpty() {
-        super(new GridSteps());
+        this(Thread.currentThread().getContextClassLoader());
     }
 
     public TheGridStartsEmpty(final ClassLoader classLoader) {
