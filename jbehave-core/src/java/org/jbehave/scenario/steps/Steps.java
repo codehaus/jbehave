@@ -32,7 +32,7 @@ import org.jbehave.scenario.parser.StepPatternBuilder;
  * 
  * <p><code>When I log in as Liz with password: Pa55word</code>
  * 
- * <p>When the step is perfomed, the two parameters in the scenario definition
+ * <p>When the step is perfomed, the parameters in the scenario definition
  * will be passed to the class, so in this case the effect will be
  * 
  * <p><code>mySteps.logIn("Liz", "Pa55word");</code>

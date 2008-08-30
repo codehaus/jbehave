@@ -5,13 +5,16 @@ import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
 
 /**
- * <p>
- * A scenario is a collection of candidate steps that need to be run using a scenario runner.
- * </p>
- * <p>Users extend Scenario by providing candidate steps appropriate for the behaviour</p>
+ * <p>Extend this class to run your scenario. Call the class after your
+ * scenario, eg: "ICanLogin".
  * 
- * @author Elizabeth Keogh
- * @author Mauro Talevi
+ * <p>The Scenario shoudl be in a matching text file in the same place, 
+ * eg: "i_can_login"
+ * 
+ * <p>Write some steps in your scenario, starting each new step with
+ * Given, When, Then or And.
+ * 
+ * <p>Then look at the Steps class.
  */
 public abstract class Scenario {
 
