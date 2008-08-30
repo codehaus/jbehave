@@ -9,6 +9,38 @@ import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 
+/**
+ * Extend this class to provide the definition of steps that
+ * match the scenario you want to run.
+ * 
+ * <p>You can define the methods that should be run when each step
+ * is performed by annotating them with @Given, @When or @Then,
+ * and providing a value for each annotation that matches the
+ * step. By default, the match is performed using a '$' prefix
+ * to pick up parameters.
+ * 
+ * <p>For instance, you could define a method as:
+ * 
+ * <p><code lang="java">
+ * @When(&quot; I log in as $username with password: $password&quot;)
+ * public void logIn(String username, String password) {
+ *   //...
+ * }
+ * </code>
+ * 
+ * <p>and this would match the step:
+ * 
+ * <p><code>When I log in as Liz with password: Pa55word</code>
+ * 
+ * <p>When the step is perfomed, the two parameters in the scenario definition
+ * will be passed to the class, so in this case the effect will be
+ * 
+ * <p><code>mySteps.logIn("Liz", "Pa55word");</code>
+ * 
+ * <p>ParameterConverters can be used to convert parameters from any String format
+ * to another class. Custom converters can be provided here in addition to the
+ * defaults.
+ */
 public class Steps {
 
     private final StepPatternBuilder patternBuilder;
@@ -25,6 +57,12 @@ public class Steps {
        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ParameterConverters(), startingWords);
     }
 
+    /**
+     * @param patternBuilder how we build patterns from annotations which will match the steps in the scenarios
+     * @param stepMonitor how we monitor the matching of the patterns
+     * @param parameterConverters how we convert parameters from Strings to other objects
+     * @param startingWords the words with which we expect steps in the scenarios to start
+     */
     public Steps(StepPatternBuilder patternBuilder, StepMonitor stepMonitor, ParameterConverters parameterConverters,
             String... startingWords) {
         this.patternBuilder = patternBuilder;
@@ -34,7 +72,7 @@ public class Steps {
     }
 
     /**
-     * Returns all the steps that can be performed by this class.
+     * @return all the steps that can be performed by this class
      */
     public CandidateStep[] getSteps() {
         ArrayList<CandidateStep> steps = new ArrayList<CandidateStep>();

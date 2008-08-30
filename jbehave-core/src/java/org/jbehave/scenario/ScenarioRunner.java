@@ -3,8 +3,8 @@ package org.jbehave.scenario;
 import org.jbehave.Configuration;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingError;
+import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepResult;
 import org.jbehave.scenario.steps.Steps;
@@ -19,7 +19,7 @@ public class ScenarioRunner {
 
     private State state = new FineSoFar();
     private ErrorStrategy currentStrategy;
-    private PendingStepStrategy pendingStepStrategy;
+    private PendingErrorStrategy pendingStepStrategy;
     private ScenarioReporter reporter;
     private ErrorStrategy errorStrategy;
     private Throwable throwable;

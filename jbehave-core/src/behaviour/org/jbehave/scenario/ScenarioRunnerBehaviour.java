@@ -12,9 +12,9 @@ import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.ErrorStrategyInWhichWeTrustTheReporter;
+import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.CandidateStep;
-import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.StepResult;
@@ -190,7 +190,7 @@ public class ScenarioRunnerBehaviour {
         StepResult pendingResult = StepResult.pending("My step isn't defined!");
         stub(pendingStep.perform()).toReturn(pendingResult);
         
-        PendingStepStrategy strategy = mock(PendingStepStrategy.class);
+        PendingErrorStrategy strategy = mock(PendingErrorStrategy.class);
         
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
@@ -205,7 +205,7 @@ public class ScenarioRunnerBehaviour {
 
     
     private Configuration configurationWithPendingStrategy(StepCreator creator,
-            ScenarioReporter reporter, PendingStepStrategy strategy) {
+            ScenarioReporter reporter, PendingErrorStrategy strategy) {
     
         return configurationWith(reporter, creator, new ErrorStrategyInWhichWeTrustTheReporter(), strategy);
     }
@@ -216,14 +216,14 @@ public class ScenarioRunnerBehaviour {
     
     private Configuration configurationWith(final ScenarioReporter reporter,
             final StepCreator creator, final ErrorStrategy errorStrategy) {
-        return configurationWith(reporter, creator, errorStrategy, PendingStepStrategy.PASSING);
+        return configurationWith(reporter, creator, errorStrategy, PendingErrorStrategy.PASSING);
     }
     
     private Configuration configurationWith(
             final ScenarioReporter reporter,
             final StepCreator creator,
             final ErrorStrategy errorStrategy,
-            final PendingStepStrategy pendingStrategy) {
+            final PendingErrorStrategy pendingStrategy) {
         
         return new PropertyBasedConfiguration() {
             @Override
@@ -233,7 +233,7 @@ public class ScenarioRunnerBehaviour {
             @Override
             public ErrorStrategy forHandlingErrors() { return errorStrategy; }
             @Override
-            public PendingStepStrategy forPendingSteps() { return pendingStrategy; }
+            public PendingErrorStrategy forPendingSteps() { return pendingStrategy; }
         };
     }
 
