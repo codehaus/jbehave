@@ -10,9 +10,9 @@ import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.errors.ErrorStrategy;
+import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class ScenarioBehaviour {
 
         public ErrorStrategy forHandlingErrors() { return null; }
 
-        public PendingStepStrategy forPendingSteps() { return null; }
+        public PendingErrorStrategy forPendingSteps() { return null; }
 
         public ScenarioReporter forReportingScenarios() { return null; }
 

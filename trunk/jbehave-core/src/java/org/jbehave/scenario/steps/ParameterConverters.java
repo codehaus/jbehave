@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,11 +69,14 @@ public class ParameterConverters {
     }
 
     private static class NumberConverter implements ParameterConverter {
-
+    	private static List<Class> acceptedClasses = Arrays.asList(new Class[] {
+    		Integer.class, int.class, Long.class, long.class,
+    		Double.class, double.class, Float.class, float.class
+    	});
+    	
         public boolean accept(Type type) {
             if (type instanceof Class) {
-                return (type == Integer.class || type == int.class || type == Long.class || type == long.class
-                        || type == Double.class || type == double.class || type == Float.class || type == float.class);
+                return acceptedClasses.contains(type);
             }
             return false;
         }

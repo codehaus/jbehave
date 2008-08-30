@@ -3,10 +3,10 @@ package org.jbehave.scenario;
 import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.errors.ErrorStrategy;
+import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.StepCreator;
 
 /**
@@ -61,11 +61,11 @@ public class PropertyBasedConfiguration implements Configuration {
      * so you can see if any steps don't match or are
      * still to be implemented.
      */
-    public PendingStepStrategy forPendingSteps() {
+    public PendingErrorStrategy forPendingSteps() {
         if (System.getProperty(FAIL_ON_PENDING) == null) {
             return defaults.forPendingSteps();
         }
-        return PendingStepStrategy.FAILING;
+        return PendingErrorStrategy.FAILING;
     }
 
     /**

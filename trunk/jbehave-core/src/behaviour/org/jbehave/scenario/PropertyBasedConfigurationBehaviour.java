@@ -6,9 +6,9 @@ import static org.jbehave.Ensure.ensureThat;
 
 import org.jbehave.scenario.definition.ScenarioGivenWhenThenAnd;
 import org.jbehave.scenario.errors.ErrorStrategy;
+import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.reporters.PassSilentlyDecorator;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
-import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,13 +41,13 @@ public class PropertyBasedConfigurationBehaviour {
     @Test
     public void shouldUsePassingPendingStepStrategyByDefault() {
         System.clearProperty(PropertyBasedConfiguration.FAIL_ON_PENDING);
-        ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingStepStrategy.PASSING));
+        ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingErrorStrategy.PASSING));
     }
     
     @Test
     public void shouldUseFailingPendingStepStrategyWhenConfiguredToDoSo() {
         System.setProperty(PropertyBasedConfiguration.FAIL_ON_PENDING, "true");
-        ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingStepStrategy.FAILING));
+        ensureThat(new PropertyBasedConfiguration().forPendingSteps(), is(PendingErrorStrategy.FAILING));
     }
     
     @Test

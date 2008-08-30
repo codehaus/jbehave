@@ -4,13 +4,13 @@ import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.ScenarioGivenWhenThenAnd;
 import org.jbehave.scenario.errors.ErrorStrategy;
+import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.parser.ScenarioFileLoader;
 import org.jbehave.scenario.reporters.PassSilentlyDecorator;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.jbehave.scenario.steps.PendingStepStrategy;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.UnmatchedToPendingStepCreator;
 
@@ -59,8 +59,8 @@ public class MostUsefulConfiguration implements Configuration {
      * PropertyBasedConfiguration which provides a mechanism for
      * altering this behaviour in different environments.
      */
-    public PendingStepStrategy forPendingSteps() {
-        return PendingStepStrategy.PASSING;
+    public PendingErrorStrategy forPendingSteps() {
+        return PendingErrorStrategy.PASSING;
     }
 
     /**
