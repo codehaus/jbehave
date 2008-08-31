@@ -7,11 +7,6 @@ import static org.jbehave.Ensure.not;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.MethodDescriptor;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
@@ -112,21 +107,21 @@ public class CandidateStepBehaviour {
     public void shouldConvertArgsToListOfNumbers() throws Exception {
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new CandidateStep("windows on the $nth floors",
-                methodFor("aMethodWithListOfLongs"), someSteps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+                SomeSteps.methodFor("aMethodWithListOfLongs"), someSteps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.createFrom("When windows on the 1L,2L,3L floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1L, 2L, 3L).toString()));
 
-        candidateStep = new CandidateStep("windows on the $nth floors", methodFor("aMethodWithListOfIntegers"),
+        candidateStep = new CandidateStep("windows on the $nth floors", SomeSteps.methodFor("aMethodWithListOfIntegers"),
                 someSteps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.createFrom("When windows on the 1,2,3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1, 2, 3).toString()));
 
-        candidateStep = new CandidateStep("windows on the $nth floors", methodFor("aMethodWithListOfDoubles"),
+        candidateStep = new CandidateStep("windows on the $nth floors", SomeSteps.methodFor("aMethodWithListOfDoubles"),
                 someSteps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.createFrom("When windows on the 1.1,2.2,3.3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1.1, 2.2, 3.3).toString()));
 
-        candidateStep = new CandidateStep("windows on the $nth floors", methodFor("aMethodWithListOfFloats"),
+        candidateStep = new CandidateStep("windows on the $nth floors", SomeSteps.methodFor("aMethodWithListOfFloats"),
                 someSteps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.createFrom("When windows on the 1.1f,2.2f,3.3f floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1.1f, 2.2f, 3.3f).toString()));
@@ -137,67 +132,8 @@ public class CandidateStepBehaviour {
     public void shouldConvertArgsToListOfStrings() throws Exception {
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new CandidateStep("windows on the $nth floors",
-                methodFor("aMethodWithListOfStrings"), someSteps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+                SomeSteps.methodFor("aMethodWithListOfStrings"), someSteps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.createFrom("When windows on the 1,2,3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList("1", "2", "3").toString()));
-    }
-
-    public static Method methodFor(String methodName) throws IntrospectionException {
-        BeanInfo beanInfo = Introspector.getBeanInfo(SomeSteps.class);
-        for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
-            if (md.getMethod().getName().equals(methodName)) {
-                return md.getMethod();
-            }
-        }
-        return null;
-    }
-
-    public class SomeSteps extends Steps {
-        private Object args;
-
-        public void aMethod() {
-
-        }
-
-        public void aMethodWith(String args) {
-            this.args = args;
-        }
-
-        public void aMethodWith(double args) {
-            this.args = args;
-        }
-
-        public void aMethodWith(long args) {
-            this.args = args;
-        }
-
-        public void aMethodWith(int args) {
-            this.args = args;
-        }
-
-        public void aMethodWith(float args) {
-            this.args = args;
-        }
-
-        public void aMethodWithListOfStrings(List<String> args) {
-            this.args = args;
-        }
-
-        public void aMethodWithListOfLongs(List<Long> args) {
-            this.args = args;
-        }
-
-        public void aMethodWithListOfIntegers(List<Integer> args) {
-            this.args = args;
-        }
-
-        public void aMethodWithListOfDoubles(List<Double> args) {
-            this.args = args;
-        }
-
-        public void aMethodWithListOfFloats(List<Float> args) {
-            this.args = args;
-        }
-
     }
 }

@@ -1,33 +1,35 @@
 package org.jbehave.scenario.steps;
 
-import static org.jbehave.Ensure.ensureThat;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.jbehave.Ensure.ensureThat;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
 
 public class ParameterConvertersBehaviour {
 
-	@Test
+	private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
+
+    @Test
 	public void shouldConvertStringsToNumbers() {
 		ParameterConverters converters = new ParameterConverters();
 		ensureThat((Integer)converters.convert("3", int.class), equalTo(3));
 	}
 	
-//	@SuppressWarnings("unchecked")
-//	@Test
-//	public void shouldConvertCommaSeparatedValuesToListsOfNumbers() throws ParseException {
-//		ParameterConverters converters = new ParameterConverters();
-//		List<Number> list = (List<Number>)converters.convert("3, 5, 6, 8.00", Arrays.asList(new Number[]{}).getClass());
-//		ensureThat(list.get(0), equalTo(NumberFormat.getInstance().parse("3")));
-//		ensureThat(list.get(1), equalTo(NumberFormat.getInstance().parse("5")));
-//		ensureThat(list.get(2), equalTo(NumberFormat.getInstance().parse("6")));
-//		ensureThat(list.get(3), equalTo(NumberFormat.getInstance().parse("8.00")));
-//	}
+	@SuppressWarnings("unchecked")
+	@Test
+	public void shouldConvertCommaSeparatedValuesToListsOfNumbers() throws ParseException, IntrospectionException {
+		ParameterConverters converters = new ParameterConverters();
+		Type type = SomeSteps.methodFor("aMethodWithListOfNumbers").getGenericParameterTypes()[0];
+        List<Number> list = (List<Number>)converters.convert("3, 5, 6, 8.00", type);
+		ensureThat(list.get(0), equalTo(NUMBER_FORMAT.parse("3")));
+		ensureThat(list.get(1), equalTo(NUMBER_FORMAT.parse("5")));
+		ensureThat(list.get(2), equalTo(NUMBER_FORMAT.parse("6")));
+		ensureThat(list.get(3), equalTo(NUMBER_FORMAT.parse("8.00")));
+	}
 }

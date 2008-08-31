@@ -69,7 +69,8 @@ public class ParameterConverters {
     }
 
     private static class NumberConverter implements ParameterConverter {
-    	private static List<Class> acceptedClasses = Arrays.asList(new Class[] {
+    	@SuppressWarnings("unchecked")
+        private static List<Class> acceptedClasses = Arrays.asList(new Class[] {
     		Integer.class, int.class, Long.class, long.class,
     		Double.class, double.class, Float.class, float.class
     	});
@@ -110,7 +111,7 @@ public class ParameterConverters {
         }
 
         public Object convertValue(String value, Type type) {
-            List<String> values = asList(value.split(COMMA));
+            List<String> values = trim(asList(value.split(COMMA)));
             NumberFormat numberFormat = NumberFormat.getInstance();
             List<Number> numbers = new ArrayList<Number>();
             for (String numberValue : values) {
@@ -139,9 +140,17 @@ public class ParameterConverters {
         }
 
         public Object convertValue(String value, Type type) {
-            return asList(value.split(COMMA));
+            return trim(asList(value.split(COMMA)));
         }
 
+    }
+
+    public static List<String> trim(List<String> values) {
+        List<String> trimmed = new ArrayList<String>();
+        for ( String value : values ){
+            trimmed.add(value.trim());
+        }
+        return trimmed;
     }
 
 }
