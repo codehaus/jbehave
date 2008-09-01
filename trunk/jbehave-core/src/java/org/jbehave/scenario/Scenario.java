@@ -38,7 +38,7 @@ public abstract class Scenario {
     }
 
     @Test
-    public void runUsingSteps() throws Throwable {
+    public void run() throws Throwable {
         StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(this.getClass());
         scenarioRunner.run(story, configuration, candidateSteps);
     }
