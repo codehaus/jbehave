@@ -15,12 +15,12 @@ Newcomers are encouraged to start from <a href="http://behaviour-driven.org/Intr
 
 <p>Features of jBehave 2 include:
 <ul>
-  <li>Scenario runner - runs executable scenarios / acceptance criteria using text-based input, with
-  auto-conversion of string arguments to numbers</li>
+  <li>Scenario runner - runs executable scenarios using text-based input, with auto-conversion of string arguments
+  to any parameter type (including generic types) via custom parameter converters.</li>
+  <li>Scenario steps defined using Java 5 annotations that match the scenarios</li>
   <li>Scenario reporter - outputs scenarios executed in human-readable form</li>
   <li>Scenario can be run as JUnit 4 tests, providing easy integration with your favourite IDE</li>
-  <li>Scenario steps defined using Java 5 annotations that match the scenarios</li>
-  <li>Pending steps auto-generated for which hasn’t been defined yet so the build is not broken by a missing step</li>
+  <li>Auto-generation of pending steps so the build is not broken by a missing step</li>
   <li>Maven integration – allows scenarios to be run at integration-test build phase</li>
 </ul>
 </p>
