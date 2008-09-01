@@ -16,7 +16,7 @@ public class ScenarioRunnerMojo extends AbstractScenarioMojo {
         for (Scenario scenario : scenarios()) {
             try {
                 getLog().info("Running scenario " + scenario.getClass().getName());
-                scenario.runUsingSteps();
+                scenario.run();
             } catch (Throwable e) {
                 throw new MojoExecutionException("Failed to run scenario " + scenario.getClass().getName(), e);
             }
