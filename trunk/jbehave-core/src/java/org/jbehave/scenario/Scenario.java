@@ -8,8 +8,8 @@ import org.junit.Test;
  * <p>Extend this class to run your scenario. Call the class after your
  * scenario, eg: "ICanLogin".
  * 
- * <p>The Scenario shoudl be in a matching text file in the same place, 
- * eg: "i_can_login"
+ * <p>The Scenario should be in a matching text file in the same place, 
+ * eg "i_can_login".
  * 
  * <p>Write some steps in your scenario, starting each new step with
  * Given, When, Then or And.
