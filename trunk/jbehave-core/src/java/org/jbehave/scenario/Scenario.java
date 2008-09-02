@@ -9,7 +9,7 @@ import org.junit.Test;
  * scenario, eg: "ICanLogin".
  * 
  * <p>The Scenario should be in a matching text file in the same place, 
- * eg "i_can_login".
+ * eg: "i_can_login"
  * 
  * <p>Write some steps in your scenario, starting each new step with
  * Given, When, Then or And.
