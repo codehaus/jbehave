@@ -37,11 +37,11 @@ div.MGroupContent {
 <div id="Menu"><#list sitemap.sections as section>
 <div class="MGroup MEntry"><a>${section.name}</a>
 <div id="MGroupContent${section_index}" class="MGroupContent"
-	style="display: block;"><#list section.pages as otherPage> <#if
-otherPage=page>
-<div class="MFile MEntry" id="MSelected">${otherPage.title}</div>
+	style="display: block;"><#list section.entries as entry> <#if
+entry=page>
+<div class="MFile MEntry" id="MSelected">${entry.title}</div>
 <#else>
-<div class="MFile MEntry"><a href="${otherPage.href}">${otherPage.title}</a>
+<div class="MFile MEntry"><a href="${entry.href}">${entry.title}</a>
 </div>
 </#if> </#list></div>
 </div>
