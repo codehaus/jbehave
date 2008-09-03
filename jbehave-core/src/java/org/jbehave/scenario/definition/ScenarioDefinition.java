@@ -1,4 +1,4 @@
-package org.jbehave.scenario;
+package org.jbehave.scenario.definition;
 
 import java.util.Arrays;
 import java.util.List;

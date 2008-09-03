@@ -1,10 +1,8 @@
-package org.jbehave.scenario;
+package org.jbehave.scenario.definition;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.jbehave.scenario.definition.Blurb;
 
 public class StoryDefinition {
 

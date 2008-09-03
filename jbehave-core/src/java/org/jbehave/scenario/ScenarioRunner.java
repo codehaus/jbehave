@@ -1,6 +1,7 @@
 package org.jbehave.scenario;
 
-import org.jbehave.Configuration;
+import org.jbehave.scenario.definition.ScenarioDefinition;
+import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
@@ -37,7 +38,6 @@ public class ScenarioRunner {
         reporter.beforeStory(story.getBlurb());
         for (ScenarioDefinition scenario : story.getScenarios()) {
             Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, candidateSteps);
-    
             reporter.beforeScenario(scenario.getTitle());
             state = new FineSoFar();
             for (Step step : steps) {

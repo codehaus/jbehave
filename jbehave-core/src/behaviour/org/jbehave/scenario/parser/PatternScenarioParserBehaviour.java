@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jbehave.scenario.PropertyBasedConfiguration;
-import org.jbehave.scenario.StoryDefinition;
+import org.jbehave.scenario.definition.StoryDefinition;
 import org.junit.Test;
 
 
