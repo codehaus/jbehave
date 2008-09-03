@@ -17,7 +17,7 @@ public class StatusAlertIsNeverActivated extends Scenario {
         super(new PropertyBasedConfiguration() {
             @Override
             public ScenarioFileLoader forDefiningScenarios() {
-                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), classLoader, new PatternScenarioParser(new PropertyBasedConfiguration()));
+                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
             }
         }, new StockSteps(100.0));
     }

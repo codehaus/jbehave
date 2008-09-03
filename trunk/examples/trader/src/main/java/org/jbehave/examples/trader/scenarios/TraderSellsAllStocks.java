@@ -17,7 +17,7 @@ public class TraderSellsAllStocks extends Scenario {
     public TraderSellsAllStocks(final ClassLoader classLoader) {
         super(new PropertyBasedConfiguration() {
             public ScenarioDefiner forDefiningScenarios() {
-                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), classLoader, new PatternScenarioParser(this));
+                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(this), classLoader);
             }
         }, new StockSteps(10.0));
     }

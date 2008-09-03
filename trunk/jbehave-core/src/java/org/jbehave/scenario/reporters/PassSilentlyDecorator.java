@@ -6,12 +6,10 @@ import java.util.List;
 import org.jbehave.scenario.definition.Blurb;
 
 /**
- * Swallows the reports from all scenarios that pass, providing output
- * only for failing or pending scenarios.
+ * Swallows the reports from all scenarios that pass, providing output only for
+ * failing or pending scenarios.
  */
 public class PassSilentlyDecorator implements ScenarioReporter {
-
-
 
     private final ScenarioReporter delegate;
     private List<Todo> currentScenario;
@@ -35,7 +33,7 @@ public class PassSilentlyDecorator implements ScenarioReporter {
             }
         };
     };
-    
+
     public void failed(final String step, final Throwable e) {
         currentScenario.add(new Todo() {
             public void doNow() {
@@ -63,7 +61,7 @@ public class PassSilentlyDecorator implements ScenarioReporter {
     }
 
     private void setStateToNoisy() {
-        scenarioState = new State(){
+        scenarioState = new State() {
             public void report() {
                 beforeStoryState.report();
                 for (Todo todo : currentScenario) {
@@ -106,15 +104,16 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         });
     }
 
-
     private static interface Todo {
         void doNow();
     }
-    
 
     private interface State {
-        State SILENT = new State(){public void report() {}};
-        
+        State SILENT = new State() {
+            public void report() {
+            }
+        };
+
         void report();
     }
 }

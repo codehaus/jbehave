@@ -25,8 +25,8 @@ public class PlayersCanHazTurns extends Scenario {
                 return new KeyWords("I can haz", "Gief", "Wen", "Den", "And");
             }
             public ScenarioFileLoader forDefiningScenarios() {
-                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), classLoader,
-                        new PatternScenarioParser(this));
+                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
+                        classLoader);
             }
         }, new LolCatzSteps());
     }

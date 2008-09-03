@@ -8,8 +8,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 
-import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.Blurb;
+import org.jbehave.scenario.definition.ScenarioDefinition;
+import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.ErrorStrategyInWhichWeTrustTheReporter;
 import org.jbehave.scenario.errors.PendingErrorStrategy;

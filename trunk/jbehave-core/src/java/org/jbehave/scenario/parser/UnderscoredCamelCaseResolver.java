@@ -5,6 +5,16 @@ import java.util.regex.Pattern;
 
 import org.jbehave.scenario.Scenario;
 
+/**
+ * <p>
+ * Resolves scenario filename converting the Java scenario class to underscored
+ * eg: "ICanLogin.java" -> "i_can_login".
+ * </p>
+ * <p>
+ * By default no filename extension is used, but this can be configured via the
+ * constructor so that we can resolve name to eg "i_can_login.scenario".
+ * </p>
+ */
 public class UnderscoredCamelCaseResolver implements ScenarioFileNameResolver {
 
     private static final String DOT_REGEX = "\\.";
@@ -22,16 +32,16 @@ public class UnderscoredCamelCaseResolver implements ScenarioFileNameResolver {
     }
 
     public String resolve(Class<? extends Scenario> scenarioClass) {
-        String packageDir = scenarioClass.getPackage().getName().replaceAll(DOT_REGEX, SLASH);        
+        String packageDir = scenarioClass.getPackage().getName().replaceAll(DOT_REGEX, SLASH);
         Matcher matcher = Pattern.compile(PATTERN).matcher(scenarioClass.getSimpleName());
         int startAt = 0;
         StringBuilder builder = new StringBuilder();
-        while(matcher.find(startAt)) {
+        while (matcher.find(startAt)) {
             builder.append(matcher.group(1).toLowerCase());
             builder.append(UNDERSCORE);
             startAt = matcher.start(2);
         }
-        
+
         String underscoredName = builder.substring(0, builder.length() - 1);
         return packageDir + SLASH + underscoredName + extension;
     }

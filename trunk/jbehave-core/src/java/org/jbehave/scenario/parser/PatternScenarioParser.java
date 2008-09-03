@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jbehave.Configuration;
+import org.jbehave.scenario.Configuration;
 import org.jbehave.scenario.PropertyBasedConfiguration;
-import org.jbehave.scenario.ScenarioDefinition;
-import org.jbehave.scenario.StoryDefinition;
 import org.jbehave.scenario.definition.Blurb;
+import org.jbehave.scenario.definition.ScenarioDefinition;
+import org.jbehave.scenario.definition.StoryDefinition;
 
+/**
+ * Pattern-based scenario parser, which uses the configured keywords to find the
+ * steps in the text scenarios.
+ */
 public class PatternScenarioParser implements ScenarioParser {
 
     private final Configuration configuration;

@@ -1,6 +1,5 @@
 package org.jbehave.scenario;
 
-import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingErrorStrategy;

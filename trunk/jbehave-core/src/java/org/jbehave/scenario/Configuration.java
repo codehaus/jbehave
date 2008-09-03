@@ -1,4 +1,4 @@
-package org.jbehave;
+package org.jbehave.scenario;
 
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.errors.ErrorStrategy;

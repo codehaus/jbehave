@@ -1,6 +1,6 @@
 package org.jbehave.scenario.steps;
 
-import org.jbehave.scenario.ScenarioDefinition;
+import org.jbehave.scenario.definition.ScenarioDefinition;
 
 public interface StepCreator {
 

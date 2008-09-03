@@ -18,8 +18,8 @@ public class ICanToggleACell extends Scenario {
         super(new PropertyBasedConfiguration() {
             @Override
             public ScenarioFileLoader forDefiningScenarios() {
-                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), classLoader,
-                        new PatternScenarioParser(this));
+                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
+                        classLoader);
             }
         }, new GridSteps());
     }

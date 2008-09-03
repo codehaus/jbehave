@@ -1,6 +1,6 @@
 package org.jbehave.scenario.parser;
 
-import org.jbehave.scenario.StoryDefinition;
+import org.jbehave.scenario.definition.StoryDefinition;
 
 public interface ScenarioParser {
 

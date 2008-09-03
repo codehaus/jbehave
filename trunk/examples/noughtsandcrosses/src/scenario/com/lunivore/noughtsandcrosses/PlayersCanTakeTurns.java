@@ -17,8 +17,8 @@ public class PlayersCanTakeTurns extends Scenario {
     public PlayersCanTakeTurns(final ClassLoader classLoader) {
         super(new MostUsefulConfiguration() {
             public ScenarioFileLoader forDefiningScenarios() {
-                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), classLoader,
-                        new PatternScenarioParser(this));
+                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
+                        classLoader);
             }
         }, new GridSteps());
     }

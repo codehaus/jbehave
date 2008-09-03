@@ -39,7 +39,7 @@ public class ScenarioFileLoaderBehaviour {
 
     @Test(expected = InvalidScenarioResourceException.class)
     public void cannotLoadScenarioForInvalidResource() {
-        ScenarioFileLoader loader = new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new InvalidClassLoader(), new PatternScenarioParser(new PropertyBasedConfiguration()));
+        ScenarioFileLoader loader = new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(new PropertyBasedConfiguration()), new InvalidClassLoader());
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
     }
 

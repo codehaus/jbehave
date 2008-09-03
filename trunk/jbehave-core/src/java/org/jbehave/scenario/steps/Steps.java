@@ -10,36 +10,39 @@ import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 
 /**
+ * <p>
  * Extend this class to provide the definition of steps that
  * match the scenario you want to run.
+ * </p>
  * 
  * <p>You can define the methods that should be run when each step
  * is performed by annotating them with @Given, @When or @Then,
  * and providing a value for each annotation that matches the
  * step. By default, the match is performed using a '$' prefix
- * to pick up parameters.
+ * to pick up parameters.</p>
  * 
  * <p>For instance, you could define a method as:
  * 
- * <p><code lang="java">
+ * <code lang="java">
  * @When(&quot; I log in as $username with password: $password&quot;)
  * public void logIn(String username, String password) {
  *   //...
  * }
  * </code>
  * 
- * <p>and this would match the step:
+ * and this would match the step:
  * 
- * <p><code>When I log in as Liz with password: Pa55word</code>
+ * <code>When I log in as Liz with password: Pa55word</code>
  * 
  * <p>When the step is perfomed, the parameters in the scenario definition
  * will be passed to the class, so in this case the effect will be
  * 
- * <p><code>mySteps.logIn("Liz", "Pa55word");</code>
+ * <code>mySteps.logIn("Liz", "Pa55word");</code>
+ * </p>
  * 
  * <p>ParameterConverters can be used to convert parameters from any String format
  * to another class. Custom converters can be provided here in addition to the
- * defaults.
+ * defaults.</p>
  */
 public class Steps {
 
@@ -48,16 +51,26 @@ public class Steps {
     private final ParameterConverters parameterConverters;
     private final String[] startingWords;
 
+    /**
+     * Creates Steps with all default dependencies
+     */
     public Steps() {
         this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ParameterConverters(), "Given", "When",
                 "Then", "And");
     }
 
+    /**
+     * Creates Steps with all default dependencies except for custom starting keywords
+     * 
+     * @param startingWords the words with which we expect steps in the scenarios to start
+     */
     public Steps(String... startingWords) {
        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ParameterConverters(), startingWords);
     }
 
     /**
+     * Creates Steps with all custom dependencies
+     * 
      * @param patternBuilder how we build patterns from annotations which will match the steps in the scenarios
      * @param stepMonitor how we monitor the matching of the patterns
      * @param parameterConverters how we convert parameters from Strings to other objects

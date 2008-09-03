@@ -5,7 +5,7 @@ import static org.jbehave.Ensure.ensureThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.stub;
 
-import org.jbehave.scenario.ScenarioDefinition;
+import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.junit.Test;
 
 public class UnmatchedToPendingStepCreatorBehaviour {

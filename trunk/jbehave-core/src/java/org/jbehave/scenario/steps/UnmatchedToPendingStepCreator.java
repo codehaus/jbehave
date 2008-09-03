@@ -1,9 +1,8 @@
 package org.jbehave.scenario.steps;
 
-import org.jbehave.scenario.ScenarioDefinition;
+import org.jbehave.scenario.definition.ScenarioDefinition;
 
 public class UnmatchedToPendingStepCreator implements StepCreator {
-
 
     public Step[] createStepsFrom(ScenarioDefinition scenario,
             Steps... candidateSteps) {

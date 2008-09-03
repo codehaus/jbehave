@@ -6,9 +6,9 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Collections;
 
-import org.jbehave.Configuration;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.KeyWords;
+import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
