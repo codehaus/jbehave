@@ -4,7 +4,7 @@ import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.parser.PatternScenarioParser;
-import org.jbehave.scenario.parser.ScenarioFileLoader;
+import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 
 import com.lunivore.noughtsandcrosses.steps.LolCatzSteps;
@@ -24,8 +24,8 @@ public class PlayersCanHazTurns extends Scenario {
             public KeyWords keywords() {
                 return new KeyWords("I can haz", "Gief", "Wen", "Den", "And");
             }
-            public ScenarioFileLoader forDefiningScenarios() {
-                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
+            public ClasspathScenarioDefiner forDefiningScenarios() {
+                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
                         classLoader);
             }
         }, new LolCatzSteps());

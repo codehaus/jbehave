@@ -7,15 +7,16 @@ import org.jbehave.scenario.Scenario;
 
 /**
  * <p>
- * Resolves scenario filename converting the Java scenario class to underscored
- * eg: "ICanLogin.java" -> "i_can_login".
+ * Resolves scenario names converting the Java scenario class to underscored eg:
+ * "org.jbehave.scenario.ICanLogin.java" -> "org/jbehave/scenario/i_can_login".
  * </p>
  * <p>
- * By default no filename extension is used, but this can be configured via the
- * constructor so that we can resolve name to eg "i_can_login.scenario".
+ * By default no extension is used, but this can be configured via the
+ * constructor so that we can resolve name to eg
+ * "org/jbehave/scenario/i_can_login.scenario".
  * </p>
  */
-public class UnderscoredCamelCaseResolver implements ScenarioFileNameResolver {
+public class UnderscoredCamelCaseResolver implements ScenarioNameResolver {
 
     private static final String DOT_REGEX = "\\.";
     private static final String SLASH = "/";

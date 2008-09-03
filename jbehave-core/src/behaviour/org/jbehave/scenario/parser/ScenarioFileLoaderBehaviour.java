@@ -18,7 +18,7 @@ public class ScenarioFileLoaderBehaviour {
     @Test
     public void canLoadScenario() {
         ScenarioParser parser = mock(ScenarioParser.class);
-        ScenarioFileLoader loader = new ScenarioFileLoader(parser);
+        ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(parser);
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
         verify(parser).defineStoryFrom("Given my scenario");
     }
@@ -26,20 +26,20 @@ public class ScenarioFileLoaderBehaviour {
     @Test
     public void canLoadScenarioWithCustomFilenameResolver() {
         ScenarioParser parser = mock(ScenarioParser.class);
-        ScenarioFileLoader loader = new ScenarioFileLoader(new CasePreservingResolver(".scenario"), parser);
+        ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(new CasePreservingResolver(".scenario"), parser);
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
         verify(parser).defineStoryFrom("Given my scenario");
     }
     
     @Test(expected = ScenarioNotFoundException.class)
     public void cannotLoadScenarioForInexistentResource() {
-        ScenarioFileLoader loader = new ScenarioFileLoader();
+        ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner();
         loader.loadScenarioDefinitionsFor(InexistentScenario.class);
     }
 
     @Test(expected = InvalidScenarioResourceException.class)
     public void cannotLoadScenarioForInvalidResource() {
-        ScenarioFileLoader loader = new ScenarioFileLoader(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(new PropertyBasedConfiguration()), new InvalidClassLoader());
+        ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(new PropertyBasedConfiguration()), new InvalidClassLoader());
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
     }
 
