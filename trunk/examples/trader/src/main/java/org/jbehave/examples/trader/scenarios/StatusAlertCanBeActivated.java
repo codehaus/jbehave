@@ -5,7 +5,7 @@ import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
-import org.jbehave.scenario.parser.ScenarioFileLoader;
+import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 
 
@@ -18,7 +18,7 @@ public class StatusAlertCanBeActivated extends Scenario {
     public StatusAlertCanBeActivated(final ClassLoader classLoader) {
         super(new MostUsefulConfiguration() {
             public ScenarioDefiner forDefiningScenarios() {
-                return new ScenarioFileLoader(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
+                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
             }
         }, new StockSteps(10.0));
     }

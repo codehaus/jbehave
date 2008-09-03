@@ -6,7 +6,7 @@ import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
-import org.jbehave.scenario.parser.ScenarioFileLoader;
+import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.reporters.PassSilentlyDecorator;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
@@ -34,7 +34,7 @@ public class MostUsefulConfiguration implements Configuration {
      * my_scenario.
      */
     public ScenarioDefiner forDefiningScenarios() {
-        return new ScenarioFileLoader(new PatternScenarioParser(this));
+        return new ClasspathScenarioDefiner(new PatternScenarioParser(this));
     }
 
     /**

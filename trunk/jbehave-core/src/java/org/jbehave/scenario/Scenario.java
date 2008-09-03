@@ -11,16 +11,16 @@ import org.junit.Test;
  * </p>
  * <p>
  * The Scenario should be in a matching text file in the same place, eg:
- * "i_can_login". The scenario name pattern can be configured via the
- * {@link ScenarioFileNameResolver}
+ * "i_can_login". The scenario name used can be configured via the
+ * {@link ScenarioNameResolver}.
  * </p>
  * <p>
  * Write some steps in your text scenario, starting each new step with Given,
- * When, Then or And. The keywords can be configured via the {@link KeyWorkds}
+ * When, Then or And. The keywords can be configured via the {@link KeyWords}
  * class, eg they can be translated/localized to other languages.
  * </p>
  * <p>
- * Then move on extending the Steps class.
+ * Then move on to extending the Steps class.
  * </p>
  */
 public abstract class Scenario {

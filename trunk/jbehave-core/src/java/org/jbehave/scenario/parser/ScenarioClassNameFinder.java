@@ -8,7 +8,7 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.jbehave.scenario.errors.InvalidScenarioClassPathException;
 
 /**
- * Finds scenario class names from a base directory
+ * Finds scenario class names from a base directory using Ant's directory scanner.
  * 
  * @author Mauro Talevi
  */
