@@ -4,16 +4,21 @@ import java.io.PrintStream;
 
 import org.jbehave.scenario.definition.Blurb;
 
+/**
+ * <p>
+ * Scenario reporter that outputs to a PrintStream, defaulting to System.out.
+ * </p>
+ */
 public class PrintStreamScenarioReporter implements ScenarioReporter {
 
     private final PrintStream output;
     private Throwable e;
     private final boolean reportErrors;
-    
-    public PrintStreamScenarioReporter(){
+
+    public PrintStreamScenarioReporter() {
         this(System.out);
     }
-    
+
     public PrintStreamScenarioReporter(PrintStream output) {
         this(output, false);
     }
@@ -55,7 +60,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     public void afterStory() {
-        
+
     }
 
     public void beforeStory(Blurb blurb) {
