@@ -1,6 +1,10 @@
 package org.jbehave.scenario;
 
+import junit.framework.TestCase;
+
+import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.StoryDefinition;
+import org.jbehave.scenario.parser.ScenarioNameResolver;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
 
@@ -23,7 +27,7 @@ import org.junit.Test;
  * Then move on to extending the Steps class.
  * </p>
  */
-public abstract class Scenario {
+public abstract class Scenario extends TestCase {
 
     private final Configuration configuration;
     private final ScenarioRunner scenarioRunner;
@@ -44,7 +48,7 @@ public abstract class Scenario {
     }
 
     @Test
-    public void run() throws Throwable {
+    public void testRun() throws Throwable {
         StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(this.getClass());
         scenarioRunner.run(story, configuration, candidateSteps);
     }

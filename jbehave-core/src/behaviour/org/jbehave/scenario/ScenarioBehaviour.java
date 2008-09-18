@@ -34,7 +34,7 @@ public class ScenarioBehaviour {
         StoryDefinition storyDefinition = new StoryDefinition(Blurb.EMPTY, Collections.EMPTY_LIST);
         stub(configuration.scenarioDefiner.loadScenarioDefinitionsFor(MyScenario.class)).toReturn(storyDefinition);
         
-        scenario.run();
+        scenario.testRun();
         
         verify(runner).run(storyDefinition, configuration, steps);
     }
