@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.jbehave.scenario.PropertyBasedConfiguration;
-import org.jbehave.scenario.Scenario;
+import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.errors.InvalidScenarioResourceException;
 import org.jbehave.scenario.errors.ScenarioNotFoundException;
 import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
@@ -43,7 +43,7 @@ public class ScenarioFileLoaderBehaviour {
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
     }
 
-    static class InexistentScenario extends Scenario {
+    static class InexistentScenario extends JUnitScenario {
 
     }
 

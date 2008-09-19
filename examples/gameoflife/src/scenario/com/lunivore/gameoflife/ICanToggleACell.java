@@ -1,14 +1,14 @@
 package com.lunivore.gameoflife;
 
 import org.jbehave.scenario.PropertyBasedConfiguration;
-import org.jbehave.scenario.Scenario;
+import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 
 import com.lunivore.gameoflife.steps.GridSteps;
 
-public class ICanToggleACell extends Scenario {
+public class ICanToggleACell extends JUnitScenario {
 
     public ICanToggleACell() {
         this(Thread.currentThread().getContextClassLoader());

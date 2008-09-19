@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.jbehave.scenario.Scenario;
+import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.errors.InvalidScenarioResourceException;
 import org.jbehave.scenario.errors.ScenarioNotFoundException;
@@ -43,12 +43,12 @@ public class ClasspathScenarioDefiner implements ScenarioDefiner {
         this.classLoader = classLoader;
     }
 
-    public StoryDefinition loadScenarioDefinitionsFor(Class<? extends Scenario> scenarioClass) {
+    public StoryDefinition loadScenarioDefinitionsFor(Class<? extends JUnitScenario> scenarioClass) {
         String wholeFileAsString = asString(loadInputStreamFor(scenarioClass));
         return parser.defineStoryFrom(wholeFileAsString);
     }
 
-    private InputStream loadInputStreamFor(Class<? extends Scenario> scenarioClass) {
+    private InputStream loadInputStreamFor(Class<? extends JUnitScenario> scenarioClass) {
         String scenarioName = resolver.resolve(scenarioClass);
         InputStream stream = classLoader.getResourceAsStream(scenarioName);
         if (stream == null) {

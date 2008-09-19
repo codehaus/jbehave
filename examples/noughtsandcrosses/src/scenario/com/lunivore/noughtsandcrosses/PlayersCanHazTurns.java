@@ -1,7 +1,7 @@
 package com.lunivore.noughtsandcrosses;
 
 import org.jbehave.scenario.MostUsefulConfiguration;
-import org.jbehave.scenario.Scenario;
+import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
@@ -13,7 +13,7 @@ import com.lunivore.noughtsandcrosses.steps.LolCatzSteps;
  * Checks that we can support scenarios written in other languages,
  * eg: lolcatz
  */
-public class PlayersCanHazTurns extends Scenario {
+public class PlayersCanHazTurns extends JUnitScenario {
 
     public PlayersCanHazTurns() {
         this(Thread.currentThread().getContextClassLoader());
