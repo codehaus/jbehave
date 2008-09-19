@@ -3,7 +3,7 @@ package org.jbehave.scenario.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jbehave.scenario.Scenario;
+import org.jbehave.scenario.JUnitScenario;
 
 /**
  * <p>
@@ -32,7 +32,7 @@ public class UnderscoredCamelCaseResolver implements ScenarioNameResolver {
         this.extension = extension;
     }
 
-    public String resolve(Class<? extends Scenario> scenarioClass) {
+    public String resolve(Class<? extends JUnitScenario> scenarioClass) {
         String packageDir = scenarioClass.getPackage().getName().replaceAll(DOT_REGEX, SLASH);
         Matcher matcher = Pattern.compile(PATTERN).matcher(scenarioClass.getSimpleName());
         int startAt = 0;

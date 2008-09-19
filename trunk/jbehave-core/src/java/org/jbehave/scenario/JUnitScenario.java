@@ -27,21 +27,21 @@ import org.junit.Test;
  * Then move on to extending the Steps class.
  * </p>
  */
-public abstract class Scenario extends TestCase {
+public abstract class JUnitScenario extends TestCase {
 
     private final Configuration configuration;
     private final ScenarioRunner scenarioRunner;
     private final Steps[] candidateSteps;
 
-    public Scenario(Steps... candidateSteps) {
+    public JUnitScenario(Steps... candidateSteps) {
         this(new PropertyBasedConfiguration(), candidateSteps);
     }
 
-    public Scenario(Configuration configuration, Steps... candidateSteps) {
+    public JUnitScenario(Configuration configuration, Steps... candidateSteps) {
         this(new ScenarioRunner(), configuration, candidateSteps);
     }
 
-    public Scenario(ScenarioRunner scenarioRunner, Configuration configuration, Steps... candidateSteps) {
+    public JUnitScenario(ScenarioRunner scenarioRunner, Configuration configuration, Steps... candidateSteps) {
         this.configuration = configuration;
         this.scenarioRunner = scenarioRunner;
         this.candidateSteps = candidateSteps;
