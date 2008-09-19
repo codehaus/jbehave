@@ -10,6 +10,11 @@ import org.junit.Test;
 
 /**
  * <p>
+ * <a href="http://junit.org">JUnit</a>-based implementation of Scenario. Both
+ * JUnit 4.x (via @Test annotation) and JUnit 3.8.x (via TestCase inheritance)
+ * are supported.
+ * </p>
+ * <p>
  * Extend this class to run your scenario. Call the class after your scenario,
  * eg: "ICanLogin.java".
  * </p>
@@ -27,7 +32,7 @@ import org.junit.Test;
  * Then move on to extending the Steps class.
  * </p>
  */
-public abstract class JUnitScenario extends TestCase {
+public abstract class JUnitScenario extends TestCase implements Scenario {
 
     private final Configuration configuration;
     private final ScenarioRunner scenarioRunner;
@@ -48,8 +53,12 @@ public abstract class JUnitScenario extends TestCase {
     }
 
     @Test
-    public void testRun() throws Throwable {
+    public void runScenario() throws Throwable {
         StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(this.getClass());
         scenarioRunner.run(story, configuration, candidateSteps);
+    }
+
+    public void testRun() throws Throwable {
+        runScenario();
     }
 }

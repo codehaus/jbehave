@@ -1,6 +1,6 @@
 package org.jbehave.scenario.parser;
 
-import org.jbehave.scenario.JUnitScenario;
+import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.definition.StoryDefinition;
 
 /**
@@ -10,6 +10,6 @@ import org.jbehave.scenario.definition.StoryDefinition;
  */
 public interface ScenarioDefiner {
 
-    StoryDefinition loadScenarioDefinitionsFor(Class<? extends JUnitScenario> scenarioClass);
+    StoryDefinition loadScenarioDefinitionsFor(Class<? extends Scenario> scenarioClass);
 
 }
