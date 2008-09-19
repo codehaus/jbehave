@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jbehave.scenario.JUnitScenario;
+import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.ScenarioClassNameFinder;
 
 /**
@@ -133,7 +133,7 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
      * @return A List of Scenarios
      * @throws MojoExecutionException
      */
-    protected List<JUnitScenario> scenarios() throws MojoExecutionException {
+    protected List<Scenario> scenarios() throws MojoExecutionException {
         List<String> names = scenarioClassNames;
         if (names == null || names.isEmpty()) {
             names = findScenarioClassNames();
@@ -143,7 +143,7 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
         }
         try {
             ScenarioClassLoader classLoader = createScenarioClassLoader();
-            List<JUnitScenario> scenarios = new ArrayList<JUnitScenario>();
+            List<Scenario> scenarios = new ArrayList<Scenario>();
             for (String name : names) {
                 scenarios.add(classLoader.newScenario(name));
             }

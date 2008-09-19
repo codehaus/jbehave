@@ -29,12 +29,12 @@ public class ScenarioBehaviour {
         ScenarioRunner runner = mock(ScenarioRunner.class);
         MockedConfiguration configuration = new MockedConfiguration();
         Steps steps = mock(Steps.class);
-        JUnitScenario scenario = new MyScenario(runner, configuration, steps);
+        Scenario scenario = new MyScenario(runner, configuration, steps);
         
         StoryDefinition storyDefinition = new StoryDefinition(Blurb.EMPTY, Collections.EMPTY_LIST);
         stub(configuration.scenarioDefiner.loadScenarioDefinitionsFor(MyScenario.class)).toReturn(storyDefinition);
         
-        scenario.testRun();
+        scenario.runScenario();
         
         verify(runner).run(storyDefinition, configuration, steps);
     }
