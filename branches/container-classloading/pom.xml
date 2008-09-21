@@ -12,6 +12,7 @@
 
   <modules>
     <module>jbehave-core</module>
+    <module>jbehave-container</module>
     <module>jbehave-maven-plugin</module>
   </modules>
 
