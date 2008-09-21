@@ -5,8 +5,6 @@ import static java.text.MessageFormat.format;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -39,33 +37,10 @@ public abstract class AbstractPicoContainer implements Container {
     }
 
     public <T> T getComponent(Class<T> type) {
-        return getPicoComponent(type, null);
+        return getComponent(type, null);
     }
 
     public <T> T getComponent(Class<T> type, Object key) {
-        return getPicoComponent(type, key);
-    }
-
-    public <T> Collection<Object> getComponentKeys(Class<T> type) {
-        List<ComponentAdapter<T>> adapters = container.getComponentAdapters(type);
-        List<Object> keys = new ArrayList<Object>();
-        for (ComponentAdapter<T> adapter : adapters) {
-            keys.add(adapter.getComponentKey());
-        }
-        return keys;
-    }
-
-    /**
-     * Returns an instance of a component of a given type and key from the
-     * delegate PicoContainer.
-     * 
-     * @param type the component Class
-     * @param key the component key
-     * @return A component instance for the given type and key, if provided
-     * @throws NoComponentOfTypeException if no Component can be found of type
-     * @throws ComponentNotFoundException if Component not found for key
-     */
-    private <T> T getPicoComponent(Class<T> type, Object key) {
         List<ComponentAdapter<T>> adapters = container.getComponentAdapters(type);
         if (adapters.isEmpty()) {
             String message = format("No component registered in container of type {0}", type);
@@ -87,16 +62,10 @@ public abstract class AbstractPicoContainer implements Container {
         }
     }
 
-    /**
-     * Builds PicoContainer from a given resource
-     * 
-     * @param resource the String encoding the script path
-     * @return A PicoContainer
-     */
     private PicoContainer buildContainer(String resource) {
         Reader script = getReader(resource, classLoader);
         ScriptedContainerBuilder builder = createContainerBuilder(script, classLoader);
-        return builder.buildContainer(null, null, true);
+        return builder.buildContainer(null, null, false);
     }
 
     private Reader getReader(String resource, ClassLoader classLoader) {
