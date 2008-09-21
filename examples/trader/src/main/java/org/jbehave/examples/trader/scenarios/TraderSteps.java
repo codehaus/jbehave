@@ -20,14 +20,14 @@ import org.jbehave.scenario.steps.StepMonitor;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.scenario.steps.StepsConfiguration;
 
-public class StockSteps extends Steps {
+public class TraderSteps extends Steps {
 
     private static final StepMonitor MONITOR = new SilentStepMonitor();
     private double threshold;
     private Stock stock;
     private Trader trader;
 
-    public StockSteps(double threshold) {
+    public TraderSteps(double threshold) {
         super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), MONITOR, new ParameterConverters(
                 new SilentStepMonitor(), new TraderConverter(mockTradePersister())), "Given", "When", "Then", "And"));
         this.threshold = threshold;
