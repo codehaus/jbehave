@@ -27,7 +27,7 @@ public class TraderSteps extends Steps {
     private Stock stock;
     private Trader trader;
 
-    public TraderSteps(double threshold) {
+    public TraderSteps(double threshold, ClassLoader classLoader) {
         super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), MONITOR, new ParameterConverters(
                 new SilentStepMonitor(), new TraderConverter(mockTradePersister())), "Given", "When", "Then", "And"));
         this.threshold = threshold;

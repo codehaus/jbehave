@@ -19,7 +19,7 @@ public class StatusAlertIsNeverActivated extends JUnitScenario {
             public ClasspathScenarioDefiner forDefiningScenarios() {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
             }
-        }, new TraderSteps(100.0));
+        }, new TraderSteps(100.0, classLoader));
     }
 
 }
