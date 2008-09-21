@@ -20,7 +20,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>org.jbehave</groupId>
       <artifactId>jbehave-core</artifactId>
       <version>${pom.version}</version>
     </dependency>
