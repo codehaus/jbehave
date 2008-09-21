@@ -2,6 +2,7 @@ package org.jbehave.container;
 
 import org.jbehave.container.pico.XMLPicoContainerSteps;
 import org.jbehave.scenario.steps.Steps;
+import org.jbehave.scenario.steps.StepsConfiguration;
 
 /**
  * <p>
@@ -23,6 +24,11 @@ public abstract class ContainerSteps extends Steps {
     }
 
     public ContainerSteps(String containerResource, ClassLoader classLoader) {    
+        this(containerResource, classLoader, new StepsConfiguration());
+    }
+
+    public ContainerSteps(String containerResource, ClassLoader classLoader, StepsConfiguration configuration) {
+        super(configuration);
         container = createContainer(containerResource, classLoader);
     }
 

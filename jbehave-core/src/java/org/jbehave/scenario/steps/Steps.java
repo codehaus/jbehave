@@ -6,43 +6,36 @@ import java.util.ArrayList;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
-import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 
 /**
  * <p>
- * Extend this class to provide the definition of steps that
- * match the scenario you want to run.
+ * Extend this class to provide the definition of steps that match the scenario
+ * you want to run.
  * </p>
- * 
- * <p>You can define the methods that should be run when each step
- * is performed by annotating them with @Given, @When or @Then,
- * and providing a value for each annotation that matches the
- * step. By default, the match is performed using a '$' prefix
- * to pick up parameters.</p>
- * 
- * <p>For instance, you could define a method as:
- * 
- * <code lang="java">
- * @When(&quot; I log in as $username with password: $password&quot;)
- * public void logIn(String username, String password) {
- *   //...
- * }
- * </code>
- * 
- * and this would match the step:
- * 
- * <code>When I log in as Liz with password: Pa55word</code>
- * 
- * <p>When the step is perfomed, the parameters in the scenario definition
- * will be passed to the class, so in this case the effect will be
- * 
- * <code>mySteps.logIn("Liz", "Pa55word");</code>
+ * <p>
+ * You can define the methods that should be run when each step is performed by
+ * annotating them with @Given, @When or @Then, and providing a value for each
+ * annotation that matches the step. By default, the match is performed using a
+ * '$' prefix to pick up parameters.
  * </p>
+ * <p>
+ * For instance, you could define a method as: <code lang="java">
  * 
- * <p>ParameterConverters can be used to convert parameters from any String format
- * to another class. Custom converters can be provided here in addition to the
- * defaults.</p>
+ * @When(&quot; I log in as $username with password: $password&quot;) public
+ *                void logIn(String username, String password) { //... } </code>
+ *                and this would match the step:
+ *                <code>When I log in as Liz with password: Pa55word</code>
+ *                <p>
+ *                When the step is perfomed, the parameters in the scenario
+ *                definition will be passed to the class, so in this case the
+ *                effect will be <code>mySteps.logIn("Liz", "Pa55word");</code>
+ *                </p>
+ *                <p>
+ *                ParameterConverters can be used to convert parameters from any
+ *                String format to another class. Custom converters can be
+ *                provided here in addition to the defaults.
+ *                </p>
  */
 public class Steps {
 
@@ -52,36 +45,33 @@ public class Steps {
     private final String[] startingWords;
 
     /**
-     * Creates Steps with all default dependencies
+     * Creates Steps with default configuration
      */
     public Steps() {
-        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ParameterConverters(), "Given", "When",
-                "Then", "And");
+        this(new StepsConfiguration());
     }
 
     /**
-     * Creates Steps with all default dependencies except for custom starting keywords
+     * Creates Steps with all default configuration except for custom starting
+     * keywords
      * 
-     * @param startingWords the words with which we expect steps in the scenarios to start
+     * @param startingWords the words with which we expect steps in the
+     *            scenarios to start
      */
     public Steps(String... startingWords) {
-       this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), new ParameterConverters(), startingWords);
+        this(new StepsConfiguration(startingWords));
     }
 
     /**
      * Creates Steps with all custom dependencies
      * 
-     * @param patternBuilder how we build patterns from annotations which will match the steps in the scenarios
-     * @param stepMonitor how we monitor the matching of the patterns
-     * @param parameterConverters how we convert parameters from Strings to other objects
-     * @param startingWords the words with which we expect steps in the scenarios to start
+     * @param configuration the StepsConfiguration
      */
-    public Steps(StepPatternBuilder patternBuilder, StepMonitor stepMonitor, ParameterConverters parameterConverters,
-            String... startingWords) {
-        this.patternBuilder = patternBuilder;
-        this.stepMonitor = stepMonitor;
-        this.parameterConverters = parameterConverters;
-        this.startingWords = startingWords;
+    public Steps(StepsConfiguration configuration) {
+        this.patternBuilder = configuration.getPatternBuilder();
+        this.stepMonitor = configuration.getMonitor();
+        this.parameterConverters = configuration.getParameterConverters();
+        this.startingWords = configuration.getStartingWords();
     }
 
     /**

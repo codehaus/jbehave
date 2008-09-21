@@ -18,6 +18,7 @@ import org.jbehave.scenario.steps.ParameterConverters;
 import org.jbehave.scenario.steps.SilentStepMonitor;
 import org.jbehave.scenario.steps.StepMonitor;
 import org.jbehave.scenario.steps.Steps;
+import org.jbehave.scenario.steps.StepsConfiguration;
 
 public class StockSteps extends Steps {
 
@@ -27,7 +28,8 @@ public class StockSteps extends Steps {
     private Trader trader;
 
     public StockSteps(double threshold) {
-        super(new PrefixCapturingPatternBuilder(), MONITOR, new ParameterConverters(new SilentStepMonitor(), new TraderConverter(mockTradePersister())), "Given", "When", "Then", "And");
+        super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), MONITOR, new ParameterConverters(
+                new SilentStepMonitor(), new TraderConverter(mockTradePersister())), "Given", "When", "Then", "And"));
         this.threshold = threshold;
     }
 
@@ -56,7 +58,7 @@ public class StockSteps extends Steps {
     }
 
     @Then("the trader sells all stocks")
-    public void theTraderSellsAllStocks(){
+    public void theTraderSellsAllStocks() {
         trader.sellAllStocks();
         ensureThat(trader.getStocks().size(), equalTo(0));
     }
