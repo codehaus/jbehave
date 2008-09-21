@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Getting Started</title>
+</head>
+
+<body>
+<p>Our goal with jBehave 2 was to make a framework that was lightweight, easy to use and didn't take as long to set
+up as jBehave 1. To that end, we've been driving this entirely from example code - no guessing, unless it's obvious -
+and we've ended up with something that works quite a lot like RSpec's story runner, but for Java.</p>
+
+<p>To use it, simply name your scenario file with underscores, eg i_can_toggle_a_cell (although the file name
+resolution is configurable) and define steps in it:
+ <textarea class="xml:nogutter:nocontrols" name="code">
+      Given a 5 by 5 game
+      When I toggle the cell at (2, 3)
+      Then the grid should look like
+      .....
+      .....
+      .....
+      ..X..
+      .....
+      When I toggle the cell at (2, 4)
+      Then the grid should look like
+      .....
+      .....
+      .....
+      ..X..
+      ..X..
+      When I toggle the cell at (2, 3)
+      Then the grid should look like
+      .....
+      .....
+      .....
+      .....
+      ..X..
+</textarea>
+A few more elements are required:
+<ul>
+  <li>Extend the <a href="javadoc/core/org/jbehave/scenario/Scenario.html">Scenario</a> class with a similarly named Java class: <code>ICanToggleACell.java</code></li>
+  <li>Extend the <a href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a> class - this is where your steps will be defined, and you can have as many as you want</li>
+  <li>Inject these into the Scenario:
+  <textarea class="java:nogutter:nocontrols" name="code">
+      public class ICanToggleACell extends Scenario {
+
+        public ICanToggleACell() {
+            super(new GridSteps()); // varargs, can have lots of steps
+        }
+      }
+  </textarea>
+  </li>
+  <li><a href="javadoc/core/org/jbehave/scenario/annotations/package-summary.html">Annotate</a> methods in your step class to match the ones in your plain text scenario.
+  <textarea class="java:nogutter:nocontrols" name="code">
+      public class GridSteps extends Steps {
+
+        private Game game;
+        private StringRenderer renderer;
+
+        @Given("a $width by $height game")
+        public void theGameIsRunning(int width, int height) {
+            game = new Game(width, height);
+            renderer = new StringRenderer();
+            game.setObserver(renderer);
+        }
+
+        @When("I toggle the cell at ($column, $row)")
+        public void iToggleTheCellAt(int column, int row) {
+            game.toggleCellAt(column, row);
+        }
+
+        @Then("the grid should look like $grid")
+        public void theGridShouldLookLike(String grid) {
+            ensureThat(renderer.asString(), equalTo(grid));
+        }
+
+      }
+  </textarea>
+  </li>
+  <li>Run your new scenario as JUnit 4 test.</li>
+  <li>Check out the working <a href="https://svn.codehaus.org/jbehave/trunk/examples">examples</a> in the source repository.</li>
+</ul>
+
+<p>Future features we're thinking of:
+<ul>
+  <li>tagging scenarios</li>
+  <li>better tolerance of whitespace</li>
+  <li>an option for pending steps to break the build</li>
+  <li>anything you persuade us you need.</li>
+</ul>
+</p>
+</body>
+</html>

@@ -1,0 +1,48 @@
+-------------------------------------------------------
+Minimock
+-------------------------------------------------------
+h1(FirstChild). Two minute tutorial
+
+Minimock is exactly what it sounds like - a super-lightweight mocking library
+with a very similar feel to jmock. Of course if minimock is too light weight for you, we
+also have an extension for "jMock":how-to-use-with-jmock.html
+
+h2. How do I use Minimock
+
+It's easy! Simply create a Behaviour Class that extends @UsingMiniMock@.
+@UsingMiniMock@ provides a bunch of "sugar" methods for use when creating mocks
+and setting up expectations.
+
+You create a @Mock@ by using the @mock(Class)@ method. You can then set expectations
+on the mock in much the same way as you can with jMock, though minimock does provide some useful shortcuts.
+At the end of your behaviour you call @verifyMocks()@ to verify that all expectations have been met.
+
+For example:
+
+<div class="Shaded"><pre>
+public class SterlingCurrencyConverterBehaviour extends UsingMiniMock {
+
+	public void shouldConvertToUSD() throws Exception {
+		// given
+		Mock exchangeRateServiceMock = mock(ExchangeRateService.class);
+		CurrencyConverter sterlingConverter = new SterlingCurrencyConverter((ExchangeRateService)exchangeRateServiceMock);
+
+		// expect
+		exchangeRateServiceMock.expects("retrieveRate").with(Currency.USD).
+				will(returnValue(new ExchangeRate(1.85, 0.54)));
+
+		// when
+		double convertedAmount = sterlingConverter.convertFromSterling(10.0, Currency.USD);
+
+		// then
+		verifyMocks();
+		ensureThat(convertedAmount, eq(18.50));
+	}
+}
+</pre></div>
+
+h2. Some useful features
+
+* By default minimock stubs all method calls and will return reasonable defaults.
+* @mock.expects("fooMethod")@ will allow calls to fooMethod with any, or no, arguments.
+* You can use @strictMock(Class)@ to create a mock that fails on unexpected calls.

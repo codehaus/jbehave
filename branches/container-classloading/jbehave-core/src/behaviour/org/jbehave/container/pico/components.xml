@@ -1,0 +1,10 @@
+<container>
+		
+	<component-implementation key='a-component'
+					class='org.jbehave.container.AComponent'>
+	</component-implementation>
+	
+	<component-implementation class='org.jbehave.container.AnotherComponent'>
+	</component-implementation>
+		
+</container>
