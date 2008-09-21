@@ -1,7 +1,7 @@
 package org.jbehave.scenario.reporters;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.Ensure.ensureThat;
+import static org.jbehave.util.JUnit4Ensure.ensureThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

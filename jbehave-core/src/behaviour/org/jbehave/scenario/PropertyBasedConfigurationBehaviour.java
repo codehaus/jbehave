@@ -2,7 +2,7 @@ package org.jbehave.scenario;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.jbehave.Ensure.ensureThat;
+import static org.jbehave.util.JUnit4Ensure.ensureThat;
 
 import org.jbehave.scenario.definition.ScenarioGivenWhenThenAnd;
 import org.jbehave.scenario.errors.ErrorStrategy;
