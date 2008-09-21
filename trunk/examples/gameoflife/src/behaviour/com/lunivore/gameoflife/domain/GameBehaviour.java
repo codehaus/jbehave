@@ -1,6 +1,6 @@
 package com.lunivore.gameoflife.domain;
 
-import static org.jbehave.Ensure.ensureThat;
+import static org.jbehave.util.JUnit4Ensure.ensureThat;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;

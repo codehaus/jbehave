@@ -1,7 +1,7 @@
 package org.jbehave.scenario.parser;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.Ensure.ensureThat;
+import static org.jbehave.util.JUnit4Ensure.ensureThat;
 
 import org.jbehave.scenario.JUnitScenario;
 import org.junit.Test;

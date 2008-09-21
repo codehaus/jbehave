@@ -1,7 +1,7 @@
 package org.jbehave.scenario.parser;
 
 import static java.util.Arrays.asList;
-import static org.jbehave.Ensure.ensureThat;
+import static org.jbehave.util.JUnit4Ensure.ensureThat;
 
 import java.io.IOException;
 import java.io.InputStream;

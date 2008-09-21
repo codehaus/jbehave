@@ -1,14 +1,14 @@
-package org.jbehave;
+package org.jbehave.util;
 
 import org.hamcrest.Matcher;
 import org.junit.Assert;
 
 /**
- * Collection of static utility methods that use Hamcrest matchers.
+ * Collection of static utility ensure methods that use Hamcrest matchers with JUnit 4.
  * 
  * @author Elizabeth Keogh
  */
-public class Ensure {
+public class JUnit4Ensure {
 
     public static void ensureThat(boolean matches) {
         Assert.assertTrue(matches);
