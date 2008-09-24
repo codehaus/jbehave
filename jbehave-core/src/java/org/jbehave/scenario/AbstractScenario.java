@@ -36,23 +36,23 @@ import org.jbehave.scenario.steps.Steps;
  * for the steps defined in the text scenario.</li>
  * <ol>
  */
-public abstract class AbstractScenario implements Scenario {
+public abstract class AbstractScenario implements RunnableScenario {
 
     private final Configuration configuration;
     private final ScenarioRunner scenarioRunner;
     private final Steps[] candidateSteps;
-    private final Class<? extends Scenario> scenarioClass;
+    private final Class<? extends RunnableScenario> scenarioClass;
 
-    public AbstractScenario(Class<? extends Scenario> scenarioClass, Steps... candidateSteps) {
+    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, Steps... candidateSteps) {
         this(scenarioClass, new PropertyBasedConfiguration(), candidateSteps);
     }
 
-    public AbstractScenario(Class<? extends Scenario> scenarioClass, Configuration configuration,
+    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, Configuration configuration,
             Steps... candidateSteps) {
         this(scenarioClass, new ScenarioRunner(), configuration, candidateSteps);
     }
 
-    public AbstractScenario(Class<? extends Scenario> scenarioClass, ScenarioRunner scenarioRunner,
+    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, ScenarioRunner scenarioRunner,
             Configuration configuration, Steps... candidateSteps) {
         this.scenarioClass = scenarioClass;
         this.configuration = configuration;

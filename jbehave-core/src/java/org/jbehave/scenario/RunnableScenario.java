@@ -13,7 +13,7 @@ package org.jbehave.scenario;
  * @see AbstractScenario
  * @see JUnitScenario
  */
-public interface Scenario {
+public interface RunnableScenario {
 
     void runScenario() throws Throwable;
 
