@@ -1,6 +1,6 @@
 package org.jbehave.scenario.parser;
 
-import org.jbehave.scenario.Scenario;
+import org.jbehave.scenario.RunnableScenario;
 
 /**
  * <p>
@@ -23,7 +23,7 @@ public class CasePreservingResolver implements ScenarioNameResolver {
         this.extension = extension;
     }
 
-    public String resolve(Class<? extends Scenario> scenarioClass) {
+    public String resolve(Class<? extends RunnableScenario> scenarioClass) {
         String packageDir = scenarioClass.getPackage().getName().replaceAll(DOT_REGEX, SLASH);
         return packageDir + SLASH + scenarioClass.getSimpleName() + extension;
     }

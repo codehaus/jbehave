@@ -22,10 +22,10 @@ import org.junit.Test;
  * 
  * @see AbstractScenario
  */
-public abstract class JUnitScenario extends TestCase implements Scenario {
+public abstract class JUnitScenario extends TestCase implements RunnableScenario {
 
     private final Class<? extends JUnitScenario> decoratorClass = this.getClass();
-    private final Scenario delegate;
+    private final RunnableScenario delegate;
 
     public JUnitScenario(Steps... candidateSteps) {
         this.delegate = new JUnitScenarioDelegate(decoratorClass, candidateSteps);
@@ -39,7 +39,7 @@ public abstract class JUnitScenario extends TestCase implements Scenario {
         this.delegate = new JUnitScenarioDelegate(decoratorClass, scenarioRunner, configuration, candidateSteps);
     }
 
-    public JUnitScenario(Scenario delegate) {
+    public JUnitScenario(RunnableScenario delegate) {
         this.delegate = delegate;
 
     }
@@ -51,7 +51,7 @@ public abstract class JUnitScenario extends TestCase implements Scenario {
 
     /**
      * A JUnit 3-compatibile runnable method which simply delegates
-     * {@link Scenario#runScenario()}
+     * {@link RunnableScenario#runScenario()}
      * 
      * @throws Throwable
      */
@@ -61,16 +61,16 @@ public abstract class JUnitScenario extends TestCase implements Scenario {
 
     public static class JUnitScenarioDelegate extends AbstractScenario {
 
-        public JUnitScenarioDelegate(Class<? extends Scenario> decoratorClass, Steps... candidateSteps) {
+        public JUnitScenarioDelegate(Class<? extends RunnableScenario> decoratorClass, Steps... candidateSteps) {
             super(decoratorClass, candidateSteps);
         }
 
-        public JUnitScenarioDelegate(Class<? extends Scenario> decoratorClass, Configuration configuration,
+        public JUnitScenarioDelegate(Class<? extends RunnableScenario> decoratorClass, Configuration configuration,
                 Steps... candidateSteps) {
             super(decoratorClass, configuration, candidateSteps);
         }
 
-        public JUnitScenarioDelegate(Class<? extends Scenario> decoratorClass, ScenarioRunner scenarioRunner,
+        public JUnitScenarioDelegate(Class<? extends RunnableScenario> decoratorClass, ScenarioRunner scenarioRunner,
                 Configuration configuration, Steps... candidateSteps) {
             super(decoratorClass, scenarioRunner, configuration, candidateSteps);
         }
