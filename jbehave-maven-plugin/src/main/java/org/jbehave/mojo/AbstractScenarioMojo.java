@@ -141,15 +141,20 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
         if (names.isEmpty()) {
             getLog().info("No scenarios to run.");
         }
+        ScenarioClassLoader classLoader = null;
         try {
-            ScenarioClassLoader classLoader = createScenarioClassLoader();
-            List<RunnableScenario> scenarios = new ArrayList<RunnableScenario>();
-            for (String name : names) {
-                scenarios.add(classLoader.newScenario(name));
-            }
-            return scenarios;
+            classLoader = createScenarioClassLoader();
         } catch (Exception e) {
-            throw new MojoExecutionException("Failed to instantiate scenarios " + names, e);
+            throw new MojoExecutionException("Failed to create scenario class loader", e);
         }
+        List<RunnableScenario> scenarios = new ArrayList<RunnableScenario>();
+        for (String name : names) {
+            try {
+                scenarios.add(classLoader.newScenario(name));
+            } catch (Exception e) {
+                throw new MojoExecutionException("Failed to instantiate scenario '" + name + "'", e);
+            }
+        }
+        return scenarios;
     }
 }
