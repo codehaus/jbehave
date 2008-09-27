@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.jbehave.container.ComponentNotFoundException;
 import org.jbehave.container.Container;
+import org.jbehave.container.InvalidContainerException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.ScriptedContainerBuilder;
@@ -73,7 +73,7 @@ public abstract class AbstractPicoContainer implements Container {
         if (is == null) {
             String message = format("Resource {0} not found in ClassLoader {1}", resource, classLoader.getClass(),
                     classLoader);
-            throw new NoSuchElementException(message);
+            throw new InvalidContainerException(message);
         }
         return new InputStreamReader(is);
     }
