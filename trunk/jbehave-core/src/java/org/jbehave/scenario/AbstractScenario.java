@@ -3,7 +3,7 @@ package org.jbehave.scenario;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.parser.ScenarioNameResolver;
-import org.jbehave.scenario.steps.Steps;
+import org.jbehave.scenario.steps.CandidateSteps;
 
 /**
  * <p>
@@ -40,20 +40,20 @@ public abstract class AbstractScenario implements RunnableScenario {
 
     private final Configuration configuration;
     private final ScenarioRunner scenarioRunner;
-    private final Steps[] candidateSteps;
+    private final CandidateSteps[] candidateSteps;
     private final Class<? extends RunnableScenario> scenarioClass;
 
-    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, Steps... candidateSteps) {
+    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, CandidateSteps... candidateSteps) {
         this(scenarioClass, new PropertyBasedConfiguration(), candidateSteps);
     }
 
     public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, Configuration configuration,
-            Steps... candidateSteps) {
+            CandidateSteps... candidateSteps) {
         this(scenarioClass, new ScenarioRunner(), configuration, candidateSteps);
     }
 
     public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, ScenarioRunner scenarioRunner,
-            Configuration configuration, Steps... candidateSteps) {
+            Configuration configuration, CandidateSteps... candidateSteps) {
         this.scenarioClass = scenarioClass;
         this.configuration = configuration;
         this.scenarioRunner = scenarioRunner;

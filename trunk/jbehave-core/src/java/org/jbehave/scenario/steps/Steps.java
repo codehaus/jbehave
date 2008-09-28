@@ -44,7 +44,7 @@ import org.jbehave.scenario.annotations.When;
  * elements, eg custom parameters converters. 
  * </p>
  */
-public class Steps {
+public class Steps implements CandidateSteps {
 
     private final StepsConfiguration configuration;
 

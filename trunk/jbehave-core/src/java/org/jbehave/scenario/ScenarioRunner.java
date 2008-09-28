@@ -6,9 +6,9 @@ import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepResult;
-import org.jbehave.scenario.steps.Steps;
 
 /**
  * Runs the steps of each scenario in a story
@@ -28,7 +28,7 @@ public class ScenarioRunner {
     public ScenarioRunner() {
     }
 
-    public void run(StoryDefinition story, Configuration configuration, Steps... candidateSteps) throws Throwable {
+    public void run(StoryDefinition story, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
         reporter = configuration.forReportingScenarios();
         pendingStepStrategy = configuration.forPendingSteps();
         errorStrategy = configuration.forHandlingErrors();

@@ -18,13 +18,13 @@ import org.jbehave.scenario.parser.StepPatternBuilder;
 public class CandidateStep {
 
     private final Method method;
-    private final Steps steps;
+    private final CandidateSteps steps;
     private final StepMonitor stepMonitor;
     private final ParameterConverters parameterConverters;
     private final String[] startingWords;
     private final Pattern pattern;
 
-    public CandidateStep(String matchThis, Method method, Steps steps, StepPatternBuilder patterBuilder,
+    public CandidateStep(String matchThis, Method method, CandidateSteps steps, StepPatternBuilder patterBuilder,
             StepMonitor stepMonitor, ParameterConverters parameterConverters, String... startingWords) {
         this.method = method;
         this.steps = steps;
