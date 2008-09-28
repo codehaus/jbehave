@@ -4,6 +4,6 @@ import org.jbehave.scenario.definition.ScenarioDefinition;
 
 public interface StepCreator {
 
-    Step[] createStepsFrom(ScenarioDefinition scenario, Steps... candidateSteps);
+    Step[] createStepsFrom(ScenarioDefinition scenario, CandidateSteps... candidateSteps);
 
 }

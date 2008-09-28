@@ -16,6 +16,7 @@ import org.jbehave.scenario.errors.ErrorStrategyInWhichWeTrustTheReporter;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.CandidateStep;
+import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.StepResult;
@@ -40,7 +41,7 @@ public class ScenarioRunnerBehaviour {
 
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         StepCreator creator = mock(StepCreator.class);
-        Steps mySteps = mock(Steps.class);
+        CandidateSteps mySteps = mock(Steps.class);
         
         stub(mySteps.getSteps()).toReturn(someCandidateSteps);
         IllegalArgumentException anException = new IllegalArgumentException();
@@ -164,7 +165,7 @@ public class ScenarioRunnerBehaviour {
         stub(pendingStep.perform()).toReturn(StepResult.pending("pendingStep"));
         stub(secondStep.perform()).toReturn(StepResult.success("secondStep"));
         StepCreator creator = mock(StepCreator.class);
-        Steps mySteps = mock(Steps.class);
+        CandidateSteps mySteps = mock(Steps.class);
 
         ScenarioDefinition scenario1 = mock(ScenarioDefinition.class);
         ScenarioDefinition scenario2 = mock(ScenarioDefinition.class);

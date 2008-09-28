@@ -16,7 +16,7 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
         
         CandidateStep candidate = mock(CandidateStep.class);
-        Steps steps = mock(Steps.class);
+        CandidateSteps steps = mock(Steps.class);
         Step executableStep = mock(Step.class);
         
         stub(candidate.matches("my step")).toReturn(true);
@@ -37,7 +37,7 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
         
         CandidateStep candidate = mock(CandidateStep.class);
-        Steps steps = mock(Steps.class);
+        CandidateSteps steps = mock(Steps.class);
         Step executableStep = mock(Step.class);
         
         stub(candidate.matches("my step")).toReturn(false);

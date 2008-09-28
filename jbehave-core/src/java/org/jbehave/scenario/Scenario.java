@@ -1,6 +1,6 @@
 package org.jbehave.scenario;
 
-import org.jbehave.scenario.steps.Steps;
+import org.jbehave.scenario.steps.CandidateSteps;
 
 /**
  * <p>
@@ -12,15 +12,15 @@ import org.jbehave.scenario.steps.Steps;
  */
 public abstract class Scenario extends JUnitScenario {
 
-    public Scenario(Steps... candidateSteps) {
+    public Scenario(CandidateSteps... candidateSteps) {
         super(candidateSteps);
     }
     
-    public Scenario(Configuration configuration, Steps... candidateSteps) {
+    public Scenario(Configuration configuration, CandidateSteps... candidateSteps) {
         super(configuration, candidateSteps);
     }
 
-    public Scenario(ScenarioRunner scenarioRunner, Configuration configuration, Steps... candidateSteps) {
+    public Scenario(ScenarioRunner scenarioRunner, Configuration configuration, CandidateSteps... candidateSteps) {
         super(scenarioRunner, configuration, candidateSteps);
     }
 
