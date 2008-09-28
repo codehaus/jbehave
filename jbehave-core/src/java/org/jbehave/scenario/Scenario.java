@@ -4,11 +4,10 @@ import org.jbehave.scenario.steps.CandidateSteps;
 
 /**
  * <p>
- * Scenario is deprecated to allow for support of multiple test frameworks.
- * Users should extend a scenario class that supports the desired test framework.
+ * Scenario represents the suggested entry point for the scenario developers. 
+ * It's a simple extension of JUnitScenario but users can choose to extend
+ * other abstract implementations of RunnableScenario.
  * </p>
- * 
- * @deprecated Since 2.1 use JUnitScenario
  */
 public abstract class Scenario extends JUnitScenario {
 
