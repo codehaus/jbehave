@@ -21,25 +21,25 @@ public class SpringContainerBehaviour {
 
     @Test
     public void canGetComponentByKey() {
-        Container container = new SpringContainer("/org/jbehave/container/spring/components.xml");
+        Container container = new SpringContainer("org/jbehave/container/spring/components.xml");
         assertNotNull(container.getComponent(AComponent.class, "a-component"));
     }
 
     @Test(expected = ComponentNotFoundException.class)
     public void cannotGetComponentByInexistentKey() {
-        Container container = new SpringContainer("/org/jbehave/container/spring/components.xml");
+        Container container = new SpringContainer("org/jbehave/container/spring/components.xml");
         container.getComponent(AComponent.class, "inexistent-key");
     }
 
     @Test
     public void canGetComponentByType() {
-        Container container = new SpringContainer("/org/jbehave/container/spring/components.xml");
+        Container container = new SpringContainer("org/jbehave/container/spring/components.xml");
         assertNotNull(container.getComponent(AnotherComponent.class));
     }
 
     //FIXME@Test
     public void canGetComponentsWithCustomClassLoader() {
-        Container container = new SpringContainer("/org/jbehave/container/spring/components.xml", Thread
+        Container container = new SpringContainer("org/jbehave/container/spring/components.xml", Thread
                 .currentThread().getContextClassLoader());
         assertNotNull(container.getComponent(AComponent.class));
         assertNotNull(container.getComponent(AnotherComponent.class));
@@ -47,12 +47,12 @@ public class SpringContainerBehaviour {
 
     @Test(expected = InvalidContainerException.class)
     public void cannotGetComponentsWithInvalidClassLoader() throws MalformedURLException {
-        new SpringContainer("/org/jbehave/container/spring/components.xml", new InvalidClassLoader());
+        new SpringContainer("org/jbehave/container/spring/components.xml", new InvalidClassLoader());
     }
 
     @Test(expected = ComponentNotFoundException.class)
     public void cannotGetComponentWithNoneConfigured() {
-        Container container = new SpringContainer("/org/jbehave/container/spring/no-components.xml");
+        Container container = new SpringContainer("org/jbehave/container/spring/no-components.xml");
         container.getComponent(AComponent.class);
     }
 
