@@ -1,0 +1,22 @@
+<sitemap>
+  <section>
+    <name>About jBehave</name>
+    <page>index.html</page>
+    <page>getting-started.html</page>
+    <page>license.html</page>
+    <page>download.html</page>
+    <page>release-notes.html</page>
+  </section>
+  <section>
+    <name>Project Info</name>
+    <page>mailing-lists.html</page>
+    <page>team-list.html</page>
+    <page>source-repository.html</page>
+    <link title="Issue Tracking">http://jira.codehaus.org/browse/JBEHAVE</link>
+  </section>
+  <section>
+    <name>JavaDoc</name>
+    <link title="Core">javadoc/core/index.html</link>
+    <link title="Maven Plugin">javadoc/maven-plugin/index.html</link>
+  </section>
+</sitemap>
