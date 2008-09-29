@@ -13,7 +13,6 @@ import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
@@ -29,21 +28,21 @@ public class ScenarioBehaviour {
     public void shouldLoadStoryDefinitionAndRunUsingTheScenarioRunner() throws Throwable {
         ScenarioRunner runner = mock(ScenarioRunner.class);
         MockedConfiguration configuration = new MockedConfiguration();
-        CandidateSteps steps = mock(Steps.class);
-        RunnableScenario scenario = new MyScenario(runner, configuration, steps);
+        Steps steps = mock(Steps.class);
+        Scenario scenario = new MyScenario(runner, configuration, steps);
         
         StoryDefinition storyDefinition = new StoryDefinition(Blurb.EMPTY, Collections.EMPTY_LIST);
         stub(configuration.scenarioDefiner.loadScenarioDefinitionsFor(MyScenario.class)).toReturn(storyDefinition);
         
-        scenario.runScenario();
+        scenario.run();
         
         verify(runner).run(storyDefinition, configuration, steps);
     }
 
-    private class MyScenario extends JUnitScenario {
+    private class MyScenario extends Scenario {
 
         public MyScenario(ScenarioRunner runner,
-                MockedConfiguration configuration, CandidateSteps steps) {
+                MockedConfiguration configuration, Steps steps) {
             super(runner, configuration, steps);
         }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jbehave.scenario.RunnableScenario;
+import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.ScenarioClassNameFinder;
 
 /**
@@ -133,7 +133,7 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
      * @return A List of Scenarios
      * @throws MojoExecutionException
      */
-    protected List<RunnableScenario> scenarios() throws MojoExecutionException {
+    protected List<Scenario> scenarios() throws MojoExecutionException {
         List<String> names = scenarioClassNames;
         if (names == null || names.isEmpty()) {
             names = findScenarioClassNames();
@@ -141,20 +141,15 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
         if (names.isEmpty()) {
             getLog().info("No scenarios to run.");
         }
-        ScenarioClassLoader classLoader = null;
         try {
-            classLoader = createScenarioClassLoader();
-        } catch (Exception e) {
-            throw new MojoExecutionException("Failed to create scenario class loader", e);
-        }
-        List<RunnableScenario> scenarios = new ArrayList<RunnableScenario>();
-        for (String name : names) {
-            try {
+            ScenarioClassLoader classLoader = createScenarioClassLoader();
+            List<Scenario> scenarios = new ArrayList<Scenario>();
+            for (String name : names) {
                 scenarios.add(classLoader.newScenario(name));
-            } catch (Exception e) {
-                throw new MojoExecutionException("Failed to instantiate scenario '" + name + "'", e);
             }
+            return scenarios;
+        } catch (Exception e) {
+            throw new MojoExecutionException("Failed to instantiate scenarios " + names, e);
         }
-        return scenarios;
     }
 }

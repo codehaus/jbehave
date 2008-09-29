@@ -1,37 +1,43 @@
 package org.jbehave.examples.trader.scenarios;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.util.JUnit4Ensure.ensureThat;
+import static org.jbehave.Ensure.ensureThat;
 
 import java.util.List;
 
-import org.jbehave.container.Container;
-import org.jbehave.examples.trader.container.TraderContainer;
+import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
 import org.jbehave.examples.trader.persistence.TraderPersister;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
+import org.jbehave.scenario.steps.ParameterConverters;
+import org.jbehave.scenario.steps.SilentStepMonitor;
+import org.jbehave.scenario.steps.StepMonitor;
 import org.jbehave.scenario.steps.Steps;
-import org.jbehave.scenario.steps.StepsConfiguration;
 
-public class TraderContainerSteps extends Steps {
+public class StockSteps extends Steps {
 
+    private static final StepMonitor MONITOR = new SilentStepMonitor();
     private double threshold;
     private Stock stock;
     private Trader trader;
-    private Container container;
 
-    public TraderContainerSteps(double threshold, ClassLoader classLoader) {
-        super(new StepsConfiguration());
+    public StockSteps(double threshold) {
+        super(new PrefixCapturingPatternBuilder(), MONITOR, new ParameterConverters(new SilentStepMonitor(), new TraderConverter(mockTradePersister())), "Given", "When", "Then", "And");
         this.threshold = threshold;
-        this.container = new TraderContainer(classLoader);
     }
 
-    @Given("a trader of name $name")
-    public void aTrader(String name) {
-        this.trader = container.getComponent(TraderPersister.class).retrieveTrader(name);
+    private static TraderPersister mockTradePersister() {
+        return new TraderPersister(new Trader("Mauro", asList(new Stock(asList(1.0d), 10.d))));
+    }
+
+    @Given("a trader of name $trader")
+    public void aTrader(Trader trader) {
+        this.trader = trader;
     }
 
     @Given("a stock of prices $prices")
@@ -50,7 +56,7 @@ public class TraderContainerSteps extends Steps {
     }
 
     @Then("the trader sells all stocks")
-    public void theTraderSellsAllStocks() {
+    public void theTraderSellsAllStocks(){
         trader.sellAllStocks();
         ensureThat(trader.getStocks().size(), equalTo(0));
     }

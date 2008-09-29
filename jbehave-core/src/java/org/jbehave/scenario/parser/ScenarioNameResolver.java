@@ -1,6 +1,6 @@
 package org.jbehave.scenario.parser;
 
-import org.jbehave.scenario.RunnableScenario;
+import org.jbehave.scenario.Scenario;
 
 /**
  * <p>
@@ -10,6 +10,6 @@ import org.jbehave.scenario.RunnableScenario;
  */
 public interface ScenarioNameResolver {
 
-    String resolve(Class<? extends RunnableScenario> scenarioClass);
+    String resolve(Class<? extends Scenario> scenarioClass);
 
 }

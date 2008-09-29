@@ -1,14 +1,14 @@
 package org.jbehave.examples.trader.scenarios;
 
-import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.PropertyBasedConfiguration;
-import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
+import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
+import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 
 
-public class TraderSellsAllStocks extends JUnitScenario {
+public class TraderSellsAllStocks extends Scenario {
 
     public TraderSellsAllStocks() {
         this(Thread.currentThread().getContextClassLoader());
@@ -19,7 +19,7 @@ public class TraderSellsAllStocks extends JUnitScenario {
             public ScenarioDefiner forDefiningScenarios() {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(this), classLoader);
             }
-        }, new TraderContainerSteps(10.0, classLoader)); // Could also use new TraderSteps(10.0, classLoader)
+        }, new StockSteps(10.0));
     }
 
 }

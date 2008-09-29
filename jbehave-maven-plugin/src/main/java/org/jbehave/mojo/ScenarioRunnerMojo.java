@@ -2,7 +2,7 @@ package org.jbehave.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.jbehave.scenario.RunnableScenario;
+import org.jbehave.scenario.Scenario;
 
 /**
  * Mojo to run scenarios
@@ -13,10 +13,10 @@ import org.jbehave.scenario.RunnableScenario;
 public class ScenarioRunnerMojo extends AbstractScenarioMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        for (RunnableScenario scenario : scenarios()) {
+        for (Scenario scenario : scenarios()) {
             try {
                 getLog().info("Running scenario " + scenario.getClass().getName());
-                scenario.runScenario();
+                scenario.run();
             } catch (Throwable e) {
                 throw new MojoExecutionException("Failed to run scenario " + scenario.getClass().getName(), e);
             }

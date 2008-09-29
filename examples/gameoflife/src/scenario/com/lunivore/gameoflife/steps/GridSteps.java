@@ -1,7 +1,7 @@
 package com.lunivore.gameoflife.steps;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.util.JUnit4Ensure.ensureThat;
+import static org.jbehave.Ensure.ensureThat;
 
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
