@@ -20,28 +20,34 @@ import org.jbehave.scenario.annotations.When;
  * '$' prefix to pick up parameters.
  * </p>
  * <p>
- * For instance, you could define a method as: 
+ * For instance, you could define a method as:
+ * 
  * <pre>
- * <code lang="java"> 
- * @When("I log in as $username with password: $password") <br/> 
+ * &lt;code lang=&quot;java&quot;&gt; 
+ * &#064;When(&quot;I log in as $username with password: $password&quot;) &lt;br/&gt; 
  * public void logIn(String username, String password) { //... } 
- * </code>
+ * &lt;/code&gt;
  * </pre>
+ * 
  * and this would match the step:
+ * 
  * <pre>
  * When I log in as Liz with password: Pa55word
  * </pre>
+ * 
  * </p>
- * <p>When the step is perfomed, the parameters in the scenario
- * definition will be passed to the class, so in this case the
- * effect will be
+ * <p>
+ * When the step is perfomed, the parameters in the scenario definition will be
+ * passed to the class, so in this case the effect will be
+ * 
  * <pre>
  * mySteps.logIn(&quot;Liz&quot;, &quot;Pa55word&quot;);
  * </pre>
+ * 
  * </p>
  * <p>
- * StepsConfiguration can be used to provide customization to the defaults configuration
- * elements, eg custom parameters converters. 
+ * StepsConfiguration can be used to provide customization to the defaults
+ * configuration elements, eg custom parameters converters.
  * </p>
  */
 public class Steps implements CandidateSteps {
@@ -75,12 +81,13 @@ public class Steps implements CandidateSteps {
         this.configuration = configuration;
     }
 
-    /**
-     * @return all the steps that can be performed by this class
-     */
     public CandidateStep[] getSteps() {
+        return getSteps(this.getClass());
+    }
+
+    public CandidateStep[] getSteps(Class<?> stepsClass) {
         List<CandidateStep> steps = new ArrayList<CandidateStep>();
-        for (Method method : this.getClass().getMethods()) {
+        for (Method method : stepsClass.getMethods()) {
             if (method.isAnnotationPresent(Given.class)) {
                 createCandidateStep(steps, method, method.getAnnotation(Given.class).value());
             }
@@ -94,7 +101,7 @@ public class Steps implements CandidateSteps {
         return steps.toArray(new CandidateStep[steps.size()]);
     }
 
-    private void createCandidateStep(List<CandidateStep> steps, Method method, String stepAsString) {
+    void createCandidateStep(List<CandidateStep> steps, Method method, String stepAsString) {
         steps.add(new CandidateStep(stepAsString, method, this, configuration.getPatternBuilder(), configuration
                 .getMonitor(), configuration.getParameterConverters(), configuration.getStartingWords()));
     }
