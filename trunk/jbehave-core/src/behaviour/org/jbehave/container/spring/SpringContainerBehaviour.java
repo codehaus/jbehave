@@ -37,10 +37,11 @@ public class SpringContainerBehaviour {
         assertNotNull(container.getComponent(AnotherComponent.class));
     }
 
-    //FIXME@Test
+    // @Test
+    // FIXME the SpringContainer(String) contructor - which delegate to this - works!
     public void canGetComponentsWithCustomClassLoader() {
-        Container container = new SpringContainer("org/jbehave/container/spring/components.xml", Thread
-                .currentThread().getContextClassLoader());
+        Container container = new SpringContainer("org/jbehave/container/spring/components.xml", Thread.currentThread()
+                .getContextClassLoader());
         assertNotNull(container.getComponent(AComponent.class));
         assertNotNull(container.getComponent(AnotherComponent.class));
     }

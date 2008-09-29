@@ -40,7 +40,7 @@ public class SpringContainer implements Container {
             return (BeanFactory) reader.getBeanFactory();
         } catch (BeansException e) {
             String message = format("Failed to create container for resource {0}", resource);
-            throw new InvalidContainerException(message);
+            throw new InvalidContainerException(message, e);
         }
     }
 
@@ -50,7 +50,7 @@ public class SpringContainer implements Container {
             return (T) factory.getBean(type.getName());
         } catch (BeansException e) {
             String message = format("No component registered in container of type {0}", type);
-            throw new ComponentNotFoundException(message);
+            throw new ComponentNotFoundException(message, e);
         }
     }
 
@@ -60,7 +60,7 @@ public class SpringContainer implements Container {
             return (T) factory.getBean(key.toString());
         } catch (BeansException e) {
             String message = format("No component registered in container of key {0}", key);
-            throw new ComponentNotFoundException(message);
+            throw new ComponentNotFoundException(message, e);
         }
     }
 

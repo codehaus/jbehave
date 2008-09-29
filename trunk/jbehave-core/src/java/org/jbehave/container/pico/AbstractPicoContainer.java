@@ -46,12 +46,11 @@ public abstract class AbstractPicoContainer implements Container {
             String message = format("No component registered in container of type {0}", type);
             throw new ComponentNotFoundException(message);
         }
-        if (key != null) {
-            T component = null;
+        if (key != null) {            
             // a key has been provided: return the component for that key
             for (ComponentAdapter<T> adapter : adapters) {
                 if (key.equals(adapter.getComponentKey())) {
-                    component = adapter.getComponentInstance(container, type);
+                    T component = adapter.getComponentInstance(container, type);
                     if ( component != null ){
                         return component;
                     }
