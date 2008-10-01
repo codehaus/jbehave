@@ -1,87 +1,55 @@
-package org.jbehave.mojo;
+package org.jbehave.ant;
+
+import static java.util.Arrays.asList;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
+import org.apache.tools.ant.types.CommandlineJava;
+import org.apache.tools.ant.types.Path;
 import org.jbehave.scenario.RunnableScenario;
 import org.jbehave.scenario.ScenarioClassLoader;
 import org.jbehave.scenario.parser.ScenarioClassNameFinder;
 
 /**
- * Abstract mojo that holds all the configuration parameters to specify and load
+ * Abstract task that holds all the configuration parameters to specify and load
  * scenarios.
  * 
  * @author Mauro Talevi
  */
-public abstract class AbstractScenarioMojo extends AbstractMojo {
+public abstract class AbstractScenarioTask extends Task {
 
     private static final String TEST_SCOPE = "test";
 
-    /**
-     * @parameter expression="${project.build.sourceDirectory}"
-     * @required
-     * @readonly
-     */
-    private String sourceDirectory;
+    private String sourceDirectory = "src/main/java";
+
+    private String testSourceDirectory = "src/test/java";
 
     /**
-     * @parameter expression="${project.build.testSourceDirectory}"
-     * @required
-     * @readonly
+     * The scope of the source, either "compile" or "test"
      */
-    private String testSourceDirectory;
-
-    /**
-     * The scope of the mojo classpath, either "compile" or "test"
-     * 
-     * @parameter default-value="compile"
-     */
-    private String scope;
+    private String scope = "compile";
 
     /**
      * Scenario class names, if specified take precedence over the names
      * specificed via the "scenarioIncludes" and "scenarioExcludes" parameters
-     * 
-     * @parameter
      */
-    private List<String> scenarioClassNames;
+    private List<String> scenarioClassNames = new ArrayList<String>();
 
     /**
      * Scenario include filters, relative to the root source directory
      * determined by the scope
-     * 
-     * @parameter
      */
-    private List<String> scenarioIncludes;
+    private List<String> scenarioIncludes = new ArrayList<String>();
 
     /**
      * Scenario exclude filters, relative to the root source directory
      * determined by the scope
-     * 
-     * @parameter
      */
-    private List<String> scenarioExcludes;
-
-    /**
-     * Compile classpath.
-     * 
-     * @parameter expression="${project.compileClasspathElements}"
-     * @required
-     * @readonly
-     */
-    private List<String> compileClasspathElements;
-
-    /**
-     * Test classpath.
-     * 
-     * @parameter expression="${project.testClasspathElements}"
-     * @required
-     * @readonly
-     */
-    private List<String> testClasspathElements;
+    private List<String> scenarioExcludes = new ArrayList<String>();
 
     /**
      * Used to find scenario class names
@@ -89,7 +57,7 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     private ScenarioClassNameFinder finder = new ScenarioClassNameFinder();
 
     /**
-     * Determines if the scope of the mojo classpath is "test"
+     * Determines if the scope of the source is "test"
      * 
      * @return A boolean <code>true</code> if test scoped
      */
@@ -107,7 +75,7 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     private List<String> findScenarioClassNames() {
         List<String> scenarioClassNames = finder.listScenarioClassNames(rootSourceDirectory(), null, scenarioIncludes,
                 scenarioExcludes);
-        getLog().debug("Found scenario class names: " + scenarioClassNames);
+        log("Found scenario class names: " + scenarioClassNames);
         return scenarioClassNames;
     }
 
@@ -123,10 +91,10 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     }
 
     private List<String> classpathElements() {
-        List<String> classpathElements = compileClasspathElements;
-        if (isTestScope()) {
-            classpathElements = testClasspathElements;
-        }
+        CommandlineJava commandLine = new CommandlineJava();
+        Path path = commandLine.createClasspath(getProject()).createPath();
+        List<String> classpathElements = asList(path.list());
+        log("Created classpath with elements "+classpathElements);
         return classpathElements;
     }
 
@@ -136,30 +104,56 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
      * or found using the parameters "scenarioIncludes" and "scenarioExcludes".
      * 
      * @return A List of Scenarios
-     * @throws MojoExecutionException
+     * @throws BuildException
      */
-    protected List<RunnableScenario> scenarios() throws MojoExecutionException {
+    protected List<RunnableScenario> scenarios() throws BuildException {
         List<String> names = scenarioClassNames;
         if (names == null || names.isEmpty()) {
             names = findScenarioClassNames();
         }
         if (names.isEmpty()) {
-            getLog().info("No scenarios to run.");
+            log("No scenarios to run.");
         }
         ScenarioClassLoader classLoader = null;
         try {
             classLoader = createScenarioClassLoader();
         } catch (Exception e) {
-            throw new MojoExecutionException("Failed to create scenario class loader", e);
+            throw new BuildException("Failed to create scenario class loader", e);
         }
         List<RunnableScenario> scenarios = new ArrayList<RunnableScenario>();
         for (String name : names) {
             try {
                 scenarios.add(classLoader.newScenario(name));
             } catch (Exception e) {
-                throw new MojoExecutionException("Failed to instantiate scenario '" + name + "'", e);
+                throw new BuildException("Failed to instantiate scenario '" + name + "'", e);
             }
         }
         return scenarios;
     }
+
+    // Setters used by Task to inject dependencies
+    public void setSourceDirectory(String sourceDirectory) {
+        this.sourceDirectory = sourceDirectory;
+    }
+
+    public void setTestSourceDirectory(String testSourceDirectory) {
+        this.testSourceDirectory = testSourceDirectory;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public void setScenarioClassNames(List<String> scenarioClassNames) {
+        this.scenarioClassNames = scenarioClassNames;
+    }
+
+    public void setScenarioIncludes(List<String> scenarioIncludes) {
+        this.scenarioIncludes = scenarioIncludes;
+    }
+
+    public void setScenarioExcludes(List<String> scenarioExcludes) {
+        this.scenarioExcludes = scenarioExcludes;
+    }
+
 }
