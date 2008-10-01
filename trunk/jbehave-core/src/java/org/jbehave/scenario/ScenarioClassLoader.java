@@ -1,4 +1,4 @@
-package org.jbehave.mojo;
+package org.jbehave.scenario;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -7,10 +7,9 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jbehave.scenario.RunnableScenario;
 
 /**
- * Extends URLClassLoader to instantiate Scenarios.
+ * Extends URLClassLoader to instantiate scenarios.
  * 
  * @author Mauro Talevi
  */
@@ -25,10 +24,10 @@ public class ScenarioClassLoader extends URLClassLoader {
     }
 
     /**
-     * Loads and instantiates a Scenario class
+     * Loads and instantiates a runnable scenario class
      * 
-     * @param scenarioClassName the name of the Scenario class
-     * @return A Scenario instance
+     * @param scenarioClassName the name of the scenario class
+     * @return A RunnableScenario instance
      */
     public RunnableScenario newScenario(String scenarioClassName) {
         try {
@@ -41,7 +40,7 @@ public class ScenarioClassLoader extends URLClassLoader {
                     + "'";
             throw new RuntimeException(message, e);
         } catch (Exception e) {
-            String message = "The Scenario '" + scenarioClassName + "' could not be instantiated with class loader: "
+            String message = "The scenario '" + scenarioClassName + "' could not be instantiated with class loader: "
                     + this;
             throw new RuntimeException(message, e);
         }
