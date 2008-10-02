@@ -1,6 +1,7 @@
 package org.jbehave.ant;
 
 import static java.util.Arrays.asList;
+import static org.apache.tools.ant.Project.MSG_INFO;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public abstract class AbstractScenarioTask extends Task {
         CommandlineJava commandLine = new CommandlineJava();
         Path path = commandLine.createClasspath(getProject()).createPath();
         List<String> classpathElements = asList(path.list());
-        log("Created classpath with elements "+classpathElements);
+        log("Created classpath with elements "+classpathElements, MSG_INFO);
         return classpathElements;
     }
 
@@ -112,7 +113,7 @@ public abstract class AbstractScenarioTask extends Task {
             names = findScenarioClassNames();
         }
         if (names.isEmpty()) {
-            log("No scenarios to run.");
+            log("No scenarios to run.", MSG_INFO);
         }
         ScenarioClassLoader classLoader = null;
         try {

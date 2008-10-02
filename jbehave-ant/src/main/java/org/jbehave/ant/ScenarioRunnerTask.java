@@ -1,5 +1,8 @@
 package org.jbehave.ant;
 
+import static org.apache.tools.ant.Project.MSG_INFO;
+import static org.apache.tools.ant.Project.MSG_WARN;
+
 import org.apache.tools.ant.BuildException;
 import org.jbehave.scenario.RunnableScenario;
 
@@ -9,18 +12,43 @@ import org.jbehave.scenario.RunnableScenario;
  * @author Mauro Talevi
  */
 public class ScenarioRunnerTask extends AbstractScenarioTask {
+    /**
+     * The boolean flag to skip running scenario
+     */
+    private boolean skip = false;
+
+    /**
+     * The boolean flag to ignoreFailure
+     */
+    private boolean ignoreFailure = false;
 
     public void execute() throws BuildException {
+        if (skip) {
+            log("Skipped running scenarios", MSG_INFO);
+            return;
+        }
         for (RunnableScenario scenario : scenarios()) {
             try {
                 log("Running scenario " + scenario.getClass().getName());
                 scenario.runScenario();
             } catch (Throwable e) {
-                throw new BuildException("Failed to run scenario " + scenario.getClass().getName(), e);
+                String message = "Failed to run scenario " + scenario.getClass().getName();
+                if (ignoreFailure) {
+                    log(message, e, MSG_WARN);
+                } else {
+                    throw new BuildException(message, e);
+                }
             }
         }
- 
     }
 
-        
+    // Setters
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+
+    public void setIgnoreFailure(boolean ignoreFailure) {
+        this.ignoreFailure = ignoreFailure;
+    }
+
 }
