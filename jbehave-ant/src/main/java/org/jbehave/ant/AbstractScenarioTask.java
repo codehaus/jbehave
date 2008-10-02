@@ -1,7 +1,7 @@
 package org.jbehave.ant;
 
 import static java.util.Arrays.asList;
-import static org.apache.tools.ant.Project.MSG_INFO;
+import static org.apache.tools.ant.Project.*;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -93,9 +93,9 @@ public abstract class AbstractScenarioTask extends Task {
 
     private List<String> classpathElements() {
         CommandlineJava commandLine = new CommandlineJava();
-        Path path = commandLine.createClasspath(getProject()).createPath();
+        Path path = commandLine.createClasspath(getProject());
         List<String> classpathElements = asList(path.list());
-        log("Created classpath with elements "+classpathElements, MSG_INFO);
+        log("Created classpath with elements " + classpathElements, MSG_DEBUG);
         return classpathElements;
     }
 
@@ -145,16 +145,16 @@ public abstract class AbstractScenarioTask extends Task {
         this.scope = scope;
     }
 
-    public void setScenarioClassNames(List<String> scenarioClassNames) {
-        this.scenarioClassNames = scenarioClassNames;
+    public void setScenarioClassNames(String scenarioClassNamesCSV) {
+        this.scenarioClassNames = asList(scenarioClassNamesCSV.split(","));
     }
 
-    public void setScenarioIncludes(List<String> scenarioIncludes) {
-        this.scenarioIncludes = scenarioIncludes;
+    public void setScenarioIncludes(String scenarioIncludesCSV) {
+        this.scenarioIncludes = asList(scenarioIncludesCSV.split(","));
     }
 
-    public void setScenarioExcludes(List<String> scenarioExcludes) {
-        this.scenarioExcludes = scenarioExcludes;
+    public void setScenarioExcludes(String scenarioExcludesCSV) {
+        this.scenarioExcludes = asList(scenarioExcludesCSV.split(","));
     }
 
 }
