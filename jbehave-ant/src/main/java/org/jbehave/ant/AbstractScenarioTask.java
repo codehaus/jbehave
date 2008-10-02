@@ -1,7 +1,7 @@
 package org.jbehave.ant;
 
 import static java.util.Arrays.asList;
-import static org.apache.tools.ant.Project.*;
+import static org.apache.tools.ant.Project.MSG_INFO;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -9,8 +9,6 @@ import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.apache.tools.ant.types.CommandlineJava;
-import org.apache.tools.ant.types.Path;
 import org.jbehave.scenario.RunnableScenario;
 import org.jbehave.scenario.ScenarioClassLoader;
 import org.jbehave.scenario.parser.ScenarioClassNameFinder;
@@ -58,16 +56,16 @@ public abstract class AbstractScenarioTask extends Task {
     private ScenarioClassNameFinder finder = new ScenarioClassNameFinder();
 
     /**
-     * Determines if the scope of the source is "test"
+     * Determines if the scope of the source directory is "test"
      * 
      * @return A boolean <code>true</code> if test scoped
      */
-    private boolean isTestScope() {
+    private boolean isSourceTestScope() {
         return TEST_SCOPE.equals(scope);
     }
 
     private String rootSourceDirectory() {
-        if (isTestScope()) {
+        if (isSourceTestScope()) {
             return testSourceDirectory;
         }
         return sourceDirectory;
@@ -92,10 +90,7 @@ public abstract class AbstractScenarioTask extends Task {
     }
 
     private List<String> classpathElements() {
-        CommandlineJava commandLine = new CommandlineJava();
-        Path path = commandLine.createClasspath(getProject());
-        List<String> classpathElements = asList(path.list());
-        log("Created classpath with elements " + classpathElements, MSG_DEBUG);
+        List<String> classpathElements = asList();
         return classpathElements;
     }
 
