@@ -66,22 +66,13 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     private List<String> scenarioExcludes;
 
     /**
-     * Compile classpath.
+     * Runtime classpath
      * 
-     * @parameter expression="${project.compileClasspathElements}"
+     * @parameter expression="${project.runtimeClasspathElements}"
      * @required
      * @readonly
      */
-    private List<String> compileClasspathElements;
-
-    /**
-     * Test classpath.
-     * 
-     * @parameter expression="${project.testClasspathElements}"
-     * @required
-     * @readonly
-     */
-    private List<String> testClasspathElements;
+    private List<String> runtimeClasspathElements;
 
     /**
      * Used to find scenario class names
@@ -89,16 +80,16 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     private ScenarioClassNameFinder finder = new ScenarioClassNameFinder();
 
     /**
-     * Determines if the scope of the mojo classpath is "test"
+     * Determines if the scope of the source directory is "test"
      * 
      * @return A boolean <code>true</code> if test scoped
      */
-    private boolean isTestScope() {
+    private boolean isSourceTestScope() {
         return TEST_SCOPE.equals(scope);
     }
 
     private String rootSourceDirectory() {
-        if (isTestScope()) {
+        if (isSourceTestScope()) {
             return testSourceDirectory;
         }
         return sourceDirectory;
@@ -123,10 +114,7 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     }
 
     private List<String> classpathElements() {
-        List<String> classpathElements = compileClasspathElements;
-        if (isTestScope()) {
-            classpathElements = testClasspathElements;
-        }
+        List<String> classpathElements = runtimeClasspathElements;
         return classpathElements;
     }
 
