@@ -18,6 +18,7 @@ public class ScenarioClassNameFinder {
     private static final String EMPTY = "";
     private static final String DOT_REGEX = "\\.";
     private static final String SLASH = "/";
+	private static final String BACKSLASH = "\\\\";
 
     private DirectoryScanner scanner = new DirectoryScanner();
 
@@ -46,7 +47,8 @@ public class ScenarioClassNameFinder {
         int javaPath = path.indexOf(JAVA);
         if ( javaPath != -1 ){
             String className = path.substring(0, javaPath);
-            return className.replaceAll(SLASH, DOT_REGEX);            
+            className = className.replaceAll(SLASH, DOT_REGEX); 
+            return className.replaceAll(BACKSLASH, DOT_REGEX);            
         }
         throw new InvalidScenarioClassPathException("Invalid scenario class path "+path);
     }
