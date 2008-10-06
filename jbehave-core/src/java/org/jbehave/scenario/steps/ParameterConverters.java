@@ -7,7 +7,6 @@ import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,6 +27,10 @@ public class ParameterConverters {
         this(new SilentStepMonitor());
     }
 
+    public ParameterConverters(ParameterConverter... customConverters) {
+        this(new SilentStepMonitor(), customConverters);
+    }
+    
     public ParameterConverters(StepMonitor monitor, ParameterConverter... customConverters) {
         this.monitor = monitor;
         this.converters.addAll(asList(customConverters));
@@ -68,9 +71,9 @@ public class ParameterConverters {
 
     }
 
-    private static class NumberConverter implements ParameterConverter {
+    public static class NumberConverter implements ParameterConverter {
     	@SuppressWarnings("unchecked")
-        private static List<Class> acceptedClasses = Arrays.asList(new Class[] {
+        private static List<Class> acceptedClasses = asList(new Class[] {
     		Integer.class, int.class, Long.class, long.class,
     		Double.class, double.class, Float.class, float.class
     	});
@@ -97,9 +100,19 @@ public class ParameterConverters {
 
     }
 
-    private static class NumberListConverter implements ParameterConverter {
+    public static class NumberListConverter implements ParameterConverter {
 
-        public boolean accept(Type type) {
+    	private NumberFormat numberFormat;    	
+    	
+        public NumberListConverter() {
+			this(NumberFormat.getInstance());
+		}
+
+		public NumberListConverter(NumberFormat numberFormat) {
+			this.numberFormat = numberFormat;
+		}
+
+		public boolean accept(Type type) {
             if (type instanceof ParameterizedType) {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type rawType = parameterizedType.getRawType();
@@ -112,7 +125,6 @@ public class ParameterConverters {
 
         public Object convertValue(String value, Type type) {
             List<String> values = trim(asList(value.split(COMMA)));
-            NumberFormat numberFormat = NumberFormat.getInstance();
             List<Number> numbers = new ArrayList<Number>();
             for (String numberValue : values) {
                 try {
@@ -126,7 +138,7 @@ public class ParameterConverters {
 
     }
 
-    private static class StringListConverter implements ParameterConverter {
+    public static class StringListConverter implements ParameterConverter {
 
         public boolean accept(Type type) {
             if (type instanceof ParameterizedType) {
