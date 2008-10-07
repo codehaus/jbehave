@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss version='2.0'>
+  <channel>
+    <title>jBehave News</title>
+    <link>http://www.jbehave.org/</link>
+    <description>JBehave is a framework for Behaviour Driven Development</description>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 09 May 2006 17:12:46 GMT</lastBuildDate>
+    <image>
+      <url>http://www.jbehave.org/logo.gif</url>
+      <title>jBehave</title>
+      <link>http://www.jbehave.org/</link>
+    </image>
+    <item>
+      <title>jBehave Website updated</title>
+      <link>http://www.jbehave.org/</link>
+      <description>jBehave website has been through a face-lifting to update the document</description>
+      <category>Documentation</category>
+      <pubDate>Sat, 27 May 2006 16:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Presentation: Behaviour Driven Development</title>
+      <link>http://www.example.com</link>
+      <description>Behaviour Driven Development presentation somewhere</description>
+      <category>Event</category>
+      <pubDate>Wed, 05 Apr 2006 16:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>IDEA and Eclipse Plugin</title>
+      <link>http://www.jmock.org/plugins.html</link>
+      <description>IDEA and Eclipse Plugins for jBehave created</description>
+      <category>Development</category>
+      <pubDate>Sat, 08 Apr 2006 16:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>New Members Added</title>
+      <description>Two new memebers added to jBehave team</description>
+      <category>Development</category>
+      <pubDate>Sat, 01 Apr 2006 16:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

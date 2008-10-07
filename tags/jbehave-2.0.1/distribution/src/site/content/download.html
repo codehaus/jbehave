@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Download</title>
+</head>
+
+<body>
+
+<h2>Stable releases</h2>
+
+<p>The stable releases of jBehave can be found on the <a href="http://repository.codehaus.org/org/jbehave/">Codehaus Repository</a>:
+    <ul>
+      <li><a href="http://repository.codehaus.org/org/jbehave/jbehave-distribution/2.0.1/jbehave-distribution-2.0.1-bin.zip">2.0.1 bin distribution</a> (xx Aug 2008)</li>
+      <li><a href="http://repository.codehaus.org/org/jbehave/jbehave-distribution/2.0.1/jbehave-distribution-2.0.1-scr.zip">2.0.1 src distribution</a> (xx Aug 2008)</li>
+    </ul>
+</p>
+
+<h2 id="snapshot">Latest Snapshot</h2>
+
+<p>The snapshot builds of jBehave can be found on the <a
+  href="http://snapshots.repository.codehaus.org/org/jbehave/jbehave-distribution/">Codehaus Snapshots Repository</a>. 
+  Be sure to choose the snapshot with the latest 2.x version and the filename with the latest timestamp.</p>
+
+<h2 id="maven">Using Maven Artifacts</h2>
+
+<p>If you use Maven as the build system (or one that is compatible with the Maven Repository, such as Ivy), you can
+declare jBehave dependency as <textarea class="xml:nogutter:nocontrols" name="code">
+  <dependency> 
+    <groupId>org.jbehave</groupId>
+    <artifactId>jbehave-core</artifactId>
+    <version>[version]</version>
+  </dependency>
+    </textarea> specifying the correct version.</p>
+
+<p>You can also run scenarios using the jBehave Maven Plugin:
+<textarea class="xml:nogutter:nocontrols" name="code">
+   <plugin>
+        <groupId>org.jbehave</groupId>
+        <artifactId>jbehave-maven-plugin</artifactId>
+        <version>[version]</version>
+        <executions>
+          <execution>
+            <id>run-scenarios-listed</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <scenarioClassNames>
+                <scenarioClassName>org.jbehave.examples.trader.scenarios.StatusAlertCanBeActivated</scenarioClassName>
+                <scenarioClassName>org.jbehave.examples.trader.scenarios.StatusAlertIsNeverActivated</scenarioClassName>
+              </scenarioClassNames>
+            </configuration>
+            <goals>
+              <goal>run-scenarios</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>run-scenarios-found</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <scenarioIncludes>
+                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
+              </scenarioIncludes>
+              <scenarioExcludes>
+                <scenarioExclude>**/*Steps.java</scenarioExclude>
+              </scenarioExcludes>
+            </configuration>
+            <goals>
+              <goal>run-scenarios</goal>
+            </goals>
+          </execution>
+        </executions>
+    </plugin>
+</textarea> specifying the correct [version].</p>
+
+<div class="clear">
+<hr />
+</div>
+
+</body>
+</html>
