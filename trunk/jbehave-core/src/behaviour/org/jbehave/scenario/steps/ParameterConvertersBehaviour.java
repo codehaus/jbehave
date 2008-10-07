@@ -5,6 +5,7 @@ import static org.jbehave.util.JUnit4Ensure.ensureThat;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -42,14 +43,14 @@ public class ParameterConvertersBehaviour {
 	@Test
 	public void shouldConvertCommaSeparatedValuesToListsOfNumbersWithCustomFormat()
 			throws ParseException, IntrospectionException {
-		NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		NumberFormat numberFormat = new DecimalFormat("#,####");
 		ParameterConverters converters = new ParameterConverters(
-				new NumberListConverter(numberFormat));
+				new NumberListConverter(numberFormat, " "));
 		Type type = SomeSteps.methodFor("aMethodWithListOfNumbers")
 				.getGenericParameterTypes()[0];
 		List<Number> list = (List<Number>) converters.convert(
-				"3, 0.5, 6.1f, 8.00", type);
-		ensureThat(list.get(0), equalTo(numberFormat.parse("3")));
+				"3,000 0.5 6.1f 8.00", type);
+		ensureThat(list.get(0), equalTo(numberFormat.parse("3,000")));
 		ensureThat(list.get(1), equalTo(numberFormat.parse("0.5")));
 		ensureThat(list.get(2), equalTo(numberFormat.parse("6.1f")));
 		ensureThat(list.get(3), equalTo(numberFormat.parse("8.00")));
