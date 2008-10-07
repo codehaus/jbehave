@@ -1,4 +1,4 @@
-package org.jbehave.scenario;
+package org.jbehave.mojo;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -7,16 +7,17 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jbehave.scenario.Scenario;
 
 /**
- * Extends URLClassLoader to instantiate scenarios.
+ * Extends URLClassLoader to instantiate Scenarios.
  * 
  * @author Mauro Talevi
  */
 public class ScenarioClassLoader extends URLClassLoader {
 
     public ScenarioClassLoader(List<String> classpathElements) throws MalformedURLException {
-        super(classpathURLs(classpathElements), RunnableScenario.class.getClassLoader());
+        super(classpathURLs(classpathElements), Scenario.class.getClassLoader());
     }
 
     public ScenarioClassLoader(List<String> classpathElements, ClassLoader parent) throws MalformedURLException {
@@ -24,24 +25,23 @@ public class ScenarioClassLoader extends URLClassLoader {
     }
 
     /**
-     * Loads and instantiates a runnable scenario class
+     * Loads and instantiates a Scenario class
      * 
-     * @param scenarioClassName the name of the scenario class
-     * @return A RunnableScenario instance
+     * @param scenarioClassName the name of the Scenario class
+     * @return A Scenario instance
      */
-    public RunnableScenario newScenario(String scenarioClassName) {
+    public Scenario newScenario(String scenarioClassName) {
         try {
-            RunnableScenario scenario = (RunnableScenario) loadClass(scenarioClassName, true).getConstructor(ClassLoader.class)
-                    .newInstance(this);
+            Scenario scenario = (Scenario) loadClass(scenarioClassName).getConstructor(ClassLoader.class).newInstance(
+                    this);
             Thread.currentThread().setContextClassLoader(this);
             return scenario;
         } catch (ClassCastException e) {
-            String message = "The scenario '" + scenarioClassName + "' must be of type '" + RunnableScenario.class.getName()
-                    + "'";
+            String message = "The scenario '" + scenarioClassName + "' must be of type '" + Scenario.class.getName() +"'";
             throw new RuntimeException(message, e);
         } catch (Exception e) {
-            String message = "The scenario '" + scenarioClassName + "' could not be instantiated with class loader: "
-                    + this;
+            String message = "The Scenario '" + scenarioClassName
+                    + "' could not be instantiated with classpath elements: " + asShortPaths(getURLs());
             throw new RuntimeException(message, e);
         }
     }
@@ -77,8 +77,4 @@ public class ScenarioClassLoader extends URLClassLoader {
         return urls.toArray(new URL[urls.size()]);
     }
 
-    @Override
-    public String toString() {
-        return "[" + ScenarioClassLoader.class.getName() + " urls=" + asShortPaths(getURLs()) + "]";
-    }
 }

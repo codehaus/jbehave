@@ -2,7 +2,7 @@ package org.jbehave.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.jbehave.scenario.RunnableScenario;
+import org.jbehave.scenario.Scenario;
 
 /**
  * Mojo to run scenarios
@@ -12,36 +12,13 @@ import org.jbehave.scenario.RunnableScenario;
  */
 public class ScenarioRunnerMojo extends AbstractScenarioMojo {
 
-    /**
-     * The boolean flag to skip running scenario
-     * 
-     * @parameter default-value="false"
-     */
-    private boolean skip;
-    
-    /**
-     * The boolean flag to ignoreFailure
-     * 
-     * @parameter default-value="false"
-     */
-    private boolean ignoreFailure;
-    
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if ( skip ){
-            getLog().info("Skipped running scenarios");
-            return;
-        }
-        for (RunnableScenario scenario : scenarios()) {
+        for (Scenario scenario : scenarios()) {
             try {
                 getLog().info("Running scenario " + scenario.getClass().getName());
-                scenario.runScenario();
+                scenario.run();
             } catch (Throwable e) {
-                String message = "Failed to run scenario " + scenario.getClass().getName();
-                if ( ignoreFailure ){
-                    getLog().warn(message, e);
-                } else {
-                    throw new MojoExecutionException(message, e);
-                }
+                throw new MojoExecutionException("Failed to run scenario " + scenario.getClass().getName(), e);
             }
         }
     }

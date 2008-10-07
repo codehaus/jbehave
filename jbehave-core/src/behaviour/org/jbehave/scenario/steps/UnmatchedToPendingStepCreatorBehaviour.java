@@ -1,7 +1,7 @@
 package org.jbehave.scenario.steps;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.util.JUnit4Ensure.ensureThat;
+import static org.jbehave.Ensure.ensureThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.stub;
 
@@ -16,7 +16,7 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
         
         CandidateStep candidate = mock(CandidateStep.class);
-        CandidateSteps steps = mock(Steps.class);
+        Steps steps = mock(Steps.class);
         Step executableStep = mock(Step.class);
         
         stub(candidate.matches("my step")).toReturn(true);
@@ -37,7 +37,7 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
         
         CandidateStep candidate = mock(CandidateStep.class);
-        CandidateSteps steps = mock(Steps.class);
+        Steps steps = mock(Steps.class);
         Step executableStep = mock(Step.class);
         
         stub(candidate.matches("my step")).toReturn(false);

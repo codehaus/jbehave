@@ -1,6 +1,6 @@
 package com.lunivore.noughtsandcrosses.game;
 
-import static org.jbehave.util.JUnit4Ensure.ensureThat;
+import static org.jbehave.Ensure.ensureThat;
 
 import java.util.HashMap;
 import java.util.Map;

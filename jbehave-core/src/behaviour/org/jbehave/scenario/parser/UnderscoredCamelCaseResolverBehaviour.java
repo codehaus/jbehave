@@ -1,9 +1,9 @@
 package org.jbehave.scenario.parser;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.util.JUnit4Ensure.ensureThat;
+import static org.jbehave.Ensure.ensureThat;
 
-import org.jbehave.scenario.JUnitScenario;
+import org.jbehave.scenario.Scenario;
 import org.junit.Test;
 
 public class UnderscoredCamelCaseResolverBehaviour {
@@ -24,11 +24,11 @@ public class UnderscoredCamelCaseResolverBehaviour {
 
     }
     
-    static class CamelCaseScenario extends JUnitScenario {
+    static class CamelCaseScenario extends Scenario {
         
     }
 
-    static class CamelCase extends JUnitScenario {
+    static class CamelCase extends Scenario {
         
     }
 }
