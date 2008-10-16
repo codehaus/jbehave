@@ -10,13 +10,18 @@ import org.jbehave.scenario.parser.StepPatternBuilder;
  * </p>
  */
 public class StepsConfiguration {
+
+    public static final String[] DEFAULT_STARTING_WORDS = new String[] {
+        "Given", "When", "Then", "And"
+    };
+    
     private StepPatternBuilder patternBuilder;
     private StepMonitor monitor;
     private ParameterConverters parameterConverters;
     private String[] startingWords;
 
     public StepsConfiguration() {
-        this("Given", "When", "Then", "And");
+        this(DEFAULT_STARTING_WORDS);
     }
 
     public StepsConfiguration(String... startingWords) {
@@ -29,6 +34,10 @@ public class StepsConfiguration {
         this.monitor = monitor;
         this.parameterConverters = parameterConverters;
         this.startingWords = startingWords;
+    }
+
+    public StepsConfiguration(ParameterConverters converters) {
+        this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(), converters, DEFAULT_STARTING_WORDS);
     }
 
     public StepPatternBuilder getPatternBuilder() {

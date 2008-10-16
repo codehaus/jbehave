@@ -14,9 +14,9 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.steps.Steps;
-import org.lunivore.tyburn.WindowControl;
 
 import com.lunivore.noughtsandcrosses.NoughtsAndCrosses;
+import com.lunivore.noughtsandcrosses.util.OAndXUniverse;
 import com.lunivore.noughtsandcrosses.view.ComponentNames;
 
 public class GridSteps extends Steps {
@@ -24,11 +24,18 @@ public class GridSteps extends Steps {
     public static String ROWS = "abc";
     public static String COLUMNS = "123";
     protected static final String NL = System.getProperty("line.separator");
-    protected WindowControl windowControl;
+	private final OAndXUniverse universe;
+
+    public GridSteps() {
+        this(new OAndXUniverse());
+    }
+    
+    public GridSteps(OAndXUniverse universe) {
+		this.universe = universe;
+    }
 
     @Given("the game is running")
     public void givenTheGameIsRunning() {
-        windowControl = new WindowControl(ComponentNames.NOUGHTSANDCROSSES);
         new NoughtsAndCrosses();
     }
     
@@ -44,19 +51,19 @@ public class GridSteps extends Steps {
     
     @Then("the message should read \"$message\"")
     public void thenTheMessageShouldRead(String message) throws Exception {
-        JLabel messageLabel = (JLabel) windowControl.findComponent(ComponentNames.MESSAGE);
+        JLabel messageLabel = (JLabel) universe.getControl().findComponent(ComponentNames.MESSAGE);
         ensureThat(messageLabel.getText(), equalTo(message));
     }
 
     @Then("the grid should look like $grid")
     public void thenTheGridShouldLookLike(String grid) throws Exception {
-        Component gridPanel = windowControl.findComponent(ComponentNames.GRID);
+        Component gridPanel = universe.getControl().findComponent(ComponentNames.GRID);
         ensureThat(gridPanel.toString(), equalTo(grid));
     }
 
     @When("the player clicks $space")
     public void whenPlayerClicksInSpace(String space) throws Exception {
-        windowControl.clickButton(space);
+    	universe.getControl().clickButton(space);
     }
     
     private void performMoves(List<String> oTurns, List<String> xTurns) throws Exception {

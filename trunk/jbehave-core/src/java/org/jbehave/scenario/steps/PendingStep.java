@@ -23,4 +23,8 @@ public class PendingStep implements Step {
         return StepResult.pending(getDescription());
     }
 
+    @Override
+    public String toString() {
+    	return getClass().getSimpleName() + "[" + step + "]";
+    }
 }

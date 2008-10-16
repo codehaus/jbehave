@@ -1,12 +1,20 @@
 package org.jbehave.scenario.steps;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jbehave.scenario.annotations.AfterScenario;
+import org.jbehave.scenario.annotations.AfterSuccessfulScenario;
+import org.jbehave.scenario.annotations.AfterUnsuccessfulScenario;
+import org.jbehave.scenario.annotations.BeforeScenario;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.errors.BeforeOrAfterScenarioException;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 
 /**
  * <p>
@@ -51,7 +59,7 @@ import org.jbehave.scenario.annotations.When;
  * </p>
  */
 public class Steps implements CandidateSteps {
-
+	
     private final StepsConfiguration configuration;
 
     /**
@@ -70,6 +78,15 @@ public class Steps implements CandidateSteps {
      */
     public Steps(String... startingWords) {
         this(new StepsConfiguration(startingWords));
+    }
+    
+    /**
+     * Creates Steps with all default dependencies except for custom parameter converters.
+     * 
+     * @param converters a set of converters which can change strings into other objects to pass into executable steps
+     */
+    public Steps(ParameterConverters converters) {
+    	this(new StepsConfiguration(converters));
     }
 
     /**
@@ -105,4 +122,68 @@ public class Steps implements CandidateSteps {
         steps.add(new CandidateStep(stepAsString, method, this, configuration.getPatternBuilder(), configuration
                 .getMonitor(), configuration.getParameterConverters(), configuration.getStartingWords()));
     }
+
+	public List<Step> runBeforeScenario() {
+		return stepsHaving(BeforeScenario.class, new OkayToRun(), new OkayToRun());
+	}
+	
+	public List<Step> runAfterScenario() {
+		List<Step> steps = new ArrayList<Step>();
+		steps.addAll(stepsHaving(AfterScenario.class, new OkayToRun(), new OkayToRun()));
+		steps.addAll(stepsHaving(AfterSuccessfulScenario.class, new OkayToRun(), new DoNotRun()));
+		steps.addAll(stepsHaving(AfterUnsuccessfulScenario.class, new DoNotRun(), new OkayToRun()));
+		return steps;
+	}
+
+	private List<Step> stepsHaving(final Class<? extends Annotation> annotation, final StepPart forSuccessfulScenarios, final StepPart forUnsuccessfulScenarios) {
+		ArrayList<Step> steps = new ArrayList<Step>();
+        for (final Method method : this.getClass().getMethods()) {
+			if (method.isAnnotationPresent(annotation)) {
+				steps.add(new Step() {
+
+					public StepResult doNotPerform() {
+						return forUnsuccessfulScenarios.run(annotation, method);
+					}
+
+					public StepResult perform() {
+								return forSuccessfulScenarios.run(annotation, method);
+					}
+					
+				});
+			}
+        }
+        return steps;
+	}
+	
+	private class OkayToRun implements StepPart {
+		public StepResult run(final Class<? extends Annotation> annotation, Method method) {
+			try {
+				method.invoke(Steps.this);
+			} catch (InvocationTargetException e) {
+				if (e.getCause() != null) { throw new BeforeOrAfterScenarioException(annotation, method, e.getCause()); }
+			} catch (Throwable t) {
+				throw new RuntimeException(t);
+			}
+			return new SilentStepResult();
+		}
+	}
+	
+	private class DoNotRun implements StepPart {
+		public StepResult run(Class<? extends Annotation> annotation, Method method) {
+			return new SilentStepResult();
+		}
+	}
+	
+	private interface StepPart {
+		StepResult run(Class<? extends Annotation> annotation, Method method);
+	}
+	
+    public class SilentStepResult extends StepResult {
+    	public SilentStepResult() {
+			super("");
+		}
+    	
+		@Override
+		public void describeTo(ScenarioReporter reporter) {}
+	}
 }
