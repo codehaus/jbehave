@@ -96,20 +96,33 @@ public class PatternScenarioParser implements ScenarioParser {
     }
 
     private String concatenateWithOr(String given, String when, String then, String[] others) {
+    	return concatenateWithOr(false, given, when, then, others);
+    }
+    
+    private String concatenateWithSpaceOr(String given, String when, String then, String[] others) {
+        return concatenateWithOr(true, given, when, then, others);
+    }
+    
+    private String concatenateWithOr(boolean usingSpace, String given, String when, String then, String[] others) {
         StringBuilder builder = new StringBuilder();
-        builder.append(given).append("|");
-        builder.append(when).append("|");
-        builder.append(then).append("|");
-        return builder.append(concatenateWithOr(others)).toString();
+        builder.append(given).append(usingSpace ? "\\s|" : "|");
+        builder.append(when).append(usingSpace ? "\\s|" : "|");
+        builder.append(then).append(usingSpace ? "\\s|" : "|");
+        builder.append(usingSpace ? concatenateWithSpaceOr(others) : concatenateWithOr(others));
+        return builder.toString();
     }
 
     private String concatenateWithOr(String... keywords) {
-        return concatenateWithOr(new StringBuilder(), keywords);
+        return concatenateWithOr(false, new StringBuilder(), keywords);
+    }
+    
+    private String concatenateWithSpaceOr(String... keywords) {
+    	return concatenateWithOr(true, new StringBuilder(), keywords);
     }
 
-    private String concatenateWithOr(StringBuilder builder, String[] keywords) {
+    private String concatenateWithOr(boolean usingSpace, StringBuilder builder, String[] keywords) {
         for (String other : keywords) {
-            builder.append(other).append("|");
+            builder.append(other).append(usingSpace ? "\\s|" : "|");
         }
         String result = builder.toString();
         return result.substring(0, result.length() - 1); // chop off the last |
@@ -118,7 +131,9 @@ public class PatternScenarioParser implements ScenarioParser {
     private Pattern patternToPullOutSteps() {
         String givenWhenThen = concatenateWithOr(configuration.keywords().given(), configuration.keywords().when(),
                 configuration.keywords().then(), configuration.keywords().others());
-        return Pattern.compile("((" + givenWhenThen + ") (.|\\s)*?)\\s*(\\Z|" + givenWhenThen + "|"
+        String givenWhenThenSpaced = concatenateWithSpaceOr(configuration.keywords().given(), configuration.keywords().when(),
+        		configuration.keywords().then(), configuration.keywords().others());
+        return Pattern.compile("((" + givenWhenThen + ") (.|\\s)*?)\\s*(\\Z|" + givenWhenThenSpaced + "|"
                 + configuration.keywords().scenario() + ":)");
     }
 }

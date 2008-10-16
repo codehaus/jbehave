@@ -1,7 +1,7 @@
 package org.jbehave.scenario.parser;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.util.JUnit4Ensure.ensureThat;
+import static org.jbehave.Ensure.ensureThat;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +28,22 @@ public class PatternScenarioParserBehaviour {
         ensureThat(steps.get(1), equalTo("When I parse it"));
         ensureThat(steps.get(2), equalTo("Then I should get steps"));
     }
+    
+    @Test
+    public void shouldExtractGivensWhensAndThensFromSimpleScenariosContainingKeywordsAsPartOfTheContent() {
+        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
+        StoryDefinition story = parser.defineStoryFrom(
+                "Given a scenario Givenly" + NL + 
+                "When I parse it to Whenever" + NL +
+                "And I parse it to Anderson" + NL +
+                "Then I should get steps Thenact");
+        
+        List<String> steps = story.getScenarios().get(0).getSteps();
+        ensureThat(steps.get(0), equalTo("Given a scenario Givenly"));
+        ensureThat(steps.get(1), equalTo("When I parse it to Whenever"));
+        ensureThat(steps.get(2), equalTo("And I parse it to Anderson"));
+        ensureThat(steps.get(3), equalTo("Then I should get steps Thenact"));
+    }    
     
     @Test
     public void shouldExtractGivensWhensAndThensFromMultilineScenarios() {
