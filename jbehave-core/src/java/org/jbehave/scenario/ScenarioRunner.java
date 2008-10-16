@@ -37,18 +37,22 @@ public class ScenarioRunner {
         
         reporter.beforeStory(story.getBlurb());
         for (ScenarioDefinition scenario : story.getScenarios()) {
-            Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, candidateSteps);
-            reporter.beforeScenario(scenario.getTitle());
-            state = new FineSoFar();
-            for (Step step : steps) {
-                state.run(step);
-            }
-            reporter.afterScenario();
-            
+            runScenario(configuration, scenario, candidateSteps);
         }
         reporter.afterStory();
         currentStrategy.handleError(throwable);
-    };
+    }
+
+	private void runScenario(Configuration configuration,
+			ScenarioDefinition scenario, CandidateSteps... candidateSteps) {
+		Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, candidateSteps);
+		reporter.beforeScenario(scenario.getTitle());
+		state = new FineSoFar();
+		for (Step step : steps) {
+		    state.run(step);
+		}
+		reporter.afterScenario();
+	};
 
     private class SomethingHappened implements State {
         public void run(Step step) {

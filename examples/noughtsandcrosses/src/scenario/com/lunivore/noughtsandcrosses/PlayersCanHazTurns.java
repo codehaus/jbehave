@@ -7,7 +7,9 @@ import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 
+import com.lunivore.noughtsandcrosses.steps.BeforeAndAfterSteps;
 import com.lunivore.noughtsandcrosses.steps.LolCatzSteps;
+import com.lunivore.noughtsandcrosses.util.OAndXUniverse;
 
 /**
  * Checks that we can support scenarios written in other languages,
@@ -20,6 +22,10 @@ public class PlayersCanHazTurns extends JUnitScenario {
     }
 
     public PlayersCanHazTurns(final ClassLoader classLoader) {
+    	this(classLoader, new OAndXUniverse());
+    }
+    
+    public PlayersCanHazTurns(final ClassLoader classLoader, OAndXUniverse universe) {
         super(new MostUsefulConfiguration() {
             public KeyWords keywords() {
                 return new KeyWords("I can haz", "Gief", "Wen", "Den", "And");
@@ -28,7 +34,7 @@ public class PlayersCanHazTurns extends JUnitScenario {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
                         classLoader);
             }
-        }, new LolCatzSteps());
+        }, new LolCatzSteps(universe), new BeforeAndAfterSteps(universe));
     }
     
 }

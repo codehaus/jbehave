@@ -204,7 +204,6 @@ public class ScenarioRunnerBehaviour {
         
         verify(strategy).handleError(pendingResult.getThrowable());
     }
-
     
     private Configuration configurationWithPendingStrategy(StepCreator creator,
             ScenarioReporter reporter, PendingErrorStrategy strategy) {
