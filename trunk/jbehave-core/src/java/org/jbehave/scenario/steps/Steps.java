@@ -126,7 +126,8 @@ public class Steps implements CandidateSteps {
 	public List<Step> runBeforeScenario() {
 		return stepsHaving(BeforeScenario.class, new OkayToRun(), new OkayToRun());
 	}
-	
+
+	//TODO Refactor to replace AfterSuccessfulScenario/AfterUnsuccessfulScenario -> AfterScenario(successful="true/false")
 	public List<Step> runAfterScenario() {
 		List<Step> steps = new ArrayList<Step>();
 		steps.addAll(stepsHaving(AfterScenario.class, new OkayToRun(), new OkayToRun()));
@@ -135,18 +136,18 @@ public class Steps implements CandidateSteps {
 		return steps;
 	}
 
-	private List<Step> stepsHaving(final Class<? extends Annotation> annotation, final StepPart forSuccessfulScenarios, final StepPart forUnsuccessfulScenarios) {
+	private List<Step> stepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forSuccessfulScenarios, final StepPart forUnsuccessfulScenarios) {
 		ArrayList<Step> steps = new ArrayList<Step>();
         for (final Method method : this.getClass().getMethods()) {
-			if (method.isAnnotationPresent(annotation)) {
+			if (method.isAnnotationPresent(annotationClass)) {				
 				steps.add(new Step() {
 
 					public StepResult doNotPerform() {
-						return forUnsuccessfulScenarios.run(annotation, method);
+						return forUnsuccessfulScenarios.run(annotationClass, method);
 					}
 
 					public StepResult perform() {
-								return forSuccessfulScenarios.run(annotation, method);
+						return forSuccessfulScenarios.run(annotationClass, method);
 					}
 					
 				});
