@@ -9,4 +9,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface AfterScenario {
 
+	/**
+	 * When set it signals that the annotated method should be invoked only upon scenario outcome, successful or not
+	 * 
+	 * @return A boolean, true if method should be invoked only upon successful scenario
+	 */
+	boolean successful() default true;
+
 }
