@@ -1,5 +1,7 @@
 package org.jbehave.scenario.annotations;
 
+import static org.jbehave.scenario.annotations.AfterScenario.Outcome.ANY;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,11 +11,13 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface AfterScenario {
 
+	enum Outcome { ANY, SUCCESS, FAILURE }
+	
 	/**
-	 * When set it signals that the annotated method should be invoked only upon scenario outcome, successful or not
+	 * Signals that the annotated method should be invoked only upon given outcome
 	 * 
-	 * @return A boolean, true if method should be invoked only upon successful scenario
+	 * @return An Outcome upon which the method should be invoked 
 	 */
-	boolean successful() default true;
+	Outcome uponOutcome() default ANY;
 
 }

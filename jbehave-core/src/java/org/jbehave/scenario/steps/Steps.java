@@ -1,5 +1,9 @@
 package org.jbehave.scenario.steps;
 
+import static org.jbehave.scenario.annotations.AfterScenario.Outcome.ANY;
+import static org.jbehave.scenario.annotations.AfterScenario.Outcome.FAILURE;
+import static org.jbehave.scenario.annotations.AfterScenario.Outcome.SUCCESS;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -7,12 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jbehave.scenario.annotations.AfterScenario;
-import org.jbehave.scenario.annotations.AfterSuccessfulScenario;
-import org.jbehave.scenario.annotations.AfterUnsuccessfulScenario;
 import org.jbehave.scenario.annotations.BeforeScenario;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.annotations.AfterScenario.Outcome;
 import org.jbehave.scenario.errors.BeforeOrAfterScenarioException;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 
@@ -124,33 +127,55 @@ public class Steps implements CandidateSteps {
     }
 
 	public List<Step> runBeforeScenario() {
-		return stepsHaving(BeforeScenario.class, new OkayToRun(), new OkayToRun());
+		return stepsHaving(BeforeScenario.class, new OkayToRun());
 	}
 
-	//TODO Refactor to replace AfterSuccessfulScenario/AfterUnsuccessfulScenario -> AfterScenario(successful="true/false")
 	public List<Step> runAfterScenario() {
 		List<Step> steps = new ArrayList<Step>();
-		steps.addAll(stepsHaving(AfterScenario.class, new OkayToRun(), new OkayToRun()));
-		steps.addAll(stepsHaving(AfterSuccessfulScenario.class, new OkayToRun(), new DoNotRun()));
-		steps.addAll(stepsHaving(AfterUnsuccessfulScenario.class, new DoNotRun(), new OkayToRun()));
+		steps.addAll(stepsHavingOutcome(AfterScenario.class, ANY, new OkayToRun(), new OkayToRun()));
+		steps.addAll(stepsHavingOutcome(AfterScenario.class, SUCCESS, new OkayToRun(), new DoNotRun()));
+		steps.addAll(stepsHavingOutcome(AfterScenario.class, FAILURE, new DoNotRun(), new OkayToRun()));
 		return steps;
 	}
 
-	private List<Step> stepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forSuccessfulScenarios, final StepPart forUnsuccessfulScenarios) {
+	private List<Step> stepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forScenarios) {
 		ArrayList<Step> steps = new ArrayList<Step>();
         for (final Method method : this.getClass().getMethods()) {
 			if (method.isAnnotationPresent(annotationClass)) {				
 				steps.add(new Step() {
-
 					public StepResult doNotPerform() {
-						return forUnsuccessfulScenarios.run(annotationClass, method);
+						return forScenarios.run(annotationClass, method);
 					}
 
 					public StepResult perform() {
-						return forSuccessfulScenarios.run(annotationClass, method);
+						return forScenarios.run(annotationClass, method);
 					}
 					
 				});
+			}
+        }
+        return steps;
+	}
+	
+	
+	private List<Step> stepsHavingOutcome(final Class<? extends AfterScenario> annotationClass, final Outcome outcome, final StepPart forSuccessfulScenarios, final StepPart forUnsuccessfulScenarios) {
+		ArrayList<Step> steps = new ArrayList<Step>();
+        for (final Method method : this.getClass().getMethods()) {
+			if (method.isAnnotationPresent(annotationClass) ) {				
+				AfterScenario annotation = method.getAnnotation(annotationClass);
+				if ( outcome.equals(annotation.uponOutcome()) ){
+					steps.add(new Step() {
+
+						public StepResult doNotPerform() {
+							return forUnsuccessfulScenarios.run(annotationClass, method);
+						}
+
+						public StepResult perform() {
+							return forSuccessfulScenarios.run(annotationClass, method);
+						}
+						
+					});					
+				}
 			}
         }
         return steps;

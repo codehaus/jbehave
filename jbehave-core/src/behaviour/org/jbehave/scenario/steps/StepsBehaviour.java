@@ -5,6 +5,7 @@ import static org.jbehave.util.JUnit4Ensure.ensureThat;
 
 import java.util.List;
 
+import org.jbehave.scenario.annotations.AfterScenario;
 import org.junit.Test;
 
 public class StepsBehaviour {
@@ -103,12 +104,12 @@ public class StepsBehaviour {
         	afterAll = true;
         }
         
-        @org.jbehave.scenario.annotations.AfterSuccessfulScenario
+        @org.jbehave.scenario.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.SUCCESS)
         public void afterSuccessfulScenarios() {
         	afterSuccess = true;
         }
         
-        @org.jbehave.scenario.annotations.AfterUnsuccessfulScenario
+        @org.jbehave.scenario.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.FAILURE)
         public void afterUnsuccessfulScenarios() {
         	afterUnsuccess = true;
         }
