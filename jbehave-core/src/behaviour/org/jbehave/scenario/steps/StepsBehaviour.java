@@ -42,7 +42,7 @@ public class StepsBehaviour {
     	ensureThat(executableSteps.size(), equalTo(3));
     	
     	executableSteps.get(0).perform();
-    	ensureThat(steps.afterAll);
+    	ensureThat(steps.afterAny);
     	
     	executableSteps.get(1).perform();
     	ensureThat(steps.afterSuccess);
@@ -57,14 +57,14 @@ public class StepsBehaviour {
     	List<Step> executableSteps = steps.runAfterScenario();
     	
     	executableSteps.get(0).doNotPerform();
-    	ensureThat(steps.afterAll); // @AfterScenario can be run after all scenarios
+    	ensureThat(steps.afterAny); // @AfterScenario is run after scenarios of any outcome 
     	
 		executableSteps.get(1).doNotPerform();
-		ensureThat(!steps.afterSuccess);
+		ensureThat(!steps.afterSuccess); // @AfterScenario(uponOutcome=SUCCESS) is run after successful scenarios
 		
 		
 		executableSteps.get(2).perform();
-		ensureThat(!steps.afterUnsuccess);
+		ensureThat(!steps.afterUnsuccess); // @AfterScenario(uponOutcome=FAILURE) is run after unsuccessful scenarios
 	
     }
     
@@ -75,7 +75,7 @@ public class StepsBehaviour {
         private boolean then;
         
         private boolean before;
-        private boolean afterAll;
+        private boolean afterAny;
         private boolean afterSuccess;
         private boolean afterUnsuccess;
         
@@ -100,8 +100,8 @@ public class StepsBehaviour {
         }
         
         @org.jbehave.scenario.annotations.AfterScenario
-        public void afterAllScenarios() {
-        	afterAll = true;
+        public void afterAnyScenarios() {
+        	afterAny = true;
         }
         
         @org.jbehave.scenario.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.SUCCESS)
