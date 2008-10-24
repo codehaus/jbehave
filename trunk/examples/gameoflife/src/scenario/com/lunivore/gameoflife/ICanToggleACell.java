@@ -21,6 +21,7 @@ public class ICanToggleACell extends JUnitScenario {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
                         classLoader);
             }
-        }, new GridSteps());
+        });
+        addSteps(new GridSteps());
     }
 }

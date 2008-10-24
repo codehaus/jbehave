@@ -48,6 +48,10 @@ public class StepsConfiguration {
         return monitor;
     }
 
+    public void useMonitor(StepMonitor monitor) {
+         this.monitor = monitor;
+    }
+
     public ParameterConverters getParameterConverters() {
         return parameterConverters;
     }

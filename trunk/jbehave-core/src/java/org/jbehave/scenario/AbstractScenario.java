@@ -5,6 +5,10 @@ import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.parser.ScenarioNameResolver;
 import org.jbehave.scenario.steps.CandidateSteps;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * <p>
  * Abstract implementation of Scenario which is primarily intended as a base
@@ -40,7 +44,7 @@ public abstract class AbstractScenario implements RunnableScenario {
 
     private final Configuration configuration;
     private final ScenarioRunner scenarioRunner;
-    private final CandidateSteps[] candidateSteps;
+    private final List<CandidateSteps> candidateSteps = new ArrayList<CandidateSteps>();
     private final Class<? extends RunnableScenario> scenarioClass;
 
     public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, CandidateSteps... candidateSteps) {
@@ -57,12 +61,17 @@ public abstract class AbstractScenario implements RunnableScenario {
         this.scenarioClass = scenarioClass;
         this.configuration = configuration;
         this.scenarioRunner = scenarioRunner;
-        this.candidateSteps = candidateSteps;
+        this.candidateSteps.addAll(Arrays.asList(candidateSteps));
     }
 
     public void runScenario() throws Throwable {
         StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioClass);
-        scenarioRunner.run(story, configuration, candidateSteps);
+        CandidateSteps[] steps = new CandidateSteps[candidateSteps.size()];
+        candidateSteps.toArray(steps);
+        scenarioRunner.run(story, configuration, steps);
     }
 
+    public void addSteps(CandidateSteps... steps) {
+        this.candidateSteps.addAll(Arrays.asList(steps));
+    }
 }

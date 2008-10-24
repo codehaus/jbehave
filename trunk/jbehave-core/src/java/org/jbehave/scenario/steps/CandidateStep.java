@@ -77,6 +77,7 @@ public class CandidateStep {
         return new Step() {
             public StepResult perform() {
                 try {
+                    stepMonitor.performing(stepAsString);
                     method.invoke(steps, args);
                     return StepResult.success(stepAsString);
                 } catch (Throwable t) {
