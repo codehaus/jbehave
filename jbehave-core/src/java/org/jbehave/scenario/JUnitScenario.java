@@ -49,6 +49,11 @@ public abstract class JUnitScenario extends TestCase implements RunnableScenario
         this.delegate.runScenario();
     }
 
+
+    public void addSteps(CandidateSteps... steps) {
+        this.delegate.addSteps(steps);
+    }
+
     /**
      * A JUnit 3-compatibile runnable method which simply delegates
      * {@link RunnableScenario#runScenario()}

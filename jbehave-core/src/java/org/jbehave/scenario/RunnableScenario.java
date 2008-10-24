@@ -1,5 +1,7 @@
 package org.jbehave.scenario;
 
+import org.jbehave.scenario.steps.CandidateSteps;
+
 /**
  * <p>
  * Scenario represents the main interface to run a scenario.
@@ -16,5 +18,7 @@ package org.jbehave.scenario;
 public interface RunnableScenario {
 
     void runScenario() throws Throwable;
+
+    void addSteps(CandidateSteps... steps);
 
 }

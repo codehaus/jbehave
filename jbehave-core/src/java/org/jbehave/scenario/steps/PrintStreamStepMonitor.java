@@ -28,6 +28,10 @@ public class PrintStreamStepMonitor implements StepMonitor {
         print(output, message);
     }
 
+    public void performing(String step) {
+    	print(output, step);
+    }
+
     protected void print(PrintStream output, String message) {
         output.println(message);
     }
