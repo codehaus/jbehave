@@ -16,43 +16,42 @@ import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.steps.ParameterConverters;
 import org.jbehave.scenario.steps.SilentStepMonitor;
-import org.jbehave.scenario.steps.StepMonitor;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.scenario.steps.StepsConfiguration;
 
 public class TraderSteps extends Steps {
 
-    private static final StepMonitor MONITOR = new SilentStepMonitor();
-    private double threshold;
+	private static final StepsConfiguration configuration = new StepsConfiguration();
     private Stock stock;
     private Trader trader;
 
-    public TraderSteps(double threshold, ClassLoader classLoader) {
-        super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), MONITOR, new ParameterConverters(
-                new SilentStepMonitor(), new TraderConverter(mockTradePersister())), "Given", "When", "Then", "And"));
-        this.threshold = threshold;
+    public TraderSteps(ClassLoader classLoader) {
+        super(configuration);
+        configuration.useParameterConverters(new ParameterConverters(
+        		new SilentStepMonitor(), new TraderConverter(mockTradePersister())));
+        configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("%"));
     }
 
-    private static TraderPersister mockTradePersister() {
+    private TraderPersister mockTradePersister() {
         return new TraderPersister(new Trader("Mauro", asList(new Stock(asList(1.0d), 10.d))));
     }
 
-    @Given("a trader of name $trader")
+    @Given("a trader of name %trader")
     public void aTrader(Trader trader) {
         this.trader = trader;
     }
 
-    @Given("a stock of prices $prices")
-    public void aStockOfPrice(List<Double> prices) {
+    @Given("a stock of prices %prices and a threshold of %threshold")
+    public void aStockOfPrice(List<Double> prices, double threshold) {
         stock = new Stock(prices, threshold);
     }
 
-    @When("the stock is traded at $price")
+    @When("the stock is traded at %price")
     public void theStockIsTradedAt(double price) {
         stock.tradeAt(price);
     }
 
-    @Then("the alert status should be $status")
+    @Then("the alert status should be %status")
     public void theAlertStatusShouldBe(String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
