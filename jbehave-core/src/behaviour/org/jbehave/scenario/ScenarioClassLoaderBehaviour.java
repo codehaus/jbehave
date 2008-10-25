@@ -7,7 +7,6 @@ import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jbehave.container.pico.XMLPicoContainer;
 import org.junit.Test;
 
 public class ScenarioClassLoaderBehaviour {
@@ -19,16 +18,6 @@ public class ScenarioClassLoaderBehaviour {
         String scenarioClassName = MyScenario.class.getName();
         assertScenarioIsInstantiated(classLoader, scenarioClassName);
     }
-
-    @Test
-    public void canInstantiateNewContainerScenario() throws MalformedURLException {
-        List<String> elements = Arrays.asList();
-        ClassLoader parent = Thread.currentThread().getContextClassLoader();
-        ScenarioClassLoader classLoader = new ScenarioClassLoader(elements, parent);
-        String scenarioClassName = MyContainerScenario.class.getName();
-        assertScenarioIsInstantiated(classLoader, scenarioClassName);
-    }
-
     
     private void assertScenarioIsInstantiated(ScenarioClassLoader classLoader, String scenarioClassName) {
         RunnableScenario scenario = classLoader.newScenario(scenarioClassName);
@@ -40,13 +29,6 @@ public class ScenarioClassLoaderBehaviour {
 
         public MyScenario(ClassLoader classLoader){
             
-        }
-    }
-
-    private static class MyContainerScenario extends JUnitScenario {
-
-        public MyContainerScenario(ClassLoader classLoader){
-            new XMLPicoContainer("org/jbehave/scenario/container.xml");
         }
     }
 
