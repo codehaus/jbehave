@@ -1,5 +1,5 @@
 <project name="jbehave" default="good-distribution">
-  <property name="version" value="2.0-SNAPSHOT" />
+  <property name="version" value="2.1-SNAPSHOT" />
   <echo message="Building version ${version}..." />
 
   <!-- modules -->
