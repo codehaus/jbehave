@@ -20,7 +20,7 @@ public class StatusAlertCanBeActivated extends JUnitScenario {
             public ScenarioDefiner forDefiningScenarios() {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
             }
-        }, new TraderSteps(10.0, classLoader));
+        }, new TraderSteps(classLoader));
     }
 
 }

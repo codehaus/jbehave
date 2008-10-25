@@ -19,7 +19,7 @@ public class TraderSellsAllStocks extends JUnitScenario {
             public ScenarioDefiner forDefiningScenarios() {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(this), classLoader);
             }
-        }, new TraderContainerSteps(10.0, classLoader)); // Could also use new TraderSteps(10.0, classLoader)
+        }, new TraderSteps(classLoader)); 
     }
 
 }
