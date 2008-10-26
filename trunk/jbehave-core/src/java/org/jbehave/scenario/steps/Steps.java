@@ -139,7 +139,7 @@ public class Steps implements CandidateSteps {
 	}
 
 	private List<Step> stepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forScenarios) {
-		ArrayList<Step> steps = new ArrayList<Step>();
+		List<Step> steps = new ArrayList<Step>();
         for (final Method method : this.getClass().getMethods()) {
 			if (method.isAnnotationPresent(annotationClass)) {				
 				steps.add(new Step() {
@@ -159,7 +159,7 @@ public class Steps implements CandidateSteps {
 	
 	
 	private List<Step> stepsHavingOutcome(final Class<? extends AfterScenario> annotationClass, final Outcome outcome, final StepPart forSuccessfulScenarios, final StepPart forUnsuccessfulScenarios) {
-		ArrayList<Step> steps = new ArrayList<Step>();
+		List<Step> steps = new ArrayList<Step>();
         for (final Method method : this.getClass().getMethods()) {
 			if (method.isAnnotationPresent(annotationClass) ) {				
 				AfterScenario annotation = method.getAnnotation(annotationClass);
