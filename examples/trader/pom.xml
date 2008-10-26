@@ -65,8 +65,6 @@
             <phase>integration-test</phase>
             <configuration>
               <tasks>
-                <property name="runtime_classpath" refid="maven.runtime.classpath" />
-                <echo message="Using runtime classpath: ${runtime_classpath}" />
                 <taskdef name="scenarioRunner" classname="org.jbehave.ant.ScenarioRunnerTask" classpathref="maven.runtime.classpath" />
                 <scenarioRunner scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
                   scenarioExcludes="**/*Steps.java" skip="false" />
