@@ -1,13 +1,14 @@
 package org.jbehave.scenario;
 
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.parser.ScenarioNameResolver;
 import org.jbehave.scenario.steps.CandidateSteps;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * <p>
@@ -61,7 +62,7 @@ public abstract class AbstractScenario implements RunnableScenario {
         this.scenarioClass = scenarioClass;
         this.configuration = configuration;
         this.scenarioRunner = scenarioRunner;
-        this.candidateSteps.addAll(Arrays.asList(candidateSteps));
+        this.candidateSteps.addAll(asList(candidateSteps));
     }
 
     public void runScenario() throws Throwable {
@@ -72,6 +73,6 @@ public abstract class AbstractScenario implements RunnableScenario {
     }
 
     public void addSteps(CandidateSteps... steps) {
-        this.candidateSteps.addAll(Arrays.asList(steps));
+        this.candidateSteps.addAll(asList(steps));
     }
 }
