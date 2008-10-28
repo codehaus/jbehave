@@ -317,7 +317,7 @@
   <licenses>
     <license>
       <name>BSD license</name>
-      <url>http://jbehave.org/license.html</url>
+      <url>https://svn.codehaus.org/jbehave/trunk/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
