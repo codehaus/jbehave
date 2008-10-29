@@ -102,5 +102,10 @@ public class CandidateStep {
 
         };
     }
+    
+    @Override
+    public String toString() {
+    	return pattern.pattern();
+    }
 
 }

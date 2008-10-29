@@ -14,11 +14,14 @@ public class StepsBehaviour {
     public void shouldProvideCandidateStepsCorrespondingToAnnotatedSteps() {
         MySteps steps = new MySteps();
         CandidateStep[] candidateSteps = steps.getSteps();
-        ensureThat(candidateSteps.length, equalTo(3));
-        
+        ensureThat(candidateSteps.length, equalTo(6));
+
         candidateSteps[0].createFrom("Given a given").perform();
-        candidateSteps[1].createFrom("When a when").perform();
-        candidateSteps[2].createFrom("Then a then").perform();
+        candidateSteps[1].createFrom("Given a given alias").perform();
+        candidateSteps[2].createFrom("When a when").perform();
+        candidateSteps[3].createFrom("When a when alias").perform();
+        candidateSteps[4].createFrom("Then a then").perform();
+        candidateSteps[5].createFrom("Then a then alias").perform();
 
         ensureThat(steps.given);
         ensureThat(steps.when);
@@ -80,16 +83,19 @@ public class StepsBehaviour {
         private boolean afterUnsuccess;
         
         @org.jbehave.scenario.annotations.Given("a given")
+        @org.jbehave.scenario.annotations.Aliases(values={"a given alias"})
         public void given() {
             given = true;
         }
         
         @org.jbehave.scenario.annotations.When("a when")
+        @org.jbehave.scenario.annotations.Aliases(values={"a when alias"})
         public void when() {
             when = true;
         }
         
         @org.jbehave.scenario.annotations.Then("a then")
+        @org.jbehave.scenario.annotations.Aliases(values={"a then alias"})
         public void then() {
             then = true;
         }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jbehave.scenario.annotations.AfterScenario;
+import org.jbehave.scenario.annotations.Aliases;
 import org.jbehave.scenario.annotations.BeforeScenario;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
@@ -110,21 +111,34 @@ public class Steps implements CandidateSteps {
         for (Method method : stepsClass.getMethods()) {
             if (method.isAnnotationPresent(Given.class)) {
                 createCandidateStep(steps, method, method.getAnnotation(Given.class).value());
+                createCandidateStepsFromAliases(steps, method);
             }
             if (method.isAnnotationPresent(When.class)) {
                 createCandidateStep(steps, method, method.getAnnotation(When.class).value());
+                createCandidateStepsFromAliases(steps, method);
             }
             if (method.isAnnotationPresent(Then.class)) {
                 createCandidateStep(steps, method, method.getAnnotation(Then.class).value());
+                createCandidateStepsFromAliases(steps, method);
             }
         }
         return steps.toArray(new CandidateStep[steps.size()]);
     }
 
-    void createCandidateStep(List<CandidateStep> steps, Method method, String stepAsString) {
+	void createCandidateStep(List<CandidateStep> steps, Method method, String stepAsString) {
         steps.add(new CandidateStep(stepAsString, method, this, configuration.getPatternBuilder(), configuration
                 .getMonitor(), configuration.getParameterConverters(), configuration.getStartingWords()));
     }
+
+    private void createCandidateStepsFromAliases(List<CandidateStep> steps,
+			Method method) {
+    	if ( method.isAnnotationPresent(Aliases.class) ){
+    		String[] aliases = method.getAnnotation(Aliases.class).values();
+    		for ( String alias : aliases ){
+        		createCandidateStep(steps, method, alias);    			
+    		}
+    	}
+	}
 
 	public List<Step> runBeforeScenario() {
 		return stepsHaving(BeforeScenario.class, new OkayToRun());
