@@ -23,9 +23,9 @@ public class StepsBehaviour {
         candidateSteps[4].createFrom("Then a then").perform();
         candidateSteps[5].createFrom("Then a then alias").perform();
 
-        ensureThat(steps.given);
-        ensureThat(steps.when);
-        ensureThat(steps.then);
+        ensureThat(steps.givens, equalTo(2));
+        ensureThat(steps.whens, equalTo(2));
+        ensureThat(steps.thens, equalTo(2));
     }
     
     @Test
@@ -73,9 +73,9 @@ public class StepsBehaviour {
     
     public static class MySteps extends Steps {
         
-        private boolean given;
-        private boolean when;
-        private boolean then;
+        private int givens;
+        private int whens;
+        private int thens;
         
         private boolean before;
         private boolean afterAny;
@@ -85,19 +85,19 @@ public class StepsBehaviour {
         @org.jbehave.scenario.annotations.Given("a given")
         @org.jbehave.scenario.annotations.Aliases(values={"a given alias"})
         public void given() {
-            given = true;
+            givens++;
         }
         
         @org.jbehave.scenario.annotations.When("a when")
         @org.jbehave.scenario.annotations.Aliases(values={"a when alias"})
         public void when() {
-            when = true;
+            whens++;
         }
         
         @org.jbehave.scenario.annotations.Then("a then")
         @org.jbehave.scenario.annotations.Aliases(values={"a then alias"})
         public void then() {
-            then = true;
+            thens++;
         }
         
         @org.jbehave.scenario.annotations.BeforeScenario
