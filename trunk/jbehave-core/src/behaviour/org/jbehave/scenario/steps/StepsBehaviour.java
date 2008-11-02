@@ -6,6 +6,7 @@ import static org.jbehave.Ensure.ensureThat;
 import java.util.List;
 
 import org.jbehave.scenario.annotations.AfterScenario;
+import org.jbehave.scenario.steps.Steps.DuplicateCandidateStepFoundException;
 import org.junit.Test;
 
 public class StepsBehaviour {
@@ -54,7 +55,7 @@ public class StepsBehaviour {
     	ensureThat(steps.afterSuccess);
     	
     	executableSteps.get(2).doNotPerform();
-    	ensureThat(steps.afterUnsuccess);
+    	ensureThat(steps.afterFailure);
     }
     
     @Test
@@ -70,9 +71,20 @@ public class StepsBehaviour {
 		
 		
 		executableSteps.get(2).perform();
-		ensureThat(!steps.afterUnsuccess); // @AfterScenario(uponOutcome=FAILURE) is run after unsuccessful scenarios
+		ensureThat(!steps.afterFailure); // @AfterScenario(uponOutcome=FAILURE) is run after unsuccessful scenarios
 	
     }
+
+    @Test(expected=DuplicateCandidateStepFoundException.class)
+    public void shouldFailIfDuplicateStepsAreEncountered() {
+        DuplicateSteps steps = new DuplicateSteps();
+        CandidateStep[] candidateSteps = steps.getSteps();
+
+        ensureThat(candidateSteps.length, equalTo(2));
+        candidateSteps[0].createFrom("Given a given").perform();
+
+    }
+
     
     public static class MySteps extends Steps {
         
@@ -83,14 +95,14 @@ public class StepsBehaviour {
         private boolean before;
         private boolean afterAny;
         private boolean afterSuccess;
-        private boolean afterUnsuccess;
+        private boolean afterFailure;
         
         @org.jbehave.scenario.annotations.Given("a given")
         @org.jbehave.scenario.annotations.Aliases(values={"a given alias", "another given alias"})
         public void given() {
             givens++;
         }
-        
+
         @org.jbehave.scenario.annotations.When("a when")
         @org.jbehave.scenario.annotations.Aliases(values={"a when alias", "another when alias"})
         public void when() {
@@ -120,9 +132,21 @@ public class StepsBehaviour {
         
         @org.jbehave.scenario.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.FAILURE)
         public void afterUnsuccessfulScenarios() {
-        	afterUnsuccess = true;
+        	afterFailure = true;
         }
         
         
+    }
+    
+    public static class DuplicateSteps extends Steps {
+        
+        @org.jbehave.scenario.annotations.Given("a given")
+        public void given() {
+        }
+
+        @org.jbehave.scenario.annotations.Given("a given")
+        public void duplicateGiven() {
+        }
+                
     }
 }
