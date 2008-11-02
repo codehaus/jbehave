@@ -14,18 +14,21 @@ public class StepsBehaviour {
     public void shouldProvideCandidateStepsCorrespondingToAnnotatedSteps() {
         MySteps steps = new MySteps();
         CandidateStep[] candidateSteps = steps.getSteps();
-        ensureThat(candidateSteps.length, equalTo(6));
+        ensureThat(candidateSteps.length, equalTo(9));
 
         candidateSteps[0].createFrom("Given a given").perform();
         candidateSteps[1].createFrom("Given a given alias").perform();
-        candidateSteps[2].createFrom("When a when").perform();
-        candidateSteps[3].createFrom("When a when alias").perform();
-        candidateSteps[4].createFrom("Then a then").perform();
-        candidateSteps[5].createFrom("Then a then alias").perform();
+        candidateSteps[2].createFrom("Given another given alias").perform();
+        candidateSteps[3].createFrom("When a when").perform();
+        candidateSteps[4].createFrom("When a when alias").perform();
+        candidateSteps[5].createFrom("When another when alias").perform();
+        candidateSteps[6].createFrom("Then a then").perform();
+        candidateSteps[7].createFrom("Then a then alias").perform();
+        candidateSteps[8].createFrom("Then another then alias").perform();
 
-        ensureThat(steps.givens, equalTo(2));
-        ensureThat(steps.whens, equalTo(2));
-        ensureThat(steps.thens, equalTo(2));
+        ensureThat(steps.givens, equalTo(3));
+        ensureThat(steps.whens, equalTo(3));
+        ensureThat(steps.thens, equalTo(3));
     }
     
     @Test
@@ -83,19 +86,19 @@ public class StepsBehaviour {
         private boolean afterUnsuccess;
         
         @org.jbehave.scenario.annotations.Given("a given")
-        @org.jbehave.scenario.annotations.Aliases(values={"a given alias"})
+        @org.jbehave.scenario.annotations.Aliases(values={"a given alias", "another given alias"})
         public void given() {
             givens++;
         }
         
         @org.jbehave.scenario.annotations.When("a when")
-        @org.jbehave.scenario.annotations.Aliases(values={"a when alias"})
+        @org.jbehave.scenario.annotations.Aliases(values={"a when alias", "another when alias"})
         public void when() {
             whens++;
         }
         
         @org.jbehave.scenario.annotations.Then("a then")
-        @org.jbehave.scenario.annotations.Aliases(values={"a then alias"})
+        @org.jbehave.scenario.annotations.Aliases(values={"a then alias", "another then alias"})
         public void then() {
             thens++;
         }
