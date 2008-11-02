@@ -1,7 +1,7 @@
 package org.jbehave.container.pico;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.util.JUnit4Ensure.ensureThat;
+import static org.jbehave.Ensure.ensureThat;
 
 import org.jbehave.container.AComponent;
 import org.jbehave.container.AnotherComponent;
