@@ -33,11 +33,11 @@ public abstract class StepResult {
 
     public static class Pending extends StepResult {
         public Pending(String step) {
-            this(step, new PendingError("Pending: " + step));
+            this(step, new PendingError(step));
         }
 
-        public Pending(String stepAsString, PendingError e) {
-            super(stepAsString, e);
+        public Pending(String step, PendingError e) {
+            super(step, e);
         }
 
         @Override
@@ -77,8 +77,8 @@ public abstract class StepResult {
         return new Pending(step);
     }
     
-    public static StepResult pending(String stepAsString, PendingError e) {
-        return new Pending(stepAsString, e);
+    public static StepResult pending(String step, PendingError e) {
+        return new Pending(step, e);
     }
 
     public static StepResult notPerformed(String step) {
