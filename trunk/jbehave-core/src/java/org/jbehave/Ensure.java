@@ -1,9 +1,9 @@
 package org.jbehave;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 
 /**
  * Collection of static utility ensure methods that use Hamcrest matchers
@@ -14,7 +14,7 @@ import org.hamcrest.Matchers;
 public class Ensure {
 	
     public static void ensureThat(boolean matches) {
-    	assertThat(matches, Matchers.is(true));
+    	ensureThat(matches, is(true));
     }
     
     public static <T> void ensureThat(T actual, Matcher<T> matcher) {
