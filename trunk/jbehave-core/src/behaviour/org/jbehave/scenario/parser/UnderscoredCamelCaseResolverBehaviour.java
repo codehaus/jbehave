@@ -16,6 +16,7 @@ public class UnderscoredCamelCaseResolverBehaviour {
 
     }
     
+    
     @Test
     public void shouldResolveCamelCasedClassNameToUnderscoredNameWithExtension() {
         UnderscoredCamelCaseResolver resolver = new UnderscoredCamelCaseResolver(".scenario");
@@ -24,11 +25,23 @@ public class UnderscoredCamelCaseResolverBehaviour {
 
     }
     
+    @Test
+    public void shouldResolveCamelCasedClassNameWithNumbers() {
+        UnderscoredCamelCaseResolver resolver = new UnderscoredCamelCaseResolver();
+        ensureThat(resolver.resolve(CamelCaseWith3Dates.class),
+                equalTo("org/jbehave/scenario/parser/camel_case_with_3_dates"));
+
+    }
+    
     static class CamelCaseScenario extends JUnitScenario {
         
     }
 
     static class CamelCase extends JUnitScenario {
+        
+    }
+    
+    static class CamelCaseWith3Dates extends JUnitScenario {
         
     }
 }

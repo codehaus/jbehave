@@ -18,14 +18,15 @@ import org.jbehave.scenario.RunnableScenario;
  */
 public class UnderscoredCamelCaseResolver implements ScenarioNameResolver {
 
-    private static final String DOT_REGEX = "\\.";
+    private static final String EMPTY = "";
+	private static final String DOT_REGEX = "\\.";
     private static final String SLASH = "/";
-    private static final String PATTERN = "([A-Z].*?)([A-Z]|\\z)";
+    private static final String PATTERN = "([A-Z0-9].*?)([A-Z0-9]|\\z)";
     private static final String UNDERSCORE = "_";
     private final String extension;
 
     public UnderscoredCamelCaseResolver() {
-        this("");
+        this(EMPTY);
     }
 
     public UnderscoredCamelCaseResolver(String extension) {
