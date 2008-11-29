@@ -1,9 +1,9 @@
 package org.jbehave.scenario.parser;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.jbehave.scenario.PropertyBasedConfiguration;
@@ -69,7 +69,7 @@ public class PatternScenarioParserBehaviour {
     }
     
     @Test
-    public void canParseMultipleScenariosFromOnePieceOfText() {
+    public void canParseMultipleScenariosFromOneStory() {
         String wholeStory = 
             "Scenario: the first scenario " + NL + NL +
             "Given my scenario" + NL + NL +
@@ -79,9 +79,9 @@ public class PatternScenarioParserBehaviour {
         StoryDefinition story = parser.defineStoryFrom(wholeStory);
         
         ensureThat(story.getScenarios().get(0).getTitle(), equalTo("the first scenario"));
-        ensureThat(story.getScenarios().get(0).getSteps(), equalTo(Arrays.asList(new String[]{"Given my scenario"})));
+        ensureThat(story.getScenarios().get(0).getSteps(), equalTo(asList("Given my scenario")));
         ensureThat(story.getScenarios().get(1).getTitle(), equalTo("the second scenario"));
-        ensureThat(story.getScenarios().get(1).getSteps(), equalTo(Arrays.asList(new String[]{"Given my second scenario"})));
+        ensureThat(story.getScenarios().get(1).getSteps(), equalTo(asList("Given my second scenario")));
     }
     
     @Test
@@ -119,26 +119,26 @@ public class PatternScenarioParserBehaviour {
                     "So that I can see what we're not delivering"));
         
         ensureThat(story.getScenarios().get(0).getTitle(), equalTo("A pending scenario"));
-        ensureThat(story.getScenarios().get(0).getSteps(), equalTo(Arrays.asList(new String[]{
+        ensureThat(story.getScenarios().get(0).getSteps(), equalTo(asList(
                 "Given a step that's pending",
                 "When I run the scenario",
                 "Then I should see this in the output"
-        })));
+        )));
         
         ensureThat(story.getScenarios().get(1).getTitle(), equalTo("A passing scenario"));
-        ensureThat(story.getScenarios().get(1).getSteps(), equalTo(Arrays.asList(new String[]{
+        ensureThat(story.getScenarios().get(1).getSteps(), equalTo(asList(
                 "Given I'm not reporting passing scenarios",
                 "When I run the scenario",
                 "Then this should not be in the output"
-        })));
+        )));
         
         ensureThat(story.getScenarios().get(2).getTitle(), equalTo("A failing scenario"));
-        ensureThat(story.getScenarios().get(2).getSteps(), equalTo(Arrays.asList(new String[]{
+        ensureThat(story.getScenarios().get(2).getSteps(), equalTo(asList(
                 "Given a step that fails",
                 "When I run the scenario",
                 "Then I should see this in the output",
                 "And I should see this in the output"
-        })));
+        )));
     }
     
 }
