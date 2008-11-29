@@ -20,15 +20,15 @@ public class ScenarioFileLoaderBehaviour {
         ScenarioParser parser = mock(ScenarioParser.class);
         ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(parser);
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
-        verify(parser).defineStoryFrom("Given my scenario");
+        verify(parser).defineStoryFrom("Given my step");
     }
 
     @Test
     public void canLoadScenarioWithCustomFilenameResolver() {
         ScenarioParser parser = mock(ScenarioParser.class);
-        ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(new CasePreservingResolver(".scenario"), parser);
+        ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(new CasePreservingResolver(".txt"), parser);
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
-        verify(parser).defineStoryFrom("Given my scenario");
+        verify(parser).defineStoryFrom("Given my step");
     }
     
     @Test(expected = ScenarioNotFoundException.class)
