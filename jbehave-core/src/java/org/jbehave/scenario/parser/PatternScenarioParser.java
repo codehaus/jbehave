@@ -57,7 +57,7 @@ public class PatternScenarioParser implements ScenarioParser {
     }
 
     private Blurb parseBlurbFrom(String wholeStoryAsString) {
-        Pattern findStoryBlurb = Pattern.compile("(.*?)(" + configuration.keywords().scenario() + ":).*",
+        Pattern findStoryBlurb = Pattern.compile("(.*?)(" + configuration.keywords().scenario() + ").*",
                 Pattern.DOTALL);
         Matcher matcher = findStoryBlurb.matcher(wholeStoryAsString);
         if (matcher.find()) {
@@ -85,14 +85,14 @@ public class PatternScenarioParser implements ScenarioParser {
     }
 
     private Pattern patternToPullScenariosIntoGroupFour() {
-        return Pattern.compile(".*?((Scenario:) (.|\\s)*?)\\s*(\\Z|Scenario:).*".replace("Scenario", configuration
+        return Pattern.compile(".*?((Scenario) (.|\\s)*?)\\s*(\\Z|Scenario).*".replace("Scenario", configuration
                 .keywords().scenario()), Pattern.DOTALL);
     }
 
     private Pattern patternToPullScenarioTitlesIntoGroupOne() {
         String concatenatedKeywords = concatenateWithOr(configuration.keywords().given(), configuration.keywords()
                 .when(), configuration.keywords().then(), configuration.keywords().others());
-        return Pattern.compile(configuration.keywords().scenario() + ":(.*?)\\s*(" + concatenatedKeywords + ").*");
+        return Pattern.compile(configuration.keywords().scenario() + "(.*?)\\s*(" + concatenatedKeywords + ").*");
     }
 
     private String concatenateWithOr(String given, String when, String then, String[] others) {
@@ -134,6 +134,6 @@ public class PatternScenarioParser implements ScenarioParser {
         String givenWhenThenSpaced = concatenateWithSpaceOr(configuration.keywords().given(), configuration.keywords().when(),
         		configuration.keywords().then(), configuration.keywords().others());
         return Pattern.compile("((" + givenWhenThen + ") (.|\\s)*?)\\s*(\\Z|" + givenWhenThenSpaced + "|"
-                + configuration.keywords().scenario() + ":)");
+                + configuration.keywords().scenario() + ")");
     }
 }
