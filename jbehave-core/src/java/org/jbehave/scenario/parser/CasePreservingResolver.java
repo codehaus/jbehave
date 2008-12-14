@@ -13,10 +13,8 @@ import org.jbehave.scenario.RunnableScenario;
  * "org/jbehave/scenario/ICanLogin.scenario".
  * </p>
  */
-public class CasePreservingResolver implements ScenarioNameResolver {
+public class CasePreservingResolver extends AbstractScenarioNameResolver {
 
-    private static final String DOT_REGEX = "\\.";
-    private static final String SLASH = "/";
     private final String extension;
 
     public CasePreservingResolver(String extension) {
@@ -24,8 +22,7 @@ public class CasePreservingResolver implements ScenarioNameResolver {
     }
 
     public String resolve(Class<? extends RunnableScenario> scenarioClass) {
-        String packageDir = scenarioClass.getPackage().getName().replaceAll(DOT_REGEX, SLASH);
-        return packageDir + SLASH + scenarioClass.getSimpleName() + extension;
+    	return toPackageDir(scenarioClass) + SLASH + scenarioClass.getSimpleName() + extension;
     }
 
 }
