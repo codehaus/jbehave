@@ -28,7 +28,7 @@ public class PlayersCanHazTurns extends JUnitScenario {
     public PlayersCanHazTurns(final ClassLoader classLoader, OAndXUniverse universe) {
         super(new MostUsefulConfiguration() {
             public KeyWords keywords() {
-                return new KeyWords("I can haz", "Gief", "Wen", "Den", "And");
+                return new KeyWords("I can haz:", "Gief", "Wen", "Den", "And");
             }
             public ClasspathScenarioDefiner forDefiningScenarios() {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
