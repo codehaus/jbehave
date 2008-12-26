@@ -1,7 +1,5 @@
 package org.jbehave.scenario.parser;
 
-import static java.text.MessageFormat.format;
-
 import org.jbehave.scenario.RunnableScenario;
 
 public abstract class AbstractScenarioNameResolver implements
@@ -24,7 +22,22 @@ public abstract class AbstractScenarioNameResolver implements
 	}
 
 	public String resolve(Class<? extends RunnableScenario> scenarioClass) {
-		return format(PATH_PATTERN, resolveDirectoryName(scenarioClass), resolveFileName(scenarioClass), extension);
+		String directoryName = resolveDirectoryName(scenarioClass);
+		String fileName = resolveFileName(scenarioClass);
+		return formatName(directoryName, fileName, extension);
+	}
+
+	private String formatName(String directoryName, String fileName,
+			String extension) {
+		StringBuffer sb = new StringBuffer();
+		if (directoryName.length() > 0) {
+			sb.append(directoryName).append(SLASH);
+		}
+		sb.append(fileName);
+		if (extension.length() > 0) {
+			sb.append(extension);
+		}
+		return sb.toString();
 	}
 
 	protected String resolveDirectoryName(
@@ -36,6 +49,7 @@ public abstract class AbstractScenarioNameResolver implements
 		return EMPTY;
 	}
 
-	protected abstract String resolveFileName(Class<? extends RunnableScenario> scenarioClass);
+	protected abstract String resolveFileName(
+			Class<? extends RunnableScenario> scenarioClass);
 
 }

@@ -34,13 +34,15 @@
         <artifactId>jbehave-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>run-scenarios-listed</id>
+            <id>run-scenarios</id>
             <phase>integration-test</phase>
             <configuration>
-              <scenarioClassNames>
-                <scenarioClassName>com.lunivore.gameoflife.ICanToggleACell</scenarioClassName>
-                <scenarioClassName>com.lunivore.gameoflife.TheGridStartsEmpty</scenarioClassName>
-              </scenarioClassNames>
+              <scenarioIncludes>
+                <scenarioInclude>**/*.java</scenarioInclude>
+              </scenarioIncludes>
+              <scenarioExcludes>
+                <scenarioExclude>**/*Steps.java</scenarioExclude>
+              </scenarioExcludes>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>
