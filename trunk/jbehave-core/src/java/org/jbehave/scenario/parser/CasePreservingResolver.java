@@ -2,6 +2,7 @@ package org.jbehave.scenario.parser;
 
 import org.jbehave.scenario.RunnableScenario;
 
+
 /**
  * <p>
  * Resolves scenario names while preserving the Java scenario class case eg:
@@ -15,14 +16,17 @@ import org.jbehave.scenario.RunnableScenario;
  */
 public class CasePreservingResolver extends AbstractScenarioNameResolver {
 
-    private final String extension;
+    public CasePreservingResolver() {
+        super();
+    }
 
     public CasePreservingResolver(String extension) {
-        this.extension = extension;
+    	super(extension);
     }
 
-    public String resolve(Class<? extends RunnableScenario> scenarioClass) {
-    	return toPackageDir(scenarioClass) + SLASH + scenarioClass.getSimpleName() + extension;
-    }
+	@Override
+	protected String resolveFileName(Class<? extends RunnableScenario> scenarioClass) {
+		return scenarioClass.getSimpleName();
+	}
 
 }
