@@ -18,25 +18,20 @@ import org.jbehave.scenario.RunnableScenario;
  */
 public class UnderscoredCamelCaseResolver extends AbstractScenarioNameResolver {
 
-    private static final String DEFAULT_EXTENSION = "";
     private static final String SIMPLE_TO_UNDERSCORED_PATTERN = "([A-Z0-9].*?)([A-Z0-9]|\\z)";
     private static final String UNDERSCORE = "_";
-    private final String extension;
 
     public UnderscoredCamelCaseResolver() {
-        this(DEFAULT_EXTENSION);
+        super();
     }
 
     public UnderscoredCamelCaseResolver(String extension) {
-        this.extension = extension;
+        super(extension);
     }
 
-    public String resolve(Class<? extends RunnableScenario> scenarioClass) {
-        return toPackageDir(scenarioClass) + SLASH + toUnderscoredName(scenarioClass.getSimpleName()) + extension;
-    }
-
-	private String toUnderscoredName(String simpleName) {
-		Matcher matcher = Pattern.compile(SIMPLE_TO_UNDERSCORED_PATTERN).matcher(simpleName);
+	@Override
+	protected String resolveFileName(Class<? extends RunnableScenario> scenarioClass) {
+		Matcher matcher = Pattern.compile(SIMPLE_TO_UNDERSCORED_PATTERN).matcher(scenarioClass.getSimpleName());
         int startAt = 0;
         StringBuilder builder = new StringBuilder();
         while (matcher.find(startAt)) {
