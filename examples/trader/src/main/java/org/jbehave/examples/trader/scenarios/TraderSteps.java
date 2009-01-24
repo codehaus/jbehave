@@ -2,7 +2,7 @@ package org.jbehave.examples.trader.scenarios;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.Ensure.ensureThat;
+import static org.jbehave.util.JUnit4Ensure.ensureThat;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
 import org.jbehave.examples.trader.persistence.TraderPersister;
-import org.jbehave.scenario.annotations.Aliases;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
@@ -48,7 +47,6 @@ public class TraderSteps extends Steps {
     }
 
     @When("the stock is traded at %price")
-    @Aliases(values={"the stock is sold at %price"})
     public void theStockIsTradedAt(double price) {
         stock.tradeAt(price);
     }

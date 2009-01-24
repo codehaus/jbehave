@@ -2,7 +2,6 @@ package org.jbehave.scenario.parser;
 
 import org.jbehave.scenario.RunnableScenario;
 
-
 /**
  * <p>
  * Resolves scenario names while preserving the Java scenario class case eg:
@@ -14,19 +13,19 @@ import org.jbehave.scenario.RunnableScenario;
  * "org/jbehave/scenario/ICanLogin.scenario".
  * </p>
  */
-public class CasePreservingResolver extends AbstractScenarioNameResolver {
+public class CasePreservingResolver implements ScenarioNameResolver {
 
-    public CasePreservingResolver() {
-        super();
-    }
+    private static final String DOT_REGEX = "\\.";
+    private static final String SLASH = "/";
+    private final String extension;
 
     public CasePreservingResolver(String extension) {
-    	super(extension);
+        this.extension = extension;
     }
 
-	@Override
-	protected String resolveFileName(Class<? extends RunnableScenario> scenarioClass) {
-		return scenarioClass.getSimpleName();
-	}
+    public String resolve(Class<? extends RunnableScenario> scenarioClass) {
+        String packageDir = scenarioClass.getPackage().getName().replaceAll(DOT_REGEX, SLASH);
+        return packageDir + SLASH + scenarioClass.getSimpleName() + extension;
+    }
 
 }

@@ -16,22 +16,25 @@ import org.jbehave.scenario.RunnableScenario;
  * "org/jbehave/scenario/i_can_login.scenario".
  * </p>
  */
-public class UnderscoredCamelCaseResolver extends AbstractScenarioNameResolver {
+public class UnderscoredCamelCaseResolver implements ScenarioNameResolver {
 
-    private static final String SIMPLE_TO_UNDERSCORED_PATTERN = "([A-Z0-9].*?)([A-Z0-9]|\\z)";
+    private static final String DOT_REGEX = "\\.";
+    private static final String SLASH = "/";
+    private static final String PATTERN = "([A-Z].*?)([A-Z]|\\z)";
     private static final String UNDERSCORE = "_";
+    private final String extension;
 
     public UnderscoredCamelCaseResolver() {
-        super();
+        this("");
     }
 
     public UnderscoredCamelCaseResolver(String extension) {
-        super(extension);
+        this.extension = extension;
     }
 
-	@Override
-	protected String resolveFileName(Class<? extends RunnableScenario> scenarioClass) {
-		Matcher matcher = Pattern.compile(SIMPLE_TO_UNDERSCORED_PATTERN).matcher(scenarioClass.getSimpleName());
+    public String resolve(Class<? extends RunnableScenario> scenarioClass) {
+        String packageDir = scenarioClass.getPackage().getName().replaceAll(DOT_REGEX, SLASH);
+        Matcher matcher = Pattern.compile(PATTERN).matcher(scenarioClass.getSimpleName());
         int startAt = 0;
         StringBuilder builder = new StringBuilder();
         while (matcher.find(startAt)) {
@@ -39,7 +42,9 @@ public class UnderscoredCamelCaseResolver extends AbstractScenarioNameResolver {
             builder.append(UNDERSCORE);
             startAt = matcher.start(2);
         }
-        return builder.substring(0, builder.length() - 1);
-	}
+
+        String underscoredName = builder.substring(0, builder.length() - 1);
+        return packageDir + SLASH + underscoredName + extension;
+    }
 
 }

@@ -4,13 +4,11 @@
   <parent>
     <groupId>org.jbehave</groupId>
     <artifactId>jbehave-examples</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.1.1-SNAPSHOT</version>
   </parent>
   <artifactId>jbehave-trader-example</artifactId>
   <name>JBehave Trader Example</name>
 
-  <dependencies>
-  </dependencies>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/behaviour/java</testSourceDirectory>
@@ -36,7 +34,7 @@
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>
               </scenarioExcludes>
-              <skip>true</skip>
+              <skip>false</skip>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>

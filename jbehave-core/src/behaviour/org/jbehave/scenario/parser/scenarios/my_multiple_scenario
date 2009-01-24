@@ -1,7 +1,7 @@
 Scenario: the first scenario
 
-Given my step
+Given my scenario
 
 Scenario: the second scenario
 
-Given my second step
+Given my second scenario

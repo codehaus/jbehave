@@ -17,7 +17,6 @@ import org.jbehave.scenario.parser.StepPatternBuilder;
  */
 public class CandidateStep {
 
-	private final String stepAsString;
     private final Method method;
     private final CandidateSteps steps;
     private final StepMonitor stepMonitor;
@@ -25,15 +24,14 @@ public class CandidateStep {
     private final String[] startingWords;
     private final Pattern pattern;
 
-    public CandidateStep(String stepAsString, Method method, CandidateSteps steps, StepPatternBuilder patterBuilder,
+    public CandidateStep(String matchThis, Method method, CandidateSteps steps, StepPatternBuilder patterBuilder,
             StepMonitor stepMonitor, ParameterConverters parameterConverters, String... startingWords) {
-        this.stepAsString = stepAsString;
         this.method = method;
         this.steps = steps;
         this.stepMonitor = stepMonitor;
         this.parameterConverters = parameterConverters;
         this.startingWords = startingWords;
-        this.pattern = patterBuilder.buildPattern(stepAsString);
+        this.pattern = patterBuilder.buildPattern(matchThis);
     }
 
     public boolean matches(String step) {
@@ -103,19 +101,6 @@ public class CandidateStep {
             }
 
         };
-    }
-    
-    public String getStepAsString(){
-    	return stepAsString;
-    }
-
-    public Pattern getPattern(){
-    	return pattern;
-    }
-    
-    @Override
-    public String toString() {
-    	return stepAsString;
     }
 
 }

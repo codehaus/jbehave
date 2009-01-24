@@ -1,7 +1,6 @@
 package org.jbehave.scenario.definition;
 
-import static java.util.Arrays.asList;
-
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,11 +19,11 @@ public class StoryDefinition {
     }
     
     public StoryDefinition(Blurb blurb, ScenarioDefinition... scenarioDefinitions) {
-        this(blurb, asList(scenarioDefinitions));
+        this(blurb, Arrays.asList(scenarioDefinitions));
     }
     
     public StoryDefinition(ScenarioDefinition... scenarioDefinitions) {
-        this(asList(scenarioDefinitions));
+        this(Arrays.asList(scenarioDefinitions));
     }
 
     public Blurb getBlurb() {
