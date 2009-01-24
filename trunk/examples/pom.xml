@@ -16,6 +16,7 @@
     <module>noughtsandcrosses</module>
     <module>noughtsandcrosses/scenarios</module>
     <module>trader</module>
+    <module>trader-test-scope</module>
   </modules>
 
   <dependencies>
