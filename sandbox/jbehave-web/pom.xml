@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <name>JBehave Web</name>
   <description>JBehave Web aims to provide a web integration layer for Behaviou-Driven Development</description>
-  
+
   <modules>
     <module>web-waffle</module>
   </modules>
@@ -262,4 +262,38 @@
       </plugin>
     </plugins>
   </build>
+
+
+  <licenses>
+    <license>
+      <name>BSD license</name>
+      <url>https://svn.codehaus.org/jbehave/trunk/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers />
+  <contributors />
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/jbehave/sandbox/jbehave-web</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/jbehave/sandbox/jbehave-web</developerConnection>
+    <url>http://svn.codehaus.org/jbehave/sandbox/jbehave-web</url>
+  </scm>
+
+  <distributionManagement>
+    <!--
+      The id used must match a server id defined in ~/.m2/settings.xml
+    -->
+    <repository>
+      <id>codehaus.org</id>
+      <name>Codehaus JBehave Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/jbehave/</url>
+    </repository>
+    <snapshotRepository>
+      <id>codehaus.org</id>
+      <name>Codehaus JBehave Snapshot Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/jbehave/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
