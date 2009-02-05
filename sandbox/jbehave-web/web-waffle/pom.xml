@@ -7,7 +7,7 @@
     <version>2.0-SNAPSHOT</version>
   </parent>
   <artifactId>jbehave-web-waffle</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging> <!-- NOTE: Change to war to run with jetty -->
   <name>JBehave Web Waffle</name>
 
   <dependencies>
