@@ -1,5 +1,6 @@
 package org.jbehave.web.waffle.controllers;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.waffle.menu.Menu;
@@ -12,7 +13,6 @@ import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioParser;
 import org.jbehave.scenario.steps.Steps;
-import org.jbehave.web.waffle.controllers.ScenarioRunnerController;
 import org.junit.Test;
 
 
@@ -54,6 +54,7 @@ public class ScenarioRunnerControllerTest {
 		controller.getScenarioContext().setInput(scenarioInput);
 		controller.run();
 		assertEquals(scenarioOutput, controller.getScenarioContext().getOutput().trim());
+		assertEquals(asList("Test failed"), controller.getScenarioContext().getMessages());
 	}
 	
 	public static class MySteps extends Steps {
