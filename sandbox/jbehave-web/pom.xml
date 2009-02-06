@@ -263,8 +263,18 @@
       </plugin>
     </plugins>
   </build>
-
-
+  <profiles>
+    <profile>
+      <!-- Examples profile -->
+      <id>examples</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <modules>
+        <module>examples</module>
+      </modules>
+    </profile>
+  </profiles>
   <licenses>
     <license>
       <name>BSD license</name>
