@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.codehaus.waffle.ComponentRegistry;
 import org.codehaus.waffle.io.RequestFileUploader;
 import org.codehaus.waffle.menu.Menu;
 import org.codehaus.waffle.menu.MenuAwareController;
@@ -29,24 +28,12 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 
 	@Override
 	public void application() {
-		ComponentRegistry registry = getComponentRegistry();
+		registerMenu();
 		registerConfiguration();
 		registerScenarioParser();
 		registerScenarioRunner();
 		registerSteps();
 		register("scenario/runner", ScenarioRunnerController.class);
-		register("home", MenuAwareController.class);
-		ViewResolver viewResolver = registry.locateByKey(ViewResolver.class);
-		viewResolver.configureView("home", "ftl/home");
-		registerInstance(createMenu());
-	}
-
-	private Menu createMenu() {
-		Map<String, List<String>> content = new HashMap<String, List<String>>();
-		content.put("Home", asList("Home:home"));
-		content.put("Data", asList("Upload:scenario/upload"));
-		content.put("Scenario", asList("Runner:scenario/runner"));
-		return new Menu(content);
 	}
 
 	@Override
@@ -54,6 +41,21 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 		register("fileItemFactory", DiskFileItemFactory.class);
 		register("uploader", RequestFileUploader.class);
 		register("scenario/upload", UploadController.class);
+	}
+
+	protected void registerMenu() {
+		register("home", MenuAwareController.class);
+		ViewResolver viewResolver = getComponentRegistry().locateByKey(ViewResolver.class);
+		viewResolver.configureView("home", "ftl/home");
+		registerInstance(createMenu());
+	}
+
+	protected Menu createMenu() {
+		Map<String, List<String>> content = new HashMap<String, List<String>>();
+		content.put("Home", asList("Home:home"));
+		content.put("Data", asList("Upload:scenario/upload"));
+		content.put("Scenario", asList("Runner:scenario/runner"));
+		return new Menu(content);
 	}
 
 	protected void registerConfiguration() {
