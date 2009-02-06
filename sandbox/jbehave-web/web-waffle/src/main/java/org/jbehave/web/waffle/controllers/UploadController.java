@@ -8,8 +8,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.codehaus.waffle.action.annotation.ActionMethod;
 import org.codehaus.waffle.action.annotation.PRG;
 import org.codehaus.waffle.io.FileUploader;
+import org.codehaus.waffle.menu.Menu;
+import org.codehaus.waffle.menu.MenuAwareController;
 
-public class UploadController {
+public class UploadController extends MenuAwareController {
 
 	private static final String UPLOAD_DIR_FIELD = "uploadDirectory";
 	private static final String DEFAULT_UPLOAD_DIR = "upload";
@@ -18,7 +20,8 @@ public class UploadController {
 	private Collection<String> errors;
 	private String uploadedPath;
 
-	public UploadController(FileUploader uploader) {
+	public UploadController(Menu menu, FileUploader uploader) {
+		super(menu);
 		this.uploader = uploader;
 		this.unzipper = new FileUnzipper();
 	}

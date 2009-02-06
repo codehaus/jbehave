@@ -2,6 +2,7 @@ package org.jbehave.web.waffle.controllers;
 
 import static org.junit.Assert.assertEquals;
 
+import org.codehaus.waffle.menu.Menu;
 import org.jbehave.scenario.Configuration;
 import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.ScenarioRunner;
@@ -17,6 +18,7 @@ import org.junit.Test;
 
 public class ScenarioRunnerControllerTest {
 
+	private static final Menu MENU = new Menu();
 	private static final Configuration CONFIGURATION = new MostUsefulConfiguration();
 	private static final ScenarioParser SCENARIO_PARSER = new PatternScenarioParser();
 	private static final ScenarioRunner SCENARIO_RUNNER = new ScenarioRunner();
@@ -24,7 +26,7 @@ public class ScenarioRunnerControllerTest {
 
 	@Test
 	public void canRunSuccessfulScenario(){
-		ScenarioRunnerController controller = new ScenarioRunnerController(CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
+		ScenarioRunnerController controller = new ScenarioRunnerController(MENU, CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
 		String scenarioInput = "Scenario: A simple test" + NL 
 						+ NL
 						+ "Given a test" + NL
@@ -38,7 +40,7 @@ public class ScenarioRunnerControllerTest {
 
 	@Test
 	public void canRunFailingScenario(){
-		ScenarioRunnerController controller = new ScenarioRunnerController(CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
+		ScenarioRunnerController controller = new ScenarioRunnerController(MENU, CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
 		String scenarioInput = "Scenario: A simple test" + NL 
 						+ NL
 						+ "Given a test" + NL

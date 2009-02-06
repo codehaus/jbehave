@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import org.codehaus.waffle.action.annotation.ActionMethod;
+import org.codehaus.waffle.menu.Menu;
+import org.codehaus.waffle.menu.MenuAwareController;
 import org.jbehave.scenario.Configuration;
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.ScenarioRunner;
@@ -15,7 +17,7 @@ import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
 
-public class ScenarioRunnerController {
+public class ScenarioRunnerController extends MenuAwareController {
 
 	private final ScenarioParser scenarioParser;
 	private final ScenarioRunner scenarioRunner;
@@ -25,9 +27,10 @@ public class ScenarioRunnerController {
 	private Configuration configuration;
 	private ScenarioContext scenarioContext;
 	
-	public ScenarioRunnerController(Configuration configuration,
+	public ScenarioRunnerController(Menu menu, Configuration configuration,
 			ScenarioParser scenarioParser, ScenarioRunner scenarioRunner,
 			Steps steps) {
+		super(menu);
 		this.scenarioParser = scenarioParser;
 		this.scenarioRunner = scenarioRunner;
 		this.steps = steps;

@@ -23,27 +23,43 @@ import org.jbehave.web.waffle.controllers.UploadController;
 
 public class JBehaveRegistrar extends AbstractRegistrar {
 
-    public JBehaveRegistrar(Registrar delegate) {
-        super(delegate);
-    }
+	public JBehaveRegistrar(Registrar delegate) {
+		super(delegate);
+	}
 
-    @Override
-    public void application() {
-        ComponentRegistry registry = getComponentRegistry();
-        registerConfiguration();
-        registerScenarioParser();
-        registerScenarioRunner();
-        registerSteps();
-        register("scenario/runner", ScenarioRunnerController.class);
-        register("home", MenuAwareController.class);
-        ViewResolver viewResolver = registry.locateByKey(ViewResolver.class);
-        viewResolver.configureView("home", "ftl/home");
-        registerInstance(createMenu());
-    }
+	@Override
+	public void application() {
+		ComponentRegistry registry = getComponentRegistry();
+		registerConfiguration();
+		registerScenarioParser();
+		registerScenarioRunner();
+		registerSteps();
+		register("scenario/runner", ScenarioRunnerController.class);
+		register("home", MenuAwareController.class);
+		ViewResolver viewResolver = registry.locateByKey(ViewResolver.class);
+		viewResolver.configureView("home", "ftl/home");
+		registerInstance(createMenu());
+	}
+
+	private Menu createMenu() {
+		Map<String, List<String>> content = new HashMap<String, List<String>>();
+		content.put("Home", asList("Home:home"));
+		content.put("Data", asList("Upload:scenario/upload"));
+		content.put("Scenario", asList("Runner:scenario/runner"));
+		return new Menu(content);
+	}
+
+	@Override
+	public void request() {
+		register("fileItemFactory", DiskFileItemFactory.class);
+		register("uploader", RequestFileUploader.class);
+		register("scenario/upload", UploadController.class);
+	}
 
 	protected void registerConfiguration() {
 		register(MostUsefulConfiguration.class);
 	}
+
 	protected void registerScenarioParser() {
 		register(PatternScenarioParser.class);
 	}
@@ -55,19 +71,5 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 	protected void registerSteps() {
 		register(Steps.class);
 	}
-	
-    @Override
-    public void request() {
-        register("fileItemFactory", DiskFileItemFactory.class);
-        register("uploader", RequestFileUploader.class);
-        register("scenario/upload", UploadController.class);
-    }
 
-    private Menu createMenu() {
-        Map<String, List<String>> content = new HashMap<String, List<String>>();
-        content.put("Home", asList("Home:home"));
-        content.put("Data", asList("Upload:scenario/upload"));
-        content.put("Scenario", asList("Runner:scenario/runner"));
-        return new Menu(content);
-    }
 }
