@@ -23,8 +23,8 @@ public class ScenarioRunnerController {
 
 	private ByteArrayOutputStream outputStream;
 	private Configuration configuration;
-	private ScenarioData scenarioData;
-
+	private ScenarioContext scenarioContext;
+	
 	public ScenarioRunnerController(Configuration configuration,
 			ScenarioParser scenarioParser, ScenarioRunner scenarioRunner,
 			Steps steps) {
@@ -39,32 +39,33 @@ public class ScenarioRunnerController {
 						outputStream));
 			}
 		};
-		this.scenarioData = new ScenarioData();
+		this.scenarioContext = new ScenarioContext();
 	}
 
 	@ActionMethod(asDefault = true)
 	public void run() {
-		if (isNotBlank(scenarioData.getInput())) {
+		if (isNotBlank(scenarioContext.getInput())) {
 			try {
 				outputStream.reset();
+				scenarioContext.clearMessages();
 				scenarioRunner.run(storyDefinition(), configuration, steps);
-				scenarioData.setOutput(outputStream.toString());
 			} catch (Throwable e) {
-				throw new RuntimeException(e);
+				scenarioContext.addMessage(e.getMessage());
 			}
+			scenarioContext.setOutput(outputStream.toString());
 		}
 	}
 
 	private StoryDefinition storyDefinition() {
-		return scenarioParser.defineStoryFrom(scenarioData.getInput());
+		return scenarioParser.defineStoryFrom(scenarioContext.getInput());
 	}
 
-	public ScenarioData getScenarioData() {
-		return scenarioData;
+	public ScenarioContext getScenarioContext() {
+		return scenarioContext;
 	}
 
-	public void setScenarioData(ScenarioData scenarioData) {
-		this.scenarioData = scenarioData;
+	public void setScenarioContext(ScenarioContext scenarioContext) {
+		this.scenarioContext = scenarioContext;
 	}
 
 }

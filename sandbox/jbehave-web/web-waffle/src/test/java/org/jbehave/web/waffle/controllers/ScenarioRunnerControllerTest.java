@@ -23,16 +23,35 @@ public class ScenarioRunnerControllerTest {
 	private static final String NL = "\n";
 
 	@Test
-	public void canRunScenario(){
+	public void canRunSuccessfulScenario(){
 		ScenarioRunnerController controller = new ScenarioRunnerController(CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
 		String scenarioInput = "Scenario: A simple test" + NL 
 						+ NL
 						+ "Given a test" + NL
 						+ "When a test is executed" + NL
 						+ "Then a tester is a happy hopper"; 
-		controller.getScenarioData().setInput(scenarioInput);
+		String scenarioOutput = scenarioInput; // if successfully, input=output
+		controller.getScenarioContext().setInput(scenarioInput);
 		controller.run();
-		assertEquals(scenarioInput, controller.getScenarioData().getOutput().trim());
+		assertEquals(scenarioOutput, controller.getScenarioContext().getOutput().trim());
+	}
+
+	@Test
+	public void canRunFailingScenario(){
+		ScenarioRunnerController controller = new ScenarioRunnerController(CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
+		String scenarioInput = "Scenario: A simple test" + NL 
+						+ NL
+						+ "Given a test" + NL
+						+ "When a test fails" + NL
+						+ "Then a tester is a happy hopper"; 
+		String scenarioOutput = "Scenario: A simple test" + NL 
+						+ NL
+						+ "Given a test" + NL
+						+ "When a test fails (FAILED)" + NL
+						+ "Then a tester is a happy hopper (NOT PERFORMED)"; 
+		controller.getScenarioContext().setInput(scenarioInput);
+		controller.run();
+		assertEquals(scenarioOutput, controller.getScenarioContext().getOutput().trim());
 	}
 	
 	public static class MySteps extends Steps {
@@ -41,6 +60,10 @@ public class ScenarioRunnerControllerTest {
 		}
 		@When("a test is executed")
 		public void aTestIsExecuted(){
+		}
+		@When("a test fails")
+		public void aTestFails(){
+			throw new RuntimeException("Test failed");
 		}
 		@Then("a tester is a happy hopper")
 		public void aTesterIsHappy(){

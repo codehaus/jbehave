@@ -17,23 +17,33 @@
                 <legend><@i.messageFor "scenarioRunner" "Scenario Runner"/></legend>
 		        <p>
                 <p>
-                	<@w.textarea "scenarioData.input" "${scenarioData.input}" "rows='20' cols='60'"/>
+                	<@w.textarea "scenarioContext.input" "${scenarioContext.input}" "rows='20' cols='60'"/>
                 </p>
                 <a href="javascript:fireActionMethod('run');"><@i.messageFor "runScenario" "Run Scenario"/></a> 
             </fieldset>
         </div>
 
-        <#if scenarioData.output?? >
+        <#if scenarioContext.output?? >
         <div id="files">    
            <fieldset>
-                <legend><@i.messageFor "scenarioData.output" "Scenario Output"/></legend>
-		        <p>
+                <legend><@i.messageFor "scenarioContext.output" "Scenario Output"/></legend>
                 <p>
-                    <@w.textarea "scenarioData.output" "${scenarioData.output}" "rows='20' cols='60'"/>
+                    <@w.textarea "scenarioContext.output" "${scenarioContext.output}" "rows='20' cols='60'"/>
                 </p>
             </fieldset>
          </div>        
-         </#if>                   
+         </#if>        
+                    
+		<#assign messages = scenarioContext.messages />
+        <#if (messages.size() > 0) >
+ 		 <fieldset>
+             <legend><@i.messageFor "scenarioMessages" "Scenario Messages"/></legend>
+            <#list messages as message>
+                <p>${message}</p>
+            </#list>
+         </table>           
+		</#if>
+		
          
     </form>
 </div>
