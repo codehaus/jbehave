@@ -19,7 +19,10 @@
                 </p>
                 <p><label for="uploadData"><@i.messageFor "uploadData" "Upload Data"/></label></p>
                 <p>
-                	<@w.file "importFile1" />
+					<#list 1..filesToUpload as count>
+						<#assign uploadFile= "uploadFile"+ count>
+						<@w.file "${uploadFile}" />
+    				</#list>  
                	</p>
                	<p>
                     <a class="buttonUpload" onclick="fireMultipartActionMethod('upload');"><@i.messageFor "upload" "Upload"/></a>        

@@ -24,6 +24,7 @@ public class UploadController extends MenuAwareController {
 	private FileUploader uploader;
 	private List<String> errors = new ArrayList<String>();
 	private List<String> uploadedPaths = new ArrayList<String>();
+	private int filesToUpload = 1;
 
 	public UploadController(Menu menu, FileUploader uploader) {
 		super(menu);
@@ -117,6 +118,14 @@ public class UploadController extends MenuAwareController {
 
 	public List<String> getUploadedPaths() {
 		return uploadedPaths;
+	}
+
+	public int getFilesToUpload() {
+		return filesToUpload;
+	}
+
+	public void setFilesToUpload(int filesToUpload) {
+		this.filesToUpload = filesToUpload;
 	}
 
 }

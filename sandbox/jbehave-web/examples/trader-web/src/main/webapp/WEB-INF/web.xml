@@ -69,6 +69,10 @@
       <param-name>view.suffix</param-name>
       <param-value>.ftl</param-value>
     </init-param>
+    <init-param>
+      <param-name>errors.view</param-name>
+      <param-value>ftl/errors</param-value>
+    </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
