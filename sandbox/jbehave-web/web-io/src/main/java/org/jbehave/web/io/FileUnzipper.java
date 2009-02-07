@@ -22,7 +22,7 @@ public class FileUnzipper {
 				unzipEntry(zipfile, entry, outputDir);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new FileUnzipFailedException(archive, outputDir);
 		}
 	}
 
@@ -53,8 +53,18 @@ public class FileUnzipper {
 	}
 
 	private void createDir(File dir) throws IOException {
-		if (!dir.mkdirs())
+		if (!dir.mkdirs()) {
 			throw new IOException("Failed to create dir " + dir);
+		}
+	}
+	
+	@SuppressWarnings("serial")
+	public static final class FileUnzipFailedException extends RuntimeException {
+
+		public FileUnzipFailedException(File archive, File outputDir) {
+			super(outputDir.toString()+File.separator+archive.toString());
+		}
+		
 	}
 
 }
