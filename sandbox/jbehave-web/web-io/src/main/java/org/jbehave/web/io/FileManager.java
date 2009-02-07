@@ -31,13 +31,13 @@ public class FileManager {
 		return uploadDir;
 	}
 
-	public List<String> write(List<FileItem> fileItems, File directory,
+	public List<File> write(List<FileItem> fileItems, File directory,
 			List<String> errors) {
-		List<String> paths = new ArrayList<String>();
+		List<File> files = new ArrayList<File>();
 		for (FileItem item : fileItems) {
 			try {
-				File file = writeToFile(directory, item);
-				paths.add(file.getAbsolutePath());
+				File file = writeItemToFile(directory, item);
+				files.add(file);
 				if ( isZip(file) ) {
 					try {
 						unzipper.unzip(file, directory);
@@ -51,18 +51,18 @@ public class FileManager {
 				errors.add(e.getMessage());
 			}
 		}
-		return paths;
+		return files;
 	}
 
 	private boolean isZip(File file) {
 		return file.getName().endsWith(".zip");
 	}
 
-	private File writeToFile(File uploadDirectory, FileItem item) {
+	private File writeItemToFile(File directory, FileItem item) {
 		if (isBlank(item.getName())) {
 			throw new FileItemNameMissingException(item);
 		}
-		File file = new File(uploadDirectory, item.getName());
+		File file = new File(directory, item.getName());
 		try {
 			item.write(file);
 		} catch (Exception e) {

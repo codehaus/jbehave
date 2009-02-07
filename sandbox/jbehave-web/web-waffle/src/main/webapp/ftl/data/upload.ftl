@@ -39,13 +39,13 @@
          </table>   
        </#if>
 
-	   <#assign uploadedPaths = controller.uploadedPaths />
-       <#if (uploadedPaths.size() > 0) >
+	   <#assign uploadedFiles = controller.uploadedFiles />
+       <#if (uploadedFiles.size() > 0) >
          <table>
-            <th><@i.messageFor "uploadedPaths" "Uploaded Paths"/></th>
-            <#list uploadedPaths as uploadedPath>
+            <th><@i.messageFor "uploadedFiles" "Uploaded Files"/></th>
+            <#list uploadedFiles as file>
                 <tr>
-                    <td>${uploadedPath}</td>
+                    <td>${file.absolutePath}</td>
                 </tr>
             </#list>
          </table>   
