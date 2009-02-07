@@ -17,7 +17,7 @@ import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.ScenarioRunner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.steps.Steps;
-import org.jbehave.web.waffle.controllers.ScenarioRunnerController;
+import org.jbehave.web.waffle.controllers.ScenarioController;
 import org.jbehave.web.waffle.controllers.UploadController;
 
 public class JBehaveRegistrar extends AbstractRegistrar {
@@ -33,29 +33,35 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 		registerScenarioParser();
 		registerScenarioRunner();
 		registerSteps();
-		register("scenario/runner", ScenarioRunnerController.class);
+		register("scenario/scenario", ScenarioController.class);
+		configureViews();
 	}
 
 	@Override
 	public void request() {
 		register("fileItemFactory", DiskFileItemFactory.class);
 		register("uploader", RequestFileUploader.class);
-		register("scenario/upload", UploadController.class);
+		register("data/upload", UploadController.class);
 	}
 
 	protected void registerMenu() {
 		register("home", MenuAwareController.class);
-		ViewResolver viewResolver = getComponentRegistry().locateByKey(ViewResolver.class);
-		viewResolver.configureView("home", "ftl/home");
 		registerInstance(createMenu());
 	}
 
 	protected Menu createMenu() {
 		Map<String, List<String>> content = new HashMap<String, List<String>>();
 		content.put("Home", asList("Home:home"));
-		content.put("Data", asList("Upload:scenario/upload"));
-		content.put("Scenario", asList("Runner:scenario/runner"));
+		content.put("Data", asList("Upload:data/upload"));
+		content.put("Scenario", asList("Run Scenario:scenario/scenario"));
 		return new Menu(content);
+	}
+
+	protected void configureViews() {
+		ViewResolver viewResolver = getComponentRegistry().locateByKey(ViewResolver.class);
+		viewResolver.configureView("home", "ftl/home");
+		viewResolver.configureView("data/upload", "ftl/data/upload");
+		viewResolver.configureView("scenario/scenario", "ftl/scenario/scenario");
 	}
 
 	protected void registerConfiguration() {

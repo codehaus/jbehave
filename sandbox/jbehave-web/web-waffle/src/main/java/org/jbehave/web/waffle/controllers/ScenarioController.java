@@ -18,7 +18,7 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.web.io.model.ScenarioContext;
 
-public class ScenarioRunnerController extends MenuAwareController {
+public class ScenarioController extends MenuAwareController {
 
 	private final ScenarioParser scenarioParser;
 	private final ScenarioRunner scenarioRunner;
@@ -28,7 +28,7 @@ public class ScenarioRunnerController extends MenuAwareController {
 	private Configuration configuration;
 	private ScenarioContext scenarioContext;
 	
-	public ScenarioRunnerController(Menu menu, Configuration configuration,
+	public ScenarioController(Menu menu, Configuration configuration,
 			ScenarioParser scenarioParser, ScenarioRunner scenarioRunner,
 			Steps steps) {
 		super(menu);

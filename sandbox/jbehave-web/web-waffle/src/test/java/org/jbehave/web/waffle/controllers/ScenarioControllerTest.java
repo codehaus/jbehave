@@ -16,7 +16,7 @@ import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
 
 
-public class ScenarioRunnerControllerTest {
+public class ScenarioControllerTest {
 
 	private static final Menu MENU = new Menu();
 	private static final Configuration CONFIGURATION = new MostUsefulConfiguration();
@@ -26,7 +26,7 @@ public class ScenarioRunnerControllerTest {
 
 	@Test
 	public void canRunSuccessfulScenario(){
-		ScenarioRunnerController controller = new ScenarioRunnerController(MENU, CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
+		ScenarioController controller = new ScenarioController(MENU, CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
 		String scenarioInput = "Scenario: A simple test" + NL 
 						+ NL
 						+ "Given a test" + NL
@@ -40,7 +40,7 @@ public class ScenarioRunnerControllerTest {
 
 	@Test
 	public void canRunFailingScenario(){
-		ScenarioRunnerController controller = new ScenarioRunnerController(MENU, CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
+		ScenarioController controller = new ScenarioController(MENU, CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
 		String scenarioInput = "Scenario: A simple test" + NL 
 						+ NL
 						+ "Given a test" + NL

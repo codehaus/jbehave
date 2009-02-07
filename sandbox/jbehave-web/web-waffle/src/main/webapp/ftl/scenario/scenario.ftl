@@ -7,7 +7,7 @@
 </head>
 <#include "/ftl/navigation.ftl" parse="true">
 <div id="content">
-    <form action="${base}/scenario/runner.action">
+    <form action="${base}/scenario/scenario.action">
     
         <h2><@i.messageFor "scenarioRunner" "Scenario Runner"/></h2>    
 

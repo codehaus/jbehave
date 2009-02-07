@@ -24,7 +24,7 @@ public class JBehaveRegistrarTest {
     @Test
     public void canRetrieveControllers() {
         RegistrarHelper helper = new RegistrarHelper();
-        assertNotNull(helper.controllerFor(CLASS, APPLICATION, "scenario/runner"));
-        assertNotNull(helper.controllerFor(CLASS, REQUEST, "scenario/upload"));
+        assertNotNull(helper.controllerFor(CLASS, APPLICATION, "scenario/scenario"));
+        assertNotNull(helper.controllerFor(CLASS, REQUEST, "data/upload"));
     }
 }
