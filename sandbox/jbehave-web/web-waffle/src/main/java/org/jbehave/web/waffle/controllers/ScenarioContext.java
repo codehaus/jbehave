@@ -1,4 +1,4 @@
-package org.jbehave.web.io.model;
+package org.jbehave.web.waffle.controllers;
 
 import static java.util.Arrays.asList;
 

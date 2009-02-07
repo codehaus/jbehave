@@ -18,23 +18,12 @@ import org.jbehave.web.io.FileUnzipper.FileUnzipFailedException;
 public class UnzippingFileManager implements FileManager {
 
 	private static final String ZIP = ".zip";
-	private static final String UPLOAD_PATH = System
-			.getProperty("java.io.tmpdir")
-			+ File.separator + "upload";
-
 	private final FileUnzipper unzipper;
-	private File uploadDir;
+	private final File uploadDirectory;
 
-	public UnzippingFileManager(FileUnzipper unzipper) {
+	public UnzippingFileManager(FileUnzipper unzipper, File uploadDirectory) {
 		this.unzipper = unzipper;
-	}
-
-	public File uploadDirectory() {
-		if (uploadDir == null) {
-			uploadDir = new File(UPLOAD_PATH);
-			uploadDir.mkdirs();
-		}
-		return uploadDir;
+		this.uploadDirectory = uploadDirectory;
 	}
 
 	public List<File> list() {
@@ -43,6 +32,11 @@ public class UnzippingFileManager implements FileManager {
 				return !file.isDirectory();
 			}			
 		}));
+	}
+
+	private File uploadDirectory() {
+		uploadDirectory.mkdirs();
+		return uploadDirectory;
 	}
 
 	public void delete(List<String> paths) {
@@ -61,6 +55,7 @@ public class UnzippingFileManager implements FileManager {
 			}
 		}
 		if ( isZip(file) ){
+			// delete the unzipped directory too
 			deleteFile(withoutZip(file));
 		}
 		return file.delete();

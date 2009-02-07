@@ -1,7 +1,10 @@
 package org.jbehave.web.waffle;
 
+import static java.io.File.separator;
+import static java.lang.System.getProperty;
 import static java.util.Arrays.asList;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,23 +39,22 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 		registerScenarioParser();
 		registerScenarioRunner();
 		registerSteps();
+		registerFileManager();
 		register("scenario/scenario", ScenarioController.class);
-		register("unzipper", FileUnzipper.class);
-		register("manager", UnzippingFileManager.class);
 		register("data/files", FilesController.class);
 		configureViews();
 	}
 
 	@Override
 	public void request() {
-		register("fileItemFactory", DiskFileItemFactory.class);
-		register("uploader", RequestFileUploader.class);
+		register(DiskFileItemFactory.class);
+		register(RequestFileUploader.class);
 		register("data/upload", FileUploadController.class);
 	}
 
 	protected void registerMenu() {
 		register("home", MenuAwareController.class);
-		registerInstance(createMenu());
+		registerInstance("menu", createMenu());
 	}
 
 	protected Menu createMenu() {
@@ -86,5 +88,12 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 	protected void registerSteps() {
 		register(Steps.class);
 	}
+
+	protected void registerFileManager() {
+		register(FileUnzipper.class);
+		register(UnzippingFileManager.class);
+		registerInstance("uploadDirectory", new File(getProperty("java.io.tmpdir")+separator+"upload"));
+	}
+
 
 }
