@@ -16,6 +16,7 @@ import org.jbehave.scenario.parser.ScenarioParser;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.Steps;
+import org.jbehave.web.io.model.ScenarioContext;
 
 public class ScenarioRunnerController extends MenuAwareController {
 

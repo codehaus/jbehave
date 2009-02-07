@@ -9,6 +9,7 @@
   <description>JBehave Web aims to provide a web integration layer for Behaviou-Driven Development</description>
 
   <modules>
+    <module>web-io</module>
     <module>web-selenium</module>
     <module>web-waffle</module>
   </modules>

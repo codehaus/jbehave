@@ -10,6 +10,7 @@ import org.codehaus.waffle.action.annotation.PRG;
 import org.codehaus.waffle.io.FileUploader;
 import org.codehaus.waffle.menu.Menu;
 import org.codehaus.waffle.menu.MenuAwareController;
+import org.jbehave.web.io.FileUnzipper;
 
 public class UploadController extends MenuAwareController {
 

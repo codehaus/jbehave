@@ -1,4 +1,4 @@
-package org.jbehave.web.waffle.controllers;
+package org.jbehave.web.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
