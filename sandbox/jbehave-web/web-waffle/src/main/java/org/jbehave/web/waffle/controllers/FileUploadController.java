@@ -14,7 +14,7 @@ import org.codehaus.waffle.menu.Menu;
 import org.codehaus.waffle.menu.MenuAwareController;
 import org.jbehave.web.io.FileManager;
 
-public class UploadController extends MenuAwareController {
+public class FileUploadController extends MenuAwareController {
 
 	private final FileUploader uploader;
 	private final FileManager manager;
@@ -22,7 +22,7 @@ public class UploadController extends MenuAwareController {
 	private List<File> uploadedFiles = new ArrayList<File>();
 	private int filesToUpload = 1;
 
-	public UploadController(Menu menu, FileUploader uploader, FileManager manager) {
+	public FileUploadController(Menu menu, FileUploader uploader, FileManager manager) {
 		super(menu);
 		this.uploader = uploader;
 		this.manager = manager;
@@ -35,7 +35,7 @@ public class UploadController extends MenuAwareController {
 		uploadedFiles.clear();
 		List<FileItem> files = uploader.getFiles();
 		errors.addAll(uploader.getErrors());
-		uploadedFiles.addAll(manager.write(files, manager.uploadDirectory(), errors));
+		uploadedFiles.addAll(manager.write(files, errors));
 	}
 
 	public Collection<String> getErrors() {

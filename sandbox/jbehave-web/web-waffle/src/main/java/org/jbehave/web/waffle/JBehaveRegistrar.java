@@ -19,8 +19,9 @@ import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.web.io.FileManager;
 import org.jbehave.web.io.FileUnzipper;
+import org.jbehave.web.waffle.controllers.FileUploadController;
+import org.jbehave.web.waffle.controllers.FilesController;
 import org.jbehave.web.waffle.controllers.ScenarioController;
-import org.jbehave.web.waffle.controllers.UploadController;
 
 public class JBehaveRegistrar extends AbstractRegistrar {
 
@@ -36,6 +37,9 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 		registerScenarioRunner();
 		registerSteps();
 		register("scenario/scenario", ScenarioController.class);
+		register("manager", FileManager.class);
+		register("unzipper", FileUnzipper.class);
+		register("data/files", FilesController.class);
 		configureViews();
 	}
 
@@ -43,9 +47,7 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 	public void request() {
 		register("fileItemFactory", DiskFileItemFactory.class);
 		register("uploader", RequestFileUploader.class);
-		register("unzipper", FileUnzipper.class);
-		register("manager", FileManager.class);
-		register("data/upload", UploadController.class);
+		register("data/upload", FileUploadController.class);
 	}
 
 	protected void registerMenu() {
@@ -56,7 +58,7 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 	protected Menu createMenu() {
 		Map<String, List<String>> content = new HashMap<String, List<String>>();
 		content.put("Home", asList("Home:home"));
-		content.put("Data", asList("Upload:data/upload"));
+		content.put("Data", asList("Files:data/files", "Upload:data/upload"));
 		content.put("Scenario", asList("Run Scenario:scenario/scenario"));
 		return new Menu(content);
 	}
@@ -64,6 +66,7 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 	protected void configureViews() {
 		ViewResolver viewResolver = getComponentRegistry().locateByKey(ViewResolver.class);
 		viewResolver.configureView("home", "ftl/home");
+		viewResolver.configureView("data/files", "ftl/data/files");
 		viewResolver.configureView("data/upload", "ftl/data/upload");
 		viewResolver.configureView("scenario/scenario", "ftl/scenario/scenario");
 	}

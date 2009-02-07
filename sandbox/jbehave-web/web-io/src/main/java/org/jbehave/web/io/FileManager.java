@@ -3,6 +3,7 @@
  */
 package org.jbehave.web.io;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.isBlank;
 
 import java.io.File;
@@ -13,8 +14,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.jbehave.web.io.FileUnzipper.FileUnzipFailedException;
 
 public class FileManager {
-	
-	private static final String UPLOAD_PATH = System.getProperty("java.io.tmpdir")+File.separator+"upload";
+
+	private static final String UPLOAD_PATH = System
+			.getProperty("java.io.tmpdir")
+			+ File.separator + "upload";
 
 	private final FileUnzipper unzipper;
 	private File uploadDir;
@@ -31,14 +34,18 @@ public class FileManager {
 		return uploadDir;
 	}
 
-	public List<File> write(List<FileItem> fileItems, File directory,
-			List<String> errors) {
+	public List<File> list() {
+		return asList(uploadDirectory().listFiles());
+	}
+
+	public List<File> write(List<FileItem> fileItems, List<String> errors) {
 		List<File> files = new ArrayList<File>();
+		File directory = uploadDirectory();
 		for (FileItem item : fileItems) {
 			try {
 				File file = writeItemToFile(directory, item);
 				files.add(file);
-				if ( isZip(file) ) {
+				if (isZip(file)) {
 					try {
 						unzipper.unzip(file, directory);
 					} catch (FileUnzipFailedException e) {

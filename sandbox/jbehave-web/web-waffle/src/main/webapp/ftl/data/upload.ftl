@@ -9,9 +9,7 @@
 <div id="content">
     <form action="${base}/data/upload.action">
     
-        <h2><@i.messageFor "dataUpload" "Data Upload"/></h2>    
-        
-        <div id="actions">
+        <div id="upload">
            <fieldset>
                 <legend><@i.messageFor "upload" "Upload"/></legend>
                 <p><label for="uploadData"><@i.messageFor "uploadData" "Upload Data"/></label></p>
@@ -29,26 +27,34 @@
 
        <#assign errors = controller.errors />
        <#if (errors.size() > 0) >
-         <table>
-            <th><@i.messageFor "errors" "Errors"/></th>
-            <#list errors as error>
-                <tr>
-                    <td>${error}</td>
-                </tr>
-            </#list>
-         </table>   
+	   <div id="errors">  
+	 	 <fieldset>       
+	         <table>
+	            <th><@i.messageFor "errors" "Errors"/></th>
+	            <#list errors as error>
+	                <tr>
+	                    <td>${error}</td>
+	                </tr>
+	            </#list>
+	         </table>   
+	     </fieldset>
+       </div>
        </#if>
 
 	   <#assign uploadedFiles = controller.uploadedFiles />
        <#if (uploadedFiles.size() > 0) >
-         <table>
-            <th><@i.messageFor "uploadedFiles" "Uploaded Files"/></th>
-            <#list uploadedFiles as file>
-                <tr>
-                    <td>${file.absolutePath}</td>
-                </tr>
-            </#list>
-         </table>   
+	   <div id="uploadedFiles">  
+	 	 <fieldset>
+		     <legend><@i.messageFor "uploadedFiles" "Uploaded Files"/></legend>
+	         <table>
+	            <#list uploadedFiles as file>
+	                <tr>
+	                    <td>${file.absolutePath}</td>
+	                </tr>
+	            </#list>
+	         </table>   
+         </fieldset>
+       </div>
        </#if>                   
     </form>
 </div>
