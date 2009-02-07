@@ -15,9 +15,10 @@
 			   <#assign files = controller.files />
 		       <#if (files.size() > 0) >		       		
 	           <table>
-	             <#list files as file>
+	             <#list files as file>	
 	                <tr>
-	                    <td>${file.absolutePath}</td>
+	                    <td>${file.name}</td>
+	                    <td><@w.checkbox "selectedPaths" "${file.absolutePath}" /></td>
 	                </tr>
 	             </#list>
 	           </table>
@@ -30,6 +31,7 @@
                 <legend><@i.messageFor "actions" "Actions"/></legend>
                	<p>
                     <a class="buttonList" onclick="fireActionMethod('list');"><@i.messageFor "list" "List"/></a>        
+                    <a class="buttonDelete" onclick="fireActionMethod('delete');"><@i.messageFor "delete" "Delete"/></a>        
                 </p>
             </fieldset>
         </div>

@@ -29,8 +29,8 @@
        <#if (errors.size() > 0) >
 	   <div id="errors">  
 	 	 <fieldset>       
+            <legend><@i.messageFor "errors" "Errors"/></legend>
 	         <table>
-	            <th><@i.messageFor "errors" "Errors"/></th>
 	            <#list errors as error>
 	                <tr>
 	                    <td>${error}</td>
