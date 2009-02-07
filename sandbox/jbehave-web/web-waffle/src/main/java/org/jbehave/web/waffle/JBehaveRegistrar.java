@@ -20,8 +20,8 @@ import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.ScenarioRunner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.steps.Steps;
-import org.jbehave.web.io.FileUnzipper;
-import org.jbehave.web.io.UnzippingFileManager;
+import org.jbehave.web.io.FileZipper;
+import org.jbehave.web.io.ZippingFileManager;
 import org.jbehave.web.waffle.controllers.FileUploadController;
 import org.jbehave.web.waffle.controllers.FilesController;
 import org.jbehave.web.waffle.controllers.ScenarioController;
@@ -90,8 +90,8 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 	}
 
 	protected void registerFileManager() {
-		register(FileUnzipper.class);
-		register(UnzippingFileManager.class);
+		register(FileZipper.class);
+		register(ZippingFileManager.class);
 		registerInstance("uploadDirectory", new File(getProperty("java.io.tmpdir")+separator+"upload"));
 	}
 

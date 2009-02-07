@@ -13,16 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
-import org.jbehave.web.io.FileUnzipper.FileUnzipFailedException;
+import org.jbehave.web.io.FileZipper.FileUnzipFailedException;
 
-public class UnzippingFileManager implements FileManager {
+public class ZippingFileManager implements FileManager {
 
 	private static final String ZIP = ".zip";
-	private final FileUnzipper unzipper;
+	private final FileZipper zipper;
 	private final File uploadDirectory;
 
-	public UnzippingFileManager(FileUnzipper unzipper, File uploadDirectory) {
-		this.unzipper = unzipper;
+	public ZippingFileManager(FileZipper zipper, File uploadDirectory) {
+		this.zipper = zipper;
 		this.uploadDirectory = uploadDirectory;
 	}
 
@@ -74,7 +74,7 @@ public class UnzippingFileManager implements FileManager {
 				files.add(file);
 				if (isZip(file)) {
 					try {
-						unzipper.unzip(file, directory);
+						zipper.unzip(file, directory);
 					} catch (FileUnzipFailedException e) {
 						errors.add(e.getMessage());
 					}
