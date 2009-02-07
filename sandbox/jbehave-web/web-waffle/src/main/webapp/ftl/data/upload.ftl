@@ -14,9 +14,6 @@
         <div id="actions">
            <fieldset>
                 <legend><@i.messageFor "upload" "Upload"/></legend>
-                <p><label for="uploadDirectory"><@i.messageFor "uploadDirectory" "Upload Directory"/></label>
-                	<@w.text "uploadDirectory" ""/>
-                </p>
                 <p><label for="uploadData"><@i.messageFor "uploadData" "Upload Data"/></label></p>
                 <p>
 					<#list 1..filesToUpload as count>

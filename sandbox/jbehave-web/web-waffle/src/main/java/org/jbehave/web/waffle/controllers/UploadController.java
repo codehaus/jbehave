@@ -1,7 +1,6 @@
 package org.jbehave.web.waffle.controllers;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,10 +34,7 @@ public class UploadController extends MenuAwareController {
 		uploadedPaths.clear();
 		List<FileItem> files = uploader.getFiles();
 		errors.addAll(uploader.getErrors());
-		List<FileItem> formFields = uploader.getFormFields();
-		File uploadDirectory = manager.uploadDirectory(formFields);
-		uploadedPaths.addAll(manager.write(files, uploadDirectory, true,
-				errors));
+		uploadedPaths.addAll(manager.write(files, manager.uploadDirectory(), errors));
 	}
 
 	public Collection<String> getErrors() {
@@ -51,10 +47,6 @@ public class UploadController extends MenuAwareController {
 
 	public int getFilesToUpload() {
 		return filesToUpload;
-	}
-
-	public void setFilesToUpload(int filesToUpload) {
-		this.filesToUpload = filesToUpload;
 	}
 
 }
