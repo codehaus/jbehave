@@ -17,7 +17,7 @@
 	           <table>
 	             <#list files as file>	
 	                <tr>
-	                    <td>${file.name}</td>
+	                    <td>${file.absolutePath}</td>
 	                    <td><@w.checkbox "selectedPaths" "${file.absolutePath}" /></td>
 	                </tr>
 	             </#list>
