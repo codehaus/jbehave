@@ -17,6 +17,8 @@ import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.ScenarioRunner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.steps.Steps;
+import org.jbehave.web.io.FileManager;
+import org.jbehave.web.io.FileUnzipper;
 import org.jbehave.web.waffle.controllers.ScenarioController;
 import org.jbehave.web.waffle.controllers.UploadController;
 
@@ -41,6 +43,8 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 	public void request() {
 		register("fileItemFactory", DiskFileItemFactory.class);
 		register("uploader", RequestFileUploader.class);
+		register("unzipper", FileUnzipper.class);
+		register("manager", FileManager.class);
 		register("data/upload", UploadController.class);
 	}
 
