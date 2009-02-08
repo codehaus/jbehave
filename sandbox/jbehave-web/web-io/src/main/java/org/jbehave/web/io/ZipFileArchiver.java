@@ -6,6 +6,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -19,7 +20,6 @@ import org.apache.commons.io.IOUtils;
 public class ZipFileArchiver implements FileArchiver {
 
 	private static final String ZIP = ".zip";
-	private byte[] BUFFER = new byte[1024];
 
 	public boolean isArchive(File file) {
 		return file.getName().endsWith(ZIP);
@@ -31,33 +31,37 @@ public class ZipFileArchiver implements FileArchiver {
 
 	public void archive(File archive, List<File> files) {
 		try {
-			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
-					archive));
+			// Open archive stream
+			FileOutputStream fileStream = new FileOutputStream(archive);
+			ZipOutputStream zipStream = new ZipOutputStream(fileStream);
+
 			for (File file : files) {
-				FileInputStream in = new FileInputStream(file);
+				if (!file.exists() || file.isDirectory()) {
+					continue;
+				}
 
-				// Add entry to output stream.
-				out.putNextEntry(new ZipEntry(file.getAbsolutePath()));
+				// Add archive entry
+				ZipEntry entry = new ZipEntry(file.getName());
+				zipStream.putNextEntry(entry);
 
-				// copy from file to entry
-				copy(in, out);
-
-				// close entry
-				out.closeEntry();
-				in.close();
+				// Copy file to output
+				copy(file, zipStream);
 			}
-			// close stream
-			out.close();
+
+			zipStream.close();
+			fileStream.close();
 		} catch (Exception e) {
 			throw new FileArchiveFailedException(archive, files);
 		}
 	}
 
-	private void copy(FileInputStream in, ZipOutputStream out)
-			throws IOException {
-		int len;
-		while ((len = in.read(BUFFER)) > 0) {
-			out.write(BUFFER, 0, len);
+	private void copy(File file, ZipOutputStream out)
+			throws FileNotFoundException, IOException {
+		FileInputStream in = new FileInputStream(file);
+		try {
+			IOUtils.copy(in, out);
+		} finally {
+			in.close();
 		}
 	}
 
@@ -86,16 +90,16 @@ public class ZipFileArchiver implements FileArchiver {
 			createDir(outputFile.getParentFile());
 		}
 
-		BufferedInputStream inputStream = new BufferedInputStream(zipfile
+		BufferedInputStream in = new BufferedInputStream(zipfile
 				.getInputStream(entry));
-		BufferedOutputStream outputStream = new BufferedOutputStream(
+		BufferedOutputStream out = new BufferedOutputStream(
 				new FileOutputStream(outputFile));
 
 		try {
-			IOUtils.copy(inputStream, outputStream);
+			IOUtils.copy(in, out);
 		} finally {
-			outputStream.close();
-			inputStream.close();
+			out.close();
+			in.close();
 		}
 	}
 

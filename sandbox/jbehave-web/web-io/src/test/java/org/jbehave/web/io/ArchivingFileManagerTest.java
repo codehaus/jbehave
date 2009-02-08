@@ -37,7 +37,7 @@ public class ArchivingFileManagerTest {
 		file1 = create("file1");
 		file2 = create("file2");
 		zip = create("dir1.zip");
-		archiver.archive(zip, asList(file1, file2));
+		archiver.archive(zip, asList(dir1, file1, file2));
 
 	}
 
