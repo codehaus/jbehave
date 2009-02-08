@@ -1,15 +1,12 @@
 package org.jbehave.web.io;
 
 import java.io.File;
-import java.util.List;
 
 public interface FileArchiver {
 
-	void archive(File archive, List<File> files);
+	boolean isArchive(File file);
 
 	void unarchive(File archive, File outputDir);
-
-	boolean isArchive(File file);
 
 	File unarchivedDir(File file);	
 

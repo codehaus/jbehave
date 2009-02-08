@@ -1,74 +1,48 @@
 package org.jbehave.web.io;
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
-import org.jbehave.web.io.ZipFileArchiver.FileArchiveFailedException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ZipFileArchiverTest {
 
-	private static final String TMP = System.getProperty("java.io.tmpdir");
-	private File upload;
-	private File dir1;
-	private File file1;
-	private File file2;
-	private File zip;
+	private File dir;
 
 	@Before
 	public void setup() throws IOException {
-		upload = new File(TMP, "upload");
-		upload.mkdirs();
-		dir1 = createDir("dir1");
-		file1 = create("file1");
-		file2 = create("file2");
-		zip = create("dir1.zip");
-
-	}
-
-	@After
-	public void tearDown() throws IOException {
-		file1.delete();
-		file2.delete();
-		dir1.delete();
-		zip.delete();
+		dir = File.createTempFile("dir", "");
+		dir.delete();
+		dir.mkdir();
 	}
 
 	@Test
-	public void canArchiveFilesAndDirectories() throws IOException {
+	public void canUnarchiveZip() throws IOException {
 		FileArchiver archiver = new ZipFileArchiver();
-		archiver.archive(zip, asList(dir1, file1, file2));
+		File zip = resourceFile("dir1.zip");
+		assertTrue(archiver.isArchive(zip));
+		archiver.unarchive(zip, dir);
+		assertFilesUnarchived(asList("dir1", "dir1/file1.txt", "dir1/subdir1", "dir1/subdir1/subfile1.txt"));
 	}
 	
-	@Test
-	public void canArchiveInexistingFilesAndDirectories() throws IOException {
-		FileArchiver archiver = new ZipFileArchiver();
-		file1.delete();
-		archiver.archive(zip, asList(dir1, file1, file2));
+	private void assertFilesUnarchived(List<String> paths) {
+		for ( String path : paths ){
+			assertFileExists(path);
+		}
+	}
+
+	private void assertFileExists(String path) {
+		assertTrue(new File(dir, path).exists());
+		
+	}
+
+	private File resourceFile( String path ) {
+		return new File(getClass().getClassLoader().getResource(path).getFile());		
 	}
 	
-	@Test(expected=FileArchiveFailedException.class)
-	public void cannotArchiveNullEntries() throws Exception {
-		FileArchiver archiver = new ZipFileArchiver();
-		archiver.archive(zip, asList((File)null));
-	}
-
-	private File create(String path) throws IOException {
-		File file = new File(upload, path);
-		file.createNewFile();
-		return file;
-	}
-
-	private File createDir(String path) throws IOException {
-		File dir = new File(upload, path);
-		dir.mkdirs();
-		File child = new File(dir, "child1");
-		child.createNewFile();
-		return dir;
-	}
-
 }

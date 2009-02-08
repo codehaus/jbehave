@@ -5,20 +5,17 @@ import static org.apache.commons.lang.StringUtils.removeEnd;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.IOUtils;
 
+// Should wrap commons-compress (http://commons.apache.org/sandbox/compress) when released
 public class ZipFileArchiver implements FileArchiver {
 
 	private static final String ZIP = ".zip";
@@ -31,42 +28,6 @@ public class ZipFileArchiver implements FileArchiver {
 		return new File(removeEnd(file.getPath(), ZIP));
 	}
 
-	public void archive(File archive, List<File> files) {
-		try {
-			// Open archive stream
-			FileOutputStream fileStream = new FileOutputStream(archive);
-			ZipOutputStream zipStream = new ZipOutputStream(fileStream);
-
-			for (File file : files) {
-				if (!file.exists() || file.isDirectory()) {
-					continue;
-				}
-
-				// Add archive entry
-				ZipEntry entry = new ZipEntry(file.getName());
-				zipStream.putNextEntry(entry);
-
-				// Copy file to output
-				copy(file, zipStream);
-			}
-
-			zipStream.close();
-			fileStream.close();
-		} catch (Exception e) {
-			throw new FileArchiveFailedException(archive, files);
-		}
-	}
-
-	private void copy(File file, ZipOutputStream out)
-			throws FileNotFoundException, IOException {
-		FileInputStream in = new FileInputStream(file);
-		try {
-			IOUtils.copy(in, out);
-		} finally {
-			in.close();
-		}
-	}
-
 	public void unarchive(File archive, File outputDir) {
 		try {
 			ZipFile zipfile = new ZipFile(archive);
@@ -75,7 +36,7 @@ public class ZipFileArchiver implements FileArchiver {
 				unzipEntry(zipfile, entry, outputDir);
 			}
 		} catch (Exception e) {
-			throw new FileUnarchiveFailedException(archive, outputDir);
+			throw new FileUnarchiveFailedException(archive, outputDir, e);
 		}
 	}
 
@@ -118,21 +79,11 @@ public class ZipFileArchiver implements FileArchiver {
 	}
 
 	@SuppressWarnings("serial")
-	public static final class FileArchiveFailedException extends
-			RuntimeException {
-
-		public FileArchiveFailedException(File archive, List<File> files) {
-			super(files.toString() + File.separator + files.toString());
-		}
-
-	}
-
-	@SuppressWarnings("serial")
 	public static final class FileUnarchiveFailedException extends
 			RuntimeException {
 
-		public FileUnarchiveFailedException(File archive, File outputDir) {
-			super(outputDir.toString() + File.separator + archive.toString());
+		public FileUnarchiveFailedException(File archive, File outputDir, Exception cause) {
+			super(archive.toString()+File.pathSeparator+outputDir.toString(), cause);
 		}
 
 	}

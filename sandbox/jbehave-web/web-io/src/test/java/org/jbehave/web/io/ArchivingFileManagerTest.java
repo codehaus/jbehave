@@ -4,11 +4,17 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.IOUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -21,8 +27,8 @@ import org.junit.runner.RunWith;
 public class ArchivingFileManagerTest {
 
 	private Mockery mockery = new Mockery();
-	private static final FileArchiver archiver = new ZipFileArchiver();
 	private static final String TMP = System.getProperty("java.io.tmpdir");
+	private FileManager manager;
 	private File upload;
 	private File dir1;
 	private File file1;
@@ -37,8 +43,8 @@ public class ArchivingFileManagerTest {
 		file1 = create("file1");
 		file2 = create("file2");
 		zip = create("dir1.zip");
-		archiver.archive(zip, asList(dir1, file1, file2));
-
+		archiveFiles(zip, asList(file1, file2));
+		manager = new ArchivingFileManager(new ZipFileArchiver(), upload);
 	}
 
 	@After
@@ -51,13 +57,11 @@ public class ArchivingFileManagerTest {
 
 	@Test
 	public void canListFilesThatAreNotDirectories() throws IOException {
-		FileManager manager = new ArchivingFileManager(archiver, upload);
 		assertEquals(asList(zip, file1, file2), manager.list());
 	}
 
 	@Test
 	public void canDeleteFilesAndDirectories() throws IOException {
-		FileManager manager = new ArchivingFileManager(archiver, upload);
 		assertEquals(asList(zip, file1, file2), manager.list());
 		manager.delete(asList(file1.getAbsolutePath()));
 		assertEquals(asList(zip, file2), manager.list());
@@ -67,7 +71,6 @@ public class ArchivingFileManagerTest {
 
 	@Test
 	public void canWriteFileItems() throws Exception {
-		FileManager manager = new ArchivingFileManager(archiver, upload);
 		List<String> errors = new ArrayList<String>();
 		final FileItem file2FileItem = mockery.mock(FileItem.class, "file2");
 		final FileItem zipFileItem = mockery.mock(FileItem.class, "zip");
@@ -90,7 +93,6 @@ public class ArchivingFileManagerTest {
 
 	@Test
 	public void cannotUnarchiveMissingFile() throws Exception {
-		FileManager manager = new ArchivingFileManager(archiver, upload);
 		List<String> errors = new ArrayList<String>();
 		final FileItem file2FileItem = mockery.mock(FileItem.class, "file2");
 		final FileItem zipFileItem = mockery.mock(FileItem.class, "zip");
@@ -115,7 +117,6 @@ public class ArchivingFileManagerTest {
 
 	@Test
 	public void canIgnoreWritingFileItemsWithBlankNames() throws Exception {
-		FileManager manager = new ArchivingFileManager(archiver, upload);
 		List<String> errors = new ArrayList<String>();
 		final FileItem file2FileItem = mockery.mock(FileItem.class, "file2");
 		final FileItem zipFileItem = mockery.mock(FileItem.class, "zip");
@@ -133,7 +134,6 @@ public class ArchivingFileManagerTest {
 
 	@Test
 	public void cannotWriteFileItemsThatFail() throws Exception {
-		FileManager manager = new ArchivingFileManager(archiver, upload);
 		List<String> errors = new ArrayList<String>();
 		final FileItem file2FileItem = mockery.mock(FileItem.class, "file2");
 		final FileItem zipFileItem = mockery.mock(FileItem.class, "zip");
@@ -168,6 +168,34 @@ public class ArchivingFileManagerTest {
 		File child = new File(dir, "child1");
 		child.createNewFile();
 		return dir;
+	}
+
+	private void archiveFiles(File archive, List<File> files) throws IOException {
+		FileOutputStream fileStream = new FileOutputStream(archive);
+		ZipOutputStream zipStream = new ZipOutputStream(fileStream);
+
+		for (File file : files) {
+			if (!file.exists() || file.isDirectory()) {
+				// only interested in flat file archives for testing purposes
+				continue;
+			}
+			ZipEntry entry = new ZipEntry(file.getName());
+			zipStream.putNextEntry(entry);
+			copy(file, zipStream);
+		}
+
+		zipStream.close();
+		fileStream.close();
+	}
+
+	private void copy(File file, ZipOutputStream out)
+			throws FileNotFoundException, IOException {
+		FileInputStream in = new FileInputStream(file);
+		try {
+			IOUtils.copy(in, out);
+		} finally {
+			in.close();
+		}
 	}
 
 }
