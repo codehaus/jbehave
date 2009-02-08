@@ -18,10 +18,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(JMock.class)
-public class ZippingFileManagerTest {
+public class ArchivingFileManagerTest {
 
 	private Mockery mockery = new Mockery();
-	private static final FileZipper zipper = new FileZipper();
+	private static final FileArchiver archiver = new ZipFileArchiver();
 	private static final String TMP = System.getProperty("java.io.tmpdir");
 	private File upload;
 	private File dir1;
@@ -37,7 +37,7 @@ public class ZippingFileManagerTest {
 		file1 = create("file1");
 		file2 = create("file2");
 		zip = create("dir1.zip");
-		zipper.zip(zip, asList(file1, file2));
+		archiver.archive(zip, asList(file1, file2));
 
 	}
 	
@@ -51,13 +51,13 @@ public class ZippingFileManagerTest {
 
 	@Test
 	public void canListFilesThatAreNotDirectories() throws IOException {
-		FileManager manager = new ZippingFileManager(zipper, upload);
+		FileManager manager = new ArchivingFileManager(archiver, upload);
 		assertEquals(asList(zip, file1, file2), manager.list());
 	}
 
 	@Test
 	public void canDeleteFilesAndDirectories() throws IOException {
-		FileManager manager = new ZippingFileManager(zipper, upload);
+		FileManager manager = new ArchivingFileManager(archiver, upload);
 		assertEquals(asList(zip, file1, file2), manager.list());
 		manager.delete(asList(file1.getAbsolutePath()));
 		assertEquals(asList(zip, file2), manager.list());
@@ -65,7 +65,7 @@ public class ZippingFileManagerTest {
 
 	@Test
 	public void canWriteZippedFileItems() throws Exception {
-		FileManager manager = new ZippingFileManager(zipper, upload);
+		FileManager manager = new ArchivingFileManager(archiver, upload);
 		List<String> errors = new ArrayList<String>();
 		final FileItem zipFileItem = mockery.mock(FileItem.class);
 		mockery.checking(new Expectations() {

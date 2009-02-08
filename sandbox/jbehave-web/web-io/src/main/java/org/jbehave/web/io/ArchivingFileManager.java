@@ -1,11 +1,7 @@
-/**
- * 
- */
 package org.jbehave.web.io;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.removeEnd;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -13,16 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
-import org.jbehave.web.io.FileZipper.FileUnzipFailedException;
+import org.jbehave.web.io.ZipFileArchiver.FileUnzipFailedException;
 
-public class ZippingFileManager implements FileManager {
+public class ArchivingFileManager implements FileManager {
 
-	private static final String ZIP = ".zip";
-	private final FileZipper zipper;
+	private final FileArchiver archiver;
 	private final File uploadDirectory;
 
-	public ZippingFileManager(FileZipper zipper, File uploadDirectory) {
-		this.zipper = zipper;
+	public ArchivingFileManager(FileArchiver archiver, File uploadDirectory) {
+		this.archiver = archiver;
 		this.uploadDirectory = uploadDirectory;
 	}
 
@@ -54,17 +49,13 @@ public class ZippingFileManager implements FileManager {
 				}
 			}
 		}
-		if ( isZip(file) ){
+		if ( archiver.isArchive(file) ){
 			// delete the unzipped directory too
-			deleteFile(withoutZip(file));
+			deleteFile(archiver.unarchivedDir(file));
 		}
 		return file.delete();
 	}
-
-	private File withoutZip(File file) {
-		return new File(removeEnd(file.getPath(), ZIP));
-	}
-
+	
 	public List<File> write(List<FileItem> fileItems, List<String> errors) {
 		List<File> files = new ArrayList<File>();
 		File directory = uploadDirectory();
@@ -72,9 +63,9 @@ public class ZippingFileManager implements FileManager {
 			try {
 				File file = writeItemToFile(directory, item);
 				files.add(file);
-				if (isZip(file)) {
+				if (archiver.isArchive(file)) {
 					try {
-						zipper.unzip(file, directory);
+						archiver.unarchive(file, directory);
 					} catch (FileUnzipFailedException e) {
 						errors.add(e.getMessage());
 					}
@@ -90,10 +81,7 @@ public class ZippingFileManager implements FileManager {
 		return files;
 	}
 
-	private boolean isZip(File file) {
-		return file.getName().endsWith(ZIP);
-	}
-
+	
 	private File writeItemToFile(File directory, FileItem item) {
 		if (isBlank(item.getName())) {
 			throw new FileItemNameMissingException(item);

@@ -1,5 +1,7 @@
 package org.jbehave.web.io;
 
+import static org.apache.commons.lang.StringUtils.removeEnd;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -14,11 +16,20 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.IOUtils;
 
-public class FileZipper {
+public class ZipFileArchiver implements FileArchiver {
 
+	private static final String ZIP = ".zip";
 	private byte[] BUFFER = new byte[1024];
 
-	public void zip(File archive, List<File> files) {
+	public boolean isArchive(File file) {
+		return file.getName().endsWith(ZIP);
+	}
+
+	public File unarchivedDir(File file) {
+		return new File(removeEnd(file.getPath(), ZIP));
+	}
+
+	public void archive(File archive, List<File> files) {
 		try {
 			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
 					archive));
@@ -46,7 +57,7 @@ public class FileZipper {
 		}
 	}
 
-	public void unzip(File archive, File outputDir) {
+	public void unarchive(File archive, File outputDir) {
 		try {
 			ZipFile zipfile = new ZipFile(archive);
 			for (Enumeration<?> e = zipfile.entries(); e.hasMoreElements();) {
@@ -89,7 +100,6 @@ public class FileZipper {
 			throw new IOException("Failed to create dir " + dir);
 		}
 	}
-	
 
 	@SuppressWarnings("serial")
 	public static final class FileZipFailedException extends RuntimeException {
