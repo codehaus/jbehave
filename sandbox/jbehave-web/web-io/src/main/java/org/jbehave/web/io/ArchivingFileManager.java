@@ -70,8 +70,6 @@ public class ArchivingFileManager implements FileManager {
 				}
 			} catch (FileItemNameMissingException e) {
 				// ignore and carry on
-			} catch (FileAlreadyExistsException e) {
-				errors.add(e.getMessage());
 			} catch (FileWriteFailedException e) {
 				errors.add(e.getMessage());
 			}
@@ -85,10 +83,10 @@ public class ArchivingFileManager implements FileManager {
 			throw new FileItemNameMissingException(item);
 		}
 		File file = new File(directory, item.getName());
-		if (file.exists()) {
-			throw new FileAlreadyExistsException(file);
-		}
 		try {
+			if (file.exists()) {
+				file.createNewFile();
+			}
 			item.write(file);
 		} catch (Exception e) {
 			throw new FileWriteFailedException(file, e);
@@ -101,17 +99,7 @@ public class ArchivingFileManager implements FileManager {
 			RuntimeException {
 
 		public FileItemNameMissingException(FileItem file) {
-			super(file.toString());
-		}
-
-	}
-
-	@SuppressWarnings("serial")
-	public static final class FileAlreadyExistsException extends
-			RuntimeException {
-
-		public FileAlreadyExistsException(File file) {
-			super(file.toString() + " already exists");
+			super(file.toString() + " missing name");
 		}
 
 	}
