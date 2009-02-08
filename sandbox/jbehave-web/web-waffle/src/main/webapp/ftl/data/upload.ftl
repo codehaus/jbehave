@@ -11,8 +11,7 @@
     
         <div id="upload">
            <fieldset>
-                <legend><@i.messageFor "upload" "Upload"/></legend>
-                <p><label for="uploadData"><@i.messageFor "uploadData" "Upload Data"/></label></p>
+                <legend><@i.messageFor "uploadData" "Upload Data"/></legend>
                 <p>
 					<#list 1..filesToUpload as count>
 						<#assign uploadFile= "uploadFile"+ count>

@@ -85,7 +85,7 @@
               <outputDirectory>${project.build.directory}/webapps</outputDirectory>
               <overWriteReleases>true</overWriteReleases>
               <overWriteSnapshots>true</overWriteSnapshots>
-              <includes>**\/*.ftl</includes>
+              <includes>**\/*.ftl,**\/*.css</includes>
               <excludes></excludes>
               <artifactItems>
                 <artifactItem>
