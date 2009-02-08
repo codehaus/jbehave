@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
-import org.jbehave.web.io.ZipFileArchiver.FileUnzipFailedException;
+import org.jbehave.web.io.ZipFileArchiver.FileUnarchiveFailedException;
 
 public class ArchivingFileManager implements FileManager {
 
@@ -40,20 +40,18 @@ public class ArchivingFileManager implements FileManager {
 		}
 	}
 
-	private boolean deleteFile(File file) {
+	private void deleteFile(File file) {
 		if (file.isDirectory()) {
 			// recursively delete children
 			for (String child : file.list()) {
-				if (!deleteFile(new File(file, child))) {
-					return false;
-				}
+				deleteFile(new File(file, child));
 			}
 		}
 		if ( archiver.isArchive(file) ){
-			// delete the unzipped directory too
+			// delete the unarchived directory too
 			deleteFile(archiver.unarchivedDir(file));
 		}
-		return file.delete();
+		file.delete();
 	}
 	
 	public List<File> write(List<FileItem> fileItems, List<String> errors) {
@@ -66,7 +64,7 @@ public class ArchivingFileManager implements FileManager {
 				if (archiver.isArchive(file)) {
 					try {
 						archiver.unarchive(file, directory);
-					} catch (FileUnzipFailedException e) {
+					} catch (FileUnarchiveFailedException e) {
 						errors.add(e.getMessage());
 					}
 				}

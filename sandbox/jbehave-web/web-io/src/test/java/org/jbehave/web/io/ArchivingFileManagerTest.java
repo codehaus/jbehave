@@ -61,24 +61,93 @@ public class ArchivingFileManagerTest {
 		assertEquals(asList(zip, file1, file2), manager.list());
 		manager.delete(asList(file1.getAbsolutePath()));
 		assertEquals(asList(zip, file2), manager.list());
+		manager.delete(asList(zip.getAbsolutePath()));
+		assertEquals(asList(file2), manager.list());
 	}
 
 	@Test
-	public void canWriteZippedFileItems() throws Exception {
+	public void canWriteFileItems() throws Exception {
 		FileManager manager = new ArchivingFileManager(archiver, upload);
 		List<String> errors = new ArrayList<String>();
-		final FileItem zipFileItem = mockery.mock(FileItem.class);
+		final FileItem file2FileItem = mockery.mock(FileItem.class, "file2");
+		final FileItem zipFileItem = mockery.mock(FileItem.class, "zip");
 		mockery.checking(new Expectations() {
 			{
 				allowing(zipFileItem).getName();
 				will(returnValue(zip.getName()));
 				one(zipFileItem).write(zip);
+				allowing(file2FileItem).getName();
+				will(returnValue(file2.getName()));
+				one(file2FileItem).write(file2);
 			}
 		});
-		zip.delete(); // ensure it does not exist
-		manager.write(asList(zipFileItem), errors);
+		// ensure files do not exists
+		file2.delete(); 
+		zip.delete(); 
+		manager.write(asList(file2FileItem, zipFileItem), errors);
+	}
+	
+
+	@Test
+	public void canIgnoreWritingFileItemsWithBlankNames() throws Exception {
+		FileManager manager = new ArchivingFileManager(archiver, upload);
+		List<String> errors = new ArrayList<String>();
+		final FileItem file2FileItem = mockery.mock(FileItem.class, "file2");
+		final FileItem zipFileItem = mockery.mock(FileItem.class, "zip");
+		mockery.checking(new Expectations() {
+			{
+				allowing(zipFileItem).getName();
+				will(returnValue(""));
+				allowing(file2FileItem).getName();
+				will(returnValue(""));
+			}
+		});
+		manager.write(asList(file2FileItem, zipFileItem), errors);
+	}
+	
+	@Test
+	public void cannotOverWriteExistingFileItems() throws Exception {
+		FileManager manager = new ArchivingFileManager(archiver, upload);
+		List<String> errors = new ArrayList<String>();
+		final FileItem file2FileItem = mockery.mock(FileItem.class, "file2");
+		final FileItem zipFileItem = mockery.mock(FileItem.class, "zip");
+		mockery.checking(new Expectations() {
+			{
+				allowing(zipFileItem).getName();
+				will(returnValue(zip.getName()));
+				allowing(file2FileItem).getName();
+				will(returnValue(file2.getName()));
+			}
+		});
+		manager.write(asList(file2FileItem, zipFileItem), errors);
+		assertEquals(2, errors.size());
 	}
 
+	@Test
+	public void cannotWriteFileItemsThatFail() throws Exception {
+		FileManager manager = new ArchivingFileManager(archiver, upload);
+		List<String> errors = new ArrayList<String>();
+		final FileItem file2FileItem = mockery.mock(FileItem.class, "file2");
+		final FileItem zipFileItem = mockery.mock(FileItem.class, "zip");
+		mockery.checking(new Expectations() {
+			{
+				allowing(zipFileItem).getName();
+				will(returnValue(zip.getName()));
+				one(zipFileItem).write(zip);
+				will(throwException(new IOException("zip write failed")));
+				allowing(file2FileItem).getName();
+				will(returnValue(file2.getName()));
+				one(file2FileItem).write(file2);
+				will(throwException(new IOException("file2 write failed")));
+			}
+		});
+		// ensure files do not exists
+		file2.delete(); 
+		zip.delete(); 
+		manager.write(asList(file2FileItem, zipFileItem), errors);
+		assertEquals(2, errors.size());
+	}
+	
 	private File create(String path) throws IOException {
 		File file = new File(upload, path);
 		file.createNewFile();
@@ -86,9 +155,11 @@ public class ArchivingFileManagerTest {
 	}
 
 	private File createDir(String path) throws IOException {
-		File file = new File(upload, path);
-		file.mkdirs();
-		return file;
+		File dir = new File(upload, path);
+		dir.mkdirs();
+		File child = new File(dir, "child1");
+		child.createNewFile();
+		return dir;
 	}
 
 }

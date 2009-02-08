@@ -33,18 +33,14 @@ public class ZipFileArchiver implements FileArchiver {
 		try {
 			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
 					archive));
-			// Compress the files
 			for (File file : files) {
 				FileInputStream in = new FileInputStream(file);
 
 				// Add entry to output stream.
 				out.putNextEntry(new ZipEntry(file.getAbsolutePath()));
 
-				// Transfer bytes from the file to the ZIP file
-				int len;
-				while ((len = in.read(BUFFER)) > 0) {
-					out.write(BUFFER, 0, len);
-				}
+				// copy from file to entry
+				copy(in, out);
 
 				// close entry
 				out.closeEntry();
@@ -53,7 +49,15 @@ public class ZipFileArchiver implements FileArchiver {
 			// close stream
 			out.close();
 		} catch (Exception e) {
-			throw new FileZipFailedException(archive, files);
+			throw new FileArchiveFailedException(archive, files);
+		}
+	}
+
+	private void copy(FileInputStream in, ZipOutputStream out)
+			throws IOException {
+		int len;
+		while ((len = in.read(BUFFER)) > 0) {
+			out.write(BUFFER, 0, len);
 		}
 	}
 
@@ -65,7 +69,7 @@ public class ZipFileArchiver implements FileArchiver {
 				unzipEntry(zipfile, entry, outputDir);
 			}
 		} catch (Exception e) {
-			throw new FileUnzipFailedException(archive, outputDir);
+			throw new FileUnarchiveFailedException(archive, outputDir);
 		}
 	}
 
@@ -102,18 +106,20 @@ public class ZipFileArchiver implements FileArchiver {
 	}
 
 	@SuppressWarnings("serial")
-	public static final class FileZipFailedException extends RuntimeException {
+	public static final class FileArchiveFailedException extends
+			RuntimeException {
 
-		public FileZipFailedException(File archive, List<File> files) {
+		public FileArchiveFailedException(File archive, List<File> files) {
 			super(files.toString() + File.separator + files.toString());
 		}
 
 	}
 
 	@SuppressWarnings("serial")
-	public static final class FileUnzipFailedException extends RuntimeException {
+	public static final class FileUnarchiveFailedException extends
+			RuntimeException {
 
-		public FileUnzipFailedException(File archive, File outputDir) {
+		public FileUnarchiveFailedException(File archive, File outputDir) {
 			super(outputDir.toString() + File.separator + archive.toString());
 		}
 
