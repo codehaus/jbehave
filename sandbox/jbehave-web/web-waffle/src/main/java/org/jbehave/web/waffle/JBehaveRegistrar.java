@@ -59,9 +59,8 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 
 	protected Menu createMenu() {
 		Map<String, List<String>> content = new HashMap<String, List<String>>();
-		content.put("Home", asList("Home:home"));
-		content.put("Data", asList("Files:data/files", "Upload:data/upload"));
-		content.put("Scenario", asList("Run Scenario:scenario/scenario"));
+		content.put("Menu", asList("Home:home"));
+		content.put("Scenario", asList("Data Files:data/files", "Data Upload:data/upload", "Run:scenario/scenario"));
 		return new Menu(content);
 	}
 
