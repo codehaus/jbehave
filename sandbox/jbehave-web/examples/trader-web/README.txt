@@ -1,22 +1,25 @@
-To run:
+To deploy:
 
-- Using Maven
+- Using Maven with embedded Jetty
 
 mvn jetty:run-war
 
-- Using a webapp container (e.g. Jetty, Tomcat, etc ...)
+- Using Maven with a webapp container (e.g. Jetty, Tomcat, etc ...)
 
+mvn clean install
 Copy target/jbehave-trader.war to container deploy dir and start container.
 
-If prefer not using Maven to build the war, then you can use the snapshot deployed on 
+- If prefer not using Maven to build the war, then you can use the snapshot deployed on 
 
 http://snapshots.repository.codehaus.org/org/jbehave/web/jbehave-trader-webapp/2.0-SNAPSHOT/
+
+To use: 
 
 Open webapp page at
 
 http://localhost:8080/jbehave-trader (assuming normal port conventions)
 
-Click on Scenario Runner link in navigation menu.
+Click on Run Scenario link in navigation menu.
 
 Input textual scenario in textarea and click on Run Scenario link.
 
