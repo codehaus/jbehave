@@ -26,7 +26,7 @@
            <fieldset>
                 <legend><@i.messageFor "scenarioOutput" "Scenario Output"/></legend>
                 <p>
-                    <@w.textarea "scenarioContext.output" "${scenarioContext.output}" "rows='20' cols='60'"/>
+                    <@w.textarea "scenarioContext.output" "${scenarioContext.output}" "rows='20' cols='60' disabled='true'"/>
                 </p>
             </fieldset>
          </div>        
