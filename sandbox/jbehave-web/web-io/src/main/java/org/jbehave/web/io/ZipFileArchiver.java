@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -90,10 +92,16 @@ public class ZipFileArchiver implements FileArchiver {
 			createDir(outputFile.getParentFile());
 		}
 
-		BufferedInputStream in = new BufferedInputStream(zipfile
-				.getInputStream(entry));
-		BufferedOutputStream out = new BufferedOutputStream(
-				new FileOutputStream(outputFile));
+		// Copy entry to output
+		InputStream in = zipfile.getInputStream(entry);
+		copy(in, outputFile);
+	}
+
+	private void copy(InputStream inputStream, File outputFile)
+			throws IOException {
+		InputStream in = new BufferedInputStream(inputStream);
+		OutputStream out = new BufferedOutputStream(new FileOutputStream(
+				outputFile));
 
 		try {
 			IOUtils.copy(in, out);
