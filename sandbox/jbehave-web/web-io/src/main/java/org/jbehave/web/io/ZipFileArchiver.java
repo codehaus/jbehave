@@ -15,7 +15,8 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
 
-// Should wrap commons-compress (http://commons.apache.org/sandbox/compress) when released
+// unarchive() impl adapted from http://piotrga.wordpress.com/2008/05/07/how-to-unzip-archive-in-java/
+// works as tested, but should be replaced with commons-compress (http://commons.apache.org/sandbox/compress) when released
 public class ZipFileArchiver implements FileArchiver {
 
 	private static final String ZIP = ".zip";
@@ -82,8 +83,10 @@ public class ZipFileArchiver implements FileArchiver {
 	public static final class FileUnarchiveFailedException extends
 			RuntimeException {
 
-		public FileUnarchiveFailedException(File archive, File outputDir, Exception cause) {
-			super(archive.toString()+File.pathSeparator+outputDir.toString(), cause);
+		public FileUnarchiveFailedException(File archive, File outputDir,
+				Exception cause) {
+			super(archive.toString() + File.pathSeparator
+					+ outputDir.toString(), cause);
 		}
 
 	}
