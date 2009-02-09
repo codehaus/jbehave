@@ -15,7 +15,7 @@
                 <legend><@i.messageFor "scenarioInput" "Scenario Input"/></legend>
 		        <p>
                 <p>
-                	<@w.textarea "scenarioContext.input" "${scenarioContext.input}" "rows='20' cols='60'"/>
+                	<@w.textarea "scenarioContext.input" "${scenarioContext.input}" "rows='20' cols='70'"/>
                 </p>
                 <a href="javascript:fireActionMethod('run');"><@i.messageFor "runScenario" "Run Scenario"/></a> 
             </fieldset>
@@ -26,7 +26,7 @@
            <fieldset>
                 <legend><@i.messageFor "scenarioOutput" "Scenario Output"/></legend>
                 <p>
-                    <@w.textarea "scenarioContext.output" "${scenarioContext.output}" "rows='20' cols='60' disabled='true'"/>
+                    <@w.textarea "scenarioContext.output" "${scenarioContext.output}" "rows='20' cols='70' disabled='true'"/>
                 </p>
             </fieldset>
          </div>        
@@ -40,10 +40,22 @@
 	            <#list messages as message>
 	                <p>${message}</p>
 	            </#list>
-	         </table>           
+	         </fieldset>           
          </div>
 		</#if>
 		
+		<#assign failureCause = scenarioContext.failureCauseAsString />
+        <#if (failureCause.length() > 0) >
+        <div id="failureCause">  
+	 		 <fieldset>
+	             <legend><@i.messageFor "failureCause" "Failure Cause"/></legend>
+				<p>
+					<@w.textarea "failureCause" "${failureCause}" "rows='35' cols='70' disabled='true'"/>
+				</p>
+	         </fieldset>           
+         </div>
+		</#if>
+
          
     </form>
 </div>

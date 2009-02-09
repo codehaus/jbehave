@@ -2,6 +2,8 @@ package org.jbehave.web.waffle.controllers;
 
 import static java.util.Arrays.asList;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class ScenarioContext {
 	private String input;
 	private String output;
 	private List<String> messages;
+	private Throwable cause;
 
 	public ScenarioContext() {
 		this(EMPTY, EMPTY, EMPTY_LIST);
@@ -45,7 +48,7 @@ public class ScenarioContext {
 
 	public void addMessage(String message) {
 		this.messages.add(message);
-	}	
+	}
 
 	public List<String> getMessages() {
 		return messages;
@@ -55,11 +58,21 @@ public class ScenarioContext {
 		this.messages.clear();
 	}
 
+	public void setFailureCause(Throwable cause) {
+		this.cause = cause;
+	}
+
+	public String getFailureCauseAsString() {
+		StringWriter writer = new StringWriter();
+		if (cause != null) {
+			cause.printStackTrace(new PrintWriter(writer));
+		}
+		return writer.getBuffer().toString();
+	}
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
-	
 
 }

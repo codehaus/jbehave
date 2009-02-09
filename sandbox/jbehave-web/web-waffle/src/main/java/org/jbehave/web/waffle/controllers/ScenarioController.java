@@ -53,6 +53,7 @@ public class ScenarioController extends MenuAwareController {
 				scenarioContext.clearMessages();
 				scenarioRunner.run(storyDefinition(), configuration, steps);
 			} catch (Throwable e) {
+				scenarioContext.setFailureCause(e);
 				scenarioContext.addMessage(e.getMessage());
 			}
 			scenarioContext.setOutput(outputStream.toString());
