@@ -58,7 +58,11 @@ public class ScenarioContext {
 		this.messages.clear();
 	}
 
-	public void setFailureCause(Throwable cause) {
+	public void clearFailureCause() {
+		this.cause = null;		
+	}
+	
+	public void runFailedFor(Throwable cause) {
 		this.cause = cause;
 	}
 
@@ -74,5 +78,6 @@ public class ScenarioContext {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+
 
 }

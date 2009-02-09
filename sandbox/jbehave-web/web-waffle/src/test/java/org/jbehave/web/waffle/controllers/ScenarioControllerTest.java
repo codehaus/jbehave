@@ -2,6 +2,7 @@ package org.jbehave.web.waffle.controllers;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.codehaus.waffle.menu.Menu;
 import org.jbehave.scenario.Configuration;
@@ -36,6 +37,8 @@ public class ScenarioControllerTest {
 		controller.getScenarioContext().setInput(scenarioInput);
 		controller.run();
 		assertEquals(scenarioOutput, controller.getScenarioContext().getOutput().trim());
+		assertEquals(0, controller.getScenarioContext().getMessages().size());
+		assertEquals("", controller.getScenarioContext().getFailureCauseAsString());
 	}
 
 	@Test
@@ -55,6 +58,7 @@ public class ScenarioControllerTest {
 		controller.run();
 		assertEquals(scenarioOutput, controller.getScenarioContext().getOutput().trim());
 		assertEquals(asList("Test failed"), controller.getScenarioContext().getMessages());
+		assertTrue(controller.getScenarioContext().getFailureCauseAsString().startsWith("java.lang.RuntimeException: Test failed"));
 	}
 	
 	public static class MySteps extends Steps {
