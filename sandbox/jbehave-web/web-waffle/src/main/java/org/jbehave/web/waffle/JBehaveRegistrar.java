@@ -20,8 +20,8 @@ import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.ScenarioRunner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.steps.Steps;
-import org.jbehave.web.io.ZipFileArchiver;
 import org.jbehave.web.io.ArchivingFileManager;
+import org.jbehave.web.io.ZipFileArchiver;
 import org.jbehave.web.waffle.controllers.FileUploadController;
 import org.jbehave.web.waffle.controllers.FilesController;
 import org.jbehave.web.waffle.controllers.ScenarioController;
@@ -40,11 +40,15 @@ public class JBehaveRegistrar extends AbstractRegistrar {
 		registerScenarioRunner();
 		registerSteps();
 		registerFileManager();
-		register("scenario/scenario", ScenarioController.class);
 		register("data/files", FilesController.class);
 		configureViews();
 	}
 
+	@Override
+	public void session() {
+		register("scenario/scenario", ScenarioController.class);
+	}
+	
 	@Override
 	public void request() {
 		register(DiskFileItemFactory.class);
