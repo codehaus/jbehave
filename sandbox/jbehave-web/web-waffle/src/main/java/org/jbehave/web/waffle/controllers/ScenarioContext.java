@@ -46,16 +46,20 @@ public class ScenarioContext {
 		this.output = output;
 	}
 
-	public void addMessage(String message) {
-		this.messages.add(message);
-	}
-
-	public List<String> getMessages() {
+	public List<String> getFailureMessages() {
+		messages.clear();
+		addFailureMessage(cause);
 		return messages;
 	}
 
-	public void clearMessages() {
-		this.messages.clear();
+	private void addFailureMessage(Throwable cause) {
+		if ( cause != null ){
+			if ( cause.getMessage() != null ){
+				messages.add(cause.getMessage());
+			}
+			// recurse
+			addFailureMessage(cause.getCause());
+		}
 	}
 
 	public void clearFailureCause() {
@@ -66,7 +70,7 @@ public class ScenarioContext {
 		this.cause = cause;
 	}
 
-	public String getFailureCauseAsString() {
+	public String getFailureStackTrace() {
 		StringWriter writer = new StringWriter();
 		if (cause != null) {
 			cause.printStackTrace(new PrintWriter(writer));

@@ -37,8 +37,8 @@ public class ScenarioControllerTest {
 		controller.getScenarioContext().setInput(scenarioInput);
 		controller.run();
 		assertEquals(scenarioOutput, controller.getScenarioContext().getOutput().trim());
-		assertEquals(0, controller.getScenarioContext().getMessages().size());
-		assertEquals("", controller.getScenarioContext().getFailureCauseAsString());
+		assertEquals(0, controller.getScenarioContext().getFailureMessages().size());
+		assertEquals("", controller.getScenarioContext().getFailureStackTrace());
 	}
 
 	@Test
@@ -57,8 +57,8 @@ public class ScenarioControllerTest {
 		controller.getScenarioContext().setInput(scenarioInput);
 		controller.run();
 		assertEquals(scenarioOutput, controller.getScenarioContext().getOutput().trim());
-		assertEquals(asList("Test failed"), controller.getScenarioContext().getMessages());
-		assertTrue(controller.getScenarioContext().getFailureCauseAsString().startsWith("java.lang.RuntimeException: Test failed"));
+		assertEquals(asList("Test failed"), controller.getScenarioContext().getFailureMessages());
+		assertTrue(controller.getScenarioContext().getFailureStackTrace().startsWith("java.lang.RuntimeException: Test failed"));
 	}
 	
 	public static class MySteps extends Steps {

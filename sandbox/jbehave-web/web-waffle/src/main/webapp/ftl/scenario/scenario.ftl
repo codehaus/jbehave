@@ -32,25 +32,25 @@
          </div>        
          </#if>        
                     
-		<#assign messages = scenarioContext.messages />
-        <#if (messages.size() > 0) >
-        <div id="scenarioMessages">  
+		<#assign failureMessages = scenarioContext.failureMessages />
+        <#if (failureMessages.size() > 0) >
+        <div id="scenariofailureMessages">  
 	 		 <fieldset>
-	             <legend><@i.messageFor "scenarioMessages" "Scenario Messages"/></legend>
-	            <#list messages as message>
+	             <legend><@i.messageFor "scenariofailureMessages" "Scenario Failure Messages"/></legend>
+	            <#list failureMessages as message>
 	                <p>${message}</p>
 	            </#list>
 	         </fieldset>           
          </div>
 		</#if>
 		
-		<#assign failureCause = scenarioContext.failureCauseAsString />
-        <#if (failureCause.length() > 0) >
-        <div id="failureCause">  
+		<#assign failureStackTrace = scenarioContext.failureStackTrace />
+        <#if (failureStackTrace.length() > 0) >
+        <div id="failureStackTrace">  
 	 		 <fieldset>
-	             <legend><@i.messageFor "failureCause" "Failure Cause"/></legend>
+	             <legend><@i.messageFor "failureStackTrace" "Failure Stack Trace"/></legend>
 				<p>
-					<@w.textarea "failureCause" "${failureCause}" "rows='35' cols='70' disabled='true'"/>
+					<@w.textarea "failureStackTrace" "${failureStackTrace}" "rows='35' cols='70' disabled='true'"/>
 				</p>
 	         </fieldset>           
          </div>
