@@ -15,7 +15,7 @@ body {
 #content {
 	width: 840px;
 	float: left;
-	margin-top: 0px;
+	margin-top: -50px;
 	padding: 10px
 }
 
@@ -37,10 +37,9 @@ body {
 	border: 2px solid #ccc;
 	padding: 10px;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: 10px;
+	left: 10px;
 	width: 120px;
-	margin-top: 20px;
 	line-height: 1;
 }
 
@@ -48,6 +47,7 @@ body {
 	font-weight: bold;
 	padding: 0px 1px 0px 1px;
 	text-decoration: none;
+	text-shadow: none;
 }
 
 .menu-group a {
@@ -60,7 +60,7 @@ body {
 	padding: 2px 5px 2px 2px;
 	text-align: right;
 	text-decoration: none;
-	text-shadow: #5e708e 2px 2px 1px;
+	text-shadow: none;
 }
 
 .menu-group-content {
@@ -79,7 +79,7 @@ body {
 	padding: 2px 2px 2px 5px;
 	text-align: left;
 	text-decoration: none;
-	text-shadow: #333 2px 2px 1px;
+	text-shadow: none;
 }
 
 .menu-file a:hover,.menu-file a:active,.menu-index a:hover,.menu-index a:active
@@ -87,7 +87,6 @@ body {
 	background-color: #999;
 	border-right: 4px solid #333;
 	color: #090;
-	text-shadow: #333 2px 2px 1px;
 }
 
 #menu-selected {
