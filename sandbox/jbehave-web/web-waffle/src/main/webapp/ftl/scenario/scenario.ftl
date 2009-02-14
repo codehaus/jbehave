@@ -38,9 +38,13 @@
         <div id="scenariofailureMessages">  
 	 		 <fieldset>
 	             <legend><@i.messageFor "scenariofailureMessages" "Scenario Failure Messages"/></legend>
-	            <#list failureMessages as message>
-	                <p>${message}</p>
-	            </#list>
+				 <p>
+                    <pre class="brush: plain">
+			            <#list failureMessages as message>
+	    		            ${message}
+	            		</#list>
+                    </pre>
+                </p>
 	         </fieldset>           
          </div>
 		</#if>
