@@ -10,5 +10,6 @@
 ${body}
 <#include "/ftl/footer.ftl" parse="true">
 </div>
+<#include "/ftl/sh.ftl" parse="true">
 </body>
 </html>

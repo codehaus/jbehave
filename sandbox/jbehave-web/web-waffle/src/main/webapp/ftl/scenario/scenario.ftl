@@ -13,11 +13,10 @@
         <div id="scenarioInput">
            <fieldset>
                 <legend><@i.messageFor "scenarioInput" "Scenario Input"/></legend>
-		        <p>
                 <p>
-                	<@w.textarea "scenarioContext.input" "${scenarioContext.input}" "rows='20' cols='70'"/>
+                	<@w.textarea "scenarioContext.input" "${scenarioContext.input}" "rows='25' cols='100'"/>
                 </p>
-                <a href="javascript:fireActionMethod('run');"><@i.messageFor "runScenario" "Run Scenario"/></a> 
+ 				<p><a href="javascript:fireActionMethod('run');"><@i.messageFor "runScenario" "Run Scenario"/></a></p> 
             </fieldset>
         </div>
 
@@ -26,7 +25,9 @@
            <fieldset>
                 <legend><@i.messageFor "scenarioOutput" "Scenario Output"/></legend>
                 <p>
-                    <@w.textarea "scenarioContext.output" "${scenarioContext.output}" "rows='20' cols='70' disabled='true'"/>
+                    <pre class="brush: plain">
+                    	${scenarioContext.output}
+                    </pre>
                 </p>
             </fieldset>
          </div>        
@@ -50,7 +51,9 @@
 	 		 <fieldset>
 	             <legend><@i.messageFor "failureStackTrace" "Failure Stack Trace"/></legend>
 				<p>
-					<@w.textarea "failureStackTrace" "${failureStackTrace}" "rows='35' cols='70' disabled='true'"/>
+					<pre class="brush: java; gutter: false">
+                    	${failureStackTrace}
+                    </pre>
 				</p>
 	         </fieldset>           
          </div>
