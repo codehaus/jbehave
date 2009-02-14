@@ -30,7 +30,6 @@
            <fieldset>
                 <legend><@i.messageFor "actions" "Actions"/></legend>
                	<p>
-                    <a class="buttonList" onclick="fireActionMethod('list');"><@i.messageFor "list" "List"/></a>        
                     <a class="buttonDelete" onclick="fireActionMethod('delete');"><@i.messageFor "delete" "Delete"/></a>        
                 </p>
             </fieldset>

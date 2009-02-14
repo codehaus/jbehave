@@ -31,59 +31,21 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpack-waffle-webapp</id>
+            <id>unpack-webapp-resources</id>
             <phase>process-resources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/waffle-webapp</outputDirectory>
+              <outputDirectory>${project.build.directory}/webapp-resources</outputDirectory>
               <overWriteReleases>true</overWriteReleases>
               <overWriteSnapshots>true</overWriteSnapshots>
-              <excludes></excludes>
+              <excludes>**/*.class</excludes>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.jbehave.web</groupId>
                   <artifactId>jbehave-web-waffle</artifactId>
                   <version>2.0-SNAPSHOT</version>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>unpack-web-resources</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/waffle-webapp</outputDirectory>
-              <overWriteReleases>false</overWriteReleases>
-              <overWriteSnapshots>true</overWriteSnapshots>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.jbehave.web</groupId>
-                  <artifactId>jbehave-web-resources</artifactId>
-                  <version>2.0-SNAPSHOT</version>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>unpack-waffle-resources</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/waffle-webapp</outputDirectory>
-              <overWriteReleases>false</overWriteReleases>
-              <overWriteSnapshots>true</overWriteSnapshots>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.codehaus.waffle</groupId>
-                  <artifactId>waffle-resources</artifactId>
-                  <version>1.3</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -101,7 +63,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/waffle-webapp</outputDirectory>
+              <outputDirectory>${project.build.directory}/webapp-resources</outputDirectory>
               <overwrite>true</overwrite>
               <resources>
                 <resource>
@@ -119,7 +81,7 @@
           <warName>${webapp.name}</warName>
           <webResources>
             <resource>
-              <directory>${project.build.directory}/waffle-webapp</directory>
+              <directory>${project.build.directory}/webapp-resources</directory>
             </resource>
           </webResources>
         </configuration>
