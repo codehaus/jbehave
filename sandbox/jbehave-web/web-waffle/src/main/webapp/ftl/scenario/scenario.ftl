@@ -51,7 +51,7 @@
 	 		 <fieldset>
 	             <legend><@i.messageFor "failureStackTrace" "Failure Stack Trace"/></legend>
 				<p>
-					<pre class="brush: java; gutter: false">
+					<pre class="brush: java; gutter: false; collapse: true">
                     	${failureStackTrace}
                     </pre>
 				</p>

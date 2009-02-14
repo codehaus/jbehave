@@ -40,7 +40,6 @@
               <outputDirectory>${project.build.directory}/waffle-webapp</outputDirectory>
               <overWriteReleases>true</overWriteReleases>
               <overWriteSnapshots>true</overWriteSnapshots>
-              <includes>**\/*.css,**\/*.ftl,**\/*.js,**\/*.jsp,**\/*.xml</includes>
               <excludes></excludes>
               <artifactItems>
                 <artifactItem>
@@ -107,13 +106,6 @@
               <resources>
                 <resource>
                   <directory>${basedir}/src/main/webapp</directory>
-                  <includes>
-                    <include>**\/*.css</include>
-                    <include>**\/*.ftl</include>
-                    <include>**\/*.js</include>
-                    <include>**\/*.jsp</include>
-                    <include>**\/*.xml</include>
-                  </includes>
                 </resource>
               </resources>
             </configuration>
