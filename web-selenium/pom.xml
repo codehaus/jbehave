@@ -5,12 +5,15 @@
     <artifactId>jbehave-web</artifactId>
     <version>2.0-beta-1</version>
   </parent>
-  <artifactId>jbehave-web-examples</artifactId>
-  <packaging>pom</packaging>
-  <name>JBehave Web Examples</name>
+  <artifactId>jbehave-web-selenium</artifactId>
+  <packaging>jar</packaging>
+  <name>JBehave Web Selenium</name>
 
-  <modules>
-    <module>trader-web</module>
-  </modules>
-  
+  <dependencies>
+    <dependency>
+      <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+      <artifactId>selenium-java-client-driver</artifactId>
+      <version>1.0-beta-2</version>
+    </dependency>
+  </dependencies>
 </project>
