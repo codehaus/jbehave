@@ -19,15 +19,16 @@ import org.junit.Test;
 
 public class ScenarioControllerTest {
 
-	private static final Menu MENU = new Menu();
-	private static final Configuration CONFIGURATION = new MostUsefulConfiguration();
-	private static final ScenarioParser SCENARIO_PARSER = new PatternScenarioParser();
-	private static final ScenarioRunner SCENARIO_RUNNER = new ScenarioRunner();
 	private static final String NL = "\n";
+
+	private final Menu MENU = new Menu();
+	private final Configuration configuration = new MostUsefulConfiguration();
+	private final ScenarioParser parser = new PatternScenarioParser();
+	private final ScenarioRunner runner = new ScenarioRunner();
 
 	@Test
 	public void canRunSuccessfulScenario(){
-		ScenarioController controller = new ScenarioController(MENU, CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
+		ScenarioController controller = new ScenarioController(MENU, configuration, parser, runner, new MySteps());
 		String scenarioInput = "Scenario: A simple test" + NL 
 						+ NL
 						+ "Given a test" + NL
@@ -43,7 +44,7 @@ public class ScenarioControllerTest {
 
 	@Test
 	public void canRunFailingScenario(){
-		ScenarioController controller = new ScenarioController(MENU, CONFIGURATION, SCENARIO_PARSER, SCENARIO_RUNNER, new MySteps());
+		ScenarioController controller = new ScenarioController(MENU, configuration, parser, runner, new MySteps());
 		String scenarioInput = "Scenario: A simple test" + NL 
 						+ NL
 						+ "Given a test" + NL

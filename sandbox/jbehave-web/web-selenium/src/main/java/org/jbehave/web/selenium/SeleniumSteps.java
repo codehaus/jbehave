@@ -31,12 +31,12 @@ public class SeleniumSteps extends Steps {
 	}
 
 	@BeforeScenario
-	public void setUp() throws Exception {
+	public void beforeScenario() throws Exception {
 		selenium.start();
 	}
 
 	@AfterScenario
-	public void tearDown() throws Exception {
+	public void afterScenario() throws Exception {
 		selenium.close();
 		selenium.stop();
 	}
