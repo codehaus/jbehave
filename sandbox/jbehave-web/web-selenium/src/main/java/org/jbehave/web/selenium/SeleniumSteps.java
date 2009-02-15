@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.jbehave.scenario.annotations.AfterScenario;
 import org.jbehave.scenario.annotations.BeforeScenario;
 import org.jbehave.scenario.steps.Steps;
+import org.jbehave.scenario.steps.StepsConfiguration;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
@@ -26,10 +27,15 @@ public class SeleniumSteps extends Steps {
 	protected final ConditionRunner runner;
 
 	public SeleniumSteps() {
+		this(new StepsConfiguration());
+	}
+
+	public SeleniumSteps(StepsConfiguration configuration){
+		super(configuration);
 		this.selenium = createSelenium();
 		this.runner = createConditionRunner(selenium);
 	}
-
+	
 	@BeforeScenario
 	public void beforeScenario() throws Exception {
 		selenium.start();
