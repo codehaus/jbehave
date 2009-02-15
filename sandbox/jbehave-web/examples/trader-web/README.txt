@@ -11,7 +11,7 @@ Copy target/jbehave-trader.war to container deploy dir and start container.
 
 - If prefer not using Maven to build the war, then you can use the snapshot deployed on 
 
-http://snapshots.repository.codehaus.org/org/jbehave/web/jbehave-trader-webapp/2.0-SNAPSHOT/
+http://snapshots.repository.codehaus.org/org/jbehave/web/examples/jbehave-trader-webapp/2.0-SNAPSHOT/
 
 To use: 
 
