@@ -269,6 +269,16 @@
   </build>
   <profiles>
     <profile>
+      <!-- Distribution profile -->
+      <id>distribution</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <modules>
+        <module>distribution</module>
+      </modules>
+    </profile>
+    <profile>
       <!-- Examples profile -->
       <id>examples</id>
       <activation>
