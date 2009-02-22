@@ -75,4 +75,9 @@ public abstract class AbstractScenario implements RunnableScenario {
     public void addSteps(CandidateSteps... steps) {
         this.candidateSteps.addAll(asList(steps));
     }
+
+	public List<CandidateSteps> getSteps() {
+		return candidateSteps;
+	}    
+    
 }

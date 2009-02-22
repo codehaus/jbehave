@@ -1,5 +1,7 @@
 package org.jbehave.scenario;
 
+import java.util.List;
+
 import org.jbehave.scenario.steps.CandidateSteps;
 
 /**
@@ -20,5 +22,7 @@ public interface RunnableScenario {
     void runScenario() throws Throwable;
 
     void addSteps(CandidateSteps... steps);
+
+    List<CandidateSteps> getSteps();
 
 }
