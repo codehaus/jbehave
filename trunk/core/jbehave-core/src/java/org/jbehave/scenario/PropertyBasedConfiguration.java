@@ -6,7 +6,9 @@ import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.jbehave.scenario.reporters.StepDocReporter;
 import org.jbehave.scenario.steps.StepCreator;
+import org.jbehave.scenario.steps.StepDocGenerator;
 
 /**
  * This is backed by the MostUsefulConfiguration, but has different
@@ -87,5 +89,14 @@ public class PropertyBasedConfiguration implements Configuration {
      */
     public KeyWords keywords() {
         return defaults.keywords();
-    }    
+    }
+
+	public StepDocGenerator forGeneratingStepdoc() {		
+		return defaults.forGeneratingStepdoc();
+	}
+
+	public StepDocReporter forReportingStepdoc() {
+		return defaults.forReportingStepdoc();
+	}    
+	
 }
