@@ -13,10 +13,10 @@ import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.jbehave.scenario.reporters.Stepdoc2Reporter;
+import org.jbehave.scenario.reporters.StepdocReporter;
 import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.StepCreator;
-import org.jbehave.scenario.steps.Stepdoc2Generator;
+import org.jbehave.scenario.steps.StepdocGenerator;
 import org.jbehave.scenario.steps.Steps;
 import org.junit.Test;
 
@@ -67,9 +67,9 @@ public class ScenarioBehaviour {
 
         public KeyWords keywords() { return null; }
 
-		public Stepdoc2Generator forGeneratingStepdoc() { return null; }
+		public StepdocGenerator forGeneratingStepdoc() { return null; }
 
-		public Stepdoc2Reporter forReportingStepdoc() { return null; }
+		public StepdocReporter forReportingStepdoc() { return null; }
         
     }
 }

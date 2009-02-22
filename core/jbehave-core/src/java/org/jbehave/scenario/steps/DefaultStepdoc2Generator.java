@@ -10,21 +10,21 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 
-public class DefaultStepdoc2Generator implements Stepdoc2Generator {
+public class DefaultStepdoc2Generator implements StepdocGenerator {
 
-	public List<Stepdoc2> generate(Class<?> stepsClass) {
-		List<Stepdoc2> stepdocs = new LinkedList<Stepdoc2>();
+	public List<Stepdoc> generate(Class<?> stepsClass) {
+		List<Stepdoc> stepdocs = new LinkedList<Stepdoc>();
 		for (Method method : stepsClass.getMethods()) {
 			if (method.isAnnotationPresent(Given.class)) {
-				stepdocs.add(new Stepdoc2(Given.class, method.getAnnotation(Given.class).value(), 
+				stepdocs.add(new Stepdoc(Given.class, method.getAnnotation(Given.class).value(), 
 						aliases(method), method));
 			}
 			if (method.isAnnotationPresent(When.class)) {
-				stepdocs.add(new Stepdoc2(When.class, method.getAnnotation(When.class).value(), 
+				stepdocs.add(new Stepdoc(When.class, method.getAnnotation(When.class).value(), 
 						aliases(method), method));
 			}
 			if (method.isAnnotationPresent(Then.class)) {
-				stepdocs.add(new Stepdoc2(Then.class, method.getAnnotation(Then.class).value(), 
+				stepdocs.add(new Stepdoc(Then.class, method.getAnnotation(Then.class).value(), 
 						aliases(method), method));
 			}
 		}

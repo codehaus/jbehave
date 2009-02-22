@@ -8,13 +8,13 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class Stepdoc2GeneratorBehaviour {
+public class StepdocGeneratorBehaviour {
 	
     @Test
     public void shouldGenerateStepdocsInPriorityOrder() {
-        Stepdoc2Generator generator = new DefaultStepdoc2Generator();
+        StepdocGenerator generator = new DefaultStepdoc2Generator();
         MySteps steps = new MySteps();
-        List<Stepdoc2> stepdocs = generator.generate(steps.getClass());
+        List<Stepdoc> stepdocs = generator.generate(steps.getClass());
         ensureThat(stepdocs.get(0).getPattern(), equalTo("a given"));
         ensureThat(stepdocs.get(0).getAliasPatterns(), equalTo(asList("a given alias", "another given alias")));
         ensureThat(stepdocs.get(0).getMethod().getName(), equalTo("given"));

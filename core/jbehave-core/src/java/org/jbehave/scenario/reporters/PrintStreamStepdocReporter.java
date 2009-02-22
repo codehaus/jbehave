@@ -3,33 +3,33 @@ package org.jbehave.scenario.reporters;
 import java.io.PrintStream;
 import java.util.List;
 
-import org.jbehave.scenario.steps.Stepdoc2;
+import org.jbehave.scenario.steps.Stepdoc;
 
 /**
  * <p>
- * Stepdoc2 reporter that outputs to a PrintStream, defaulting to System.out.
+ * Stepdoc reporter that outputs to a PrintStream, defaulting to System.out.
  * </p>
  */
-public class PrintStreamStepdoc2Reporter implements Stepdoc2Reporter {
+public class PrintStreamStepdocReporter implements StepdocReporter {
 
 	private final PrintStream output;
 	private final boolean reportMethods;
 
-	public PrintStreamStepdoc2Reporter() {
+	public PrintStreamStepdocReporter() {
 		this(System.out);
 	}
 
-	public PrintStreamStepdoc2Reporter(PrintStream output) {
+	public PrintStreamStepdocReporter(PrintStream output) {
 		this(output, false);
 	}
 
-	public PrintStreamStepdoc2Reporter(PrintStream output, boolean reportMethods) {
+	public PrintStreamStepdocReporter(PrintStream output, boolean reportMethods) {
 		this.output = output;
 		this.reportMethods = reportMethods;
 	}
 
-	public void report(List<Stepdoc2> stepdocs) {
-		for (Stepdoc2 stepdoc : stepdocs) {
+	public void report(List<Stepdoc> stepdocs) {
+		for (Stepdoc stepdoc : stepdocs) {
 			output.println(stepdoc.getAnnotation().getSimpleName() + " "
 					+ stepdoc.getPattern());
 			if (stepdoc.getAliasPatterns().size() > 0) {
