@@ -12,7 +12,7 @@ public class Stepdoc2GeneratorBehaviour {
 	
     @Test
     public void shouldGenerateStepdocsInPriorityOrder() {
-        Stepdoc2Generator generator = new DefaultStepDocGenerator();
+        Stepdoc2Generator generator = new DefaultStepdoc2Generator();
         MySteps steps = new MySteps();
         List<Stepdoc2> stepdocs = generator.generate(steps.getClass());
         ensureThat(stepdocs.get(0).getPattern(), equalTo("a given"));
