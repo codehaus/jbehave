@@ -3,6 +3,7 @@ package org.jbehave.scenario.steps;
 import static java.util.Arrays.asList;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.jbehave.scenario.annotations.Given;
@@ -13,14 +14,16 @@ public class StepDoc implements Comparable<StepDoc> {
 
 	private final Class<? extends Annotation> annotation;
 	private final String pattern;
-	private final String[] aliasPatterns;
+	private final List<String> aliasPatterns;
+	private final Method method;
 	private Integer priority = 0;
 
 	public StepDoc(Class<? extends Annotation> annotation, String pattern,
-			String[] aliasPatterns) {
+			String[] aliasPatterns, Method method) {
 		this.annotation = annotation;
 		this.pattern = pattern;
-		this.aliasPatterns = aliasPatterns;
+		this.aliasPatterns = asList(aliasPatterns);
+		this.method = method;
 		assignPriority();
 	}
 
@@ -44,14 +47,18 @@ public class StepDoc implements Comparable<StepDoc> {
 	}
 
 	public List<String> getAliasPatterns() {
-		return asList(aliasPatterns);
+		return aliasPatterns;
+	}
+	
+	public Method getMethod() {
+		return method;
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[StepDoc pattern=").append(pattern).append(", aliases=")
-				.append(asList(aliasPatterns)).append("]");
+				.append(aliasPatterns).append(", method=").append(method).append("]");
 		return sb.toString();
 	}
 
