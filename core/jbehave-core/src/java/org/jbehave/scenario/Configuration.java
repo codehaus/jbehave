@@ -22,6 +22,7 @@ import org.jbehave.scenario.steps.StepdocGenerator;
  * is provided.
  * 
  * @author Elizabeth Keogh
+ * @author Mauro Talevi
  */
 public interface Configuration {
 
