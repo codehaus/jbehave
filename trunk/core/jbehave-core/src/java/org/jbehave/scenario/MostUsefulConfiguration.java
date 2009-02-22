@@ -9,12 +9,12 @@ import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.reporters.PassSilentlyDecorator;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
-import org.jbehave.scenario.reporters.PrintStreamStepDocReporter;
+import org.jbehave.scenario.reporters.PrintStreamStepdoc2Reporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.jbehave.scenario.reporters.StepDocReporter;
+import org.jbehave.scenario.reporters.Stepdoc2Reporter;
 import org.jbehave.scenario.steps.DefaultStepDocGenerator;
 import org.jbehave.scenario.steps.StepCreator;
-import org.jbehave.scenario.steps.StepDocGenerator;
+import org.jbehave.scenario.steps.Stepdoc2Generator;
 import org.jbehave.scenario.steps.UnmatchedToPendingStepCreator;
 
 /**
@@ -86,12 +86,12 @@ public class MostUsefulConfiguration implements Configuration {
         return new ScenarioGivenWhenThenAnd();
     }
 
-	public StepDocGenerator forGeneratingStepdoc() {
+	public Stepdoc2Generator forGeneratingStepdoc() {
 		return new DefaultStepDocGenerator();
 	}
 
-	public StepDocReporter forReportingStepdoc() {
-		return new PrintStreamStepDocReporter();
+	public Stepdoc2Reporter forReportingStepdoc() {
+		return new PrintStreamStepdoc2Reporter();
 	}
 
 }

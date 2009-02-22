@@ -10,7 +10,7 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 
-public class StepDoc implements Comparable<StepDoc> {
+public class Stepdoc2 implements Comparable<Stepdoc2> {
 
 	private final Class<? extends Annotation> annotation;
 	private final String pattern;
@@ -18,7 +18,7 @@ public class StepDoc implements Comparable<StepDoc> {
 	private final Method method;
 	private Integer priority = 0;
 
-	public StepDoc(Class<? extends Annotation> annotation, String pattern,
+	public Stepdoc2(Class<? extends Annotation> annotation, String pattern,
 			String[] aliasPatterns, Method method) {
 		this.annotation = annotation;
 		this.pattern = pattern;
@@ -57,12 +57,12 @@ public class StepDoc implements Comparable<StepDoc> {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("[StepDoc pattern=").append(pattern).append(", aliases=")
+		sb.append("[Stepdoc2 pattern=").append(pattern).append(", aliases=")
 				.append(aliasPatterns).append(", method=").append(method).append("]");
 		return sb.toString();
 	}
 
-	public int compareTo(StepDoc that) {
+	public int compareTo(Stepdoc2 that) {
 		return this.priority.compareTo(that.priority);
 	}
 }
