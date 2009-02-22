@@ -4,7 +4,6 @@ import static java.util.Arrays.asList;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.List;
 
 import org.jbehave.scenario.annotations.Given;
@@ -56,29 +55,27 @@ public class Stepdoc implements Comparable<Stepdoc> {
 	}
 
     /**
-     * Method signature without "public void" (etc) prefix
-     * @return
+     * Method signature without "public void" prefix
+     * @return The method signature in String format
      */
-    public String getSignature() {
+    public String getMethodSignature() {
         String methodSignature = method.toString();
-        int ix = methodSignature.indexOf(" ");
-        ix = methodSignature.indexOf(" ", ix+1);
-        return methodSignature.substring(ix+1);
+        return methodSignature.replaceFirst("public void ", "");
     }
 
     @Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[Stepdoc pattern=").append(pattern).append(", aliases=")
-				.append(aliasPatterns).append(", method=").append(getSignature()).append("]");
+				.append(aliasPatterns).append(", method=").append(getMethodSignature()).append("]");
 		return sb.toString();
 	}
 
 	public int compareTo(Stepdoc that) {
-        int retVal = this.priority.compareTo(that.priority);
-        if (retVal == 0) {
-            retVal = this.getPattern().compareTo(that.getPattern());
+        int compare = this.priority.compareTo(that.priority);
+        if (compare == 0) {
+            compare = this.pattern.compareTo(that.pattern);
         }
-        return retVal;
+        return compare;
 	}
 }

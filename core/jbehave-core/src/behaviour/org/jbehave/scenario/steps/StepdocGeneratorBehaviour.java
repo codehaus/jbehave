@@ -34,10 +34,10 @@ public class StepdocGeneratorBehaviour {
         StepdocGenerator generator = new DefaultStepdocGenerator();
         MoreSteps steps = new MoreSteps();
         List<Stepdoc> stepdocs = generator.generate(steps.getClass());
-        ensureThat(stepdocs.get(0).getSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.givenAbc(int,int)"));
-        ensureThat(stepdocs.get(1).getSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.whenAbc(int,int)"));
-        ensureThat(stepdocs.get(2).getSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.whenXyz(int,int)"));
-        ensureThat(stepdocs.get(3).getSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.thenAbc(int,int)"));
+        ensureThat(stepdocs.get(0).getMethodSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.givenAbc(int,int)"));
+        ensureThat(stepdocs.get(1).getMethodSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.whenAbc(int,int)"));
+        ensureThat(stepdocs.get(2).getMethodSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.whenXyz(int,int)"));
+        ensureThat(stepdocs.get(3).getMethodSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.thenAbc(int,int)"));
     }
 
     @Test
@@ -49,15 +49,13 @@ public class StepdocGeneratorBehaviour {
         Stepdoc when2 = stepdocs.get(2);
 
         ensureThat(when1.compareTo(when2), lessThan(0));
-
         ensureThat(when2.compareTo(when1), greaterThan(0));
     }
 
     private Matcher<Integer> lessThan(final int i) {
         return new BaseMatcher<Integer>() {
             public boolean matches(Object o) {
-                int i1 = ((Integer) o).compareTo(i);
-                return i1 < 0;
+                return ((Integer) o).compareTo(i) < 0;
             }
 
             public void describeTo(Description description) {
@@ -69,8 +67,7 @@ public class StepdocGeneratorBehaviour {
     private Matcher<Integer> greaterThan(final int i) {
         return new BaseMatcher<Integer>() {
             public boolean matches(Object o) {
-                int i1 = ((Integer) o).compareTo(i);
-                return i1 > 0;
+                return ((Integer) o).compareTo(i) > 0;
             }
 
             public void describeTo(Description description) {
