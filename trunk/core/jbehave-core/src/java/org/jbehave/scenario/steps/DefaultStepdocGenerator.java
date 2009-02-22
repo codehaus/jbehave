@@ -10,7 +10,7 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 
-public class DefaultStepdoc2Generator implements StepdocGenerator {
+public class DefaultStepdocGenerator implements StepdocGenerator {
 
 	public List<Stepdoc> generate(Class<?> stepsClass) {
 		List<Stepdoc> stepdocs = new LinkedList<Stepdoc>();

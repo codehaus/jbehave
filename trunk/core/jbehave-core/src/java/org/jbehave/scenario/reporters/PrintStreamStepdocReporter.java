@@ -1,5 +1,7 @@
 package org.jbehave.scenario.reporters;
 
+import static java.text.MessageFormat.format;
+
 import java.io.PrintStream;
 import java.util.List;
 
@@ -12,11 +14,18 @@ import org.jbehave.scenario.steps.Stepdoc;
  */
 public class PrintStreamStepdocReporter implements StepdocReporter {
 
+	private static final String STEP = "Step: {0} {1}";
+	private static final String ALIASES = "Aliases: {0}";
+	private static final String METHOD = "Method: {0}";
 	private final PrintStream output;
 	private final boolean reportMethods;
 
 	public PrintStreamStepdocReporter() {
 		this(System.out);
+	}
+
+	public PrintStreamStepdocReporter(boolean reportMethods) {
+		this(System.out, reportMethods);
 	}
 
 	public PrintStreamStepdocReporter(PrintStream output) {
@@ -30,13 +39,12 @@ public class PrintStreamStepdocReporter implements StepdocReporter {
 
 	public void report(List<Stepdoc> stepdocs) {
 		for (Stepdoc stepdoc : stepdocs) {
-			output.println(stepdoc.getAnnotation().getSimpleName() + " "
-					+ stepdoc.getPattern());
+			output.println(format(STEP, stepdoc.getAnnotation().getSimpleName(), stepdoc.getPattern()));
 			if (stepdoc.getAliasPatterns().size() > 0) {
-				output.println("Aliases: " + stepdoc.getAliasPatterns());
+				output.println(format(ALIASES, stepdoc.getAliasPatterns()));
 			}
 			if (reportMethods) {
-				output.println("Method: " + stepdoc.getMethod());
+				output.println(format(METHOD, stepdoc.getMethod()));
 			}
 		}
 	}
