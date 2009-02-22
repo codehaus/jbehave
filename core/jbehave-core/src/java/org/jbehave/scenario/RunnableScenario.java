@@ -25,4 +25,6 @@ public interface RunnableScenario {
 
     List<CandidateSteps> getSteps();
 
+	void generateStepdoc();
+
 }

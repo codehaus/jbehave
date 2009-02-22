@@ -4,13 +4,17 @@ import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.ScenarioGivenWhenThenAnd;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
+import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
-import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.reporters.PassSilentlyDecorator;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
+import org.jbehave.scenario.reporters.PrintStreamStepDocReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.jbehave.scenario.reporters.StepDocReporter;
+import org.jbehave.scenario.steps.DefaultStepDocGenerator;
 import org.jbehave.scenario.steps.StepCreator;
+import org.jbehave.scenario.steps.StepDocGenerator;
 import org.jbehave.scenario.steps.UnmatchedToPendingStepCreator;
 
 /**
@@ -81,5 +85,13 @@ public class MostUsefulConfiguration implements Configuration {
     public KeyWords keywords() {
         return new ScenarioGivenWhenThenAnd();
     }
+
+	public StepDocGenerator forGeneratingStepdoc() {
+		return new DefaultStepDocGenerator();
+	}
+
+	public StepDocReporter forReportingStepdoc() {
+		return new PrintStreamStepDocReporter();
+	}
 
 }

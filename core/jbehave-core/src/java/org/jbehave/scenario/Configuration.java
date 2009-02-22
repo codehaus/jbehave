@@ -5,7 +5,9 @@ import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.jbehave.scenario.reporters.StepDocReporter;
 import org.jbehave.scenario.steps.StepCreator;
+import org.jbehave.scenario.steps.StepDocGenerator;
 
 /**
  * Provides the configuration with which JBehave runs.
@@ -34,5 +36,9 @@ public interface Configuration {
     ErrorStrategy forHandlingErrors();
     
     KeyWords keywords();
+
+	StepDocGenerator forGeneratingStepdoc();
+
+	StepDocReporter forReportingStepdoc();
 
 }
