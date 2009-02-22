@@ -8,10 +8,10 @@ import java.util.List;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.parser.ScenarioNameResolver;
-import org.jbehave.scenario.reporters.StepDocReporter;
+import org.jbehave.scenario.reporters.Stepdoc2Reporter;
 import org.jbehave.scenario.steps.CandidateSteps;
-import org.jbehave.scenario.steps.StepDoc;
-import org.jbehave.scenario.steps.StepDocGenerator;
+import org.jbehave.scenario.steps.Stepdoc2;
+import org.jbehave.scenario.steps.Stepdoc2Generator;
 
 /**
  * <p>
@@ -84,10 +84,10 @@ public abstract class AbstractScenario implements RunnableScenario {
 	}    
     
 	public void generateStepdoc(){
-		StepDocGenerator generator = configuration.forGeneratingStepdoc();
+		Stepdoc2Generator generator = configuration.forGeneratingStepdoc();
 		for ( CandidateSteps steps : candidateSteps ){
-			List<StepDoc> stepdocs = generator.generate(steps.getClass());
-			StepDocReporter reporter = configuration.forReportingStepdoc();
+			List<Stepdoc2> stepdocs = generator.generate(steps.getClass());
+			Stepdoc2Reporter reporter = configuration.forReportingStepdoc();
 			reporter.report(stepdocs);
 		}
 	}
