@@ -2,15 +2,15 @@ package org.jbehave.scenario.reporters;
 
 import java.util.List;
 
-import org.jbehave.scenario.steps.Stepdoc2;
+import org.jbehave.scenario.steps.Stepdoc;
 
 /**
  * Generates reports of generated StepDocs
  * 
  * @author Mauro Talevi
  */
-public interface Stepdoc2Reporter {
+public interface StepdocReporter {
 
-	void report(List<Stepdoc2> stepdocs);
+	void report(List<Stepdoc> stepdocs);
 
 }
