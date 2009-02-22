@@ -12,7 +12,7 @@ import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.PrintStreamStepdoc2Reporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.reporters.Stepdoc2Reporter;
-import org.jbehave.scenario.steps.DefaultStepDocGenerator;
+import org.jbehave.scenario.steps.DefaultStepdoc2Generator;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.Stepdoc2Generator;
 import org.jbehave.scenario.steps.UnmatchedToPendingStepCreator;
@@ -87,7 +87,7 @@ public class MostUsefulConfiguration implements Configuration {
     }
 
 	public Stepdoc2Generator forGeneratingStepdoc() {
-		return new DefaultStepDocGenerator();
+		return new DefaultStepdoc2Generator();
 	}
 
 	public Stepdoc2Reporter forReportingStepdoc() {
