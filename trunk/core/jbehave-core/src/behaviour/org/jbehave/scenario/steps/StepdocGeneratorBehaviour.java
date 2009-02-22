@@ -2,6 +2,9 @@ package org.jbehave.scenario.steps;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
+import org.hamcrest.Matcher;
+import org.hamcrest.Description;
+import org.hamcrest.BaseMatcher;
 import static org.jbehave.Ensure.ensureThat;
 
 import java.util.List;
@@ -25,7 +28,58 @@ public class StepdocGeneratorBehaviour {
         ensureThat(stepdocs.get(2).getAliasPatterns(), equalTo(asList("a then alias", "another then alias")));
         ensureThat(stepdocs.get(2).getMethod().getName(), equalTo("then"));
     }    
+
+    @Test
+    public void shouldHaveTerseSignatures() {
+        StepdocGenerator generator = new DefaultStepdocGenerator();
+        MoreSteps steps = new MoreSteps();
+        List<Stepdoc> stepdocs = generator.generate(steps.getClass());
+        ensureThat(stepdocs.get(0).getSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.givenAbc(int,int)"));
+        ensureThat(stepdocs.get(1).getSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.whenAbc(int,int)"));
+        ensureThat(stepdocs.get(2).getSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.whenXyz(int,int)"));
+        ensureThat(stepdocs.get(3).getSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.thenAbc(int,int)"));
+    }
+
+    @Test
+    public void shouldHaveFinerGrainedComparablesThanJustPriority() {
+        StepdocGenerator generator = new DefaultStepdocGenerator();
+        MoreSteps steps = new MoreSteps();
+        List<Stepdoc> stepdocs = generator.generate(steps.getClass());
+        Stepdoc when1 = stepdocs.get(1);
+        Stepdoc when2 = stepdocs.get(2);
+
+        ensureThat(when1.compareTo(when2), lessThan(0));
+
+        ensureThat(when2.compareTo(when1), greaterThan(0));
+    }
+
+    private Matcher<Integer> lessThan(final int i) {
+        return new BaseMatcher<Integer>() {
+            public boolean matches(Object o) {
+                int i1 = ((Integer) o).compareTo(i);
+                return i1 < 0;
+            }
+
+            public void describeTo(Description description) {
+                description.appendText("not less than");
+            }
+        };
+    }
     
+    private Matcher<Integer> greaterThan(final int i) {
+        return new BaseMatcher<Integer>() {
+            public boolean matches(Object o) {
+                int i1 = ((Integer) o).compareTo(i);
+                return i1 > 0;
+            }
+
+            public void describeTo(Description description) {
+                description.appendText("not greater than");
+            }
+        };
+    }
+
+
     public static class MySteps extends Steps {
         
         private int givens;
@@ -51,5 +105,25 @@ public class StepdocGeneratorBehaviour {
         }
                 
     }
-    
+
+    public static class MoreSteps extends Steps {
+
+        @org.jbehave.scenario.annotations.Given("blah $xx blah $yy")
+        public void givenAbc(int xx, int yy) {
+        }
+
+        @org.jbehave.scenario.annotations.When("blah $xx blah $yy")
+        public void whenAbc(int xx, int yy) {
+        }
+        
+        @org.jbehave.scenario.annotations.When("blah $xx blah $yy blah")
+        public void whenXyz(int xx, int yy) {
+        }
+
+        @org.jbehave.scenario.annotations.Then("blah $xx blah $yy")
+        public void thenAbc(int xx, int yy) {
+        }
+
+    }
+
 }

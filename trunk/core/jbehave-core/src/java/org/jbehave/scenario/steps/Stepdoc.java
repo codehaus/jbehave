@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import org.jbehave.scenario.annotations.Given;
@@ -54,15 +55,30 @@ public class Stepdoc implements Comparable<Stepdoc> {
 		return method;
 	}
 
-	@Override
+    /**
+     * Method signature without "public void" (etc) prefix
+     * @return
+     */
+    public String getSignature() {
+        String methodSignature = method.toString();
+        int ix = methodSignature.indexOf(" ");
+        ix = methodSignature.indexOf(" ", ix+1);
+        return methodSignature.substring(ix+1);
+    }
+
+    @Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[Stepdoc pattern=").append(pattern).append(", aliases=")
-				.append(aliasPatterns).append(", method=").append(method).append("]");
+				.append(aliasPatterns).append(", method=").append(getSignature()).append("]");
 		return sb.toString();
 	}
 
 	public int compareTo(Stepdoc that) {
-		return this.priority.compareTo(that.priority);
+        int retVal = this.priority.compareTo(that.priority);
+        if (retVal == 0) {
+            retVal = this.getPattern().compareTo(that.getPattern());
+        }
+        return retVal;
 	}
 }
