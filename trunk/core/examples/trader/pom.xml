@@ -36,10 +36,26 @@
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>
               </scenarioExcludes>
-              <skip>true</skip>
+              <skip>false</skip>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stepdoc</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <scenarioIncludes>
+                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
+              </scenarioIncludes>
+              <scenarioExcludes>
+                <scenarioExclude>**/*Steps.java</scenarioExclude>
+              </scenarioExcludes>
+              <skip>false</skip>
+            </configuration>
+            <goals>
+              <goal>stepdoc</goal>
             </goals>
           </execution>
         </executions>
@@ -55,7 +71,21 @@
               <tasks>
                 <taskdef name="scenarioRunner" classname="org.jbehave.ant.ScenarioRunnerTask" classpathref="maven.runtime.classpath" />
                 <scenarioRunner scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
-                  scenarioExcludes="**/*Steps.java" skip="false" />
+                  scenarioExcludes="**/*Steps.java" skip="true" />
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stepdoc-via-ant</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <tasks>
+                <taskdef name="stepdoc" classname="org.jbehave.ant.StepdocTask" classpathref="maven.runtime.classpath" />
+                <stepdoc scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
+                  scenarioExcludes="**/*Steps.java" skip="true" />
               </tasks>
             </configuration>
             <goals>
@@ -64,8 +94,6 @@
           </execution>
         </executions>
       </plugin>
-
-
     </plugins>
   </build>
 </project>

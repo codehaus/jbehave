@@ -3,7 +3,7 @@
     Note: Use of <artifact:dependencies/> requires
     ../../lib/build/maven-ant-tasks-2.0.9.jar in $ANT_HOME/lib
   -->
-<project name="trader" default="run"
+<project name="trader" default="run-scenario"
   xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
   <artifact:dependencies pathId="dependency.classpath">
@@ -35,7 +35,7 @@
     </javac>
   </target>
 
-  <target name="run" depends="compile">
+  <target name="run-scenario" depends="compile">
     <property name="dependency.classpath" refid="dependency.classpath" />
     <path id="scenario.classpath">
       <pathelement location="target/classes" />
@@ -44,6 +44,18 @@
     <taskdef name="scenarioRunner" classname="org.jbehave.ant.ScenarioRunnerTask"
       classpathref="scenario.classpath" />
     <scenarioRunner scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
+      scenarioExcludes="**/*Steps.java" skip="false" />
+  </target>
+
+  <target name="stepdoc" depends="compile">
+    <property name="dependency.classpath" refid="dependency.classpath" />
+    <path id="scenario.classpath">
+      <pathelement location="target/classes" />
+      <pathelement path="${dependency.classpath}" />
+    </path>
+    <taskdef name="stepdoc" classname="org.jbehave.ant.StepdocTask"
+      classpathref="scenario.classpath" />
+    <stepdoc scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
       scenarioExcludes="**/*Steps.java" skip="false" />
   </target>
 

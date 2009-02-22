@@ -32,11 +32,12 @@ public class ScenarioRunnerMojo extends AbstractScenarioMojo {
             return;
         }
         for (RunnableScenario scenario : scenarios()) {
+            String scenarioName = scenario.getClass().getName();
             try {
-                getLog().info("Running scenario " + scenario.getClass().getName());
+				getLog().info("Running scenario " + scenarioName);
                 scenario.runScenario();
             } catch (Throwable e) {
-                String message = "Failed to run scenario " + scenario.getClass().getName();
+                String message = "Failed to run scenario " + scenarioName;
                 if ( ignoreFailure ){
                     getLog().warn(message, e);
                 } else {

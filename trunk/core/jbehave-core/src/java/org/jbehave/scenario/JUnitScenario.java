@@ -1,5 +1,7 @@
 package org.jbehave.scenario;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.jbehave.scenario.steps.CandidateSteps;
@@ -49,11 +51,14 @@ public abstract class JUnitScenario extends TestCase implements RunnableScenario
         this.delegate.runScenario();
     }
 
-
     public void addSteps(CandidateSteps... steps) {
         this.delegate.addSteps(steps);
     }
 
+    public List<CandidateSteps> getSteps() {
+    	return delegate.getSteps();
+    }
+    
     /**
      * A JUnit 3-compatibile runnable method which simply delegates
      * {@link RunnableScenario#runScenario()}

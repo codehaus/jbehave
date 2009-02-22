@@ -1,5 +1,6 @@
 package org.jbehave.scenario.steps;
 
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -37,6 +38,11 @@ public class DefaultStepDocGenerator implements StepDocGenerator {
 			return method.getAnnotation(Aliases.class).values();
 		}
 		return new String[]{};
+	}
+
+	public void reportTo(List<StepDoc> stepdocs, OutputStream outputStream) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
