@@ -17,10 +17,13 @@ public class StepDocGeneratorBehaviour {
         List<StepDoc> stepdocs = generator.generate(steps.getClass());
         ensureThat(stepdocs.get(0).getPattern(), equalTo("a given"));
         ensureThat(stepdocs.get(0).getAliasPatterns(), equalTo(asList("a given alias", "another given alias")));
+        ensureThat(stepdocs.get(0).getMethod().getName(), equalTo("given"));
         ensureThat(stepdocs.get(1).getPattern(), equalTo("a when"));
         ensureThat(stepdocs.get(1).getAliasPatterns(), equalTo(asList("a when alias", "another when alias")));
+        ensureThat(stepdocs.get(1).getMethod().getName(), equalTo("when"));
         ensureThat(stepdocs.get(2).getPattern(), equalTo("a then"));
         ensureThat(stepdocs.get(2).getAliasPatterns(), equalTo(asList("a then alias", "another then alias")));
+        ensureThat(stepdocs.get(2).getMethod().getName(), equalTo("then"));
     }    
     
     public static class MySteps extends Steps {

@@ -17,15 +17,15 @@ public class DefaultStepDocGenerator implements StepDocGenerator {
 		for (Method method : stepsClass.getMethods()) {
 			if (method.isAnnotationPresent(Given.class)) {
 				stepdocs.add(new StepDoc(Given.class, method.getAnnotation(Given.class).value(), 
-						aliases(method)));
+						aliases(method), method));
 			}
 			if (method.isAnnotationPresent(When.class)) {
 				stepdocs.add(new StepDoc(When.class, method.getAnnotation(When.class).value(), 
-						aliases(method)));
+						aliases(method), method));
 			}
 			if (method.isAnnotationPresent(Then.class)) {
 				stepdocs.add(new StepDoc(Then.class, method.getAnnotation(Then.class).value(), 
-						aliases(method)));
+						aliases(method), method));
 			}
 		}
 		Collections.sort(stepdocs);
