@@ -75,21 +75,34 @@ public class PatternScenarioParser implements ScenarioParser {
 		}
 	}
 
-	private List<String> splitScenarios(String allScenariosInFile) {
+    @SuppressWarnings("serial")
+	public static class InvalidPatternException extends RuntimeException {
+		public InvalidPatternException(String message, Throwable cause) {
+			super(message, cause);
+		}
+
+	}
+
+    private List<String> splitScenarios(String allScenariosInFile) {
 		Pattern scenarioSplitter = patternToPullScenariosIntoGroupFour();
 		Matcher matcher = scenarioSplitter.matcher(allScenariosInFile);
 		int startAt = 0;
 		List<String> scenarios = new ArrayList<String>();
-		if (matcher.matches()) {
-			while (matcher.find(startAt)) {
-				scenarios.add(matcher.group(1));
-				startAt = matcher.start(4);
-			}
-		} else {
-			String loneScenario = allScenariosInFile;
-			scenarios.add(loneScenario);
-		}
-		return scenarios;
+        try {
+            if (matcher.matches()) {
+                while (matcher.find(startAt)) {
+                    scenarios.add(matcher.group(1));
+                    startAt = matcher.start(4);
+                }
+            } else {
+                String loneScenario = allScenariosInFile;
+                scenarios.add(loneScenario);
+            }
+        } catch (StackOverflowError e) {
+            // TODO - wish we had the scenario file name here.
+            throw new InvalidPatternException("Regex failure for scenario.  See http://jbehave.org/documentation/regex-stack-overflow-errors", e);  
+        }
+        return scenarios;
 	}
 
 	private Pattern patternToPullScenariosIntoGroupFour() {
