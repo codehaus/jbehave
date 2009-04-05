@@ -21,8 +21,18 @@ public interface CandidateSteps {
      */
     CandidateStep[] getSteps(Class<?> stepsClass);
 
+    /**
+     * Return all steps to run before scenario
+     * 
+     * @return The list of steps 
+     */
     Collection<? extends Step> runBeforeScenario();
 
+    /**
+     * Return all steps to run after scenario
+     * 
+     * @return The list of steps 
+     */
     Collection<? extends Step> runAfterScenario();
 
 }
