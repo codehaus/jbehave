@@ -18,19 +18,22 @@ import org.jbehave.scenario.RunnableScenario;
  * "org/jbehave/scenario/i_can_login.scenario".
  * </p>
  * <p>
- * The default resolution pattern treats numbers as upper case letters, eg:
- * "org.jbehave.scenario.ICanLoginTo1Site.java" -> "org/jbehave/scenario/i_can_login_to_1_site"
+ * The default resolution pattern {@link NUMBERS_AS_UPPER_CASE_LETTERS_PATTERN}
+ * treats numbers as upper case letters, eg:
+ * "org.jbehave.scenario.ICanLoginTo1Site.java" ->
+ * "org/jbehave/scenario/i_can_login_to_1_site"
  * </p>
  * <p>
- * Choose {@link NUMBERS_AS_LOWER_CASE_LETTERS_PATTERN} to treat numbers as lower case letters, eg:
- * "org.jbehave.scenario.ICanLoginTo1Site.java" -> "org/jbehave/scenario/i_can_login_to1_site"
+ * Choose {@link NUMBERS_AS_LOWER_CASE_LETTERS_PATTERN} to treat numbers as
+ * lower case letters, eg: "org.jbehave.scenario.ICanLoginTo1Site.java" ->
+ * "org/jbehave/scenario/i_can_login_to1_site"
  * </p>
  */
 public class UnderscoredCamelCaseResolver extends AbstractScenarioNameResolver {
 
-	protected static final String NUMBERS_AS_UPPER_CASE_LETTERS_PATTERN = "([A-Z0-9].*?)([A-Z0-9]|\\z)";
-	protected static final String NUMBERS_AS_LOWER_CASE_LETTERS_PATTERN = "([A-Z].*?)([A-Z]|\\z)";
-	protected static final String UNDERSCORE = "_";
+	public static final String NUMBERS_AS_UPPER_CASE_LETTERS_PATTERN = "([A-Z0-9].*?)([A-Z0-9]|\\z)";
+	public static final String NUMBERS_AS_LOWER_CASE_LETTERS_PATTERN = "([A-Z].*?)([A-Z]|\\z)";
+	private static final String UNDERSCORE = "_";
 	private final String resolutionPattern;
 
 	public UnderscoredCamelCaseResolver() {
