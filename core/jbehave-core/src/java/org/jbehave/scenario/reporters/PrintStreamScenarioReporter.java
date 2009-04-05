@@ -12,8 +12,8 @@ import org.jbehave.scenario.definition.Blurb;
 public class PrintStreamScenarioReporter implements ScenarioReporter {
 
     private final PrintStream output;
-    private Throwable e;
     private final boolean reportErrors;
+    private Throwable cause;
 
     public PrintStreamScenarioReporter() {
         this(System.out);
@@ -40,21 +40,21 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         output.println(step + " (NOT PERFORMED)");
     }
 
-    public void failed(String step, Throwable e) {
-        this.e = e;
+    public void failed(String step, Throwable cause) {
+        this.cause = cause;
         output.println(step + " (FAILED)");
     }
 
     public void afterScenario() {
         output.println();
-        if (reportErrors && e != null) {
-            e.printStackTrace(output);
+        if (reportErrors && cause != null) {
+            cause.printStackTrace(output);
             output.println();
         }
     }
 
     public void beforeScenario(String title) {
-        e = null;
+        cause = null;
         output.println("Scenario: " + title);
         output.println();
     }
