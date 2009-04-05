@@ -11,21 +11,25 @@ import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.StepdocGenerator;
 
 /**
- * This is backed by the MostUsefulConfiguration, but has different
- * behaviour if certain system properties are non-null.
+ * PropertyBasedConfiguration is backed by MostUsefulConfiguration as default, but has different
+ * behaviour if certain system properties are non-null:
+ * <ul>
+ *   <li>PropertyBasedConfiguration.FAIL_ON_PENDING: uses  PendingErrorStrategy.FAILING as PendingErrorStrategy</li<
+ *   <li>PropertyBasedConfiguration.OUTPUT_ALL:  uses PrintStreamScenarioReporter as ScenarioReporter</li<
+ * </ul>
  */
 public class PropertyBasedConfiguration implements Configuration {
 
     public static final String FAIL_ON_PENDING = "org.jbehave.failonpending";
     public static final String OUTPUT_ALL = "org.jbehave.outputall";
-    private final Configuration defaults;
+    private final Configuration defaultConfiguration;
     
     public PropertyBasedConfiguration() {
         this(new MostUsefulConfiguration());
     }
 
-    public PropertyBasedConfiguration(Configuration defaults) {
-        this.defaults = defaults;
+    public PropertyBasedConfiguration(Configuration defaultConfiguration) {
+        this.defaultConfiguration = defaultConfiguration;
     }
 
     /**
@@ -39,7 +43,7 @@ public class PropertyBasedConfiguration implements Configuration {
      */
     public ScenarioReporter forReportingScenarios() {
         if (System.getProperty(OUTPUT_ALL) == null) {
-            return defaults.forReportingScenarios();
+            return defaultConfiguration.forReportingScenarios();
         } else {
             return new PrintStreamScenarioReporter();
         }
@@ -49,7 +53,7 @@ public class PropertyBasedConfiguration implements Configuration {
      * Returns the default ScenarioDefiner.
      */
     public ScenarioDefiner forDefiningScenarios() {
-        return defaults.forDefiningScenarios();
+        return defaultConfiguration.forDefiningScenarios();
     }
 
     /**
@@ -64,7 +68,7 @@ public class PropertyBasedConfiguration implements Configuration {
      */
     public PendingErrorStrategy forPendingSteps() {
         if (System.getProperty(FAIL_ON_PENDING) == null) {
-            return defaults.forPendingSteps();
+            return defaultConfiguration.forPendingSteps();
         }
         return PendingErrorStrategy.FAILING;
     }
@@ -73,7 +77,7 @@ public class PropertyBasedConfiguration implements Configuration {
      * Returns the default StepCreator.
      */
     public StepCreator forCreatingSteps() {
-        return defaults.forCreatingSteps();
+        return defaultConfiguration.forCreatingSteps();
     }
 
     /**
@@ -81,22 +85,22 @@ public class PropertyBasedConfiguration implements Configuration {
      * errors.
      */
     public ErrorStrategy forHandlingErrors() {
-        return defaults.forHandlingErrors();
+        return defaultConfiguration.forHandlingErrors();
     }
 
     /**
      * Returns the default keywords.
      */
     public KeyWords keywords() {
-        return defaults.keywords();
+        return defaultConfiguration.keywords();
     }
 
 	public StepdocGenerator forGeneratingStepdoc() {		
-		return defaults.forGeneratingStepdoc();
+		return defaultConfiguration.forGeneratingStepdoc();
 	}
 
 	public StepdocReporter forReportingStepdoc() {
-		return defaults.forReportingStepdoc();
+		return defaultConfiguration.forReportingStepdoc();
 	}    
 	
 }
