@@ -10,6 +10,10 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 
+/**
+ * Default implementation of StepdocGenerator, which collates stepdocs for methods annotated with
+ * {@link Given}, {@link When} and {@link Then} and their aliases. 
+ */
 public class DefaultStepdocGenerator implements StepdocGenerator {
 
 	public List<Stepdoc> generate(Class<?> stepsClass) {

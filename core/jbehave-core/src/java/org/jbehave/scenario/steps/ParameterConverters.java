@@ -17,7 +17,8 @@ import java.util.List;
  */
 public class ParameterConverters {
 
-	private static final String NL = System.getProperty("line.separator");
+	private static final String NEWLINES_PATTERN = "(\n)|(\r\n)";
+	private static final String SYSTEM_NEWLINE = System.getProperty("line.separator");
 	private static final String COMMA = ",";
 	private static final List<ParameterConverter> DEFAULT_CONVERTERS = asList(
 			new NumberConverter(), new NumberListConverter(),
@@ -55,7 +56,7 @@ public class ParameterConverters {
 	}
 
 	private Object replaceNewlinesWithSystemNewlines(String value) {
-		return value.replaceAll("(\n)|(\r\n)", NL);
+		return value.replaceAll(NEWLINES_PATTERN, SYSTEM_NEWLINE);
 	}
 
 	public static interface ParameterConverter {

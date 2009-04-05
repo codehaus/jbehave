@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.jbehave.scenario.definition.ScenarioDefinition;
 
+/**
+ * StepCreator that marks unmatched steps as {@link StepResult.Pending}
+ */
 public class UnmatchedToPendingStepCreator implements StepCreator {
 
     public Step[] createStepsFrom(ScenarioDefinition scenario,
@@ -28,9 +31,9 @@ public class UnmatchedToPendingStepCreator implements StepCreator {
 		}
 	}
 
-	private void addAllNormalSteps(ScenarioDefinition scenario,
+	private void addAllNormalSteps(ScenarioDefinition scenarioDefinition,
 			List<Step> steps, CandidateSteps... candidateSteps) {
-		for (String stringStep : scenario.getSteps()) {
+		for (String stringStep : scenarioDefinition.getSteps()) {
 			Step step = new PendingStep(stringStep);
             for (CandidateSteps candidates : candidateSteps) {
                 for (CandidateStep candidate : candidates.getSteps()) {

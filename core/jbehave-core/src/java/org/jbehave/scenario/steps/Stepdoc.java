@@ -10,6 +10,19 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 
+/**
+ * A Stepdoc represents the documentation on a single {@link Step}, which
+ * includes:
+ * <ul>
+ * <li>the associated annotation in the {@link Steps} class</li>
+ * <li>the pattern to match the candidate step that configured in the annotation
+ * </li>
+ * <li>the aliases for the step (optional)</li>
+ * <li>the matched method inthe {@link Steps} class</li>
+ * </ul>
+ * 
+ * @author Mauro Talevi
+ */
 public class Stepdoc implements Comparable<Stepdoc> {
 
 	private final Class<? extends Annotation> annotation;

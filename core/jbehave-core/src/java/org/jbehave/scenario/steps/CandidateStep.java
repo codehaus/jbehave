@@ -10,7 +10,7 @@ import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 
 /**
- * Creates steps from candidate string representations
+ * Creates step from its candidate string representations
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi
