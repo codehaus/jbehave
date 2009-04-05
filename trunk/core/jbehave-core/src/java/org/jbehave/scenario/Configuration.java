@@ -10,33 +10,32 @@ import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.StepdocGenerator;
 
 /**
- * Provides the configuration with which JBehave runs.
+ * Provides the configuration used by the {@link ScenarioRunner} and is injected
+ * in the {@link Scenario} to customise its runtime properties.
  * 
- * Anyone wishing to customize JBehave may wish
- * to inject a new Configuration into their Scenario.
- * 
- * NB: This class may change dynamically, so any other class
- * wishing to use this should store the whole configuration,
- * and use the respective parts of it at runtime, rather
- * than attempting to store any part of it when the configuration
- * is provided.
+ * NB: This class may change dynamically, so any other class wishing to use this
+ * should store the whole configuration, and use the respective parts of it at
+ * runtime, rather than attempting to store any part of it when the
+ * configuration is provided.
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi
+ * @see {@link MostUsefulConfiguration}
+ * @see {@link PropertyBasedConfiguration}
  */
 public interface Configuration {
 
-    ScenarioDefiner forDefiningScenarios();
+	ScenarioDefiner forDefiningScenarios();
 
-    ScenarioReporter forReportingScenarios();
+	ScenarioReporter forReportingScenarios();
 
-    PendingErrorStrategy forPendingSteps();
+	PendingErrorStrategy forPendingSteps();
 
-    StepCreator forCreatingSteps();
+	StepCreator forCreatingSteps();
 
-    ErrorStrategy forHandlingErrors();
-    
-    KeyWords keywords();
+	ErrorStrategy forHandlingErrors();
+
+	KeyWords keywords();
 
 	StepdocGenerator forGeneratingStepdoc();
 
