@@ -17,7 +17,7 @@ public class StepdocGeneratorBehaviour {
     public void shouldGenerateStepdocsInPriorityOrder() {
         StepdocGenerator generator = new DefaultStepdocGenerator();
         MySteps steps = new MySteps();
-        List<Stepdoc> stepdocs = generator.generate(steps.getClass());
+        List<Stepdoc> stepdocs = generator.generate(steps);
         ensureThat(stepdocs.get(0).getPattern(), equalTo("a given"));
         ensureThat(stepdocs.get(0).getAliasPatterns(), equalTo(asList("a given alias", "another given alias")));
         ensureThat(stepdocs.get(0).getMethod().getName(), equalTo("given"));
@@ -33,7 +33,7 @@ public class StepdocGeneratorBehaviour {
     public void shouldHaveTerseSignatures() {
         StepdocGenerator generator = new DefaultStepdocGenerator();
         MoreSteps steps = new MoreSteps();
-        List<Stepdoc> stepdocs = generator.generate(steps.getClass());
+        List<Stepdoc> stepdocs = generator.generate(steps);
         ensureThat(stepdocs.get(0).getMethodSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.givenAbc(int,int)"));
         ensureThat(stepdocs.get(1).getMethodSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.whenAbc(int,int)"));
         ensureThat(stepdocs.get(2).getMethodSignature(), equalTo("org.jbehave.scenario.steps.StepdocGeneratorBehaviour$MoreSteps.whenXyz(int,int)"));
@@ -44,7 +44,7 @@ public class StepdocGeneratorBehaviour {
     public void shouldHaveFinerGrainedComparablesThanJustPriority() {
         StepdocGenerator generator = new DefaultStepdocGenerator();
         MoreSteps steps = new MoreSteps();
-        List<Stepdoc> stepdocs = generator.generate(steps.getClass());
+        List<Stepdoc> stepdocs = generator.generate(steps);
         Stepdoc when1 = stepdocs.get(1);
         Stepdoc when2 = stepdocs.get(2);
 
