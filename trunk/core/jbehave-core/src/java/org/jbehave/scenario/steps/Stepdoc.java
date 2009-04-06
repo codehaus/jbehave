@@ -29,14 +29,16 @@ public class Stepdoc implements Comparable<Stepdoc> {
 	private final String pattern;
 	private final List<String> aliasPatterns;
 	private final Method method;
+	private final CandidateSteps candidateSteps;
 	private Integer priority = 0;
 
 	public Stepdoc(Class<? extends Annotation> annotation, String pattern,
-			String[] aliasPatterns, Method method) {
+			String[] aliasPatterns, Method method, CandidateSteps candidateSteps) {
 		this.annotation = annotation;
 		this.pattern = pattern;
 		this.aliasPatterns = asList(aliasPatterns);
 		this.method = method;
+		this.candidateSteps = candidateSteps;
 		assignPriority();
 	}
 
@@ -66,8 +68,12 @@ public class Stepdoc implements Comparable<Stepdoc> {
 	public Method getMethod() {
 		return method;
 	}
+	
+    public CandidateSteps getCandidateSteps() {
+		return candidateSteps;
+	}
 
-    /**
+	/**
      * Method signature without "public void" prefix
      * @return The method signature in String format
      */
@@ -80,7 +86,8 @@ public class Stepdoc implements Comparable<Stepdoc> {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[Stepdoc pattern=").append(pattern).append(", aliases=")
-				.append(aliasPatterns).append(", method=").append(getMethodSignature()).append("]");
+				.append(aliasPatterns).append(", method=").append(getMethodSignature())
+				.append(", candidateSteps=").append(candidateSteps.getClass()).append("]");
 		return sb.toString();
 	}
 
