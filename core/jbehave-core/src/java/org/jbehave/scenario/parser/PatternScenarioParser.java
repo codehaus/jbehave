@@ -100,7 +100,7 @@ public class PatternScenarioParser implements ScenarioParser {
             }
         } catch (StackOverflowError e) {
             // TODO - wish we had the scenario file name here.
-            throw new InvalidPatternException("Regex failure for scenario.  See http://jbehave.org/documentation/regex-stack-overflow-errors", e);  
+            throw new InvalidPatternException("Failed to parse scenarios (see http://jbehave.org/documentation/known-issues/regex-stack-overflow-errors): "+allScenariosInFile, e);  
         }
         return scenarios;
 	}
