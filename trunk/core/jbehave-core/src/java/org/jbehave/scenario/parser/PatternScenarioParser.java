@@ -80,10 +80,32 @@ public class PatternScenarioParser implements ScenarioParser {
 		public InvalidPatternException(String message, Throwable cause) {
 			super(message, cause);
 		}
-
 	}
+    
+    protected List<String> splitScenarios(String allScenariosInFile) {
+        return splitScenariosWithKeyword(allScenariosInFile);
+    }
+    
+    protected List<String> splitScenariosWithKeyword(String allScenariosInFile) {
+        List<String> scenarios = new ArrayList<String>();
+        String scenarioKeyword = "Scenario".replace("Scenario", configuration.keywords().scenario());
+        String allScenarios = allScenariosInFile;
+        
+        if (allScenariosInFile.indexOf(scenarioKeyword) !=-1 ){
+        	allScenarios = allScenariosInFile.substring(allScenariosInFile.indexOf(scenarioKeyword));
+        }
+        
+        for (String scenario : allScenarios.split(scenarioKeyword)) {
+			if (scenario.trim().length() > 0) {
+				scenarios.add(scenarioKeyword + scenario);
+			}
+		}
+        return scenarios;
+    }
 
-    private List<String> splitScenarios(String allScenariosInFile) {
+    //This pattern approach causes stack overflow error on Windows
+    //http://jbehave.org/documentation/known-issues/regex-stack-overflow-errors
+    protected List<String> splitScenariosWithPattern(String allScenariosInFile) {
 		Pattern scenarioSplitter = patternToPullScenariosIntoGroupFour();
 		Matcher matcher = scenarioSplitter.matcher(allScenariosInFile);
 		int startAt = 0;
