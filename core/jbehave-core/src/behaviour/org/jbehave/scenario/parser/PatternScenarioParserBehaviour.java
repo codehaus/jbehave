@@ -7,6 +7,7 @@ import static org.jbehave.Ensure.ensureThat;
 import java.util.List;
 
 import org.jbehave.scenario.PropertyBasedConfiguration;
+import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.junit.Test;
 
@@ -85,7 +86,7 @@ public class PatternScenarioParserBehaviour {
     }
     
     @Test
-    public void canLoadFullStories() {
+    public void canParseFullStory() {
         String wholeStory = 
             "Story: I can output narratives" + NL + NL +
             
@@ -93,19 +94,17 @@ public class PatternScenarioParserBehaviour {
             "I want to see the narrative for my story when a scenario in that story breaks" + NL +
             "So that I can see what we're not delivering" + NL + NL +
             
-            "Scenario: A pending scenario" + NL + NL +
+            "Scenario: A pending scenario" + NL +  NL +
             "Given a step that's pending" + NL +
             "When I run the scenario" + NL +
             "Then I should see this in the output" + NL +
 
             "Scenario: A passing scenario" + NL +
-    
             "Given I'm not reporting passing scenarios" + NL +
             "When I run the scenario" + NL +
             "Then this should not be in the output" + NL +
     
             "Scenario: A failing scenario" + NL +
-    
             "Given a step that fails" + NL +
             "When I run the scenario" + NL +
             "Then I should see this in the output" + NL +
@@ -141,4 +140,33 @@ public class PatternScenarioParserBehaviour {
         )));
     }
     
+    @Test
+    public void canParseAVeryLongStory() {
+    	String aGivenWhenThen = 
+        "Given a step" + NL +
+        "When I run it" + NL +
+        "Then I should seen an output" + NL;
+
+    	StringBuffer aScenario = new StringBuffer();
+
+		aScenario.append("Scenario: A long scenario").append(NL);
+		int numberOfGivenWhenThensPerScenario = 50;
+		for (int i = 0; i < numberOfGivenWhenThensPerScenario; i++) {
+			aScenario.append(aGivenWhenThen);
+		}
+
+		int numberOfScenarios = 100;
+		StringBuffer wholeStory = new StringBuffer();
+		wholeStory.append("Story: A very long story").append(NL);
+		for (int i = 0; i < numberOfScenarios; i++) {
+			wholeStory.append(aScenario).append(NL);
+		}
+            
+        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory.toString());
+        ensureThat(story.getScenarios().size(), equalTo(numberOfScenarios));
+        for ( ScenarioDefinition scenario : story.getScenarios() ){
+        	ensureThat(scenario.getSteps().size(), equalTo(numberOfGivenWhenThensPerScenario*3));        	
+        }
+         
+    }
 }
