@@ -89,11 +89,15 @@ public class PatternScenarioParser implements ScenarioParser {
     protected List<String> splitScenariosWithKeyword(String allScenariosInFile) {
         List<String> scenarios = new ArrayList<String>();
         String scenarioKeyword = "Scenario".replace("Scenario", configuration.keywords().scenario());
-        String allScenarios = allScenariosInFile;
         
-        if (allScenariosInFile.indexOf(scenarioKeyword) !=-1 ){
-        	allScenarios = allScenariosInFile.substring(allScenariosInFile.indexOf(scenarioKeyword));
-        }
+        String allScenarios = null;
+        //chomp off anything before first keyword, if found
+        int keywordIndex = allScenariosInFile.indexOf(scenarioKeyword);
+		if (keywordIndex != -1) {
+			allScenarios = allScenariosInFile.substring(keywordIndex);
+		} else { // use all scenarios in file
+			allScenarios = allScenariosInFile;
+		}
         
         for (String scenario : allScenarios.split(scenarioKeyword)) {
 			if (scenario.trim().length() > 0) {
