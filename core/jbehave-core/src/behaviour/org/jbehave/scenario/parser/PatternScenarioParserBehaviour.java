@@ -9,6 +9,7 @@ import java.util.List;
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -141,8 +142,27 @@ public class PatternScenarioParserBehaviour {
     }
     
     @Test
-    public void canParseAVeryLongStory() {
-    	String aGivenWhenThen = 
+    public void canParseLongStoryWithKeywordSplitScenarios() {
+        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
+    	ensureLongStoryCanBeParsed(parser);        
+    }
+
+    @Test
+    @Ignore("on Windows, it should fail due to regex stack overflow")
+    public void canParseLongStoryWithPatternSplitScenarios() {
+        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration()){
+
+			@Override
+			protected List<String> splitScenarios(String allScenariosInFile) {
+				return super.splitScenariosWithPattern(allScenariosInFile);
+			}
+        	
+        };
+    	ensureLongStoryCanBeParsed(parser);        
+    }
+
+	private void ensureLongStoryCanBeParsed(ScenarioParser parser) {
+		String aGivenWhenThen = 
         "Given a step" + NL +
         "When I run it" + NL +
         "Then I should seen an output" + NL;
@@ -162,11 +182,10 @@ public class PatternScenarioParserBehaviour {
 			wholeStory.append(aScenario).append(NL);
 		}
             
-        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory.toString());
+		StoryDefinition story = parser.defineStoryFrom(wholeStory.toString());
         ensureThat(story.getScenarios().size(), equalTo(numberOfScenarios));
         for ( ScenarioDefinition scenario : story.getScenarios() ){
         	ensureThat(scenario.getSteps().size(), equalTo(numberOfGivenWhenThensPerScenario*3));        	
         }
-         
-    }
+	}
 }
