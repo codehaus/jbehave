@@ -312,9 +312,9 @@
   <contributors />
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/jbehave/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/jbehave/trunk</developerConnection>
-    <url>http://svn.codehaus.org/jbehave/trunk</url>
+    <connection>scm:svn:https://svn.codehaus.org/jbehave/trunk/core</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/jbehave/trunk/core</developerConnection>
+    <url>http://svn.codehaus.org/jbehave/trunk/core</url>
   </scm>
 
   <distributionManagement>
