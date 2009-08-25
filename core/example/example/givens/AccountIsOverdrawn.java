@@ -1,0 +1,30 @@
+/*
+ * Created on 27-Aug-2004
+ * 
+ * (c) 2003-2004 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
+package example.givens;
+
+import jbehave.core.minimock.Mock;
+import jbehave.story.domain.GivenUsingMiniMock;
+import jbehave.story.domain.World;
+
+
+import example.domain.Account;
+
+
+/**
+ * set balance = -50
+ */
+public class AccountIsOverdrawn extends GivenUsingMiniMock {
+    public void setUp(World world) {
+        Mock accountMock = (Mock)world.get("account", mock(Account.class));
+        accountMock.stubs("getBalance").will(returnValue(-50));
+    }
+
+    public String getDescription() {
+        return "set balance = -50";
+    }
+}
