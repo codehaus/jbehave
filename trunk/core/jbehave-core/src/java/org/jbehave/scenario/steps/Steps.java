@@ -130,9 +130,11 @@ public class Steps implements CandidateSteps {
 	void createCandidateStep(List<CandidateStep> steps, Method method,
 			String stepAsString) {
 		checkForDuplicateCandidateSteps(steps, stepAsString);
-		steps.add(new CandidateStep(stepAsString, method, this, configuration
-				.getPatternBuilder(), configuration.getMonitor(), configuration
-				.getParameterConverters(), configuration.getStartingWords()));
+        CandidateStep step = new CandidateStep(stepAsString, method, this, configuration
+                .getPatternBuilder(), configuration
+                .getParameterConverters(), configuration.getStartingWords());
+        step.setStepMonitor(configuration.getMonitor());
+        steps.add(step);
 	}
 
 	private void checkForDuplicateCandidateSteps(List<CandidateStep> steps,
@@ -154,7 +156,7 @@ public class Steps implements CandidateSteps {
 		}
 		if (method.isAnnotationPresent(Alias.class)) {
 		    createCandidateStep(steps, method, method.getAnnotation(Alias.class).value());
-		}        
+		}
 	}
 
 	public List<Step> runBeforeScenario() {

@@ -20,20 +20,30 @@ public class CandidateStep {
 	private final String stepAsString;
     private final Method method;
     private final CandidateSteps steps;
-    private final StepMonitor stepMonitor;
+    private StepMonitor stepMonitor = new SilentStepMonitor();
     private final ParameterConverters parameterConverters;
     private final String[] startingWords;
     private final Pattern pattern;
 
     public CandidateStep(String stepAsString, Method method, CandidateSteps steps, StepPatternBuilder patterBuilder,
             StepMonitor stepMonitor, ParameterConverters parameterConverters, String... startingWords) {
+        this(stepAsString,method,steps, patterBuilder, parameterConverters, startingWords);
+        setStepMonitor(stepMonitor);
+    }
+
+    public CandidateStep(String stepAsString, Method method, CandidateSteps steps, StepPatternBuilder patterBuilder,
+            ParameterConverters parameterConverters, String... startingWords) {
         this.stepAsString = stepAsString;
         this.method = method;
         this.steps = steps;
-        this.stepMonitor = stepMonitor;
         this.parameterConverters = parameterConverters;
         this.startingWords = startingWords;
         this.pattern = patterBuilder.buildPattern(stepAsString);
+    }
+
+
+    public void setStepMonitor(StepMonitor stepMonitor) {
+        this.stepMonitor = stepMonitor;
     }
 
     public boolean matches(String step) {
