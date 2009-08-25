@@ -10,12 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jbehave.scenario.annotations.AfterScenario;
-import org.jbehave.scenario.annotations.Aliases;
-import org.jbehave.scenario.annotations.BeforeScenario;
-import org.jbehave.scenario.annotations.Given;
-import org.jbehave.scenario.annotations.Then;
-import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.annotations.*;
 import org.jbehave.scenario.annotations.AfterScenario.Outcome;
 import org.jbehave.scenario.errors.BeforeOrAfterScenarioException;
 import org.jbehave.scenario.reporters.ScenarioReporter;
@@ -157,6 +152,9 @@ public class Steps implements CandidateSteps {
 				createCandidateStep(steps, method, alias);
 			}
 		}
+		if (method.isAnnotationPresent(Alias.class)) {
+		    createCandidateStep(steps, method, method.getAnnotation(Alias.class).value());
+		}        
 	}
 
 	public List<Step> runBeforeScenario() {
