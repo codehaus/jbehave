@@ -1,0 +1,13 @@
+In order to build the jbehave eclipse feature you need to specify the 
+eclipse installation against which you wish to compile.
+
+This is the magic to do:
+ant -DeclipseDir=<eclipseInstallDir>
+
+If this is too inconvenient you may also specify the eclipseDir property 
+in the build.properties. It currently defaults to c:\Program Files\eclipse.
+
+If you are lucky you will end up with a nice update site in the build/site folder, 
+that contains everything you need.
+
+The PDE Junit tests are currently not executed in the build.

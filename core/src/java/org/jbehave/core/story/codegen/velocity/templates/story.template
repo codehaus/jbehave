@@ -1,0 +1,18 @@
+package ${packageName};
+
+import org.jbehave.core.story.domain.Narrative;
+import org.jbehave.core.story.domain.ScenarioDrivenStory;
+
+public class ${className} extends ScenarioDrivenStory {
+
+    public ${className}() {
+        super(new Narrative("${narrative.role}", "${narrative.feature}", "${narrative.benefit}"));
+    }
+    
+    public void specify() {
+        #foreach( $scenarioClassName in $scenarioClassNames )
+	      addScenario(new $scenarioClassName());
+    	#end
+    }
+
+}
