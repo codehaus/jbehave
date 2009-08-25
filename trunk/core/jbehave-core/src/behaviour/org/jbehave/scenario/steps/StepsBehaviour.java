@@ -12,8 +12,8 @@ import org.junit.Test;
 public class StepsBehaviour {
 
     @Test
-    public void shouldProvideCandidateStepsCorrespondingToAnnotatedSteps() {
-        MySteps steps = new MySteps();
+    public void shouldProvideCandidateStepsCorrespondingToAnnotatedStepsWithMultipleAliases() {
+        MyStepsWithAliases steps = new MyStepsWithAliases();
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(9));
 
@@ -31,10 +31,28 @@ public class StepsBehaviour {
         ensureThat(steps.whens, equalTo(3));
         ensureThat(steps.thens, equalTo(3));
     }
-    
+
+    @Test
+    public void shouldProvideCandidateStepsCorrespondingToAnnotatedStepsWithSingleAlias() {
+        MyStepsWithAlias steps = new MyStepsWithAlias();
+        CandidateStep[] candidateSteps = steps.getSteps();
+        ensureThat(candidateSteps.length, equalTo(6));
+
+        candidateSteps[0].createFrom("Given a given").perform();
+        candidateSteps[1].createFrom("Given a given alias").perform();
+        candidateSteps[2].createFrom("When a when").perform();
+        candidateSteps[3].createFrom("When a when alias").perform();
+        candidateSteps[4].createFrom("Then a then").perform();
+        candidateSteps[5].createFrom("Then a then alias").perform();
+
+        ensureThat(steps.givens, equalTo(2));
+        ensureThat(steps.whens, equalTo(2));
+        ensureThat(steps.thens, equalTo(2));
+    }
+
     @Test
     public void shouldProvideStepsToBePerformedBeforeScenarios() {
-    	MySteps steps = new MySteps();
+    	MyStepsWithAliases steps = new MyStepsWithAliases();
     	List<Step> executableSteps = steps.runBeforeScenario();
 		ensureThat(executableSteps.size(), equalTo(1));
 		
@@ -44,7 +62,7 @@ public class StepsBehaviour {
     
     @Test
     public void shouldProvideStepsToBePerformedAfterScenarios() {
-    	MySteps steps = new MySteps();
+    	MyStepsWithAliases steps = new MyStepsWithAliases();
     	List<Step> executableSteps = steps.runAfterScenario();
     	ensureThat(executableSteps.size(), equalTo(3));
     	
@@ -60,7 +78,7 @@ public class StepsBehaviour {
     
     @Test
     public void shouldIgnoreSuccessfulStepsWhichArePerformedInUnsuccessfulScenarioOrViceVersa() {
-    	MySteps steps = new MySteps();
+    	MyStepsWithAliases steps = new MyStepsWithAliases();
     	List<Step> executableSteps = steps.runAfterScenario();
     	
     	executableSteps.get(0).doNotPerform();
@@ -75,6 +93,7 @@ public class StepsBehaviour {
 	
     }
 
+
     @Test(expected=DuplicateCandidateStepFoundException.class)
     public void shouldFailIfDuplicateStepsAreEncountered() {
         DuplicateSteps steps = new DuplicateSteps();
@@ -86,7 +105,7 @@ public class StepsBehaviour {
     }
 
     
-    public static class MySteps extends Steps {
+    public static class MyStepsWithAliases extends Steps {
         
         private int givens;
         private int whens;
@@ -137,7 +156,61 @@ public class StepsBehaviour {
         
         
     }
-    
+
+    public static class MyStepsWithAlias extends Steps {
+
+        private int givens;
+        private int whens;
+        private int thens;
+
+        private boolean before;
+        private boolean afterAny;
+        private boolean afterSuccess;
+        private boolean afterFailure;
+
+        @org.jbehave.scenario.annotations.Given("a given")
+        @org.jbehave.scenario.annotations.Alias("a given alias")
+        public void given() {
+            givens++;
+        }
+
+        @org.jbehave.scenario.annotations.When("a when")
+        @org.jbehave.scenario.annotations.Alias("a when alias")
+        public void when() {
+            whens++;
+        }
+
+        @org.jbehave.scenario.annotations.Then("a then")
+        @org.jbehave.scenario.annotations.Alias("a then alias")
+        public void then() {
+            thens++;
+        }
+
+        @org.jbehave.scenario.annotations.BeforeScenario
+        public void beforeScenarios() {
+        	before = true;
+        }
+
+        @org.jbehave.scenario.annotations.AfterScenario
+        public void afterAnyScenarios() {
+        	afterAny = true;
+        }
+
+        @org.jbehave.scenario.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.SUCCESS)
+        public void afterSuccessfulScenarios() {
+        	afterSuccess = true;
+        }
+
+        @org.jbehave.scenario.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.FAILURE)
+        public void afterUnsuccessfulScenarios() {
+        	afterFailure = true;
+        }
+
+
+    }
+
+
+
     public static class DuplicateSteps extends Steps {
         
         @org.jbehave.scenario.annotations.Given("a given")
