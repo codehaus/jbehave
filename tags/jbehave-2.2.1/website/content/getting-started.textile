@@ -1,0 +1,56 @@
+--------------------------------------------
+Getting Started
+--------------------------------------------
+h1(FirstChild). Two minute tutorial
+
+You create a Behaviour Class, which is a plain Java class that by convention
+has the name of the class whose behaviour we are specifying followed
+by the word "Behaviour", so @Foo@ has @FooBehaviour@.
+
+Inside the Behaviour Class are a bunch of methods that specify the
+behaviour we expect. These are just public void methods that start with the word "should"
+and describe the specific behaviour (e.g. @CustomerServiceBehaviour@
+might have @shouldFindCustomerBySurname()@).
+
+These will typically set up a known environment, execute some behaviour and
+then verify that stuff happened. There are some static methods in
+@org.jbehave.core.Ensure@ that help with this, for instance
+@Ensure.that(somethingHappened)@ and @Ensure.that(actualValue, eq(expectedValue))@.
+
+Our template behaviour method looks like this:
+
+<div class="Shaded"><pre>
+public void should[DoSomething]() {
+	// given
+	
+	// expect
+
+	// when
+
+	// then
+}
+</pre></div>
+
+The <tt>DoSomething</tt> is highlighted so we know we have to change it to actually
+describe some behaviour.
+
+Behaviour classes can be contained in a behaviour class container (!).
+This is a plain Java class that implements the @org.jbehave.core.behaviour.Behaviours@
+interface. This has a single method: @getBehaviours()@, which returns an
+array of @Class@ objects representing the behaviour classes to run. Naturally
+behaviour class containers can contain other behaviour class containers.
+
+Behaviour is verified by reflecting into the behaviour classes and invoking the methods.
+A Listener is notified whenever something interesting happens.
+
+A single behaviour method is represented as a @BehaviourMethod@ and verified by a
+@MethodVerifier@, a behaviour class is verified by a <tt>BehaviourClassVerifier</tt>
+
+So how do we tie this all together? There is a small <tt>main</tt> method inside
+<tt>org.jbehave.core.Run</tt> that takes a behaviour class name as its argument and invokes a
+<tt>BehaviourVerifier</tt> on it passing in a <tt>TextListener</tt>. Run that with
+<tt>org.jbehave.jar</tt> on your classpath. And, um, that's it. So:
+
+<div class="Shaded">
+<pre>java -cp org.jbehave.jar;your_classpath org.jbehave.core.Run your.ApplicationBehaviour</pre>
+</div>
