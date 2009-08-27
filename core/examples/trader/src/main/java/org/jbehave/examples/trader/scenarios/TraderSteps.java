@@ -10,6 +10,7 @@ import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
 import org.jbehave.examples.trader.persistence.TraderPersister;
+import org.jbehave.scenario.annotations.Alias;
 import org.jbehave.scenario.annotations.Aliases;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
@@ -54,6 +55,7 @@ public class TraderSteps extends Steps {
     }
 
     @Then("the alert status should be %status")
+    @Alias("the alert status is %status")
     public void theAlertStatusShouldBe(String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
