@@ -7,8 +7,14 @@ import static org.jbehave.Ensure.not;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.MethodDescriptor;
+import java.lang.reflect.Method;
 import java.util.List;
 
+import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 import org.jbehave.scenario.reporters.ScenarioReporter;
@@ -136,4 +142,45 @@ public class CandidateStepBehaviour {
         candidateStep.createFrom("When windows on the 1,2,3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList("1", "2", "3").toString()));
     }
+    
+    @Test
+    public void shouldMatchMethodParametersByAnnotatedNames() throws Exception {
+    	NamedParameterSteps steps = new NamedParameterSteps();
+        CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
+        		NamedParameterSteps.methodFor("methodWithNamedParametersInOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+        candidateStep.createFrom("When I live on the first floor but some call it the ground").perform();
+        ensureThat(steps.ith, equalTo("first"));
+        ensureThat(steps.nth, equalTo("ground"));
+        candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
+        		NamedParameterSteps.methodFor("methodWithNamedParametersInInverseOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+        candidateStep.createFrom("When I live on the first floor but some call it the ground").perform();
+        ensureThat(steps.ith, equalTo("first"));
+        ensureThat(steps.nth, equalTo("ground"));
+    }
+    
+    public static class NamedParameterSteps extends Steps {
+    	String ith;
+        String nth;
+
+        public void methodWithNamedParametersInOrder(@Named("ith") String ithName, @Named("nth") String nthName){
+    		this.ith = ithName;    	
+    		this.nth = nthName;
+        }
+        
+        public void methodWithNamedParametersInInverseOrder(@Named("nth") String nthName, @Named("ith") String ithName){
+    		this.ith = ithName;    	
+    		this.nth = nthName;
+        }
+
+        public static Method methodFor(String methodName) throws IntrospectionException {
+            BeanInfo beanInfo = Introspector.getBeanInfo(NamedParameterSteps.class);
+            for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
+                if (md.getMethod().getName().equals(methodName)) {
+                    return md.getMethod();
+                }
+            }
+            return null;
+        }
+    }
+    
 }
