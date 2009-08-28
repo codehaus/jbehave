@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
  */
 public class PrefixCapturingPatternBuilder implements StepPatternBuilder {
 
+	private final String prefix;
     private final String anyWordBeginningWithThePrefix;
 
     /**
@@ -29,7 +30,8 @@ public class PrefixCapturingPatternBuilder implements StepPatternBuilder {
      * prefix in a matching step.
      */
     public PrefixCapturingPatternBuilder(String prefix) {
-        anyWordBeginningWithThePrefix = "(\\" + prefix + "\\w*)(\\W|\\Z)";
+        this.prefix = prefix;
+		this.anyWordBeginningWithThePrefix = "(\\" + prefix + "\\w*)(\\W|\\Z)";
     }
 
     public Pattern buildPattern(String matchThis) {
@@ -49,7 +51,7 @@ public class PrefixCapturingPatternBuilder implements StepPatternBuilder {
         Matcher findingAllTheDollarWords = Pattern.compile(anyWordBeginningWithThePrefix, Pattern.DOTALL).matcher(matchThisButLeaveBrackets);
         List<Replacement> replacements = new ArrayList<Replacement>();
         while(findingAllTheDollarWords.find()) {
-            replacements.add(new Replacement(findingAllTheDollarWords.start(), findingAllTheDollarWords.end(), findingAllTheDollarWords.group(2)));
+            replacements.add(new Replacement(matchThisButLeaveBrackets, findingAllTheDollarWords.start(), findingAllTheDollarWords.end(), findingAllTheDollarWords.group(2)));
         }
         return replacements;
     }
@@ -71,16 +73,27 @@ public class PrefixCapturingPatternBuilder implements StepPatternBuilder {
         return escapedMatch;
     }
 
-    private static class Replacement {
+    private class Replacement {
         private final int start;
         private final int end;
         private final String whitespaceIfAny;
+		private final String name;
 
-        public Replacement(int start, int end, String whitespaceIfAny) {
+        public Replacement(String pattern, int start, int end, String whitespaceIfAny) {
             this.start = start;
             this.end = end;
             this.whitespaceIfAny = whitespaceIfAny;
+            this.name = pattern.substring(start + prefix.length(), end).trim();
         }
+        
     }
+
+	public String[] extractParameterNames(String pattern) {
+		List<String> names = new ArrayList<String>();
+		for (Replacement replacement : findArgumentsToReplace(pattern)) {
+			names.add(replacement.name);
+		}
+		return names.toArray(new String[names.size()]);
+	}
 
 }

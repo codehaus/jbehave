@@ -23,4 +23,11 @@ public interface StepPatternBuilder {
      */
     Pattern buildPattern(String matchThis);
 
+    /**
+     * Extract the parameter names from a template step
+     * @param step the template step
+     * @return an array of parameter names
+     */
+	String[] extractParameterNames(String string);
+
 }

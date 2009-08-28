@@ -13,6 +13,7 @@ import org.jbehave.examples.trader.persistence.TraderPersister;
 import org.jbehave.scenario.annotations.Alias;
 import org.jbehave.scenario.annotations.Aliases;
 import org.jbehave.scenario.annotations.Given;
+import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
@@ -44,7 +45,8 @@ public class TraderSteps extends Steps {
     }
 
     @Given("a stock of prices %prices and a threshold of %threshold")
-    public void aStockOfPrice(List<Double> prices, double threshold) {
+    // Parameters are in reverse order to prove one of the features of @Named annotation 
+    public void aStockOfPrice(@Named("threshold") double threshold, @Named("prices") List<Double> prices) {
         stock = new Stock(prices, threshold);
     }
 
