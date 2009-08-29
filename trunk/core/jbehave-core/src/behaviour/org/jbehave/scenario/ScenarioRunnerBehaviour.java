@@ -8,6 +8,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
@@ -26,7 +29,9 @@ import org.mockito.InOrder;
 
 public class ScenarioRunnerBehaviour {
     
-    @Test
+    private Map<String, String> tableValues = new HashMap<String, String>();
+    
+	@Test
     public void shouldRunStepsInScenariosAndReportResultsToReporter() throws Throwable {
         ScenarioDefinition scenarioDefinition1 = new ScenarioDefinition("my title 1", "failingStep", "successfulStep");
         ScenarioDefinition scenarioDefinition2 = new ScenarioDefinition("my title 2", "successfulStep");
@@ -54,9 +59,9 @@ public class ScenarioRunnerBehaviour {
         stub(successfulStep.doNotPerform()).toReturn(StepResult.notPerformed("successfulStep"));
         stub(failingStep.perform()).toReturn(StepResult.failure("failingStep", anException));
 
-        stub(creator.createStepsFrom(scenarioDefinition1, mySteps)).toReturn(new Step[] {failingStep, successfulStep});
-        stub(creator.createStepsFrom(scenarioDefinition2, mySteps)).toReturn(new Step[] {successfulStep});
-        stub(creator.createStepsFrom(scenarioDefinition3, mySteps)).toReturn(new Step[] {successfulStep, pendingStep});
+        stub(creator.createStepsFrom(scenarioDefinition1, tableValues, mySteps)).toReturn(new Step[] {failingStep, successfulStep});
+        stub(creator.createStepsFrom(scenarioDefinition2, tableValues, mySteps)).toReturn(new Step[] {successfulStep});
+        stub(creator.createStepsFrom(scenarioDefinition3, tableValues, mySteps)).toReturn(new Step[] {successfulStep, pendingStep});
 
         ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
         ScenarioRunner runner = new ScenarioRunner();
@@ -92,7 +97,7 @@ public class ScenarioRunnerBehaviour {
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
         
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(mySteps)))
+        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableValues), eq(mySteps)))
                 .toReturn(new Step[] {firstStepNormal, secondStepPending, thirdStepNormal, fourthStepAlsoPending});
         
         ScenarioRunner runner = new ScenarioRunner();
@@ -133,7 +138,7 @@ public class ScenarioRunnerBehaviour {
         Steps mySteps = mock(Steps.class);
         ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
         
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(mySteps)))
+        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableValues), eq(mySteps)))
                 .toReturn(new Step[] {firstStepExceptional, secondStepNotPerformed});
         
         ScenarioRunner runner = new ScenarioRunner();
@@ -169,12 +174,12 @@ public class ScenarioRunnerBehaviour {
 
         ScenarioDefinition scenario1 = mock(ScenarioDefinition.class);
         ScenarioDefinition scenario2 = mock(ScenarioDefinition.class);
-        
-        stub(creator.createStepsFrom(scenario1, mySteps))
+
+        stub(creator.createStepsFrom(scenario1, tableValues, mySteps))
                 .toReturn(new Step[] {pendingStep});
-        stub(creator.createStepsFrom(scenario2, mySteps))
+        stub(creator.createStepsFrom(scenario2, tableValues, mySteps))
             .toReturn(new Step[] {secondStep});
-        
+
         ScenarioRunner runner = new ScenarioRunner();
         
         runner.run(new StoryDefinition(scenario1, scenario2), configurationWith(reporter, creator), mySteps);
@@ -197,7 +202,7 @@ public class ScenarioRunnerBehaviour {
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
         
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(mySteps)))
+        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableValues), eq(mySteps)))
                 .toReturn(new Step[] {pendingStep});
         
         new ScenarioRunner().run(new StoryDefinition(new ScenarioDefinition("")), configurationWithPendingStrategy(creator, reporter, strategy), mySteps);

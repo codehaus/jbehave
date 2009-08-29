@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,31 +66,47 @@ public class CandidateStep {
         return step.substring(word.length() + 1); // 1 for the space after
     }
 
-    public Step createFrom(final String stepAsString) {
+    public Step createFrom(Map<String, String> tableValues, final String stepAsString) {
         String startingWord = findStartingWord(stepAsString);
         Matcher matcher = pattern.matcher(trimStartingWord(startingWord, stepAsString));
         matcher.find();
         Type[] types = method.getGenericParameterTypes();
         String[] annotatedParameterNames = annotatedParameterNames();
         int groupCount = matcher.groupCount();
-		final Object[] args = new Object[groupCount];
-        for (int group = 0; group < args.length; group++) {
+		final Object[] args = new Object[types.length];
+        for (int group = 0; group < types.length; group++) {
             int parameterIndex = parameterIndex(annotatedParameterNames, group);
-            int groupIndex = group + 1; // default in case parameter index is not found
-            if ( parameterIndex != -1 ){            	
+            int groupIndex = -1; 
+            Type type = null;
+            if ( parameterIndex != -1 ){ // we are using annotated parameters
             	groupIndex = parameterIndex + 1;
+                type = types[parameterIndex];
+            } else {                    // default natural ordering
+                groupIndex = group + 1;
+                type = types[group];
             }
-            String arg = matcher.group(groupIndex);
-            Object converted = parameterConverters.convert(arg, types[group]);
+
+            String arg = null;
+            if ( useAnnotatedParameterNames(tableValues) ){
+            	arg = tableValues.get(annotatedParameterNames[parameterIndex]);
+            } else {
+            	arg = matcher.group(groupIndex);            	
+            }
+            Object converted = parameterConverters.convert(arg, type);
             args[group] = converted;
         }
         return createStep(stepAsString, args);
     }
 
+	private boolean useAnnotatedParameterNames(Map<String, String> tableValues) {
+		return tableValues.size() > 0;
+	}
+
     private int parameterIndex(String[] annotatedNames, int group) {
-    	String name = parameterNames[group];    	
+    	String name = annotatedNames[group];    	
     	for ( int index = 0; index < annotatedNames.length; index++ ){
-    		if ( name.equals(annotatedNames[index]) ){
+            String annotatedName = annotatedNames[index];
+            if ( annotatedName != null && name.equals(annotatedName) ){
     			return index;
     		}
     	}

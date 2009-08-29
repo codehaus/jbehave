@@ -1,5 +1,7 @@
 package org.jbehave.scenario.steps;
 
+import java.util.Map;
+
 import org.jbehave.scenario.definition.ScenarioDefinition;
 
 /**
@@ -9,6 +11,6 @@ import org.jbehave.scenario.definition.ScenarioDefinition;
 public interface StepCreator {
 
 	Step[] createStepsFrom(ScenarioDefinition scenarioDefinition,
-			CandidateSteps... candidateSteps);
+			Map<String, String> tableValues, CandidateSteps... candidateSteps);
 
 }

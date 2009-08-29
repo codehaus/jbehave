@@ -1,4 +1,4 @@
-package org.jbehave.examples.trader.scenarios;
+package org.jbehave.examples.trader;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -44,21 +44,35 @@ public class TraderSteps extends Steps {
         this.trader = trader;
     }
 
+    @Given("some stocks of <prices> and a <threshold>")
+    public void pricesWithThreshold(@Named("prices") List<Double> prices, @Named("threshold") double threshold) {
+        stock = new Stock(prices, threshold);
+    }
+
+    @When("one of these stocks is traded at <price>")
+    public void theStockIsBoughtAt(@Named("price") double price) {
+        stock.tradeAt(price);
+    }
+
+    @Then("the trader is alerted with <status>")
+    public void theAlertIs(@Named("status") String status) {
+        ensureThat(stock.getStatus().name(), equalTo(status));
+    }
+
     @Given("a stock of prices %prices and a threshold of %threshold")
-    // Parameters are in reverse order to prove one of the features of @Named annotation 
-    public void aStockOfPrice(@Named("threshold") double threshold, @Named("prices") List<Double> prices) {
+    public void aStockOfPrice(@Named("prices") List<Double> prices, @Named("threshold") double threshold) {
         stock = new Stock(prices, threshold);
     }
 
     @When("the stock is traded at %price")
     @Aliases(values={"the stock is sold at %price"})
-    public void theStockIsTradedAt(double price) {
+    public void theStockIsTradedAt(@Named("price") double price) {
         stock.tradeAt(price);
     }
 
     @Then("the alert status should be %status")
     @Alias("the alert status is %status")
-    public void theAlertStatusShouldBe(String status) {
+    public void theAlertStatusShouldBe(@Named("status") String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 

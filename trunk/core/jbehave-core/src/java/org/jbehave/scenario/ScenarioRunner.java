@@ -1,7 +1,11 @@
 package org.jbehave.scenario;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
+import org.jbehave.scenario.definition.Table;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
@@ -37,15 +41,22 @@ public class ScenarioRunner {
         
         reporter.beforeStory(story.getBlurb());
         for (ScenarioDefinition scenario : story.getScenarios()) {
-            runScenario(configuration, scenario, candidateSteps);
+        	Table table = scenario.getTable();
+        	if ( table != null && table.getRowCount() > 0 ){
+        		for (Map<String,String> tableValues : table.getRows() ) {
+					runScenario(configuration, scenario, tableValues, candidateSteps);
+				}
+        	} else {
+            	runScenario(configuration, scenario, new HashMap<String, String>(), candidateSteps);        		
+        	}
         }
         reporter.afterStory();
         currentStrategy.handleError(throwable);
     }
 
 	private void runScenario(Configuration configuration,
-			ScenarioDefinition scenario, CandidateSteps... candidateSteps) {
-		Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, candidateSteps);
+			ScenarioDefinition scenario, Map<String, String> tableValues, CandidateSteps... candidateSteps) {
+		Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, tableValues, candidateSteps);
 		reporter.beforeScenario(scenario.getTitle());
 		state = new FineSoFar();
 		for (Step step : steps) {

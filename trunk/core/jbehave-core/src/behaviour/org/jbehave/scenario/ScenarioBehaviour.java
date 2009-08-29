@@ -1,10 +1,9 @@
 package org.jbehave.scenario;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
-
-import java.util.Collections;
 
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.KeyWords;
@@ -34,7 +33,7 @@ public class ScenarioBehaviour {
         CandidateSteps steps = mock(Steps.class);
         RunnableScenario scenario = new MyScenario(runner, configuration, steps);
         
-        StoryDefinition storyDefinition = new StoryDefinition(Blurb.EMPTY, Collections.EMPTY_LIST);
+        StoryDefinition storyDefinition = new StoryDefinition(Blurb.EMPTY, EMPTY_LIST);
         stub(configuration.scenarioDefiner.loadScenarioDefinitionsFor(MyScenario.class)).toReturn(storyDefinition);
         
         scenario.runScenario();

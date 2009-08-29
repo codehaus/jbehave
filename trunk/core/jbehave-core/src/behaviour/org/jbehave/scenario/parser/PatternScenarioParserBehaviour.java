@@ -2,6 +2,8 @@ package org.jbehave.scenario.parser;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.jbehave.Ensure.ensureThat;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
+import org.jbehave.scenario.definition.Table;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -188,4 +191,43 @@ public class PatternScenarioParserBehaviour {
         	ensureThat(scenario.getSteps().size(), equalTo(numberOfGivenWhenThensPerScenario*3));        	
         }
 	}
+	
+	@Test
+	public void canParseStoryWithTemplateScenario() {
+		String wholeStory =
+				"Scenario: A template scenario with table values" + NL +  NL +
+	            "Given a step with a <one>" + NL +
+	            "When I run the scenario of name <two>" + NL +
+	            "Then I should see <three> in the output" + NL +
+
+	            "Examples:" + NL +
+	            "|one|two|three|" + NL +
+	            "|a|b|c|" + NL +
+	            "|d|e|f|";
+		
+	        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory);
+	        
+	        ScenarioDefinition scenario = story.getScenarios().get(0);
+			ensureThat(scenario.getTitle(), equalTo("A template scenario with table values"));	        
+	        ensureThat(scenario.getSteps(), equalTo(asList(
+	                "Given a step with a <one>",
+	                "When I run the scenario of name <two>",
+	                "Then I should see <three> in the output"
+	        )));
+	        Table table = scenario.getTable();
+			ensureThat(table.toString(), equalTo(
+	        		"|one|two|three|" + NL +
+		            "|a|b|c|" + NL +
+		            "|d|e|f|"));	        
+	        ensureThat(table.getRowCount(), equalTo(2));
+	        ensureThat(table.getRow(0), not(nullValue()));
+	        ensureThat(table.getRow(0).get("one"), equalTo("a"));
+	        ensureThat(table.getRow(0).get("two"), equalTo("b"));
+	        ensureThat(table.getRow(0).get("three"), equalTo("c"));
+	        ensureThat(table.getRow(1), not(nullValue()));
+	        ensureThat(table.getRow(1).get("one"), equalTo("d"));
+	        ensureThat(table.getRow(1).get("two"), equalTo("e"));
+	        ensureThat(table.getRow(1).get("three"), equalTo("f"));
+	    }
+	    
 }
