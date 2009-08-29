@@ -15,6 +15,7 @@ import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
+import org.jbehave.scenario.definition.Table;
 
 /**
  * Pattern-based scenario parser, which uses the configured keywords to find the
@@ -43,13 +44,26 @@ public class PatternScenarioParser implements ScenarioParser {
 		List<ScenarioDefinition> scenarioDefinitions = new ArrayList<ScenarioDefinition>();
 		List<String> scenarios = splitScenarios(wholeStoryAsString);
 		for (String scenario : scenarios) {
-			Matcher findingTitle = patternToPullScenarioTitlesIntoGroupOne()
-					.matcher(scenario);
-			scenarioDefinitions.add(new ScenarioDefinition(
-					findingTitle.find() ? findingTitle.group(1).trim() : "",
-					findSteps(scenario)));
+			String title = findTitle(scenario);
+			Table table = findTable(scenario);
+			List<String> steps = findSteps(scenario);
+			scenarioDefinitions
+					.add(new ScenarioDefinition(title, table, steps));
 		}
 		return scenarioDefinitions;
+	}
+
+	private String findTitle(String scenario) {
+		Matcher findingTitle = patternToPullScenarioTitlesIntoGroupOne()
+				.matcher(scenario);
+		return findingTitle.find() ? findingTitle.group(1).trim() : "";
+	}
+
+	private Table findTable(String scenario) {
+		Matcher findingTable = patternToPullScenarioTableIntoGroupOne()
+		.matcher(scenario);
+		String table = findingTable.find() ? findingTable.group(1).trim() : "";
+		return new Table(table);
 	}
 
 	private List<String> findSteps(String scenarioAsString) {
@@ -60,7 +74,6 @@ public class PatternScenarioParser implements ScenarioParser {
 			steps.add(matcher.group(1));
 			startAt = matcher.start(4);
 		}
-
 		return steps;
 	}
 
@@ -75,66 +88,75 @@ public class PatternScenarioParser implements ScenarioParser {
 		}
 	}
 
-    @SuppressWarnings("serial")
+	@SuppressWarnings("serial")
 	public static class InvalidPatternException extends RuntimeException {
 		public InvalidPatternException(String message, Throwable cause) {
 			super(message, cause);
 		}
 	}
-    
-    protected List<String> splitScenarios(String allScenariosInFile) {
-        return splitScenariosWithKeyword(allScenariosInFile);
-    }
-    
-    protected List<String> splitScenariosWithKeyword(String allScenariosInFile) {
-        List<String> scenarios = new ArrayList<String>();
-        String scenarioKeyword = "Scenario".replace("Scenario", configuration.keywords().scenario());
-        
-        String allScenarios = null;
-        //chomp off anything before first keyword, if found
-        int keywordIndex = allScenariosInFile.indexOf(scenarioKeyword);
+
+	protected List<String> splitScenarios(String allScenariosInFile) {
+		return splitScenariosWithKeyword(allScenariosInFile);
+	}
+
+	protected List<String> splitScenariosWithKeyword(String allScenariosInFile) {
+		List<String> scenarios = new ArrayList<String>();
+		String scenarioKeyword = "Scenario".replace("Scenario", configuration
+				.keywords().scenario());
+
+		String allScenarios = null;
+		// chomp off anything before first keyword, if found
+		int keywordIndex = allScenariosInFile.indexOf(scenarioKeyword);
 		if (keywordIndex != -1) {
 			allScenarios = allScenariosInFile.substring(keywordIndex);
 		} else { // use all scenarios in file
 			allScenarios = allScenariosInFile;
 		}
-        
-        for (String scenario : allScenarios.split(scenarioKeyword)) {
+
+		for (String scenario : allScenarios.split(scenarioKeyword)) {
 			if (scenario.trim().length() > 0) {
 				scenarios.add(scenarioKeyword + scenario);
 			}
 		}
-        return scenarios;
-    }
+		return scenarios;
+	}
 
-    //This pattern approach causes stack overflow error on Windows
-    //http://jbehave.org/documentation/known-issues/regex-stack-overflow-errors
-    protected List<String> splitScenariosWithPattern(String allScenariosInFile) {
+	// This pattern approach causes stack overflow error on Windows
+	// http://jbehave.org/documentation/known-issues/regex-stack-overflow-errors
+	protected List<String> splitScenariosWithPattern(String allScenariosInFile) {
 		Pattern scenarioSplitter = patternToPullScenariosIntoGroupFour();
 		Matcher matcher = scenarioSplitter.matcher(allScenariosInFile);
 		int startAt = 0;
 		List<String> scenarios = new ArrayList<String>();
-        try {
-            if (matcher.matches()) {
-                while (matcher.find(startAt)) {
-                    scenarios.add(matcher.group(1));
-                    startAt = matcher.start(4);
-                }
-            } else {
-                String loneScenario = allScenariosInFile;
-                scenarios.add(loneScenario);
-            }
-        } catch (StackOverflowError e) {
-            // TODO - wish we had the scenario file name here.
-            throw new InvalidPatternException("Failed to parse scenarios (see http://jbehave.org/documentation/known-issues/regex-stack-overflow-errors): "+allScenariosInFile, e);  
-        }
-        return scenarios;
+		try {
+			if (matcher.matches()) {
+				while (matcher.find(startAt)) {
+					scenarios.add(matcher.group(1));
+					startAt = matcher.start(4);
+				}
+			} else {
+				String loneScenario = allScenariosInFile;
+				scenarios.add(loneScenario);
+			}
+		} catch (StackOverflowError e) {
+			// TODO - wish we had the scenario file name here.
+			throw new InvalidPatternException(
+					"Failed to parse scenarios (see http://jbehave.org/documentation/known-issues/regex-stack-overflow-errors): "
+							+ allScenariosInFile, e);
+		}
+		return scenarios;
 	}
 
 	private Pattern patternToPullScenariosIntoGroupFour() {
 		String scenario = configuration.keywords().scenario();
 		return compile(".*?((" + scenario + ") (.|\\s)*?)\\s*(\\Z|" + scenario
 				+ ").*", DOTALL);
+	}
+
+	private Pattern patternToPullScenarioTableIntoGroupOne() {
+		KeyWords keywords = configuration.keywords();
+		String table = keywords.table();
+		return compile(".*"+table+"\\s*((.|\\s)*)");
 	}
 
 	private Pattern patternToPullScenarioTitlesIntoGroupOne() {
@@ -190,7 +212,8 @@ public class PatternScenarioParser implements ScenarioParser {
 		String givenWhenThenSpaced = concatenateWithSpaceOr(keywords.given(),
 				keywords.when(), keywords.then(), keywords.others());
 		String scenario = keywords.scenario();
+		String table = keywords.table();
 		return compile("((" + givenWhenThen + ") (.|\\s)*?)\\s*(\\Z|"
-				+ givenWhenThenSpaced + "|" + scenario + ")");
+				+ givenWhenThenSpaced + "|" + scenario + "|"+ table + ")");
 	}
 }

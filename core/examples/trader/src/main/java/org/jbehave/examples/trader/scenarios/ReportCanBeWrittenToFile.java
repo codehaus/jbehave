@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import org.jbehave.examples.trader.TraderSteps;
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.PropertyBasedConfiguration;

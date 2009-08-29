@@ -1,0 +1,27 @@
+Scenario: 
+In order to ensure a quick response
+As a trader 
+I want to monitor stock prices 
+
+Given a stock of prices 0.5,1.0 and a threshold of 15.0
+When the stock is traded at 5.0
+Then the alert status should be OFF
+When the stock is sold at 11.0
+Then the alert status is OFF
+When the stock is sold at 16.0
+Then the alert status is ON
+
+Scenario:
+In order to ensure a quick response 
+As a trader 
+I want to monitor stock prices 
+
+Given some stocks of <prices> and a <threshold>
+When one of these stocks is traded at <price>
+Then the trader is alerted with <status>
+
+Examples:
+|prices|threshold|price|status|
+|0.5,1.0|15.0|5.0|OFF|
+|0.5,1.0|15.0|11.0|OFF|
+|0.5,1.0|15.0|16.0|ON|
