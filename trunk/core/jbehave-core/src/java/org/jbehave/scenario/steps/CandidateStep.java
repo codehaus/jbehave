@@ -11,12 +11,17 @@ import java.util.regex.Pattern;
 import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.parser.StepPatternBuilder;
+import com.thoughtworks.paranamer.Paranamer;
+import com.thoughtworks.paranamer.NullParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 
 /**
  * Creates step from its candidate string representations
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi
+ * @author Paul Hammant
  */
 public class CandidateStep {
 
@@ -27,7 +32,8 @@ public class CandidateStep {
     private final String[] startingWords;
     private final Pattern pattern;
     private StepMonitor stepMonitor = new SilentStepMonitor();
-	private String[] parameterNames;
+	private String[] groupNames;
+    private Paranamer paranamer = new NullParanamer();
 
     public CandidateStep(String stepAsString, Method method, CandidateSteps steps, StepPatternBuilder patterBuilder,
             StepMonitor stepMonitor, ParameterConverters parameterConverters, String... startingWords) {
@@ -43,7 +49,7 @@ public class CandidateStep {
         this.parameterConverters = parameterConverters;
         this.startingWords = startingWords;
         this.pattern = patternBuilder.buildPattern(stepAsString);
-        this.parameterNames = patternBuilder.extractParameterNames(stepAsString);
+        this.groupNames = patternBuilder.extractGroupNames(stepAsString);
     }
 
     public void useStepMonitor(StepMonitor stepMonitor) {
@@ -71,41 +77,64 @@ public class CandidateStep {
         Matcher matcher = pattern.matcher(trimStartingWord(startingWord, stepAsString));
         matcher.find();
         Type[] types = method.getGenericParameterTypes();
-        String[] annotatedParameterNames = annotatedParameterNames();
+        String[] annotationNames = annotatedParameterNames();
+        String[] parameterNames = paranamer.lookupParameterNames(method, false);
+        final Object[] args = new Object[types.length];
         int groupCount = matcher.groupCount();
-		final Object[] args = new Object[types.length];
-        for (int group = 0; group < types.length; group++) {
-            int parameterIndex = parameterIndex(annotatedParameterNames, group);
-            int groupIndex = -1; 
-            Type type = null;
-            if ( parameterIndex != -1 ){ // we are using annotated parameters
-            	groupIndex = parameterIndex + 1;
-                type = types[parameterIndex];
-            } else {                    // default natural ordering
-                groupIndex = group + 1;
-                type = types[group];
-            }
-
+        for (int ix = 0; ix < types.length; ix++) {
+            int annotatedNameIx = parameterIndex(annotationNames, ix);
+            int parameterNameIx = parameterIndex(parameterNames, ix);
             String arg = null;
-            if ( useAnnotatedParameterNames(tableValues) ){
-            	arg = tableValues.get(annotatedParameterNames[parameterIndex]);
+            if (annotatedNameIx != -1 && isGroupName(annotationNames[ix])) {
+                arg = getGroup(matcher, annotationNames[ix]);
+            } else if (parameterNameIx != -1 && isGroupName(parameterNames[ix])) {
+                arg = getGroup(matcher, parameterNames[ix]);
+            } else if (annotatedNameIx != -1 && isTableFieldName(tableValues, annotationNames[ix])) {
+                arg = getTableValue(tableValues, annotationNames[ix]);
+            } else if (parameterNameIx != -1 && isTableFieldName(tableValues, parameterNames[ix])) {
+                arg = getTableValue(tableValues, parameterNames[ix]);
             } else {
-            	arg = matcher.group(groupIndex);            	
+                arg = matcher.group(ix + 1);
             }
-            Object converted = parameterConverters.convert(arg, type);
-            args[group] = converted;
+            args[ix] = parameterConverters.convert(arg, types[ix]);
         }
         return createStep(stepAsString, args);
     }
 
-	private boolean useAnnotatedParameterNames(Map<String, String> tableValues) {
-		return tableValues.size() > 0;
-	}
+    private String getTableValue(Map<String, String> tableValues, String name) {
+        return tableValues.get(name);
+    }
 
-    private int parameterIndex(String[] annotatedNames, int group) {
-    	String name = annotatedNames[group];    	
-    	for ( int index = 0; index < annotatedNames.length; index++ ){
-            String annotatedName = annotatedNames[index];
+    private boolean isTableFieldName(Map<String, String> tableValues, String name) {
+        return tableValues.get(name) != null;
+    }
+
+    private String getGroup(Matcher matcher, String name) {
+        for (int i = 0; i < groupNames.length; i++) {
+            String groupName = groupNames[i];
+            if (name.equals(groupName)) {
+                return matcher.group(i + 1);
+            }
+        }
+        throw new RuntimeException("no group for name");
+    }
+
+    private boolean isGroupName(String name) {
+        for (String groupName : groupNames) {
+            if (name.equals(groupName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int parameterIndex(String[] names, int ix) {
+        if (names.length == 0) {
+            return -1;
+        }
+    	String name = names[ix];
+    	for ( int index = 0; index < names.length; index++ ){
+            String annotatedName = names[index];
             if ( annotatedName != null && name.equals(annotatedName) ){
     			return index;
     		}
@@ -185,4 +214,11 @@ public class CandidateStep {
     	return stepAsString;
     }
 
+    public void useParanamer(boolean useIt) {
+        if (useIt) {
+            this.paranamer = new CachingParanamer(new BytecodeReadingParanamer());
+        } else {
+            this.paranamer = new NullParanamer();
+        }
+    }
 }

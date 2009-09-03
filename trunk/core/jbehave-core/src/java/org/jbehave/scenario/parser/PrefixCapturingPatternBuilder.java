@@ -88,7 +88,7 @@ public class PrefixCapturingPatternBuilder implements StepPatternBuilder {
         
     }
 
-	public String[] extractParameterNames(String pattern) {
+	public String[] extractGroupNames(String pattern) {
 		List<String> names = new ArrayList<String>();
 		for (Replacement replacement : findArgumentsToReplace(pattern)) {
 			names.add(replacement.name);
