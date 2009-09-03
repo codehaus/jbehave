@@ -74,7 +74,7 @@ public class PrefixCapturingPatternBuilderBehaviour {
     @Test
     public void shouldExtractParameterNamesFromStepPattern(){
     	StepPatternBuilder builder = new PrefixCapturingPatternBuilder();
-        String[] names  = builder.extractParameterNames("The grid $name looks like $grid");
+        String[] names  = builder.extractGroupNames("The grid $name looks like $grid");
         ensureThat(names.length, equalTo(2));
         ensureThat(names[0], equalTo("name"));
         ensureThat(names[1], equalTo("grid"));

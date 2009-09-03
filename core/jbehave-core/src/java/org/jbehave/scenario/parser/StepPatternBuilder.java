@@ -28,6 +28,6 @@ public interface StepPatternBuilder {
      * @param step the template step
      * @return an array of parameter names
      */
-	String[] extractParameterNames(String string);
+	String[] extractGroupNames(String string);
 
 }

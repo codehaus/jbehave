@@ -15,6 +15,50 @@
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.paranamer</groupId>
+      <artifactId>paranamer</artifactId>
+      <version>2.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactId>jbehave-core</shadedArtifactId>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.apache.ant:ant</exclude>
+                                    <exclude>junit:junit-dep</exclude>
+                                    <exclude>org.hamcrest:hamcrest-all</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.thoughtworks.paranamer</pattern>
+                                    <shadedPattern>org.jbehave.paranamer</shadedPattern>
+                                    <excludes>
+                                        <exclude>com.thoughtworks.paranamer.JavadocParanamer</exclude>
+                                        <exclude>com.thoughtworks.paranamer.DefaultParanamer</exclude>
+                                        <exclude>com.thoughtworks.paranamer.AdaptiveParanamer</exclude>
+                                    </excludes>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
