@@ -1,6 +1,7 @@
 package org.jbehave.scenario;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jbehave.scenario.definition.ScenarioDefinition;
@@ -51,7 +52,7 @@ public class ScenarioRunner {
         reporter.beforeStory(story.getBlurb());
         for (ScenarioDefinition scenario : story.getScenarios()) {
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
-        	if ( isTemplateScenario(scenario.getTable()) ){ // run template scenario
+        	if ( isTemplateScenario(scenario) ){ // run template scenario
         		runTemplateScenario(configuration, scenario, scenario.getTable(), candidateSteps);
         	} else { // run plain old scenario
             	runScenario(configuration, scenario, new HashMap<String, String>(), candidateSteps);        		
@@ -61,7 +62,8 @@ public class ScenarioRunner {
         currentStrategy.handleError(throwable);
     }
 
-	private boolean isTemplateScenario(Table table) {
+	private boolean isTemplateScenario(ScenarioDefinition scenario) {
+		Table table = scenario.getTable();
 		return table != null && table.getRowCount() > 0;
 	}
 
@@ -76,9 +78,10 @@ public class ScenarioRunner {
 	private void runGivenScenarios(Configuration configuration,
 			ScenarioDefinition scenario, CandidateSteps... candidateSteps)
 			throws Throwable {
-		if ( scenario.getGivenScenarios().size() > 0 ){
-			for ( String scenarioPath : scenario.getGivenScenarios() ){
-				reporter.givenScenario(scenarioPath);
+		List<String> givenScenarios = scenario.getGivenScenarios();
+		if ( givenScenarios.size() > 0 ){
+			reporter.givenScenarios(givenScenarios);
+			for ( String scenarioPath : givenScenarios ){
 				run(scenarioPath, configuration, candidateSteps);
 			}
 		}
@@ -88,6 +91,9 @@ public class ScenarioRunner {
 			ScenarioDefinition scenario, Map<String, String> tableValues, CandidateSteps... candidateSteps) {
 		Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, tableValues, candidateSteps);
 		reporter.beforeScenario(scenario.getTitle());
+		if ( !tableValues.isEmpty() ){
+			reporter.usingTableValues(tableValues);
+		}
 		state = new FineSoFar();
 		for (Step step : steps) {
 		    state.run(step);

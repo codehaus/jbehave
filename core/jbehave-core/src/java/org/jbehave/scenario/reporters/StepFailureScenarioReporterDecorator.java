@@ -1,5 +1,8 @@
 package org.jbehave.scenario.reporters;
 
+import java.util.List;
+import java.util.Map;
+
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.errors.StepFailure;
 
@@ -59,8 +62,12 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.successful(step);
 	}
 
-	public void givenScenario(String scenarioPath) {
-		delegate.givenScenario(scenarioPath);		
+	public void givenScenarios(List<String> givenScenarios) {
+		delegate.givenScenarios(givenScenarios);		
+	}
+
+	public void usingTableValues(Map<String, String> tableValues) {
+		delegate.usingTableValues(tableValues);
 	}
 
 }

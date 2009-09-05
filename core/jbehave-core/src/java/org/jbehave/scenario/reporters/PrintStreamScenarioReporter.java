@@ -1,6 +1,8 @@
 package org.jbehave.scenario.reporters;
 
 import java.io.PrintStream;
+import java.util.List;
+import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
 
@@ -68,8 +70,12 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         output.println();
     }
 
-	public void givenScenario(String scenarioPath) {
-		output.println("GivenScenario: "+scenarioPath);		
+	public void givenScenarios(List<String> givenScenarios) {
+		output.println("GivenScenarios: "+givenScenarios);		
+	}
+
+	public void usingTableValues(Map<String, String> tableValues) {
+		output.println("Using table values: "+tableValues);
 	}
 
 }
