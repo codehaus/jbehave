@@ -18,7 +18,7 @@ import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.steps.ParameterConverters;
-import org.jbehave.scenario.steps.PrintStreamStepMonitor;
+import org.jbehave.scenario.steps.SilentStepMonitor;
 import org.jbehave.scenario.steps.StepMonitor;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.scenario.steps.StepsConfiguration;
@@ -31,7 +31,7 @@ public class TraderSteps extends Steps {
 
     public TraderSteps(ClassLoader classLoader) {
         super(configuration);
-        StepMonitor monitor = new PrintStreamStepMonitor();
+        StepMonitor monitor = new SilentStepMonitor();
 		configuration.useParameterConverters(new ParameterConverters(
         		monitor, new TraderConverter(mockTradePersister())));
         configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("%"));

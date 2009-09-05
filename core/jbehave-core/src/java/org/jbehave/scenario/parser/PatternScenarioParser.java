@@ -46,15 +46,16 @@ public class PatternScenarioParser implements ScenarioParser {
 		for (String scenario : scenarios) {
 			String title = findTitle(scenario);
 			Table table = findTable(scenario);
+			List<String> givenScenarios = findGivenScenarios(scenario);
 			List<String> steps = findSteps(scenario);
 			scenarioDefinitions
-					.add(new ScenarioDefinition(title, table, steps));
+					.add(new ScenarioDefinition(title, givenScenarios, table, steps));
 		}
 		return scenarioDefinitions;
 	}
 
 	private String findTitle(String scenario) {
-		Matcher findingTitle = patternToPullScenarioTitlesIntoGroupOne()
+		Matcher findingTitle = patternToPullScenarioTitleIntoGroupOne()
 				.matcher(scenario);
 		return findingTitle.find() ? findingTitle.group(1).trim() : "";
 	}
@@ -64,6 +65,20 @@ public class PatternScenarioParser implements ScenarioParser {
 		.matcher(scenario);
 		String table = findingTable.find() ? findingTable.group(1).trim() : "";
 		return new Table(table);
+	}
+
+	private List<String> findGivenScenarios(String scenario) {
+		Matcher findingGivenScenarios = patternToPullGivenScenariosIntoGroupOne()
+		.matcher(scenario);
+		String givenScenariosAsCSV = findingGivenScenarios.find() ? findingGivenScenarios.group(1).trim() : "";
+		List<String> givenScenarios = new ArrayList<String>();		
+		for ( String givenScenario : givenScenariosAsCSV.split(",") ){			
+			String trimmed = givenScenario.trim();
+			if ( trimmed.length() > 0 ) {
+				givenScenarios.add(trimmed);
+			}
+		}
+		return givenScenarios;
 	}
 
 	private List<String> findSteps(String scenarioAsString) {
@@ -153,17 +168,25 @@ public class PatternScenarioParser implements ScenarioParser {
 				+ ").*", DOTALL);
 	}
 
+	private Pattern patternToPullGivenScenariosIntoGroupOne() {
+		KeyWords keywords = configuration.keywords();
+		String givenScenarios = keywords.givenScenarios();
+		String concatenatedKeywords = concatenateWithOr(keywords.given(),
+				keywords.when(), keywords.then(), keywords.others());
+		return compile(".*"+givenScenarios+"(.*?)\\s*(" + concatenatedKeywords + ").*");
+	}
+
 	private Pattern patternToPullScenarioTableIntoGroupOne() {
 		KeyWords keywords = configuration.keywords();
 		String table = keywords.table();
 		return compile(".*"+table+"\\s*((.|\\s)*)");
 	}
 
-	private Pattern patternToPullScenarioTitlesIntoGroupOne() {
+	private Pattern patternToPullScenarioTitleIntoGroupOne() {
 		KeyWords keywords = configuration.keywords();
+		String scenario = keywords.scenario();
 		String concatenatedKeywords = concatenateWithOr(keywords.given(),
 				keywords.when(), keywords.then(), keywords.others());
-		String scenario = keywords.scenario();
 		return compile(scenario + "(.*?)\\s*(" + concatenatedKeywords + ").*");
 	}
 

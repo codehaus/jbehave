@@ -116,4 +116,12 @@ public class PassSilentlyDecorator implements ScenarioReporter {
 
         void report();
     }
+
+	public void givenScenario(final String scenarioPath) {
+//        currentScenario.add(new Todo() {
+//            public void doNow() {
+//                delegate.givenScenario(scenarioPath);
+//            }
+//        });
+	}
 }

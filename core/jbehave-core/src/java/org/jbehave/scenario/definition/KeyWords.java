@@ -8,15 +8,17 @@ package org.jbehave.scenario.definition;
 public class KeyWords {
 
 	private final String scenario;
+	private final String givenScenarios;
 	private final String given;
 	private final String when;
 	private final String then;
 	private final String table;
 	private final String[] others;
 
-	public KeyWords(String scenario, String given, String when, String then,
-			String table, String... others) {
+	public KeyWords(String scenario, String givenScenarios, String given, String when,
+			String then, String table, String... others) {
 		this.scenario = scenario;
+		this.givenScenarios = givenScenarios;
 		this.given = given;
 		this.when = when;
 		this.then = then;
@@ -26,6 +28,10 @@ public class KeyWords {
 
 	public String scenario() {
 		return scenario;
+	}
+
+	public String givenScenarios() {
+		return givenScenarios;
 	}
 
 	public String table() {
@@ -47,5 +53,6 @@ public class KeyWords {
 	public String[] others() {
 		return others;
 	}
+
 
 }

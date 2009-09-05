@@ -25,5 +25,6 @@ public interface ScenarioReporter {
 
     void afterStory();
 
+	void givenScenario(String scenarioPath);
 
 }

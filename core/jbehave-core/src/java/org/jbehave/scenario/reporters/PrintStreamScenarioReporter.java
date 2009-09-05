@@ -68,4 +68,8 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         output.println();
     }
 
+	public void givenScenario(String scenarioPath) {
+		output.println("GivenScenario: "+scenarioPath);		
+	}
+
 }

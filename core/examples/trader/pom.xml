@@ -52,7 +52,7 @@
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>
               </scenarioExcludes>
-              <skip>false</skip>
+              <skip>true</skip>
             </configuration>
             <goals>
               <goal>stepdoc</goal>
