@@ -33,7 +33,7 @@ import org.mockito.InOrder;
 
 public class ScenarioRunnerBehaviour {
     
-    private Map<String, String> tableValues = new HashMap<String, String>();
+    private Map<String, String> tableRow = new HashMap<String, String>();
     
 	@Test
     public void shouldRunStepsInScenariosAndReportResultsToReporter() throws Throwable {
@@ -63,9 +63,9 @@ public class ScenarioRunnerBehaviour {
         stub(successfulStep.doNotPerform()).toReturn(StepResult.notPerformed("successfulStep"));
         stub(failingStep.perform()).toReturn(StepResult.failure("failingStep", anException));
 
-        stub(creator.createStepsFrom(scenarioDefinition1, tableValues, mySteps)).toReturn(new Step[] {failingStep, successfulStep});
-        stub(creator.createStepsFrom(scenarioDefinition2, tableValues, mySteps)).toReturn(new Step[] {successfulStep});
-        stub(creator.createStepsFrom(scenarioDefinition3, tableValues, mySteps)).toReturn(new Step[] {successfulStep, pendingStep});
+        stub(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).toReturn(new Step[] {failingStep, successfulStep});
+        stub(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).toReturn(new Step[] {successfulStep});
+        stub(creator.createStepsFrom(scenarioDefinition3, tableRow, mySteps)).toReturn(new Step[] {successfulStep, pendingStep});
 
         ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
         ScenarioRunner runner = new ScenarioRunner();
@@ -114,8 +114,8 @@ public class ScenarioRunnerBehaviour {
         Step anotherSuccessfulStep = mock(Step.class);
         stub(anotherSuccessfulStep.perform()).toReturn(StepResult.success("anotherSuccessfulStep"));
 
-        stub(creator.createStepsFrom(scenarioDefinition1, tableValues, mySteps)).toReturn(new Step[] {successfulStep});
-        stub(creator.createStepsFrom(scenarioDefinition2, tableValues, mySteps)).toReturn(new Step[] {anotherSuccessfulStep});
+        stub(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).toReturn(new Step[] {successfulStep});
+        stub(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).toReturn(new Step[] {anotherSuccessfulStep});
         
         stub(scenarioDefiner.loadScenarioDefinitionsFor("/path/to/given/scenario1")).toReturn(storyDefinition1);
         
@@ -145,7 +145,7 @@ public class ScenarioRunnerBehaviour {
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
         
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableValues), eq(mySteps)))
+        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableRow), eq(mySteps)))
                 .toReturn(new Step[] {firstStepNormal, secondStepPending, thirdStepNormal, fourthStepAlsoPending});
         
         ScenarioRunner runner = new ScenarioRunner();
@@ -186,7 +186,7 @@ public class ScenarioRunnerBehaviour {
         Steps mySteps = mock(Steps.class);
         ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
         
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableValues), eq(mySteps)))
+        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableRow), eq(mySteps)))
                 .toReturn(new Step[] {firstStepExceptional, secondStepNotPerformed});
         
         ScenarioRunner runner = new ScenarioRunner();
@@ -223,9 +223,9 @@ public class ScenarioRunnerBehaviour {
         ScenarioDefinition scenario1 = mock(ScenarioDefinition.class);
         ScenarioDefinition scenario2 = mock(ScenarioDefinition.class);
 
-        stub(creator.createStepsFrom(scenario1, tableValues, mySteps))
+        stub(creator.createStepsFrom(scenario1, tableRow, mySteps))
                 .toReturn(new Step[] {pendingStep});
-        stub(creator.createStepsFrom(scenario2, tableValues, mySteps))
+        stub(creator.createStepsFrom(scenario2, tableRow, mySteps))
             .toReturn(new Step[] {secondStep});
 
         ScenarioRunner runner = new ScenarioRunner();
@@ -250,7 +250,7 @@ public class ScenarioRunnerBehaviour {
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
         
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableValues), eq(mySteps)))
+        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableRow), eq(mySteps)))
                 .toReturn(new Step[] {pendingStep});
         
         new ScenarioRunner().run(new StoryDefinition(new ScenarioDefinition("")), configurationWithPendingStrategy(creator, reporter, strategy), mySteps);

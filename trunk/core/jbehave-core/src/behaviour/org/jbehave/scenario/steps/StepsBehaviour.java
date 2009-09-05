@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class StepsBehaviour {
 
-    private Map<String, String> tableValues = new HashMap<String, String>();
+    private Map<String, String> tableRow = new HashMap<String, String>();
 
 	@Test
     public void shouldProvideCandidateStepsCorrespondingToAnnotatedStepsWithMultipleAliases() {
@@ -21,15 +21,15 @@ public class StepsBehaviour {
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(9));
 
-        candidateSteps[0].createFrom(tableValues, "Given a given").perform();
-        candidateSteps[1].createFrom(tableValues, "Given a given alias").perform();
-        candidateSteps[2].createFrom(tableValues, "Given another given alias").perform();
-        candidateSteps[3].createFrom(tableValues, "When a when").perform();
-        candidateSteps[4].createFrom(tableValues, "When a when alias").perform();
-        candidateSteps[5].createFrom(tableValues, "When another when alias").perform();
-        candidateSteps[6].createFrom(tableValues, "Then a then").perform();
-        candidateSteps[7].createFrom(tableValues, "Then a then alias").perform();
-        candidateSteps[8].createFrom(tableValues, "Then another then alias").perform();
+        candidateSteps[0].createFrom(tableRow, "Given a given").perform();
+        candidateSteps[1].createFrom(tableRow, "Given a given alias").perform();
+        candidateSteps[2].createFrom(tableRow, "Given another given alias").perform();
+        candidateSteps[3].createFrom(tableRow, "When a when").perform();
+        candidateSteps[4].createFrom(tableRow, "When a when alias").perform();
+        candidateSteps[5].createFrom(tableRow, "When another when alias").perform();
+        candidateSteps[6].createFrom(tableRow, "Then a then").perform();
+        candidateSteps[7].createFrom(tableRow, "Then a then alias").perform();
+        candidateSteps[8].createFrom(tableRow, "Then another then alias").perform();
 
         ensureThat(steps.givens, equalTo(3));
         ensureThat(steps.whens, equalTo(3));
@@ -42,12 +42,12 @@ public class StepsBehaviour {
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(6));
 
-        candidateSteps[0].createFrom(tableValues, "Given a given").perform();
-        candidateSteps[1].createFrom(tableValues, "Given a given alias").perform();
-        candidateSteps[2].createFrom(tableValues, "When a when").perform();
-        candidateSteps[3].createFrom(tableValues, "When a when alias").perform();
-        candidateSteps[4].createFrom(tableValues, "Then a then").perform();
-        candidateSteps[5].createFrom(tableValues, "Then a then alias").perform();
+        candidateSteps[0].createFrom(tableRow, "Given a given").perform();
+        candidateSteps[1].createFrom(tableRow, "Given a given alias").perform();
+        candidateSteps[2].createFrom(tableRow, "When a when").perform();
+        candidateSteps[3].createFrom(tableRow, "When a when alias").perform();
+        candidateSteps[4].createFrom(tableRow, "Then a then").perform();
+        candidateSteps[5].createFrom(tableRow, "Then a then alias").perform();
 
         ensureThat(steps.givens, equalTo(2));
         ensureThat(steps.whens, equalTo(2));
@@ -104,7 +104,7 @@ public class StepsBehaviour {
         CandidateStep[] candidateSteps = steps.getSteps();
 
         ensureThat(candidateSteps.length, equalTo(2));
-        candidateSteps[0].createFrom(tableValues, "Given a given").perform();
+        candidateSteps[0].createFrom(tableRow, "Given a given").perform();
 
     }
 

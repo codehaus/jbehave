@@ -12,11 +12,11 @@ import org.jbehave.scenario.definition.ScenarioDefinition;
 public class UnmatchedToPendingStepCreator implements StepCreator {
 
 	public Step[] createStepsFrom(ScenarioDefinition scenario,
-			Map<String, String> tableValues,
+			Map<String, String> tableRow,
 			CandidateSteps... candidateSteps) {
 		List<Step> steps = new ArrayList<Step>();
 
-		addAllNormalSteps(scenario, steps, tableValues, candidateSteps);
+		addAllNormalSteps(scenario, steps, tableRow, candidateSteps);
 		addBeforeAndAfterSteps(steps, candidateSteps);
 
 		return steps.toArray(new Step[steps.size()]);
@@ -34,13 +34,13 @@ public class UnmatchedToPendingStepCreator implements StepCreator {
 	}
 
 	private void addAllNormalSteps(ScenarioDefinition scenarioDefinition,
-			List<Step> steps, Map<String, String> tableValues, CandidateSteps... candidateSteps) {
+			List<Step> steps, Map<String, String> tableRow, CandidateSteps... candidateSteps) {
 		for (String stringStep : scenarioDefinition.getSteps()) {
 			Step step = new PendingStep(stringStep);
 			for (CandidateSteps candidates : candidateSteps) {
 				for (CandidateStep candidate : candidates.getSteps()) {
 					if (candidate.matches(stringStep)) {
-						step = candidate.createFrom(tableValues, stringStep);
+						step = candidate.createFrom(tableRow, stringStep);
 						break;
 					}
 				}

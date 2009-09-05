@@ -81,7 +81,7 @@ public class CandidateStep {
 		return step.substring(word.length() + 1); // 1 for the space after
 	}
 
-	public Step createFrom(Map<String, String> tableValues,
+	public Step createFrom(Map<String, String> tableRow,
 			final String stepAsString) {
 		String startingWord = findStartingWord(stepAsString);
 		Matcher matcher = pattern.matcher(trimStartingWord(startingWord,
@@ -90,25 +90,25 @@ public class CandidateStep {
 		Type[] types = method.getGenericParameterTypes();
 		String[] annotationNames = annotatedParameterNames();
 		String[] parameterNames = paranamer.lookupParameterNames(method, false);
-		Object[] args = argsForStep(tableValues, matcher, types,
+		Object[] args = argsForStep(tableRow, matcher, types,
 				annotationNames, parameterNames);
 		return createStep(stepAsString, args);
 	}
 
-	private Object[] argsForStep(Map<String, String> tableValues,
+	private Object[] argsForStep(Map<String, String> tableRow,
 			Matcher matcher, Type[] types, String[] annotationNames,
 			String[] parameterNames) {
 		final Object[] args = new Object[types.length];
 		for (int position = 0; position < types.length; position++) {
 			String arg = argForPosition(position, annotationNames, parameterNames,
-					tableValues, matcher);
+					tableRow, matcher);
 			args[position] = parameterConverters.convert(arg, types[position]);
 		}
 		return args;
 	}
 
 	private String argForPosition(int position, String[] annotationNames,
-			String[] parameterNames, Map<String, String> tableValues,
+			String[] parameterNames, Map<String, String> tableRow,
 			Matcher matcher) {
 		int annotatedNamePosition = parameterPosition(annotationNames, position);
 		int parameterNamePosition = parameterPosition(parameterNames, position);
@@ -123,15 +123,15 @@ public class CandidateStep {
 			stepMonitor.usingParameterNameForArg(name, position);
 			arg = getGroup(matcher, name);
 		} else if (annotatedNamePosition != -1
-				&& isTableFieldName(tableValues, annotationNames[position])) {
+				&& isTableFieldName(tableRow, annotationNames[position])) {
 			String name = annotationNames[position];
 			stepMonitor.usingTableAnnotatedNameForArg(name, position);
-			arg = getTableValue(tableValues, name);
+			arg = getTableValue(tableRow, name);
 		} else if (parameterNamePosition != -1
-				&& isTableFieldName(tableValues, parameterNames[position])) {
+				&& isTableFieldName(tableRow, parameterNames[position])) {
 			String name = parameterNames[position];
 			stepMonitor.usingTableParameterNameForArg(name, position);
-			arg = getTableValue(tableValues, name);
+			arg = getTableValue(tableRow, name);
 		} else {
 			stepMonitor.usingNaturalOrderForArg(position);
 			arg = matcher.group(position + 1);
@@ -140,13 +140,13 @@ public class CandidateStep {
 		return arg;
 	}
 
-	private String getTableValue(Map<String, String> tableValues, String name) {
-		return tableValues.get(name);
+	private String getTableValue(Map<String, String> tableRow, String name) {
+		return tableRow.get(name);
 	}
 
-	private boolean isTableFieldName(Map<String, String> tableValues,
+	private boolean isTableFieldName(Map<String, String> tableRow,
 			String name) {
-		return tableValues.get(name) != null;
+		return tableRow.get(name) != null;
 	}
 
 	private String getGroup(Matcher matcher, String name) {
