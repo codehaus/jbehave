@@ -167,11 +167,6 @@ public class StepsBehaviour {
         private int whens;
         private int thens;
 
-        private boolean before;
-        private boolean afterAny;
-        private boolean afterSuccess;
-        private boolean afterFailure;
-
         @org.jbehave.scenario.annotations.Given("a given")
         @org.jbehave.scenario.annotations.Alias("a given alias")
         public void given() {
@@ -188,26 +183,6 @@ public class StepsBehaviour {
         @org.jbehave.scenario.annotations.Alias("a then alias")
         public void then() {
             thens++;
-        }
-
-        @org.jbehave.scenario.annotations.BeforeScenario
-        public void beforeScenarios() {
-        	before = true;
-        }
-
-        @org.jbehave.scenario.annotations.AfterScenario
-        public void afterAnyScenarios() {
-        	afterAny = true;
-        }
-
-        @org.jbehave.scenario.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.SUCCESS)
-        public void afterSuccessfulScenarios() {
-        	afterSuccess = true;
-        }
-
-        @org.jbehave.scenario.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.FAILURE)
-        public void afterUnsuccessfulScenarios() {
-        	afterFailure = true;
         }
 
     }
