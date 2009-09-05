@@ -15,15 +15,15 @@ public interface StepMonitor {
 
     void performing(String step);
 
-	void usingAnnotatedName(String name, int index);
+	void usingAnnotatedNameForArg(String name, int position);
 
-	void usingParameterName(String name, int index);
+	void usingParameterNameForArg(String name, int position);
 
-	void usingTableAnnotatedName(String name, int index);
+	void usingTableAnnotatedNameForArg(String name, int position);
 
-	void usingTableParameterName(String name, int index);
+	void usingTableParameterNameForArg(String name, int position);
 
-	void usingNaturalOrder(int index);
+	void usingNaturalOrderForArg(int position);
 
-	void foundArg(String arg, int index);
+	void foundArg(String arg, int position);
 }
