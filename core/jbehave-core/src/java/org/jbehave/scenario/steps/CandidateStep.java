@@ -26,199 +26,229 @@ import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 public class CandidateStep {
 
 	private final String stepAsString;
-    private final Method method;
-    private final CandidateSteps steps;
-    private final ParameterConverters parameterConverters;
-    private final String[] startingWords;
-    private final Pattern pattern;
-    private StepMonitor stepMonitor = new SilentStepMonitor();
+	private final Method method;
+	private final CandidateSteps steps;
+	private final ParameterConverters parameterConverters;
+	private final String[] startingWords;
+	private final Pattern pattern;
+	private StepMonitor stepMonitor = new SilentStepMonitor();
 	private String[] groupNames;
-    private Paranamer paranamer = new NullParanamer();
+	private Paranamer paranamer = new NullParanamer();
 
-    public CandidateStep(String stepAsString, Method method, CandidateSteps steps, StepPatternBuilder patterBuilder,
-            StepMonitor stepMonitor, ParameterConverters parameterConverters, String... startingWords) {
-        this(stepAsString, method, steps, patterBuilder, parameterConverters, startingWords);
-        useStepMonitor(stepMonitor);
-    }
+	public CandidateStep(String stepAsString, Method method,
+			CandidateSteps steps, StepPatternBuilder patterBuilder,
+			StepMonitor stepMonitor, ParameterConverters parameterConverters,
+			String... startingWords) {
+		this(stepAsString, method, steps, patterBuilder, parameterConverters,
+				startingWords);
+		useStepMonitor(stepMonitor);
+	}
 
-    public CandidateStep(String stepAsString, Method method, CandidateSteps steps, StepPatternBuilder patternBuilder,
-            ParameterConverters parameterConverters, String... startingWords) {
-        this.stepAsString = stepAsString;
-        this.method = method;
-        this.steps = steps;
-        this.parameterConverters = parameterConverters;
-        this.startingWords = startingWords;
-        this.pattern = patternBuilder.buildPattern(stepAsString);
-        this.groupNames = patternBuilder.extractGroupNames(stepAsString);
-    }
+	public CandidateStep(String stepAsString, Method method,
+			CandidateSteps steps, StepPatternBuilder patternBuilder,
+			ParameterConverters parameterConverters, String... startingWords) {
+		this.stepAsString = stepAsString;
+		this.method = method;
+		this.steps = steps;
+		this.parameterConverters = parameterConverters;
+		this.startingWords = startingWords;
+		this.pattern = patternBuilder.buildPattern(stepAsString);
+		this.groupNames = patternBuilder.extractGroupNames(stepAsString);
+	}
 
-    public void useStepMonitor(StepMonitor stepMonitor) {
-        this.stepMonitor = stepMonitor;
-    }
+	public void useStepMonitor(StepMonitor stepMonitor) {
+		this.stepMonitor = stepMonitor;
+	}
 
-    public boolean matches(String step) {
-        String word = findStartingWord(step);
-        if (word == null) {
-            return false;
-        }
-        String trimmed = trimStartingWord(word, step);
-        Matcher matcher = pattern.matcher(trimmed);
-        boolean matches = matcher.matches();
-        stepMonitor.stepMatchesPattern(step, matches, pattern.pattern());
-        return matches;
-    }
+	public boolean matches(String step) {
+		String word = findStartingWord(step);
+		if (word == null) {
+			return false;
+		}
+		String trimmed = trimStartingWord(word, step);
+		Matcher matcher = pattern.matcher(trimmed);
+		boolean matches = matcher.matches();
+		stepMonitor.stepMatchesPattern(step, matches, pattern.pattern());
+		return matches;
+	}
 
-    private String trimStartingWord(String word, String step) {
-        return step.substring(word.length() + 1); // 1 for the space after
-    }
+	private String trimStartingWord(String word, String step) {
+		return step.substring(word.length() + 1); // 1 for the space after
+	}
 
-    public Step createFrom(Map<String, String> tableValues, final String stepAsString) {
-        String startingWord = findStartingWord(stepAsString);
-        Matcher matcher = pattern.matcher(trimStartingWord(startingWord, stepAsString));
-        matcher.find();
-        Type[] types = method.getGenericParameterTypes();
-        String[] annotationNames = annotatedParameterNames();
-        String[] parameterNames = paranamer.lookupParameterNames(method, false);
-        final Object[] args = new Object[types.length];
-        int groupCount = matcher.groupCount();
-        for (int ix = 0; ix < types.length; ix++) {
-            int annotatedNameIx = parameterIndex(annotationNames, ix);
-            int parameterNameIx = parameterIndex(parameterNames, ix);
-            String arg = null;
-            if (annotatedNameIx != -1 && isGroupName(annotationNames[ix])) {
-                arg = getGroup(matcher, annotationNames[ix]);
-            } else if (parameterNameIx != -1 && isGroupName(parameterNames[ix])) {
-                arg = getGroup(matcher, parameterNames[ix]);
-            } else if (annotatedNameIx != -1 && isTableFieldName(tableValues, annotationNames[ix])) {
-                arg = getTableValue(tableValues, annotationNames[ix]);
-            } else if (parameterNameIx != -1 && isTableFieldName(tableValues, parameterNames[ix])) {
-                arg = getTableValue(tableValues, parameterNames[ix]);
-            } else {
-                arg = matcher.group(ix + 1);
-            }
-            args[ix] = parameterConverters.convert(arg, types[ix]);
-        }
-        return createStep(stepAsString, args);
-    }
+	public Step createFrom(Map<String, String> tableValues,
+			final String stepAsString) {
+		String startingWord = findStartingWord(stepAsString);
+		Matcher matcher = pattern.matcher(trimStartingWord(startingWord,
+				stepAsString));
+		matcher.find();
+		Type[] types = method.getGenericParameterTypes();
+		String[] annotationNames = annotatedParameterNames();
+		String[] parameterNames = paranamer.lookupParameterNames(method, false);
+		Object[] args = argsForStep(tableValues, matcher, types,
+				annotationNames, parameterNames);
+		return createStep(stepAsString, args);
+	}
 
-    private String getTableValue(Map<String, String> tableValues, String name) {
-        return tableValues.get(name);
-    }
+	private Object[] argsForStep(Map<String, String> tableValues,
+			Matcher matcher, Type[] types, String[] annotationNames,
+			String[] parameterNames) {
+		final Object[] args = new Object[types.length];
+		for (int index = 0; index < types.length; index++) {
+			String arg = argForIndex(index, annotationNames, parameterNames,
+					tableValues, matcher);
+			args[index] = parameterConverters.convert(arg, types[index]);
+		}
+		return args;
+	}
 
-    private boolean isTableFieldName(Map<String, String> tableValues, String name) {
-        return tableValues.get(name) != null;
-    }
+	private String argForIndex(int index, String[] annotationNames,
+			String[] parameterNames, Map<String, String> tableValues,
+			Matcher matcher) {
+		int annotatedNameIndex = parameterIndex(annotationNames, index);
+		int parameterNameIndex = parameterIndex(parameterNames, index);
+		String arg = null;
+		if (annotatedNameIndex != -1 && isGroupName(annotationNames[index])) {
+			arg = getGroup(matcher, annotationNames[index]);
+		} else if (parameterNameIndex != -1
+				&& isGroupName(parameterNames[index])) {
+			arg = getGroup(matcher, parameterNames[index]);
+		} else if (annotatedNameIndex != -1
+				&& isTableFieldName(tableValues, annotationNames[index])) {
+			arg = getTableValue(tableValues, annotationNames[index]);
+		} else if (parameterNameIndex != -1
+				&& isTableFieldName(tableValues, parameterNames[index])) {
+			arg = getTableValue(tableValues, parameterNames[index]);
+		} else {
+			arg = matcher.group(index + 1);
+		}
+		return arg;
+	}
 
-    private String getGroup(Matcher matcher, String name) {
-        for (int i = 0; i < groupNames.length; i++) {
-            String groupName = groupNames[i];
-            if (name.equals(groupName)) {
-                return matcher.group(i + 1);
-            }
-        }
-        throw new RuntimeException("no group for name");
-    }
+	private String getTableValue(Map<String, String> tableValues, String name) {
+		return tableValues.get(name);
+	}
 
-    private boolean isGroupName(String name) {
-        for (String groupName : groupNames) {
-            if (name.equals(groupName)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	private boolean isTableFieldName(Map<String, String> tableValues,
+			String name) {
+		return tableValues.get(name) != null;
+	}
 
-    private int parameterIndex(String[] names, int ix) {
-        if (names.length == 0) {
-            return -1;
-        }
-    	String name = names[ix];
-    	for ( int index = 0; index < names.length; index++ ){
-            String annotatedName = names[index];
-            if ( annotatedName != null && name.equals(annotatedName) ){
-    			return index;
-    		}
-    	}
-    	return -1;
+	private String getGroup(Matcher matcher, String name) {
+		for (int i = 0; i < groupNames.length; i++) {
+			String groupName = groupNames[i];
+			if (name.equals(groupName)) {
+				return matcher.group(i + 1);
+			}
+		}
+		throw new RuntimeException("no group for name");
+	}
+
+	private boolean isGroupName(String name) {
+		for (String groupName : groupNames) {
+			if (name.equals(groupName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private int parameterIndex(String[] names, int ix) {
+		if (names.length == 0) {
+			return -1;
+		}
+		String name = names[ix];
+		for (int index = 0; index < names.length; index++) {
+			String annotatedName = names[index];
+			if (annotatedName != null && name.equals(annotatedName)) {
+				return index;
+			}
+		}
+		return -1;
 	}
 
 	/**
-     * Extract annotated parameter names from the @Named parameter annotations
-     * @return An array of annotated parameter names, which <b>may</b> include <code>null</code> values
-     * for parameters that are not annotated
-     */
-    private String[] annotatedParameterNames() {
+	 * Extract annotated parameter names from the @Named parameter annotations
+	 * 
+	 * @return An array of annotated parameter names, which <b>may</b> include
+	 *         <code>null</code> values for parameters that are not annotated
+	 */
+	private String[] annotatedParameterNames() {
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-    	String[] names = new String[parameterAnnotations.length];
-        for (int x = 0; x < parameterAnnotations.length; x ++) {
-        	Annotation[] annotations = parameterAnnotations[x];        	
-        	for (int y = 0; y < annotations.length; y ++) {
-        		Annotation annotation = annotations[y];
-    			if (annotation.annotationType().isAssignableFrom(Named.class) ){
-    				names[x] = ((Named)annotation).value();
-        		}
-        	}
-        }
+		String[] names = new String[parameterAnnotations.length];
+		for (int x = 0; x < parameterAnnotations.length; x++) {
+			Annotation[] annotations = parameterAnnotations[x];
+			for (int y = 0; y < annotations.length; y++) {
+				Annotation annotation = annotations[y];
+				if (annotation.annotationType().isAssignableFrom(Named.class)) {
+					names[x] = ((Named) annotation).value();
+				}
+			}
+		}
 		return names;
 	}
 
 	private String findStartingWord(final String stepAsString) {
-        for (String word : startingWords) {
-            if (stepAsString.startsWith(word)) {
-                return word;
-            }
-        }
-        return null;
-    }
+		for (String word : startingWords) {
+			if (stepAsString.startsWith(word)) {
+				return word;
+			}
+		}
+		return null;
+	}
 
-    private Step createStep(final String stepAsString, final Object[] args) {
-        return new Step() {
-            public StepResult perform() {
-                try {
-                    stepMonitor.performing(stepAsString);
-                    method.invoke(steps, args);
-                    return StepResult.success(stepAsString);
-                } catch (Throwable t) {
-                    return failureWithOriginalException(stepAsString, t);
-                }
-            }
+	private Step createStep(final String stepAsString, final Object[] args) {
+		return new Step() {
+			public StepResult perform() {
+				try {
+					stepMonitor.performing(stepAsString);
+					method.invoke(steps, args);
+					return StepResult.success(stepAsString);
+				} catch (Throwable t) {
+					return failureWithOriginalException(stepAsString, t);
+				}
+			}
 
-            private StepResult failureWithOriginalException(final String stepAsString, Throwable t) {
-                if (t instanceof InvocationTargetException && t.getCause() != null) {
-                    if (t.getCause() instanceof PendingError) {
-                        return StepResult.pending(stepAsString, (PendingError) t.getCause());
-                    } else {
-                        return StepResult.failure(stepAsString, t.getCause());
-                    }
-                }
-                return StepResult.failure(stepAsString, t);
-            }
+			private StepResult failureWithOriginalException(
+					final String stepAsString, Throwable t) {
+				if (t instanceof InvocationTargetException
+						&& t.getCause() != null) {
+					if (t.getCause() instanceof PendingError) {
+						return StepResult.pending(stepAsString,
+								(PendingError) t.getCause());
+					} else {
+						return StepResult.failure(stepAsString, t.getCause());
+					}
+				}
+				return StepResult.failure(stepAsString, t);
+			}
 
-            public StepResult doNotPerform() {
-                return StepResult.notPerformed(stepAsString);
-            }
+			public StepResult doNotPerform() {
+				return StepResult.notPerformed(stepAsString);
+			}
 
-        };
-    }
-    
-    public String getStepAsString(){
-    	return stepAsString;
-    }
+		};
+	}
 
-    public Pattern getPattern(){
-    	return pattern;
-    }
-    
-    @Override
-    public String toString() {
-    	return stepAsString;
-    }
+	public String getStepAsString() {
+		return stepAsString;
+	}
 
-    public void useParanamer(boolean useIt) {
-        if (useIt) {
-            this.paranamer = new CachingParanamer(new BytecodeReadingParanamer());
-        } else {
-            this.paranamer = new NullParanamer();
-        }
-    }
+	public Pattern getPattern() {
+		return pattern;
+	}
+
+	@Override
+	public String toString() {
+		return stepAsString;
+	}
+
+	public void useParanamer(boolean useIt) {
+		if (useIt) {
+			this.paranamer = new CachingParanamer(
+					new BytecodeReadingParanamer());
+		} else {
+			this.paranamer = new NullParanamer();
+		}
+	}
 }
