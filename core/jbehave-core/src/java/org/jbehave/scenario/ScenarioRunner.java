@@ -70,8 +70,10 @@ public class ScenarioRunner {
 	private void runTemplateScenario(Configuration configuration,
 			ScenarioDefinition scenario, Table table,
 			CandidateSteps... candidateSteps) {
-		for (Map<String,String> tableValues : table.getRows() ) {
-			runScenario(configuration, scenario, tableValues, candidateSteps);
+		reporter.usingTable(table);
+		for (Map<String,String> tableRow : table.getRows() ) {
+			reporter.usingTableRow(tableRow);
+			runScenario(configuration, scenario, tableRow, candidateSteps);
 		}
 	}
 
@@ -88,12 +90,9 @@ public class ScenarioRunner {
 	}
 
 	private void runScenario(Configuration configuration,
-			ScenarioDefinition scenario, Map<String, String> tableValues, CandidateSteps... candidateSteps) {
-		Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, tableValues, candidateSteps);
+			ScenarioDefinition scenario, Map<String, String> tableRow, CandidateSteps... candidateSteps) {
+		Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, tableRow, candidateSteps);
 		reporter.beforeScenario(scenario.getTitle());
-		if ( !tableValues.isEmpty() ){
-			reporter.usingTableValues(tableValues);
-		}
 		state = new FineSoFar();
 		for (Step step : steps) {
 		    state.run(step);

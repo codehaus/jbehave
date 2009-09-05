@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class UnmatchedToPendingStepCreatorBehaviour {
 
-    private Map<String, String> tableValues = new HashMap<String, String>();
+    private Map<String, String> tableRow = new HashMap<String, String>();
 
 	@Test
     public void shouldMatchUpStepsAndScenarioDefinitionToCreateExecutableSteps() {
@@ -28,11 +28,11 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         Step executableStep = mock(Step.class);
         
         stub(candidate.matches("my step")).toReturn(true);
-        stub(candidate.createFrom(tableValues, "my step")).toReturn(executableStep);
+        stub(candidate.createFrom(tableRow, "my step")).toReturn(executableStep);
         stub(steps.getSteps()).toReturn(new CandidateStep[] {candidate});
         
         // When
-        Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableValues, steps);
+        Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableRow, steps);
         
         // Then
         ensureThat(executableSteps.length, equalTo(1));
@@ -51,7 +51,7 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         stub(steps.getSteps()).toReturn(new CandidateStep[] {candidate});
         
         // When
-        Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableValues, steps);
+        Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableRow, steps);
         // Then
         ensureThat(executableSteps.length, equalTo(1));
         StepResult result = executableSteps[0].perform();
@@ -79,13 +79,13 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         Step normalStep = mock(Step.class);
         
         stub(candidate.matches("my step")).toReturn(true);
-        stub(candidate.createFrom(tableValues, "my step")).toReturn(normalStep);
+        stub(candidate.createFrom(tableRow, "my step")).toReturn(normalStep);
         stub(steps1.getSteps()).toReturn(new CandidateStep[] {candidate});
         stub(steps2.getSteps()).toReturn(new CandidateStep[] {});
     	
         // When we create the series of steps for the scenario
     	UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
-    	Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableValues, steps1, steps2);
+    	Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableRow, steps1, steps2);
     	
     	// Then all before and after steps should be added
     	ensureThat(executableSteps, array(equalTo(stepBefore2), equalTo(stepBefore1), equalTo(normalStep), equalTo(stepAfter1), equalTo(stepAfter2)));

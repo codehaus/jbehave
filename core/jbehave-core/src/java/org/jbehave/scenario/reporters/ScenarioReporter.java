@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
+import org.jbehave.scenario.definition.Table;
 
 /**
  * Allows the runner to report the state of running scenarios
@@ -23,7 +24,9 @@ public interface ScenarioReporter {
     
 	void givenScenarios(List<String> givenScenarios);
 
-	void usingTableValues(Map<String, String> tableValues);
+	void usingTable(Table table);
+
+	void usingTableRow(Map<String, String> tableRow);
 
     void successful(String step);
 
