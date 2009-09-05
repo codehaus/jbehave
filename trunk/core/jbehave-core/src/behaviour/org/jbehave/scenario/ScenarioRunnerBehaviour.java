@@ -10,6 +10,7 @@ import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
@@ -92,7 +93,8 @@ public class ScenarioRunnerBehaviour {
 	@Test
     public void shouldRunGivenScenariosBeforeSteps() throws Throwable {
         ScenarioDefinition scenarioDefinition1 = new ScenarioDefinition("scenario 1", asList("successfulStep"));
-        ScenarioDefinition scenarioDefinition2 = new ScenarioDefinition("scenario 2", asList("/path/to/given/scenario1"), asList("anotherSuccessfulStep"));
+        List<String> givenScenarios = asList("/path/to/given/scenario1");
+		ScenarioDefinition scenarioDefinition2 = new ScenarioDefinition("scenario 2", givenScenarios, asList("anotherSuccessfulStep"));
         StoryDefinition storyDefinition1 = new StoryDefinition(new Blurb("story 1"), scenarioDefinition1);
         StoryDefinition storyDefinition2 = new StoryDefinition(new Blurb("story 2"), scenarioDefinition2);
         
@@ -125,7 +127,7 @@ public class ScenarioRunnerBehaviour {
         
         InOrder inOrder = inOrder(reporter);
         inOrder.verify(reporter).beforeStory(storyDefinition2.getBlurb());
-        inOrder.verify(reporter).givenScenario("/path/to/given/scenario1");
+        inOrder.verify(reporter).givenScenarios(givenScenarios);
         inOrder.verify(reporter).successful("successfulStep");
         inOrder.verify(reporter).successful("anotherSuccessfulStep");
         inOrder.verify(reporter).afterStory();

@@ -2,7 +2,6 @@ package org.jbehave.scenario.parser;
 
 import static java.util.regex.Pattern.DOTALL;
 import static java.util.regex.Pattern.compile;
-import static org.jbehave.scenario.definition.Blurb.EMPTY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,8 @@ import org.jbehave.scenario.definition.Table;
  */
 public class PatternScenarioParser implements ScenarioParser {
 
+	private static final String NONE = "";
+	private static final String COMMA = ",";
 	private final Configuration configuration;
 
 	public PatternScenarioParser() {
@@ -57,22 +58,22 @@ public class PatternScenarioParser implements ScenarioParser {
 	private String findTitle(String scenario) {
 		Matcher findingTitle = patternToPullScenarioTitleIntoGroupOne()
 				.matcher(scenario);
-		return findingTitle.find() ? findingTitle.group(1).trim() : "";
+		return findingTitle.find() ? findingTitle.group(1).trim() : NONE;
 	}
 
 	private Table findTable(String scenario) {
 		Matcher findingTable = patternToPullScenarioTableIntoGroupOne()
 		.matcher(scenario);
-		String table = findingTable.find() ? findingTable.group(1).trim() : "";
+		String table = findingTable.find() ? findingTable.group(1).trim() : NONE;
 		return new Table(table);
 	}
 
 	private List<String> findGivenScenarios(String scenario) {
 		Matcher findingGivenScenarios = patternToPullGivenScenariosIntoGroupOne()
 		.matcher(scenario);
-		String givenScenariosAsCSV = findingGivenScenarios.find() ? findingGivenScenarios.group(1).trim() : "";
+		String givenScenariosAsCSV = findingGivenScenarios.find() ? findingGivenScenarios.group(1).trim() : NONE;
 		List<String> givenScenarios = new ArrayList<String>();		
-		for ( String givenScenario : givenScenariosAsCSV.split(",") ){			
+		for ( String givenScenario : givenScenariosAsCSV.split(COMMA) ){			
 			String trimmed = givenScenario.trim();
 			if ( trimmed.length() > 0 ) {
 				givenScenarios.add(trimmed);
@@ -99,7 +100,7 @@ public class PatternScenarioParser implements ScenarioParser {
 		if (matcher.find()) {
 			return new Blurb(matcher.group(1).trim());
 		} else {
-			return EMPTY;
+			return Blurb.EMPTY;
 		}
 	}
 
@@ -116,8 +117,7 @@ public class PatternScenarioParser implements ScenarioParser {
 
 	protected List<String> splitScenariosWithKeyword(String allScenariosInFile) {
 		List<String> scenarios = new ArrayList<String>();
-		String scenarioKeyword = "Scenario".replace("Scenario", configuration
-				.keywords().scenario());
+		String scenarioKeyword = configuration.keywords().scenario();
 
 		String allScenarios = null;
 		// chomp off anything before first keyword, if found

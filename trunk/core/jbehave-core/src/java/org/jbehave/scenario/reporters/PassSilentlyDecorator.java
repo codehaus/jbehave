@@ -2,6 +2,7 @@ package org.jbehave.scenario.reporters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
 
@@ -104,6 +105,22 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         });
     }
 
+	public void givenScenarios(final List<String> givenScenarios) {
+        currentScenario.add(new Todo() {
+            public void doNow() {
+                delegate.givenScenarios(givenScenarios);
+            }
+        });
+	}
+
+	public void usingTableValues(final Map<String, String> tableValues) {
+        currentScenario.add(new Todo() {
+            public void doNow() {
+                delegate.usingTableValues(tableValues);
+            }
+        });		
+	}
+	
     private static interface Todo {
         void doNow();
     }
@@ -117,11 +134,4 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         void report();
     }
 
-	public void givenScenario(final String scenarioPath) {
-//        currentScenario.add(new Todo() {
-//            public void doNow() {
-//                delegate.givenScenario(scenarioPath);
-//            }
-//        });
-	}
 }
