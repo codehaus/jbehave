@@ -21,7 +21,6 @@ import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.junit.Test;
-import org.junit.Ignore;
 
 public class CandidateStepBehaviour {
 

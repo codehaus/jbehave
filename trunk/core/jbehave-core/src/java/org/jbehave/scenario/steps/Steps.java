@@ -127,7 +127,7 @@ public class Steps implements CandidateSteps {
 		return steps.toArray(new CandidateStep[steps.size()]);
 	}
 
-	void createCandidateStep(List<CandidateStep> steps, Method method,
+	private void createCandidateStep(List<CandidateStep> steps, Method method,
 			String stepAsString) {
 		checkForDuplicateCandidateSteps(steps, stepAsString);
         CandidateStep step = new CandidateStep(stepAsString, method, this, configuration

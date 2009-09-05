@@ -15,7 +15,7 @@ public class TraderConverter implements ParameterConverter {
     }
 
     public boolean accept(Type type) {
-        if (type instanceof Class) {
+        if (type instanceof Class<?>) {
             return Trader.class.isAssignableFrom((Class<?>) type);
         }
         return false;
