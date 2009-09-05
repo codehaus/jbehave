@@ -31,8 +31,9 @@ public class CandidateStep {
 	private final ParameterConverters parameterConverters;
 	private final String[] startingWords;
 	private final Pattern pattern;
+	private final String[] groupNames;
+	
 	private StepMonitor stepMonitor = new SilentStepMonitor();
-	private String[] groupNames;
 	private Paranamer paranamer = new NullParanamer();
 
 	public CandidateStep(String stepAsString, Method method,
