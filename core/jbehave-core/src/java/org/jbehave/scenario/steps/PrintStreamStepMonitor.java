@@ -10,11 +10,16 @@ import java.lang.reflect.Type;
  * {@link System.out}.
  */
 public class PrintStreamStepMonitor implements StepMonitor {
+	
 	private static final String CONVERTED_VALUE_OF_TYPE = "Converted value ''{0}'' of type ''{1}'' to ''{2}'' with converter ''{3}''";
 	private static final String STEP_MATCHES_PATTERN = "Step ''{0}'' {1} pattern ''{2}''";
 	private static final String MATCHES = "matches";
 	private static final String DOES_NOT_MATCH = "does not match";
-	private static final String USING_NAME_FOR_INDEX = "Using {0} name {1} for index {2}";
+	private static final String USING_NAME_FOR_INDEX = "Using {0} name ''{1}'' for index {2}";
+	private static final String ANNOTATED = "annotated";
+	private static final String PARAMETER = "parameter";
+	private static final String TABLE_ANNOTATED = "table annotated";
+	private static final String TABLE_PARAMETER = "table parameter";
 	private static final String USING_NATURAL_ORDER_FOR_INDEX = "Using natural order for index {0}";
 	private static final String FOUND_ARG_FOR_INDEX = "Found argument ''{0}'' for index {1}";
 
@@ -46,22 +51,22 @@ public class PrintStreamStepMonitor implements StepMonitor {
 	}
 
 	public void usingAnnotatedName(String name, int index) {
-		String message = format(USING_NAME_FOR_INDEX, "annotated", name, index);
+		String message = format(USING_NAME_FOR_INDEX, ANNOTATED, name, index);
 		print(output, message);
 	}
 
 	public void usingParameterName(String name, int index) {
-		String message = format(USING_NAME_FOR_INDEX, "parameter", name, index);
+		String message = format(USING_NAME_FOR_INDEX, PARAMETER, name, index);
 		print(output, message);		
 	}
 
 	public void usingTableAnnotatedName(String name, int index) {
-		String message = format(USING_NAME_FOR_INDEX, "table annotated", name, index);
+		String message = format(USING_NAME_FOR_INDEX, TABLE_ANNOTATED, name, index);
 		print(output, message);		
 	}
 
 	public void usingTableParameterName(String name, int index) {
-		String message = format(USING_NAME_FOR_INDEX, "table parameter", name, index);
+		String message = format(USING_NAME_FOR_INDEX, TABLE_PARAMETER, name, index);
 		print(output, message);		
 	}
 
