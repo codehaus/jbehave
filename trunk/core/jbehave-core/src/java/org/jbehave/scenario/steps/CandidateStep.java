@@ -11,10 +11,9 @@ import java.util.regex.Pattern;
 import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.parser.StepPatternBuilder;
-import com.thoughtworks.paranamer.Paranamer;
+
 import com.thoughtworks.paranamer.NullParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 
 /**
  * Creates step from its candidate string representations
@@ -58,6 +57,10 @@ public class CandidateStep {
 
 	public void useStepMonitor(StepMonitor stepMonitor) {
 		this.stepMonitor = stepMonitor;
+	}
+
+	public void useParanamer(Paranamer paranamer) {
+		this.paranamer = paranamer;
 	}
 
 	public boolean matches(String step) {
@@ -243,12 +246,4 @@ public class CandidateStep {
 		return stepAsString;
 	}
 
-	public void useParanamer(boolean useIt) {
-		if (useIt) {
-			this.paranamer = new CachingParanamer(
-					new BytecodeReadingParanamer());
-		} else {
-			this.paranamer = new NullParanamer();
-		}
-	}
 }

@@ -133,7 +133,8 @@ public class Steps implements CandidateSteps {
         CandidateStep step = new CandidateStep(stepAsString, method, this, configuration
                 .getPatternBuilder(), configuration
                 .getParameterConverters(), configuration.getStartingWords());
-        step.useStepMonitor(configuration.getMonitor());
+        step.useStepMonitor(configuration.getMonitor());        
+        step.useParanamer(configuration.getParanamer());
         steps.add(step);
 	}
 

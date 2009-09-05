@@ -3,6 +3,9 @@ package org.jbehave.scenario.steps;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 
+import com.thoughtworks.paranamer.NullParanamer;
+import com.thoughtworks.paranamer.Paranamer;
+
 /**
  * <p>
  * Class allowing steps functionality to be fully configurable, while providing
@@ -23,6 +26,7 @@ public class StepsConfiguration {
 
 	private StepPatternBuilder patternBuilder;
 	private StepMonitor monitor;
+	private Paranamer paranamer;
 	private ParameterConverters parameterConverters;
 	private String[] startingWords;
 
@@ -32,21 +36,22 @@ public class StepsConfiguration {
 
 	public StepsConfiguration(String... startingWords) {
 		this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
-				new ParameterConverters(), startingWords);
-	}
-
-	public StepsConfiguration(StepPatternBuilder patternBuilder,
-			StepMonitor monitor, ParameterConverters parameterConverters,
-			String... startingWords) {
-		this.patternBuilder = patternBuilder;
-		this.monitor = monitor;
-		this.parameterConverters = parameterConverters;
-		this.startingWords = startingWords;
+				new NullParanamer(), new ParameterConverters(), startingWords);
 	}
 
 	public StepsConfiguration(ParameterConverters converters) {
 		this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
-				converters, DEFAULT_STARTING_WORDS);
+				new NullParanamer(), converters, DEFAULT_STARTING_WORDS);
+	}
+
+	public StepsConfiguration(StepPatternBuilder patternBuilder,
+			StepMonitor monitor, Paranamer paranamer,
+			ParameterConverters parameterConverters, String... startingWords) {
+		this.patternBuilder = patternBuilder;
+		this.monitor = monitor;
+		this.paranamer = paranamer;
+		this.parameterConverters = parameterConverters;
+		this.startingWords = startingWords;
 	}
 
 	public StepPatternBuilder getPatternBuilder() {
@@ -63,6 +68,14 @@ public class StepsConfiguration {
 
 	public void useMonitor(StepMonitor monitor) {
 		this.monitor = monitor;
+	}
+
+	public Paranamer getParanamer() {
+		return paranamer;
+	}
+
+	public void useParanamer(Paranamer paranamer) {
+		this.paranamer = paranamer;
 	}
 
 	public ParameterConverters getParameterConverters() {
