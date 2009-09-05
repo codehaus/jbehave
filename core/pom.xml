@@ -68,6 +68,15 @@
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/behaviour</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>${project.build.sourceDirectory}</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
     <testResources>
       <testResource>
         <directory>${project.build.testSourceDirectory}</directory>

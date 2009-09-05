@@ -2,6 +2,8 @@ package org.jbehave.examples.trader;
 
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.PropertyBasedConfiguration;
+import org.jbehave.scenario.definition.KeyWords;
+import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
@@ -25,6 +27,11 @@ public class TraderScenario extends JUnitScenario {
 			@Override
 			public ScenarioReporter forReportingScenarios() {
 				return new PrintStreamScenarioReporter();
+			}
+
+			@Override
+			public KeyWords keywords() {
+				return new I18nKeyWords();
 			}
             
         }, new TraderSteps(classLoader)); 
