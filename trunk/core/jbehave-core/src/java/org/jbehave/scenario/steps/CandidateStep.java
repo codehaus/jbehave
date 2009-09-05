@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -112,19 +113,29 @@ public class CandidateStep {
 		int parameterNameIndex = parameterIndex(parameterNames, index);
 		String arg = null;
 		if (annotatedNameIndex != -1 && isGroupName(annotationNames[index])) {
-			arg = getGroup(matcher, annotationNames[index]);
+			String name = annotationNames[index];
+			stepMonitor.usingAnnotatedName(name, index);
+			arg = getGroup(matcher, name);
 		} else if (parameterNameIndex != -1
 				&& isGroupName(parameterNames[index])) {
-			arg = getGroup(matcher, parameterNames[index]);
+			String name = parameterNames[index];
+			stepMonitor.usingParameterName(name, index);
+			arg = getGroup(matcher, name);
 		} else if (annotatedNameIndex != -1
 				&& isTableFieldName(tableValues, annotationNames[index])) {
-			arg = getTableValue(tableValues, annotationNames[index]);
+			String name = annotationNames[index];
+			stepMonitor.usingTableAnnotatedName(name, index);
+			arg = getTableValue(tableValues, name);
 		} else if (parameterNameIndex != -1
 				&& isTableFieldName(tableValues, parameterNames[index])) {
-			arg = getTableValue(tableValues, parameterNames[index]);
+			String name = parameterNames[index];
+			stepMonitor.usingTableParameterName(name, index);
+			arg = getTableValue(tableValues, name);
 		} else {
+			stepMonitor.usingNaturalOrder(index);
 			arg = matcher.group(index + 1);
 		}
+		stepMonitor.foundArg(arg, index);
 		return arg;
 	}
 
@@ -144,7 +155,7 @@ public class CandidateStep {
 				return matcher.group(i + 1);
 			}
 		}
-		throw new RuntimeException("no group for name");
+		throw new NoGroupFoundForNameException("No group found for name "+name+" amongst "+Arrays.asList(groupNames));
 	}
 
 	private boolean isGroupName(String name) {
@@ -244,6 +255,15 @@ public class CandidateStep {
 	@Override
 	public String toString() {
 		return stepAsString;
+	}
+	
+	@SuppressWarnings("serial")
+	public static class NoGroupFoundForNameException extends RuntimeException {
+
+		public NoGroupFoundForNameException(String message) {
+			super(message);
+		}
+
 	}
 
 }

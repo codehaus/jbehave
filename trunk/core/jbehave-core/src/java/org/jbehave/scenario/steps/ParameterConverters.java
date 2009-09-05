@@ -83,7 +83,7 @@ public class ParameterConverters {
 				double.class, Float.class, float.class });
 
 		public boolean accept(Type type) {
-			if (type instanceof Class) {
+			if (type instanceof Class<?>) {
 				return acceptedClasses.contains(type);
 			}
 			return false;
