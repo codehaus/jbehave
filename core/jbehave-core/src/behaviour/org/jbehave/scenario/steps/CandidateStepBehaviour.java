@@ -22,12 +22,17 @@ import org.jbehave.scenario.parser.StepPatternBuilder;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.junit.Test;
 
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
+
 public class CandidateStepBehaviour {
 
     private static final StepPatternBuilder PATTERN_BUILDER = new PrefixCapturingPatternBuilder();
     private static final StepMonitor MONITOR = new SilentStepMonitor();
     private static final String NL = System.getProperty("line.separator");
 	private Map<String, String> tableValues = new HashMap<String, String>();
+	private Paranamer paranamer =  new CachingParanamer(new BytecodeReadingParanamer());
 
     @Test
     public void shouldMatchASimpleString() throws Exception {
@@ -209,7 +214,7 @@ public class CandidateStepBehaviour {
     	NamedParameterStepsViaParanamer steps = new NamedParameterStepsViaParanamer();
         CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
         		NamedParameterStepsViaParanamer.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
-        candidateStep.useParanamer(true);
+        candidateStep.useParanamer(paranamer);
         candidateStep.createFrom(tableValues, "When I live on the first floor but some call it the ground").perform();
         ensureThat(steps.ith, equalTo("first"));
         ensureThat(steps.nth, equalTo("ground"));
@@ -220,7 +225,7 @@ public class CandidateStepBehaviour {
     	NamedParameterStepsViaParanamer steps = new NamedParameterStepsViaParanamer();
         CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
         		NamedParameterStepsViaParanamer.methodFor("methodWithNamedParametersInInverseOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
-        candidateStep.useParanamer(true);
+        candidateStep.useParanamer(paranamer);
         candidateStep.createFrom(tableValues, "When I live on the first floor but some call it the ground").perform();
         ensureThat(steps.ith, equalTo("first"));
         ensureThat(steps.nth, equalTo("ground"));
@@ -233,7 +238,7 @@ public class CandidateStepBehaviour {
     	tableValues.put("nth", "ground");
         CandidateStep candidateStep = new CandidateStep("I live on the ith floor but some call it the nth",
         		NamedParameterStepsViaParanamer.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
-        candidateStep.useParanamer(true);
+        candidateStep.useParanamer(paranamer);
         candidateStep.createFrom(tableValues, "When I live on the <ith> floor but some call it the <nth>").perform();
         ensureThat(steps.ith, equalTo("first"));
         ensureThat(steps.nth, equalTo("ground"));
