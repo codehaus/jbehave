@@ -65,15 +65,15 @@ public class CandidateStep {
 		this.paranamer = paranamer;
 	}
 
-	public boolean matches(String step) {
-		String word = findStartingWord(step);
+	public boolean matches(String stepAsString) {
+		String word = findStartingWord(stepAsString);
 		if (word == null) {
 			return false;
 		}
-		String trimmed = trimStartingWord(word, step);
+		String trimmed = trimStartingWord(word, stepAsString);
 		Matcher matcher = pattern.matcher(trimmed);
 		boolean matches = matcher.matches();
-		stepMonitor.stepMatchesPattern(step, matches, pattern.pattern());
+		stepMonitor.stepMatchesPattern(stepAsString, matches, pattern.pattern());
 		return matches;
 	}
 
@@ -99,44 +99,44 @@ public class CandidateStep {
 			Matcher matcher, Type[] types, String[] annotationNames,
 			String[] parameterNames) {
 		final Object[] args = new Object[types.length];
-		for (int index = 0; index < types.length; index++) {
-			String arg = argForIndex(index, annotationNames, parameterNames,
+		for (int position = 0; position < types.length; position++) {
+			String arg = argForPosition(position, annotationNames, parameterNames,
 					tableValues, matcher);
-			args[index] = parameterConverters.convert(arg, types[index]);
+			args[position] = parameterConverters.convert(arg, types[position]);
 		}
 		return args;
 	}
 
-	private String argForIndex(int index, String[] annotationNames,
+	private String argForPosition(int position, String[] annotationNames,
 			String[] parameterNames, Map<String, String> tableValues,
 			Matcher matcher) {
-		int annotatedNameIndex = parameterIndex(annotationNames, index);
-		int parameterNameIndex = parameterIndex(parameterNames, index);
+		int annotatedNamePosition = parameterPosition(annotationNames, position);
+		int parameterNamePosition = parameterPosition(parameterNames, position);
 		String arg = null;
-		if (annotatedNameIndex != -1 && isGroupName(annotationNames[index])) {
-			String name = annotationNames[index];
-			stepMonitor.usingAnnotatedName(name, index);
+		if (annotatedNamePosition != -1 && isGroupName(annotationNames[position])) {
+			String name = annotationNames[position];
+			stepMonitor.usingAnnotatedNameForArg(name, position);
 			arg = getGroup(matcher, name);
-		} else if (parameterNameIndex != -1
-				&& isGroupName(parameterNames[index])) {
-			String name = parameterNames[index];
-			stepMonitor.usingParameterName(name, index);
+		} else if (parameterNamePosition != -1
+				&& isGroupName(parameterNames[position])) {
+			String name = parameterNames[position];
+			stepMonitor.usingParameterNameForArg(name, position);
 			arg = getGroup(matcher, name);
-		} else if (annotatedNameIndex != -1
-				&& isTableFieldName(tableValues, annotationNames[index])) {
-			String name = annotationNames[index];
-			stepMonitor.usingTableAnnotatedName(name, index);
+		} else if (annotatedNamePosition != -1
+				&& isTableFieldName(tableValues, annotationNames[position])) {
+			String name = annotationNames[position];
+			stepMonitor.usingTableAnnotatedNameForArg(name, position);
 			arg = getTableValue(tableValues, name);
-		} else if (parameterNameIndex != -1
-				&& isTableFieldName(tableValues, parameterNames[index])) {
-			String name = parameterNames[index];
-			stepMonitor.usingTableParameterName(name, index);
+		} else if (parameterNamePosition != -1
+				&& isTableFieldName(tableValues, parameterNames[position])) {
+			String name = parameterNames[position];
+			stepMonitor.usingTableParameterNameForArg(name, position);
 			arg = getTableValue(tableValues, name);
 		} else {
-			stepMonitor.usingNaturalOrder(index);
-			arg = matcher.group(index + 1);
+			stepMonitor.usingNaturalOrderForArg(position);
+			arg = matcher.group(position + 1);
 		}
-		stepMonitor.foundArg(arg, index);
+		stepMonitor.foundArg(arg, position);
 		return arg;
 	}
 
@@ -168,15 +168,15 @@ public class CandidateStep {
 		return false;
 	}
 
-	private int parameterIndex(String[] names, int ix) {
+	private int parameterPosition(String[] names, int position) {
 		if (names.length == 0) {
 			return -1;
 		}
-		String name = names[ix];
-		for (int index = 0; index < names.length; index++) {
-			String annotatedName = names[index];
+		String name = names[position];
+		for (int i = 0; i < names.length; i++) {
+			String annotatedName = names[i];
 			if (annotatedName != null && name.equals(annotatedName)) {
-				return index;
+				return i;
 			}
 		}
 		return -1;

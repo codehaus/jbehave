@@ -15,13 +15,13 @@ public class PrintStreamStepMonitor implements StepMonitor {
 	private static final String STEP_MATCHES_PATTERN = "Step ''{0}'' {1} pattern ''{2}''";
 	private static final String MATCHES = "matches";
 	private static final String DOES_NOT_MATCH = "does not match";
-	private static final String USING_NAME_FOR_INDEX = "Using {0} name ''{1}'' for index {2}";
+	private static final String USING_NAME_FOR_ARG = "Using {0} name ''{1}'' for position {2}";
 	private static final String ANNOTATED = "annotated";
 	private static final String PARAMETER = "parameter";
 	private static final String TABLE_ANNOTATED = "table annotated";
 	private static final String TABLE_PARAMETER = "table parameter";
-	private static final String USING_NATURAL_ORDER_FOR_INDEX = "Using natural order for index {0}";
-	private static final String FOUND_ARG_FOR_INDEX = "Found argument ''{0}'' for index {1}";
+	private static final String USING_NATURAL_ORDER_FOR_ARG = "Using natural order for position {0}";
+	private static final String FOUND_ARG = "Found argument ''{0}'' for position {1}";
 
 	private final PrintStream output;
 
@@ -50,33 +50,33 @@ public class PrintStreamStepMonitor implements StepMonitor {
 		print(output, step);
 	}
 
-	public void usingAnnotatedName(String name, int index) {
-		String message = format(USING_NAME_FOR_INDEX, ANNOTATED, name, index);
+	public void usingAnnotatedNameForArg(String name, int position) {
+		String message = format(USING_NAME_FOR_ARG, ANNOTATED, name, position);
 		print(output, message);
 	}
 
-	public void usingParameterName(String name, int index) {
-		String message = format(USING_NAME_FOR_INDEX, PARAMETER, name, index);
+	public void usingParameterNameForArg(String name, int position) {
+		String message = format(USING_NAME_FOR_ARG, PARAMETER, name, position);
 		print(output, message);		
 	}
 
-	public void usingTableAnnotatedName(String name, int index) {
-		String message = format(USING_NAME_FOR_INDEX, TABLE_ANNOTATED, name, index);
+	public void usingTableAnnotatedNameForArg(String name, int position) {
+		String message = format(USING_NAME_FOR_ARG, TABLE_ANNOTATED, name, position);
 		print(output, message);		
 	}
 
-	public void usingTableParameterName(String name, int index) {
-		String message = format(USING_NAME_FOR_INDEX, TABLE_PARAMETER, name, index);
+	public void usingTableParameterNameForArg(String name, int position) {
+		String message = format(USING_NAME_FOR_ARG, TABLE_PARAMETER, name, position);
 		print(output, message);		
 	}
 
-	public void usingNaturalOrder(int index) {
-		String message = format(USING_NATURAL_ORDER_FOR_INDEX, index);
+	public void usingNaturalOrderForArg(int position) {
+		String message = format(USING_NATURAL_ORDER_FOR_ARG, position);
 		print(output, message);		
 	}
 
-	public void foundArg(String arg, int index) {
-		String message = format(FOUND_ARG_FOR_INDEX, arg, index);
+	public void foundArg(String arg, int position) {
+		String message = format(FOUND_ARG, arg, position);
 		print(output, message);		
 	}
 	
