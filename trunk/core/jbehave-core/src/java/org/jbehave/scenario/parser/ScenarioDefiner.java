@@ -12,4 +12,6 @@ public interface ScenarioDefiner {
 
     StoryDefinition loadScenarioDefinitionsFor(Class<? extends RunnableScenario> scenarioClass);
 
+    StoryDefinition loadScenarioDefinitionsFor(String scenarioPath);
+
 }

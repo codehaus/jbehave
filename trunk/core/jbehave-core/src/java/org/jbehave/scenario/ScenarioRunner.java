@@ -19,6 +19,8 @@ import org.jbehave.scenario.steps.StepResult;
  * and describes the results to the {@link ScenarioReporter}.
  * 
  * @author Elizabeth Keogh
+ * @author Mauro Talevi
+ * @author Paul Hammant
  */
 public class ScenarioRunner {
 
@@ -29,7 +31,14 @@ public class ScenarioRunner {
     private ErrorStrategy errorStrategy;
     private Throwable throwable;
 
-    public ScenarioRunner() {
+    public void run(Class<? extends RunnableScenario> scenarioClass, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
+		StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioClass);
+		run(story, configuration, candidateSteps);
+    }
+
+    public void run(String scenarioPath, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
+		StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioPath);
+		run(story, configuration, candidateSteps);
     }
 
     public void run(StoryDefinition story, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
@@ -41,18 +50,39 @@ public class ScenarioRunner {
         
         reporter.beforeStory(story.getBlurb());
         for (ScenarioDefinition scenario : story.getScenarios()) {
-        	Table table = scenario.getTable();
-        	if ( table != null && table.getRowCount() > 0 ){
-        		for (Map<String,String> tableValues : table.getRows() ) {
-					runScenario(configuration, scenario, tableValues, candidateSteps);
-				}
-        	} else {
+        	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
+        	if ( isTemplateScenario(scenario.getTable()) ){ // run template scenario
+        		runTemplateScenario(configuration, scenario, scenario.getTable(), candidateSteps);
+        	} else { // run plain old scenario
             	runScenario(configuration, scenario, new HashMap<String, String>(), candidateSteps);        		
         	}
         }
         reporter.afterStory();
         currentStrategy.handleError(throwable);
     }
+
+	private boolean isTemplateScenario(Table table) {
+		return table != null && table.getRowCount() > 0;
+	}
+
+	private void runTemplateScenario(Configuration configuration,
+			ScenarioDefinition scenario, Table table,
+			CandidateSteps... candidateSteps) {
+		for (Map<String,String> tableValues : table.getRows() ) {
+			runScenario(configuration, scenario, tableValues, candidateSteps);
+		}
+	}
+
+	private void runGivenScenarios(Configuration configuration,
+			ScenarioDefinition scenario, CandidateSteps... candidateSteps)
+			throws Throwable {
+		if ( scenario.getGivenScenarios().size() > 0 ){
+			for ( String scenarioPath : scenario.getGivenScenarios() ){
+				reporter.givenScenario(scenarioPath);
+				run(scenarioPath, configuration, candidateSteps);
+			}
+		}
+	}
 
 	private void runScenario(Configuration configuration,
 			ScenarioDefinition scenario, Map<String, String> tableValues, CandidateSteps... candidateSteps) {

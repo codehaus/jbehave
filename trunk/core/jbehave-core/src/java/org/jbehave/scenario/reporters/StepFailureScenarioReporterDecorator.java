@@ -59,4 +59,8 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.successful(step);
 	}
 
+	public void givenScenario(String scenarioPath) {
+		delegate.givenScenario(scenarioPath);		
+	}
+
 }

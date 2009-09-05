@@ -1,5 +1,6 @@
 package org.jbehave.scenario.steps;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsArray.array;
 import static org.jbehave.Ensure.ensureThat;
@@ -31,7 +32,7 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         stub(steps.getSteps()).toReturn(new CandidateStep[] {candidate});
         
         // When
-        Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", "my step"), tableValues, steps);
+        Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableValues, steps);
         
         // Then
         ensureThat(executableSteps.length, equalTo(1));
@@ -50,8 +51,7 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         stub(steps.getSteps()).toReturn(new CandidateStep[] {candidate});
         
         // When
-        Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", "my step"), tableValues, steps);
-        
+        Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableValues, steps);
         // Then
         ensureThat(executableSteps.length, equalTo(1));
         StepResult result = executableSteps[0].perform();
@@ -85,7 +85,7 @@ public class UnmatchedToPendingStepCreatorBehaviour {
     	
         // When we create the series of steps for the scenario
     	UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
-    	Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", "my step"), tableValues, steps1, steps2);
+    	Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableValues, steps1, steps2);
     	
     	// Then all before and after steps should be added
     	ensureThat(executableSteps, array(equalTo(stepBefore2), equalTo(stepBefore1), equalTo(normalStep), equalTo(stepAfter1), equalTo(stepAfter2)));

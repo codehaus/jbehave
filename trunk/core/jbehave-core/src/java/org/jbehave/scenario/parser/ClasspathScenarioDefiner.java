@@ -48,15 +48,23 @@ public class ClasspathScenarioDefiner implements ScenarioDefiner {
         return parser.defineStoryFrom(wholeFileAsString);
     }
 
+	public StoryDefinition loadScenarioDefinitionsFor(String scenarioPath) {
+        String wholeFileAsString = asString(loadInputStreamFor(scenarioPath));
+        return parser.defineStoryFrom(wholeFileAsString);
+	}
+
     private InputStream loadInputStreamFor(Class<? extends RunnableScenario> scenarioClass) {
-        String scenarioName = resolver.resolve(scenarioClass);
-        InputStream stream = classLoader.getResourceAsStream(scenarioName);
+        return loadInputStreamFor(resolver.resolve(scenarioClass));
+    }
+
+	private InputStream loadInputStreamFor(String scenarioPath) {
+		InputStream stream = classLoader.getResourceAsStream(scenarioPath);
         if (stream == null) {
-            throw new ScenarioNotFoundException("Scenario " + scenarioName + " could not be found by classloader "
+            throw new ScenarioNotFoundException("Scenario " + scenarioPath + " could not be found by classloader "
                     + classLoader);
         }
         return stream;
-    }
+	}
 
     private String asString(InputStream stream) {
         try {
@@ -69,4 +77,5 @@ public class ClasspathScenarioDefiner implements ScenarioDefiner {
             throw new InvalidScenarioResourceException("Failed to convert scenario resource to string", e);
         }
     }
+
 }

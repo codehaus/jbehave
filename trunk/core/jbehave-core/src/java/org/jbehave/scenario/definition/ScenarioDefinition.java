@@ -1,37 +1,49 @@
 package org.jbehave.scenario.definition;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScenarioDefinition {
 
-    private final List<String> steps;
     private final String title;
+	private final List<String> givenScenarios;
+    private final List<String> steps;
 	private final Table table;
 
-    public ScenarioDefinition(List<String> steps) {
+    public ScenarioDefinition(String title) {
+        this("", new ArrayList<String>());
+    }
+
+	public ScenarioDefinition(List<String> steps) {
         this("", steps);
     }
 
     public ScenarioDefinition(String title, List<String> steps) {
-        this(title, new Table(""), steps);
+        this(title, new ArrayList<String>(), new Table(""), steps);
     }
 
-    public ScenarioDefinition(String title, String... steps) {
-        this(title, Arrays.asList(steps));
+    public ScenarioDefinition(String title, List<String> givenScenarios, List<String> steps) {
+        this(title, givenScenarios, new Table(""), steps);
     }
-    
-    public ScenarioDefinition(String title, Table table, List<String> steps) {
+
+    public ScenarioDefinition(String title, List<String> givenScenarios, Table table, List<String> steps) {
     	this.title = title;
+		this.givenScenarios = givenScenarios;
     	this.steps = steps;
 		this.table = table;
     }
 
     public ScenarioDefinition(String title, Table table, String... steps) {
-        this(title, table, Arrays.asList(steps));
+        this(title, new ArrayList<String>(), table, asList(steps));
     }
+    
+    public List<String> getGivenScenarios() {
+		return givenScenarios;
+	}
 
-    public List<String> getSteps() {
+	public List<String> getSteps() {
         return steps;
     }
 

@@ -122,6 +122,7 @@ public class PatternScenarioParserBehaviour {
                     "So that I can see what we're not delivering"));
         
         ensureThat(story.getScenarios().get(0).getTitle(), equalTo("A pending scenario"));
+		ensureThat(story.getScenarios().get(0).getGivenScenarios().size(), equalTo(0));
         ensureThat(story.getScenarios().get(0).getSteps(), equalTo(asList(
                 "Given a step that's pending",
                 "When I run the scenario",
@@ -129,6 +130,7 @@ public class PatternScenarioParserBehaviour {
         )));
         
         ensureThat(story.getScenarios().get(1).getTitle(), equalTo("A passing scenario"));
+		ensureThat(story.getScenarios().get(1).getGivenScenarios().size(), equalTo(0));
         ensureThat(story.getScenarios().get(1).getSteps(), equalTo(asList(
                 "Given I'm not reporting passing scenarios",
                 "When I run the scenario",
@@ -136,6 +138,7 @@ public class PatternScenarioParserBehaviour {
         )));
         
         ensureThat(story.getScenarios().get(2).getTitle(), equalTo("A failing scenario"));
+		ensureThat(story.getScenarios().get(2).getGivenScenarios().size(), equalTo(0));
         ensureThat(story.getScenarios().get(2).getSteps(), equalTo(asList(
                 "Given a step that fails",
                 "When I run the scenario",
@@ -209,7 +212,8 @@ public class PatternScenarioParserBehaviour {
 	        
 	        ScenarioDefinition scenario = story.getScenarios().get(0);
 			ensureThat(scenario.getTitle(), equalTo("A template scenario with table values"));	        
-	        ensureThat(scenario.getSteps(), equalTo(asList(
+			ensureThat(scenario.getGivenScenarios().size(), equalTo(0));
+			ensureThat(scenario.getSteps(), equalTo(asList(
 	                "Given a step with a <one>",
 	                "When I run the scenario of name <two>",
 	                "Then I should see <three> in the output"
@@ -228,6 +232,30 @@ public class PatternScenarioParserBehaviour {
 	        ensureThat(table.getRow(1).get("one"), equalTo("d"));
 	        ensureThat(table.getRow(1).get("two"), equalTo("e"));
 	        ensureThat(table.getRow(1).get("three"), equalTo("f"));
+	    }
+	
+	@Test
+	public void canParseStoryWithGivenScenarios() {
+		String wholeStory =
+				"Scenario: A scenario with given scenarios" + NL + NL +
+	            "GivenScenarios: path/to/one,path/to/two" + NL + NL +
+	            "Given a step with a <one>" + NL +
+	            "When I run the scenario of name <two>" + NL +
+	            "Then I should see <three> in the output";
+		
+	        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory);
+	        
+	        ScenarioDefinition scenario = story.getScenarios().get(0);
+			ensureThat(scenario.getTitle(), equalTo("A scenario with given scenarios"));	        
+			ensureThat(scenario.getGivenScenarios(), equalTo(asList(
+	                "path/to/one",
+	                "path/to/two")));   
+	        ensureThat(scenario.getSteps(), equalTo(asList(
+	                "Given a step with a <one>",
+	                "When I run the scenario of name <two>",
+	                "Then I should see <three> in the output"
+	        )));
+
 	    }
 	    
 }
