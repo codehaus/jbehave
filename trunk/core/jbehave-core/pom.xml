@@ -43,15 +43,20 @@
                                     <exclude>org.hamcrest:hamcrest-all</exclude>
                                 </excludes>
                             </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>com.thoughtworks.paranamer:paranamer</artifact>
+                                    <excludes>
+                                        <exclude>com/thoughtworks/paranamer/Javadoc*</exclude>
+                                        <exclude>com/thoughtworks/paranamer/Default*</exclude>
+                                        <exclude>com/thoughtworks/paranamer/Adaptive*</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <relocations>
                                 <relocation>
                                     <pattern>com.thoughtworks.paranamer</pattern>
                                     <shadedPattern>org.jbehave.paranamer</shadedPattern>
-                                    <excludes>
-                                        <exclude>com.thoughtworks.paranamer.JavadocParanamer</exclude>
-                                        <exclude>com.thoughtworks.paranamer.DefaultParanamer</exclude>
-                                        <exclude>com.thoughtworks.paranamer.AdaptiveParanamer</exclude>
-                                    </excludes>
                                 </relocation>
                             </relocations>
                         </configuration>
