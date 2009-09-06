@@ -18,29 +18,29 @@ positions itself as a design philosophy.</p>
 Newcomers are encouraged to start from <a
     href="http://behaviour-driven.org/Introduction">Introducing BDD</a>.</p>
 
-<p>Features of JBehave 2 include:
+<p>Features of JBehave include:
 <ul>
-    <li>Scenario runner - runs executable scenarios using
-    text-based input, with auto-conversion of string arguments to any
+    <li>Pure Java implementation, which plays well with Java-based enterprises</li>
+    <li>Allows users to specify and run text-based scenarios, which 
+    allows "out-in" development.</li>
+    <li>Annotation-based binding of textual steps to Java methods</li>
+    <li>Auto-conversion of string arguments to any
     parameter type (including generic types) via custom parameter
     converters.</li>
-    <li>Scenario steps defined using Java 5 annotations that match
-    the scenarios</li>
     <li>Scenario reporter - outputs scenarios executed in
     human-readable form</li>
-    <li>Scenario can be run as JUnit tests, providing easy
-    integration with your favourite IDE</li>
     <li>Auto-generation of pending steps so the build is not broken
-    by a missing step</li>
+    by a missing step, but has option to configure breaking build for pending steps.</li>
+    <li>Scenario can be run as JUnit tests, providing easy
+    integration with your favourite IDE.  Using alternative annotation-based
+    unit test frameworks is equally easy.</li>
     <li>Ant integration: allows scenarios to be run via Ant task</li>
     <li>Maven integration: allows scenarios to be run via Maven
     plugin at given build phase</li>
 </ul>
 </p>
 
-<p>This documentation is primarily to help users <a
-    href="getting-started.html">getting started</a> and as a reference development guide
-for each release, containing the javadoc and the project information. More information can
-be found in <a href="http://jbehave.org">JBehave website</a>.</p>
+<p>The reference documentation is primarily to provide a reference development guide
+for each release. More dynamic information can be found in <a href="http://jbehave.org">JBehave wiki</a>.</p>
 </body>
 </html>
