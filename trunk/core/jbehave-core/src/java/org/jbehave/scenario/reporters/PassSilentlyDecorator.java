@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
-import org.jbehave.scenario.definition.Table;
+import org.jbehave.scenario.definition.ExamplesTable;
 
 /**
  * Swallows the reports from all scenarios that pass, providing output only for
@@ -114,10 +114,10 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         });
 	}
 	
-	public void usingTable(final Table table) {
+	public void usingExamplesTable(final ExamplesTable table) {
         currentScenario.add(new Todo() {
             public void doNow() {
-                delegate.usingTable(table);
+                delegate.usingExamplesTable(table);
             }
         });		
 	}

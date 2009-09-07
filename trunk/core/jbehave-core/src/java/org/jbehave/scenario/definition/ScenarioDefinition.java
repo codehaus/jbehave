@@ -10,7 +10,7 @@ public class ScenarioDefinition {
     private final String title;
 	private final List<String> givenScenarios;
     private final List<String> steps;
-	private final Table table;
+	private final ExamplesTable table;
 
     public ScenarioDefinition(String title) {
         this("", new ArrayList<String>());
@@ -21,21 +21,21 @@ public class ScenarioDefinition {
     }
 
     public ScenarioDefinition(String title, List<String> steps) {
-        this(title, new ArrayList<String>(), new Table(""), steps);
+        this(title, new ArrayList<String>(), new ExamplesTable(""), steps);
     }
 
     public ScenarioDefinition(String title, List<String> givenScenarios, List<String> steps) {
-        this(title, givenScenarios, new Table(""), steps);
+        this(title, givenScenarios, new ExamplesTable(""), steps);
     }
 
-    public ScenarioDefinition(String title, List<String> givenScenarios, Table table, List<String> steps) {
+    public ScenarioDefinition(String title, List<String> givenScenarios, ExamplesTable table, List<String> steps) {
     	this.title = title;
 		this.givenScenarios = givenScenarios;
     	this.steps = steps;
 		this.table = table;
     }
 
-    public ScenarioDefinition(String title, Table table, String... steps) {
+    public ScenarioDefinition(String title, ExamplesTable table, String... steps) {
         this(title, new ArrayList<String>(), table, asList(steps));
     }
     
@@ -51,7 +51,7 @@ public class ScenarioDefinition {
         return title;
     }
 
-    public Table getTable(){
+    public ExamplesTable getTable(){
     	return table;
     }
     
