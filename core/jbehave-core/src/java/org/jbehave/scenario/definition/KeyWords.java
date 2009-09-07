@@ -17,27 +17,27 @@ public class KeyWords {
 	static final String WHEN = "When";
 	static final String THEN = "Then";
 	static final String AND = "And";
-	static final String TABLE = "Table";
-	protected static final List<String> KEYWORDS = Arrays.asList(SCENARIO, GIVEN_SCENARIOS, GIVEN, WHEN, THEN, AND, TABLE);
+	static final String EXAMPLES_TABLE = "ExamplesTable";
+	protected static final List<String> KEYWORDS = Arrays.asList(SCENARIO, GIVEN_SCENARIOS, GIVEN, WHEN, THEN, AND, EXAMPLES_TABLE);
 	
 	private final String scenario;
 	private final String givenScenarios;
 	private final String given;
 	private final String when;
 	private final String then;
-	private final String table;
+	private final String examplesTable;
 	private final String[] others;
 
 	public KeyWords(Map<String, String> keywords) {
 		this(keywords.get(SCENARIO), keywords.get(GIVEN_SCENARIOS), keywords
-		.get(TABLE), keywords.get(GIVEN), keywords.get(WHEN), keywords.get(THEN), keywords.get(AND));
+		.get(EXAMPLES_TABLE), keywords.get(GIVEN), keywords.get(WHEN), keywords.get(THEN), keywords.get(AND));
 	}
 
-	public KeyWords(String scenario, String givenScenarios, String table,
+	public KeyWords(String scenario, String givenScenarios, String examplesTable,
 			String given, String when, String then, String... others) {
 		this.scenario = scenario;
 		this.givenScenarios = givenScenarios;
-		this.table = table;
+		this.examplesTable = examplesTable;
 		this.given = given;
 		this.when = when;
 		this.then = then;
@@ -52,8 +52,8 @@ public class KeyWords {
 		return givenScenarios;
 	}
 
-	public String table() {
-		return table;
+	public String examplesTable() {
+		return examplesTable;
 	}
 
 	public String given() {

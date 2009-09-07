@@ -11,7 +11,7 @@ import java.util.List;
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
-import org.jbehave.scenario.definition.Table;
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -218,7 +218,7 @@ public class PatternScenarioParserBehaviour {
 	                "When I run the scenario of name <two>",
 	                "Then I should see <three> in the output"
 	        )));
-	        Table table = scenario.getTable();
+	        ExamplesTable table = scenario.getTable();
 			ensureThat(table.toString(), equalTo(
 	        		"|one|two|three|" + NL +
 		            "|a|b|c|" + NL +

@@ -14,7 +14,7 @@ import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
-import org.jbehave.scenario.definition.Table;
+import org.jbehave.scenario.definition.ExamplesTable;
 
 /**
  * Pattern-based scenario parser, which uses the configured keywords to find the
@@ -46,7 +46,7 @@ public class PatternScenarioParser implements ScenarioParser {
 		List<String> scenarios = splitScenarios(wholeStoryAsString);
 		for (String scenario : scenarios) {
 			String title = findTitle(scenario);
-			Table table = findTable(scenario);
+			ExamplesTable table = findTable(scenario);
 			List<String> givenScenarios = findGivenScenarios(scenario);
 			List<String> steps = findSteps(scenario);
 			scenarioDefinitions
@@ -61,11 +61,11 @@ public class PatternScenarioParser implements ScenarioParser {
 		return findingTitle.find() ? findingTitle.group(1).trim() : NONE;
 	}
 
-	private Table findTable(String scenario) {
+	private ExamplesTable findTable(String scenario) {
 		Matcher findingTable = patternToPullScenarioTableIntoGroupOne()
 		.matcher(scenario);
 		String table = findingTable.find() ? findingTable.group(1).trim() : NONE;
-		return new Table(table);
+		return new ExamplesTable(table);
 	}
 
 	private List<String> findGivenScenarios(String scenario) {
@@ -178,7 +178,7 @@ public class PatternScenarioParser implements ScenarioParser {
 
 	private Pattern patternToPullScenarioTableIntoGroupOne() {
 		KeyWords keywords = configuration.keywords();
-		String table = keywords.table();
+		String table = keywords.examplesTable();
 		return compile(".*"+table+"\\s*((.|\\s)*)");
 	}
 
@@ -235,7 +235,7 @@ public class PatternScenarioParser implements ScenarioParser {
 		String givenWhenThenSpaced = concatenateWithSpaceOr(keywords.given(),
 				keywords.when(), keywords.then(), keywords.others());
 		String scenario = keywords.scenario();
-		String table = keywords.table();
+		String table = keywords.examplesTable();
 		return compile("((" + givenWhenThen + ") (.|\\s)*?)\\s*(\\Z|"
 				+ givenWhenThenSpaced + "|" + scenario + "|"+ table + ")");
 	}

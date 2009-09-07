@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
-import org.jbehave.scenario.definition.Table;
+import org.jbehave.scenario.definition.ExamplesTable;
 
 /**
  * <p>
@@ -75,8 +75,8 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 		output.println("GivenScenarios: " + givenScenarios);
 	}
 
-	public void usingTable(Table table) {
-		output.println("Using table:");
+	public void usingExamplesTable(ExamplesTable table) {
+		output.println("Using examples table:");
 		output.println();
 		output.println(table);
 		output.println();

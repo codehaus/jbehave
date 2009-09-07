@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
-import org.jbehave.scenario.definition.Table;
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.errors.StepFailure;
 
 /**
@@ -67,8 +67,8 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.givenScenarios(givenScenarios);		
 	}
 
-	public void usingTable(Table table) {
-		delegate.usingTable(table);
+	public void usingExamplesTable(ExamplesTable table) {
+		delegate.usingExamplesTable(table);
 	}
 
 	public void usingTableRow(Map<String, String> tableRow) {

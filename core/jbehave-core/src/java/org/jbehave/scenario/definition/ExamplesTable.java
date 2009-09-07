@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a tabular structure:<br/><br/>
+ * Represents a tabular structure to hold example data for number of named parameters:<br/><br/>
  * 
- * |header 1|header 2| .... |header n|<br/>
+ * |name 1|name 2| .... |name n|<br/>
  * |value 11|value 12| .... |value 1n|<br/>
  *  ...<br/>
  * |value m1|value m2| .... |value mn|<br/>
  */
-public class Table {
+public class ExamplesTable {
 
 	private static final String COLUMN_SEPARATOR = "\\|";
 	private final List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private final String tableAsString;
 
-	public Table(String tableAsString) {
+	public ExamplesTable(String tableAsString) {
 		this.tableAsString = tableAsString;
 		parse();
 	}

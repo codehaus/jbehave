@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
-import org.jbehave.scenario.definition.Table;
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
@@ -63,14 +63,14 @@ public class ScenarioRunner {
     }
 
 	private boolean isTemplateScenario(ScenarioDefinition scenario) {
-		Table table = scenario.getTable();
+		ExamplesTable table = scenario.getTable();
 		return table != null && table.getRowCount() > 0;
 	}
 
 	private void runTemplateScenario(Configuration configuration,
-			ScenarioDefinition scenario, Table table,
+			ScenarioDefinition scenario, ExamplesTable table,
 			CandidateSteps... candidateSteps) {
-		reporter.usingTable(table);
+		reporter.usingExamplesTable(table);
 		for (Map<String,String> tableRow : table.getRows() ) {
 			reporter.usingTableRow(tableRow);
 			runScenario(configuration, scenario, tableRow, candidateSteps);
