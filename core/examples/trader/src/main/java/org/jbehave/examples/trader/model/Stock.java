@@ -3,6 +3,7 @@ package org.jbehave.examples.trader.model;
 import static org.jbehave.examples.trader.model.Stock.AlertStatus.OFF;
 import static org.jbehave.examples.trader.model.Stock.AlertStatus.ON;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Stock {
@@ -11,24 +12,29 @@ public class Stock {
         ON, OFF
     };
 
-    private List<Double> prices;
+	private String symbol;
     private double alertPrice;
     private AlertStatus status = OFF;
+    private List<Double> prices = new ArrayList<Double>();
 
-    public Stock(List<Double> prices, double alertPrice) {
-        this.prices = prices;
+    public Stock(String symbol, double alertPrice) {
+        this.symbol = symbol;
         this.alertPrice = alertPrice;
     }
 
-    public List<Double> getPrices() {
-        return prices;
+    public String getSymbol(){
+    	return symbol;
     }
-
+    
     public void tradeAt(double price) {
         this.prices.add(price);
         if (price > alertPrice) {
             status = ON;
         }
+    }
+
+    public List<Double> getPrices() {
+        return prices;
     }
 
     public void resetAlert() {
