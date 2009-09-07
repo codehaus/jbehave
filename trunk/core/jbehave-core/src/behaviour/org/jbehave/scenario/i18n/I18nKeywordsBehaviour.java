@@ -26,7 +26,7 @@ public class I18nKeywordsBehaviour {
 	public void keywordsInItalian(){
 		KeyWords keywords = new I18nKeyWords(Locale.ITALIAN);
 		assertEquals("Scenario:", keywords.scenario());
-		assertEquals("Dati gli Scenari:", keywords.givenScenarios());
+		assertEquals("Dati gli scenari:", keywords.givenScenarios());
 		assertEquals("Esempi:", keywords.examplesTable());		
 		assertEquals("Dato che", keywords.given());
 		assertEquals("Quando", keywords.when());
@@ -38,12 +38,25 @@ public class I18nKeywordsBehaviour {
 	public void keywordsInSpanish(){
 		KeyWords keywords = new I18nKeyWords(new Locale("es", "ES", ""));
 		assertEquals("Escenario:", keywords.scenario());
-		assertEquals("Dados los Escenarios:", keywords.givenScenarios());
+		assertEquals("Dados los escenarios:", keywords.givenScenarios());
 		assertEquals("Ejemplos:", keywords.examplesTable());		
 		assertEquals("Dado que", keywords.given());
 		assertEquals("Cuando", keywords.when());
 		assertEquals("Entonces", keywords.then());
 		assertEquals("Y", keywords.and());
+	}
+	
+
+	@Test
+	public void keywordsInPortugues(){
+		KeyWords keywords = new I18nKeyWords(new Locale("pt", "BR", ""));
+		assertEquals("Cen‡rio:", keywords.scenario());
+		assertEquals("Dados os cen‡rios:", keywords.givenScenarios());
+		assertEquals("Exemplos:", keywords.examplesTable());		
+		assertEquals("Dado que", keywords.given());
+		assertEquals("Quando", keywords.when());
+		assertEquals("Ent‹o", keywords.then());
+		assertEquals("E", keywords.and());
 	}
 	
 }
