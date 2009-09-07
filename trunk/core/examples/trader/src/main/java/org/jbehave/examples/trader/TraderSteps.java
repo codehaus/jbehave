@@ -4,8 +4,6 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 
-import java.util.List;
-
 import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
@@ -39,7 +37,7 @@ public class TraderSteps extends Steps {
     }
 
     private TraderPersister mockTradePersister() {
-        return new TraderPersister(new Trader("Mauro", asList(new Stock(asList(1.0d), 10.d))));
+        return new TraderPersister(new Trader("Mauro", asList(new Stock("STK1", 10.d))));
     }
 
     @Given("a trader of name %trader")
@@ -47,12 +45,12 @@ public class TraderSteps extends Steps {
         this.trader = trader;
     }
 
-    @Given("some stocks of <prices> and a <threshold>")
-    public void pricesWithThreshold(@Named("prices") List<Double> prices, @Named("threshold") double threshold) {
-        stock = new Stock(prices, threshold);
+    @Given("a stock of <symbol> and a <threshold>")
+    public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+        stock = new Stock(symbol, threshold);
     }
 
-    @When("one of these stocks is traded at <price>")
+    @When("the stock is traded with <price>")
     public void theStockIsBoughtAt(@Named("price") double price) {
         stock.tradeAt(price);
     }
@@ -62,13 +60,13 @@ public class TraderSteps extends Steps {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
-    @Given("a stock of prices %prices and a threshold of %threshold")
-    public void aStockOfPrice(@Named("prices") List<Double> prices, @Named("threshold") double threshold) {
-        stock = new Stock(prices, threshold);
+    @Given("a stock of symbol %symbol and a threshold of %threshold")
+    public void aStockWithNamedParameters(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+        stock = new Stock(symbol, threshold);
     }
 
-    @When("the stock is traded at %price")
-    @Aliases(values={"the stock is sold at %price"})
+    @When("the stock is traded at price %price")
+    @Aliases(values={"the stock is sold at price %price"})
     public void theStockIsTradedAt(@Named("price") double price) {
         stock.tradeAt(price);
     }
@@ -79,9 +77,13 @@ public class TraderSteps extends Steps {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
-    @Then("the trader sells all stocks")
+    @When("the trader sells all stocks")
     public void theTraderSellsAllStocks() {
         trader.sellAllStocks();
+    }
+
+    @Then ("the trader is left with no stocks")
+    public void theTraderIsLeftWithNoStocks() {
         ensureThat(trader.getStocks().size(), equalTo(0));
     }
 
