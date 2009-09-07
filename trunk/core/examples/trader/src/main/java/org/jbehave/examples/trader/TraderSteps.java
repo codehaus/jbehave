@@ -31,8 +31,8 @@ public class TraderSteps extends Steps {
         super(configuration);
         StepMonitor monitor = new SilentStepMonitor();
 		configuration.useParameterConverters(new ParameterConverters(
-        		monitor, new TraderConverter(mockTradePersister())));
-        configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("%"));
+        		monitor, new TraderConverter(mockTradePersister())));  // define converter for custom type Trader
+        configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("%")); // use '%' instead of '$' to identify parameters
         configuration.useMonitor(monitor);
     }
 
@@ -46,34 +46,34 @@ public class TraderSteps extends Steps {
     }
 
     @Given("a stock of <symbol> and a <threshold>")
-    public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+    public void aStockWithTableParams(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+        stock = new Stock(symbol, threshold);
+    }
+
+    @Given("a stock of symbol %symbol and a threshold of %threshold")
+    public void aStockWithNamedParams(@Named("symbol") String symbol, @Named("threshold") double threshold) {
         stock = new Stock(symbol, threshold);
     }
 
     @When("the stock is traded with <price>")
-    public void theStockIsBoughtAt(@Named("price") double price) {
+    public void theStockIsTradedAtWithTableParam(@Named("price") double price) {
+        stock.tradeAt(price);
+    }
+
+    @When("the stock is traded at price %price")
+    @Aliases(values={"the stock is sold at price %price", "the stock is exchanged at price %price"}) // multiple aliases
+    public void theStockIsTradedAtWithNamedParam(@Named("price") double price) {
         stock.tradeAt(price);
     }
 
     @Then("the trader is alerted with <status>")
-    public void theAlertIs(@Named("status") String status) {
+    public void theAlertStatusIsWithTableParam(@Named("status") String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
-    @Given("a stock of symbol %symbol and a threshold of %threshold")
-    public void aStockWithNamedParameters(@Named("symbol") String symbol, @Named("threshold") double threshold) {
-        stock = new Stock(symbol, threshold);
-    }
-
-    @When("the stock is traded at price %price")
-    @Aliases(values={"the stock is sold at price %price"})
-    public void theStockIsTradedAt(@Named("price") double price) {
-        stock.tradeAt(price);
-    }
-
-    @Then("the alert status should be %status")
-    @Alias("the alert status is %status")
-    public void theAlertStatusShouldBe(@Named("status") String status) {
+    @Then("the alert status is %status")
+    @Alias("the alert status will be %status") // single alias
+    public void theAlertStatusIsWithNamedParam(@Named("status") String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
