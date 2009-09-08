@@ -11,7 +11,7 @@ import org.junit.Test;
 public class I18nKeywordsBehaviour {
 
 	@Test
-	public void keywordsInDefaultLocale(){
+	public void keywordsInEnglishAsDefault(){
 		KeyWords keywords = new I18nKeyWords();
 		assertEquals("Scenario:", keywords.scenario());
 		assertEquals("GivenScenarios:", keywords.givenScenarios());
@@ -24,7 +24,7 @@ public class I18nKeywordsBehaviour {
 
 	@Test
 	public void keywordsInItalian(){
-		KeyWords keywords = new I18nKeyWords(Locale.ITALIAN);
+		KeyWords keywords = new I18nKeyWords(new Locale("it"));
 		assertEquals("Scenario:", keywords.scenario());
 		assertEquals("Dati gli scenari:", keywords.givenScenarios());
 		assertEquals("Esempi:", keywords.examplesTable());		
@@ -36,7 +36,7 @@ public class I18nKeywordsBehaviour {
 
 	@Test
 	public void keywordsInSpanish(){
-		KeyWords keywords = new I18nKeyWords(new Locale("es", "ES", ""));
+		KeyWords keywords = new I18nKeyWords(new Locale("es"));
 		assertEquals("Escenario:", keywords.scenario());
 		assertEquals("Dados los escenarios:", keywords.givenScenarios());
 		assertEquals("Ejemplos:", keywords.examplesTable());		
@@ -44,12 +44,11 @@ public class I18nKeywordsBehaviour {
 		assertEquals("Cuando", keywords.when());
 		assertEquals("Entonces", keywords.then());
 		assertEquals("Y", keywords.and());
-	}
-	
+	}	
 
 	@Test
-	public void keywordsInPortugues(){
-		KeyWords keywords = new I18nKeyWords(new Locale("pt", "BR", ""));
+	public void keywordsInPortuguese(){
+		KeyWords keywords = new I18nKeyWords(new Locale("pt"));
 		assertEquals("Cen‡rio:", keywords.scenario());
 		assertEquals("Dados os cen‡rios:", keywords.givenScenarios());
 		assertEquals("Exemplos:", keywords.examplesTable());		
