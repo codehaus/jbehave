@@ -16,7 +16,7 @@ public class I18nKeyWords extends KeyWords {
 	private static final String DEFAULT_BUNDLE_NAME = "org/jbehave/scenario/i18n/keywords";
 
 	public I18nKeyWords() {
-        this(DEFAULT_BUNDLE_NAME, Locale.getDefault());
+        this(DEFAULT_BUNDLE_NAME, Locale.ENGLISH);
     }
 
     public I18nKeyWords(Locale locale) {
