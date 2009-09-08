@@ -70,4 +70,36 @@ public class PrintStreamScenarioReporterBehaviour {
     }
 
 
+    @Test
+    public void shouldOutputStepsAndResultToPrintStreamWithCustomPatterns() {
+        IllegalAccessException exception = new IllegalAccessException("Leave my money alone!");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(out)){
+
+			@Override
+			protected String patternFor(String key, String defaultPattern) {
+				if ( key.equals("pending") ){
+					return "{0} (NOT YET IMPLEMENTED)";
+				} else if ( key.equals("failed") ){
+					return "{0} <<< FAILED";					
+				} else if ( key.equals("notPerformed") ){
+					return "{0} (NOT EXECUTED DUE TO PENDING)";					
+				}
+				return defaultPattern;
+			}
+        	
+        };
+        reporter.successful("Given I have a balance of $50");
+        reporter.successful("When I request $20");
+        reporter.failed("When I ask Liz for a loan of $100", exception);
+        reporter.pending("Then I should have a balance of $30");
+        reporter.notPerformed("Then I should have $20");
+        
+        ensureThat(out.toString(), equalTo(
+                "Given I have a balance of $50" + NL +
+                "When I request $20" + NL +
+                "When I ask Liz for a loan of $100 <<< FAILED" + NL +
+                "Then I should have a balance of $30 (NOT YET IMPLEMENTED)" + NL +
+                "Then I should have $20 (NOT EXECUTED DUE TO PENDING)" + NL));
+    }
 }
