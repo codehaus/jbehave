@@ -1,7 +1,5 @@
 package org.jbehave.scenario.i18n;
 
-import static java.util.ResourceBundle.getBundle;
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -43,7 +41,7 @@ public class I18nKeyWords extends KeyWords {
 
     private static ResourceBundle lookupBunde(String bundleName, Locale locale) {
         try {
-            return getBundle(bundleName.trim(), locale);
+            return UTF8ResourceBundle.getBundle(bundleName.trim(), locale);
         } catch (MissingResourceException e) {
             return EMPTY_BUNDLE;
         }
