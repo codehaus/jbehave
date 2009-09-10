@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
@@ -18,6 +19,7 @@ import org.jbehave.scenario.i18n.I18nKeyWords;
 public class PrintStreamScenarioReporter implements ScenarioReporter {
 
 	private final PrintStream output;
+	private final Properties outputPatterns;
 	private final KeyWords keywords;
 	private final boolean reportErrors;
 	private Throwable cause;
@@ -27,12 +29,13 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 	}
 
 	public PrintStreamScenarioReporter(PrintStream output) {
-		this(output, new I18nKeyWords(), false);
+		this(output, new Properties(), new I18nKeyWords(), false);
 	}
 
-	public PrintStreamScenarioReporter(PrintStream output, KeyWords keywords, boolean reportErrors) {
+	public PrintStreamScenarioReporter(PrintStream output, Properties outputPatterns, KeyWords keywords, boolean reportErrors) {
 		this.output = output;
 		this.keywords = keywords;
+		this.outputPatterns = outputPatterns;
 		this.reportErrors = reportErrors;
 	}
 
@@ -67,7 +70,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 	}
 
 	public void afterStory() {
-		output.println(format("afterStory", "" ));
+		output.println(format("afterStory", ""));
 	}
 
 	public void beforeStory(Blurb blurb) {
@@ -85,15 +88,25 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 	}
 
 	public void examplesTableRow(Map<String, String> tableRow) {
-		output.println(format("tableRow", "{0} {1}\n", keywords.examplesTableRow(), tableRow));
+		output.println(format("examplesTableRow", "{0} {1}\n", keywords.examplesTableRow(), tableRow));
 	}
 
+	/**
+	 * Formats event output by key, conventionally equal to the method name.
+	 * 
+	 * @param key the event key
+	 * @param defaultPattern the default pattern to return if a custom pattern is not found
+	 * @param args the args used to format output
+	 * @return A formatted event output
+	 */
 	protected String format(String key, String defaultPattern, Object... args) {
 		return MessageFormat.format(patternFor(key, defaultPattern), args);
 	}
 
 	/**
-	 * Provide format patterns for the output by key, conventionally equal to the method name.
+	 * Looks up the format pattern for the event output by key, conventionally equal to the method name.
+	 * The pattern is used by the {#format(String,String,Object...)} method and by default is formatted
+	 * using the {@link MessageFormat#format()} method.
 	 * If no pattern is found for key or needs to be overridden, the default pattern should be returned. 
 	 * 
 	 * @param key the format pattern key
@@ -101,6 +114,9 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 	 * @return The format patter for the given key
 	 */
 	protected String patternFor(String key, String defaultPattern) {
+		if ( outputPatterns.containsKey(key) ){
+			return outputPatterns.getProperty(key);
+		}
 		return defaultPattern;
 	}
 
