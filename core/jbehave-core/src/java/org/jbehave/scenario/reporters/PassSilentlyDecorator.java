@@ -114,18 +114,18 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         });
 	}
 	
-	public void usingExamplesTable(final ExamplesTable table) {
+	public void examplesTable(final ExamplesTable table) {
         currentScenario.add(new Todo() {
             public void doNow() {
-                delegate.usingExamplesTable(table);
+                delegate.examplesTable(table);
             }
         });		
 	}
 
-	public void usingTableRow(final Map<String, String> tableRow) {
+	public void examplesTableRow(final Map<String, String> tableRow) {
         currentScenario.add(new Todo() {
             public void doNow() {
-                delegate.usingTableRow(tableRow);
+                delegate.examplesTableRow(tableRow);
             }
         });		
 	}

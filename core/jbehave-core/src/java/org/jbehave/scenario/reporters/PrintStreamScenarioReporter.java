@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.definition.KeyWords;
+import org.jbehave.scenario.i18n.I18nKeyWords;
 
 /**
  * <p>
@@ -16,6 +18,7 @@ import org.jbehave.scenario.definition.ExamplesTable;
 public class PrintStreamScenarioReporter implements ScenarioReporter {
 
 	private final PrintStream output;
+	private final KeyWords keywords;
 	private final boolean reportErrors;
 	private Throwable cause;
 
@@ -24,11 +27,12 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 	}
 
 	public PrintStreamScenarioReporter(PrintStream output) {
-		this(output, false);
+		this(output, new I18nKeyWords(), false);
 	}
 
-	public PrintStreamScenarioReporter(PrintStream output, boolean reportErrors) {
+	public PrintStreamScenarioReporter(PrintStream output, KeyWords keywords, boolean reportErrors) {
 		this.output = output;
+		this.keywords = keywords;
 		this.reportErrors = reportErrors;
 	}
 
@@ -37,16 +41,16 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 	}
 
 	public void pending(String step) {
-		output.println(format("pending", "{0} (PENDING)", step));
+		output.println(format("pending", "{0} ({1})", step, keywords.pending()));
 	}
 
 	public void notPerformed(String step) {
-		output.println(format("notPerformed", "{0} (NOT PERFORMED)", step));
+		output.println(format("notPerformed", "{0} ({1})", step, keywords.notPerformed()));
 	}
 
 	public void failed(String step, Throwable cause) {
 		this.cause = cause;
-		output.println(format("failed", "{0} (FAILED)", step));
+		output.println(format("failed", "{0} ({1})", step, keywords.failed()));
 	}
 
 	public void afterScenario() {
@@ -59,7 +63,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 
 	public void beforeScenario(String title) {
 		cause = null;
-		output.println(format("beforeScenario", "Scenario: {0}\n", title));
+		output.println(format("beforeScenario", "{0} {1}\n", keywords.scenario(), title));		
 	}
 
 	public void afterStory() {
@@ -71,17 +75,17 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 	}
 
 	public void givenScenarios(List<String> givenScenarios) {
-		output.println(format("givenScenarios", "GivenScenarios: {0}\n",
-				givenScenarios));
+		output.println(format("givenScenarios", "{0} {1}\n",
+				keywords.givenScenarios(), givenScenarios));
 	}
 
-	public void usingExamplesTable(ExamplesTable table) {
-		output.println(format("usingExamplesTable",
-				"Using examples table:\n\n{0}\n\n", table));
+	public void examplesTable(ExamplesTable table) {
+		output.println(format("examplesTable",
+				"{0}\n\n{1}\n\n", keywords.examplesTable(), table));
 	}
 
-	public void usingTableRow(Map<String, String> tableRow) {
-		output.println(format("usingTableRow", "Using table row: {0}\n", tableRow));
+	public void examplesTableRow(Map<String, String> tableRow) {
+		output.println(format("tableRow", "{0} {1}\n", keywords.examplesTableRow(), tableRow));
 	}
 
 	protected String format(String key, String defaultPattern, Object... args) {
