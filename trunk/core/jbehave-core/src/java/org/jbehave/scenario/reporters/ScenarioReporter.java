@@ -24,9 +24,9 @@ public interface ScenarioReporter {
     
 	void givenScenarios(List<String> givenScenarios);
 
-	void usingExamplesTable(ExamplesTable table);
+	void examplesTable(ExamplesTable table);
 
-	void usingTableRow(Map<String, String> tableRow);
+	void examplesTableRow(Map<String, String> tableRow);
 
     void successful(String step);
 

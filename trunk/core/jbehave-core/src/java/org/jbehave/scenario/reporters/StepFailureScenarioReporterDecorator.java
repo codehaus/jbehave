@@ -67,12 +67,12 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.givenScenarios(givenScenarios);		
 	}
 
-	public void usingExamplesTable(ExamplesTable table) {
-		delegate.usingExamplesTable(table);
+	public void examplesTable(ExamplesTable table) {
+		delegate.examplesTable(table);
 	}
 
-	public void usingTableRow(Map<String, String> tableRow) {
-		delegate.usingTableRow(tableRow);
+	public void examplesTableRow(Map<String, String> tableRow) {
+		delegate.examplesTableRow(tableRow);
 	}
 
 }

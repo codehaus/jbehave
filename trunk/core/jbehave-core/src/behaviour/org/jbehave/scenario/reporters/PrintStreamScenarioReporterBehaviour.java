@@ -6,6 +6,7 @@ import static org.jbehave.Ensure.ensureThat;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.junit.Test;
 
 
@@ -38,7 +39,7 @@ public class PrintStreamScenarioReporterBehaviour {
         exception.printStackTrace(new PrintStream(stackTrace));
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(out), true);
+        ScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(out), new I18nKeyWords(), true);
         reporter.beforeScenario("A title");
         reporter.successful("Given I have a balance of $50");
         reporter.successful("When I request $20");
@@ -57,7 +58,7 @@ public class PrintStreamScenarioReporterBehaviour {
                 stackTrace + NL));
         
         out = new ByteArrayOutputStream();
-        reporter = new PrintStreamScenarioReporter(new PrintStream(out), false);
+        reporter = new PrintStreamScenarioReporter(new PrintStream(out));
         reporter.beforeScenario("A title");
         reporter.successful("Given I have a balance of $50");
         reporter.successful("When I request $20");
