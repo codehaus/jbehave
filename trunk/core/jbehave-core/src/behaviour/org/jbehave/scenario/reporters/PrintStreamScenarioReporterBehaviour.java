@@ -5,6 +5,7 @@ import static org.jbehave.Ensure.ensureThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.jbehave.scenario.i18n.I18nKeyWords;
@@ -16,7 +17,7 @@ public class PrintStreamScenarioReporterBehaviour {
     private static final String NL = System.getProperty("line.separator");
 
     @Test
-    public void shouldOutputStepsAndResultToPrintStream() {
+    public void shouldReportEventsToPrintStream() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(out));
         reporter.successful("Given I have a balance of $50");
@@ -34,7 +35,7 @@ public class PrintStreamScenarioReporterBehaviour {
     }
     
     @Test
-    public void shouldOutputThrowablesWhenToldToDoSo() {
+    public void shouldReportThrowablesWhenToldToDoSo() {
         IllegalAccessException exception = new IllegalAccessException("Leave my money alone!");
         ByteArrayOutputStream stackTrace = new ByteArrayOutputStream();
         exception.printStackTrace(new PrintStream(stackTrace));
@@ -73,7 +74,7 @@ public class PrintStreamScenarioReporterBehaviour {
 
 
     @Test
-    public void shouldOutputStepsAndResultToPrintStreamWithCustomPatterns() {
+    public void shouldReportEventsToPrintStreamWithCustomPatterns() {
         IllegalAccessException exception = new IllegalAccessException("Leave my money alone!");
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Properties patterns = new Properties();
@@ -96,4 +97,26 @@ public class PrintStreamScenarioReporterBehaviour {
                 "Then I should have $20 : NOT PERFORMED (because of previous pending)" + NL));
         
     }
+
+    @Test
+    public void shouldReportEventsToPrintStreamInItalian() {
+        IllegalAccessException exception = new IllegalAccessException("Lasciate in pace i miei soldi!");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        I18nKeyWords keywords = new I18nKeyWords(Locale.ITALIAN);
+		ScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(out),  new Properties(), keywords, true);
+        reporter.successful("Dato che ho un saldo di $50");
+        reporter.successful("Quando richiedo $20");
+        reporter.failed("Quando chiedo a Liz un prestito di $100", exception);
+        reporter.pending("Allora dovrei avere un saldo di $30");
+        reporter.notPerformed("Allora dovrei avere $20");
+        
+        ensureThat(out.toString(), equalTo(
+                "Dato che ho un saldo di $50" + NL +
+                "Quando richiedo $20" + NL +
+                "Quando chiedo a Liz un prestito di $100 (FALLITO)" + NL +
+                "Allora dovrei avere un saldo di $30 (PENDENTE)" + NL +
+                "Allora dovrei avere $20 (NON ESEGUITO)" + NL));
+        
+    }
+
 }
