@@ -63,7 +63,7 @@ public class I18nKeywordsBehaviour {
 
 	private String utf8(String value) {
 		try {
-			return new String(value.getBytes("ISO-8859-1"), "UTF-8");
+			return new String(value.getBytes("UTF-8"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
