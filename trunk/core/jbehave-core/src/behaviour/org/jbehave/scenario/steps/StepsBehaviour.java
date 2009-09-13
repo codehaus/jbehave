@@ -17,7 +17,7 @@ public class StepsBehaviour {
 
 	@Test
     public void shouldProvideCandidateStepsCorrespondingToAnnotatedStepsWithMultipleAliases() {
-        MyStepsWithAliases steps = new MyStepsWithAliases();
+        MultipleAliasesSteps steps = new MultipleAliasesSteps();
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(9));
 
@@ -38,7 +38,7 @@ public class StepsBehaviour {
 
     @Test
     public void shouldProvideCandidateStepsCorrespondingToAnnotatedStepsWithSingleAlias() {
-        MyStepsWithAlias steps = new MyStepsWithAlias();
+        SingleAliasSteps steps = new SingleAliasSteps();
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(6));
 
@@ -56,7 +56,7 @@ public class StepsBehaviour {
 
     @Test
     public void shouldProvideStepsToBePerformedBeforeScenarios() {
-    	MyStepsWithAliases steps = new MyStepsWithAliases();
+    	MultipleAliasesSteps steps = new MultipleAliasesSteps();
     	List<Step> executableSteps = steps.runBeforeScenario();
 		ensureThat(executableSteps.size(), equalTo(1));
 		
@@ -66,7 +66,7 @@ public class StepsBehaviour {
     
     @Test
     public void shouldProvideStepsToBePerformedAfterScenarios() {
-    	MyStepsWithAliases steps = new MyStepsWithAliases();
+    	MultipleAliasesSteps steps = new MultipleAliasesSteps();
     	List<Step> executableSteps = steps.runAfterScenario();
     	ensureThat(executableSteps.size(), equalTo(3));
     	
@@ -82,7 +82,7 @@ public class StepsBehaviour {
     
     @Test
     public void shouldIgnoreSuccessfulStepsWhichArePerformedInUnsuccessfulScenarioOrViceVersa() {
-    	MyStepsWithAliases steps = new MyStepsWithAliases();
+    	MultipleAliasesSteps steps = new MultipleAliasesSteps();
     	List<Step> executableSteps = steps.runAfterScenario();
     	
     	executableSteps.get(0).doNotPerform();
@@ -109,7 +109,7 @@ public class StepsBehaviour {
     }
 
     
-    public static class MyStepsWithAliases extends Steps {
+    static class MultipleAliasesSteps extends Steps {
         
         private int givens;
         private int whens;
@@ -161,7 +161,7 @@ public class StepsBehaviour {
         
     }
 
-    public static class MyStepsWithAlias extends Steps {
+    static class SingleAliasSteps extends Steps {
 
         private int givens;
         private int whens;
@@ -187,7 +187,7 @@ public class StepsBehaviour {
 
     }
 
-    public static class DuplicateSteps extends Steps {
+    static class DuplicateSteps extends Steps {
         
         @org.jbehave.scenario.annotations.Given("a given")
         public void given() {

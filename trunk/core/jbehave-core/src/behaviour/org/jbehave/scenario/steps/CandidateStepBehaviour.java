@@ -153,9 +153,9 @@ public class CandidateStepBehaviour {
     
     @Test
     public void shouldMatchMethodParametersByAnnotatedNamesInNaturalOrder() throws Exception {
-    	NamedParameterStepsViaNamedAnnotation steps = new NamedParameterStepsViaNamedAnnotation();
+    	AnnotationNamedParameterSteps steps = new AnnotationNamedParameterSteps();
         CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
-        		NamedParameterStepsViaNamedAnnotation.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+        		AnnotationNamedParameterSteps.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.createFrom(tableRow, "When I live on the first floor but some call it the ground").perform();
         ensureThat(steps.ith, equalTo("first"));
         ensureThat(steps.nth, equalTo("ground"));
@@ -163,9 +163,9 @@ public class CandidateStepBehaviour {
 
     @Test
     public void shouldMatchMethodParametersByAnnotatedNamesInverseOrder() throws Exception {
-    	NamedParameterStepsViaNamedAnnotation steps = new NamedParameterStepsViaNamedAnnotation();
+    	AnnotationNamedParameterSteps steps = new AnnotationNamedParameterSteps();
         CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
-        		NamedParameterStepsViaNamedAnnotation.methodFor("methodWithNamedParametersInInverseOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+        		AnnotationNamedParameterSteps.methodFor("methodWithNamedParametersInInverseOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.createFrom(tableRow, "When I live on the first floor but some call it the ground").perform();
         ensureThat(steps.ith, equalTo("first"));
         ensureThat(steps.nth, equalTo("ground"));
@@ -173,18 +173,18 @@ public class CandidateStepBehaviour {
 
     @Test
     public void shouldCreateStepFromTableValuesViaAnnotations() throws Exception {
-    	NamedParameterStepsViaNamedAnnotation steps = new NamedParameterStepsViaNamedAnnotation();
+    	AnnotationNamedParameterSteps steps = new AnnotationNamedParameterSteps();
     	tableRow.put("ith", "first");
     	tableRow.put("nth", "ground");
         CandidateStep candidateStep = new CandidateStep("I live on the ith floor but some call it the nth",
-        		NamedParameterStepsViaNamedAnnotation.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+        		AnnotationNamedParameterSteps.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.createFrom(tableRow, "When I live on the <ith> floor but some call it the <nth>").perform();
         ensureThat(steps.ith, equalTo("first"));
         ensureThat(steps.nth, equalTo("ground"));
     }
     
     
-    public static class NamedParameterStepsViaNamedAnnotation extends Steps {
+    static class AnnotationNamedParameterSteps extends Steps {
     	String ith;
         String nth;
 
@@ -199,7 +199,7 @@ public class CandidateStepBehaviour {
         }
 
         public static Method methodFor(String methodName) throws IntrospectionException {
-            BeanInfo beanInfo = Introspector.getBeanInfo(NamedParameterStepsViaNamedAnnotation.class);
+            BeanInfo beanInfo = Introspector.getBeanInfo(AnnotationNamedParameterSteps.class);
             for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
                 if (md.getMethod().getName().equals(methodName)) {
                     return md.getMethod();
@@ -211,9 +211,9 @@ public class CandidateStepBehaviour {
 
     @Test
     public void shouldMatchMethodParametersByParanamerNamesInNaturalOrder() throws Exception {
-    	NamedParameterStepsViaParanamer steps = new NamedParameterStepsViaParanamer();
+    	ParanamerNamedParameterSteps steps = new ParanamerNamedParameterSteps();
         CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
-        		NamedParameterStepsViaParanamer.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+        		ParanamerNamedParameterSteps.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.useParanamer(paranamer);
         candidateStep.createFrom(tableRow, "When I live on the first floor but some call it the ground").perform();
         ensureThat(steps.ith, equalTo("first"));
@@ -222,9 +222,9 @@ public class CandidateStepBehaviour {
 
     @Test
     public void shouldMatchMethodParametersByParanamerInverseOrder() throws Exception {
-    	NamedParameterStepsViaParanamer steps = new NamedParameterStepsViaParanamer();
+    	ParanamerNamedParameterSteps steps = new ParanamerNamedParameterSteps();
         CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
-        		NamedParameterStepsViaParanamer.methodFor("methodWithNamedParametersInInverseOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+        		ParanamerNamedParameterSteps.methodFor("methodWithNamedParametersInInverseOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.useParanamer(paranamer);
         candidateStep.createFrom(tableRow, "When I live on the first floor but some call it the ground").perform();
         ensureThat(steps.ith, equalTo("first"));
@@ -233,19 +233,18 @@ public class CandidateStepBehaviour {
 
     @Test
     public void shouldCreateStepFromTableValuesViaParanamer() throws Exception {
-    	NamedParameterStepsViaParanamer steps = new NamedParameterStepsViaParanamer();
+    	ParanamerNamedParameterSteps steps = new ParanamerNamedParameterSteps();
     	tableRow.put("ith", "first");
     	tableRow.put("nth", "ground");
         CandidateStep candidateStep = new CandidateStep("I live on the ith floor but some call it the nth",
-        		NamedParameterStepsViaParanamer.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
+        		ParanamerNamedParameterSteps.methodFor("methodWithNamedParametersInNaturalOrder"), steps, PATTERN_BUILDER, MONITOR, new ParameterConverters(), "Given", "When", "Then");
         candidateStep.useParanamer(paranamer);
         candidateStep.createFrom(tableRow, "When I live on the <ith> floor but some call it the <nth>").perform();
         ensureThat(steps.ith, equalTo("first"));
         ensureThat(steps.nth, equalTo("ground"));
     }
 
-
-    public static class NamedParameterStepsViaParanamer extends Steps {
+    static class ParanamerNamedParameterSteps extends Steps {
     	String ith;
         String nth;
 
@@ -260,7 +259,7 @@ public class CandidateStepBehaviour {
         }
 
         public static Method methodFor(String methodName) throws IntrospectionException {
-            BeanInfo beanInfo = Introspector.getBeanInfo(NamedParameterStepsViaParanamer.class);
+            BeanInfo beanInfo = Introspector.getBeanInfo(ParanamerNamedParameterSteps.class);
             for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
                 if (md.getMethod().getName().equals(methodName)) {
                     return md.getMethod();
