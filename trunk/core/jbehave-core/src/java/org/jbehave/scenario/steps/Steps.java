@@ -10,8 +10,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jbehave.scenario.annotations.*;
+import org.jbehave.scenario.annotations.AfterScenario;
+import org.jbehave.scenario.annotations.Alias;
+import org.jbehave.scenario.annotations.Aliases;
+import org.jbehave.scenario.annotations.BeforeScenario;
+import org.jbehave.scenario.annotations.Given;
+import org.jbehave.scenario.annotations.Then;
+import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.annotations.AfterScenario.Outcome;
+import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.errors.BeforeOrAfterScenarioException;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 
@@ -66,6 +73,18 @@ public class Steps implements CandidateSteps {
 	 */
 	public Steps() {
 		this(new StepsConfiguration());
+	}
+
+	/**
+	 * Creates Steps with all default configuration except for custom starting
+	 * keywords
+	 * 
+	 * @param keywords
+	 *            the KeyWords which hold the words with which we expect steps in
+	 *            the scenarios to start
+	 */
+	public Steps(KeyWords keywords) {
+		this(new StepsConfiguration(keywords));
 	}
 
 	/**
@@ -130,12 +149,13 @@ public class Steps implements CandidateSteps {
 	private void createCandidateStep(List<CandidateStep> steps, Method method,
 			String stepAsString) {
 		checkForDuplicateCandidateSteps(steps, stepAsString);
-        CandidateStep step = new CandidateStep(stepAsString, method, this, configuration
-                .getPatternBuilder(), configuration
-                .getParameterConverters(), configuration.getStartingWords());
-        step.useStepMonitor(configuration.getMonitor());        
-        step.useParanamer(configuration.getParanamer());
-        steps.add(step);
+		CandidateStep step = new CandidateStep(stepAsString, method, this,
+				configuration.getPatternBuilder(), configuration
+						.getParameterConverters(), configuration
+						.getStartingWords());
+		step.useStepMonitor(configuration.getMonitor());
+		step.useParanamer(configuration.getParanamer());
+		steps.add(step);
 	}
 
 	private void checkForDuplicateCandidateSteps(List<CandidateStep> steps,
@@ -156,7 +176,8 @@ public class Steps implements CandidateSteps {
 			}
 		}
 		if (method.isAnnotationPresent(Alias.class)) {
-		    createCandidateStep(steps, method, method.getAnnotation(Alias.class).value());
+			createCandidateStep(steps, method, method
+					.getAnnotation(Alias.class).value());
 		}
 	}
 
@@ -264,7 +285,8 @@ public class Steps implements CandidateSteps {
 	}
 
 	@SuppressWarnings("serial")
-	public static class DuplicateCandidateStepFoundException extends RuntimeException {
+	public static class DuplicateCandidateStepFoundException extends
+			RuntimeException {
 
 		public DuplicateCandidateStepFoundException(String message) {
 			super(message);

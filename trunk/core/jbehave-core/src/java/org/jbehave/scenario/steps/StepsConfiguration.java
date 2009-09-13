@@ -1,5 +1,7 @@
 package org.jbehave.scenario.steps;
 
+import org.jbehave.scenario.definition.KeyWords;
+import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 
@@ -21,29 +23,43 @@ import com.thoughtworks.paranamer.Paranamer;
  */
 public class StepsConfiguration {
 
-	public static final String[] DEFAULT_STARTING_WORDS = new String[] {
-			"Given", "When", "Then", "And" };
-
 	private StepPatternBuilder patternBuilder;
 	private StepMonitor monitor;
 	private Paranamer paranamer;
 	private ParameterConverters parameterConverters;
+	private KeyWords keywords;
 	private String[] startingWords;
 
 	public StepsConfiguration() {
-		this(DEFAULT_STARTING_WORDS);
+		this(new I18nKeyWords());
 	}
 
-	public StepsConfiguration(String... startingWords) {
+	public StepsConfiguration(KeyWords keywords) {
 		this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
-				new NullParanamer(), new ParameterConverters(), startingWords);
+				new NullParanamer(), new ParameterConverters(), keywords);
 	}
 
 	public StepsConfiguration(ParameterConverters converters) {
 		this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
-				new NullParanamer(), converters, DEFAULT_STARTING_WORDS);
+				new NullParanamer(), converters, new I18nKeyWords());
 	}
 
+	public StepsConfiguration(StepPatternBuilder patternBuilder,
+			StepMonitor monitor, Paranamer paranamer,
+			ParameterConverters parameterConverters, KeyWords keywords) {
+		this.patternBuilder = patternBuilder;
+		this.monitor = monitor;
+		this.paranamer = paranamer;
+		this.parameterConverters = parameterConverters;
+		this.keywords = keywords;
+		this.startingWords = startingWordsFrom(this.keywords);
+	}
+	
+	public StepsConfiguration(String... startingWords) {
+		this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
+				new NullParanamer(), new ParameterConverters(), startingWords);
+	}
+	
 	public StepsConfiguration(StepPatternBuilder patternBuilder,
 			StepMonitor monitor, Paranamer paranamer,
 			ParameterConverters parameterConverters, String... startingWords) {
@@ -51,7 +67,12 @@ public class StepsConfiguration {
 		this.monitor = monitor;
 		this.paranamer = paranamer;
 		this.parameterConverters = parameterConverters;
+		this.keywords = new I18nKeyWords();
 		this.startingWords = startingWords;
+	}
+
+	protected String[] startingWordsFrom(KeyWords keywords) {
+		return new String[]{keywords.given(), keywords.when(), keywords.then(), keywords.and()};
 	}
 
 	public StepPatternBuilder getPatternBuilder() {
@@ -92,6 +113,15 @@ public class StepsConfiguration {
 
 	public void useStartingWords(String... startingWords) {
 		this.startingWords = startingWords;
+	}
+	
+	public KeyWords getKeywords() {
+		return keywords;
+	}
+
+	public void useKeyWords(KeyWords keywords) {
+		this.keywords = keywords;
+		this.startingWords = startingWordsFrom(this.keywords);
 	}
 
 }
