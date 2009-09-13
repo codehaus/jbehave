@@ -1,10 +1,11 @@
 package org.jbehave.scenario.steps;
 
+import static java.util.Arrays.asList;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +33,7 @@ public class CandidateStep {
 	private final String[] startingWords;
 	private final Pattern pattern;
 	private final String[] groupNames;
-	
+
 	private StepMonitor stepMonitor = new SilentStepMonitor();
 	private Paranamer paranamer = new NullParanamer();
 
@@ -66,15 +67,15 @@ public class CandidateStep {
 	}
 
 	public boolean matches(String stepAsString) {
-		String word = findStartingWord(stepAsString);
-		if (word == null) {
+		try {
+			Matcher matcher = matcherForStep(stepAsString);
+			boolean matches = matcher.matches();
+			stepMonitor.stepMatchesPattern(stepAsString, matches, pattern
+					.pattern());
+			return matches;
+		} catch (StartingWordNotFound e) {
 			return false;
 		}
-		String trimmed = trimStartingWord(word, stepAsString);
-		Matcher matcher = pattern.matcher(trimmed);
-		boolean matches = matcher.matches();
-		stepMonitor.stepMatchesPattern(stepAsString, matches, pattern.pattern());
-		return matches;
 	}
 
 	private String trimStartingWord(String word, String step) {
@@ -83,25 +84,28 @@ public class CandidateStep {
 
 	public Step createFrom(Map<String, String> tableRow,
 			final String stepAsString) {
-		String startingWord = findStartingWord(stepAsString);
-		Matcher matcher = pattern.matcher(trimStartingWord(startingWord,
-				stepAsString));
+		Matcher matcher = matcherForStep(stepAsString);
 		matcher.find();
 		Type[] types = method.getGenericParameterTypes();
 		String[] annotationNames = annotatedParameterNames();
 		String[] parameterNames = paranamer.lookupParameterNames(method, false);
-		Object[] args = argsForStep(tableRow, matcher, types,
-				annotationNames, parameterNames);
+		Object[] args = argsForStep(tableRow, matcher, types, annotationNames,
+				parameterNames);
 		return createStep(stepAsString, args);
 	}
 
-	private Object[] argsForStep(Map<String, String> tableRow,
-			Matcher matcher, Type[] types, String[] annotationNames,
-			String[] parameterNames) {
+	private Matcher matcherForStep(final String stepAsString) {
+		String startingWord = findStartingWord(stepAsString);
+		String trimmed = trimStartingWord(startingWord, stepAsString);
+		return pattern.matcher(trimmed);
+	}
+
+	private Object[] argsForStep(Map<String, String> tableRow, Matcher matcher,
+			Type[] types, String[] annotationNames, String[] parameterNames) {
 		final Object[] args = new Object[types.length];
 		for (int position = 0; position < types.length; position++) {
-			String arg = argForPosition(position, annotationNames, parameterNames,
-					tableRow, matcher);
+			String arg = argForPosition(position, annotationNames,
+					parameterNames, tableRow, matcher);
 			args[position] = parameterConverters.convert(arg, types[position]);
 		}
 		return args;
@@ -113,7 +117,8 @@ public class CandidateStep {
 		int annotatedNamePosition = parameterPosition(annotationNames, position);
 		int parameterNamePosition = parameterPosition(parameterNames, position);
 		String arg = null;
-		if (annotatedNamePosition != -1 && isGroupName(annotationNames[position])) {
+		if (annotatedNamePosition != -1
+				&& isGroupName(annotationNames[position])) {
 			String name = annotationNames[position];
 			stepMonitor.usingAnnotatedNameForArg(name, position);
 			arg = getGroup(matcher, name);
@@ -144,8 +149,7 @@ public class CandidateStep {
 		return tableRow.get(name);
 	}
 
-	private boolean isTableFieldName(Map<String, String> tableRow,
-			String name) {
+	private boolean isTableFieldName(Map<String, String> tableRow, String name) {
 		return tableRow.get(name) != null;
 	}
 
@@ -156,7 +160,7 @@ public class CandidateStep {
 				return matcher.group(i + 1);
 			}
 		}
-		throw new NoGroupFoundForNameException("No group found for name "+name+" amongst "+Arrays.asList(groupNames));
+		throw new NoGroupFoundForName(name, groupNames);
 	}
 
 	private boolean isGroupName(String name) {
@@ -203,13 +207,14 @@ public class CandidateStep {
 		return names;
 	}
 
-	private String findStartingWord(final String stepAsString) {
+	private String findStartingWord(final String stepAsString)
+			throws StartingWordNotFound {
 		for (String word : startingWords) {
 			if (stepAsString.startsWith(word)) {
 				return word;
 			}
 		}
-		return null;
+		throw new StartingWordNotFound(stepAsString, startingWords);
 	}
 
 	private Step createStep(final String stepAsString, final Object[] args) {
@@ -257,12 +262,23 @@ public class CandidateStep {
 	public String toString() {
 		return stepAsString;
 	}
-	
-	@SuppressWarnings("serial")
-	public static class NoGroupFoundForNameException extends RuntimeException {
 
-		public NoGroupFoundForNameException(String message) {
-			super(message);
+	@SuppressWarnings("serial")
+	public static class NoGroupFoundForName extends RuntimeException {
+
+		public NoGroupFoundForName(String name, String[] groupNames) {
+			super("No group found for name " + name + " amongst "
+					+ asList(groupNames));
+		}
+
+	}
+
+	@SuppressWarnings("serial")
+	public static class StartingWordNotFound extends RuntimeException {
+
+		public StartingWordNotFound(String step, String[] startingWords) {
+			super("No starting word found for step " + step + " amongst "
+					+ asList(startingWords));
 		}
 
 	}

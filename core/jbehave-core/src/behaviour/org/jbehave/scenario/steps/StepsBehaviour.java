@@ -5,9 +5,12 @@ import static org.jbehave.Ensure.ensureThat;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.jbehave.scenario.annotations.AfterScenario;
+import org.jbehave.scenario.i18n.I18nKeyWords;
+import org.jbehave.scenario.steps.CandidateStep.StartingWordNotFound;
 import org.jbehave.scenario.steps.Steps.DuplicateCandidateStepFoundException;
 import org.junit.Test;
 
@@ -108,6 +111,31 @@ public class StepsBehaviour {
 
     }
 
+    @Test
+    public void shouldAllowI18nOfSteps(){
+    	I18nSteps steps = new I18nSteps(new I18nKeyWords(new Locale("it")));
+        CandidateStep[] candidateSteps = steps.getSteps();
+        ensureThat(candidateSteps.length, equalTo(3));
+
+        candidateSteps[0].createFrom(tableRow, "Dato che un dato che").perform();
+        candidateSteps[1].createFrom(tableRow, "Quando un quando").perform();
+        candidateSteps[2].createFrom(tableRow, "Allora un allora").perform();
+
+        ensureThat(steps.givens, equalTo(1));
+        ensureThat(steps.whens, equalTo(1));
+        ensureThat(steps.thens, equalTo(1));    	    	
+    }
+
+    @Test(expected=StartingWordNotFound.class)
+    public void shouldNotCreateStepIfStartingWordNotFound(){
+    	I18nSteps steps = new I18nSteps(new I18nKeyWords(new Locale("it")));
+        CandidateStep[] candidateSteps = steps.getSteps();
+        ensureThat(candidateSteps.length, equalTo(3));
+
+        // misspelled starting word 
+        candidateSteps[0].createFrom(tableRow, "Dado che un dato che"); 
+        
+    }
     
     static class MultipleAliasesSteps extends Steps {
         
@@ -197,5 +225,32 @@ public class StepsBehaviour {
         public void duplicateGiven() {
         }
                 
+    }
+
+    static class I18nSteps extends Steps {
+
+        private int givens;
+        private int whens;
+        private int thens;
+
+        public I18nSteps(I18nKeyWords keywords) {
+        	super(keywords);
+		}
+
+		@org.jbehave.scenario.annotations.Given("un dato che")
+        public void given() {
+            givens++;
+        }
+
+        @org.jbehave.scenario.annotations.When("un quando")
+        public void when() {
+            whens++;
+        }
+
+        @org.jbehave.scenario.annotations.Then("un allora")
+        public void then() {
+            thens++;
+        }
+
     }
 }
