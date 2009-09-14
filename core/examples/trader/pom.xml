@@ -31,7 +31,7 @@
             <phase>integration-test</phase>
             <configuration>
               <scenarioIncludes>
-                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
+                <scenarioInclude>**/scenarios/I18n*.java</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>

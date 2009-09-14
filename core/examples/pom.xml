@@ -58,7 +58,7 @@
             <phase>integration-test</phase>
             <configuration>
               <scenarioIncludes>
-                <scenarioInclude>**/scenario/*.java</scenarioInclude>
+                <scenarioInclude>${scenario.includes}</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>
@@ -72,4 +72,7 @@
       </plugin>
     </plugins>
   </build>
+  <properties>
+    <scenario.includes>**/scenario/*.java</scenario.includes>
+  </properties>
 </project>
