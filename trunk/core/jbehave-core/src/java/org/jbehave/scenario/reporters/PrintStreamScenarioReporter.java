@@ -16,10 +16,10 @@ import org.jbehave.scenario.i18n.I18nKeyWords;
  * Scenario reporter that outputs to a PrintStream, defaulting to System.out.
  * </p>
  * <p>
- * The output of each reported event is (optionally) configurable via two means:
+ * The output of the reported event is also configurable via two other means:
  * <ul>
- * <li>custom output patterns</li>
- * <li>keywords in different languages</li>
+ * <li>custom output patterns, providing only the patterns that differ from default</li>
+ * <li>keywords in different languages, providing the i18n locale</li>
  * </ul>
  * </p>
  * <p>
@@ -34,8 +34,9 @@ import org.jbehave.scenario.i18n.I18nKeyWords;
  * </pre>
  * 
  * The pattern is by default processed and formatted by the
- * {@link MessageFormat}.  Both the {@link #format()} and {@link #lookupPattern()} methods are overrideable
- * and a different formatter or pattern lookup can be used by subclasses.
+ * {@link MessageFormat}. Both the {@link #format()} and
+ * {@link #lookupPattern()} methods are overrideable and a different formatter
+ * or pattern lookup can be used by subclasses.
  * </p>
  * <p>
  * If the keyword "FAILED" (or any other keyword used by the reporter) needs to
@@ -43,7 +44,7 @@ import org.jbehave.scenario.i18n.I18nKeyWords;
  * instance of {@link I18nKeyWords} using the appropriate {@link Locale}, e.g.
  * 
  * <pre>
- *   KeyWords keywords = new I18nKeyWords(new Locale(&quot;it&quot;);
+ * KeyWords keywords = new I18nKeyWords(new Locale(&quot;it&quot;);
  * </pre>
  * 
  * </p>
@@ -62,6 +63,14 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 
 	public PrintStreamScenarioReporter(PrintStream output) {
 		this(output, new Properties(), new I18nKeyWords(), false);
+	}
+
+	public PrintStreamScenarioReporter(Properties outputPatterns) {
+		this(System.out, outputPatterns, new I18nKeyWords(), false);
+	}
+
+	public PrintStreamScenarioReporter(KeyWords keywords) {
+		this(System.out, new Properties(), keywords, false);
 	}
 
 	public PrintStreamScenarioReporter(PrintStream output,
