@@ -1,5 +1,5 @@
 #banner {
-/*border-bottom: 1px solid #fff;*/
+  background: #ffffff url(../images/background-banner.png) repeat top left;
 }
 
 #banner img {
@@ -8,7 +8,7 @@
 
 #footer {
   width: 100%;
-  background-color: #666D80;
+  background: #ffffff url(../images/background-footer.png) repeat;
   color: white;
   border: 1px solid;
   padding: 5px 0 5px 0;
@@ -58,11 +58,11 @@ body {
   color: #555;
   text-align: left;
   padding: 0 0 10px 0;
-  background-color: #cccccc;
+  background-color: #ccc;
 }
 
 h2 {
-  background-color: orange;
+  background-color: #ffcd13;
   opacity: 0.75;
   margin-bottom: 10px;
   padding: 5px 10px;
@@ -93,15 +93,15 @@ a {
 }
 
 a:link {
-  color: #009900;
+  color: #39912b;
 }
 
 a:visited {
-  color: #009900;
+  color: #39912b;
 }
 
 a:active, a:hover {
-  color: #009900;
+  color: #39912b;
 }
 
 table.bodyTable th {
@@ -162,7 +162,7 @@ table.bodyTable tr.b {
 }
 
 .MGroup a {
-  background: #009900 none repeat scroll 0%;
+  background: #39912b none repeat scroll 0%;
   border-right: 4px solid #b3b3a1;
   color: #FFFFFF;
   cursor: pointer;
