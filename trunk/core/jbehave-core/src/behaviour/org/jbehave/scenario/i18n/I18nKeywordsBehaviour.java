@@ -20,19 +20,27 @@ public class I18nKeywordsBehaviour {
 	}
 
 	@Test
-	public void keywordsInItalian() {
-		ensureKeywordsAre(new Locale("it"), asList("Scenario:",
-				"Dati gli scenari:", "Esempi:", "Esempio:", "Dato che",
-				"Quando", "Allora", "E", "PENDENTE", "NON ESEGUITO", "FALLITO"));
-	}
-
-	@Test
 	public void keywordsInSpanish() {
 		ensureKeywordsAre(new Locale("es"), asList("Escenario:",
 				"Dados los escenarios:", "Ejemplos:", "Ejemplo:", "Dado que",
 				"Cuando", "Entonces", "Y", "PENDIENTE", "NO REALIZADO",
 				"FRACASADO"));
 	}
+
+	@Test
+	public void keywordsInFrench() {
+		ensureKeywordsAre(new Locale("fr"), asList("Scénario:",
+				"Donné les scenarios:", "Exemples:", "Exemple:", "Étant donné",
+				"Quand", "Alors", "Et", "EN ATTENDANT", "NON EXÉCUTÉ", "ÉCHOUÉ"));
+	}
+	
+    @Test
+	public void keywordsInItalian() {
+		ensureKeywordsAre(new Locale("it"), asList("Scenario:",
+				"Dati gli scenari:", "Esempi:", "Esempio:", "Dato che",
+				"Quando", "Allora", "E", "PENDENTE", "NON ESEGUITO", "FALLITO"));
+	}
+
 
 	@Test
 	public void keywordsInPortuguese() {
