@@ -94,6 +94,7 @@ a {
 
 a:link {
   color: #39912b;
+  font-weight: bold;
 }
 
 a:visited {
