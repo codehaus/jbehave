@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Developing Scenarios</title>
+</head>
+
+<body>
+
+<h2>Writing Text Scenarios</h2>
+
+<p>We encourage users to start from writing your scenarios in a
+non-Java format, e.g. in simple text: <textarea
+    class="xml:nogutter:nocontrols" name="code">
+    Given a stock of symbol STK1 and a threshold of 10.0
+    When the stock is traded at 5.0
+    Then the alert status should be OFF
+    When the stock is traded at 11.0
+    Then the alert status should be ON
+</textarea> and to give a name that is expressive, i.e. <code>status_alert_can_be_activated.scenario</code>.
+This scenario will map to a Java file <code>StatusAlertCanBeActivated.java</code>
+in same package.</p>
+
+<h2>Writing Java Scenarios</h2>
+
+<p>The contract for a user-defined Java scenario is the following:</p>
+<p>Must extend an instance of a <a
+    href="javadoc/core/org/jbehave/scenario/RunnableScenario.html">RunnableScenario</a>,
+such as <a href="javadoc/core/org/jbehave/scenario/JUnitScenario.html">JUnitScenario</a>
+</p>
+<p>Must provide a default constructor and a constructor with a
+ClassLoader parameter, e.g.: <textarea class="java:nogutter:nocontrols"
+    name="code">
+   public class StatusAlertCanBeActivated extends JUnitScenario {
+
+    public StatusAlertCanBeActivated() {
+        this(Thread.currentThread().getContextClassLoader());
+    }
+
+    public StatusAlertCanBeActivated(final ClassLoader classLoader) {
+        super(new MostUsefulConfiguration() {
+            public ScenarioDefiner forDefiningScenarios() {
+                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), 
+                            new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
+            }
+        }, new TraderSteps());
+    }
+
+}
+</textarea></p>
+<p>Must inject an instance of <a
+    href="javadoc/core/org/jbehave/scenario/steps/CandidateSteps.html">CandidateSteps</a>,
+e.g.: <textarea class="java:nogutter:nocontrols" name="code">
+   public class TraderSteps extends Steps {
+
+    private Stock stock;
+
+    @Given("a stock of symbol $symbol and a threshold of $threshold")
+    public void aStock(String symbol, double threshold) {
+        stock = new Stock(symbol, threshold);
+    }
+
+    @When("the stock is traded at $price")
+    public void theStockIsTradedAt(double price) {
+        stock.tradeAt(price);
+    }
+
+    @Then("the alert status should be $status")
+    public void theAlertStatusShouldBe(String status) {
+        ensureThat(stock.getStatus().name(), equalTo(status));
+    }
+
+}
+</textarea></p>
+</p>
+
+<h2>Configuring Scenarios</h2>
+
+<p>JBehave was designed to be highly configurable but to provide
+default behaviour for the most useful configuration. <a
+    href="javadoc/core/org/jbehave/scenario/Configuration.html">Configuration</a>
+is the main interface for configuring all the components of a scenario.
+JBehave provides two implementations:
+<p><a
+    href="javadoc/core/org/jbehave/scenario/MostUsefulConfiguration.html">MostUsefulConfiguration</a>:
+provides default configuration that most user will find appropriate</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/PropertyBasedConfiguration.html">PropertyBasedConfiguration</a>:
+overrides default configuration via system properties</p>
+</p>
+
+<h2>Configuring Steps</h2>
+
+<p>Steps can also be configured to a high degree via the <a
+    href="javadoc/core/org/jbehave/scenario/steps/StepsConfiguration.html">StepsConfiguration</a>.
+Among the elements that can be configured are:
+<p><a
+    href="javadoc/core/org/jbehave/scenario/parser/StepPatternBuilder.html">StepPatternBuilder</a>:
+defaults to <a
+    href="javadoc/core/org/jbehave/scenario/parser/PrefixCapturingPatternBuilder.html">PrefixCapturingPatternBuilder</a></p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/steps/StepMonitor.html">StepMonitor</a>:
+defaults to <a
+    href="javadoc/core/org/jbehave/scenario/steps/SilentStepMonitor.html">SilentStepMonitor</a>,
+useful to either debug the step matching or to describe the steps being
+performed to some output</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/steps/ParameterConverters.html">ParameterConverters</a>:
+facade for collecting user-defined <a
+    href="javadoc/core/org/jbehave/scenario/steps/ParameterConverters.ParameterConverter.html">ParameterConverter</a>s.</p>
+
+</p>
+<div class="clear">
+<hr />
+</div>
+
+</body>
+</html>

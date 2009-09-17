@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Getting Started</title>
+</head>
+
+<body>
+
+<h2>Getting Started</h2>
+
+<p>To start using JBehave, simply name your scenario file with
+underscores, eg i_can_toggle_a_cell (although the file name resolution
+is configurable) and define steps in it: <textarea
+    class="xml:nogutter:nocontrols" name="code">
+      Given a 5 by 5 game
+      When I toggle the cell at (2, 3)
+      Then the grid should look like
+      .....
+      .....
+      .....
+      ..X..
+      .....
+      When I toggle the cell at (2, 4)
+      Then the grid should look like
+      .....
+      .....
+      .....
+      ..X..
+      ..X..
+      When I toggle the cell at (2, 3)
+      Then the grid should look like
+      .....
+      .....
+      .....
+      .....
+      ..X..
+</textarea> A few more elements are required:
+<p>1. Extend the <a
+    href="javadoc/core/org/jbehave/scenario/Scenario.html">Scenario</a>
+class with a similarly named Java class: <code>ICanToggleACell.java</code>
+</p>
+
+<p>2. Extend the <a
+    href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>
+class - this is where your steps will be defined, and you can have as
+many as you want. Associate the Steps with the Scenario: <textarea
+    class="java:nogutter:nocontrols" name="code">
+      public class ICanToggleACell extends Scenario {
+
+        public ICanToggleACell() {
+            super(new GridSteps()); // varargs, can have lots of steps
+        }
+      }
+  </textarea></p>
+<p>3. <a
+    href="javadoc/core/org/jbehave/scenario/annotations/package-summary.html">Annotate</a>
+methods in your step class to match the ones in your plain text
+scenario. <textarea class="java:nogutter:nocontrols" name="code">
+      public class GridSteps extends Steps {
+
+        private Game game;
+        private StringRenderer renderer;
+
+        @Given("a $width by $height game")
+        public void theGameIsRunning(int width, int height) {
+            game = new Game(width, height);
+            renderer = new StringRenderer();
+            game.setObserver(renderer);
+        }
+
+        @When("I toggle the cell at ($column, $row)")
+        public void iToggleTheCellAt(int column, int row) {
+            game.toggleCellAt(column, row);
+        }
+
+        @Then("the grid should look like $grid")
+        public void theGridShouldLookLike(String grid) {
+            ensureThat(renderer.asString(), equalTo(grid));
+        }
+
+      }
+  </textarea></p>
+<p>Run your new scenario as JUnit test.</p>
+<p>Check out the working <a
+    href="https://svn.codehaus.org/jbehave/trunk/core/examples">examples</a>
+in the source repository.</p>
+
+</body>
+</html>
