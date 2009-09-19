@@ -13,7 +13,7 @@ parts thereof, by simply changing some parameter values. These are ideal
 candidates for using JBehave Table Examples feature. Let's look at the
 example:</p>
 
-<pre class="brush: plain">
+<pre class="brush: bdd">
     Given a stock of symbol STK1 and a threshold of 10.0
     When the stock is traded at 5.0
     Then the alert status should be OFF
@@ -24,7 +24,7 @@ example:</p>
 <p>We notice that two lines are repeated and identical but for the
 values. We can then rewrite this scenario as:</p>
 
-<pre class="brush: plain">
+<pre class="brush: bdd">
     Given a stock of symbol [symbol] and a threshold of [threshold]
     When the stock is traded at [price]
     Then the alert status should be [status]

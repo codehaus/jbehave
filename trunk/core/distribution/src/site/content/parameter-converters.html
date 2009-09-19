@@ -14,7 +14,7 @@
 parameter extracted from the candidate step with the parameter type of
 the matched method in the Steps class. Let's go back to our example to
 make this point clear. Consider a single textual step:</p>
-<pre class="brush: plain">
+<pre class="brush: bdd">
     Given a stock of symbol STK1 and a threshold of 10.0
 </pre>
 <p>which we map to the Java method:</p>
@@ -28,7 +28,7 @@ make this point clear. Consider a single textual step:</p>
 the textual step to the annotation pattern are: "STK1" and "1.0". These
 are converted respectively to a <b>String</b> and a <b>double</b>.</p>
 <p>If we had comma-separated values, e.g</p>
-<pre class="brush: plain">
+<pre class="brush: bdd">
     Given a stock of symbols STK1,STK2 and thresholds of 10.0,20.0
 </pre>
 <p>these would handled automatically as well, provided the type of
@@ -70,7 +70,7 @@ implementations of this interface. Specifically:</p>
 <p>This mechanism then allows for custom converters to be defined
 too. For example, let's consider the case of date conversion, a rather
 common one. The step would typically look like:</p>
-<pre class="brush: plain">
+<pre class="brush: bdd">
     When a stock of symbol STK1 is traded on 09/09/2009
 </pre>
 <p>and the matching step is</p>
