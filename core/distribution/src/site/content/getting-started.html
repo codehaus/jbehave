@@ -8,9 +8,11 @@
 
 <h2>Getting Started</h2>
 
+<h3>Write a textual scenario</h3>
+
 <p>To start using JBehave, simply name your scenario file with
 underscores, eg i_can_toggle_a_cell (although the file name resolution
-is configurable) and define steps in it:
+is configurable) and define steps in it:</p>
 <pre class="brush: plain">
       Given a 5 by 5 game
       When I toggle the cell at (2, 3)
@@ -35,16 +37,14 @@ is configurable) and define steps in it:
       .....
       ..X..
 </pre>
-A few more elements are required:
-<p>1. Extend the <a
+
+<h3>Map textual scenario to Java class</h3>
+
+<p>Extend the <a
     href="javadoc/core/org/jbehave/scenario/Scenario.html">Scenario</a>
-class with a similarly named Java class: <code>ICanToggleACell.java</code>
+class with a similarly named Java class: <b>ICanToggleACell.java</b>
 </p>
 
-<p>2. Extend the <a
-    href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>
-class - this is where your steps will be defined, and you can have as
-many as you want. Associate the Steps with the Scenario:
 <pre class="brush: java">
       public class ICanToggleACell extends Scenario {
 
@@ -53,11 +53,17 @@ many as you want. Associate the Steps with the Scenario:
         }
       }
   </pre>
-</p>
-<p>3. <a
+
+<h3>Map textual scenario steps to Java methods</h3>
+
+<p>Extend the <a
+    href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>
+class: this is where your steps will be defined, and you can have as
+many as you want. <a
     href="javadoc/core/org/jbehave/scenario/annotations/package-summary.html">Annotate</a>
 methods in your step class to match the ones in your plain text
-scenario.
+scenario.</p>
+
 <pre class="brush: java">
       public class GridSteps extends Steps {
 
@@ -82,9 +88,11 @@ scenario.
         }
 
       }
-  </pre>
-</p>
-<p>4. Run your new scenario as JUnit test.</p>
+</pre>
+
+<h3>Run Scenario</h3>
+
+<p>Run your new Java Scenario as JUnit test, in your favourite IDE.</p>
 
 <h2>Looking for more examples?</h2>
 

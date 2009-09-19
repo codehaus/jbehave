@@ -20,24 +20,17 @@ examples on how to configure both extensions - using the trader example.</p>
 
 <h2>Running as Ant task</h2>
 
-<p>
 <pre class="brush: xml">
   <taskdef name="scenarioRunner"
     classname="org.jbehave.ant.ScenarioRunnerTask"
     classpathref="your.runtime.classpath" />
   
-  <scenarioRunner
-    scenarioClassNames="org.jbehave.examples.trader.scenarios.StatusAlertCanBeActivated,org.jbehave.examples.trader.scenarios.StatusAlertCanBeActivated" />
-  
-  <scenarioRunner
-    scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
+  <scenarioRunner scenarioIncludes="**/scenarios/*.java"
     scenarioExcludes="**/*Steps.java" />
     
 </pre>
-Remember that you need to include
-<b>jbehave-ant</b>
-to your runtime classpath.
-</p>
+<p>Remember that you need to include <b>jbehave-ant</b> to your
+runtime classpath.</p>
 
 <h2>Running as Maven Plugin</h2>
 
@@ -48,24 +41,11 @@ to your runtime classpath.
         <version>[version]</version>
         <executions>
           <execution>
-            <id>run-scenarios-listed</id>
-            <phase>integration-test</phase>
-            <configuration>
-              <scenarioClassNames>
-                <scenarioClassName>org.jbehave.examples.trader.scenarios.StatusAlertCanBeActivated</scenarioClassName>
-                <scenarioClassName>org.jbehave.examples.trader.scenarios.StatusAlertIsNeverActivated</scenarioClassName>
-              </scenarioClassNames>
-            </configuration>
-            <goals>
-              <goal>run-scenarios</goal>
-            </goals>
-          </execution>
-          <execution>
             <id>run-scenarios-found</id>
             <phase>integration-test</phase>
             <configuration>
               <scenarioIncludes>
-                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
+                <scenarioInclude>**/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>
@@ -78,7 +58,7 @@ to your runtime classpath.
         </executions>
     </plugin>
 </pre>
-</p>
+
 
 <div class="clear">
 <hr />
