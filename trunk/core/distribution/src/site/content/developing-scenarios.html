@@ -6,50 +6,32 @@
 
 <body>
 
-<h2>Writing Text Scenarios</h2>
+<h2>Writing Textual Scenarios</h2>
 
-<p>We encourage users to start from writing your scenarios in a
-non-Java format, e.g. in simple text: <textarea
+<p>BDD encourages you to start defining the scenarios that express
+the desired behaviour in a textual format, e.g.: <textarea
     class="xml:nogutter:nocontrols" name="code">
     Given a stock of symbol STK1 and a threshold of 10.0
     When the stock is traded at 5.0
     Then the alert status should be OFF
     When the stock is traded at 11.0
     Then the alert status should be ON
-</textarea> and to give a name that is expressive, i.e. <code>status_alert_can_be_activated.scenario</code>.
-This scenario will map to a Java file <code>StatusAlertCanBeActivated.java</code>
-in same package.</p>
-
-<h2>Writing Java Scenarios</h2>
-
-<p>The contract for a user-defined Java scenario is the following:</p>
-<p>Must extend an instance of a <a
-    href="javadoc/core/org/jbehave/scenario/RunnableScenario.html">RunnableScenario</a>,
-such as <a href="javadoc/core/org/jbehave/scenario/JUnitScenario.html">JUnitScenario</a>
+</textarea>. The textual scenario should use the language of the business domain
+and shield away as much as possible the details of the technical
+implementation. Also, it should be given a name that is expressive of
+the functionality that is being verified, i.e. <b>trader_is_alerted_of_status.scenario</b>.
 </p>
-<p>Must provide a default constructor and a constructor with a
-ClassLoader parameter, e.g.: <textarea class="java:nogutter:nocontrols"
-    name="code">
-   public class StatusAlertCanBeActivated extends JUnitScenario {
+<p>The scenario should use a syntax compatible with the <a
+    href="grammar.html">Grammar</a>.</p>
 
-    public StatusAlertCanBeActivated() {
-        this(Thread.currentThread().getContextClassLoader());
-    }
+<h2>Mapping Textual Scenarios to Java</h2>
 
-    public StatusAlertCanBeActivated(final ClassLoader classLoader) {
-        super(new MostUsefulConfiguration() {
-            public ScenarioDefiner forDefiningScenarios() {
-                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), 
-                            new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
-            }
-        }, new TraderSteps());
-    }
-
-}
-</textarea></p>
-<p>Must inject an instance of <a
-    href="javadoc/core/org/jbehave/scenario/steps/CandidateSteps.html">CandidateSteps</a>,
-e.g.: <textarea class="java:nogutter:nocontrols" name="code">
+<p>JBehave maps textual steps to Java method via a <a
+    href="javadoc/core/org/jbehave/scenario/steps/CandidateSteps.html">CandidateSteps</a>
+class. The scenario writer need only extends the default implementation
+<a href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>,
+and provide annotated method that match the textual steps by regex
+patterns: <textarea class="java:nogutter:nocontrols" name="code">
    public class TraderSteps extends Steps {
 
     private Stock stock;
@@ -71,44 +53,56 @@ e.g.: <textarea class="java:nogutter:nocontrols" name="code">
 
 }
 </textarea></p>
+
+<h2>Running Scenarios</h2>
+
+<p>In JBehave Core scenarios can be run in an automated way via a
+one-to-one mapping to Java files. The mechanism via which the textual
+scenarios are resolved is determined by the implementation of the <a
+    href="javadoc/core/org/jbehave/scenario/parser/ScenarioNameResolver.html">ScenarioNameResolver</a>.
+In our example, we need to create a file <code>TraderIsAletedOfStatus.java</code>,
+which maps to out textual scenario in same package.</p>
+
+<p>The contract for a user-defined Java scenario is the following:</p>
+<p>Must extend an instance of a <a
+    href="javadoc/core/org/jbehave/scenario/RunnableScenario.html">RunnableScenario</a>,
+such as <a href="javadoc/core/org/jbehave/scenario/JUnitScenario.html">JUnitScenario</a>
 </p>
+<p>Must provide a default constructor.</p>
+<p>(Only when running via Maven) Must provide an additional
+constructor with a ClassLoader parameter.</p>
 
-<h2>Configuring Scenarios</h2>
+<p>Thus in our case the example Scenario would look like: <textarea
+    class="java:nogutter:nocontrols" name="code">
+   public class TraderIsAletedOfStatus extends JUnitScenario {
 
-<p>JBehave was designed to be highly configurable but to provide
-default behaviour for the most useful configuration. <a
-    href="javadoc/core/org/jbehave/scenario/Configuration.html">Configuration</a>
-is the main interface for configuring all the components of a scenario.
-JBehave provides two implementations:
-<p><a
-    href="javadoc/core/org/jbehave/scenario/MostUsefulConfiguration.html">MostUsefulConfiguration</a>:
-provides default configuration that most user will find appropriate</p>
-<p><a
-    href="javadoc/core/org/jbehave/scenario/PropertyBasedConfiguration.html">PropertyBasedConfiguration</a>:
-overrides default configuration via system properties</p>
-</p>
+    public TraderIsAletedOfStatus() {
+        this(Thread.currentThread().getContextClassLoader());
+    }
 
-<h2>Configuring Steps</h2>
+    public TraderIsAletedOfStatus(final ClassLoader classLoader) {
+        super(new MostUsefulConfiguration() {
+            public ScenarioDefiner forDefiningScenarios() {
+                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), 
+                            new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
+            }
+        }, new TraderSteps());
+    }
 
-<p>Steps can also be configured to a high degree via the <a
-    href="javadoc/core/org/jbehave/scenario/steps/StepsConfiguration.html">StepsConfiguration</a>.
-Among the elements that can be configured are:
-<p><a
-    href="javadoc/core/org/jbehave/scenario/parser/StepPatternBuilder.html">StepPatternBuilder</a>:
-defaults to <a
-    href="javadoc/core/org/jbehave/scenario/parser/PrefixCapturingPatternBuilder.html">PrefixCapturingPatternBuilder</a></p>
-<p><a
-    href="javadoc/core/org/jbehave/scenario/steps/StepMonitor.html">StepMonitor</a>:
-defaults to <a
-    href="javadoc/core/org/jbehave/scenario/steps/SilentStepMonitor.html">SilentStepMonitor</a>,
-useful to either debug the step matching or to describe the steps being
-performed to some output</p>
-<p><a
-    href="javadoc/core/org/jbehave/scenario/steps/ParameterConverters.html">ParameterConverters</a>:
-facade for collecting user-defined <a
-    href="javadoc/core/org/jbehave/scenario/steps/ParameterConverters.ParameterConverter.html">ParameterConverter</a>s.</p>
+}
+</textarea></p>
+<p>Here we are configuring our textual scenario files to end with
+extension <b>.scenario</b>, by overriding the default behaviour of <a
+    href="javadoc/core/org/jbehave/scenario/parser/UnderscoredCamelCaseResolver.html">UnderscoredCamelCaseResolver</a>
+which has no extension.</p>
 
-</p>
+<h2>Next?</h2>
+
+<span class="followup">The <a href="configuring-scenarios.html">Configuring
+Scenarios</a> page will go into more configuration details and <a
+    href="running-scenarios.html">Running Scenarios</a> into the
+different ways to run scenarios.</span>
+
 <div class="clear">
 <hr />
 </div>
