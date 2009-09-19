@@ -22,9 +22,10 @@
     <page>i18n.html</page>
   </section>
   <section>
-    <name>Step Parameters</name>
+    <name>Advanced Topics</name>
     <page>parameter-injection.html</page>
     <page>parameter-converters.html</page>
+    <page>table-examples.html</page>
   </section>
   <section>
     <name>Project Info</name>
