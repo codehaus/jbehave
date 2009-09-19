@@ -23,8 +23,8 @@ thus allowing the scenarios to be written in any language. All is needed
 to configure the use of <a
     href="javadoc/core/org/jbehave/scenario/i18n/I18nKeyWords.html">I18nKeyWords</a>
 for a given Locale. Each locale has a separate keywords properties file.
-E.g. for Italian locale, the file <b>keywords_it.properties</b> is: <textarea
-    class="properties:nogutter:nocontrols" name="code">
+E.g. for Italian locale, the file <b>keywords_it.properties</b> is:
+<pre class="brush: plain">
 Scenario=Scenario:
 GivenScenarios=Dati gli scenari:
 ExamplesTable=Esempi:
@@ -36,11 +36,13 @@ And=E
 Pending=PENDENTE
 NotPerformed=NON ESEGUITO
 Failed=FALLITO
-</textarea></p>
+</pre>
+</p>
 <p>We need to configure the use of the I18N-ed keywords in the <a
     href="javadoc/core/org/jbehave/scenario/JUnitScenario.html">JUnitScenario</a>,
-e.g.: <textarea class="java:nogutter:nocontrols" name="code">
-   public class ItTraderScenario extends JUnitScenario {
+e.g.:
+<pre class="brush: java">
+public class ItTraderScenario extends JUnitScenario {
 
 	public ItTraderScenario() {
 		this(Thread.currentThread().getContextClassLoader());
@@ -58,11 +60,12 @@ e.g.: <textarea class="java:nogutter:nocontrols" name="code">
 	}
 
 }
-</textarea></p>
+</pre>
+</p>
 <p>The corresponding I18N-ed <a
     href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>,
-also requires the configuration of I18N-ed keywords: <textarea
-    class="java:nogutter:nocontrols" name="code">
+also requires the configuration of I18N-ed keywords:
+<pre class="brush: java">
 public class ItTraderSteps extends Steps {
 
     private Stock stock;
@@ -88,7 +91,8 @@ public class ItTraderSteps extends Steps {
     }
 
 }
-</textarea></p>
+</pre>
+</p>
 <p>Note that the I18N-ed keywords not only allow the translation of
 the keywords used in parsing the textual scenario, but also the keywords
 used in the reporting of the scenario execution, e.g. <b>Pending</b>, <b>NotPerformed</b>
@@ -96,22 +100,23 @@ and <b>Failed</b>.</p>
 
 <h2>What if your language is not currently supported?</h2>
 
-<p>You can configure your own bundle, <textarea
-    class="java:nogutter:nocontrols" name="code">
-    
+<p>You can configure your own bundle,
+<pre class="brush: java">    
     String yourBundleName = "path/to/your/keywords"
     Locale yourLocale = new Locale(...); 
 
     KeyWords keywords = new KeyWords(yourBundleName, yourLocale);
-</textarea> Just be sure that you use on the existing bundles as a template to
-ensure all the keywords are present.</p>
+</pre>
+Just be sure that you use on the existing bundles as a template to
+ensure all the keywords are present.
+</p>
 <p>Note that by the route you can also override the keywords for a
 locale already supported.</p>
 <p>If you do find yourself providing keywords for a new language, we
 are happy to support it out of the box. Simply get in touch via the <a
     href="mailing-lists.html">mailing lists</a> or attach the bundle for
-the new locale to an enhancement request via our <a href=
-    "issue-tracking.html">issue tracking</a>.</p>
+the new locale to an enhancement request via our <a
+    href="issue-tracking.html">issue tracking</a>.</p>
 
 <div class="clear">
 <hr />
