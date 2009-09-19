@@ -23,10 +23,10 @@ examples on how to configure both extensions - using the trader example.</p>
 <pre class="brush: xml">
   <taskdef name="scenarioRunner"
     classname="org.jbehave.ant.ScenarioRunnerTask"
-    classpathref="your.runtime.classpath" />
+    classpathref="your.runtime.classpath"></taskdef>
   
   <scenarioRunner scenarioIncludes="**/scenarios/*.java"
-    scenarioExcludes="**/*Steps.java" />
+    scenarioExcludes="**/*Steps.java"></scenarioRunner>
     
 </pre>
 <p>Remember that you need to include <b>jbehave-ant</b> to your
