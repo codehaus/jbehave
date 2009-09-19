@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Using your language</title>
+</head>
+
+<body>
+
+<h2>Writing Scenarios in your Language</h2>
+
+<p>Good and effective communication is key to BDD. Therefore,
+writing scenarios in the <a href="http://en.wikipedia.org/wiki/Language">language</a>
+spoken by the business users is essential. And even though the patterns
+used to match the scenario steps to Java methods can be written in any
+language, the <a
+    href="javadoc/core/org/jbehave/scenario/definition/KeyWords.html">KeyWords</a>
+still need to be expressed in different languages.</p>
+
+<p>JBehave allows the internationalisation (I18N) of keywords by by
+Java <a
+    href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/Locale.html">Locale</a>,
+thus allowing the scenarios to be written in any language. All is needed
+to configure the use of <a
+    href="javadoc/core/org/jbehave/scenario/i18n/I18nKeyWords.html">I18nKeyWords</a>
+for a given Locale. Each locale has a separate keywords properties file.
+E.g. for Italian locale, the file <b>keywords_it.properties</b> is: <textarea
+    class="properties:nogutter:nocontrols" name="code">
+Scenario=Scenario:
+GivenScenarios=Dati gli scenari:
+ExamplesTable=Esempi:
+ExamplesTableRow=Esempio:
+Given=Dato che
+When=Quando
+Then=Allora
+And=E
+Pending=PENDENTE
+NotPerformed=NON ESEGUITO
+Failed=FALLITO
+</textarea></p>
+<p>We need to configure the use of the I18N-ed keywords in the <a
+    href="javadoc/core/org/jbehave/scenario/JUnitScenario.html">JUnitScenario</a>,
+e.g.: <textarea class="java:nogutter:nocontrols" name="code">
+   public class ItTraderScenario extends JUnitScenario {
+
+	public ItTraderScenario() {
+		this(Thread.currentThread().getContextClassLoader());
+	}
+
+	public ItTraderScenario(final ClassLoader classLoader) {
+		super(new PropertyBasedConfiguration() {
+			@Override
+			public KeyWords keywords() {
+				// use Italian for keywords
+				return new I18nKeyWords(new Locale("it"));
+			}
+
+		}, new ItTraderSteps(classLoader));
+	}
+
+}
+</textarea></p>
+<p>The corresponding I18N-ed <a
+    href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>,
+also requires the configuration of I18N-ed keywords: <textarea
+    class="java:nogutter:nocontrols" name="code">
+public class ItTraderSteps extends Steps {
+
+    private Stock stock;
+
+    public ItTraderSteps(ClassLoader classLoader) {
+    	// Use Italian for keywords
+        super(new StepsConfiguration(new I18nKeyWords(new Locale("it"))));
+    }
+
+    @Given("ho un'azione con simbolo $symbol e una soglia di $threshold")
+    public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+        stock = new Stock(symbol, threshold);
+    }
+
+    @When("l'azione e' scambiata al prezzo di $price")
+    public void stockIsTraded(@Named("price") double price) {
+        stock.tradeAt(price);
+    }
+
+    @Then("lo status di allerta e' $status")
+    public void alertStatusIs(@Named("status") String status) {
+        ensureThat(stock.getStatus().name(), equalTo(status));
+    }
+
+}
+</textarea></p>
+<p>Note that the I18N-ed keywords not only allow the translation of
+the keywords used in parsing the textual scenario, but also the keywords
+used in the reporting of the scenario execution, e.g. <b>Pending</b>, <b>NotPerformed</b>
+and <b>Failed</b>.</p>
+
+<h2>What if your language is not currently supported?</h2>
+
+<p>You can configure your own bundle, <textarea
+    class="java:nogutter:nocontrols" name="code">
+    
+    String yourBundleName = "path/to/your/keywords"
+    Locale yourLocale = new Locale(...); 
+
+    KeyWords keywords = new KeyWords(yourBundleName, yourLocale);
+</textarea> Just be sure that you use on the existing bundles as a template to
+ensure all the keywords are present.</p>
+<p>Note that by the route you can also override the keywords for a
+locale already supported.</p>
+<p>If you do find yourself providing keywords for a new language, we
+are happy to support it out of the box. Simply get in touch via the <a
+    href="mailing-lists.html">mailing lists</a> or attach the bundle for
+the new locale to an enhancement request in <a
+    href="http://jira.codehaus.org/browse/JBEHAVE">JIRA</a>.</p>
+
+<div class="clear">
+<hr />
+</div>
+
+</body>
+</html>
