@@ -9,14 +9,14 @@
 <h2>Writing Textual Scenarios</h2>
 
 <p>BDD encourages you to start defining the scenarios that express
-the desired behaviour in a textual format, e.g.: <textarea
-    class="xml:nogutter:nocontrols" name="code">
+the desired behaviour in a textual format, e.g.:
+<pre class="brush: plain">
     Given a stock of symbol STK1 and a threshold of 10.0
     When the stock is traded at 5.0
     Then the alert status should be OFF
     When the stock is traded at 11.0
     Then the alert status should be ON
-</textarea>. The textual scenario should use the language of the business domain
+</pre>. The textual scenario should use the language of the business domain
 and shield away as much as possible the details of the technical
 implementation. Also, it should be given a name that is expressive of
 the functionality that is being verified, i.e. <b>trader_is_alerted_of_status.scenario</b>.
@@ -31,7 +31,7 @@ the functionality that is being verified, i.e. <b>trader_is_alerted_of_status.sc
 class. The scenario writer need only extends the default implementation
 <a href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>,
 and provide annotated method that match the textual steps by regex
-patterns: <textarea class="java:nogutter:nocontrols" name="code">
+patterns: <pre class="brush: java">
    public class TraderSteps extends Steps {
 
     private Stock stock;
@@ -52,7 +52,7 @@ patterns: <textarea class="java:nogutter:nocontrols" name="code">
     }
 
 }
-</textarea></p>
+</pre></p>
 
 <h2>Running Scenarios</h2>
 
@@ -72,8 +72,7 @@ such as <a href="javadoc/core/org/jbehave/scenario/JUnitScenario.html">JUnitScen
 <p>(Only when running via Maven) Must provide an additional
 constructor with a ClassLoader parameter.</p>
 
-<p>Thus in our case the example Scenario would look like: <textarea
-    class="java:nogutter:nocontrols" name="code">
+<p>Thus in our case the example Scenario would look like: <pre class="brush: java">
    public class TraderIsAletedOfStatus extends JUnitScenario {
 
     public TraderIsAletedOfStatus() {
@@ -90,7 +89,7 @@ constructor with a ClassLoader parameter.</p>
     }
 
 }
-</textarea></p>
+</pre></p>
 <p>Here we are configuring our textual scenario files to end with
 extension <b>.scenario</b>, by overriding the default behaviour of <a
     href="javadoc/core/org/jbehave/scenario/parser/UnderscoredCamelCaseResolver.html">UnderscoredCamelCaseResolver</a>

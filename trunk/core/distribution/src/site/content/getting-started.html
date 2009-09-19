@@ -10,8 +10,8 @@
 
 <p>To start using JBehave, simply name your scenario file with
 underscores, eg i_can_toggle_a_cell (although the file name resolution
-is configurable) and define steps in it: <textarea
-    class="xml:nogutter:nocontrols" name="code">
+is configurable) and define steps in it:
+<pre class="brush: plain">
       Given a 5 by 5 game
       When I toggle the cell at (2, 3)
       Then the grid should look like
@@ -34,7 +34,8 @@ is configurable) and define steps in it: <textarea
       .....
       .....
       ..X..
-</textarea> A few more elements are required:
+</pre>
+A few more elements are required:
 <p>1. Extend the <a
     href="javadoc/core/org/jbehave/scenario/Scenario.html">Scenario</a>
 class with a similarly named Java class: <code>ICanToggleACell.java</code>
@@ -43,19 +44,21 @@ class with a similarly named Java class: <code>ICanToggleACell.java</code>
 <p>2. Extend the <a
     href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>
 class - this is where your steps will be defined, and you can have as
-many as you want. Associate the Steps with the Scenario: <textarea
-    class="java:nogutter:nocontrols" name="code">
+many as you want. Associate the Steps with the Scenario:
+<pre class="brush: java">
       public class ICanToggleACell extends Scenario {
 
         public ICanToggleACell() {
             super(new GridSteps()); // varargs, can have lots of steps
         }
       }
-  </textarea></p>
+  </pre>
+</p>
 <p>3. <a
     href="javadoc/core/org/jbehave/scenario/annotations/package-summary.html">Annotate</a>
 methods in your step class to match the ones in your plain text
-scenario. <textarea class="java:nogutter:nocontrols" name="code">
+scenario.
+<pre class="brush: java">
       public class GridSteps extends Steps {
 
         private Game game;
@@ -79,7 +82,8 @@ scenario. <textarea class="java:nogutter:nocontrols" name="code">
         }
 
       }
-  </textarea></p>
+  </pre>
+</p>
 <p>4. Run your new scenario as JUnit test.</p>
 
 <h2>Looking for more examples?</h2>

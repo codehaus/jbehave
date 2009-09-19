@@ -6,19 +6,11 @@
 
 <style type="text/css" media="all">
 @import url( "./style/jbehave.css" );
-
-@import url( "./style/SyntaxHighlighter.css" );
 </style>
 
-<script type="text/javascript" src="./scripts/mootools-1.2-core.js">
-    //
-  </script>
-<script type="text/javascript" src="./scripts/mootools-1.2-fx.js">
-    //
-  </script>
-<script type="text/javascript" src="./scripts/menu-fx.js">
-    //
-  </script>
+<script type="text/javascript" src="./scripts/mootools-1.2-core.js"></script>
+<script type="text/javascript" src="./scripts/mootools-1.2-fx.js"></script>
+<script type="text/javascript" src="./scripts/menu-fx.js"></script>
 <style media="screen" type="text/css">
 div.MGroupContent {
 	display: none
@@ -82,16 +74,19 @@ entry=page>
   urchinTracker();
 </script>
 
-<!--  SyntaxHighlighter scripts:  MUST be left AFTER the body -->
-<script language="javascript" src="./scripts/shCore.js"></script>
-<script language="javascript" src="./scripts/shBrushJava.js"></script>
-<script language="javascript" src="./scripts/shBrushJScript.js"></script>
-<script language="javascript" src="./scripts/shBrushProperties.js"></script>
-<script language="javascript" src="./scripts/shBrushRuby.js"></script>
-<script language="javascript" src="./scripts/shBrushSql.js"></script>
-<script language="javascript" src="./scripts/shBrushXml.js"></script>
+<!--  SyntaxHighlighter resources:  should be included at end of body -->
+<link rel="stylesheet" type="text/css" href="./style/sh/shCore.css"/>
+<link rel="stylesheet" type="text/css" href="./style/sh/shThemeRDark.css"/>
+<script language="javascript" src="./scripts/sh/shCore.js"></script>
+<script language="javascript" src="./scripts/sh/shBrushJava.js"></script>
+<script language="javascript" src="./scripts/sh/shBrushPlain.js"></script>
+<script language="javascript" src="./scripts/sh/shBrushRuby.js"></script>
+<script language="javascript" src="./scripts/sh/shBrushXml.js"></script>
 <script type="text/javascript">
-  dp.SyntaxHighlighter.HighlightAll('code', false, false);
+	SyntaxHighlighter.config.clipboardSwf = './scripts/sh/clipboard.swf';
+    SyntaxHighlighter.defaults['gutter'] = false;
+    SyntaxHighlighter.defaults['toolbar'] = false;    
+	SyntaxHighlighter.all();
 </script>
 
 </html>

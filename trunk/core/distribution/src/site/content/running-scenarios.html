@@ -20,7 +20,8 @@ examples on how to configure both extensions - using the trader example.</p>
 
 <h2>Running as Ant task</h2>
 
-<p><textarea class="xml:nogutter:nocontrols" name="code">
+<p>
+<pre class="brush: xml">
   <taskdef name="scenarioRunner"
     classname="org.jbehave.ant.ScenarioRunnerTask"
     classpathref="your.runtime.classpath" />
@@ -32,12 +33,15 @@ examples on how to configure both extensions - using the trader example.</p>
     scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
     scenarioExcludes="**/*Steps.java" />
     
-</textarea> Remember that you need to include <b>jbehave-ant</b> to your
-runtime classpath.</p>
+</pre>
+Remember that you need to include
+<b>jbehave-ant</b>
+to your runtime classpath.
+</p>
 
 <h2>Running as Maven Plugin</h2>
 
-<textarea class="xml:nogutter:nocontrols" name="code">
+<pre class="brush: xml">
    <plugin>
         <groupId>org.jbehave</groupId>
         <artifactId>jbehave-maven-plugin</artifactId>
@@ -73,12 +77,13 @@ runtime classpath.</p>
           </execution>
         </executions>
     </plugin>
-</textarea>
+</pre>
 </p>
 
 <div class="clear">
 <hr />
 </div>
+
 
 </body>
 </html>
