@@ -17,6 +17,12 @@ Description := (Word Space?)*
 ; The word is any sequence of non-space characters that does not match a KeyWord
 Word := NonSpaceCharacter* ; TODO express "!Keyword"
 
+; The space between words
+Space := " "
+
+; Any non-space character
+NonSpaceCharacter := [.] ; TODO express "!Space"
+
 ; The keywords which are reserved (or equivalent in I18n-ed locale)
 KeyWord := "Scenario:" | "GivenScenarios:" | "Given" | "When" | "Then" | "And" 
 
@@ -53,11 +59,17 @@ Examples := "Examples:" Table
 ; The table comprises of a header row and data rows
 Table := TableHeader TableRow+
 
-; The table header contains the column names, separated by "|"
-TableHeader := (("|" TableCharacter+)+ "|"  Newline
+; The table header contains the column names, separated by TableColumnSeparator
+TableHeader := ((TableColumnSeparator TableCharacter+)+ TableColumnSeparator  Newline
 
-; The table row contains the column values, separated by "|"
-TableRow := (("|" TableCharacter+)+ "|"  Newline
+; The table row contains the column values, separated by TableColumnSeparator
+TableRow := ((TableColumnSeparator TableCharacter+)+ TableColumnSeparator  Newline
+
+; The table column separator
+TableColumnSeparator := "|"
+
+; The table character can be any character, expect for TableColumnSeparator and Newline
+TableCharacter := [.] ; TODO express !TableColumnSeparator and !Newline
 
 ; The new line character
 Newline := "\n"
