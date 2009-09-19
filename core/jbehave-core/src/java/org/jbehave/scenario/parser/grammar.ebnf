@@ -1,0 +1,63 @@
+; JBehave Grammar expressed in EBNF (http://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form)
+
+; The story or feature is a collection of scenarios
+Story := Scenario+
+
+; The scenario is identified by keyword "Scenario:" (or equivalent in I18n-ed locale),
+; which is optional in the case of a single scenario.  
+; It can optionally be followed by a description, which is expressed by any sequence of words
+; that must not contain any keywords
+; Then follow the Steps 
+; Finally the Examples table, which if present will execute the scenario for as many table rows present
+Scenario := "Scenario:"? Description? GivenScenarios? Step+ Examples?
+
+; The scenario description
+Description := (Word Space?)* 
+
+; The word is any sequence of non-space characters that does not match a KeyWord
+Word := NonSpaceCharacter* ; TODO express "!Keyword"
+
+; The keywords which are reserved (or equivalent in I18n-ed locale)
+KeyWord := "Scenario:" | "GivenScenarios:" | "Given" | "When" | "Then" | "And" 
+
+; The comma-separated list of scenario resources that specify the scenarios to be run before the scenario steps
+GivenScenarios:= "GivenScenarios:" (ScenarioResourcePath ','?)+
+
+; The scenario resource path  
+ScenarioResourcePath := PathCharacter+
+
+; The characters allowed in a scenario resource path
+PathCharacter := "/" | "." | "_" | Letter | Digit 
+
+; The letter characters
+Letter := [A-Z] | [a-z]
+
+; The digit characters
+Digit := [0-9]
+
+; The scenario step is a step starting work followed by any number of characters
+Step := StepStartingWord StepContent
+
+; The step starting words (or equivalent in I18n-ed locale)
+StepStartingWord :== ("Given" | "When" | "Then" | "And" ) 
+
+; The step content is any sequence of characters that do not match a step starting word
+StepContent := StepCharacter+ ; TODO express "!StepStartingWord"
+
+; All characters are allowed in a scenario step content, including newlines
+StepCharacter := [.]
+
+; The examples table
+Examples := "Examples:" Table
+
+; The table comprises of a header row and data rows
+Table := TableHeader TableRow+
+
+; The table header contains the column names, separated by "|"
+TableHeader := (("|" TableCharacter+)+ "|"  Newline
+
+; The table row contains the column values, separated by "|"
+TableRow := (("|" TableCharacter+)+ "|"  Newline
+
+; The new line character
+Newline := "\n"
