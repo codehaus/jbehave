@@ -20,8 +20,8 @@ Word := ? Any sequence of NonSpaceCharacter that does not match KeyWord ? ;
 ; The space character
 Space := ? Unicode space character ? ;
 
-; Any non-space character
-NonSpaceCharacter := ? Any character except Space ? ;
+; The non-space character
+NonSpaceCharacter := ? Any Unicode character except Space ? ;
 
 ; The keywords which are reserved (or equivalent in I18n-ed locale)
 KeyWord := "Scenario:" | "GivenScenarios:" | "Given" | "When" | "Then" | "And" ;
@@ -36,10 +36,10 @@ ScenarioResourcePath := PathCharacter+ ;
 PathCharacter := "/" | "." | "_" | Letter | Digit ;
 
 ; The letter characters
-Letter := [A-Z] | [a-z] ;
+Letter := ? Any Unicode letter character ? ;
 
 ; The digit characters
-Digit := [0-9] ;
+Digit := ? Any Unicode digit character ? ;
 
 ; The scenario step is a step starting work followed by any number of characters
 Step := StepStartingWord StepContent ;
