@@ -14,8 +14,8 @@ import org.jbehave.scenario.steps.StepdocGenerator;
  * PropertyBasedConfiguration is backed by MostUsefulConfiguration as default, but has different
  * behaviour if certain system properties are non-null:
  * <ul>
- *   <li>PropertyBasedConfiguration.FAIL_ON_PENDING: uses  PendingErrorStrategy.FAILING as PendingErrorStrategy</li<
- *   <li>PropertyBasedConfiguration.OUTPUT_ALL:  uses PrintStreamScenarioReporter as ScenarioReporter</li<
+ *   <li>PropertyBasedConfiguration.FAIL_ON_PENDING: uses  PendingErrorStrategy.FAILING as PendingErrorStrategy</li>
+ *   <li>PropertyBasedConfiguration.OUTPUT_ALL:  uses PrintStreamScenarioReporter as ScenarioReporter</li>
  * </ul>
  */
 public class PropertyBasedConfiguration implements Configuration {

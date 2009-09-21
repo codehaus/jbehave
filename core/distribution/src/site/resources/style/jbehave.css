@@ -1,5 +1,5 @@
 #banner {
-  background: #ffffff url(../images/background-banner.png) repeat top left;
+  background: #fff url(../images/background-banner.png) repeat top left;
 }
 
 #banner img {
@@ -8,8 +8,8 @@
 
 #footer {
   width: 100%;
-  background: #ffffff url(../images/background-footer.png) repeat;
-  color: white;
+  background: #fff url(../images/background-footer.png) repeat;
+  color: #fff;
   border: 1px solid;
   padding: 5px 0 5px 0;
   margin-top: 50px;
@@ -73,8 +73,7 @@ body, td, select, input, li {
 }
 
 div.section {
-
-  background-color: white;
+  background-color: #fff;
   position: absolute;
   top: 140px;
   padding: 15px;
@@ -103,8 +102,12 @@ a:active, a:hover {
   color: #39912b;
 }
 
+b {
+  color: #333;
+}
+
 table.bodyTable th {
-  color: white;
+  color: #fff;
   background-color: #bbb;
   text-align: left;
   font-weight: bold;
@@ -174,7 +177,7 @@ table.bodyTable tr.b {
 .MGroup a {
   background: #39912b none repeat scroll 0%;
   border-right: 4px solid #b3b3a1;
-  color: #FFFFFF;
+  color: #fff;
   cursor: pointer;
   display: block;
   font-weight: bold;
@@ -213,43 +216,9 @@ table.bodyTable tr.b {
 }
 
 #MSelected {
-  background-color: #FFFFFF;
-  border-right: 4px solid #FFFFFF;
-  color: #333333;
+  background-color: #fff;
+  border-right: 4px solid #fff;
+  color: #333;
   text-shadow: none;
-}
-
-/* Language specific styles */
-
-.dp-highlighter .comment, .dp-highlighter .comments {
-  color: #428BDD;
-}
-
-.dp-highlighter .string {
-  color: #00CC00;
-}
-
-.dp-highlighter .keyword {
-  color: #F9BB00;
-}
-
-.dp-highlighter .preprocessor {
-  color: gray;
-}
-
-.dp-xml .cdata {
-  color: #fff;
-}
-
-.dp-xml .tag, .dp-xml .tag-name {
-  color: #F9BB00;
-}
-
-.dp-xml .attribute {
-  color: #428BDD;
-}
-
-.dp-xml .attribute-value {
-  color: #0c0;
 }
 
