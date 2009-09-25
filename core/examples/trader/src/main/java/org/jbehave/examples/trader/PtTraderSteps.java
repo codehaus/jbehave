@@ -14,26 +14,26 @@ import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.scenario.steps.StepsConfiguration;
 
-public class ItTraderSteps extends Steps {
+public class PtTraderSteps extends Steps {
 
     private Stock stock;
 
-    public ItTraderSteps(ClassLoader classLoader) {
-    	// Use Italian for keywords
-        super(new StepsConfiguration(new I18nKeyWords(new Locale("it"))));
+    public PtTraderSteps(ClassLoader classLoader) {
+    	// Use Portuguese for keywords
+        super(new StepsConfiguration(new I18nKeyWords(new Locale("pt"))));
     }
 
-    @Given("ho un'azione con simbolo $symbol e una soglia di $threshold")
+    @Given("há uma ação com símbolo $symbol e um limite de $threshold")
     public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
         stock = new Stock(symbol, threshold);
     }
 
-    @When("l'azione è scambiata al prezzo di $price")
+    @When("a ação é oferecida ao preço de $price")
     public void stockIsTraded(@Named("price") double price) {
         stock.tradeAt(price);
     }
 
-    @Then("lo status di allerta è $status")
+    @Then("o estado de alerta é $status")
     public void alertStatusIs(@Named("status") String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
