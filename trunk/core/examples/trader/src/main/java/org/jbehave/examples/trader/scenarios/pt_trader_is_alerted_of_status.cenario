@@ -1,0 +1,15 @@
+Cenário:
+Para assegurar uma resposta rápida
+Como um negociante que fala portuguese
+Quero monitorar os preços das ações
+
+Dado que há uma ação com símbolo STK1 e um limite de 15.0
+Quando a ação é oferecida ao preço de 5.0
+Então o estado de alerta é OFF
+Quando a ação é oferecida ao preço de 11.0
+Então o estado de alerta é OFF
+Quando a ação é oferecida ao preço de 16.0
+Então o estado de alerta é ON
+Quando a ação é oferecida ao preçoooooooo de 20.0
+Então o estado de alerta é ON
+
