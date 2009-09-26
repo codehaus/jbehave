@@ -14,43 +14,43 @@ public class I18nKeywordsBehaviour {
 
 	@Test
 	public void keywordsInEnglishAsDefault() throws IOException {
-		ensureKeywordsAre(null);
+		ensureKeywordsAreLocalisedFor(null);
 	}
 
 	@Test
 	public void keywordsInSpanish() throws IOException {
-		ensureKeywordsAre(new Locale("es"));
+		ensureKeywordsAreLocalisedFor(new Locale("es"));
 	}
 
 	@Test
 	public void keywordsInFrench() throws IOException {
-		ensureKeywordsAre(new Locale("fr"));
+		ensureKeywordsAreLocalisedFor(new Locale("fr"));
 	}
 	
     @Test
 	public void keywordsInItalian() throws IOException {
-		ensureKeywordsAre(new Locale("it"));
+		ensureKeywordsAreLocalisedFor(new Locale("it"));
 	}
 
 	@Test
 	public void keywordsInPortuguese() throws IOException {
-		ensureKeywordsAre(new Locale("pt"));
+		ensureKeywordsAreLocalisedFor(new Locale("pt"));
 	}
 
-	private void ensureKeywordsAre(Locale locale) throws IOException {
-		Properties expected = bundleFor(locale);
+	private void ensureKeywordsAreLocalisedFor(Locale locale) throws IOException {
+		Properties properties = bundleFor(locale);
 		KeyWords keywords = keyWordsFor(locale);		
-		assertUtf8Equals(expected.getProperty("Scenario"), keywords.scenario());
-		assertUtf8Equals(expected.getProperty("GivenScenarios"), keywords.givenScenarios());
-		assertUtf8Equals(expected.getProperty("ExamplesTable"), keywords.examplesTable());
-		assertUtf8Equals(expected.getProperty("ExamplesTableRow"), keywords.examplesTableRow());
-		assertUtf8Equals(expected.getProperty("Given"), keywords.given());
-		assertUtf8Equals(expected.getProperty("When"), keywords.when());
-		assertUtf8Equals(expected.getProperty("Then"), keywords.then());
-		assertUtf8Equals(expected.getProperty("And"), keywords.and());
-		assertUtf8Equals(expected.getProperty("Pending"), keywords.pending());
-		assertUtf8Equals(expected.getProperty("NotPerformed"), keywords.notPerformed());
-		assertUtf8Equals(expected.getProperty("Failed"), keywords.failed());
+		ensureKeywordIs(properties, "Scenario", keywords.scenario());
+		ensureKeywordIs(properties, "GivenScenarios", keywords.givenScenarios());
+		ensureKeywordIs(properties, "ExamplesTable", keywords.examplesTable());
+		ensureKeywordIs(properties, "ExamplesTableRow", keywords.examplesTableRow());
+		ensureKeywordIs(properties, "Given", keywords.given());
+		ensureKeywordIs(properties, "When", keywords.when());
+		ensureKeywordIs(properties, "Then", keywords.then());
+		ensureKeywordIs(properties, "And", keywords.and());
+		ensureKeywordIs(properties, "Pending", keywords.pending());
+		ensureKeywordIs(properties, "NotPerformed", keywords.notPerformed());
+		ensureKeywordIs(properties, "Failed", keywords.failed());
 	}
 
 	private I18nKeyWords keyWordsFor(Locale locale) {
@@ -65,8 +65,8 @@ public class I18nKeywordsBehaviour {
 		return expected;
 	}
 
-	private void assertUtf8Equals(String expected, String actual) {
-		assertEquals(utf8(expected), actual);
+	private void ensureKeywordIs(Properties properties, String key, String value) {
+		assertEquals(utf8(properties.getProperty(key)), value);
 	}
 
 	private String utf8(String value) {
