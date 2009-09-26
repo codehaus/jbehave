@@ -1,14 +1,14 @@
 Scenario: 
 Per assicurare una risposta rapida
-In qualità di trader che parla italiano
+In qualit√† di trader che parla italiano
 Voglio controllare i prezzi delle azioni
 
 Dato che ho un'azione con simbolo STK1 e una soglia di 15.0
-Quando l'azione è scambiata al prezzo di 5.0
-Allora lo status di allerta è OFF
-Quando l'azione è scambiata al prezzo di 11.0
-Allora lo status di allerta è OFF
-Quando l'azione è scambiata al prezzo di 16.0
-Allora lo status di allerta è ON
-Quando l'azione è scambiata al prezzzzzzzzo di 20.0
-Allora lo status di allerta è ON
+Quando l'azione √® scambiata al prezzo di 5.0
+Allora lo status di allerta √® OFF
+Quando l'azione √® scambiata al prezzo di 11.0
+Allora lo status di allerta √® OFF
+Quando l'azione √® scambiata al prezzo di 16.0
+Allora lo status di allerta √® ON
+Quando l'azione √® scambiata al prezzzzzzzzo di 20.0
+Allora lo status di allerta √® ON
