@@ -16,8 +16,7 @@ import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepResult;
 
 /**
- * Runs the steps of each scenario in a story
- * and describes the results to the {@link ScenarioReporter}.
+ * Runs the steps of each scenario in a story and describes the results to the {@link ScenarioReporter}.
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi
@@ -52,8 +51,8 @@ public class ScenarioRunner {
         reporter.beforeStory(story.getBlurb());
         for (ScenarioDefinition scenario : story.getScenarios()) {
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
-        	if ( isTemplateScenario(scenario) ){ // run template scenario
-        		runTemplateScenario(configuration, scenario, scenario.getTable(), candidateSteps);
+        	if ( isExamplesTableScenario(scenario) ){ // run examples table scenario
+        		runExamplesTableScenario(configuration, scenario, scenario.getTable(), candidateSteps);
         	} else { // run plain old scenario
             	runScenario(configuration, scenario, new HashMap<String, String>(), candidateSteps);        		
         	}
@@ -61,21 +60,6 @@ public class ScenarioRunner {
         reporter.afterStory();
         currentStrategy.handleError(throwable);
     }
-
-	private boolean isTemplateScenario(ScenarioDefinition scenario) {
-		ExamplesTable table = scenario.getTable();
-		return table != null && table.getRowCount() > 0;
-	}
-
-	private void runTemplateScenario(Configuration configuration,
-			ScenarioDefinition scenario, ExamplesTable table,
-			CandidateSteps... candidateSteps) {
-		reporter.examplesTable(table);
-		for (Map<String,String> tableRow : table.getRows() ) {
-			reporter.examplesTableRow(tableRow);
-			runScenario(configuration, scenario, tableRow, candidateSteps);
-		}
-	}
 
 	private void runGivenScenarios(Configuration configuration,
 			ScenarioDefinition scenario, CandidateSteps... candidateSteps)
@@ -86,6 +70,21 @@ public class ScenarioRunner {
 			for ( String scenarioPath : givenScenarios ){
 				run(scenarioPath, configuration, candidateSteps);
 			}
+		}
+	}
+
+	private boolean isExamplesTableScenario(ScenarioDefinition scenario) {
+		ExamplesTable table = scenario.getTable();
+		return table != null && table.getRowCount() > 0;
+	}
+
+	private void runExamplesTableScenario(Configuration configuration,
+			ScenarioDefinition scenario, ExamplesTable table,
+			CandidateSteps... candidateSteps) {
+		reporter.examplesTable(table);
+		for (Map<String,String> tableRow : table.getRows() ) {
+			reporter.examplesTableRow(tableRow);
+			runScenario(configuration, scenario, tableRow, candidateSteps);
 		}
 	}
 
