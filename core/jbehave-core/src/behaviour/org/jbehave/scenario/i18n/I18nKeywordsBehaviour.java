@@ -1,11 +1,11 @@
 package org.jbehave.scenario.i18n;
 
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import org.jbehave.scenario.definition.KeyWords;
 import org.junit.Test;
@@ -13,56 +13,56 @@ import org.junit.Test;
 public class I18nKeywordsBehaviour {
 
 	@Test
-	public void keywordsInEnglishAsDefault() {
-		ensureKeywordsAre(null, asList("Scenario:", "GivenScenarios:",
-				"Examples:", "Example:", "Given", "When", "Then", "And",
-				"PENDING", "NOT PERFORMED", "FAILED"));
+	public void keywordsInEnglishAsDefault() throws IOException {
+		ensureKeywordsAre(null);
 	}
 
 	@Test
-	public void keywordsInSpanish() {
-		ensureKeywordsAre(new Locale("es"), asList("Escenario:",
-				"Dados los escenarios:", "Ejemplos:", "Ejemplo:", "Dado que",
-				"Cuando", "Entonces", "Y", "PENDIENTE", "NO REALIZADO",
-				"FRACASADO"));
+	public void keywordsInSpanish() throws IOException {
+		ensureKeywordsAre(new Locale("es"));
 	}
 
 	@Test
-	public void keywordsInFrench() {
-		ensureKeywordsAre(new Locale("fr"), asList("Scénario:",
-				"Donné les scenarios:", "Exemples:", "Exemple:", "Étant donné",
-				"Quand", "Alors", "Et", "EN ATTENDANT", "NON EXÉCUTÉ", "ÉCHOUÉ"));
+	public void keywordsInFrench() throws IOException {
+		ensureKeywordsAre(new Locale("fr"));
 	}
 	
     @Test
-	public void keywordsInItalian() {
-		ensureKeywordsAre(new Locale("it"), asList("Scenario:",
-				"Dati gli scenari:", "Esempi:", "Esempio:", "Dato che",
-				"Quando", "Allora", "E", "PENDENTE", "NON ESEGUITO", "FALLITO"));
+	public void keywordsInItalian() throws IOException {
+		ensureKeywordsAre(new Locale("it"));
 	}
-
 
 	@Test
-	public void keywordsInPortuguese() {
-		ensureKeywordsAre(new Locale("pt"), asList("Cenário:",
-				"Dados os cenários:", "Exemplos:", "Exemplo:", "Dado que",
-				"Quando", "Então", "E", "PENDENTE", "NÃO EXECUTADO", "FALHADO"));
+	public void keywordsInPortuguese() throws IOException {
+		ensureKeywordsAre(new Locale("pt"));
 	}
 
-	private void ensureKeywordsAre(Locale locale, List<String> expected) {
-		KeyWords keywords = (locale == null ? new I18nKeyWords()
+	private void ensureKeywordsAre(Locale locale) throws IOException {
+		Properties expected = bundleFor(locale);
+		KeyWords keywords = keyWordsFor(locale);		
+		assertUtf8Equals(expected.getProperty("Scenario"), keywords.scenario());
+		assertUtf8Equals(expected.getProperty("GivenScenarios"), keywords.givenScenarios());
+		assertUtf8Equals(expected.getProperty("ExamplesTable"), keywords.examplesTable());
+		assertUtf8Equals(expected.getProperty("ExamplesTableRow"), keywords.examplesTableRow());
+		assertUtf8Equals(expected.getProperty("Given"), keywords.given());
+		assertUtf8Equals(expected.getProperty("When"), keywords.when());
+		assertUtf8Equals(expected.getProperty("Then"), keywords.then());
+		assertUtf8Equals(expected.getProperty("And"), keywords.and());
+		assertUtf8Equals(expected.getProperty("Pending"), keywords.pending());
+		assertUtf8Equals(expected.getProperty("NotPerformed"), keywords.notPerformed());
+		assertUtf8Equals(expected.getProperty("Failed"), keywords.failed());
+	}
+
+	private I18nKeyWords keyWordsFor(Locale locale) {
+		return (locale == null ? new I18nKeyWords()
 				: new I18nKeyWords(locale));
-		assertUtf8Equals(expected.get(0), keywords.scenario());
-		assertUtf8Equals(expected.get(1), keywords.givenScenarios());
-		assertUtf8Equals(expected.get(2), keywords.examplesTable());
-		assertUtf8Equals(expected.get(3), keywords.examplesTableRow());
-		assertUtf8Equals(expected.get(4), keywords.given());
-		assertUtf8Equals(expected.get(5), keywords.when());
-		assertUtf8Equals(expected.get(6), keywords.then());
-		assertUtf8Equals(expected.get(7), keywords.and());
-		assertUtf8Equals(expected.get(8), keywords.pending());
-		assertUtf8Equals(expected.get(9), keywords.notPerformed());
-		assertUtf8Equals(expected.get(10), keywords.failed());
+	}
+
+	private Properties bundleFor(Locale locale) throws IOException {
+		Properties expected = new Properties();
+		String bundle = "org/jbehave/scenario/i18n/keywords_"+( locale == null ? "en" : locale.getLanguage()) +".properties";
+		expected.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(bundle));
+		return expected;
 	}
 
 	private void assertUtf8Equals(String expected, String actual) {
@@ -71,7 +71,7 @@ public class I18nKeywordsBehaviour {
 
 	private String utf8(String value) {
 		try {
-			return new String(value.getBytes("UTF-8"), "UTF-8");
+			return new String(value.getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
