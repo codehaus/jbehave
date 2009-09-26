@@ -1,15 +1,16 @@
-Cenário:
-Para assegurar uma resposta rápida
-Como um negociante que fala portuguese
-Quero monitorar os preços das ações
+Cen√°rio:
+Para assegurar uma resposta r√°pida
+Como um negociante que fala portugu√™s
+Quero monitorar os pre√ßos das a√ß√µes
 
-Dado que há uma ação com símbolo STK1 e um limite de 15.0
-Quando a ação é oferecida ao preço de 5.0
-Então o estado de alerta é OFF
-Quando a ação é oferecida ao preço de 11.0
-Então o estado de alerta é OFF
-Quando a ação é oferecida ao preço de 16.0
-Então o estado de alerta é ON
-Quando a ação é oferecida ao preçoooooooo de 20.0
-Então o estado de alerta é ON
+Dado que h√° uma a√ß√£o com s√≠mbolo STK1 e um limite de 15.0
+Quando a a√ß√£o √© oferecida ao pre√ßo de 5.0
+Entao o estado de alerta √© OFF
+Quando a a√ß√£o √© oferecida ao pre√ßo de 11.0
+Entao o estado de alerta √© OFF
+Quando a a√ß√£o √© oferecida ao pre√ßo de 16.0
+Entao o estado de alerta √© ON
+Quando a a√ß√£o √© oferecida ao pre√ßoooooooo de 20.0
+Entao o estado de alerta √© OFF
+
 
