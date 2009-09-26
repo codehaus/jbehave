@@ -16,26 +16,27 @@ import org.jbehave.scenario.steps.StepsConfiguration;
 
 public class PtTraderSteps extends Steps {
 
-    private Stock stock;
+	private Stock stock;
 
-    public PtTraderSteps(ClassLoader classLoader) {
-    	// Use Portuguese for keywords
-        super(new StepsConfiguration(new I18nKeyWords(new Locale("pt"))));
-    }
+	public PtTraderSteps(ClassLoader classLoader) {
+		// Use Portuguese for keywords
+		super(new StepsConfiguration(new I18nKeyWords(new Locale("pt"))));
+	}
 
-    @Given("há uma ação com símbolo $symbol e um limite de $threshold")
-    public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
-        stock = new Stock(symbol, threshold);
-    }
+	@Given("há uma ação com símbolo $symbol e um limite de $threshold")
+	public void aStock(@Named("symbol") String symbol,
+			@Named("threshold") double threshold) {
+		stock = new Stock(symbol, threshold);
+	}
 
-    @When("a ação é oferecida ao preço de $price")
-    public void stockIsTraded(@Named("price") double price) {
-        stock.tradeAt(price);
-    }
+	@When("a ação é oferecida ao preço de $price")
+	public void stockIsTraded(@Named("price") double price) {
+		stock.tradeAt(price);
+	}
 
-    @Then("o estado de alerta é $status")
-    public void alertStatusIs(@Named("status") String status) {
-        ensureThat(stock.getStatus().name(), equalTo(status));
-    }
+	@Then("o estado de alerta é $status")
+	public void alertStatusIs(@Named("status") String status) {
+		ensureThat(stock.getStatus().name(), equalTo(status));
+	}
 
 }
