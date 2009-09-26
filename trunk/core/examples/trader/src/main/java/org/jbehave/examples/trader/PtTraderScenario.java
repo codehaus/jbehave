@@ -1,11 +1,16 @@
 package org.jbehave.examples.trader;
 
+import static org.jbehave.scenario.i18n.StringEncoder.ISO_8859_1;
+import static org.jbehave.scenario.i18n.StringEncoder.UTF_8;
+
 import java.util.Locale;
 
+import org.hamcrest.text.StringEndsWith;
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.i18n.I18nKeyWords;
+import org.jbehave.scenario.i18n.StringEncoder;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
@@ -31,13 +36,13 @@ public class PtTraderScenario extends JUnitScenario {
 
 			@Override
 			public ScenarioReporter forReportingScenarios() {
-				// report outcome in Brazilian Portuguese (to System.out)
-				return new PrintStreamScenarioReporter(new I18nKeyWords(new Locale("pt")));
+				// report outcome in Portuguese (to System.out)
+				return new PrintStreamScenarioReporter(new I18nKeyWords(new Locale("pt"), new StringEncoder(UTF_8, ISO_8859_1)));
 			}
 
 			@Override
 			public KeyWords keywords() {
-				// use Brazilian Portuguese for keywords
+				// use Portuguese for keywords
 				return new I18nKeyWords(new Locale("pt"));
 			}
 

@@ -3,7 +3,6 @@ package org.jbehave.scenario.i18n;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -12,6 +11,8 @@ import org.junit.Test;
 
 public class I18nKeywordsBehaviour {
 
+	private StringEncoder encoder = new StringEncoder("UTF-8", "UTF-8");
+	
 	@Test
 	public void keywordsInEnglishAsDefault() throws IOException {
 		ensureKeywordsAreLocalisedFor(null);
@@ -66,15 +67,7 @@ public class I18nKeywordsBehaviour {
 	}
 
 	private void ensureKeywordIs(Properties properties, String key, String value) {
-		assertEquals(utf8(properties.getProperty(key)), value);
-	}
-
-	private String utf8(String value) {
-		try {
-			return new String(value.getBytes("ISO-8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
+		assertEquals(encoder.encode(properties.getProperty(key)), value);
 	}
 
 }
