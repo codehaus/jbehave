@@ -5,6 +5,8 @@ import static java.util.Arrays.asList;
 import java.util.List;
 import java.util.Map;
 
+import org.jbehave.scenario.i18n.StringEncoder;
+
 /**
  * Provides the keywords which allow parsers to find steps in scenarios and
  * match those steps with candidates through the Given, When and Then
@@ -34,12 +36,14 @@ public class KeyWords {
 	private final String then;
 	private final String examplesTable;
 	private final String[] others;
+	private StringEncoder encoder;
 
-	public KeyWords(Map<String, String> keywords) {
+	public KeyWords(Map<String, String> keywords, StringEncoder encoder) {
 		this(keywords.get(SCENARIO), keywords.get(GIVEN_SCENARIOS), keywords
 				.get(EXAMPLES_TABLE), keywords.get(GIVEN), keywords.get(WHEN),
 				keywords.get(THEN), keywords.get(AND), keywords.get(PENDING),
 				keywords.get(NOT_PERFORMED), keywords.get(FAILED), keywords.get(EXAMPLES_TABLE_ROW));
+		this.encoder = encoder;
 	}
 
 	public KeyWords(String scenario, String givenScenarios,
@@ -100,6 +104,13 @@ public class KeyWords {
 
 	public String[] others() {
 		return others;
+	}
+
+	public String encode(String value) {
+		if ( encoder != null ){
+			return encoder.encode(value);
+		}
+		return value;
 	}
 
 }

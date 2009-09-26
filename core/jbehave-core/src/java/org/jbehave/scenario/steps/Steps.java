@@ -67,7 +67,7 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 public class Steps implements CandidateSteps {
 
 	private final StepsConfiguration configuration;
-
+	
 	/**
 	 * Creates Steps with default configuration
 	 */
@@ -128,22 +128,26 @@ public class Steps implements CandidateSteps {
 		List<CandidateStep> steps = new ArrayList<CandidateStep>();
 		for (Method method : stepsClass.getMethods()) {
 			if (method.isAnnotationPresent(Given.class)) {
-				String value = method.getAnnotation(Given.class).value();
+				String value = encode(method.getAnnotation(Given.class).value());
 				createCandidateStep(steps, method, value);
 				createCandidateStepsFromAliases(steps, method);
 			}
 			if (method.isAnnotationPresent(When.class)) {
-				String value = method.getAnnotation(When.class).value();
+				String value = encode(method.getAnnotation(When.class).value());
 				createCandidateStep(steps, method, value);
 				createCandidateStepsFromAliases(steps, method);
 			}
 			if (method.isAnnotationPresent(Then.class)) {
-				String value = method.getAnnotation(Then.class).value();
+				String value = encode(method.getAnnotation(Then.class).value());
 				createCandidateStep(steps, method, value);
 				createCandidateStepsFromAliases(steps, method);
 			}
 		}
 		return steps.toArray(new CandidateStep[steps.size()]);
+	}
+
+	private String encode(String value) {
+		return configuration.getKeywords().encode(value);
 	}
 
 	private void createCandidateStep(List<CandidateStep> steps, Method method,

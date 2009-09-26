@@ -31,10 +31,10 @@
             <phase>integration-test</phase>
             <configuration>
               <scenarioIncludes>
-                <scenarioInclude>**/scenarios/I18n*.java</scenarioInclude>
+                <scenarioInclude>**/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
-                <scenarioExclude>**/*Steps.java</scenarioExclude>
+                <scenarioExclude>**/scenarios/None.java</scenarioExclude>
               </scenarioExcludes>
               <skip>false</skip>
             </configuration>
@@ -47,10 +47,10 @@
             <phase>integration-test</phase>
             <configuration>
               <scenarioIncludes>
-                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
+                <scenarioInclude>**/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
-                <scenarioExclude>**/*Steps.java</scenarioExclude>
+                <scenarioExclude>**/scenarios/None.java</scenarioExclude>
               </scenarioExcludes>
               <skip>true</skip>
             </configuration>

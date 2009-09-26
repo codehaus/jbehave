@@ -14,34 +14,38 @@ public class I18nKeyWords extends KeyWords {
 	private static final String DEFAULT_BUNDLE_NAME = "org/jbehave/scenario/i18n/keywords";
 
 	public I18nKeyWords() {
-        this(DEFAULT_BUNDLE_NAME, Locale.ENGLISH);
+        this(DEFAULT_BUNDLE_NAME, Locale.ENGLISH, new StringEncoder());
     }
 
     public I18nKeyWords(Locale locale) {
-    	this(DEFAULT_BUNDLE_NAME, locale);
+    	this(DEFAULT_BUNDLE_NAME, locale,  new StringEncoder());
     }
 
-    public I18nKeyWords(String bundleName, Locale locale) {
-    	super(keywords(bundleName, locale));
+    public I18nKeyWords(Locale locale,  StringEncoder encoder) {
+    	this(DEFAULT_BUNDLE_NAME, locale, encoder);
+    }
+
+    public I18nKeyWords(String bundleName, Locale locale, StringEncoder encoder) {
+    	super(keywords(bundleName, locale, encoder), encoder);
     }
 
 	private static Map<String, String> keywords(String bundleName,
-			Locale locale) {
+			Locale locale, StringEncoder encoder) {
 		ResourceBundle bundle = lookupBunde(bundleName, locale);
 		Map<String, String> keywords = new HashMap<String, String>();
 		for ( String key : KEYWORDS ) {
-			keywords.put(key, keyword(bundle, key));			
+			keywords.put(key, keyword(bundle, key, encoder));			
 		}
 		return keywords;
 	}
 
-	private static String keyword(ResourceBundle bundle, String name) {
-		return bundle.getString(name);
+	private static String keyword(ResourceBundle bundle, String name, StringEncoder encoder) {
+		return encoder.encode(bundle.getString(name));
 	}
 
     private static ResourceBundle lookupBunde(String bundleName, Locale locale) {
         try {
-            return UTF8ResourceBundle.getBundle(bundleName.trim(), locale);
+            return ResourceBundle.getBundle(bundleName.trim(), locale);
         } catch (MissingResourceException e) {
             return EMPTY_BUNDLE;
         }

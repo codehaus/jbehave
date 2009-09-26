@@ -23,17 +23,17 @@ public class PtTraderSteps extends Steps {
         super(new StepsConfiguration(new I18nKeyWords(new Locale("pt"))));
     }
 
-    @Given("há uma ação com símbolo $symbol e um limite de $threshold")
+    @Given("h√° uma a√ß√£o com s√≠mbolo $symbol e um limite de $threshold")
     public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
         stock = new Stock(symbol, threshold);
     }
 
-    @When("a ação é oferecida ao preço de $price")
+    @When("a a√ß√£o √© oferecida ao pre√ßo de $price")
     public void stockIsTraded(@Named("price") double price) {
         stock.tradeAt(price);
     }
 
-    @Then("o estado de alerta é $status")
+    @Then("o estado de alerta √© $status")
     public void alertStatusIs(@Named("status") String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
