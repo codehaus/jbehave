@@ -1,6 +1,6 @@
-package org.jbehave.examples.trader.scenarios;
+package org.jbehave.examples.trader.i18n.scenarios;
 
-import org.jbehave.examples.trader.PtTraderScenario;
+import org.jbehave.examples.trader.i18n.PtTraderScenario;
 
 
 public class PtTraderIsAlertedOfStatus extends PtTraderScenario {

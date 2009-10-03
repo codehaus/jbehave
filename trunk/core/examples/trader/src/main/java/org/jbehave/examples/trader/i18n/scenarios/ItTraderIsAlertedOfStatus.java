@@ -1,6 +1,6 @@
-package org.jbehave.examples.trader.scenarios;
+package org.jbehave.examples.trader.i18n.scenarios;
 
-import org.jbehave.examples.trader.ItTraderScenario;
+import org.jbehave.examples.trader.i18n.ItTraderScenario;
 
 
 public class ItTraderIsAlertedOfStatus extends ItTraderScenario {
