@@ -1,4 +1,4 @@
-package org.jbehave.examples.trader;
+package org.jbehave.examples.trader.i18n;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;

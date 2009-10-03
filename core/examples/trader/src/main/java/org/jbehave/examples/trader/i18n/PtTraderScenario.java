@@ -1,4 +1,4 @@
-package org.jbehave.examples.trader;
+package org.jbehave.examples.trader.i18n;
 
 import java.util.Locale;
 
@@ -13,35 +13,37 @@ import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 
-public class ItTraderScenario extends JUnitScenario {
+public class PtTraderScenario extends JUnitScenario {
 
-	public ItTraderScenario() {
+	public PtTraderScenario() {
 		this(Thread.currentThread().getContextClassLoader());
 	}
 
-	public ItTraderScenario(final ClassLoader classLoader) {
+	public PtTraderScenario(final ClassLoader classLoader) {
 		super(new PropertyBasedConfiguration() {
 			@Override
 			public ScenarioDefiner forDefiningScenarios() {
-				// use underscored camel case scenario files with extension ".scenario"
+				// use underscored camel case scenario files with extension
+				// ".cenario"
 				return new ClasspathScenarioDefiner(
-						new UnderscoredCamelCaseResolver(".scenario"),
+						new UnderscoredCamelCaseResolver(".cenario"),
 						new PatternScenarioParser(this), classLoader);
 			}
 
 			@Override
 			public ScenarioReporter forReportingScenarios() {
-				// report outcome in Italian (to System.out)
-				return new PrintStreamScenarioReporter(new I18nKeyWords(new Locale("it")));
+				// report outcome in Portuguese (to System.out)
+				return new PrintStreamScenarioReporter(new I18nKeyWords(
+						new Locale("pt")));
 			}
 
 			@Override
 			public KeyWords keywords() {
-				// use Italian for keywords
-				return new I18nKeyWords(new Locale("it"));
+				// use Portuguese for keywords
+				return new I18nKeyWords(new Locale("pt"));
 			}
 
-		}, new ItTraderSteps(classLoader));
+		}, new PtTraderSteps(classLoader));
 	}
 
 }
