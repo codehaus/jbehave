@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Pending Steps</title>
+</head>
+
+<body>
+
+<h2>Pending Steps</h2>
+
+<p>By default, JBehave does not fail with it encounters steps that
+do not match any method in the Steps class. These are called <b>pending</b>
+steps. This is because it is designed to allow scenario writers to write
+the textual scenario before the implementation (hence the
+behaviour-driven development). By marking a step as pending, it's
+telling the scenario writer that it's not yet implemented and
+correspondingly it will not execute any steps that following in the same
+scenario.</p>
+
+<p>In some cases, thought, it may be useful to make the scenarios
+fail when steps are pending. This is done by configuring the <a
+    href="javadoc/core/org/jbehave/scenario/errors/PendingErrorStrategy.html">PendingErrorStrategy</a>
+in <a href="javadoc/core/org/jbehave/scenario/Configuration.html">Configuration</a></p>
+<pre class="brush: java">
+new Configuration(){
+   public PendingErrorStrategy forPendingSteps() {
+       return PendingErrorStrategy.FAILING;
+   }
+} 
+</pre>
+
+<div class="clear">
+<hr />
+</div>
+
+</body>
+</html>
