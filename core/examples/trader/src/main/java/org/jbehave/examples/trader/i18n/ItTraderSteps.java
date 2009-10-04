@@ -10,7 +10,9 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.i18n.I18nKeyWords;
+import org.jbehave.scenario.i18n.StringEncoder;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.scenario.steps.StepsConfiguration;
 
@@ -20,7 +22,7 @@ public class ItTraderSteps extends Steps {
 
     public ItTraderSteps(ClassLoader classLoader) {
     	// Use Italian for keywords
-        super(new StepsConfiguration(new I18nKeyWords(new Locale("it"))));
+        super(new StepsConfiguration(keywordsFor(new Locale("it"), classLoader)));
     }
 
     @Given("ho un'azione con simbolo $symbol e una soglia di $threshold")
@@ -37,5 +39,9 @@ public class ItTraderSteps extends Steps {
     public void alertStatusIs(@Named("status") String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
+
+	protected static KeyWords keywordsFor(Locale locale, ClassLoader classLoader) {
+		return new I18nKeyWords(locale, new StringEncoder(), "org/jbehave/examples/trader/i18n/keywords", classLoader);
+	}
 
 }
