@@ -12,35 +12,21 @@ import org.junit.Test;
 public class I18nKeywordsBehaviour {
 
 	private StringEncoder encoder = new StringEncoder("UTF-8", "UTF-8");
-	
+
 	@Test
 	public void keywordsInEnglishAsDefault() throws IOException {
 		ensureKeywordsAreLocalisedFor(null);
 	}
 
 	@Test
-	public void keywordsInSpanish() throws IOException {
-		ensureKeywordsAreLocalisedFor(new Locale("es"));
-	}
-
-	@Test
-	public void keywordsInFrench() throws IOException {
-		ensureKeywordsAreLocalisedFor(new Locale("fr"));
-	}
-	
-    @Test
 	public void keywordsInItalian() throws IOException {
 		ensureKeywordsAreLocalisedFor(new Locale("it"));
 	}
 
-	@Test
-	public void keywordsInPortuguese() throws IOException {
-		ensureKeywordsAreLocalisedFor(new Locale("pt"));
-	}
-
-	private void ensureKeywordsAreLocalisedFor(Locale locale) throws IOException {
+	private void ensureKeywordsAreLocalisedFor(Locale locale)
+			throws IOException {
 		Properties properties = bundleFor(locale);
-		KeyWords keywords = keyWordsFor(locale);		
+		KeyWords keywords = keyWordsFor(locale);
 		ensureKeywordIs(properties, "Scenario", keywords.scenario());
 		ensureKeywordIs(properties, "GivenScenarios", keywords.givenScenarios());
 		ensureKeywordIs(properties, "ExamplesTable", keywords.examplesTable());
@@ -55,14 +41,16 @@ public class I18nKeywordsBehaviour {
 	}
 
 	private I18nKeyWords keyWordsFor(Locale locale) {
-		return (locale == null ? new I18nKeyWords()
-				: new I18nKeyWords(locale));
+		return (locale == null ? new I18nKeyWords() : new I18nKeyWords(locale));
 	}
 
 	private Properties bundleFor(Locale locale) throws IOException {
 		Properties expected = new Properties();
-		String bundle = "org/jbehave/scenario/i18n/keywords_"+( locale == null ? "en" : locale.getLanguage()) +".properties";
-		expected.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(bundle));
+		String bundle = "org/jbehave/scenario/i18n/keywords_"
+				+ (locale == null ? "en" : locale.getLanguage())
+				+ ".properties";
+		expected.load(Thread.currentThread().getContextClassLoader()
+				.getResourceAsStream(bundle));
 		return expected;
 	}
 
