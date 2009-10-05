@@ -13,15 +13,13 @@ import org.jbehave.scenario.steps.StepdocGenerator;
  * Provides the configuration used by the {@link ScenarioRunner} and is injected
  * in the {@link Scenario} to customise its runtime properties.
  * 
- * NB: This class may change dynamically, so any other class wishing to use this
+ * The configuration may change dynamically, so any other class wishing to use this
  * should store the whole configuration, and use the respective parts of it at
  * runtime, rather than attempting to store any part of it when the
  * configuration is provided.
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi
- * @see {@link MostUsefulConfiguration}
- * @see {@link PropertyBasedConfiguration}
  */
 public interface Configuration {
 

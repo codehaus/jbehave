@@ -1,9 +1,10 @@
 package org.jbehave.scenario;
 
 import org.jbehave.scenario.definition.KeyWords;
-import org.jbehave.scenario.definition.ScenarioGivenWhenThenAnd;
 import org.jbehave.scenario.errors.ErrorStrategy;
+import org.jbehave.scenario.errors.ErrorStrategyInWhichWeTrustTheReporter;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
+import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
@@ -27,7 +28,7 @@ import org.jbehave.scenario.steps.UnmatchedToPendingStepCreator;
  *   <li>{@link ErrorStrategy}: ErrorStrategy.RETHROW</li>
  *   <li>{@link PendingErrorStrategy}: PendingErrorStrategy.PASSING</li>
  *   <li>{@link ScenarioReporter}: new PassSilentlyDecorator(new PrintStreamScenarioReporter())</li>
- *   <li>{@link KeyWords}: new ScenarioGivenWhenThenAnd()</li>
+ *   <li>{@link KeyWords}: new I18nKeyWords()</li>
  *   <li>{@link StepdocGenerator}: new DefaultStepdocGenerator()</li>
  *   <li>{@link StepdocReporter}: new PrintStreamStepdocReporter(true)</li>
  * </ul>
@@ -93,10 +94,10 @@ public class MostUsefulConfiguration implements Configuration {
 	}
 
 	/**
-	 * Provides the keywords Scenario, Given, When, Then and And.
+	 * Provides the keywords in English
 	 */
 	public KeyWords keywords() {
-		return new ScenarioGivenWhenThenAnd();
+		return new I18nKeyWords();
 	}
 
 	/**
