@@ -11,10 +11,10 @@
     <page>release-notes.html</page>
   </section>
   <section>
-    <name>BDD Concepts</name>
-    <page>bdd-concepts.html</page>
-    <page>bdd-grammar.html</page>
-    <page>bdd-resources.html</page>
+    <name>Fundamentals</name>
+    <page>concepts.html</page>
+    <page>grammar.html</page>
+    <page>more-on-bdd.html</page>
   </section>
   <section>
     <name>Scenarios</name>
