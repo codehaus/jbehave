@@ -59,6 +59,9 @@ runtime classpath.</p>
     </plugin>
 </pre>
 
+<p><b>NOTE</b>: Running scenarios with Maven requires each Scenario class to have a constructor with a single ClassLoader parameter. 
+Maven uses this constructor to instantiate the Scenario class using the classpath constructed with the POM depedendencies.  
+</p>
 
 <div class="clear">
 <hr />

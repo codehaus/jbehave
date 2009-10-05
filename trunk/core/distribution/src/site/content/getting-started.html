@@ -71,7 +71,7 @@ textual step:</p>
 
         @Then("the grid should look like $grid")
         public void theGridShouldLookLike(String grid) {
-            ensureThat(renderer.asString(), equalTo(grid));
+            Ensure.ensureThat(renderer.asString(), CoreMatchers.equalTo(grid));
         }
 
       }
