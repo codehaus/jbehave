@@ -14,7 +14,7 @@ import org.jbehave.scenario.definition.ExamplesTable;
 public class PassSilentlyDecorator implements ScenarioReporter {
 
     private final ScenarioReporter delegate;
-    private List<Todo> currentScenario;
+    private List<Todo> currentScenario = new ArrayList<Todo>();
     private State scenarioState = State.SILENT;
     private State beforeStoryState = State.SILENT;
     private State afterStoryState = State.SILENT;

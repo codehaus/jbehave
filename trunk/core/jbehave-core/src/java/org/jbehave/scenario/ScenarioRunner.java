@@ -50,12 +50,14 @@ public class ScenarioRunner {
         
         reporter.beforeStory(story.getBlurb());
         for (ScenarioDefinition scenario : story.getScenarios()) {
+    		reporter.beforeScenario(scenario.getTitle());
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
         	if ( isExamplesTableScenario(scenario) ){ // run examples table scenario
         		runExamplesTableScenario(configuration, scenario, scenario.getTable(), candidateSteps);
         	} else { // run plain old scenario
             	runScenario(configuration, scenario, new HashMap<String, String>(), candidateSteps);        		
         	}
+    		reporter.afterScenario();
         }
         reporter.afterStory();
         currentStrategy.handleError(throwable);
@@ -91,12 +93,10 @@ public class ScenarioRunner {
 	private void runScenario(Configuration configuration,
 			ScenarioDefinition scenario, Map<String, String> tableRow, CandidateSteps... candidateSteps) {
 		Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, tableRow, candidateSteps);
-		reporter.beforeScenario(scenario.getTitle());
 		state = new FineSoFar();
 		for (Step step : steps) {
 		    state.run(step);
 		}
-		reporter.afterScenario();
 	};
 
     private class SomethingHappened implements State {
