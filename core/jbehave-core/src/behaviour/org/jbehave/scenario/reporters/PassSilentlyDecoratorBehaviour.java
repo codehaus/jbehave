@@ -1,11 +1,15 @@
 package org.jbehave.scenario.reporters;
 
+import static java.util.Arrays.asList;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
+
 import org.jbehave.scenario.definition.Blurb;
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -15,6 +19,8 @@ public class PassSilentlyDecoratorBehaviour {
     public void shouldSwallowOutputFromPassingScenarios() {
         ScenarioReporter delegate = mock(ScenarioReporter.class);
         PassSilentlyDecorator decorator = new PassSilentlyDecorator(delegate);
+        List<String> givenScenarios = asList("path/to/scenario1", "path/to/scenario2");
+        ExamplesTable examplesTable = new ExamplesTable("|one|two|\n|1|2|\n");
         IllegalArgumentException anException = new IllegalArgumentException();
         Blurb blurb = new Blurb("Some blurb");
         
@@ -26,12 +32,14 @@ public class PassSilentlyDecoratorBehaviour {
         decorator.afterScenario();
         
         decorator.beforeScenario("My scenario 2");
+		decorator.givenScenarios(givenScenarios);
         decorator.successful("Given step 2.1");
         decorator.pending("When step 2.2");
         decorator.notPerformed("Then step 2.3");
         decorator.afterScenario();
         
         decorator.beforeScenario("My scenario 3");
+		decorator.examplesTable(examplesTable);
         decorator.successful("Given step 3.1");
         decorator.successful("When step 3.2");
         decorator.failed("Then step 3.3", anException);
@@ -58,15 +66,18 @@ public class PassSilentlyDecoratorBehaviour {
         
         inOrder.verify(delegate).beforeStory(blurb);
         inOrder.verify(delegate).beforeScenario("My scenario 2");
+        inOrder.verify(delegate).givenScenarios(givenScenarios);
         inOrder.verify(delegate).successful("Given step 2.1");
         inOrder.verify(delegate).pending("When step 2.2");
         inOrder.verify(delegate).notPerformed("Then step 2.3");
         inOrder.verify(delegate).afterScenario();
         
         inOrder.verify(delegate).beforeScenario("My scenario 3");
+        inOrder.verify(delegate).examplesTable(examplesTable);
         inOrder.verify(delegate).successful("Given step 3.1");
         inOrder.verify(delegate).successful("When step 3.2");
         inOrder.verify(delegate).failed("Then step 3.3", anException);
+        
         inOrder.verify(delegate).afterScenario();
         inOrder.verify(delegate).afterStory();
         

@@ -133,7 +133,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 	}
 
 	public void examplesTableRow(Map<String, String> tableRow) {
-		output.println(format("examplesTableRow", "{0} {1}\n", keywords
+		output.println(format("examplesTableRow", "\n{0} {1}\n", keywords
 				.examplesTableRow(), tableRow));
 	}
 
