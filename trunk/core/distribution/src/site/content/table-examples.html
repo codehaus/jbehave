@@ -39,10 +39,19 @@ values. We can then rewrite this scenario as:</p>
 repeated for as many times as there are data rows in the examples table.
 At each execution, the named parameters are taken from the corresponding
 row.</p>
-
-<p>Note that use of table examples requires more <a
-    href="parameter-injection.html"> named parameters</a> for the
-candidate steps to be matched to Java methods.</p>
+<p>One important difference to underline in using table examples is
+that they require <a href="parameter-injection.html">named
+parameters</a> for the candidate steps to be matched to Java methods. The
+named parameters allow the parameters to be injected using the table row
+values with the corresponding header name, instead of being extracted
+from the annotation pattern match. As such, <b>the step annotation pattern
+must hold the verbatim textual step</b>. e.g.:</p>
+<pre class="brush: java">
+    @Given("a stock of symbol [symbol] and a threshold of [threshold]")
+    public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+        // ...
+    }
+</pre>
 
 <div class="clear">
 <hr />
