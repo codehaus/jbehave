@@ -59,7 +59,7 @@
         <executions>
           <execution>
             <id>unpack-javadoc-core</id>
-            <phase>install</phase>
+            <phase>generate-resources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -79,7 +79,7 @@
           </execution>
           <execution>
             <id>unpack-javadoc-ant</id>
-            <phase>install</phase>
+            <phase>generate-resources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -99,7 +99,7 @@
           </execution>
           <execution>
             <id>unpack-javadoc-maven-plugin</id>
-            <phase>install</phase>
+            <phase>generate-resources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -118,8 +118,8 @@
             </configuration>
           </execution>
           <execution>
-            <id>unpack-xsite-resources</id>
-            <phase>install</phase>
+            <id>unpack-jbehave-site-resources</id>
+            <phase>generate-resources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -128,9 +128,9 @@
               <overWriteSnapshots>true</overWriteSnapshots>
               <artifactItems>
                 <artifactItem>
-                  <groupId>org.codehaus.xsite</groupId>
-                  <artifactId>xsite-resources</artifactId>
-                  <version>1.1</version>
+                  <groupId>org.jbehave.site</groupId>
+                  <artifactId>jbehave-site-resources</artifactId>
+                  <version>2.0</version>
                   <outputDirectory>${project.build.directory}/site</outputDirectory>
                 </artifactItem>
               </artifactItems>
