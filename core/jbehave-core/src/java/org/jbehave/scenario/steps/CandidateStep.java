@@ -18,7 +18,7 @@ import com.thoughtworks.paranamer.NullParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
 /**
- * Creates step from its candidate string representations
+ * Creates candidate step from its string representation
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi
@@ -36,15 +36,6 @@ public class CandidateStep {
 
 	private StepMonitor stepMonitor = new SilentStepMonitor();
 	private Paranamer paranamer = new NullParanamer();
-
-	public CandidateStep(String stepAsString, Method method,
-			CandidateSteps steps, StepPatternBuilder patterBuilder,
-			StepMonitor stepMonitor, ParameterConverters parameterConverters,
-			String... startingWords) {
-		this(stepAsString, method, steps, patterBuilder, parameterConverters,
-				startingWords);
-		useStepMonitor(stepMonitor);
-	}
 
 	public CandidateStep(String stepAsString, Method method,
 			CandidateSteps steps, StepPatternBuilder patternBuilder,
