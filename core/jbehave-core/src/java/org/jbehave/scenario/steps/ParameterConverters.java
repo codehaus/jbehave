@@ -4,6 +4,8 @@ import static java.util.Arrays.asList;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ public class ParameterConverters {
 		@SuppressWarnings("unchecked")
 		private static List<Class> acceptedClasses = asList(new Class[] {
 				Integer.class, int.class, Long.class, long.class, Double.class,
-				double.class, Float.class, float.class });
+				double.class, Float.class, float.class, BigDecimal.class, BigInteger.class });
 
 		public boolean accept(Type type) {
 			if (type instanceof Class<?>) {
@@ -98,6 +100,10 @@ public class ParameterConverters {
 				return Double.valueOf(value);
 			} else if (type == Float.class || type == float.class) {
 				return Float.valueOf(value);
+			} else if (type == BigDecimal.class) {
+				return new BigDecimal(value);
+			} else if (type == BigInteger.class) {
+				return new BigInteger(value);
 			}
 			return value;
 		}
