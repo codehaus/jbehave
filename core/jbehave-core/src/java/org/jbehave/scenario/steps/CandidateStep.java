@@ -244,6 +244,10 @@ public class CandidateStep {
 		};
 	}
 
+	public StepType getStepType() {
+		return stepType;
+	}
+
 	public String getStepAsString() {
 		return stepAsString;
 	}
