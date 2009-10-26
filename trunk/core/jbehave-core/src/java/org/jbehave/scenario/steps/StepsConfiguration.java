@@ -1,5 +1,12 @@
 package org.jbehave.scenario.steps;
 
+import static org.jbehave.scenario.steps.StepType.GIVEN;
+import static org.jbehave.scenario.steps.StepType.THEN;
+import static org.jbehave.scenario.steps.StepType.WHEN;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
@@ -29,6 +36,7 @@ public class StepsConfiguration {
 	private ParameterConverters parameterConverters;
 	private KeyWords keywords;
 	private String[] startingWords;
+	private Map<StepType,String> startingWordsByType;
 
 	public StepsConfiguration() {
 		this(new I18nKeyWords());
@@ -53,8 +61,12 @@ public class StepsConfiguration {
 		this.parameterConverters = parameterConverters;
 		this.keywords = keywords;
 		this.startingWords = startingWordsFrom(this.keywords);
+		this.startingWordsByType = startingWordsByType(this.keywords);
 	}
 	
+	/**
+	 * @deprecated Use StepsConfiguration(KeyWords)
+	 */
 	public StepsConfiguration(String... startingWords) {
 		this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
 				new NullParanamer(), new ParameterConverters(), startingWords);
@@ -73,6 +85,15 @@ public class StepsConfiguration {
 
 	protected String[] startingWordsFrom(KeyWords keywords) {
 		return new String[]{keywords.given(), keywords.when(), keywords.then(), keywords.and()};
+	}
+	
+	
+	protected Map<StepType, String> startingWordsByType(KeyWords keywords) {
+		Map<StepType, String> words = new HashMap<StepType, String>();
+		words.put(GIVEN, keywords.given());
+		words.put(WHEN, keywords.when());
+		words.put(THEN, keywords.then());
+		return words;
 	}
 
 	public StepPatternBuilder getPatternBuilder() {
@@ -109,6 +130,10 @@ public class StepsConfiguration {
 
 	public String[] getStartingWords() {
 		return startingWords;
+	}
+
+	public Map<StepType, String> getStartingWordsByType() {
+		return startingWordsByType;
 	}
 
 	public void useStartingWords(String... startingWords) {

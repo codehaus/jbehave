@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.steps.Steps;
 
 import com.lunivore.noughtsandcrosses.NoughtsAndCrosses;
@@ -30,9 +31,13 @@ public class LolCatzSteps extends Steps {
     }
     
     public LolCatzSteps(OAndXUniverse universe) {
-    	super("Gief", "Wen", "Den", "And");
+    	super(lolCatsKeywords());
 		this.universe = universe;
 	}
+    
+    private static KeyWords lolCatsKeywords(){
+    	return new KeyWords("Scenaio", "GiefScenaio", "TibleScenaio", "Gief", "Wen", "Den", "And");
+    }
 
 	@Given("game")
     public void givenTheGameIsRunning() {

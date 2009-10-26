@@ -27,24 +27,27 @@ import com.thoughtworks.paranamer.Paranamer;
 public class CandidateStep {
 
 	private final String stepAsString;
+	private final StepType stepType;
 	private final Method method;
 	private final CandidateSteps steps;
 	private final ParameterConverters parameterConverters;
-	private final String[] startingWords;
+	private final Map<StepType, String> startingWordsByType;
 	private final Pattern pattern;
 	private final String[] groupNames;
 
 	private StepMonitor stepMonitor = new SilentStepMonitor();
 	private Paranamer paranamer = new NullParanamer();
 
-	public CandidateStep(String stepAsString, Method method,
+	public CandidateStep(String stepAsString, StepType stepType, Method method,
 			CandidateSteps steps, StepPatternBuilder patternBuilder,
-			ParameterConverters parameterConverters, String... startingWords) {
+			ParameterConverters parameterConverters,
+			Map<StepType, String> startingWords) {
 		this.stepAsString = stepAsString;
+		this.stepType = stepType;
 		this.method = method;
 		this.steps = steps;
 		this.parameterConverters = parameterConverters;
-		this.startingWords = startingWords;
+		this.startingWordsByType = startingWords;
 		this.pattern = patternBuilder.buildPattern(stepAsString);
 		this.groupNames = patternBuilder.extractGroupNames(stepAsString);
 	}
@@ -200,12 +203,12 @@ public class CandidateStep {
 
 	private String findStartingWord(final String stepAsString)
 			throws StartingWordNotFound {
-		for (String word : startingWords) {
-			if (stepAsString.startsWith(word)) {
-				return word;
-			}
+		String startingWord = startingWordsByType.get(stepType);
+		if (startingWord != null && stepAsString.startsWith(startingWord)) {
+			return startingWord;
 		}
-		throw new StartingWordNotFound(stepAsString, startingWords);
+		throw new StartingWordNotFound(stepAsString, stepType,
+				startingWordsByType);
 	}
 
 	private Step createStep(final String stepAsString, final Object[] args) {
@@ -267,9 +270,10 @@ public class CandidateStep {
 	@SuppressWarnings("serial")
 	public static class StartingWordNotFound extends RuntimeException {
 
-		public StartingWordNotFound(String step, String[] startingWords) {
-			super("No starting word found for step " + step + " amongst "
-					+ asList(startingWords));
+		public StartingWordNotFound(String step, StepType stepType,
+				Map<StepType, String> startingWordsByType) {
+			super("No starting word found for step " + step + " of type "
+					+ stepType + " amongst " + startingWordsByType);
 		}
 
 	}
