@@ -7,6 +7,7 @@ import static org.jbehave.Ensure.ensureThat;
 import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
+import org.jbehave.examples.trader.model.Stock.AlertStatus;
 import org.jbehave.examples.trader.persistence.TraderPersister;
 import org.jbehave.scenario.annotations.Alias;
 import org.jbehave.scenario.annotations.Aliases;
@@ -71,9 +72,11 @@ public class TraderSteps extends Steps {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
-    @Given("the alert status is OFF") // shows that matching pattern need only be unique for step type
-    public void theAlertStatusIsReset() {
-    	stock.resetAlert();
+    @Given("the alert status is %status") // shows that matching pattern need only be unique for step type
+    public void theAlertStatusIsReset(@Named("status") String status) {
+    	if ( AlertStatus.OFF.name().startsWith(status) ){
+        	stock.resetAlert();    		
+    	}
     }
 
     @Then("the alert status is %status")
