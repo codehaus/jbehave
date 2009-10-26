@@ -2,6 +2,7 @@ package org.jbehave.scenario.steps;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.jbehave.Ensure.ensureThat;
 import static org.jbehave.Ensure.not;
 import static org.jbehave.scenario.steps.StepType.GIVEN;
@@ -19,10 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Named;
+import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.jbehave.scenario.steps.CandidateStep.StartingWordNotFound;
 import org.junit.Test;
 
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
@@ -227,6 +231,44 @@ public class CandidateStepBehaviour {
         candidateStep.createFrom(tableRow, "When I live on the <ith> floor but some call it the <nth>").perform();
         ensureThat(steps.ith, equalTo("first"));
         ensureThat(steps.nth, equalTo("ground"));
+    }
+    
+    @Test
+    public void shouldCreateStepsOfDifferentTypesWithSameMatchingPattern() {
+        NamedTypeSteps steps = new NamedTypeSteps();
+        CandidateStep[] candidateSteps = steps.getSteps();
+        ensureThat(candidateSteps.length, equalTo(2));
+        candidateSteps[0].createFrom(tableRow, "Given foo named xyz").perform();
+        candidateSteps[1].createFrom(tableRow, "When foo named Bar").perform();
+        ensureThat(steps.givenName, equalTo("xyz"));
+        ensureThat(steps.whenName, equalTo("Bar"));
+    }
+
+	@Test(expected=StartingWordNotFound.class)
+    public void shouldNotCreateStepOfWrongType() {
+        NamedTypeSteps steps = new NamedTypeSteps();
+        CandidateStep[] candidateSteps = steps.getSteps();
+        ensureThat(candidateSteps.length, equalTo(2));
+        candidateSteps[0].createFrom(tableRow, "Given foo named xyz").perform();
+        ensureThat(steps.givenName, equalTo("xyz"));
+        ensureThat(steps.whenName, nullValue());
+        candidateSteps[0].createFrom(tableRow, "Then foo named xyz").perform();
+    }
+	
+    static class NamedTypeSteps extends Steps {
+        String givenName;
+        String whenName;
+
+        @Given("foo named $name")
+        public void givenFoo(String name) {
+        	givenName = name;
+        }
+
+        @When("foo named $name")
+        public void whenFoo(String name) {
+        	whenName = name;
+        }
+
     }
 
     static class AnnotationNamedParameterSteps extends Steps {
