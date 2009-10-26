@@ -3,6 +3,9 @@ package org.jbehave.scenario.steps;
 import static org.jbehave.scenario.annotations.AfterScenario.Outcome.ANY;
 import static org.jbehave.scenario.annotations.AfterScenario.Outcome.FAILURE;
 import static org.jbehave.scenario.annotations.AfterScenario.Outcome.SUCCESS;
+import static org.jbehave.scenario.steps.StepType.GIVEN;
+import static org.jbehave.scenario.steps.StepType.THEN;
+import static org.jbehave.scenario.steps.StepType.WHEN;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -67,7 +70,7 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 public class Steps implements CandidateSteps {
 
 	private final StepsConfiguration configuration;
-	
+
 	/**
 	 * Creates Steps with default configuration
 	 */
@@ -80,8 +83,8 @@ public class Steps implements CandidateSteps {
 	 * keywords
 	 * 
 	 * @param keywords
-	 *            the KeyWords which hold the words with which we expect steps in
-	 *            the scenarios to start
+	 *            the KeyWords which hold the words with which we expect steps
+	 *            in the scenarios to start
 	 */
 	public Steps(KeyWords keywords) {
 		this(new StepsConfiguration(keywords));
@@ -93,6 +96,7 @@ public class Steps implements CandidateSteps {
 	 * 
 	 * @param startingWords
 	 *            the words with which we expect steps in the scenarios to start
+	 * @deprecated Use Steps(KeyWords)
 	 */
 	public Steps(String... startingWords) {
 		this(new StepsConfiguration(startingWords));
@@ -129,18 +133,18 @@ public class Steps implements CandidateSteps {
 		for (Method method : stepsClass.getMethods()) {
 			if (method.isAnnotationPresent(Given.class)) {
 				String value = encode(method.getAnnotation(Given.class).value());
-				createCandidateStep(steps, method, value);
-				createCandidateStepsFromAliases(steps, method);
+				createCandidateStep(steps, method, GIVEN, value);
+				createCandidateStepsFromAliases(steps, method, GIVEN);
 			}
 			if (method.isAnnotationPresent(When.class)) {
 				String value = encode(method.getAnnotation(When.class).value());
-				createCandidateStep(steps, method, value);
-				createCandidateStepsFromAliases(steps, method);
+				createCandidateStep(steps, method, WHEN, value);
+				createCandidateStepsFromAliases(steps, method, WHEN);
 			}
 			if (method.isAnnotationPresent(Then.class)) {
 				String value = encode(method.getAnnotation(Then.class).value());
-				createCandidateStep(steps, method, value);
-				createCandidateStepsFromAliases(steps, method);
+				createCandidateStep(steps, method, THEN, value);
+				createCandidateStepsFromAliases(steps, method, THEN);
 			}
 		}
 		return steps.toArray(new CandidateStep[steps.size()]);
@@ -151,12 +155,12 @@ public class Steps implements CandidateSteps {
 	}
 
 	private void createCandidateStep(List<CandidateStep> steps, Method method,
-			String stepAsString) {
+			StepType stepType, String stepAsString) {
 		checkForDuplicateCandidateSteps(steps, stepAsString);
-		CandidateStep step = new CandidateStep(stepAsString, method, this,
-				configuration.getPatternBuilder(), configuration
+		CandidateStep step = new CandidateStep(stepAsString, stepType, method,
+				this, configuration.getPatternBuilder(), configuration
 						.getParameterConverters(), configuration
-						.getStartingWords());
+						.getStartingWordsByType());
 		step.useStepMonitor(configuration.getMonitor());
 		step.useParanamer(configuration.getParanamer());
 		steps.add(step);
@@ -172,16 +176,16 @@ public class Steps implements CandidateSteps {
 	}
 
 	private void createCandidateStepsFromAliases(List<CandidateStep> steps,
-			Method method) {
+			Method method, StepType stepType) {
 		if (method.isAnnotationPresent(Aliases.class)) {
 			String[] aliases = method.getAnnotation(Aliases.class).values();
 			for (String alias : aliases) {
-				createCandidateStep(steps, method, alias);
+				createCandidateStep(steps, method, stepType, alias);
 			}
 		}
 		if (method.isAnnotationPresent(Alias.class)) {
-			createCandidateStep(steps, method, method
-					.getAnnotation(Alias.class).value());
+			createCandidateStep(steps, method, stepType, method.getAnnotation(
+					Alias.class).value());
 		}
 	}
 

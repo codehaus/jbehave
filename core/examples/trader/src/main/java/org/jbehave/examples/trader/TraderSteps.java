@@ -71,6 +71,11 @@ public class TraderSteps extends Steps {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
+    @Given("the alert status is OFF") // shows that matching pattern need only be unique for step type
+    public void theAlertStatusIsReset() {
+    	stock.resetAlert();
+    }
+
     @Then("the alert status is %status")
     @Alias("the alert status will be %status") // single alias
     public void theAlertStatusIsWithNamedParam(@Named("status") String status) {
