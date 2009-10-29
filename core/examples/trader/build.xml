@@ -6,41 +6,53 @@
 <project name="trader" default="run-scenario"
   xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
-  <artifact:dependencies pathId="dependency.classpath">
+  <property name="version" value="2.4-SNAPSHOT" />
+  <artifact:dependencies filesetId="dependency.fileset">
     <dependency groupId="org.jbehave" artifactId="jbehave-core"
-      version="2.2-SNAPSHOT" scope="compile" />
+      version="${version}" scope="compile" />
     <dependency groupId="org.jbehave" artifactId="jbehave-ant"
-      version="2.2-SNAPSHOT" scope="compile" />
+      version="${version}" scope="compile" />
     <dependency groupId="org.apache.ant" artifactId="ant"
       version="1.7.0" scope="compile" />
     <dependency groupId="junit" artifactId="junit-dep"
-      version="4.4" scope="compile" />
+      version="4.5" scope="compile" />
     <dependency groupId="org.hamcrest" artifactId="hamcrest-all"
       version="1.1" scope="compile" />
   </artifact:dependencies>
 
   <target name="clean">
-    <delete dir="build" />
+    <delete dir="target" />
   </target>
 
   <target name="setup">
     <mkdir dir="target" />
     <mkdir dir="target/classes" />
+    <mkdir dir="target/lib"/>
+    <copy todir="target/lib">
+    <fileset refid="dependency.fileset" />
+      <mapper type="flatten" />      
+    </copy>
+    
+    <path id="scenario.classpath">
+      <fileset dir="target/lib"  includes="**/*.jar" />
+      <pathelement location="target/classes" />
+    </path>
+    <classloader classpathref="scenario.classpath" />
+
+    <pathconvert targetos="unix" property="scenario.classpath.unix" refid="scenario.classpath">
+    </pathconvert>
+    <echo>Using classpath: ${scenario.classpath.unix}</echo>
+
   </target>
 
   <target name="compile" depends="setup">
     <javac srcdir="src/main/java" destdir="target/classes" debug="on"
       debuglevel="lines,source" includes="**/*.java,**/*.xml">
-      <classpath refid="dependency.classpath" />
+      <classpath refid="scenario.classpath" />
     </javac>
   </target>
 
   <target name="run-scenario" depends="compile">
-    <property name="dependency.classpath" refid="dependency.classpath" />
-    <path id="scenario.classpath">
-      <pathelement location="target/classes" />
-      <pathelement path="${dependency.classpath}" />
-    </path>
     <taskdef name="scenarioRunner" classname="org.jbehave.ant.ScenarioRunnerTask"
       classpathref="scenario.classpath" />
     <scenarioRunner scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
@@ -48,11 +60,6 @@
   </target>
 
   <target name="stepdoc" depends="compile">
-    <property name="dependency.classpath" refid="dependency.classpath" />
-    <path id="scenario.classpath">
-      <pathelement location="target/classes" />
-      <pathelement path="${dependency.classpath}" />
-    </path>
     <taskdef name="stepdoc" classname="org.jbehave.ant.StepdocTask"
       classpathref="scenario.classpath" />
     <stepdoc scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
