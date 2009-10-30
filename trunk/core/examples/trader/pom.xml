@@ -52,7 +52,7 @@
               <scenarioExcludes>
                 <scenarioExclude>**/scenarios/None.java</scenarioExclude>
               </scenarioExcludes>
-              <skip>true</skip>
+              <skip>${skip.stepdoc}</skip>
             </configuration>
             <goals>
               <goal>stepdoc</goal>
@@ -69,9 +69,12 @@
             <phase>integration-test</phase>
             <configuration>
               <tasks>
-                <taskdef name="scenarioRunner" classname="org.jbehave.ant.ScenarioRunnerTask" classpathref="maven.runtime.classpath" />
-                <scenarioRunner scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
-                  scenarioExcludes="**/*Steps.java" skip="true" />
+                <taskdef name="scenarioRunner"
+                  classname="org.jbehave.ant.ScenarioRunnerTask"
+                  classpathref="maven.runtime.classpath" />
+                <scenarioRunner
+                  scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
+                  scenarioExcludes="**/*Steps.java" skip="${skip.ant.scenarios}" />
               </tasks>
             </configuration>
             <goals>
@@ -83,9 +86,10 @@
             <phase>integration-test</phase>
             <configuration>
               <tasks>
-                <taskdef name="stepdoc" classname="org.jbehave.ant.StepdocTask" classpathref="maven.runtime.classpath" />
+                <taskdef name="stepdoc" classname="org.jbehave.ant.StepdocTask"
+                  classpathref="maven.runtime.classpath" />
                 <stepdoc scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
-                  scenarioExcludes="**/*Steps.java" skip="true" />
+                  scenarioExcludes="**/*Steps.java" skip="${skip.ant.stepdoc}" />
               </tasks>
             </configuration>
             <goals>
@@ -96,4 +100,24 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>ant</id>
+      <properties>
+        <skip.ant.scenarios>false</skip.ant.scenarios>
+        <skip.ant.stepdoc>false</skip.ant.stepdoc>
+      </properties>
+    </profile>
+    <profile>
+      <id>stepdoc</id>
+      <properties>
+        <skip.stepdoc>false</skip.stepdoc>
+      </properties>
+    </profile>
+  </profiles>
+  <properties>
+    <skip.ant.scenarios>true</skip.ant.scenarios>
+    <skip.ant.stepdoc>true</skip.ant.stepdoc>
+    <skip.stepdoc>true</skip.stepdoc>
+  </properties>
 </project>
