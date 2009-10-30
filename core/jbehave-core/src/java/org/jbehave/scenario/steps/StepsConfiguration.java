@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.i18n.I18nKeyWords;
+import org.jbehave.scenario.i18n.StringEncoder;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 
@@ -79,8 +80,26 @@ public class StepsConfiguration {
 		this.monitor = monitor;
 		this.paranamer = paranamer;
 		this.parameterConverters = parameterConverters;
-		this.keywords = new I18nKeyWords();
+		this.keywords = keywordsFrom(startingWords);
 		this.startingWords = startingWords;
+		this.startingWordsByType = startingWordsByType(this.keywords);
+	}
+
+	/**
+	 * Makes best effort to convert starting words into keywords,
+	 * assuming order (GIVEN,WHEN,THEN,AND)
+	 * @param startingWords
+	 * @return Keywords with given starting words values
+	 */
+	private KeyWords keywordsFrom(String[] startingWords) {
+		Map<String, String> keywords = new HashMap<String, String>();
+		if ( startingWords.length >= 4 ){
+			keywords.put(KeyWords.GIVEN, startingWords[0]);
+			keywords.put(KeyWords.WHEN, startingWords[1]);
+			keywords.put(KeyWords.THEN, startingWords[2]);
+			keywords.put(KeyWords.AND, startingWords[3]);
+		}
+		return new KeyWords(keywords, new StringEncoder());
 	}
 
 	protected String[] startingWordsFrom(KeyWords keywords) {
@@ -128,6 +147,9 @@ public class StepsConfiguration {
 		this.parameterConverters = parameterConverters;
 	}
 
+	/**
+	 * @deprecated Use getStartingWordsByType()
+	 */
 	public String[] getStartingWords() {
 		return startingWords;
 	}

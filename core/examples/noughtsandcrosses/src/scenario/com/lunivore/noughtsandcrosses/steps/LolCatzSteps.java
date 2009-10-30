@@ -31,7 +31,7 @@ public class LolCatzSteps extends Steps {
     }
     
     public LolCatzSteps(OAndXUniverse universe) {
-    	super(lolCatsKeywords());
+    	super("Gief", "Wen", "Den", "And"); //deprecated, use super(lolCatsKeywords()); 
 		this.universe = universe;
 	}
     

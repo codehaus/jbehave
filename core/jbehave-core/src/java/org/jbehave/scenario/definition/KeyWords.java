@@ -14,17 +14,17 @@ import org.jbehave.scenario.i18n.StringEncoder;
  */
 public class KeyWords {
 
-	static final String SCENARIO = "Scenario";
-	static final String GIVEN_SCENARIOS = "GivenScenarios";
-	static final String EXAMPLES_TABLE = "ExamplesTable";
-	static final String GIVEN = "Given";
-	static final String WHEN = "When";
-	static final String THEN = "Then";
-	static final String AND = "And";
-	static final String PENDING = "Pending";
-	static final String NOT_PERFORMED = "NotPerformed";
-	static final String FAILED = "Failed";
-	static final String EXAMPLES_TABLE_ROW = "ExamplesTableRow";
+	public static final String SCENARIO = "Scenario";
+	public static final String GIVEN_SCENARIOS = "GivenScenarios";
+	public static final String EXAMPLES_TABLE = "ExamplesTable";
+	public static final String GIVEN = "Given";
+	public static final String WHEN = "When";
+	public static final String THEN = "Then";
+	public static final String AND = "And";
+	public static final String PENDING = "Pending";
+	public static final String NOT_PERFORMED = "NotPerformed";
+	public static final String FAILED = "Failed";
+	public static final String EXAMPLES_TABLE_ROW = "ExamplesTableRow";
 	protected static final List<String> KEYWORDS = asList(SCENARIO,
 			GIVEN_SCENARIOS, EXAMPLES_TABLE, GIVEN, WHEN, THEN, AND, PENDING,
 			NOT_PERFORMED, FAILED, EXAMPLES_TABLE_ROW);
