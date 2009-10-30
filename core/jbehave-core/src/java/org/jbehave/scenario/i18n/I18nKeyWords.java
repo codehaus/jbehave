@@ -6,10 +6,12 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.jbehave.scenario.ScenarioClassLoader;
 import org.jbehave.scenario.definition.KeyWords;
 
 /**
- * Add i18n support to Keywords, allowing to read the keywords from resource bundles for a given locale.
+ * Add i18n support to Keywords, allowing to read the keywords from resource
+ * bundles for a given locale.
  */
 public class I18nKeyWords extends KeyWords {
 
@@ -61,7 +63,11 @@ public class I18nKeyWords extends KeyWords {
 	private static ResourceBundle lookupBunde(String bundleName, Locale locale,
 			ClassLoader classLoader) {
 		try {
-			return ResourceBundle.getBundle(bundleName, locale, classLoader);
+			if (classLoader instanceof ScenarioClassLoader) {
+				return ResourceBundle
+						.getBundle(bundleName, locale, classLoader);
+			}
+			return ResourceBundle.getBundle(bundleName, locale);
 		} catch (MissingResourceException e) {
 			throw new ResourceBundleNotFoundExcepion(bundleName, locale,
 					classLoader, e);
