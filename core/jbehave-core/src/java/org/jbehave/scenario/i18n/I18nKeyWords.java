@@ -1,5 +1,7 @@
 package org.jbehave.scenario.i18n;
 
+import static java.util.ResourceBundle.getBundle;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -64,10 +66,9 @@ public class I18nKeyWords extends KeyWords {
 			ClassLoader classLoader) {
 		try {
 			if (classLoader instanceof ScenarioClassLoader) {
-				return ResourceBundle
-						.getBundle(bundleName, locale, classLoader);
+				return getBundle(bundleName, locale, classLoader);
 			}
-			return ResourceBundle.getBundle(bundleName, locale);
+			return getBundle(bundleName, locale);
 		} catch (MissingResourceException e) {
 			throw new ResourceBundleNotFoundExcepion(bundleName, locale,
 					classLoader, e);
