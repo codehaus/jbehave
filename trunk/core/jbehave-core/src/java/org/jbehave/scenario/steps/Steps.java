@@ -155,9 +155,9 @@ public class Steps implements CandidateSteps {
 	}
 
 	private void createCandidateStep(List<CandidateStep> steps, Method method,
-			StepType stepType, String stepAsString) {
-		checkForDuplicateCandidateSteps(steps, stepType, stepAsString);
-		CandidateStep step = new CandidateStep(stepAsString, stepType, method,
+			StepType stepType, String stepPatternAsString) {
+		checkForDuplicateCandidateSteps(steps, stepType, stepPatternAsString);
+		CandidateStep step = new CandidateStep(stepPatternAsString, stepType, method,
 				this, configuration.getPatternBuilder(), configuration
 						.getParameterConverters(), configuration
 						.getStartingWordsByType());
@@ -167,10 +167,10 @@ public class Steps implements CandidateSteps {
 	}
 
 	private void checkForDuplicateCandidateSteps(List<CandidateStep> steps,
-			StepType stepType, String stepAsString) {
+			StepType stepType, String patternAsString) {
 		for (CandidateStep step : steps) {
-			if (step.getStepType() == stepType && step.getStepAsString().equals(stepAsString)) {
-				throw new DuplicateCandidateStepFoundException(stepType, stepAsString);
+			if (step.getStepType() == stepType && step.getPatternAsString().equals(patternAsString)) {
+				throw new DuplicateCandidateStepFoundException(stepType, patternAsString);
 			}
 		}
 	}
@@ -296,8 +296,8 @@ public class Steps implements CandidateSteps {
 	public static class DuplicateCandidateStepFoundException extends
 			RuntimeException {
 
-		public DuplicateCandidateStepFoundException(StepType stepType, String stepAsString) {
-			super(stepType+" "+stepAsString);
+		public DuplicateCandidateStepFoundException(StepType stepType, String patternAsString) {
+			super(stepType+" "+patternAsString);
 		}
 
 	}
