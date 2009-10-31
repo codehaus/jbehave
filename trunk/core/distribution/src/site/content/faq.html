@@ -10,12 +10,13 @@
 
 <h3>What is BDD?</h3>
 
-<p>stands for Behaviour-Driven Development and you can learn
-more about BBD from our <a href="more-on-bdd.html">More on BDD</a> page.</p>
+<p>BDD stands for <b>Behaviour-Driven Development</b> and you can
+learn more about BBD from our <a href="more-on-bdd.html">More on BDD</a>
+page.</p>
 
 <h3>What Java version is required by JBehave?</h3>
 
-<p>JBehave uses Java 5 annotations, so any JDK 1.5+ will work.</p>
+<p>JBehave requires a JDK 1.5 or greater.</p>
 
 <h3>How do I use JBehave within my development environment?</h3>
 
@@ -23,7 +24,10 @@ more about BBD from our <a href="more-on-bdd.html">More on BDD</a> page.</p>
 tests.</p>
 
 <p>Scenarios can also be run on command line, see <a
-    href="running-scenarios.html">running scenarios</a>.</p>
+    href="running-scenarios.html">running scenarios</a>. It can also be
+run via web runner, although the web support is not part of JBehave
+Core. For more info on web support refer to <a
+    href="http://jbehave.org/reference/web/stable">JBehave Web</a>.</p>
 
 <h3>What libraries does JBehave depend on?</h3>
 
@@ -73,8 +77,8 @@ public class YourScenario extends JUnitScenario {
 }
 </pre>
 
-<p>Note that we don't tend to use TestNG so this solution as not
-been tested. If you encounter any issues please let us know.</p>
+<p>Note that as we don't tend to use TestNG this solution has not
+been well-tested. If you encounter any issues please let us know.</p>
 
 <h3>How do I make my scenarios fail when steps are not matched and
 are shown as pending?</h3>

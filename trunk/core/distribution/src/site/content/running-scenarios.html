@@ -11,7 +11,9 @@
 <p>JBehave was designed to be embeddable in different development
 environments. The JBehave Core module contains support for running
 scenarios as JUnit tests - which can be run either in your favourite IDE
-or in your command-line build that supports JUnit tests.</p>
+or in your command-line build that supports JUnit tests. Other unit
+testing frameworks, e.g. TestNG, can also be used very easily, c.f. <a
+    href="faq.html">FAQ</a>.</p>
 
 <p>You can also run scenarios using the JBehave Ant or Maven
 extensions. Both support two way to lookup scenarios, by list of
@@ -23,10 +25,13 @@ examples on how to configure both extensions - using the trader example.</p>
 <pre class="brush: xml">
   <taskdef name="scenarioRunner"
     classname="org.jbehave.ant.ScenarioRunnerTask"
-    classpathref="your.runtime.classpath"></taskdef>
+    classpathref="your.runtime.classpath" />
   
   <scenarioRunner scenarioIncludes="**/scenarios/*.java"
-    scenarioExcludes="**/*Steps.java"></scenarioRunner>
+    scenarioExcludes="**/*Steps.java" 
+    skip="[true|false]"
+    ignoreFailure="[true|false]"
+    scope="[compile|test]"/>
     
 </pre>
 <p>Remember that you need to include <b>jbehave-ant</b> to your
@@ -50,6 +55,9 @@ runtime classpath.</p>
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>
               </scenarioExcludes>
+              <skip>[true|false]</skip> 
+              <ignoreFailure>[true|false]</ignoreFailure>
+              <scope>[compile|test]</scope>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>
@@ -59,9 +67,10 @@ runtime classpath.</p>
     </plugin>
 </pre>
 
-<p><b>NOTE</b>: Running scenarios with Maven requires each Scenario class to have a constructor with a single ClassLoader parameter. 
-Maven uses this constructor to instantiate the Scenario class using the classpath constructed with the POM depedendencies.  
-</p>
+<p><b>NOTE</b>: Running scenarios with Maven requires each Scenario
+class to have a constructor with a single ClassLoader parameter. Maven
+uses this constructor to instantiate the Scenario class using the
+classpath constructed with the POM depedendencies.</p>
 
 <div class="clear">
 <hr />
