@@ -18,7 +18,8 @@ import com.thoughtworks.paranamer.NullParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
 /**
- * Creates candidate step from its string representation
+ * Creates candidate step from a regex pattern of a step of a given type,
+ * associated to a Java method.
  * 
  * @author Elizabeth Keogh
  * @author Mauro Talevi
@@ -26,7 +27,7 @@ import com.thoughtworks.paranamer.Paranamer;
  */
 public class CandidateStep {
 
-	private final String stepAsString;
+	private final String patternAsString;
 	private final StepType stepType;
 	private final Method method;
 	private final CandidateSteps steps;
@@ -38,18 +39,18 @@ public class CandidateStep {
 	private StepMonitor stepMonitor = new SilentStepMonitor();
 	private Paranamer paranamer = new NullParanamer();
 
-	public CandidateStep(String stepAsString, StepType stepType, Method method,
+	public CandidateStep(String patternAsString, StepType stepType, Method method,
 			CandidateSteps steps, StepPatternBuilder patternBuilder,
 			ParameterConverters parameterConverters,
 			Map<StepType, String> startingWords) {
-		this.stepAsString = stepAsString;
+		this.patternAsString = patternAsString;
 		this.stepType = stepType;
 		this.method = method;
 		this.steps = steps;
 		this.parameterConverters = parameterConverters;
 		this.startingWordsByType = startingWords;
-		this.pattern = patternBuilder.buildPattern(stepAsString);
-		this.groupNames = patternBuilder.extractGroupNames(stepAsString);
+		this.pattern = patternBuilder.buildPattern(patternAsString);
+		this.groupNames = patternBuilder.extractGroupNames(patternAsString);
 	}
 
 	public void useStepMonitor(StepMonitor stepMonitor) {
@@ -248,8 +249,8 @@ public class CandidateStep {
 		return stepType;
 	}
 
-	public String getStepAsString() {
-		return stepAsString;
+	public String getPatternAsString() {
+		return patternAsString;
 	}
 
 	public Pattern getPattern() {
@@ -258,7 +259,7 @@ public class CandidateStep {
 
 	@Override
 	public String toString() {
-		return stepAsString;
+		return patternAsString;
 	}
 
 	@SuppressWarnings("serial")
