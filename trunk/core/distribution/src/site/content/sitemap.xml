@@ -19,13 +19,16 @@
   <section>
     <name>Scenarios</name>
     <page>developing-scenarios.html</page>
+    <page>annotations.html</page>
+    <page>candidate-steps.html</page>
+    <page>pending-steps.html</page>
     <page>configuring-scenarios.html</page>
     <page>running-scenarios.html</page>
     <page>i18n-scenarios.html</page>
-    <page>pending-steps.html</page>
   </section>
   <section>
     <name>Advanced Topics</name>
+    <page>aliases.html</page>
     <page>parameter-injection.html</page>
     <page>parameter-converters.html</page>
     <page>table-examples.html</page>
