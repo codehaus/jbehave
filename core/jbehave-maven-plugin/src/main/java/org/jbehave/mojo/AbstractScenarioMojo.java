@@ -105,6 +105,7 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     }
 
     private List<String> findScenarioClassNames() {
+        getLog().debug("Searching for scenario class names including "+scenarioIncludes+" and excluding "+scenarioExcludes);
         List<String> scenarioClassNames = finder.listScenarioClassNames(rootSourceDirectory(), null, scenarioIncludes,
                 scenarioExcludes);
         getLog().debug("Found scenario class names: " + scenarioClassNames);
@@ -155,7 +156,7 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
         List<RunnableScenario> scenarios = new ArrayList<RunnableScenario>();
         for (String name : names) {
             try {
-                scenarios.add(classLoader.newScenario(name));
+                scenarios.add(classLoader.newScenario(name, ClassLoader.class));
             } catch (Exception e) {
                 throw new MojoExecutionException("Failed to instantiate scenario '" + name + "'", e);
             }

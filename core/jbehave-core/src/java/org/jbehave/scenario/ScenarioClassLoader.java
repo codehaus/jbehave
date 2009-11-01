@@ -1,12 +1,15 @@
 package org.jbehave.scenario;
 
+import static java.util.Arrays.asList;
+
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Extends URLClassLoader to instantiate scenarios.
@@ -27,23 +30,34 @@ public class ScenarioClassLoader extends URLClassLoader {
      * Loads and instantiates a runnable scenario class
      * 
      * @param scenarioClassName the name of the scenario class
+     * @param parameterTypes the types of the constructor used to instantiate
+     *            scenario class
      * @return A RunnableScenario instance
      */
-    public RunnableScenario newScenario(String scenarioClassName) {
+    public RunnableScenario newScenario(String scenarioClassName, Class<?>... parameterTypes) {
         try {
-            RunnableScenario scenario = (RunnableScenario) loadClass(scenarioClassName, true).getConstructor(ClassLoader.class)
-                    .newInstance(this);
+            Class<?> scenarioClass = loadClass(scenarioClassName, true);
+            RunnableScenario scenario = newInstance(scenarioClass, parameterTypes);
             Thread.currentThread().setContextClassLoader(this);
             return scenario;
         } catch (ClassCastException e) {
-            String message = "The scenario '" + scenarioClassName + "' must be of type '" + RunnableScenario.class.getName()
-                    + "'";
+            String message = "The scenario '" + scenarioClassName + "' must be of type '"
+                    + RunnableScenario.class.getName() + "'";
             throw new RuntimeException(message, e);
         } catch (Exception e) {
-            String message = "The scenario '" + scenarioClassName + "' could not be instantiated with class loader: "
-                    + this;
+            String message = "The scenario '" + scenarioClassName + "' could not be instantiated with parameter types '"
+                    + asList(parameterTypes) + "' and class loader '" + this + "'";
             throw new RuntimeException(message, e);
         }
+    }
+
+    private RunnableScenario newInstance(Class<?> scenarioClass, Class<?>... parameterTypes)
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        if ( parameterTypes != null && parameterTypes.length > 0 ){
+            Constructor<?> constructor = scenarioClass.getConstructor(parameterTypes);
+            return (RunnableScenario) constructor.newInstance(this);            
+        }
+        return (RunnableScenario) scenarioClass.newInstance();
     }
 
     private List<String> asShortPaths(URL[] urls) {
