@@ -73,7 +73,7 @@
                   classname="org.jbehave.ant.ScenarioRunnerTask"
                   classpathref="maven.runtime.classpath" />
                 <scenarioRunner
-                  scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
+                  scenarioIncludes="**/scenarios/*.java"
                   scenarioExcludes="**/*Steps.java" skip="${skip.ant.scenarios}" />
               </tasks>
             </configuration>
@@ -88,7 +88,7 @@
               <tasks>
                 <taskdef name="stepdoc" classname="org.jbehave.ant.StepdocTask"
                   classpathref="maven.runtime.classpath" />
-                <stepdoc scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
+                <stepdoc scenarioIncludes="**/scenarios/*.java"
                   scenarioExcludes="**/*Steps.java" skip="${skip.ant.stepdoc}" />
               </tasks>
             </configuration>

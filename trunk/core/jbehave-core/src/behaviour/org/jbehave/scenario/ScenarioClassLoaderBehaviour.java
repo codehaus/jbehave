@@ -5,27 +5,36 @@ import static org.junit.Assert.assertNotNull;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 
 public class ScenarioClassLoaderBehaviour {
 
     @Test
-    public void canInstantiateNewScenario() throws MalformedURLException {
-        List<String> elements = Arrays.asList();
-        ScenarioClassLoader classLoader = new ScenarioClassLoader(elements);
+    public void canInstantiateNewScenarioWithDefaultConstructor() throws MalformedURLException {
+        ScenarioClassLoader classLoader = new ScenarioClassLoader(Arrays.<String>asList());
         String scenarioClassName = MyScenario.class.getName();
         assertScenarioIsInstantiated(classLoader, scenarioClassName);
     }
-    
-    private void assertScenarioIsInstantiated(ScenarioClassLoader classLoader, String scenarioClassName) {
+
+    @Test
+    public void canInstantiateNewScenarioWithClassLoader() throws MalformedURLException {
+        ScenarioClassLoader classLoader = new ScenarioClassLoader(Arrays.<String>asList());
+        String scenarioClassName = MyScenario.class.getName();
+        assertScenarioIsInstantiated(classLoader, scenarioClassName, ClassLoader.class);
+    }
+
+    private void assertScenarioIsInstantiated(ScenarioClassLoader classLoader, String scenarioClassName, Class<?>... parameterTypes) {
         RunnableScenario scenario = classLoader.newScenario(scenarioClassName);
         assertNotNull(scenario);
         assertEquals(scenarioClassName, scenario.getClass().getName());
     }
 
     private static class MyScenario extends JUnitScenario {
+
+    	public MyScenario(){
+            
+        }
 
         public MyScenario(ClassLoader classLoader){
             

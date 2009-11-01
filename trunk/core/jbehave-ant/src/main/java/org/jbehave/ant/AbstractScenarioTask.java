@@ -1,6 +1,7 @@
 package org.jbehave.ant;
 
 import static java.util.Arrays.asList;
+import static org.apache.tools.ant.Project.MSG_DEBUG;
 import static org.apache.tools.ant.Project.MSG_INFO;
 
 import java.net.MalformedURLException;
@@ -72,9 +73,10 @@ public abstract class AbstractScenarioTask extends Task {
     }
 
     private List<String> findScenarioClassNames() {
+        log("Searching for scenario class names including "+scenarioIncludes+" and excluding "+scenarioExcludes, MSG_DEBUG);
         List<String> scenarioClassNames = finder.listScenarioClassNames(rootSourceDirectory(), null, scenarioIncludes,
                 scenarioExcludes);
-        log("Found scenario class names: " + scenarioClassNames);
+        log("Found scenario class names: " + scenarioClassNames, MSG_DEBUG);
         return scenarioClassNames;
     }
 
@@ -119,7 +121,7 @@ public abstract class AbstractScenarioTask extends Task {
         List<RunnableScenario> scenarios = new ArrayList<RunnableScenario>();
         for (String name : names) {
             try {
-                scenarios.add(classLoader.newScenario(name));
+                scenarios.add(classLoader.newScenario(name, ClassLoader.class));
             } catch (Exception e) {
                 throw new BuildException("Failed to instantiate scenario '" + name + "'", e);
             }
