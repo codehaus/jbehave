@@ -63,6 +63,7 @@
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>
               </scenarioExcludes>
+              <classLoaderInjected>false</classLoaderInjected>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>

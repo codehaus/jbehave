@@ -28,14 +28,12 @@ examples on how to configure both extensions - using the trader example.</p>
     classpathref="your.runtime.classpath" />
   
   <scenarioRunner scenarioIncludes="**/scenarios/*.java"
-    scenarioExcludes="**/*Steps.java" 
-    skip="[true|false]"
-    ignoreFailure="[true|false]"
-    scope="[compile|test]"/>
+    scenarioExcludes="**/*Steps.java" classLoaderInjected="[true|false]"
+    skip="[true|false]" ignoreFailure="[true|false]"
+    scope="[compile|test]" />
     
 </pre>
-<p>Remember that you need to include <b>jbehave-ant</b> to your
-runtime classpath.</p>
+<p>Remember to include <b>jbehave-ant</b> to your runtime classpath.</p>
 
 <h2>Running as Maven Plugin</h2>
 
@@ -55,6 +53,7 @@ runtime classpath.</p>
               <scenarioExcludes>
                 <scenarioExclude>**/*Steps.java</scenarioExclude>
               </scenarioExcludes>
+              <classLoaderInjected>[true|false]</classLoaderInjected>
               <skip>[true|false]</skip> 
               <ignoreFailure>[true|false]</ignoreFailure>
               <scope>[compile|test]</scope>
@@ -67,10 +66,16 @@ runtime classpath.</p>
     </plugin>
 </pre>
 
-<p><b>NOTE</b>: Running scenarios with Maven requires each Scenario
-class to have a constructor with a single ClassLoader parameter. Maven
-uses this constructor to instantiate the Scenario class using the
-classpath constructed with the POM depedendencies.</p>
+<h2>Instantiating Scenario classes</h2>
+
+<p>Both Ant and Maven by default instantiate the Scenario class via
+a public constructor with a single ClassLoader parameter (i.e. with
+property <b>classLoaderInjected</b> set to <b>true</b>). This allows the
+scenario to be injected with the class loader during instantiation, e.g.
+as used in the loading of I18n resource bundles. If the user does not
+require the class loader during instantiation, its injection can be
+disabled by setting the property <b>classLoaderInjected</b> to <b>false</b>.
+In this case only the default public constructor is required.</p>
 
 <div class="clear">
 <hr />

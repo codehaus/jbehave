@@ -41,6 +41,7 @@
                 <scenarioClassName>com.lunivore.noughtsandcrosses.PlayersCanHazTurns</scenarioClassName>
                 <scenarioClassName>com.lunivore.noughtsandcrosses.PlayersCanTakeTurns</scenarioClassName>
               </scenarioClassNames>
+              <classLoaderInjected>false</classLoaderInjected>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>

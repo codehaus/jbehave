@@ -34,9 +34,24 @@
                 <scenarioInclude>**/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
-                <scenarioExclude>**/scenarios/None.java</scenarioExclude>
+                <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
               </scenarioExcludes>
               <skip>false</skip>
+              <classLoaderInjected>false</classLoaderInjected>
+            </configuration>
+            <goals>
+              <goal>run-scenarios</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>run-i18n-scenarios-found</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <scenarioIncludes>
+                <scenarioInclude>**/i18n/scenarios/*.java</scenarioInclude>
+              </scenarioIncludes>
+              <skip>false</skip>
+              <classLoaderInjected>true</classLoaderInjected>
             </configuration>
             <goals>
               <goal>run-scenarios</goal>
@@ -72,9 +87,10 @@
                 <taskdef name="scenarioRunner"
                   classname="org.jbehave.ant.ScenarioRunnerTask"
                   classpathref="maven.runtime.classpath" />
-                <scenarioRunner
-                  scenarioIncludes="**/scenarios/*.java"
-                  scenarioExcludes="**/*Steps.java" skip="${skip.ant.scenarios}" />
+                <scenarioRunner scenarioIncludes="**/scenarios/*.java"
+                  scenarioExcludes="**/i18n/scenarios/*.java" classLoaderInjected="false" skip="${skip.ant.scenarios}" />
+                <scenarioRunner scenarioIncludes="**/i18n/scenarios/*.java"
+                  scenarioExcludes="" classLoaderInjected="true" skip="${skip.ant.scenarios}" />
               </tasks>
             </configuration>
             <goals>
@@ -89,7 +105,7 @@
                 <taskdef name="stepdoc" classname="org.jbehave.ant.StepdocTask"
                   classpathref="maven.runtime.classpath" />
                 <stepdoc scenarioIncludes="**/scenarios/*.java"
-                  scenarioExcludes="**/*Steps.java" skip="${skip.ant.stepdoc}" />
+                  scenarioExcludes="**/i18n/scenarios/*.java" classLoaderInjected="false" skip="${skip.ant.stepdoc}" />
               </tasks>
             </configuration>
             <goals>

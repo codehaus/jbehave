@@ -52,6 +52,21 @@ public abstract class AbstractScenarioTask extends Task {
     private List<String> scenarioExcludes = new ArrayList<String>();
 
     /**
+     * The boolean flag to determined if class loader is injected in scenario class
+     */
+    private boolean classLoaderInjected = true;
+    
+    /**
+     * The boolean flag to skip running scenario
+     */
+    private boolean skip = false;
+
+    /**
+     * The boolean flag to ignoreFailure
+     */
+    private boolean ignoreFailure = false;
+
+    /**
      * Used to find scenario class names
      */
     private ScenarioClassNameFinder finder = new ScenarioClassNameFinder();
@@ -96,6 +111,25 @@ public abstract class AbstractScenarioTask extends Task {
         return classpathElements;
     }
 
+
+    /**
+     * Indicates if failure should be ignored
+     * 
+     * @return A boolean flag, <code>true</code> if failure should be ignored
+     */
+    protected boolean ignoreFailure() {
+        return ignoreFailure;
+    }
+
+    /**
+     * Indicates if scenarios should be skipped
+     * 
+     * @return A boolean flag, <code>true</code> if scenarios are skipped
+     */
+    protected boolean skipScenarios() {
+        return skip;
+    }
+
     /**
      * Returns the list of scenario instances, whose class names are either
      * specified via the parameter "scenarioClassNames" (which takes precedence)
@@ -121,12 +155,19 @@ public abstract class AbstractScenarioTask extends Task {
         List<RunnableScenario> scenarios = new ArrayList<RunnableScenario>();
         for (String name : names) {
             try {
-                scenarios.add(classLoader.newScenario(name, ClassLoader.class));
+                scenarios.add(scenarioFor(classLoader, name));
             } catch (Exception e) {
                 throw new BuildException("Failed to instantiate scenario '" + name + "'", e);
             }
         }
         return scenarios;
+    }
+
+    private RunnableScenario scenarioFor(ScenarioClassLoader classLoader, String name) {
+        if ( classLoaderInjected ){
+            return classLoader.newScenario(name, ClassLoader.class);            
+        }
+        return classLoader.newScenario(name);
     }
 
     // Setters used by Task to inject dependencies
@@ -153,5 +194,19 @@ public abstract class AbstractScenarioTask extends Task {
     public void setScenarioExcludes(String scenarioExcludesCSV) {
         this.scenarioExcludes = asList(scenarioExcludesCSV.split(","));
     }
+    
+    public void setclassLoaderInjected(boolean classLoaderInjected) {
+        this.classLoaderInjected = classLoaderInjected;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+
+    public void setIgnoreFailure(boolean ignoreFailure) {
+        this.ignoreFailure = ignoreFailure;
+    }
+
+
 
 }

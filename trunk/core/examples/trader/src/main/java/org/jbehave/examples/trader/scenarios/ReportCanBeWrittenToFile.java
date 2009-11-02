@@ -18,40 +18,31 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 
 public class ReportCanBeWrittenToFile extends JUnitScenario {
 
-	public ReportCanBeWrittenToFile() {
-		this(Thread.currentThread().getContextClassLoader());
-	}
+    public ReportCanBeWrittenToFile() {
+        super(new FileOutputConfiguration(), new TraderSteps());
+    }
 
-	public ReportCanBeWrittenToFile(final ClassLoader classLoader) {
-		super(new MyConfiguration(classLoader), new TraderSteps(classLoader));
-	}
+    private static class FileOutputConfiguration extends MostUsefulConfiguration {
+        private final OutputStream outputStream;
 
-	private static class MyConfiguration extends MostUsefulConfiguration {
-		private final ClassLoader classLoader;
-		private final OutputStream outputStream;
+        public FileOutputConfiguration() {
+            try {
+                File file = File.createTempFile("ScenarioReport", ".txt");
+                this.outputStream = new FileOutputStream(file);
+                System.out.println("Writing output to " + file.getAbsolutePath());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-		public MyConfiguration(ClassLoader classLoader) {
-			this.classLoader = classLoader;
-			try {
-				File file = File.createTempFile("ScenarioReport", ".txt");
-				this.outputStream = new FileOutputStream(file);
-				System.out.println("Writing output to "+file.getAbsolutePath());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
+        public ScenarioDefiner forDefiningScenarios() {
+            return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"),
+                    new PatternScenarioParser(new PropertyBasedConfiguration()));
+        }
 
-		public ScenarioDefiner forDefiningScenarios() {
-			return new ClasspathScenarioDefiner(
-					new UnderscoredCamelCaseResolver(".scenario"),
-					new PatternScenarioParser(new PropertyBasedConfiguration()),
-					classLoader);
-		}
-
-		public ScenarioReporter forReportingScenarios() {
-			return new PrintStreamScenarioReporter(
-					new PrintStream(outputStream));
-		}
-	}
+        public ScenarioReporter forReportingScenarios() {
+            return new PrintStreamScenarioReporter(new PrintStream(outputStream));
+        }
+    }
 
 }

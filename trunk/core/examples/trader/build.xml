@@ -27,19 +27,20 @@
   <target name="setup">
     <mkdir dir="target" />
     <mkdir dir="target/classes" />
-    <mkdir dir="target/lib"/>
+    <mkdir dir="target/lib" />
     <copy todir="target/lib">
-    <fileset refid="dependency.fileset" />
-      <mapper type="flatten" />      
+      <fileset refid="dependency.fileset" />
+      <mapper type="flatten" />
     </copy>
-    
+
     <path id="scenario.classpath">
-      <fileset dir="target/lib"  includes="**/*.jar" />
+      <fileset dir="target/lib" includes="**/*.jar" />
       <pathelement location="target/classes" />
     </path>
     <classloader classpathref="scenario.classpath" />
 
-    <pathconvert targetos="unix" property="scenario.classpath.unix" refid="scenario.classpath">
+    <pathconvert targetos="unix" property="scenario.classpath.unix"
+      refid="scenario.classpath">
     </pathconvert>
     <echo>Using classpath: ${scenario.classpath.unix}</echo>
 
@@ -55,15 +56,18 @@
   <target name="run-scenario" depends="compile">
     <taskdef name="scenarioRunner" classname="org.jbehave.ant.ScenarioRunnerTask"
       classpathref="scenario.classpath" />
-    <scenarioRunner scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
-      scenarioExcludes="**/*Steps.java" skip="false" />
+
+    <scenarioRunner scenarioIncludes="**/scenarios/*.java"
+      scenarioExcludes="**/i18n/scenarios/*.java" classLoaderInjected="false" />
+    <scenarioRunner scenarioIncludes="**/i18n/scenarios/*.java"
+      scenarioExcludes="" classLoaderInjected="true" />
   </target>
 
   <target name="stepdoc" depends="compile">
     <taskdef name="stepdoc" classname="org.jbehave.ant.StepdocTask"
       classpathref="scenario.classpath" />
-    <stepdoc scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
-      scenarioExcludes="**/*Steps.java" skip="false" />
+    <stepdoc scenarioIncludes="**/scenarios/*.java"
+      scenarioExcludes="**/i18n/scenarios/*.java" classLoaderInjected="false" />
   </target>
 
 </project> 

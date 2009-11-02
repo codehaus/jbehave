@@ -35,8 +35,8 @@ public class LolCatzSteps extends Steps {
 		this.universe = universe;
 	}
     
-    private static KeyWords lolCatsKeywords(){
-    	return new KeyWords("Scenaio", "GiefScenaio", "TibleScenaio", "Gief", "Wen", "Den", "And");
+    public static KeyWords lolCatzKeywords(){
+    	return new KeyWords("I can haz:", "Gief I can haz:", "Ezemples:", "Gief", "Wen", "Den", "And");
     }
 
 	@Given("game")

@@ -28,7 +28,7 @@ public class TraderSteps extends Steps {
     private Stock stock;
     private Trader trader;
 
-    public TraderSteps(ClassLoader classLoader) {
+    public TraderSteps() {
         super(configuration);
         StepMonitor monitor = new SilentStepMonitor();
 		configuration.useParameterConverters(new ParameterConverters(
