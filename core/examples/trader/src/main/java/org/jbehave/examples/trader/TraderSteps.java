@@ -74,7 +74,7 @@ public class TraderSteps extends Steps {
 
     @Given("the alert status is %status") // shows that matching pattern need only be unique for step type
     public void theAlertStatusIsReset(@Named("status") String status) {
-    	if ( AlertStatus.OFF.name().startsWith(status) ){
+    	if ( AlertStatus.OFF.name().startsWith(status) && stock != null ){
         	stock.resetAlert();    		
     	}
     }
