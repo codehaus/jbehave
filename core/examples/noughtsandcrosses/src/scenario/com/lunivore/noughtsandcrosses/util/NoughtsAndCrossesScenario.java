@@ -5,25 +5,27 @@ import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
+import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 
 import com.lunivore.noughtsandcrosses.steps.BeforeAndAfterSteps;
 import com.lunivore.noughtsandcrosses.steps.GridSteps;
 
 public abstract class NoughtsAndCrossesScenario extends Scenario {
 
-	/**
-	 * The only reason this classLoader is here is to support Maven.
-	 */
-	public NoughtsAndCrossesScenario(final ClassLoader classLoader) {
-		this(classLoader, new OAndXUniverse());
+	public NoughtsAndCrossesScenario() {
+		this(new OAndXUniverse());
 	}
 	
-	public NoughtsAndCrossesScenario(final ClassLoader classLoader, OAndXUniverse universe) {
+	public NoughtsAndCrossesScenario(OAndXUniverse universe) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ClasspathScenarioDefiner forDefiningScenarios() {
-                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
-                        classLoader);
+                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this));
+            }
+            @Override
+            public ScenarioReporter forReportingScenarios() {
+                return new PrintStreamScenarioReporter();
             }
         }, new GridSteps(universe), new BeforeAndAfterSteps(universe));
      }

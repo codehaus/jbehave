@@ -13,13 +13,10 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 public class TraderScenario extends JUnitScenario {
 
     public TraderScenario() {
-        this(Thread.currentThread().getContextClassLoader());
-    }
-
-    public TraderScenario(final ClassLoader classLoader) {
         super(new PropertyBasedConfiguration() {
+            @Override
             public ScenarioDefiner forDefiningScenarios() {
-                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(this), classLoader);
+                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), new PatternScenarioParser(this));
             }
 
 			@Override
@@ -27,7 +24,7 @@ public class TraderScenario extends JUnitScenario {
 				return new PrintStreamScenarioReporter();
 			}
             
-        }, new TraderSteps(classLoader)); 
+        }, new TraderSteps()); 
     }
 
 }

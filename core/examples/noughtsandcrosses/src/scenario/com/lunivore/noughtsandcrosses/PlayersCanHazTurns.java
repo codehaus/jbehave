@@ -6,6 +6,8 @@ import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
+import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 
 import com.lunivore.noughtsandcrosses.steps.BeforeAndAfterSteps;
 import com.lunivore.noughtsandcrosses.steps.LolCatzSteps;
@@ -18,21 +20,20 @@ import com.lunivore.noughtsandcrosses.util.OAndXUniverse;
 public class PlayersCanHazTurns extends JUnitScenario {
 
     public PlayersCanHazTurns() {
-        this(Thread.currentThread().getContextClassLoader());
-    }
-
-    public PlayersCanHazTurns(final ClassLoader classLoader) {
-    	this(classLoader, new OAndXUniverse());
+    	this(new OAndXUniverse());
     }
     
-    public PlayersCanHazTurns(final ClassLoader classLoader, OAndXUniverse universe) {
+    public PlayersCanHazTurns(OAndXUniverse universe) {
         super(new MostUsefulConfiguration() {
             public KeyWords keywords() {
-                return new KeyWords("I can haz:", "Gief I can haz:", "Ehemples:", "Gief", "Wen", "Den", "And");
+                return LolCatzSteps.lolCatzKeywords();
             }
             public ClasspathScenarioDefiner forDefiningScenarios() {
-                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
-                        classLoader);
+                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this));
+            }
+            @Override
+            public ScenarioReporter forReportingScenarios() {
+                return new PrintStreamScenarioReporter();
             }
         }, new LolCatzSteps(universe), new BeforeAndAfterSteps(universe));
     }

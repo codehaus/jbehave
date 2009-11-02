@@ -84,6 +84,27 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     private List<String> testClasspathElements;
 
     /**
+     * The boolean flag to determined if class loader is injected in scenario class
+     * 
+     * @parameter default-value="true"
+     */
+    private boolean classLoaderInjected;
+    
+    /**
+     * The boolean flag to skip scenarios
+     * 
+     * @parameter default-value="false"
+     */
+    private boolean skip;
+    
+    /**
+     * The boolean flag to ignore failure
+     * 
+     * @parameter default-value="false"
+     */
+    private boolean ignoreFailure;
+    
+    /**
      * Used to find scenario class names
      */
     private ScenarioClassNameFinder finder = new ScenarioClassNameFinder();
@@ -132,6 +153,24 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
     }
 
     /**
+     * Indicates if failure should be ignored
+     * 
+     * @return A boolean flag, <code>true</code> if failure should be ignored
+     */
+    protected boolean ignoreFailure() {
+        return ignoreFailure;
+    }
+
+    /**
+     * Indicates if scenarios should be skipped
+     * 
+     * @return A boolean flag, <code>true</code> if scenarios are skipped
+     */
+    protected boolean skipScenarios() {
+        return skip;
+    }
+    
+    /**
      * Returns the list of scenario instances, whose class names are either
      * specified via the parameter "scenarioClassNames" (which takes precedence)
      * or found using the parameters "scenarioIncludes" and "scenarioExcludes".
@@ -156,11 +195,18 @@ public abstract class AbstractScenarioMojo extends AbstractMojo {
         List<RunnableScenario> scenarios = new ArrayList<RunnableScenario>();
         for (String name : names) {
             try {
-                scenarios.add(classLoader.newScenario(name, ClassLoader.class));
+                scenarios.add(scenarioFor(classLoader, name));
             } catch (Exception e) {
                 throw new MojoExecutionException("Failed to instantiate scenario '" + name + "'", e);
             }
         }
         return scenarios;
+    }
+
+    private RunnableScenario scenarioFor(ScenarioClassLoader classLoader, String name) {
+        if ( classLoaderInjected ){
+            return classLoader.newScenario(name, ClassLoader.class);            
+        }
+        return classLoader.newScenario(name);
     }
 }

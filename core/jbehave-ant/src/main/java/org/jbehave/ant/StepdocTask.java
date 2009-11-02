@@ -12,44 +12,26 @@ import org.jbehave.scenario.RunnableScenario;
  * @author Mauro Talevi
  */
 public class StepdocTask extends AbstractScenarioTask {
-	/**
-	 * The boolean flag to skip running scenario
-	 */
-	private boolean skip = false;
 
-	/**
-	 * The boolean flag to ignoreFailure
-	 */
-	private boolean ignoreFailure = false;
-
-	public void execute() throws BuildException {
-		if (skip) {
-			log("Skipped running scenarios", MSG_INFO);
-			return;
-		}
-		for (RunnableScenario scenario : scenarios()) {
-			String scenarioName = scenario.getClass().getName();
-			try {
-				log("Generating stepdoc for " + scenarioName);
-				scenario.generateStepdoc();
-			} catch (Throwable e) {
-				String message = "Failed to generate stepdoc for " + scenarioName;
-				if (ignoreFailure) {
-					log(message, e, MSG_WARN);
-				} else {
-					throw new BuildException(message, e);
-				}
-			}
-		}
-	}
-
-	// Setters
-	public void setSkip(boolean skip) {
-		this.skip = skip;
-	}
-
-	public void setIgnoreFailure(boolean ignoreFailure) {
-		this.ignoreFailure = ignoreFailure;
-	}
+    public void execute() throws BuildException {
+        if (skipScenarios()) {
+            log("Skipped running scenarios", MSG_INFO);
+            return;
+        }
+        for (RunnableScenario scenario : scenarios()) {
+            String scenarioName = scenario.getClass().getName();
+            try {
+                log("Generating stepdoc for " + scenarioName);
+                scenario.generateStepdoc();
+            } catch (Throwable e) {
+                String message = "Failed to generate stepdoc for " + scenarioName;
+                if (ignoreFailure()) {
+                    log(message, e, MSG_WARN);
+                } else {
+                    throw new BuildException(message, e);
+                }
+            }
+        }
+    }
 
 }

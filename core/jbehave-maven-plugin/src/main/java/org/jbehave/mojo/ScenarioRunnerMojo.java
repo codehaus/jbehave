@@ -11,23 +11,9 @@ import org.jbehave.scenario.RunnableScenario;
  * @goal run-scenarios
  */
 public class ScenarioRunnerMojo extends AbstractScenarioMojo {
-
-    /**
-     * The boolean flag to skip running scenario
-     * 
-     * @parameter default-value="false"
-     */
-    private boolean skip;
-    
-    /**
-     * The boolean flag to ignoreFailure
-     * 
-     * @parameter default-value="false"
-     */
-    private boolean ignoreFailure;
     
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if ( skip ){
+        if ( skipScenarios() ){
             getLog().info("Skipped running scenarios");
             return;
         }
@@ -38,7 +24,7 @@ public class ScenarioRunnerMojo extends AbstractScenarioMojo {
                 scenario.runScenario();
             } catch (Throwable e) {
                 String message = "Failed to run scenario " + scenarioName;
-                if ( ignoreFailure ){
+                if ( ignoreFailure() ){
                     getLog().warn(message, e);
                 } else {
                     throw new MojoExecutionException(message, e);
