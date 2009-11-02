@@ -6,7 +6,7 @@ package org.jbehave.scenario.steps;
 public enum StepType {
 
 	/** 
-	 * Represents a precondition
+	 * Represents a precondition to an event
 	 */
 	GIVEN, 
 	
@@ -16,8 +16,13 @@ public enum StepType {
 	WHEN, 
 	
 	/**
-	 * Represents an outcome
+	 * Represents an outcome of an event
 	 */
-	THEN
+	THEN,
+	
+    /**
+     * Represents repetition of previous step
+     */
+	AND	
 	
 }

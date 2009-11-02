@@ -27,260 +27,259 @@ import com.thoughtworks.paranamer.Paranamer;
  */
 public class CandidateStep {
 
-	private final String patternAsString;
-	private final StepType stepType;
-	private final Method method;
-	private final CandidateSteps steps;
-	private final ParameterConverters parameterConverters;
-	private final Map<StepType, String> startingWordsByType;
-	private final Pattern pattern;
-	private final String[] groupNames;
+    private final String patternAsString;
+    private final StepType stepType;
+    private final Method method;
+    private final CandidateSteps steps;
+    private final ParameterConverters parameterConverters;
+    private final Map<StepType, String> startingWordsByType;
+    private final Pattern pattern;
+    private final String[] groupNames;
 
-	private StepMonitor stepMonitor = new SilentStepMonitor();
-	private Paranamer paranamer = new NullParanamer();
+    private StepMonitor stepMonitor = new SilentStepMonitor();
+    private Paranamer paranamer = new NullParanamer();
 
-	public CandidateStep(String patternAsString, StepType stepType, Method method,
-			CandidateSteps steps, StepPatternBuilder patternBuilder,
-			ParameterConverters parameterConverters,
-			Map<StepType, String> startingWords) {
-		this.patternAsString = patternAsString;
-		this.stepType = stepType;
-		this.method = method;
-		this.steps = steps;
-		this.parameterConverters = parameterConverters;
-		this.startingWordsByType = startingWords;
-		this.pattern = patternBuilder.buildPattern(patternAsString);
-		this.groupNames = patternBuilder.extractGroupNames(patternAsString);
-	}
+    public CandidateStep(String patternAsString, StepType stepType, Method method, CandidateSteps steps,
+            StepPatternBuilder patternBuilder, ParameterConverters parameterConverters,
+            Map<StepType, String> startingWords) {
+        this.patternAsString = patternAsString;
+        this.stepType = stepType;
+        this.method = method;
+        this.steps = steps;
+        this.parameterConverters = parameterConverters;
+        this.startingWordsByType = startingWords;
+        this.pattern = patternBuilder.buildPattern(patternAsString);
+        this.groupNames = patternBuilder.extractGroupNames(patternAsString);
+    }
 
-	public void useStepMonitor(StepMonitor stepMonitor) {
-		this.stepMonitor = stepMonitor;
-	}
+    public void useStepMonitor(StepMonitor stepMonitor) {
+        this.stepMonitor = stepMonitor;
+    }
 
-	public void useParanamer(Paranamer paranamer) {
-		this.paranamer = paranamer;
-	}
+    public void useParanamer(Paranamer paranamer) {
+        this.paranamer = paranamer;
+    }
 
-	public boolean matches(String stepAsString) {
-		try {
-			Matcher matcher = matcherForStep(stepAsString);
-			boolean matches = matcher.matches();
-			stepMonitor.stepMatchesPattern(stepAsString, matches, pattern
-					.pattern());
-			return matches;
-		} catch (StartingWordNotFound e) {
-			return false;
-		}
-	}
+    public boolean matches(String stepAsString) {
+        try {
+            Matcher matcher = matcherForStep(stepAsString);
+            boolean matches = matcher.matches();
+            stepMonitor.stepMatchesPattern(stepAsString, matches, pattern.pattern());
+            return matches;
+        } catch (StartingWordNotFound e) {
+            return false;
+        }
+    }
 
-	private String trimStartingWord(String word, String step) {
-		return step.substring(word.length() + 1); // 1 for the space after
-	}
+    private String trimStartingWord(String word, String step) {
+        return step.substring(word.length() + 1); // 1 for the space after
+    }
 
-	public Step createFrom(Map<String, String> tableRow,
-			final String stepAsString) {
-		Matcher matcher = matcherForStep(stepAsString);
-		matcher.find();
-		Type[] types = method.getGenericParameterTypes();
-		String[] annotationNames = annotatedParameterNames();
-		String[] parameterNames = paranamer.lookupParameterNames(method, false);
-		Object[] args = argsForStep(tableRow, matcher, types, annotationNames,
-				parameterNames);
-		return createStep(stepAsString, args);
-	}
+    public Step createFrom(Map<String, String> tableRow, final String stepAsString) {
+        Matcher matcher = matcherForStep(stepAsString);
+        matcher.find();
+        Type[] types = method.getGenericParameterTypes();
+        String[] annotationNames = annotatedParameterNames();
+        String[] parameterNames = paranamer.lookupParameterNames(method, false);
+        Object[] args = argsForStep(tableRow, matcher, types, annotationNames, parameterNames);
+        return createStep(stepAsString, args);
+    }
 
-	private Matcher matcherForStep(final String stepAsString) {
-		String startingWord = findStartingWord(stepAsString);
-		String trimmed = trimStartingWord(startingWord, stepAsString);
-		return pattern.matcher(trimmed);
-	}
+    private Matcher matcherForStep(final String stepAsString) {
+        String startingWord = findStartingWord(stepAsString);
+        String trimmed = trimStartingWord(startingWord, stepAsString);
+        return pattern.matcher(trimmed);
+    }
 
-	private Object[] argsForStep(Map<String, String> tableRow, Matcher matcher,
-			Type[] types, String[] annotationNames, String[] parameterNames) {
-		final Object[] args = new Object[types.length];
-		for (int position = 0; position < types.length; position++) {
-			String arg = argForPosition(position, annotationNames,
-					parameterNames, tableRow, matcher);
-			args[position] = parameterConverters.convert(arg, types[position]);
-		}
-		return args;
-	}
+    private Object[] argsForStep(Map<String, String> tableRow, Matcher matcher, Type[] types, String[] annotationNames,
+            String[] parameterNames) {
+        final Object[] args = new Object[types.length];
+        for (int position = 0; position < types.length; position++) {
+            String arg = argForPosition(position, annotationNames, parameterNames, tableRow, matcher);
+            args[position] = parameterConverters.convert(arg, types[position]);
+        }
+        return args;
+    }
 
-	private String argForPosition(int position, String[] annotationNames,
-			String[] parameterNames, Map<String, String> tableRow,
-			Matcher matcher) {
-		int annotatedNamePosition = parameterPosition(annotationNames, position);
-		int parameterNamePosition = parameterPosition(parameterNames, position);
-		String arg = null;
-		if (annotatedNamePosition != -1
-				&& isGroupName(annotationNames[position])) {
-			String name = annotationNames[position];
-			stepMonitor.usingAnnotatedNameForArg(name, position);
-			arg = getGroup(matcher, name);
-		} else if (parameterNamePosition != -1
-				&& isGroupName(parameterNames[position])) {
-			String name = parameterNames[position];
-			stepMonitor.usingParameterNameForArg(name, position);
-			arg = getGroup(matcher, name);
-		} else if (annotatedNamePosition != -1
-				&& isTableFieldName(tableRow, annotationNames[position])) {
-			String name = annotationNames[position];
-			stepMonitor.usingTableAnnotatedNameForArg(name, position);
-			arg = getTableValue(tableRow, name);
-		} else if (parameterNamePosition != -1
-				&& isTableFieldName(tableRow, parameterNames[position])) {
-			String name = parameterNames[position];
-			stepMonitor.usingTableParameterNameForArg(name, position);
-			arg = getTableValue(tableRow, name);
-		} else {
-			stepMonitor.usingNaturalOrderForArg(position);
-			arg = matcher.group(position + 1);
-		}
-		stepMonitor.foundArg(arg, position);
-		return arg;
-	}
+    private String argForPosition(int position, String[] annotationNames, String[] parameterNames,
+            Map<String, String> tableRow, Matcher matcher) {
+        int annotatedNamePosition = parameterPosition(annotationNames, position);
+        int parameterNamePosition = parameterPosition(parameterNames, position);
+        String arg = null;
+        if (annotatedNamePosition != -1 && isGroupName(annotationNames[position])) {
+            String name = annotationNames[position];
+            stepMonitor.usingAnnotatedNameForArg(name, position);
+            arg = getGroup(matcher, name);
+        } else if (parameterNamePosition != -1 && isGroupName(parameterNames[position])) {
+            String name = parameterNames[position];
+            stepMonitor.usingParameterNameForArg(name, position);
+            arg = getGroup(matcher, name);
+        } else if (annotatedNamePosition != -1 && isTableFieldName(tableRow, annotationNames[position])) {
+            String name = annotationNames[position];
+            stepMonitor.usingTableAnnotatedNameForArg(name, position);
+            arg = getTableValue(tableRow, name);
+        } else if (parameterNamePosition != -1 && isTableFieldName(tableRow, parameterNames[position])) {
+            String name = parameterNames[position];
+            stepMonitor.usingTableParameterNameForArg(name, position);
+            arg = getTableValue(tableRow, name);
+        } else {
+            stepMonitor.usingNaturalOrderForArg(position);
+            arg = matcher.group(position + 1);
+        }
+        stepMonitor.foundArg(arg, position);
+        return arg;
+    }
 
-	private String getTableValue(Map<String, String> tableRow, String name) {
-		return tableRow.get(name);
-	}
+    private String getTableValue(Map<String, String> tableRow, String name) {
+        return tableRow.get(name);
+    }
 
-	private boolean isTableFieldName(Map<String, String> tableRow, String name) {
-		return tableRow.get(name) != null;
-	}
+    private boolean isTableFieldName(Map<String, String> tableRow, String name) {
+        return tableRow.get(name) != null;
+    }
 
-	private String getGroup(Matcher matcher, String name) {
-		for (int i = 0; i < groupNames.length; i++) {
-			String groupName = groupNames[i];
-			if (name.equals(groupName)) {
-				return matcher.group(i + 1);
-			}
-		}
-		throw new NoGroupFoundForName(name, groupNames);
-	}
+    private String getGroup(Matcher matcher, String name) {
+        for (int i = 0; i < groupNames.length; i++) {
+            String groupName = groupNames[i];
+            if (name.equals(groupName)) {
+                return matcher.group(i + 1);
+            }
+        }
+        throw new NoGroupFoundForName(name, groupNames);
+    }
 
-	private boolean isGroupName(String name) {
-		for (String groupName : groupNames) {
-			if (name.equals(groupName)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    private boolean isGroupName(String name) {
+        for (String groupName : groupNames) {
+            if (name.equals(groupName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	private int parameterPosition(String[] names, int position) {
-		if (names.length == 0) {
-			return -1;
-		}
-		String name = names[position];
-		for (int i = 0; i < names.length; i++) {
-			String annotatedName = names[i];
-			if (annotatedName != null && name.equals(annotatedName)) {
-				return i;
-			}
-		}
-		return -1;
-	}
+    private int parameterPosition(String[] names, int position) {
+        if (names.length == 0) {
+            return -1;
+        }
+        String name = names[position];
+        for (int i = 0; i < names.length; i++) {
+            String annotatedName = names[i];
+            if (annotatedName != null && name.equals(annotatedName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
-	/**
-	 * Extract annotated parameter names from the @Named parameter annotations
-	 * 
-	 * @return An array of annotated parameter names, which <b>may</b> include
-	 *         <code>null</code> values for parameters that are not annotated
-	 */
-	private String[] annotatedParameterNames() {
-		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-		String[] names = new String[parameterAnnotations.length];
-		for (int x = 0; x < parameterAnnotations.length; x++) {
-			Annotation[] annotations = parameterAnnotations[x];
-			for (int y = 0; y < annotations.length; y++) {
-				Annotation annotation = annotations[y];
-				if (annotation.annotationType().isAssignableFrom(Named.class)) {
-					names[x] = ((Named) annotation).value();
-				}
-			}
-		}
-		return names;
-	}
+    /**
+     * Extract annotated parameter names from the @Named parameter annotations
+     * 
+     * @return An array of annotated parameter names, which <b>may</b> include
+     *         <code>null</code> values for parameters that are not annotated
+     */
+    private String[] annotatedParameterNames() {
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        String[] names = new String[parameterAnnotations.length];
+        for (int x = 0; x < parameterAnnotations.length; x++) {
+            Annotation[] annotations = parameterAnnotations[x];
+            for (int y = 0; y < annotations.length; y++) {
+                Annotation annotation = annotations[y];
+                if (annotation.annotationType().isAssignableFrom(Named.class)) {
+                    names[x] = ((Named) annotation).value();
+                }
+            }
+        }
+        return names;
+    }
 
-	private String findStartingWord(final String stepAsString)
-			throws StartingWordNotFound {
-		String startingWord = startingWordsByType.get(stepType);
-		if (startingWord != null && stepAsString.startsWith(startingWord)) {
-			return startingWord;
-		}
-		throw new StartingWordNotFound(stepAsString, stepType,
-				startingWordsByType);
-	}
+    private String findStartingWord(final String stepAsString) throws StartingWordNotFound {
+        String wordForType = startingWordFor(stepType);
+        if (stepAsString.startsWith(wordForType)) {
+            return wordForType;
+        }
+        String andWord = startingWordFor(StepType.AND);
+        if (stepAsString.startsWith(andWord)) {
+            return andWord;
+        }
+        throw new StartingWordNotFound(stepAsString, stepType, startingWordsByType);
+    }
 
-	private Step createStep(final String stepAsString, final Object[] args) {
-		return new Step() {
-			public StepResult perform() {
-				try {
-					stepMonitor.performing(stepAsString);
-					method.invoke(steps, args);
-					return StepResult.success(stepAsString);
-				} catch (Throwable t) {
-					return failureWithOriginalException(stepAsString, t);
-				}
-			}
+    private String startingWordFor(StepType stepType) {
+        String startingWord = startingWordsByType.get(stepType);
+        if (startingWord == null) {
+            throw new StartingWordNotFound(stepType, startingWordsByType);
+        }
+        return startingWord;
+    }
 
-			private StepResult failureWithOriginalException(
-					final String stepAsString, Throwable t) {
-				if (t instanceof InvocationTargetException
-						&& t.getCause() != null) {
-					if (t.getCause() instanceof PendingError) {
-						return StepResult.pending(stepAsString,
-								(PendingError) t.getCause());
-					} else {
-						return StepResult.failure(stepAsString, t.getCause());
-					}
-				}
-				return StepResult.failure(stepAsString, t);
-			}
+    private Step createStep(final String stepAsString, final Object[] args) {
+        return new Step() {
+            public StepResult perform() {
+                try {
+                    stepMonitor.performing(stepAsString);
+                    method.invoke(steps, args);
+                    return StepResult.success(stepAsString);
+                } catch (Throwable t) {
+                    return failureWithOriginalException(stepAsString, t);
+                }
+            }
 
-			public StepResult doNotPerform() {
-				return StepResult.notPerformed(stepAsString);
-			}
+            private StepResult failureWithOriginalException(final String stepAsString, Throwable t) {
+                if (t instanceof InvocationTargetException && t.getCause() != null) {
+                    if (t.getCause() instanceof PendingError) {
+                        return StepResult.pending(stepAsString, (PendingError) t.getCause());
+                    } else {
+                        return StepResult.failure(stepAsString, t.getCause());
+                    }
+                }
+                return StepResult.failure(stepAsString, t);
+            }
 
-		};
-	}
+            public StepResult doNotPerform() {
+                return StepResult.notPerformed(stepAsString);
+            }
 
-	public StepType getStepType() {
-		return stepType;
-	}
+        };
+    }
 
-	public String getPatternAsString() {
-		return patternAsString;
-	}
+    public StepType getStepType() {
+        return stepType;
+    }
 
-	public Pattern getPattern() {
-		return pattern;
-	}
+    public String getPatternAsString() {
+        return patternAsString;
+    }
 
-	@Override
-	public String toString() {
-		return patternAsString;
-	}
+    public Pattern getPattern() {
+        return pattern;
+    }
 
-	@SuppressWarnings("serial")
-	public static class NoGroupFoundForName extends RuntimeException {
+    @Override
+    public String toString() {
+        return stepType + " " + patternAsString;
+    }
 
-		public NoGroupFoundForName(String name, String[] groupNames) {
-			super("No group found for name " + name + " amongst "
-					+ asList(groupNames));
-		}
+    @SuppressWarnings("serial")
+    public static class NoGroupFoundForName extends RuntimeException {
 
-	}
+        public NoGroupFoundForName(String name, String[] groupNames) {
+            super("No group found for name " + name + " amongst " + asList(groupNames));
+        }
 
-	@SuppressWarnings("serial")
-	public static class StartingWordNotFound extends RuntimeException {
+    }
 
-		public StartingWordNotFound(String step, StepType stepType,
-				Map<StepType, String> startingWordsByType) {
-			super("No starting word found for step " + step + " of type "
-					+ stepType + " amongst " + startingWordsByType);
-		}
+    @SuppressWarnings("serial")
+    public static class StartingWordNotFound extends RuntimeException {
 
-	}
+        public StartingWordNotFound(String step, StepType stepType, Map<StepType, String> startingWordsByType) {
+            super("No starting word found for step " + step + " of type " + stepType + " amongst "
+                    + startingWordsByType);
+        }
+
+        public StartingWordNotFound(StepType stepType, Map<StepType, String> startingWordsByType) {
+            super("No starting word found of type " + stepType + " amongst " + startingWordsByType);
+        }
+
+    }
 
 }

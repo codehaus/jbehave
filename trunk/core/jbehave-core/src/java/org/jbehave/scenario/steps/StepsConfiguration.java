@@ -1,5 +1,6 @@
 package org.jbehave.scenario.steps;
 
+import static org.jbehave.scenario.steps.StepType.AND;
 import static org.jbehave.scenario.steps.StepType.GIVEN;
 import static org.jbehave.scenario.steps.StepType.THEN;
 import static org.jbehave.scenario.steps.StepType.WHEN;
@@ -88,7 +89,8 @@ public class StepsConfiguration {
 	/**
 	 * Makes best effort to convert starting words into keywords,
 	 * assuming order (GIVEN,WHEN,THEN,AND)
-	 * @param startingWords
+	 * 
+	 * @param startingWords the array of starting words
 	 * @return Keywords with given starting words values
 	 */
 	private KeyWords keywordsFrom(String[] startingWords) {
@@ -105,13 +107,13 @@ public class StepsConfiguration {
 	protected String[] startingWordsFrom(KeyWords keywords) {
 		return new String[]{keywords.given(), keywords.when(), keywords.then(), keywords.and()};
 	}
-	
-	
+		
 	protected Map<StepType, String> startingWordsByType(KeyWords keywords) {
 		Map<StepType, String> words = new HashMap<StepType, String>();
 		words.put(GIVEN, keywords.given());
 		words.put(WHEN, keywords.when());
 		words.put(THEN, keywords.then());
+		words.put(AND, keywords.and());
 		return words;
 	}
 
