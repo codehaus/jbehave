@@ -1,8 +1,8 @@
 package org.jbehave.scenario.definition;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
-import java.util.Collections;
 import java.util.List;
 
 public class StoryDefinition {
@@ -10,9 +10,8 @@ public class StoryDefinition {
     private final Blurb blurb;
     private final List<ScenarioDefinition> scenarioDefinitions;
 
-    public StoryDefinition(Blurb blurb, List<ScenarioDefinition> scenarioDefinitions) {
-        this.blurb = blurb;
-        this.scenarioDefinitions = scenarioDefinitions;
+    public StoryDefinition(ScenarioDefinition... scenarioDefinitions) {
+        this(asList(scenarioDefinitions));
     }
 
     public StoryDefinition(List<ScenarioDefinition> scenarioDefinitions) {
@@ -23,8 +22,9 @@ public class StoryDefinition {
         this(blurb, asList(scenarioDefinitions));
     }
     
-    public StoryDefinition(ScenarioDefinition... scenarioDefinitions) {
-        this(asList(scenarioDefinitions));
+    public StoryDefinition(Blurb blurb, List<ScenarioDefinition> scenarioDefinitions) {
+        this.blurb = blurb;
+        this.scenarioDefinitions = scenarioDefinitions;
     }
 
     public Blurb getBlurb() {
@@ -32,6 +32,6 @@ public class StoryDefinition {
     }
 
     public List<ScenarioDefinition> getScenarios() {
-        return Collections.unmodifiableList(scenarioDefinitions);
+        return unmodifiableList(scenarioDefinitions);
     }
 }
