@@ -36,19 +36,25 @@ public class ScenarioRunner {
 		run(story, configuration, candidateSteps);
     }
 
-    public void run(String scenarioPath, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
+    public void run(String scenarioPath, Configuration configuration, boolean embeddedStory, CandidateSteps... candidateSteps) throws Throwable {
 		StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioPath);
-		run(story, configuration, candidateSteps);
-    }
+		run(story, configuration, embeddedStory, candidateSteps);
+    }    
 
     public void run(StoryDefinition story, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
+        run(story, configuration, false, candidateSteps);
+    }
+    
+    public void run(StoryDefinition story, Configuration configuration, boolean embeddedStory, CandidateSteps... candidateSteps) throws Throwable {
         reporter = configuration.forReportingScenarios();
         pendingStepStrategy = configuration.forPendingSteps();
         errorStrategy = configuration.forHandlingErrors();
         currentStrategy = ErrorStrategy.SILENT;
         throwable = null;
         
-        reporter.beforeStory(story.getBlurb());
+        if ( !embeddedStory ){
+            reporter.beforeStory(story.getBlurb());            
+        }
         for (ScenarioDefinition scenario : story.getScenarios()) {
     		reporter.beforeScenario(scenario.getTitle());
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
@@ -59,7 +65,9 @@ public class ScenarioRunner {
         	}
     		reporter.afterScenario();
         }
-        reporter.afterStory();
+        if ( !embeddedStory ){
+            reporter.afterStory();            
+        }
         currentStrategy.handleError(throwable);
     }
 
@@ -70,7 +78,8 @@ public class ScenarioRunner {
 		if ( givenScenarios.size() > 0 ){
 			reporter.givenScenarios(givenScenarios);
 			for ( String scenarioPath : givenScenarios ){
-				run(scenarioPath, configuration, candidateSteps);
+			    // run in embedded mode
+				run(scenarioPath, configuration, true, candidateSteps);
 			}
 		}
 	}

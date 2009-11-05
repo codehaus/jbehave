@@ -8,10 +8,8 @@ import java.util.List;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.parser.ScenarioNameResolver;
-import org.jbehave.scenario.reporters.StepdocReporter;
 import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.Stepdoc;
-import org.jbehave.scenario.steps.StepdocGenerator;
 
 /**
  * <p>
@@ -46,51 +44,46 @@ import org.jbehave.scenario.steps.StepdocGenerator;
  */
 public abstract class AbstractScenario implements RunnableScenario {
 
-	private final Configuration configuration;
-	private final ScenarioRunner scenarioRunner;
-	private final List<CandidateSteps> candidateSteps = new ArrayList<CandidateSteps>();
-	private final Class<? extends RunnableScenario> scenarioClass;
+    private final Configuration configuration;
+    private final ScenarioRunner scenarioRunner;
+    private final List<CandidateSteps> candidateSteps = new ArrayList<CandidateSteps>();
+    private final Class<? extends RunnableScenario> scenarioClass;
 
-	public AbstractScenario(Class<? extends RunnableScenario> scenarioClass,
-			CandidateSteps... candidateSteps) {
-		this(scenarioClass, new PropertyBasedConfiguration(), candidateSteps);
-	}
+    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, CandidateSteps... candidateSteps) {
+        this(scenarioClass, new PropertyBasedConfiguration(), candidateSteps);
+    }
 
-	public AbstractScenario(Class<? extends RunnableScenario> scenarioClass,
-			Configuration configuration, CandidateSteps... candidateSteps) {
-		this(scenarioClass, new ScenarioRunner(), configuration, candidateSteps);
-	}
+    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, Configuration configuration,
+            CandidateSteps... candidateSteps) {
+        this(scenarioClass, new ScenarioRunner(), configuration, candidateSteps);
+    }
 
-	public AbstractScenario(Class<? extends RunnableScenario> scenarioClass,
-			ScenarioRunner scenarioRunner, Configuration configuration,
-			CandidateSteps... candidateSteps) {
-		this.scenarioClass = scenarioClass;
-		this.configuration = configuration;
-		this.scenarioRunner = scenarioRunner;
-		this.candidateSteps.addAll(asList(candidateSteps));
-	}
+    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, ScenarioRunner scenarioRunner,
+            Configuration configuration, CandidateSteps... candidateSteps) {
+        this.scenarioClass = scenarioClass;
+        this.configuration = configuration;
+        this.scenarioRunner = scenarioRunner;
+        this.candidateSteps.addAll(asList(candidateSteps));
+    }
 
-	public void runScenario() throws Throwable {
-		StoryDefinition story = configuration.forDefiningScenarios()
-				.loadScenarioDefinitionsFor(scenarioClass);
-		CandidateSteps[] steps = new CandidateSteps[candidateSteps.size()];
-		candidateSteps.toArray(steps);
-		scenarioRunner.run(story, configuration, steps);
-	}
+    public void runScenario() throws Throwable {
+        StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioClass);
+        CandidateSteps[] steps = candidateSteps.toArray(new CandidateSteps[candidateSteps.size()]);
+        scenarioRunner.run(story, configuration, false, steps);
+    }
 
-	public void addSteps(CandidateSteps... steps) {
-		this.candidateSteps.addAll(asList(steps));
-	}
+    public void addSteps(CandidateSteps... steps) {
+        this.candidateSteps.addAll(asList(steps));
+    }
 
-	public List<CandidateSteps> getSteps() {
-		return candidateSteps;
-	}
+    public List<CandidateSteps> getSteps() {
+        return candidateSteps;
+    }
 
-	public void generateStepdoc() {
-		StepdocGenerator generator = configuration.forGeneratingStepdoc();
-		List<Stepdoc> stepdocs = generator.generate(candidateSteps.toArray(new CandidateSteps[candidateSteps.size()]));
-		StepdocReporter reporter = configuration.forReportingStepdoc();
-		reporter.report(stepdocs);
-	}
+    public void generateStepdoc() {
+        CandidateSteps[] steps = candidateSteps.toArray(new CandidateSteps[candidateSteps.size()]);
+        List<Stepdoc> stepdocs = configuration.forGeneratingStepdoc().generate(steps);
+        configuration.forReportingStepdoc().report(stepdocs);
+    }
 
 }

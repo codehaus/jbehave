@@ -32,29 +32,28 @@ import org.junit.Test;
 import org.mockito.InOrder;
 
 public class ScenarioRunnerBehaviour {
-    
+
     private Map<String, String> tableRow = new HashMap<String, String>();
-    
-	@Test
+
+    @Test
     public void shouldRunStepsInScenariosAndReportResultsToReporter() throws Throwable {
-        ScenarioDefinition scenarioDefinition1 = new ScenarioDefinition("my title 1", asList("failingStep", "successfulStep"));
-        ScenarioDefinition scenarioDefinition2 = new ScenarioDefinition("my title 2", asList("successfulStep"));
-        ScenarioDefinition scenarioDefinition3 = new ScenarioDefinition("my title 3", asList("successfulStep", "pendingStep"));
-        StoryDefinition storyDefinition = new StoryDefinition(new Blurb("my blurb"), scenarioDefinition1, scenarioDefinition2, scenarioDefinition3);
-        
         // Given
+        ScenarioDefinition scenarioDefinition1 = new ScenarioDefinition("my title 1", asList("failingStep",
+                "successfulStep"));
+        ScenarioDefinition scenarioDefinition2 = new ScenarioDefinition("my title 2", asList("successfulStep"));
+        ScenarioDefinition scenarioDefinition3 = new ScenarioDefinition("my title 3", asList("successfulStep",
+                "pendingStep"));
+        StoryDefinition storyDefinition = new StoryDefinition(new Blurb("my blurb"), scenarioDefinition1,
+                scenarioDefinition2, scenarioDefinition3);
         CandidateStep[] someCandidateSteps = new CandidateStep[0];
         Step step = mock(Step.class);
         StepResult result = mock(StepResult.class);
         stub(step.perform()).toReturn(result);
-
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         StepCreator creator = mock(StepCreator.class);
         CandidateSteps mySteps = mock(Steps.class);
-        
         stub(mySteps.getSteps()).toReturn(someCandidateSteps);
         IllegalArgumentException anException = new IllegalArgumentException();
-
         Step pendingStep = mock(Step.class);
         Step successfulStep = mock(Step.class);
         Step failingStep = mock(Step.class);
@@ -62,16 +61,18 @@ public class ScenarioRunnerBehaviour {
         stub(successfulStep.perform()).toReturn(StepResult.success("successfulStep"));
         stub(successfulStep.doNotPerform()).toReturn(StepResult.notPerformed("successfulStep"));
         stub(failingStep.perform()).toReturn(StepResult.failure("failingStep", anException));
+        stub(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).toReturn(
+                new Step[] { failingStep, successfulStep });
+        stub(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).toReturn(new Step[] { successfulStep });
+        stub(creator.createStepsFrom(scenarioDefinition3, tableRow, mySteps)).toReturn(
+                new Step[] { successfulStep, pendingStep });
 
-        stub(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).toReturn(new Step[] {failingStep, successfulStep});
-        stub(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).toReturn(new Step[] {successfulStep});
-        stub(creator.createStepsFrom(scenarioDefinition3, tableRow, mySteps)).toReturn(new Step[] {successfulStep, pendingStep});
-
+        // When
         ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
         ScenarioRunner runner = new ScenarioRunner();
-        
-        runner.run(storyDefinition, configurationWith(reporter, creator, errorStrategy), mySteps);
-        
+        runner.run(storyDefinition, configurationWith(reporter, creator, errorStrategy), false, mySteps);
+
+        // Then
         InOrder inOrder = inOrder(reporter, errorStrategy);
         inOrder.verify(reporter).beforeStory(storyDefinition.getBlurb());
         inOrder.verify(reporter).beforeScenario("my title 1");
@@ -88,17 +89,17 @@ public class ScenarioRunnerBehaviour {
         inOrder.verify(reporter).afterStory();
         inOrder.verify(errorStrategy).handleError(anException);
     }
-    
-	
-	@Test
+
+    @Test
     public void shouldRunGivenScenariosBeforeSteps() throws Throwable {
+        // Given
         ScenarioDefinition scenarioDefinition1 = new ScenarioDefinition("scenario 1", asList("successfulStep"));
         List<String> givenScenarios = asList("/path/to/given/scenario1");
-		ScenarioDefinition scenarioDefinition2 = new ScenarioDefinition("scenario 2", givenScenarios, asList("anotherSuccessfulStep"));
+        ScenarioDefinition scenarioDefinition2 = new ScenarioDefinition("scenario 2", givenScenarios,
+                asList("anotherSuccessfulStep"));
         StoryDefinition storyDefinition1 = new StoryDefinition(new Blurb("story 1"), scenarioDefinition1);
         StoryDefinition storyDefinition2 = new StoryDefinition(new Blurb("story 2"), scenarioDefinition2);
-        
-        // Given
+
         CandidateStep[] someCandidateSteps = new CandidateStep[0];
         Step step = mock(Step.class);
         StepResult result = mock(StepResult.class);
@@ -107,32 +108,33 @@ public class ScenarioRunnerBehaviour {
         ScenarioDefiner scenarioDefiner = mock(ScenarioDefiner.class);
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         StepCreator creator = mock(StepCreator.class);
-        CandidateSteps mySteps = mock(Steps.class);        
+        CandidateSteps mySteps = mock(Steps.class);
         stub(mySteps.getSteps()).toReturn(someCandidateSteps);
         Step successfulStep = mock(Step.class);
         stub(successfulStep.perform()).toReturn(StepResult.success("successfulStep"));
         Step anotherSuccessfulStep = mock(Step.class);
         stub(anotherSuccessfulStep.perform()).toReturn(StepResult.success("anotherSuccessfulStep"));
-
-        stub(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).toReturn(new Step[] {successfulStep});
-        stub(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).toReturn(new Step[] {anotherSuccessfulStep});
-        
+        stub(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).toReturn(new Step[] { successfulStep });
+        stub(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).toReturn(
+                new Step[] { anotherSuccessfulStep });
         stub(scenarioDefiner.loadScenarioDefinitionsFor("/path/to/given/scenario1")).toReturn(storyDefinition1);
-        
         ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
 
+        // When
         ScenarioRunner runner = new ScenarioRunner();
-        
-        runner.run(storyDefinition2, configurationWith(scenarioDefiner, reporter, creator, errorStrategy), mySteps);
-        
+        runner.run(storyDefinition2, configurationWith(scenarioDefiner, reporter, creator, errorStrategy), false,
+                mySteps);
+
+        // Then
         InOrder inOrder = inOrder(reporter);
         inOrder.verify(reporter).beforeStory(storyDefinition2.getBlurb());
         inOrder.verify(reporter).givenScenarios(givenScenarios);
         inOrder.verify(reporter).successful("successfulStep");
         inOrder.verify(reporter).successful("anotherSuccessfulStep");
         inOrder.verify(reporter).afterStory();
+        verify(reporter, never()).beforeStory(storyDefinition1.getBlurb());
     }
-	
+
     @Test
     public void shouldNotPerformStepsAfterStepsWhichShouldNotContinue() throws Throwable {
         // Given
@@ -141,77 +143,71 @@ public class ScenarioRunnerBehaviour {
         Step secondStepPending = mock(Step.class);
         Step thirdStepNormal = mock(Step.class);
         Step fourthStepAlsoPending = mock(Step.class);
-        
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
-        
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableRow), eq(mySteps)))
-                .toReturn(new Step[] {firstStepNormal, secondStepPending, thirdStepNormal, fourthStepAlsoPending});
-        
-        ScenarioRunner runner = new ScenarioRunner();
-        
+        stub(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).toReturn(
+                new Step[] { firstStepNormal, secondStepPending, thirdStepNormal, fourthStepAlsoPending });
         stub(firstStepNormal.perform()).toReturn(StepResult.success("Given I succeed"));
         stub(secondStepPending.perform()).toReturn(StepResult.pending("When I am pending"));
         stub(thirdStepNormal.doNotPerform()).toReturn(StepResult.notPerformed("Then I should not be performed"));
-        stub(fourthStepAlsoPending.doNotPerform()).toReturn(StepResult.notPerformed("Then I should not be performed either"));
+        stub(fourthStepAlsoPending.doNotPerform()).toReturn(
+                StepResult.notPerformed("Then I should not be performed either"));
 
         // When
-        runner.run(new StoryDefinition(new ScenarioDefinition("")), configurationWith(reporter, creator), mySteps);
-        
+        ScenarioRunner runner = new ScenarioRunner();
+        runner.run(new StoryDefinition(new ScenarioDefinition("")), configurationWith(reporter, creator), false,
+                mySteps);
+
         // Then
         verify(firstStepNormal).perform();
         verify(secondStepPending).perform();
         verify(thirdStepNormal).doNotPerform();
         verify(fourthStepAlsoPending).doNotPerform();
-        
+
         verify(reporter).successful("Given I succeed");
         verify(reporter).pending("When I am pending");
         verify(reporter).notPerformed("Then I should not be performed");
         verify(reporter).notPerformed("Then I should not be performed either");
     }
-    
+
     @Test
     public void shouldReportAnyThrowablesThenHandleAfterStoryIsFinished() throws Throwable {
         // Given
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         Step firstStepExceptional = mock(Step.class);
         Step secondStepNotPerformed = mock(Step.class);
-        
         StepResult failure = StepResult.failure("When I fail", new IllegalStateException());
         StepResult notPerformed = StepResult.notPerformed("Then I should not be performed");
         stub(firstStepExceptional.perform()).toReturn(failure);
         stub(secondStepNotPerformed.doNotPerform()).toReturn(notPerformed);
-
+        ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
-        ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
-        
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableRow), eq(mySteps)))
-                .toReturn(new Step[] {firstStepExceptional, secondStepNotPerformed});
-        
-        ScenarioRunner runner = new ScenarioRunner();
-        
+        stub(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).toReturn(
+                new Step[] { firstStepExceptional, secondStepNotPerformed });
+
         // When
-        runner.run(new StoryDefinition(new ScenarioDefinition("")), configurationWith(reporter, creator, errorStrategy), mySteps);
-        
-        // Then scenario should still have finished
+        ScenarioRunner runner = new ScenarioRunner();
+        runner.run(new StoryDefinition(new ScenarioDefinition("")),
+                configurationWith(reporter, creator, errorStrategy), false, mySteps);
+
+        // Then
         verify(firstStepExceptional).perform();
         verify(secondStepNotPerformed).doNotPerform();
 
-        // And results should have been described
         InOrder inOrder = inOrder(reporter, errorStrategy);
-        inOrder.verify(reporter).beforeStory((Blurb)anyObject());
-        inOrder.verify(reporter).beforeScenario((String)anyObject());
+        inOrder.verify(reporter).beforeStory((Blurb) anyObject());
+        inOrder.verify(reporter).beforeScenario((String) anyObject());
         inOrder.verify(reporter).failed("When I fail", failure.getThrowable());
         inOrder.verify(reporter).notPerformed("Then I should not be performed");
         inOrder.verify(reporter).afterScenario();
         inOrder.verify(reporter).afterStory();
         inOrder.verify(errorStrategy).handleError(failure.getThrowable());
     }
-    
-	@Test
-    public void shouldResetStateForEachSetOfSteps() throws Throwable {
 
+    @Test
+    public void shouldResetStateForEachSetOfSteps() throws Throwable {
+        // Given
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         Step pendingStep = mock(Step.class);
         Step secondStep = mock(Step.class);
@@ -219,83 +215,91 @@ public class ScenarioRunnerBehaviour {
         stub(secondStep.perform()).toReturn(StepResult.success("secondStep"));
         StepCreator creator = mock(StepCreator.class);
         CandidateSteps mySteps = mock(Steps.class);
-
         ScenarioDefinition scenario1 = mock(ScenarioDefinition.class);
         ScenarioDefinition scenario2 = mock(ScenarioDefinition.class);
+        stub(creator.createStepsFrom(scenario1, tableRow, mySteps)).toReturn(new Step[] { pendingStep });
+        stub(creator.createStepsFrom(scenario2, tableRow, mySteps)).toReturn(new Step[] { secondStep });
 
-        stub(creator.createStepsFrom(scenario1, tableRow, mySteps))
-                .toReturn(new Step[] {pendingStep});
-        stub(creator.createStepsFrom(scenario2, tableRow, mySteps))
-            .toReturn(new Step[] {secondStep});
-
+        // When
         ScenarioRunner runner = new ScenarioRunner();
-        
-        runner.run(new StoryDefinition(scenario1, scenario2), configurationWith(reporter, creator), mySteps);
-        
+        runner.run(new StoryDefinition(scenario1, scenario2), configurationWith(reporter, creator), false, mySteps);
+
+        // Then
         verify(pendingStep).perform();
         verify(secondStep).perform();
         verify(secondStep, never()).doNotPerform();
     }
-    
-    
+
     @Test
     public void shouldHandlePendingStepsAccordingToStrategy() throws Throwable {
+        // Given
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         Step pendingStep = mock(Step.class);
         StepResult pendingResult = StepResult.pending("My step isn't defined!");
         stub(pendingStep.perform()).toReturn(pendingResult);
-        
         PendingErrorStrategy strategy = mock(PendingErrorStrategy.class);
-        
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
-        
-        stub(creator.createStepsFrom((ScenarioDefinition)anyObject(), eq(tableRow), eq(mySteps)))
-                .toReturn(new Step[] {pendingStep});
-        
-        new ScenarioRunner().run(new StoryDefinition(new ScenarioDefinition("")), configurationWithPendingStrategy(creator, reporter, strategy), mySteps);
-        
+        stub(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).toReturn(
+                new Step[] { pendingStep });
+
+        // When
+        ScenarioRunner runner = new ScenarioRunner();
+        runner.run(new StoryDefinition(new ScenarioDefinition("")), configurationWithPendingStrategy(creator, reporter,
+                strategy), false, mySteps);
+
+        // Then
         verify(strategy).handleError(pendingResult.getThrowable());
     }
-    
-    private Configuration configurationWithPendingStrategy(StepCreator creator,
-            ScenarioReporter reporter, PendingErrorStrategy strategy) {    
-        return configurationWith(new ClasspathScenarioDefiner(), reporter, creator, new ErrorStrategyInWhichWeTrustTheReporter(), strategy);
+
+    private Configuration configurationWithPendingStrategy(StepCreator creator, ScenarioReporter reporter,
+            PendingErrorStrategy strategy) {
+        return configurationWith(new ClasspathScenarioDefiner(), reporter, creator,
+                new ErrorStrategyInWhichWeTrustTheReporter(), strategy);
     }
 
     private Configuration configurationWith(final ScenarioReporter reporter, final StepCreator creator) {
         return configurationWith(reporter, creator, new ErrorStrategyInWhichWeTrustTheReporter());
     }
-    
-    private Configuration configurationWith(ScenarioReporter reporter,
-			StepCreator creator, ErrorStrategy errorStrategy) {
-		return configurationWith(new ClasspathScenarioDefiner(), reporter, creator, errorStrategy);
-	}
 
-    private Configuration configurationWith(ScenarioDefiner definer,
-            final ScenarioReporter reporter, final StepCreator creator, final ErrorStrategy errorStrategy) {
+    private Configuration configurationWith(ScenarioReporter reporter, StepCreator creator, ErrorStrategy errorStrategy) {
+        return configurationWith(new ClasspathScenarioDefiner(), reporter, creator, errorStrategy);
+    }
+
+    private Configuration configurationWith(ScenarioDefiner definer, final ScenarioReporter reporter,
+            final StepCreator creator, final ErrorStrategy errorStrategy) {
         return configurationWith(definer, reporter, creator, errorStrategy, PendingErrorStrategy.PASSING);
     }
-    
-    private Configuration configurationWith(
-            final ScenarioDefiner definer, final ScenarioReporter reporter,
-            final StepCreator creator,
-            final ErrorStrategy errorStrategy,
-            final PendingErrorStrategy pendingStrategy) {
-        
-        return new PropertyBasedConfiguration() {        	
+
+    private Configuration configurationWith(final ScenarioDefiner definer, final ScenarioReporter reporter,
+            final StepCreator creator, final ErrorStrategy errorStrategy, final PendingErrorStrategy pendingStrategy) {
+
+        return new PropertyBasedConfiguration() {
             @Override
-			public ScenarioDefiner forDefiningScenarios() { return definer; }
-			@Override
-            public StepCreator forCreatingSteps() { return creator; }
+            public ScenarioDefiner forDefiningScenarios() {
+                return definer;
+            }
+
             @Override
-            public ScenarioReporter forReportingScenarios() { return reporter; }
+            public StepCreator forCreatingSteps() {
+                return creator;
+            }
+
             @Override
-            public ErrorStrategy forHandlingErrors() { return errorStrategy; }
+            public ScenarioReporter forReportingScenarios() {
+                return reporter;
+            }
+
             @Override
-            public PendingErrorStrategy forPendingSteps() { return pendingStrategy; }
+            public ErrorStrategy forHandlingErrors() {
+                return errorStrategy;
+            }
+
+            @Override
+            public PendingErrorStrategy forPendingSteps() {
+                return pendingStrategy;
+            }
         };
     }
 
-    
 }
