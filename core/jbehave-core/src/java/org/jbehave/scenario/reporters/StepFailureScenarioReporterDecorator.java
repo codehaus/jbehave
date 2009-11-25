@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.errors.StepFailure;
 
 /**
@@ -46,6 +47,11 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.beforeStory(blurb);
 	}
 
+    public void beforeStory(StoryDefinition story) {
+        failure = null;
+        delegate.beforeStory(story);
+    }
+
 	public void failed(String step, Throwable cause) {
 		failure = new StepFailure(step, cause);
 		delegate.failed(step, failure);
@@ -74,5 +80,6 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 	public void examplesTableRow(Map<String, String> tableRow) {
 		delegate.examplesTableRow(tableRow);
 	}
+
 
 }
