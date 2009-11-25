@@ -9,6 +9,7 @@ public class StoryDefinition {
 
     private final Blurb blurb;
     private final List<ScenarioDefinition> scenarioDefinitions;
+    private String name = "Story";
 
     public StoryDefinition(ScenarioDefinition... scenarioDefinitions) {
         this(asList(scenarioDefinitions));
@@ -33,5 +34,13 @@ public class StoryDefinition {
 
     public List<ScenarioDefinition> getScenarios() {
         return unmodifiableList(scenarioDefinitions);
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public void namedAs(String name){
+        this.name = name;
     }
 }
