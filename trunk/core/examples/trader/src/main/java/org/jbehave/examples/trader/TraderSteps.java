@@ -1,8 +1,14 @@
 package org.jbehave.examples.trader;
 
 import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
@@ -15,6 +21,7 @@ import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.steps.ParameterConverters;
 import org.jbehave.scenario.steps.SilentStepMonitor;
@@ -27,6 +34,8 @@ public class TraderSteps extends Steps {
 	private static final StepsConfiguration configuration = new StepsConfiguration();
     private Stock stock;
     private Trader trader;
+    private List<Trader> traders = new ArrayList<Trader>();
+    private List<Trader> searchedTraders;
 
     public TraderSteps() {
         super(configuration);
@@ -46,6 +55,41 @@ public class TraderSteps extends Steps {
         this.trader = trader;
     }
 
+    @Given("the traders: %tradersTable")
+    public void theTraders(String tradersTable) {
+        traders.clear();
+        traders.addAll(parseTraders(tradersTable));
+    }
+
+    @When("a wildcard search \"%regex\" is executed")
+    public void aWildcardSearchIsExecuted(String regex) {
+        searchedTraders = new ArrayList<Trader>();
+        for (Trader trader : traders) {
+            if ( trader.getName().matches(regex) ){
+                searchedTraders.add(trader);
+            }
+        }
+    }
+    
+    @Then("the traders returned are: %tradersTable")
+    public void theTradersReturnedAre(String tradersTable) {
+        List<Trader> expected = parseTraders(tradersTable);
+        assertEquals(expected.toString(), searchedTraders.toString());
+    }
+
+    private List<Trader> parseTraders(String tradersTable) {
+        ExamplesTable table = new ExamplesTable(tradersTable);
+        List<Trader> traders = new ArrayList<Trader>();
+        List<Map<String, String>> rows = table.getRows();
+        for (Map<String, String> row : rows) {
+            String name = row.get("name");
+            String rank = row.get("rank");
+            traders.add(new Trader(name, rank));
+        }
+        Collections.sort(traders);
+        return traders;
+    }
+    
     @Given("a stock of <symbol> and a <threshold>")
     public void aStockWithTableParams(@Named("symbol") String symbol, @Named("threshold") double threshold) {
         stock = new Stock(symbol, threshold);
