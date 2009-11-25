@@ -11,7 +11,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
+import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.steps.ParameterConverters.ExamplesTableConverter;
 import org.jbehave.scenario.steps.ParameterConverters.NumberListConverter;
 import org.junit.Test;
 
@@ -66,5 +69,23 @@ public class ParameterConvertersBehaviour {
 		ensureThat(list.get(2), equalTo(numberFormat.parse("6.1f")));
 		ensureThat(list.get(3), equalTo(numberFormat.parse("8.00")));
 	}
-
+	
+    @Test
+    public void shouldConvertMultilineTableParameter()
+            throws ParseException, IntrospectionException {
+        ParameterConverters converters = new ParameterConverters(
+                new ExamplesTableConverter());
+        Type type = SomeSteps.methodFor("aMethodWithExamplesTable")
+                .getGenericParameterTypes()[0];
+        ExamplesTable table = (ExamplesTable) converters.convert(
+                "|col1|col2|\n|row11|row12|\n|row21|row22|\n", type);
+        ensureThat(table.getRowCount(), equalTo(2));
+        Map<String, String> row1 = table.getRow(0);
+        ensureThat(row1.get("col1"), equalTo("row11"));
+        ensureThat(row1.get("col2"), equalTo("row12"));
+        Map<String, String> row2 = table.getRow(1);
+        ensureThat(row2.get("col1"), equalTo("row21"));
+        ensureThat(row2.get("col2"), equalTo("row22"));
+    }
+	
 }

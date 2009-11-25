@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jbehave.scenario.definition.ExamplesTable;
+
 /**
  * Facade responsible for converting parameter values to Java objects.
  * 
@@ -24,7 +26,7 @@ public class ParameterConverters {
 	private static final String COMMA = ",";
 	private static final List<ParameterConverter> DEFAULT_CONVERTERS = asList(
 			new NumberConverter(), new NumberListConverter(),
-			new StringListConverter());
+			new StringListConverter(), new ExamplesTableConverter());
 	private final StepMonitor monitor;
 	private final List<ParameterConverter> converters = new ArrayList<ParameterConverter>();
 
@@ -190,4 +192,18 @@ public class ParameterConverters {
 		return trimmed;
 	}
 
+    public static class ExamplesTableConverter implements ParameterConverter {
+        public boolean accept(Type type) {
+            if (type instanceof Class<?>) {
+                return ExamplesTable.class.isAssignableFrom((Class<?>) type);
+            }
+            return false;
+        }
+
+        public Object convertValue(String value, Type type) {
+            return new ExamplesTable(value);
+        }
+
+    }
+	
 }

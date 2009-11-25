@@ -56,9 +56,9 @@ public class TraderSteps extends Steps {
     }
 
     @Given("the traders: %tradersTable")
-    public void theTraders(String tradersTable) {
+    public void theTraders(ExamplesTable tradersTable) {
         traders.clear();
-        traders.addAll(parseTraders(tradersTable));
+        traders.addAll(toTraders(tradersTable));
     }
 
     @When("a wildcard search \"%regex\" is executed")
@@ -72,13 +72,12 @@ public class TraderSteps extends Steps {
     }
     
     @Then("the traders returned are: %tradersTable")
-    public void theTradersReturnedAre(String tradersTable) {
-        List<Trader> expected = parseTraders(tradersTable);
+    public void theTradersReturnedAre(ExamplesTable tradersTable) {
+        List<Trader> expected = toTraders(tradersTable);
         assertEquals(expected.toString(), searchedTraders.toString());
     }
 
-    private List<Trader> parseTraders(String tradersTable) {
-        ExamplesTable table = new ExamplesTable(tradersTable);
+    private List<Trader> toTraders(ExamplesTable table) {
         List<Trader> traders = new ArrayList<Trader>();
         List<Map<String, String>> rows = table.getRows();
         for (Map<String, String> row : rows) {
