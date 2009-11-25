@@ -6,6 +6,9 @@ import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
+import org.jbehave.scenario.reporters.CollectingScenarioReporter;
+import org.jbehave.scenario.reporters.FilePrintStreamFactory;
+import org.jbehave.scenario.reporters.HtmlPrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 
@@ -21,7 +24,7 @@ public class TraderScenario extends JUnitScenario {
 
 			@Override
 			public ScenarioReporter forReportingScenarios() {
-				return new PrintStreamScenarioReporter();
+				return new CollectingScenarioReporter(new PrintStreamScenarioReporter(), new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory().createPrintStream("index")));
 			}
             
         }, new TraderSteps()); 

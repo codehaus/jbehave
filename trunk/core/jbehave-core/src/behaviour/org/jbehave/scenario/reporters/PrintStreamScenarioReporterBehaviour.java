@@ -51,13 +51,13 @@ public class PrintStreamScenarioReporterBehaviour {
         reporter.afterScenario();
         
         ensureThat(out.toString(), equalTo(
-                "Scenario: A title" + NL + NL +
+                "Scenario: A title" + NL +
                 "Given I have a balance of $50" + NL +
                 "When I request $20" + NL +
                 "When I ask Liz for a loan of $100 (FAILED)" + NL +
                 "Then I should have a balance of $30 (PENDING)" + NL +
-                "Then I should have $20 (NOT PERFORMED)" + NL + NL +
-                stackTrace + NL));
+                "Then I should have $20 (NOT PERFORMED)" + NL +
+                NL + stackTrace + NL));
         
         out = new ByteArrayOutputStream();
         reporter = new PrintStreamScenarioReporter(new PrintStream(out));
@@ -78,9 +78,9 @@ public class PrintStreamScenarioReporterBehaviour {
         IllegalAccessException exception = new IllegalAccessException("Leave my money alone!");
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Properties patterns = new Properties();
-        patterns.setProperty("pending", "{0} - {1} - need to implement me");
-        patterns.setProperty("failed", "{0} <<< {1}");
-        patterns.setProperty("notPerformed", "{0} : {1} (because of previous pending)");
+        patterns.setProperty("pending", "{0} - {1} - need to implement me\n");
+        patterns.setProperty("failed", "{0} <<< {1}\n");
+        patterns.setProperty("notPerformed", "{0} : {1} (because of previous pending)\n");
 
 		ScenarioReporter reporter = new PrintStreamScenarioReporter(new PrintStream(out),  patterns, new I18nKeyWords(), true);
         reporter.successful("Given I have a balance of $50");

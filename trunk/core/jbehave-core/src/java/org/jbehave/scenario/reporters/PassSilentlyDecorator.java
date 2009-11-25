@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.definition.StoryDefinition;
 
 /**
  * Swallows the reports from all scenarios that pass, providing output only for
@@ -27,6 +28,10 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         afterStoryState.report();
     }
 
+    public void beforeStory(StoryDefinition story) {
+        beforeStory(story.getBlurb());
+    }
+    
     public void beforeStory(final Blurb blurb) {
         beforeStoryState = new State() {
             public void report() {

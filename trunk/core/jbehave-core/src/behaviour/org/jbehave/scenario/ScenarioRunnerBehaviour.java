@@ -74,7 +74,7 @@ public class ScenarioRunnerBehaviour {
 
         // Then
         InOrder inOrder = inOrder(reporter, errorStrategy);
-        inOrder.verify(reporter).beforeStory(storyDefinition.getBlurb());
+        inOrder.verify(reporter).beforeStory(storyDefinition);
         inOrder.verify(reporter).beforeScenario("my title 1");
         inOrder.verify(reporter).failed("failingStep", anException);
         inOrder.verify(reporter).notPerformed("successfulStep");
@@ -127,12 +127,12 @@ public class ScenarioRunnerBehaviour {
 
         // Then
         InOrder inOrder = inOrder(reporter);
-        inOrder.verify(reporter).beforeStory(storyDefinition2.getBlurb());
+        inOrder.verify(reporter).beforeStory(storyDefinition2);
         inOrder.verify(reporter).givenScenarios(givenScenarios);
         inOrder.verify(reporter).successful("successfulStep");
         inOrder.verify(reporter).successful("anotherSuccessfulStep");
         inOrder.verify(reporter).afterStory();
-        verify(reporter, never()).beforeStory(storyDefinition1.getBlurb());
+        verify(reporter, never()).beforeStory(storyDefinition1);
     }
 
     @Test
@@ -196,7 +196,7 @@ public class ScenarioRunnerBehaviour {
         verify(secondStepNotPerformed).doNotPerform();
 
         InOrder inOrder = inOrder(reporter, errorStrategy);
-        inOrder.verify(reporter).beforeStory((Blurb) anyObject());
+        inOrder.verify(reporter).beforeStory((StoryDefinition) anyObject());
         inOrder.verify(reporter).beforeScenario((String) anyObject());
         inOrder.verify(reporter).failed("When I fail", failure.getThrowable());
         inOrder.verify(reporter).notPerformed("Then I should not be performed");

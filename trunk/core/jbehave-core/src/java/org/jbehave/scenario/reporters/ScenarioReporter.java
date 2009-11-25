@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.definition.StoryDefinition;
 
 /**
  * Allows the runner to report the state of running scenarios
@@ -14,6 +15,11 @@ import org.jbehave.scenario.definition.ExamplesTable;
  */
 public interface ScenarioReporter {
 
+    void beforeStory(StoryDefinition story);
+
+    /**
+     * @deprecated Use beforeStory(StoryDefinition)
+     */
     void beforeStory(Blurb blurb);
 
     void afterStory();

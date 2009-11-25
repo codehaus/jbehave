@@ -53,7 +53,7 @@ public class ScenarioRunner {
         throwable = null;
         
         if ( !embeddedStory ){
-            reporter.beforeStory(story.getBlurb());            
+            reporter.beforeStory(story);            
         }
         for (ScenarioDefinition scenario : story.getScenarios()) {
     		reporter.beforeScenario(scenario.getTitle());
