@@ -1,12 +1,13 @@
 package org.jbehave.scenario;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
-import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.errors.ErrorStrategy;
 import org.jbehave.scenario.errors.PendingError;
 import org.jbehave.scenario.errors.PendingErrorStrategy;
@@ -33,11 +34,13 @@ public class ScenarioRunner {
 
     public void run(Class<? extends RunnableScenario> scenarioClass, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
 		StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioClass);
+		story.namedAs(scenarioClass.getSimpleName());
 		run(story, configuration, candidateSteps);
     }
 
     public void run(String scenarioPath, Configuration configuration, boolean embeddedStory, CandidateSteps... candidateSteps) throws Throwable {
 		StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioPath);
+        story.namedAs(new File(scenarioPath).getName());
 		run(story, configuration, embeddedStory, candidateSteps);
     }    
 

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jbehave.scenario.definition.KeyWords;
-import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.parser.ScenarioNameResolver;
 import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.Stepdoc;
@@ -67,9 +66,8 @@ public abstract class AbstractScenario implements RunnableScenario {
     }
 
     public void runScenario() throws Throwable {
-        StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioClass);
         CandidateSteps[] steps = candidateSteps.toArray(new CandidateSteps[candidateSteps.size()]);
-        scenarioRunner.run(story, configuration, false, steps);
+        scenarioRunner.run(scenarioClass, configuration, steps);
     }
 
     public void addSteps(CandidateSteps... steps) {

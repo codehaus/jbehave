@@ -28,8 +28,13 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         afterStoryState.report();
     }
 
-    public void beforeStory(StoryDefinition story) {
-        beforeStory(story.getBlurb());
+    public void beforeStory(final StoryDefinition story) {
+        beforeStoryState = new State() {
+            public void report() {
+                delegate.beforeStory(story);
+                beforeStoryState = State.SILENT;
+            }
+        };
     }
     
     public void beforeStory(final Blurb blurb) {

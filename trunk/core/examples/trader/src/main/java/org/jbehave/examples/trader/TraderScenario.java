@@ -24,7 +24,7 @@ public class TraderScenario extends JUnitScenario {
 
 			@Override
 			public ScenarioReporter forReportingScenarios() {
-				return new CollectingScenarioReporter(new PrintStreamScenarioReporter(), new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory().createPrintStream("index")));
+				return new CollectingScenarioReporter(new PrintStreamScenarioReporter(), new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory()));
 			}
             
         }, new TraderSteps()); 

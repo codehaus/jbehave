@@ -4,43 +4,37 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
-import org.jbehave.scenario.RunnableScenario;
-
 /**
- * Creates {@link PrintStream} instance that write to a file. It also provides useful
- * defaults for reporting scenarios.
+ * Creates {@link PrintStream} instances that write to a file. It also provides useful
+ * defaults for the file directory and the extension.
  */
-public class FilePrintStreamFactory {
+public class FilePrintStreamFactory implements PrintStreamFactory {
 
-    private static final File DIR = new File("target", "scenario-reports");
+    private static final File DEFAULT_DIRECTORY = new File("target", "scenario-reports");
     private static final String HTML = "html";
-    private final File dir;
+    private final File directory;
     private final String extension;
 
     public FilePrintStreamFactory() {
-        this(DIR, HTML);
+        this(DEFAULT_DIRECTORY, HTML);
     }
 
-    public FilePrintStreamFactory(File dir, String extension) {
-        this.dir = dir;
+    public FilePrintStreamFactory(File directory, String extension) {
+        this.directory = directory;
         this.extension = extension;
     }
 
-    public PrintStream createPrintStream(Class<? extends RunnableScenario> scenarioClass) {
-       return createPrintStream(scenarioClass.getSimpleName());
-    }
-
-    public PrintStream createPrintStream(String scenarioName) {
+    public PrintStream createPrintStream(String storyName) {
         try {
-            return new PrintStream(streamFile(dir, scenarioName, extension));
+            return new PrintStream(fileFor(directory, storyName, extension));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static File streamFile(File dir, String fileName, String extension) {
+    private File fileFor(File dir, String name, String ext) {
         dir.mkdirs();
-        return new File(dir, fileName + "." + extension);
+        return new File(dir, name + "." + ext);
     }
 
 }

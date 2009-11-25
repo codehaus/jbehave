@@ -2,15 +2,12 @@ package org.jbehave.scenario.reporters;
 
 import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
-import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
-import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.StoryDefinition;
 
 /**
@@ -26,25 +23,10 @@ import org.jbehave.scenario.definition.StoryDefinition;
  */
 public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter {
 
-    public HtmlPrintStreamScenarioReporter() {
-        super();
-    }
+    private final PrintStreamFactory printStreamFactory;
 
-    public HtmlPrintStreamScenarioReporter(KeyWords keywords) {
-        super(keywords);
-    }
-
-    public HtmlPrintStreamScenarioReporter(PrintStream output) {
-        super(output);
-    }
-
-    public HtmlPrintStreamScenarioReporter(Properties outputPatterns) {
-        super(outputPatterns);
-    }
-
-    public HtmlPrintStreamScenarioReporter(PrintStream output, Properties outputPatterns, KeyWords keywords,
-            boolean reportErrors) {
-        super(output, outputPatterns, keywords, reportErrors);
+    public HtmlPrintStreamScenarioReporter(PrintStreamFactory printStreamFactory) {
+        this.printStreamFactory = printStreamFactory;
     }
 
     public void successful(String step) {
@@ -69,6 +51,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     public void beforeStory(StoryDefinition story) {
+        usePrintStream(printStreamFactory.createPrintStream(story.getName()));
         beforeStory(story.getBlurb());
     }
 

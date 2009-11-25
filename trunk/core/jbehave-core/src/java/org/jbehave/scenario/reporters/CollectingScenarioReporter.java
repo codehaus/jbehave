@@ -58,7 +58,9 @@ public class CollectingScenarioReporter implements ScenarioReporter {
     }
 
     public void beforeStory(StoryDefinition story) {
-        beforeStory(story.getBlurb());
+        for (ScenarioReporter reporter : reporters) {
+            reporter.beforeStory(story);
+        }
     }
     
     public void beforeStory(Blurb blurb) {

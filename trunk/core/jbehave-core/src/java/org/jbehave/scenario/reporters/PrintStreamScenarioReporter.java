@@ -54,7 +54,7 @@ import org.jbehave.scenario.i18n.I18nKeyWords;
  */
 public class PrintStreamScenarioReporter implements ScenarioReporter {
 
-    protected final PrintStream output;
+    protected PrintStream output;
     protected final Properties outputPatterns;
     protected final KeyWords keywords;
     protected final boolean reportErrors;
@@ -168,6 +168,15 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
             return outputPatterns.getProperty(key);
         }
         return defaultPattern;
+    }
+    
+    /**
+     * Changes print stream used for output
+     * 
+     * @param output the new PrintStream to use
+     */
+    protected void usePrintStream(PrintStream output){
+        this.output = output;
     }
 
 }
