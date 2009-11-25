@@ -48,24 +48,23 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     public void successful(String step) {
-        String defaultPattern = "<li class=\"step\"><span class=\"step.successful\"><span class=\"step.text\">{0}</span></span></li>\n";
+        String defaultPattern = "<div class=\"step.successful\">{0}</div>\n";
         output.print(format("successful.html", defaultPattern, escapeHtml(step)));
     }
 
     public void pending(String step) {
-        String defaultPattern = "<li class=\"step\"><span class=\"step.pending\"><span class=\"step.text\">{0}</span> - {1}</span></li>\n";
+        String defaultPattern = "<div class=\"step.pending\">{0}<span class=\"keyword.pending\">({1})</span></div>\n";
         output.print(format("pending.html", defaultPattern, escapeHtml(step), keywords.pending()));
     }
 
     public void notPerformed(String step) {
-        String defaultPattern = "<li class=\"step\"><span class=\"step.notPerformed\"><span class=\"step.text\">{0}</span> - {1}</span></li>\n";
-        output.print(format("pending.html", defaultPattern, escapeHtml(step), keywords.notPerformed()));
+        String defaultPattern = "<div class=\"step.notPerformed\">{0}<span class=\"keyword.notPerformed\">({1})</span></div>\n";
+        output.print(format("notPerformed.html", defaultPattern, escapeHtml(step), keywords.notPerformed()));
     }
 
     public void failed(String step, Throwable cause) {
         this.cause = cause;
-        String defaultPattern = "<li class=\"step\"><span class=\"step.failed\">"
-                + "<span class=\"step.text\">{0}</span> - {1} </span>\n";
+        String defaultPattern = "<div class=\"step.failed\">{0}<span class=\"keyword.failed\">({1})</span></div>\n";
         output.print(format("failed.html", defaultPattern, escapeHtml(step), keywords.failed()));
     }
 
@@ -74,22 +73,22 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     public void beforeStory(Blurb blurb) {
-        String defaultPattern = "<html>\n<head>\n<title>{0}</title>\n</head>\n<body>\n<h1 class=\"story\">{0}</h1>\n";
+        String defaultPattern = "<div class=\"story\">\n<h1>{0}</h1>\n";
         output.print(format("beforeStory.html", defaultPattern, blurb.asString()));
     }
 
+    public void afterStory() {
+        output.print(format("afterStory.html", "</div>\n"));
+    }
+    
     public void beforeScenario(String title) {
         cause = null;
-        String defaultPattern = "<h2>{0} {1}</h2>\n<ol title=\"{1}\" class=\"scenario\">\n";
+        String defaultPattern = "<div class=\"scenario\">\n<h2>{0} {1}</h2>\n";
         output.print(format("beforeScenario.html", defaultPattern, keywords.scenario(), escapeHtml(title)));
     }
 
     public void afterScenario() {
-        output.print(format("afterScenario.html", "</ol>\n"));
-    }
-
-    public void afterStory() {
-        output.print(format("afterStory.html", "<body>\n</html>\n"));
+        output.print(format("afterScenario.html", "</div>\n"));
     }
 
     public void givenScenarios(List<String> givenScenarios) {
