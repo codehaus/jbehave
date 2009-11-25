@@ -15,15 +15,20 @@ import org.jbehave.scenario.definition.StoryDefinition;
  */
 public interface ScenarioReporter {
 
-    void beforeStory(StoryDefinition story);
+    void beforeStory(StoryDefinition story, boolean embeddedStory);
 
     /**
-     * @deprecated Use beforeStory(StoryDefinition)
+     * @deprecated Use beforeStory(StoryDefinition, boolean)
      */
     void beforeStory(Blurb blurb);
 
+    void afterStory(boolean embeddedStory);
+    
+    /**
+     * @deprecated Use afterStory(boolean)
+     */
     void afterStory();
-
+    
     void beforeScenario(String title);
     
     void afterScenario();

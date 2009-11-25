@@ -114,11 +114,15 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         output.print(format("beforeScenario", "{0} {1}\n", keywords.scenario(), title));
     }
 
+    public void afterStory(boolean embeddedStory) {
+        output.print(format("afterStory", "\n"));
+    }
+
     public void afterStory() {
         output.print(format("afterStory", "\n"));
     }
 
-    public void beforeStory(StoryDefinition story) {
+    public void beforeStory(StoryDefinition story, boolean embeddedStory) {
         beforeStory(story.getBlurb());
     }
 

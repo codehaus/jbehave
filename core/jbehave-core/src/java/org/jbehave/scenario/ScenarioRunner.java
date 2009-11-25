@@ -55,9 +55,7 @@ public class ScenarioRunner {
         currentStrategy = ErrorStrategy.SILENT;
         throwable = null;
         
-        if ( !embeddedStory ){
-            reporter.beforeStory(story);            
-        }
+        reporter.beforeStory(story, embeddedStory);            
         for (ScenarioDefinition scenario : story.getScenarios()) {
     		reporter.beforeScenario(scenario.getTitle());
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
@@ -68,9 +66,7 @@ public class ScenarioRunner {
         	}
     		reporter.afterScenario();
         }
-        if ( !embeddedStory ){
-            reporter.afterStory();            
-        }
+        reporter.afterStory(embeddedStory);            
         currentStrategy.handleError(throwable);
     }
 

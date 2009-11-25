@@ -45,6 +45,12 @@ public class CollectingScenarioReporter implements ScenarioReporter {
         }
     }
 
+    public void afterStory(boolean embeddedStory) {
+        for (ScenarioReporter reporter : reporters) {
+            reporter.afterStory(embeddedStory);
+        }
+    }
+
     public void afterStory() {
         for (ScenarioReporter reporter : reporters) {
             reporter.afterStory();
@@ -57,9 +63,9 @@ public class CollectingScenarioReporter implements ScenarioReporter {
         }
     }
 
-    public void beforeStory(StoryDefinition story) {
+    public void beforeStory(StoryDefinition story, boolean embeddedStory) {
         for (ScenarioReporter reporter : reporters) {
-            reporter.beforeStory(story);
+            reporter.beforeStory(story, embeddedStory);
         }
     }
     
