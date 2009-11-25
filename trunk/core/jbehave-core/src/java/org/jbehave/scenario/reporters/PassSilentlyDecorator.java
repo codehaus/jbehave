@@ -19,19 +19,25 @@ public class PassSilentlyDecorator implements ScenarioReporter {
     private State scenarioState = State.SILENT;
     private State beforeStoryState = State.SILENT;
     private State afterStoryState = State.SILENT;
+    private boolean embeddedStory;
 
     public PassSilentlyDecorator(ScenarioReporter delegate) {
         this.delegate = delegate;
+    }
+
+    public void afterStory(boolean embeddedStory) {
+        afterStoryState.report();
     }
 
     public void afterStory() {
         afterStoryState.report();
     }
 
-    public void beforeStory(final StoryDefinition story) {
+    public void beforeStory(final StoryDefinition story, final boolean embeddedStory) {
+        this.embeddedStory = embeddedStory;
         beforeStoryState = new State() {
             public void report() {
-                delegate.beforeStory(story);
+                delegate.beforeStory(story, embeddedStory);
                 beforeStoryState = State.SILENT;
             }
         };
@@ -81,7 +87,7 @@ public class PassSilentlyDecorator implements ScenarioReporter {
                 }
                 afterStoryState = new State() {
                     public void report() {
-                        delegate.afterStory();
+                        delegate.afterStory(embeddedStory);
                         afterStoryState = State.SILENT;
                     }
                 };

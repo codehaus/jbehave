@@ -27,6 +27,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
 
     public HtmlPrintStreamScenarioReporter(PrintStreamFactory printStreamFactory) {
         this.printStreamFactory = printStreamFactory;
+        usePrintStream(printStreamFactory.createPrintStream("Story"));
     }
 
     public void successful(String step) {
@@ -50,7 +51,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
         output.print(format("failed.html", defaultPattern, escapeHtml(step), keywords.failed()));
     }
 
-    public void beforeStory(StoryDefinition story) {
+    public void beforeStory(StoryDefinition story, boolean embeddedStory) {
         usePrintStream(printStreamFactory.createPrintStream(story.getName()));
         beforeStory(story.getBlurb());
     }
@@ -60,7 +61,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
         output.print(format("beforeStory.html", defaultPattern, blurb.asString()));
     }
 
-    public void afterStory() {
+    public void afterStory(boolean embeddedStory) {
         output.print(format("afterStory.html", "</div>\n"));
     }
     

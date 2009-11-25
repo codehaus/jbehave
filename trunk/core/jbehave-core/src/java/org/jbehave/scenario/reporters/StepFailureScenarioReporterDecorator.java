@@ -31,13 +31,20 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.afterScenario();
 	}
 
-	public void afterStory() {
-		delegate.afterStory();
+	public void afterStory(boolean embeddedStory) {
+		delegate.afterStory(embeddedStory);
 		if (failure != null) {
 			throw failure;
 		}
 	}
 
+    public void afterStory() {
+        delegate.afterStory();
+        if (failure != null) {
+            throw failure;
+        }
+    }
+	
 	public void beforeScenario(String title) {
 		delegate.beforeScenario(title);
 	}
@@ -47,9 +54,9 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.beforeStory(blurb);
 	}
 
-    public void beforeStory(StoryDefinition story) {
+    public void beforeStory(StoryDefinition story, boolean embeddedStory) {
         failure = null;
-        delegate.beforeStory(story);
+        delegate.beforeStory(story, embeddedStory);
     }
 
 	public void failed(String step, Throwable cause) {

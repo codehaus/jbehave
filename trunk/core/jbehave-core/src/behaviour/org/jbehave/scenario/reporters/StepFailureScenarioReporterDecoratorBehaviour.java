@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.jbehave.scenario.definition.Blurb;
+import org.jbehave.scenario.definition.StoryDefinition;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -31,27 +31,28 @@ public class StepFailureScenarioReporterDecoratorBehaviour {
 	@Test
 	public void shouldJustDelegateAllReportingMethodsOtherThanFailure() {
 		// Given
-		Blurb blurb = new Blurb("Some blurb");
-
-		// When
-		decorator.beforeStory(blurb);
+	    StoryDefinition story = new StoryDefinition();		
+		boolean embeddedStory = false;
+		
+        // When
+		decorator.beforeStory(story, embeddedStory);
 		decorator.beforeScenario("My scenario 1");
 		decorator.successful("Given step 1.1");
 		decorator.pending("When step 1.2");
 		decorator.notPerformed("Then step 1.3");
 		decorator.afterScenario();
-		decorator.afterStory();
+		decorator.afterStory(embeddedStory);
 
 		// Then
 		InOrder inOrder = inOrder(delegate);
 
-		inOrder.verify(delegate).beforeStory(blurb);
+		inOrder.verify(delegate).beforeStory(story, embeddedStory);
 		inOrder.verify(delegate).beforeScenario("My scenario 1");
 		inOrder.verify(delegate).successful("Given step 1.1");
 		inOrder.verify(delegate).pending("When step 1.2");
 		inOrder.verify(delegate).notPerformed("Then step 1.3");
 		inOrder.verify(delegate).afterScenario();
-		inOrder.verify(delegate).afterStory();
+		inOrder.verify(delegate).afterStory(embeddedStory);
 	}
 
 	@Test
@@ -76,10 +77,11 @@ public class StepFailureScenarioReporterDecoratorBehaviour {
 		Throwable t = new IllegalArgumentException("World Peace for everyone");
 		String stepAsString = "When I have a bad idea";
 		decorator.failed(stepAsString, t);
+        boolean embeddedStory = false;
 
 		// When
 		try {
-			decorator.afterStory();
+            decorator.afterStory(embeddedStory);
 			fail("Should have rethrown exception");
 		} catch (Throwable rethrown) {
 			// Then

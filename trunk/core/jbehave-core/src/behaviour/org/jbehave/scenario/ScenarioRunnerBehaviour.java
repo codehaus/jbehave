@@ -45,6 +45,8 @@ public class ScenarioRunnerBehaviour {
                 "pendingStep"));
         StoryDefinition storyDefinition = new StoryDefinition(new Blurb("my blurb"), scenarioDefinition1,
                 scenarioDefinition2, scenarioDefinition3);
+        boolean embeddedStory = false;
+
         CandidateStep[] someCandidateSteps = new CandidateStep[0];
         Step step = mock(Step.class);
         StepResult result = mock(StepResult.class);
@@ -74,7 +76,7 @@ public class ScenarioRunnerBehaviour {
 
         // Then
         InOrder inOrder = inOrder(reporter, errorStrategy);
-        inOrder.verify(reporter).beforeStory(storyDefinition);
+        inOrder.verify(reporter).beforeStory(storyDefinition, embeddedStory);
         inOrder.verify(reporter).beforeScenario("my title 1");
         inOrder.verify(reporter).failed("failingStep", anException);
         inOrder.verify(reporter).notPerformed("successfulStep");
@@ -86,7 +88,7 @@ public class ScenarioRunnerBehaviour {
         inOrder.verify(reporter).successful("successfulStep");
         inOrder.verify(reporter).pending("pendingStep");
         inOrder.verify(reporter).afterScenario();
-        inOrder.verify(reporter).afterStory();
+        inOrder.verify(reporter).afterStory(embeddedStory);
         inOrder.verify(errorStrategy).handleError(anException);
     }
 
@@ -99,6 +101,7 @@ public class ScenarioRunnerBehaviour {
                 asList("anotherSuccessfulStep"));
         StoryDefinition storyDefinition1 = new StoryDefinition(new Blurb("story 1"), scenarioDefinition1);
         StoryDefinition storyDefinition2 = new StoryDefinition(new Blurb("story 2"), scenarioDefinition2);
+        boolean embeddedStory = false;
 
         CandidateStep[] someCandidateSteps = new CandidateStep[0];
         Step step = mock(Step.class);
@@ -127,12 +130,12 @@ public class ScenarioRunnerBehaviour {
 
         // Then
         InOrder inOrder = inOrder(reporter);
-        inOrder.verify(reporter).beforeStory(storyDefinition2);
+        inOrder.verify(reporter).beforeStory(storyDefinition2, embeddedStory);
         inOrder.verify(reporter).givenScenarios(givenScenarios);
         inOrder.verify(reporter).successful("successfulStep");
         inOrder.verify(reporter).successful("anotherSuccessfulStep");
-        inOrder.verify(reporter).afterStory();
-        verify(reporter, never()).beforeStory(storyDefinition1);
+        inOrder.verify(reporter).afterStory(embeddedStory);
+        verify(reporter, never()).beforeStory(storyDefinition1, embeddedStory);
     }
 
     @Test
@@ -185,23 +188,24 @@ public class ScenarioRunnerBehaviour {
         Steps mySteps = mock(Steps.class);
         stub(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).toReturn(
                 new Step[] { firstStepExceptional, secondStepNotPerformed });
+        StoryDefinition story = new StoryDefinition(new ScenarioDefinition(""));
+        boolean embeddedStory = false;
 
         // When
         ScenarioRunner runner = new ScenarioRunner();
-        runner.run(new StoryDefinition(new ScenarioDefinition("")),
-                configurationWith(reporter, creator, errorStrategy), false, mySteps);
+        runner.run(story, configurationWith(reporter, creator, errorStrategy), false, mySteps);
 
         // Then
         verify(firstStepExceptional).perform();
         verify(secondStepNotPerformed).doNotPerform();
 
         InOrder inOrder = inOrder(reporter, errorStrategy);
-        inOrder.verify(reporter).beforeStory((StoryDefinition) anyObject());
+        inOrder.verify(reporter).beforeStory((StoryDefinition) anyObject(), eq(embeddedStory));
         inOrder.verify(reporter).beforeScenario((String) anyObject());
         inOrder.verify(reporter).failed("When I fail", failure.getThrowable());
         inOrder.verify(reporter).notPerformed("Then I should not be performed");
         inOrder.verify(reporter).afterScenario();
-        inOrder.verify(reporter).afterStory();
+        inOrder.verify(reporter).afterStory(embeddedStory);
         inOrder.verify(errorStrategy).handleError(failure.getThrowable());
     }
 

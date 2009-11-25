@@ -8,8 +8,8 @@ import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
-import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.definition.StoryDefinition;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -22,9 +22,10 @@ public class PassSilentlyDecoratorBehaviour {
         List<String> givenScenarios = asList("path/to/scenario1", "path/to/scenario2");
         ExamplesTable examplesTable = new ExamplesTable("|one|two|\n|1|2|\n");
         IllegalArgumentException anException = new IllegalArgumentException();
-        Blurb blurb = new Blurb("Some blurb");
+        StoryDefinition story = new StoryDefinition();        
+        boolean embeddedStory = false;
         
-        decorator.beforeStory(blurb);
+        decorator.beforeStory(story, embeddedStory);
         decorator.beforeScenario("My scenario 1");
         decorator.successful("Given step 1.1");
         decorator.successful("When step 1.2");
@@ -50,7 +51,7 @@ public class PassSilentlyDecoratorBehaviour {
         decorator.successful("When step 4.2");
         decorator.successful("Then step 4.3");
         decorator.afterScenario();
-        decorator.afterStory();
+        decorator.afterStory(embeddedStory);
         
         InOrder inOrder = inOrder(delegate);
         
@@ -64,7 +65,7 @@ public class PassSilentlyDecoratorBehaviour {
         verify(delegate, never()).successful("When step 4.2");
         verify(delegate, never()).successful("Then step 4.3");
         
-        inOrder.verify(delegate).beforeStory(blurb);
+        inOrder.verify(delegate).beforeStory(story, embeddedStory);
         inOrder.verify(delegate).beforeScenario("My scenario 2");
         inOrder.verify(delegate).givenScenarios(givenScenarios);
         inOrder.verify(delegate).successful("Given step 2.1");
@@ -79,7 +80,7 @@ public class PassSilentlyDecoratorBehaviour {
         inOrder.verify(delegate).failed("Then step 3.3", anException);
         
         inOrder.verify(delegate).afterScenario();
-        inOrder.verify(delegate).afterStory();
+        inOrder.verify(delegate).afterStory(embeddedStory);
         
     }
 }
