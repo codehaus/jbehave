@@ -7,6 +7,8 @@ import java.beans.MethodDescriptor;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.jbehave.scenario.definition.ExamplesTable;
+
 public class SomeSteps extends Steps {
     Object args;
 
@@ -55,6 +57,10 @@ public class SomeSteps extends Steps {
     }
     
     public void aMethodWithListOfNumbers(List<Number> args) {
+        this.args = args;
+    }
+
+    public void aMethodWithExamplesTable(ExamplesTable args) {
         this.args = args;
     }
 
