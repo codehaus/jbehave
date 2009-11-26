@@ -179,6 +179,7 @@ public class ParameterConverters {
 		}
 
 		public Object convertValue(String value, Type type) {
+			if (value.trim().length() == 0) return asList();
 			return trim(asList(value.split(valueSeparator)));
 		}
 

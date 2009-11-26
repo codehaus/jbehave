@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +70,31 @@ public class ParameterConvertersBehaviour {
 		ensureThat(list.get(2), equalTo(numberFormat.parse("6.1f")));
 		ensureThat(list.get(3), equalTo(numberFormat.parse("8.00")));
 	}
+	
+	@Test
+	public void shouldConvertCommaSeparatedValuesToListOfStrings() throws IntrospectionException {
+		ParameterConverters converters = new ParameterConverters();
+		Type type = SomeSteps.methodFor("aMethodWithListOfStrings")
+				.getGenericParameterTypes()[0];
+        List<String> emptyList = Arrays.asList("a", "string");
+        ensureValueIsConvertedToEmptyList(converters, type, "a, string ", emptyList);
+	}
+	
+	@Test
+	public void shouldConvertEmptyStringToEmptyListOfStrings() throws IntrospectionException {
+		ParameterConverters converters = new ParameterConverters();
+		Type type = SomeSteps.methodFor("aMethodWithListOfStrings")
+				.getGenericParameterTypes()[0];
+        List<String> emptyList = Arrays.asList();
+        ensureValueIsConvertedToEmptyList(converters, type, "", emptyList);
+        ensureValueIsConvertedToEmptyList(converters, type, " ", emptyList);
+	}
+
+    @SuppressWarnings("unchecked")
+    private void ensureValueIsConvertedToEmptyList(ParameterConverters converters, Type type, String value, List<String> expected) {
+        List<String> list = (List<String>) converters.convert(value, type);
+        ensureThat(list.size(), equalTo(expected.size()));
+    }
 	
     @Test
     public void shouldConvertMultilineTableParameter()
