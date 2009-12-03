@@ -62,9 +62,13 @@ public class StepsConfiguration {
 		this.paranamer = paranamer;
 		this.parameterConverters = parameterConverters;
 		this.keywords = keywords;
-		this.startingWords = startingWordsFrom(this.keywords);
-		this.startingWordsByType = startingWordsByType(this.keywords);
+		startingWordsFromKeywords();
 	}
+
+    private void startingWordsFromKeywords() {
+        this.startingWords = startingWordsFrom(this.keywords);
+		this.startingWordsByType = startingWordsByType(this.keywords);
+    }
 	
 	/**
 	 * @deprecated Use StepsConfiguration(KeyWords)
@@ -170,7 +174,7 @@ public class StepsConfiguration {
 
 	public void useKeyWords(KeyWords keywords) {
 		this.keywords = keywords;
-		this.startingWords = startingWordsFrom(this.keywords);
+		startingWordsFromKeywords();
 	}
 
 }

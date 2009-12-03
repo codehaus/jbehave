@@ -1,15 +1,19 @@
 package org.jbehave.scenario.i18n;
-
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.jbehave.Ensure.ensureThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.i18n.I18nKeyWords.KeywordNotFoundExcepion;
 import org.jbehave.scenario.i18n.I18nKeyWords.ResourceBundleNotFoundExcepion;
+import org.jbehave.scenario.steps.StepType;
+import org.jbehave.scenario.steps.StepsConfiguration;
 import org.junit.Test;
 
 public class I18nKeywordsBehaviour {
@@ -36,6 +40,23 @@ public class I18nKeywordsBehaviour {
 		ensureKeywordsAreLocalisedFor(new Locale("es"), null);
 	}
 
+	@Test
+    public void shouldAllowKeywordsToBeOverriddenInStepsConfiguration() {
+        StepsConfiguration configuration = new StepsConfiguration();
+        ensureKeywordsAreLocalised(configuration, new Locale("en"));
+        configuration.useKeyWords(new I18nKeyWords(new Locale("it")));
+        ensureKeywordsAreLocalised(configuration, new Locale("it"));
+    }
+
+    private void ensureKeywordsAreLocalised(StepsConfiguration configuration, Locale locale) {
+        Map<StepType, String> startingWordsByType = configuration.getStartingWordsByType();
+        KeyWords keywords = keyWordsFor(locale, null);
+        ensureThat(startingWordsByType.get(StepType.GIVEN), equalTo(keywords.given()));
+        ensureThat(startingWordsByType.get(StepType.WHEN), equalTo(keywords.when()));
+        ensureThat(startingWordsByType.get(StepType.THEN), equalTo(keywords.then()));
+        ensureThat(startingWordsByType.get(StepType.AND), equalTo(keywords.and()));
+    }
+    
 	private void ensureKeywordsAreLocalisedFor(Locale locale, String bundleName)
 			throws IOException {
 		KeyWords keywords = keyWordsFor(locale, bundleName);
