@@ -19,7 +19,9 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 public class ReportCanBeWrittenToFile extends JUnitScenario {
 
     public ReportCanBeWrittenToFile() {
-        super(new FileOutputConfiguration(), new TraderSteps());
+        super(new TraderSteps());
+        // override default configuration post-instantiation
+        useConfiguration(new FileOutputConfiguration());
     }
 
     private static class FileOutputConfiguration extends MostUsefulConfiguration {
