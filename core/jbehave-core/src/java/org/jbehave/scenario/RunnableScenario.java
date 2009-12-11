@@ -21,6 +21,10 @@ public interface RunnableScenario {
 
     void runScenario() throws Throwable;
 
+    void useConfiguration(Configuration configuration);
+    
+    Configuration getConfiguration();
+    
     void addSteps(CandidateSteps... steps);
 
     List<CandidateSteps> getSteps();

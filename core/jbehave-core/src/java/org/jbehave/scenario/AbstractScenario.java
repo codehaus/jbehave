@@ -43,18 +43,23 @@ import org.jbehave.scenario.steps.Stepdoc;
  */
 public abstract class AbstractScenario implements RunnableScenario {
 
-    private final Configuration configuration;
+    private Configuration configuration;
     private final ScenarioRunner scenarioRunner;
     private final List<CandidateSteps> candidateSteps = new ArrayList<CandidateSteps>();
     private final Class<? extends RunnableScenario> scenarioClass;
 
     public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, CandidateSteps... candidateSteps) {
-        this(scenarioClass, new PropertyBasedConfiguration(), candidateSteps);
+        this(scenarioClass, new ScenarioRunner(), new PropertyBasedConfiguration(), candidateSteps);
     }
 
     public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, Configuration configuration,
             CandidateSteps... candidateSteps) {
         this(scenarioClass, new ScenarioRunner(), configuration, candidateSteps);
+    }
+
+    public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, ScenarioRunner scenarioRunner,
+            CandidateSteps... candidateSteps) {
+        this(scenarioClass, scenarioRunner, new PropertyBasedConfiguration(), candidateSteps);
     }
 
     public AbstractScenario(Class<? extends RunnableScenario> scenarioClass, ScenarioRunner scenarioRunner,
@@ -68,6 +73,14 @@ public abstract class AbstractScenario implements RunnableScenario {
     public void runScenario() throws Throwable {
         CandidateSteps[] steps = candidateSteps.toArray(new CandidateSteps[candidateSteps.size()]);
         scenarioRunner.run(scenarioClass, configuration, steps);
+    }
+    
+    public void useConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+    
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     public void addSteps(CandidateSteps... steps) {

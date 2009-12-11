@@ -37,18 +37,29 @@ public abstract class JUnitScenario extends TestCase implements RunnableScenario
         this.delegate = new JUnitScenarioDelegate(decoratorClass, configuration, candidateSteps);
     }
 
+    public JUnitScenario(ScenarioRunner scenarioRunner, CandidateSteps... candidateSteps) {
+        this.delegate = new JUnitScenarioDelegate(decoratorClass, scenarioRunner, candidateSteps);
+    }
+
     public JUnitScenario(ScenarioRunner scenarioRunner, Configuration configuration, CandidateSteps... candidateSteps) {
         this.delegate = new JUnitScenarioDelegate(decoratorClass, scenarioRunner, configuration, candidateSteps);
     }
 
     public JUnitScenario(RunnableScenario delegate) {
         this.delegate = delegate;
-
     }
 
     @Test
     public void runScenario() throws Throwable {
         this.delegate.runScenario();
+    }
+    
+    public void useConfiguration(Configuration configuration) {
+        this.delegate.useConfiguration(configuration);
+    }
+    
+    public Configuration getConfiguration() {
+        return delegate.getConfiguration();
     }
 
     public void addSteps(CandidateSteps... steps) {
@@ -82,6 +93,11 @@ public abstract class JUnitScenario extends TestCase implements RunnableScenario
         public JUnitScenarioDelegate(Class<? extends RunnableScenario> decoratorClass, Configuration configuration,
                 CandidateSteps... candidateSteps) {
             super(decoratorClass, configuration, candidateSteps);
+        }
+
+        public JUnitScenarioDelegate(Class<? extends RunnableScenario> decoratorClass, ScenarioRunner scenarioRunner,
+                CandidateSteps... candidateSteps) {
+            super(decoratorClass, scenarioRunner, candidateSteps);
         }
 
         public JUnitScenarioDelegate(Class<? extends RunnableScenario> decoratorClass, ScenarioRunner scenarioRunner,
