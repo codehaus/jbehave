@@ -14,7 +14,7 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
  */
 public abstract class StepResult {
 
-	public static class Failed extends StepResult {
+    public static class Failed extends StepResult {
 
 		public Failed(String step, Throwable throwable) {
 			super(step, throwable);
@@ -54,17 +54,20 @@ public abstract class StepResult {
 	}
 
 	public static class Success extends StepResult {
-		public Success(String string) {
+
+        public Success(String string) {
 			super(string);
 		}
 
 		@Override
 		public void describeTo(ScenarioReporter reporter) {
-			reporter.successful(step);
+			reporter.successful(getTranslatedText() != null ? getTranslatedText() : step);
 		}
+
 	}
 
 	protected final String step;
+    private String translatedText;
 	protected final Throwable throwable;
 
 	public StepResult(String step) {
@@ -76,7 +79,16 @@ public abstract class StepResult {
 		this.throwable = throwable;
 	}
 
-	public static StepResult success(String step) {
+    public StepResult withTranslatedText(String translatedText) {
+        this.translatedText = translatedText;
+        return this;
+    }
+
+    public String getTranslatedText() {
+        return translatedText;
+    }
+
+    public static StepResult success(String step) {
 		return new Success(step);
 	}
 

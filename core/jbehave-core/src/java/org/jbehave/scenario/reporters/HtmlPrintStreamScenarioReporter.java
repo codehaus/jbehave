@@ -29,6 +29,9 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     private void print(String message) {
+        if (message.startsWith("Scenario:")) {
+            System.out.println("");
+        }
         output.print(message);
     }
 
@@ -58,12 +61,8 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        beforeStory(story.getBlurb());
-    }
-
-    public void beforeStory(Blurb blurb) {
-        String defaultPattern = "<div class=\"story\">\n<h1>{0}</h1>\n";
-        print(format("beforeStory.html", defaultPattern, blurb.asString()));
+        String defaultPattern = "<div class=\"story\">\n<h1>{0}</h1>\n({1})\n";
+        print(format("beforeStory.html", defaultPattern, story.getBlurb().asString(), story.getStoryPath()));
     }
 
     public void afterStory(boolean embeddedStory) {

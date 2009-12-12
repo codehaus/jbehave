@@ -1,4 +1,6 @@
-Scenario: Trader sells it all and goes to Bermuda.  
+Trader sells all stocks
+
+Scenario: Trader sells it all and goes to Bermuda.
 This scenario shows that the same step pattern can be used for different step types
 
 GivenScenarios: org/jbehave/examples/trader/scenarios/trader_is_alerted_of_status.scenario

@@ -1,3 +1,5 @@
+Report can be written to file
+
 Scenario: Status alert can be activated
 
 Given a stock of symbol STK1 and a threshold of 10.0
