@@ -27,62 +27,67 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
 
     public HtmlPrintStreamScenarioReporter(PrintStreamFactory printStreamFactory) {
         this.printStreamFactory = printStreamFactory;
-        usePrintStream(printStreamFactory.createPrintStream("Story"));
+        usePrintStream(printStreamFactory.getPrintStream("Story"));
     }
 
     public void successful(String step) {
         String defaultPattern = "<div class=\"step.successful\">{0}</div>\n";
-        output.print(format("successful.html", defaultPattern, escapeHtml(step)));
+        String s = format("successful.html", defaultPattern, escapeHtml(step));
+        prt(s);
+    }
+
+    private void prt(String s) {
+        output.print(s);
     }
 
     public void pending(String step) {
         String defaultPattern = "<div class=\"step.pending\">{0}<span class=\"keyword.pending\">({1})</span></div>\n";
-        output.print(format("pending.html", defaultPattern, escapeHtml(step), keywords.pending()));
+        prt(format("pending.html", defaultPattern, escapeHtml(step), keywords.pending()));
     }
 
     public void notPerformed(String step) {
         String defaultPattern = "<div class=\"step.notPerformed\">{0}<span class=\"keyword.notPerformed\">({1})</span></div>\n";
-        output.print(format("notPerformed.html", defaultPattern, escapeHtml(step), keywords.notPerformed()));
+        prt(format("notPerformed.html", defaultPattern, escapeHtml(step), keywords.notPerformed()));
     }
 
     public void failed(String step, Throwable cause) {
         this.cause = cause;
         String defaultPattern = "<div class=\"step.failed\">{0}<span class=\"keyword.failed\">({1})</span></div>\n";
-        output.print(format("failed.html", defaultPattern, escapeHtml(step), keywords.failed()));
+        prt(format("failed.html", defaultPattern, escapeHtml(step), keywords.failed()));
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        usePrintStream(printStreamFactory.createPrintStream(story.getName()));
+        usePrintStream(printStreamFactory.getPrintStream(story.getName()));
         beforeStory(story.getBlurb());
     }
 
     public void beforeStory(Blurb blurb) {
         String defaultPattern = "<div class=\"story\">\n<h1>{0}</h1>\n";
-        output.print(format("beforeStory.html", defaultPattern, blurb.asString()));
+        prt(format("beforeStory.html", defaultPattern, blurb.asString()));
     }
 
     public void afterStory(boolean embeddedStory) {
-        output.print(format("afterStory.html", "</div>\n"));
+        prt(format("afterStory.html", "</div>\n"));
     }
     
     public void beforeScenario(String title) {
         cause = null;
         String defaultPattern = "<div class=\"scenario\">\n<h2>{0} {1}</h2>\n";
-        output.print(format("beforeScenario.html", defaultPattern, keywords.scenario(), escapeHtml(title)));
+        prt(format("beforeScenario.html", defaultPattern, keywords.scenario(), escapeHtml(title)));
     }
 
     public void afterScenario() {
-        output.print(format("afterScenario.html", "</div>\n"));
+        prt(format("afterScenario.html", "</div>\n"));
     }
 
     public void givenScenarios(List<String> givenScenarios) {
         String defaultPattern = "<span class=\"givenScenarios\">{0} {1}</span>\n";
-        output.print(format("givenScenarios.html", defaultPattern, keywords.givenScenarios(), escapeHtml(givenScenarios.toString())));
+        prt(format("givenScenarios.html", defaultPattern, keywords.givenScenarios(), escapeHtml(givenScenarios.toString())));
     }
 
     public void examplesTable(ExamplesTable table) {
         String defaultPattern = "<h3 class=\"examplesTable\">{0}</h3>\n<table class=\"examplesTable\">\n";
-        output.print(format("examplesTable.html", defaultPattern, keywords.examplesTable()));
+        prt(format("examplesTable.html", defaultPattern, keywords.examplesTable()));
         final List<Map<String, String>> rows = table.getRows();
         final Set<String> columnNames = rows.get(0).keySet();
         output.println("<thead>\n<tr>");
@@ -104,7 +109,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
 
     public void examplesTableRow(Map<String, String> tableRow) {
         String defaultPattern = "\n<h3 class=\"examplesTableRow\">{0} {1}</h3>\n";
-        output.print(format("examplesTableRow.html", defaultPattern, keywords.examplesTableRow(), escapeHtml(tableRow.toString())));
+        prt(format("examplesTableRow.html", defaultPattern, keywords.examplesTableRow(), escapeHtml(tableRow.toString())));
     }
 
 }

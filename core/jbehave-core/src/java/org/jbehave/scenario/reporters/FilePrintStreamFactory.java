@@ -2,6 +2,7 @@ package org.jbehave.scenario.reporters;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 /**
@@ -10,31 +11,36 @@ import java.io.PrintStream;
  */
 public class FilePrintStreamFactory implements PrintStreamFactory {
 
-    private static final File DEFAULT_DIRECTORY = new File("target", "scenario-reports");
     private static final String HTML = "html";
-    private final File directory;
-    private final String extension;
+    private PrintStream printStream;
 
-    public FilePrintStreamFactory() {
-        this(DEFAULT_DIRECTORY, HTML);
+
+    public FilePrintStreamFactory(Class<?> scenarioClass) {
+        this(scenarioClass, HTML);
     }
 
-    public FilePrintStreamFactory(File directory, String extension) {
-        this.directory = directory;
-        this.extension = extension;
+    public FilePrintStreamFactory(Class<?> scenarioClass, String fileSuffix) {
+        this(makeDefaultOutputDirectory(scenarioClass), scenarioClass.getName() + "." + fileSuffix);
     }
 
-    public PrintStream createPrintStream(String storyName) {
+    public FilePrintStreamFactory(File outputDirectory, String fileName) {
+        outputDirectory.mkdirs();
         try {
-            return new PrintStream(fileFor(directory, storyName, extension));
+            printStream = new PrintStream(new FileOutputStream(new File(outputDirectory, fileName), true));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private File fileFor(File dir, String name, String ext) {
-        dir.mkdirs();
-        return new File(dir, name + "." + ext);
+    public PrintStream getPrintStream(String storyName) {
+        return printStream;
     }
+
+    public static File makeDefaultOutputDirectory(Class<?> scenarioClass) {
+        String classesDir = scenarioClass.getProtectionDomain().getCodeSource().getLocation().getFile();
+        File targetDirectory = new File(classesDir).getParentFile();
+        return new File(targetDirectory, "scenario-reports");
+    }
+
 
 }
