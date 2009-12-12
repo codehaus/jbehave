@@ -117,6 +117,7 @@ public class ScenarioRunner {
     private final class FineSoFar implements State {
 
         public void run(Step step) {
+
             StepResult result = step.perform();
             result.describeTo(reporter);
             Throwable thisScenariosThrowable = result.getThrowable();

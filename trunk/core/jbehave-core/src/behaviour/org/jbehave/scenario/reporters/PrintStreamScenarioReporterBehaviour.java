@@ -78,7 +78,7 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // Then
         String expected = 
-        "<div class=\"story\">\n<h1>An interesting story</h1>\n" +
+        "<div class=\"story\">\n<h1>An interesting story</h1>\n(/path/to/story)\n" +
         "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
         "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
         "<div class=\"step.successful\">Given I have a balance of $50</div>\n" +

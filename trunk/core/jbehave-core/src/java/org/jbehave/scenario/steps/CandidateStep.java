@@ -82,7 +82,8 @@ public class CandidateStep {
         String[] annotationNames = annotatedParameterNames();
         String[] parameterNames = paranamer.lookupParameterNames(method, false);
         Object[] args = argsForStep(tableRow, matcher, types, annotationNames, parameterNames);
-        return createStep(stepAsString, args);
+        String translatedStep = translatedStep(stepAsString, tableRow, types, annotationNames, parameterNames);
+        return createStep(stepAsString, args, translatedStep);
     }
 
     private Matcher matcherForStep(final String stepAsString) {
@@ -99,6 +100,15 @@ public class CandidateStep {
             args[position] = parameterConverters.convert(arg, types[position]);
         }
         return args;
+    }
+
+    private String translatedStep(String stepAsString, Map<String, String> tableRow, Type[] types, String[] annotationNames,
+            String[] parameterNames) {
+        String replacedStepText = stepAsString;
+        for (int position = 0; position < types.length; position++) {
+            replacedStepText = replaceValuesInStepText(replacedStepText, position, annotationNames, parameterNames, tableRow);
+        }
+        return replacedStepText;
     }
 
     private String argForPosition(int position, String[] annotationNames, String[] parameterNames,
@@ -129,6 +139,27 @@ public class CandidateStep {
         stepMonitor.foundArg(arg, position);
         return arg;
     }
+
+    private String replaceValuesInStepText(String stepText, int position, String[] annotationNames, String[] parameterNames,
+            Map<String, String> tableRow) {
+        int annotatedNamePosition = parameterPosition(annotationNames, position);
+        int parameterNamePosition = parameterPosition(parameterNames, position);
+        if (annotatedNamePosition != -1) {
+            String name = annotationNames[position];
+            String val = getTableValue(tableRow, name);
+            if (val != null) {
+                stepText = stepText.replace("<" + name + ">", val);
+            }
+        } else if (parameterNamePosition != -1) {
+            String name = parameterNames[position];
+            String val = getTableValue(tableRow, name);
+            if (val != null) {
+                stepText = stepText.replace("<" + name + ">", val);
+            }
+        }
+        return stepText;
+    }
+
 
     private String getTableValue(Map<String, String> tableRow, String name) {
         return tableRow.get(name);
@@ -212,13 +243,13 @@ public class CandidateStep {
         return startingWord;
     }
 
-    private Step createStep(final String stepAsString, final Object[] args) {
+    private Step createStep(final String stepAsString, final Object[] args, final String translatedStep) {
         return new Step() {
             public StepResult perform() {
                 try {
                     stepMonitor.performing(stepAsString);
                     method.invoke(steps, args);
-                    return StepResult.success(stepAsString);
+                    return StepResult.success(stepAsString).withTranslatedText(translatedStep);
                 } catch (Throwable t) {
                     return failureWithOriginalException(stepAsString, t);
                 }
