@@ -34,10 +34,10 @@ public class PatternScenarioParser implements ScenarioParser {
 		this.configuration = configuration;
 	}
 
-	public StoryDefinition defineStoryFrom(String wholeStoryAsString) {
+	public StoryDefinition defineStoryFrom(String wholeStoryAsString, String storyPath) {
 		Blurb blurb = parseBlurbFrom(wholeStoryAsString);
 		List<ScenarioDefinition> scenarioDefinitions = parseScenariosFrom(wholeStoryAsString);
-		return new StoryDefinition(blurb, scenarioDefinitions);
+		return new StoryDefinition(blurb, scenarioDefinitions, storyPath);
 	}
 
 	private List<ScenarioDefinition> parseScenariosFrom(

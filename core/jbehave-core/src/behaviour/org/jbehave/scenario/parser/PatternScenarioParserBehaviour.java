@@ -26,7 +26,7 @@ public class PatternScenarioParserBehaviour {
         StoryDefinition story = parser.defineStoryFrom(
                 "Given a scenario" + NL + 
                 "When I parse it" + NL + 
-                "Then I should get steps");
+                "Then I should get steps", null);
         
         List<String> steps = story.getScenarios().get(0).getSteps();
         ensureThat(steps.get(0), equalTo("Given a scenario"));
@@ -41,7 +41,7 @@ public class PatternScenarioParserBehaviour {
                 "Given a scenario Givenly" + NL + 
                 "When I parse it to Whenever" + NL +
                 "And I parse it to Anderson" + NL +
-                "Then I should get steps Thenact");
+                "Then I should get steps Thenact", null);
         
         List<String> steps = story.getScenarios().get(0).getSteps();
         ensureThat(steps.get(0), equalTo("Given a scenario Givenly"));
@@ -60,7 +60,7 @@ public class PatternScenarioParserBehaviour {
                 "with another line" + NL + NL +
                 "Then I should get steps" + NL +
                 "without worrying about lines" + NL +
-                "or extra white space between or after steps" + NL + NL);
+                "or extra white space between or after steps" + NL + NL, null);
 
         List<String> steps = story.getScenarios().get(0).getSteps();
         
@@ -81,7 +81,7 @@ public class PatternScenarioParserBehaviour {
             "Scenario: the second scenario" + NL + NL +
             "Given my second scenario";
         PatternScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
-        StoryDefinition story = parser.defineStoryFrom(wholeStory);
+        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
         
         ensureThat(story.getScenarios().get(0).getTitle(), equalTo("the first scenario"));
         ensureThat(story.getScenarios().get(0).getSteps(), equalTo(asList("Given my scenario")));
@@ -114,7 +114,7 @@ public class PatternScenarioParserBehaviour {
             "Then I should see this in the output" + NL +
             "And I should see this in the output" + NL;
         
-        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory);
+        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory, null);
         
         ensureThat(story.getBlurb().asString(), equalTo("Story: I can output narratives" + NL + NL +
                     "As a developer" + NL +
@@ -188,7 +188,7 @@ public class PatternScenarioParserBehaviour {
 			wholeStory.append(aScenario).append(NL);
 		}
             
-		StoryDefinition story = parser.defineStoryFrom(wholeStory.toString());
+		StoryDefinition story = parser.defineStoryFrom(wholeStory.toString(), null);
         ensureThat(story.getScenarios().size(), equalTo(numberOfScenarios));
         for ( ScenarioDefinition scenario : story.getScenarios() ){
         	ensureThat(scenario.getSteps().size(), equalTo(numberOfGivenWhenThensPerScenario*3));        	
@@ -208,7 +208,7 @@ public class PatternScenarioParserBehaviour {
 	            "|a|b|c|" + NL +
 	            "|d|e|f|";
 		
-	        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory);
+	        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory, null);
 	        
 	        ScenarioDefinition scenario = story.getScenarios().get(0);
 			ensureThat(scenario.getTitle(), equalTo("A template scenario with table values"));	        
@@ -243,7 +243,7 @@ public class PatternScenarioParserBehaviour {
 	            "When I run the scenario of name <two>" + NL +
 	            "Then I should see <three> in the output";
 		
-	        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory);
+	        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory, null);
 	        
 	        ScenarioDefinition scenario = story.getScenarios().get(0);
 			ensureThat(scenario.getTitle(), equalTo("A scenario with given scenarios"));	        
