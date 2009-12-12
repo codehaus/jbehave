@@ -4,10 +4,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Locale;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
+import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.junit.Test;
 
@@ -119,4 +124,21 @@ public class PrintStreamScenarioReporterBehaviour {
         
     }
 
+    @Test
+    public void shouldCreateAndWriteToFilePrintStreamForScenarioClass() throws IOException{
+        Class<MyScenario> scenarioClass = MyScenario.class;
+        FilePrintStreamFactory factory = new FilePrintStreamFactory(scenarioClass);
+        PrintStream printStream = factory.getPrintStream();
+        printStream.print("Hello World");
+        
+        File outputDirectory = FilePrintStreamFactory.outputDirectory(scenarioClass);
+        String fileName = FilePrintStreamFactory.fileName(scenarioClass, FilePrintStreamFactory.HTML);
+        File file = new File(outputDirectory, fileName);
+        ensureThat(file.exists());    
+        ensureThat(IOUtils.toString(new FileReader(file)), equalTo("Hello World"));
+    }
+    
+    private static class MyScenario extends Scenario {
+        
+    }
 }
