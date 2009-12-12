@@ -1,7 +1,7 @@
 package org.jbehave.scenario.reporters;
 
 import org.jbehave.scenario.RunnableScenario;
-import org.jbehave.scenario.parser.AbstractScenarioNameResolver;
+import org.jbehave.scenario.parser.ScenarioNameResolver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,11 +17,11 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
     static final String HTML = "html";
     private PrintStream printStream;
 
-    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass, AbstractScenarioNameResolver scenarioNameResolver) {
+    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver) {
         this(scenarioClass, scenarioNameResolver, HTML);
     }
 
-    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass, AbstractScenarioNameResolver scenarioNameResolver, String fileExt) {
+    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver, String fileExt) {
         this(outputDirectory(scenarioClass), fileName(scenarioClass, scenarioNameResolver, fileExt));
     }
 
@@ -44,9 +44,10 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
         return new File(targetDirectory, "scenario-reports");
     }
 
-    static String fileName(Class<? extends RunnableScenario> scenarioClass, AbstractScenarioNameResolver scenarioNameResolver, String fileExt) {
-        String name = scenarioNameResolver.resolve(scenarioClass).replace(File.separatorChar, '.');
-        return name.substring(0, name.lastIndexOf(".")) + "." + fileExt;
+    static String fileName(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver, String fileExt) {
+        String scenarioName = scenarioNameResolver.resolve(scenarioClass).replace(File.separatorChar, '.');
+        String name = scenarioName.substring(0, scenarioName.lastIndexOf("."));
+        return name + "." + fileExt;
     }
 
 }
