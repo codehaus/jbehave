@@ -12,11 +12,9 @@ import org.jbehave.scenario.reporters.HtmlPrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 
-import java.io.File;
-
 public class TraderScenario extends JUnitScenario {
 
-    public TraderScenario(final Class thisClass) {
+    public TraderScenario(final Class<?> thisClass) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ScenarioDefiner forDefiningScenarios() {
