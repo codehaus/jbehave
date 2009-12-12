@@ -10,6 +10,7 @@ public class StoryDefinition {
     private final Blurb blurb;
     private final List<ScenarioDefinition> scenarioDefinitions;
     private String name = "Story";
+    private String storyPath;
 
     public StoryDefinition(ScenarioDefinition... scenarioDefinitions) {
         this(asList(scenarioDefinitions));
@@ -28,6 +29,11 @@ public class StoryDefinition {
         this.scenarioDefinitions = scenarioDefinitions;
     }
 
+    public StoryDefinition(Blurb blurb, List<ScenarioDefinition> scenarioDefinitions, String storyPath) {
+        this(blurb, scenarioDefinitions);
+        this.storyPath = storyPath;
+    }
+
     public Blurb getBlurb() {
         return blurb;
     }
@@ -42,5 +48,9 @@ public class StoryDefinition {
     
     public void namedAs(String name){
         this.name = name;
+    }
+
+    public String getStoryPath() {
+        return storyPath;  
     }
 }

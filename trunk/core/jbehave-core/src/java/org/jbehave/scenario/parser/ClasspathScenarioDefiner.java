@@ -44,18 +44,16 @@ public class ClasspathScenarioDefiner implements ScenarioDefiner {
     }
 
     public StoryDefinition loadScenarioDefinitionsFor(Class<? extends RunnableScenario> scenarioClass) {
-        String wholeFileAsString = asString(loadInputStreamFor(scenarioClass));
-        return parser.defineStoryFrom(wholeFileAsString);
+        String storyPath = resolver.resolve(scenarioClass);
+        String wholeFileAsString = asString(loadInputStreamFor(storyPath));
+        return parser.defineStoryFrom(wholeFileAsString, storyPath);
     }
 
 	public StoryDefinition loadScenarioDefinitionsFor(String scenarioPath) {
         String wholeFileAsString = asString(loadInputStreamFor(scenarioPath));
-        return parser.defineStoryFrom(wholeFileAsString);
+        return parser.defineStoryFrom(wholeFileAsString, scenarioPath);
 	}
 
-    private InputStream loadInputStreamFor(Class<? extends RunnableScenario> scenarioClass) {
-        return loadInputStreamFor(resolver.resolve(scenarioClass));
-    }
 
 	private InputStream loadInputStreamFor(String scenarioPath) {
 		InputStream stream = classLoader.getResourceAsStream(scenarioPath);

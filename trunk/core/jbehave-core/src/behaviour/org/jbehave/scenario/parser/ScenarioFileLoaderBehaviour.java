@@ -20,7 +20,7 @@ public class ScenarioFileLoaderBehaviour {
         ScenarioParser parser = mock(ScenarioParser.class);
         ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(parser);
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
-        verify(parser).defineStoryFrom("Given my step");
+        verify(parser).defineStoryFrom("Given my step", "org/jbehave/scenario/parser/scenarios/my_pending_scenario");
     }
 
     @Test
@@ -28,7 +28,7 @@ public class ScenarioFileLoaderBehaviour {
         ScenarioParser parser = mock(ScenarioParser.class);
         ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(new CasePreservingResolver(".txt"), parser);
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
-        verify(parser).defineStoryFrom("Given my step");
+        verify(parser).defineStoryFrom("Given my step", "org/jbehave/scenario/parser/scenarios/MyPendingScenario.txt");
     }
     
     @Test(expected = ScenarioNotFoundException.class)
