@@ -32,7 +32,7 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
         }
     }
 
-    public PrintStream getPrintStream(String storyName) {
+    public PrintStream getPrintStream() {
         return printStream;
     }
 
