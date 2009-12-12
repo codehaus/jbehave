@@ -7,6 +7,6 @@ import java.io.PrintStream;
  */
 public interface PrintStreamFactory {
 
-    PrintStream getPrintStream(String storyName);
+    PrintStream getPrintStream();
 
 }

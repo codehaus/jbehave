@@ -27,7 +27,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
 
     public HtmlPrintStreamScenarioReporter(PrintStreamFactory printStreamFactory) {
         this.printStreamFactory = printStreamFactory;
-        usePrintStream(printStreamFactory.getPrintStream("Story"));
+        usePrintStream(printStreamFactory.getPrintStream());
     }
 
     public void successful(String step) {
@@ -57,7 +57,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        usePrintStream(printStreamFactory.getPrintStream(story.getName()));
+        usePrintStream(printStreamFactory.getPrintStream());
         beforeStory(story.getBlurb());
     }
 
