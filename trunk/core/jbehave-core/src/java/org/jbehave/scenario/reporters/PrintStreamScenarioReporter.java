@@ -116,6 +116,9 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 
     public void afterStory(boolean embeddedStory) {
         output.print(format("afterStory", "\n"));
+        if ( !embeddedStory && cause != null) {
+            throw new RuntimeException(cause);
+        }
     }
 
     public void afterStory() {
@@ -173,13 +176,13 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         }
         return defaultPattern;
     }
-    
+
     /**
      * Changes print stream used for output
      * 
      * @param output the new PrintStream to use
      */
-    protected void usePrintStream(PrintStream output){
+    protected void usePrintStream(PrintStream output) {
         this.output = output;
     }
 
