@@ -22,6 +22,7 @@ import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.i18n.I18nKeyWords;
+import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.junit.Test;
 
 
@@ -64,11 +65,13 @@ public class PrintStreamScenarioReporterBehaviour {
     public void shouldReportEventsToHtmlPrintStream() {
         // Given
         final OutputStream out = new ByteArrayOutputStream();
-        ScenarioReporter reporter = new HtmlPrintStreamScenarioReporter(new PrintStreamFactory(){
+        PrintStreamFactory factory = new PrintStreamFactory() {
 
             public PrintStream getPrintStream() {
                 return new PrintStream(out);
-            }});
+            }
+        };
+        ScenarioReporter reporter = new HtmlPrintStreamScenarioReporter(factory.getPrintStream());
         
         // When 
         narrateAnInterestingStory(reporter);
@@ -223,14 +226,16 @@ public class PrintStreamScenarioReporterBehaviour {
 
     @Test
     public void shouldCreateAndWriteToFilePrintStreamForScenarioClass() throws IOException{
+        UnderscoredCamelCaseResolver converter = new UnderscoredCamelCaseResolver(".scenario");
+
         // Given
         Class<MyScenario> scenarioClass = MyScenario.class;
-        File file = fileFor(scenarioClass);
+        File file = fileFor(scenarioClass, converter);
         file.delete(); 
         ensureThat(!file.exists());    
         
         // When
-        FilePrintStreamFactory factory = new FilePrintStreamFactory(scenarioClass);
+        FilePrintStreamFactory factory = new FilePrintStreamFactory(scenarioClass, converter);
         PrintStream printStream = factory.getPrintStream();
         printStream.print("Hello World");
 
@@ -239,9 +244,9 @@ public class PrintStreamScenarioReporterBehaviour {
         ensureThat(IOUtils.toString(new FileReader(file)), equalTo("Hello World"));
     }
 
-    private File fileFor(Class<MyScenario> scenarioClass) {
+    private File fileFor(Class<MyScenario> scenarioClass, UnderscoredCamelCaseResolver converter) {
         File outputDirectory = FilePrintStreamFactory.outputDirectory(scenarioClass);
-        String fileName = FilePrintStreamFactory.fileName(scenarioClass, FilePrintStreamFactory.HTML);
+        String fileName = FilePrintStreamFactory.fileName(scenarioClass, converter, FilePrintStreamFactory.HTML);
         return new File(outputDirectory, fileName);
     }
     

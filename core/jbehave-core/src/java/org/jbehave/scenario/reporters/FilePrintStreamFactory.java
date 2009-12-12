@@ -1,5 +1,8 @@
 package org.jbehave.scenario.reporters;
 
+import org.jbehave.scenario.RunnableScenario;
+import org.jbehave.scenario.parser.AbstractScenarioNameResolver;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,12 +17,12 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
     static final String HTML = "html";
     private PrintStream printStream;
 
-    public FilePrintStreamFactory(Class<?> scenarioClass) {
-        this(scenarioClass, HTML);
+    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass, AbstractScenarioNameResolver scenarioNameResolver) {
+        this(scenarioClass, scenarioNameResolver, HTML);
     }
 
-    public FilePrintStreamFactory(Class<?> scenarioClass, String fileExt) {
-        this(outputDirectory(scenarioClass), fileName(scenarioClass, fileExt));
+    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass, AbstractScenarioNameResolver scenarioNameResolver, String fileExt) {
+        this(outputDirectory(scenarioClass), fileName(scenarioClass, scenarioNameResolver, fileExt));
     }
 
     public FilePrintStreamFactory(File outputDirectory, String fileName) {
@@ -35,14 +38,15 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
         return printStream;
     }
 
-    static File outputDirectory(Class<?> scenarioClass) {
+    static File outputDirectory(Class<? extends RunnableScenario> scenarioClass) {
         String classesDir = scenarioClass.getProtectionDomain().getCodeSource().getLocation().getFile();
         File targetDirectory = new File(classesDir).getParentFile();
         return new File(targetDirectory, "scenario-reports");
     }
 
-    static String fileName(Class<?> scenarioClass, String fileExt) {
-        return scenarioClass.getName() + "." + fileExt;
+    static String fileName(Class<? extends RunnableScenario> scenarioClass, AbstractScenarioNameResolver scenarioNameResolver, String fileExt) {
+        String name = scenarioNameResolver.resolve(scenarioClass).replace(File.separatorChar, '.');
+        return name.substring(0, name.lastIndexOf(".")) + "." + fileExt;
     }
 
 }

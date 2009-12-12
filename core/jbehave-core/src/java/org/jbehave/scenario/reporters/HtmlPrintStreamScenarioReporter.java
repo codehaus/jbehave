@@ -2,6 +2,7 @@ package org.jbehave.scenario.reporters;
 
 import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,11 +24,8 @@ import org.jbehave.scenario.definition.StoryDefinition;
  */
 public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter {
 
-    private final PrintStreamFactory printStreamFactory;
-
-    public HtmlPrintStreamScenarioReporter(PrintStreamFactory printStreamFactory) {
-        this.printStreamFactory = printStreamFactory;
-        usePrintStream(printStreamFactory.getPrintStream());
+    public HtmlPrintStreamScenarioReporter(PrintStream printStream) {
+        usePrintStream(printStream);
     }
 
     private void print(String message) {
@@ -60,7 +58,6 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        usePrintStream(printStreamFactory.getPrintStream());
         beforeStory(story.getBlurb());
     }
 
