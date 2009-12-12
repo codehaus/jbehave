@@ -6,21 +6,20 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 /**
- * Creates {@link PrintStream} instances that write to a file. It also provides useful
- * defaults for the file directory and the extension.
+ * Creates {@link PrintStream} instances that write to a file. It also provides
+ * useful defaults for the file directory and the extension.
  */
 public class FilePrintStreamFactory implements PrintStreamFactory {
 
-    private static final String HTML = "html";
+    static final String HTML = "html";
     private PrintStream printStream;
-
 
     public FilePrintStreamFactory(Class<?> scenarioClass) {
         this(scenarioClass, HTML);
     }
 
-    public FilePrintStreamFactory(Class<?> scenarioClass, String fileSuffix) {
-        this(makeDefaultOutputDirectory(scenarioClass), scenarioClass.getName() + "." + fileSuffix);
+    public FilePrintStreamFactory(Class<?> scenarioClass, String fileExt) {
+        this(outputDirectory(scenarioClass), fileName(scenarioClass, fileExt));
     }
 
     public FilePrintStreamFactory(File outputDirectory, String fileName) {
@@ -36,11 +35,14 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
         return printStream;
     }
 
-    public static File makeDefaultOutputDirectory(Class<?> scenarioClass) {
+    static File outputDirectory(Class<?> scenarioClass) {
         String classesDir = scenarioClass.getProtectionDomain().getCodeSource().getLocation().getFile();
         File targetDirectory = new File(classesDir).getParentFile();
         return new File(targetDirectory, "scenario-reports");
     }
 
+    static String fileName(Class<?> scenarioClass, String fileExt) {
+        return scenarioClass.getName() + "." + fileExt;
+    }
 
 }
