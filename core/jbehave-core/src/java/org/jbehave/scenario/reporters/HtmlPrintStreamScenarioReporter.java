@@ -84,7 +84,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     public void givenScenarios(List<String> givenScenarios) {
-        String defaultPattern = "<span class=\"givenScenarios\">{0} {1}</span>\n";
+        String defaultPattern = "<div class=\"givenScenarios\">{0} {1}</div>\n";
         print(format("givenScenarios.html", defaultPattern, keywords.givenScenarios(), escapeHtml(givenScenarios
                 .toString())));
     }
