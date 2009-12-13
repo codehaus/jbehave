@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.StoryDefinition;
 
@@ -29,7 +28,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     private void print(String message) {
-        output.print(message.replace("&#65375;", "<i>").replace("&#65376;", "</i>"));
+        output.print(message);
     }
 
     private void println(String message) {
@@ -96,7 +95,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
         for (Map<String, String> row : rows) {
             println("<tr>");
             for (String columnName : columnNames) {
-                print(format("examplesTableCell.html", "<td><i>{0}</i></td>", escapeHtml(row.get(columnName))));
+                print(format("examplesTableCell.html", "<td>{0}</td>", escapeHtml(row.get(columnName))));
             }
             println("</tr>");
         }
