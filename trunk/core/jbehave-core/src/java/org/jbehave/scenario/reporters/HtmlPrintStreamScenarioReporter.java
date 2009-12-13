@@ -29,10 +29,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
     }
 
     private void print(String message) {
-        if (message.startsWith("Scenario:")) {
-            System.out.println("");
-        }
-        output.print(message);
+        output.print(message.replace("&#65375;", "<i>").replace("&#65376;", "</i>"));
     }
 
     private void println(String message) {
@@ -99,7 +96,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
         for (Map<String, String> row : rows) {
             println("<tr>");
             for (String columnName : columnNames) {
-                print(format("examplesTableCell.html", "<td>{0}</td>", escapeHtml(row.get(columnName))));
+                print(format("examplesTableCell.html", "<td><i>{0}</i></td>", escapeHtml(row.get(columnName))));
             }
             println("</tr>");
         }

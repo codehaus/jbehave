@@ -148,13 +148,13 @@ public class CandidateStep {
             String name = annotationNames[position];
             String val = getTableValue(tableRow, name);
             if (val != null) {
-                stepText = stepText.replace("<" + name + ">", val);
+                stepText = stepText.replace("<" + name + ">", '\uFF5F' + val + '\uFF60');
             }
         } else if (parameterNamePosition != -1) {
             String name = parameterNames[position];
             String val = getTableValue(tableRow, name);
             if (val != null) {
-                stepText = stepText.replace("<" + name + ">", val);
+                stepText = stepText.replace("<" + name + ">", '\uFF5F' + val + '\uFF60');
             }
         }
         return stepText;
