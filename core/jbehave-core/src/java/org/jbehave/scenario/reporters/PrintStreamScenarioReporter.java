@@ -85,20 +85,20 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     public void successful(String step) {
-        output.print(format("successful", "{0}\n", step));
+        print(format("successful", "{0}\n", step));
     }
 
     public void pending(String step) {
-        output.print(format("pending", "{0} ({1})\n", step, keywords.pending()));
+        print(format("pending", "{0} ({1})\n", step, keywords.pending()));
     }
 
     public void notPerformed(String step) {
-        output.print(format("notPerformed", "{0} ({1})\n", step, keywords.notPerformed()));
+        print(format("notPerformed", "{0} ({1})\n", step, keywords.notPerformed()));
     }
 
     public void failed(String step, Throwable cause) {
         this.cause = cause;
-        output.print(format("failed", "{0} ({1})\n", step, keywords.failed()));
+        print(format("failed", "{0} ({1})\n", step, keywords.failed()));
     }
 
     public void afterScenario() {
@@ -111,38 +111,43 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 
     public void beforeScenario(String title) {
         cause = null;
-        output.print(format("beforeScenario", "{0} {1}\n", keywords.scenario(), title));
+        String s = format("beforeScenario", "{0} {1}\n", keywords.scenario(), title);
+        print(s);
+    }
+
+    private void print(String text) {
+        output.print(text.replace("\uFF5F", "").replace("\uFF60", ""));
     }
 
     public void afterStory(boolean embeddedStory) {
-        output.print(format("afterStory", "\n"));
+        print(format("afterStory", "\n"));
         if ( !embeddedStory && cause != null) {
             throw new RuntimeException(cause);
         }
     }
 
     public void afterStory() {
-        output.print(format("afterStory", "\n"));
+        print(format("afterStory", "\n"));
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        output.print(format("beforeStory", "{0}\n", story.getBlurb().asString()));
+        print(format("beforeStory", "{0}\n", story.getBlurb().asString()));
     }
 
     public void beforeStory(Blurb blurb) {
-        output.print(format("beforeStory", "{0}\n", blurb.asString()));
+        print(format("beforeStory", "{0}\n", blurb.asString()));
     }
 
     public void givenScenarios(List<String> givenScenarios) {
-        output.print(format("givenScenarios", "{0} {1}\n", keywords.givenScenarios(), givenScenarios));
+        print(format("givenScenarios", "{0} {1}\n", keywords.givenScenarios(), givenScenarios));
     }
 
     public void examplesTable(ExamplesTable table) {
-        output.print(format("examplesTable", "{0}\n\n{1}\n\n", keywords.examplesTable(), table));
+        print(format("examplesTable", "{0}\n\n{1}\n\n", keywords.examplesTable(), table));
     }
 
     public void examplesTableRow(Map<String, String> tableRow) {
-        output.print(format("examplesTableRow", "\n{0} {1}\n", keywords.examplesTableRow(), tableRow));
+        print(format("examplesTableRow", "\n{0} {1}\n", keywords.examplesTableRow(), tableRow));
     }
 
     /**

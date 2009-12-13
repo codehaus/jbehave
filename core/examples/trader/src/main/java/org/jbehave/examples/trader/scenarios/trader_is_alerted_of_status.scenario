@@ -1,6 +1,17 @@
 Trader is alerted of status
 
+Scenario:
+In order to ensure a quick response
+As a trader
+I want to monitor stock prices
 
+Given a stock of symbol STK1 and a threshold of 15.0
+When the stock is traded at price 5.0
+Then the alert status is OFF
+When the stock is sold at price 11.0
+Then the alert status is OFF
+When the stock is sold at price 16.0
+Then the alert status is ON
 
 Scenario:
 In order to ensure a quick response 
