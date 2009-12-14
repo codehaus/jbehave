@@ -1,6 +1,8 @@
 package org.jbehave.scenario.reporters;
 
 import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
+import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_END;
+import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_START;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -25,14 +27,6 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
 
     public HtmlPrintStreamScenarioReporter(PrintStream printStream) {
         usePrintStream(printStream);
-    }
-
-    private void print(String message) {
-        output.print(message);
-    }
-
-    private void println(String message) {
-        output.println(message);
     }
 
     public void successful(String step) {
@@ -107,6 +101,11 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
         String defaultPattern = "\n<h3 class=\"examplesTableRow\">{0} {1}</h3>\n";
         print(format("examplesTableRow.html", defaultPattern, keywords.examplesTableRow(), escapeHtml(tableRow
                 .toString())));
+    }
+    
+    protected void print(String text) {
+        output.print(text.replace(escapeHtml(PARAMETER_VALUE_START), "<span class=\"step.parameter\">")
+                         .replace(escapeHtml(PARAMETER_VALUE_END), "</span>"));
     }
 
 }
