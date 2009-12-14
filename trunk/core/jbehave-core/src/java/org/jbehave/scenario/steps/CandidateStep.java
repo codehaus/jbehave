@@ -27,6 +27,10 @@ import com.thoughtworks.paranamer.Paranamer;
  */
 public class CandidateStep {
 
+    public static final String PARAMETER_NAME_START = "<";
+    public static final String PARAMETER_NAME_END = ">";
+    public static final String PARAMETER_VALUE_START = "\uFF5F";
+    public static final String PARAMETER_VALUE_END = "\uFF60";
     private final String patternAsString;
     private final StepType stepType;
     private final Method method;
@@ -146,15 +150,15 @@ public class CandidateStep {
         int parameterNamePosition = parameterPosition(parameterNames, position);
         if (annotatedNamePosition != -1) {
             String name = annotationNames[position];
-            String val = getTableValue(tableRow, name);
-            if (val != null) {
-                stepText = stepText.replace("<" + name + ">", '\uFF5F' + val + '\uFF60');
+            String value = getTableValue(tableRow, name);
+            if (value != null) {
+                stepText = stepText.replace(PARAMETER_NAME_START + name + PARAMETER_NAME_END, PARAMETER_VALUE_START + value + PARAMETER_VALUE_END);
             }
         } else if (parameterNamePosition != -1) {
             String name = parameterNames[position];
-            String val = getTableValue(tableRow, name);
-            if (val != null) {
-                stepText = stepText.replace("<" + name + ">", '\uFF5F' + val + '\uFF60');
+            String value = getTableValue(tableRow, name);
+            if (value != null) {
+                stepText = stepText.replace(PARAMETER_NAME_START + name + PARAMETER_NAME_END, PARAMETER_VALUE_START + value + PARAMETER_VALUE_START);
             }
         }
         return stepText;

@@ -1,5 +1,8 @@
 package org.jbehave.scenario.reporters;
 
+import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_END;
+import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_START;
+
 import java.io.PrintStream;
 import java.text.MessageFormat;
 import java.util.List;
@@ -111,12 +114,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 
     public void beforeScenario(String title) {
         cause = null;
-        String s = format("beforeScenario", "{0} {1}\n", keywords.scenario(), title);
-        print(s);
-    }
-
-    private void print(String text) {
-        output.print(text.replace("\uFF5F", "").replace("\uFF60", ""));
+        print(format("beforeScenario", "{0} {1}\n", keywords.scenario(), title));
     }
 
     public void afterStory(boolean embeddedStory) {
@@ -189,6 +187,15 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
      */
     protected void usePrintStream(PrintStream output) {
         this.output = output;
+    }
+
+    protected void print(String text) {
+        output.print(text.replace(PARAMETER_VALUE_START, "")
+                         .replace(PARAMETER_VALUE_END, ""));
+    }
+
+    protected void println(String text) {
+        output.println(text);
     }
 
 }
