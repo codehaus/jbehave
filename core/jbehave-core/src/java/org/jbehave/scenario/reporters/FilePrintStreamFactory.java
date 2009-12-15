@@ -45,7 +45,7 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
     }
 
     static String fileName(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver, String fileExt) {
-        String scenarioName = scenarioNameResolver.resolve(scenarioClass).replace(File.separatorChar, '.');
+        String scenarioName = scenarioNameResolver.resolve(scenarioClass).replace('/', '.');
         String name = scenarioName.substring(0, scenarioName.lastIndexOf("."));
         return name + "." + fileExt;
     }
