@@ -28,8 +28,6 @@ import org.junit.Test;
 
 public class PrintStreamScenarioReporterBehaviour {
     
-    private static final String NL = System.getProperty("line.separator");
-
     @Test
     public void shouldReportEventsToPrintStream() {
         // Given
@@ -117,9 +115,13 @@ public class PrintStreamScenarioReporterBehaviour {
 
     private void ensureThatOutputIs(OutputStream out, String expected) {
         // JUnit assertion allows easier comparison of strings in IDE
-        assertEquals(expected, out.toString());
+        assertEquals(expected, dos2unix(out.toString()));
         //ensureThat(out.toString(), equalTo(expected));
     }
+    
+    private String dos2unix(String string) {
+		return string.replace("\r\n", "\n");
+	}
 
     @Test
     public void shouldReportThrowablesWhenToldToDoSo() {
@@ -147,7 +149,7 @@ public class PrintStreamScenarioReporterBehaviour {
         "When I ask Liz for a loan of $100 (FAILED)\n" +
         "Then I should have a balance of $30 (PENDING)\n" +
         "Then I should have $20 (NOT PERFORMED)\n" +
-        NL + stackTrace + NL;
+        "\n" + dos2unix(stackTrace.toString()) + "\n";
         ensureThatOutputIs(out, expected);
         
         // Given
@@ -167,8 +169,7 @@ public class PrintStreamScenarioReporterBehaviour {
         ensureThat(!out.toString().contains(stackTrace.toString()));
     }
 
-
-    @Test
+	@Test
     public void shouldReportEventsToPrintStreamWithCustomPatterns() {
         // Given
         IllegalAccessException exception = new IllegalAccessException("Leave my money alone!");
