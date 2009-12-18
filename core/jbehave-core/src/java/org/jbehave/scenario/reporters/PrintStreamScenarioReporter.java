@@ -3,6 +3,7 @@ package org.jbehave.scenario.reporters;
 import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_END;
 import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_START;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.MessageFormat;
 import java.util.List;
@@ -104,17 +105,31 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         print(format("failed", "{0} ({1})\n", step, keywords.failed()));
     }
 
-    public void afterScenario() {
-        output.println();
-        if (reportErrors && cause != null) {
-            cause.printStackTrace(output);
-            output.println();
-        }
-    }
-
     public void beforeScenario(String title) {
         cause = null;
         print(format("beforeScenario", "{0} {1}\n", keywords.scenario(), title));
+    }
+
+    public void afterScenario() {
+        if (cause != null && reportErrors) {
+            print(format("afterScenario.withFailure", "\n{0}\n", stackTrace(cause)));
+        } else {
+            print(format("afterScenario", "\n"));
+        }
+    }
+
+    private String stackTrace(Throwable cause) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();        
+        cause.printStackTrace(new PrintStream(out));
+        return out.toString();
+    }
+
+    public void beforeStory(StoryDefinition story, boolean embeddedStory) {
+        print(format("beforeStory", "{0}\n", story.getBlurb().asString()));
+    }
+
+    public void beforeStory(Blurb blurb) {
+        print(format("beforeStory", "{0}\n", blurb.asString()));
     }
 
     public void afterStory(boolean embeddedStory) {
@@ -128,20 +143,30 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         print(format("afterStory", "\n"));
     }
 
-    public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        print(format("beforeStory", "{0}\n", story.getBlurb().asString()));
-    }
-
-    public void beforeStory(Blurb blurb) {
-        print(format("beforeStory", "{0}\n", blurb.asString()));
-    }
-
     public void givenScenarios(List<String> givenScenarios) {
         print(format("givenScenarios", "{0} {1}\n", keywords.givenScenarios(), givenScenarios));
     }
 
     public void examplesTable(ExamplesTable table) {
-        print(format("examplesTable", "{0}\n\n{1}\n\n", keywords.examplesTable(), table));
+        print(format("examplesTable", "{0}\n", keywords.examplesTable()));
+        print(format("examplesTableStart", "\n"));
+        final List<Map<String, String>> rows = table.getRows();
+        final List<String> headers = table.getHeaders();
+        print(format("examplesTableHeadStart", "|"));
+        for (String header : headers) {
+            print(format("examplesTableHeadCell", "{0}|", header));
+        }
+        print(format("examplesTableHeadEnd", "\n"));
+        print(format("examplesTableBodyStart", ""));
+        for (Map<String, String> row : rows) {
+            print(format("examplesTableRowStart", "|"));
+            for (String header : headers) {
+                print(format("examplesTableCell", "{0}|", row.get(header)));
+            }
+            print(format("examplesTableRowEnd", "\n"));
+        }
+        print(format("examplesTableBodyEnd", "\n"));
+        print(format("examplesTableEnd", "\n"));
     }
 
     public void examplesTableRow(Map<String, String> tableRow) {
@@ -190,12 +215,8 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     protected void print(String text) {
-        output.print(text.replace(PARAMETER_VALUE_START, "")
-                         .replace(PARAMETER_VALUE_END, ""));
-    }
-
-    protected void println(String text) {
-        output.println(text);
+        output.print(text.replace(PARAMETER_VALUE_START, format("parameterValueStart", ""))
+                         .replace(PARAMETER_VALUE_END, format("parameterValueEnd", "")));
     }
 
 }

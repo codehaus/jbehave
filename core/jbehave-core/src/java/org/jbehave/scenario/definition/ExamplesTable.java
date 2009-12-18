@@ -18,6 +18,7 @@ public class ExamplesTable {
 	private static final String COLUMN_SEPARATOR = "\\|";
 	private final List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private final String tableAsString;
+    private final List<String> headers = new ArrayList<String>();
 
 	public ExamplesTable(String tableAsString) {
 		this.tableAsString = tableAsString;
@@ -27,7 +28,7 @@ public class ExamplesTable {
 	private void parse() {
 		data.clear();
 		String[] rows = tableAsString.split("\n");
-		List<String> headers = new ArrayList<String>();
+		headers.clear();
 		for (int row = 0; row < rows.length; row++) {
 			List<String> columns = columnsFor(rows[row]);
 			if ( row == 0 ) {
@@ -54,6 +55,10 @@ public class ExamplesTable {
 		return columns;
 	}
 
+	public List<String> getHeaders(){
+	    return headers;
+	}
+	
 	public Map<String, String> getRow(int row){
 		return data.get(row);		
 	}
