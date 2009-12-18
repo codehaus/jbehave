@@ -7,7 +7,6 @@ import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_START;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.StoryDefinition;
@@ -31,75 +30,75 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
 
     public void successful(String step) {
         String defaultPattern = "<div class=\"step.successful\">{0}</div>\n";
-        print(format("successful.html", defaultPattern, escapeHtml(step)));
+        print(format("successful", defaultPattern, escapeHtml(step)));
     }
 
     public void pending(String step) {
         String defaultPattern = "<div class=\"step.pending\">{0}<span class=\"keyword.pending\">({1})</span></div>\n";
-        print(format("pending.html", defaultPattern, escapeHtml(step), keywords.pending()));
+        print(format("pending", defaultPattern, escapeHtml(step), keywords.pending()));
     }
 
     public void notPerformed(String step) {
         String defaultPattern = "<div class=\"step.notPerformed\">{0}<span class=\"keyword.notPerformed\">({1})</span></div>\n";
-        print(format("notPerformed.html", defaultPattern, escapeHtml(step), keywords.notPerformed()));
+        print(format("notPerformed", defaultPattern, escapeHtml(step), keywords.notPerformed()));
     }
 
     public void failed(String step, Throwable cause) {
         this.cause = cause;
         String defaultPattern = "<div class=\"step.failed\">{0}<span class=\"keyword.failed\">({1})</span></div>\n";
-        print(format("failed.html", defaultPattern, escapeHtml(step), keywords.failed()));
+        print(format("failed", defaultPattern, escapeHtml(step), keywords.failed()));
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
         String defaultPattern = "<div class=\"story\">\n<h1>{0}</h1>\n({1})\n";
-        print(format("beforeStory.html", defaultPattern, story.getBlurb().asString(), story.getStoryPath()));
+        print(format("beforeStory", defaultPattern, story.getBlurb().asString(), story.getStoryPath()));
     }
 
     public void afterStory(boolean embeddedStory) {
-        print(format("afterStory.html", "</div>\n"));
+        print(format("afterStory", "</div>\n"));
     }
 
     public void beforeScenario(String title) {
         cause = null;
         String defaultPattern = "<div class=\"scenario\">\n<h2>{0} {1}</h2>\n";
-        print(format("beforeScenario.html", defaultPattern, keywords.scenario(), escapeHtml(title)));
+        print(format("beforeScenario", defaultPattern, keywords.scenario(), escapeHtml(title)));
     }
 
     public void afterScenario() {
-        print(format("afterScenario.html", "</div>\n"));
+        print(format("afterScenario", "</div>\n"));
     }
 
     public void givenScenarios(List<String> givenScenarios) {
         String defaultPattern = "<div class=\"givenScenarios\">{0} {1}</div>\n";
-        print(format("givenScenarios.html", defaultPattern, keywords.givenScenarios(), escapeHtml(givenScenarios
+        print(format("givenScenarios", defaultPattern, keywords.givenScenarios(), escapeHtml(givenScenarios
                 .toString())));
     }
 
     public void examplesTable(ExamplesTable table) {
-        String defaultPattern = "<h3 class=\"examplesTable\">{0}</h3>\n<table class=\"examplesTable\">\n";
-        print(format("examplesTable.html", defaultPattern, keywords.examplesTable()));
+        print(format("examplesTable", "<h3 class=\"examplesTable\">{0}</h3>\n", keywords.examplesTable()));
+        print(format("examplesTableStart", "<table class=\"examplesTable\">\n"));
         final List<Map<String, String>> rows = table.getRows();
-        final Set<String> columnNames = rows.get(0).keySet();
-        println("<thead>\n<tr>");
-        for (String columnName : columnNames) {
-            print(format("examplesTableHeader.html", "<th>{0}</th>", escapeHtml(columnName)));
+        final List<String> headers = table.getHeaders();
+        print(format("examplesTableHeadStart", "<thead>\n<tr>\n"));
+        for (String header : headers) {
+            print(format("examplesTableHeadCell", "<th>{0}</th>", escapeHtml(header)));
         }
-        println("</tr>\n</thead>");
-        println("<tbody>");
+        print(format("examplesTableHeadEnd", "</tr>\n</thead>\n"));
+        print(format("examplesTableBodyStart", "<tbody>\n"));
         for (Map<String, String> row : rows) {
-            println("<tr>");
-            for (String columnName : columnNames) {
-                print(format("examplesTableCell.html", "<td>{0}</td>", escapeHtml(row.get(columnName))));
+            print(format("examplesTableRowStart", "<tr>\n"));
+            for (String header : headers) {
+                print(format("examplesTableCell", "<td>{0}</td>", escapeHtml(row.get(header))));
             }
-            println("</tr>");
+            print(format("examplesTableRowEnd", "</tr>\n"));
         }
-        println("</tbody>");
-        println("</table>");
+        print(format("examplesTableBodyEnd", "</tbody>\n"));
+        print(format("examplesTableEnd", "</table>\n"));
     }
 
     public void examplesTableRow(Map<String, String> tableRow) {
         String defaultPattern = "\n<h3 class=\"examplesTableRow\">{0} {1}</h3>\n";
-        print(format("examplesTableRow.html", defaultPattern, keywords.examplesTableRow(), escapeHtml(tableRow
+        print(format("examplesTableRow", defaultPattern, keywords.examplesTableRow(), escapeHtml(tableRow
                 .toString())));
     }
     
