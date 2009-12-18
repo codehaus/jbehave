@@ -85,7 +85,16 @@ public class PrintStreamScenarioReporterBehaviour {
         "<div class=\"step.pending\">Then I should have a balance of $30<span class=\"keyword.pending\">(PENDING)</span></div>\n" +
         "<div class=\"step.notPerformed\">Then I should have $20<span class=\"keyword.notPerformed\">(NOT PERFORMED)</span></div>\n" +
         "<div class=\"step.failed\">Then I don't return loan<span class=\"keyword.failed\">(FAILED)</span></div>\n" +
-        "<h3 class=\"examplesTable\">Examples:</h3>\n<table class=\"examplesTable\">\n<thead>\n<tr>\n<th>to</th><th>money</th></tr>\n</thead>\n<tbody>\n<tr>\n<td>Mauro</td><td>$30</td></tr>\n<tr>\n<td>Paul</td><td>$50</td></tr>\n</tbody>\n</table>\n"+
+        "<h3 class=\"examplesTable\">Examples:</h3>\n" +
+        "<table class=\"examplesTable\">\n" +
+        "<thead>\n" +
+        "<tr>\n<th>money</th><th>to</th></tr>\n" +
+        "</thead>\n" +
+        "<tbody>\n" +
+        "<tr>\n<td>$30</td><td>Mauro</td></tr>\n" +
+        "<tr>\n<td>$50</td><td>Paul</td></tr>\n" +
+        "</tbody>\n" +
+        "</table>\n" +
         "\n<h3 class=\"examplesTableRow\">Example: {to=Mauro, money=$30}</h3>\n" +
         "\n<h3 class=\"examplesTableRow\">Example: {to=Paul, money=$50}</h3>\n"+
         "</div>\n</div>\n";  // end of scenario and story 
