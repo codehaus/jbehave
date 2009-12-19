@@ -40,6 +40,7 @@ public class PrintStreamScenarioReporterBehaviour {
         // Then
         String expected = 
         "An interesting story\n" +
+        "(/path/to/story)\n"+
         "Scenario: I ask for a loan\n" +
         "GivenScenarios: [/given/scenario1,/given/scenario2]\n" +
         "Given I have a balance of $50\n" +
@@ -76,7 +77,7 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // Then
         String expected = 
-        "<div class=\"story\">\n<h1>An interesting story</h1>\n(/path/to/story)\n" +
+        "<div class=\"story\">\n<h1>An interesting story</h1>\n<h2>/path/to/story</h2>\n" +
         "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
         "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
         "<div class=\"step.successful\">Given I have a balance of $50</div>\n" +
@@ -98,6 +99,53 @@ public class PrintStreamScenarioReporterBehaviour {
         "\n<h3 class=\"examplesTableRow\">Example: {to=Mauro, money=$30}</h3>\n" +
         "\n<h3 class=\"examplesTableRow\">Example: {to=Paul, money=$50}</h3>\n"+
         "</div>\n</div>\n";  // end of scenario and story 
+        ensureThatOutputIs(out, expected);        
+    }    
+
+    
+    @Test
+    public void shouldReportEventsToHtmlPrintStreamUsingCustomOutputPatterns() {
+        // Given
+        final OutputStream out = new ByteArrayOutputStream();
+        PrintStreamFactory factory = new PrintStreamFactory() {
+
+            public PrintStream getPrintStream() {
+                return new PrintStream(out);
+            }
+        };
+        Properties patterns = new Properties();        
+        patterns.setProperty("afterStory", "</div><!-- after story -->\n");
+        patterns.setProperty("afterScenario", "</div><!-- after scenario -->\n");
+        ScenarioReporter reporter = new HtmlPrintStreamScenarioReporter(factory.getPrintStream(), patterns);
+        
+        // When 
+        narrateAnInterestingStory(reporter);
+
+        // Then
+        String expected = 
+        "<div class=\"story\">\n<h1>An interesting story</h1>\n<h2>/path/to/story</h2>\n" +
+        "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
+        "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
+        "<div class=\"step.successful\">Given I have a balance of $50</div>\n" +
+        "<div class=\"step.successful\">When I request $20</div>\n" +
+        "<div class=\"step.successful\">When I ask Liz for a loan of $100</div>\n" +
+        "<div class=\"step.pending\">Then I should have a balance of $30<span class=\"keyword.pending\">(PENDING)</span></div>\n" +
+        "<div class=\"step.notPerformed\">Then I should have $20<span class=\"keyword.notPerformed\">(NOT PERFORMED)</span></div>\n" +
+        "<div class=\"step.failed\">Then I don't return loan<span class=\"keyword.failed\">(FAILED)</span></div>\n" +
+        "<h3 class=\"examplesTable\">Examples:</h3>\n" +
+        "<table class=\"examplesTable\">\n" +
+        "<thead>\n" +
+        "<tr>\n<th>money</th><th>to</th></tr>\n" +
+        "</thead>\n" +
+        "<tbody>\n" +
+        "<tr>\n<td>$30</td><td>Mauro</td></tr>\n" +
+        "<tr>\n<td>$50</td><td>Paul</td></tr>\n" +
+        "</tbody>\n" +
+        "</table>\n" +
+        "\n<h3 class=\"examplesTableRow\">Example: {to=Mauro, money=$30}</h3>\n" +
+        "\n<h3 class=\"examplesTableRow\">Example: {to=Paul, money=$50}</h3>\n"+
+        "</div><!-- after scenario -->\n" +
+        "</div><!-- after story -->\n";
         ensureThatOutputIs(out, expected);        
     }    
     
