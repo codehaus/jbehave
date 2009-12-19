@@ -1,0 +1,57 @@
+
+.story {
+  text-align: left;
+  margin-left: 10px;
+}
+
+.scenario {
+  text-align: left;
+  margin-right: 10px;
+}
+
+.step {
+  color: black;
+}
+
+.successful {
+}
+
+.pending {
+  color: green;
+}
+
+.notPerformed {
+  color: yellow;
+}
+
+.failed {
+  color: red;
+}
+
+.parameter {
+  text-decoration: underline;
+}
+
+.keyword {
+  text-weight: bold;
+}
+
+table.examplesTable th {
+  color: #fff;
+  background-color: #bbb;
+  text-align: left;
+  font-weight: bold;
+}
+
+table.examplesTable th, table.examplesTable td {
+  font-size: 1em;
+}
+
+table.examplesTable tr.a {
+  background-color: #ddd;
+}
+
+table.examplesTable tr.b {
+  background-color: #eee;
+}
+
