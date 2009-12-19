@@ -23,6 +23,7 @@ import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
+import org.jbehave.scenario.reporters.FilePrintStreamFactory.FileConfiguration;
 import org.junit.Test;
 
 
@@ -302,9 +303,10 @@ public class PrintStreamScenarioReporterBehaviour {
         ensureThat(IOUtils.toString(new FileReader(file)), equalTo("Hello World"));
     }
 
-    private File fileFor(Class<MyScenario> scenarioClass, UnderscoredCamelCaseResolver converter) {
-        File outputDirectory = FilePrintStreamFactory.outputDirectory(scenarioClass);
-        String fileName = FilePrintStreamFactory.fileName(scenarioClass, converter, FilePrintStreamFactory.HTML);
+    private File fileFor(Class<MyScenario> scenarioClass, UnderscoredCamelCaseResolver converter) {        
+        FileConfiguration configuration = new FileConfiguration();
+        File outputDirectory = FilePrintStreamFactory.outputDirectory(scenarioClass, configuration);
+        String fileName = FilePrintStreamFactory.fileName(scenarioClass, converter, configuration);
         return new File(outputDirectory, fileName);
     }
     

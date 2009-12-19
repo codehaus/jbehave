@@ -14,15 +14,16 @@ import java.io.PrintStream;
  */
 public class FilePrintStreamFactory implements PrintStreamFactory {
 
-    static final String HTML = "html";
     private PrintStream printStream;
 
-    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver) {
-        this(scenarioClass, scenarioNameResolver, HTML);
+    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass,
+            ScenarioNameResolver scenarioNameResolver) {
+        this(scenarioClass, scenarioNameResolver, new FileConfiguration());
     }
 
-    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver, String fileExt) {
-        this(outputDirectory(scenarioClass), fileName(scenarioClass, scenarioNameResolver, fileExt));
+    public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass,
+            ScenarioNameResolver scenarioNameResolver, FileConfiguration configuration) {
+        this(outputDirectory(scenarioClass,  configuration), fileName(scenarioClass, scenarioNameResolver, configuration));
     }
 
     public FilePrintStreamFactory(File outputDirectory, String fileName) {
@@ -38,16 +39,46 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
         return printStream;
     }
 
-    static File outputDirectory(Class<? extends RunnableScenario> scenarioClass) {
+    static File outputDirectory(Class<? extends RunnableScenario> scenarioClass, FileConfiguration configuration) {
         String classesDir = scenarioClass.getProtectionDomain().getCodeSource().getLocation().getFile();
         File targetDirectory = new File(classesDir).getParentFile();
-        return new File(targetDirectory, "scenario-reports");
+        return new File(targetDirectory, configuration.getDirectory());
     }
 
-    static String fileName(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver, String fileExt) {
+    static String fileName(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver,
+            FileConfiguration configuration) {
         String scenarioName = scenarioNameResolver.resolve(scenarioClass).replace('/', '.');
         String name = scenarioName.substring(0, scenarioName.lastIndexOf("."));
-        return name + "." + fileExt;
+        return name + "." + configuration.getExtension();
     }
 
+    public static class FileConfiguration {
+        public static final String DIRECTORY = "jbehave-reports";
+        public static final String HTML = "html";
+
+        private final String directory;
+        private final String extension;
+
+        public FileConfiguration() {
+            this(DIRECTORY, HTML);
+        }
+
+        public FileConfiguration(String extension) {
+            this(DIRECTORY, extension);
+        }
+
+        public FileConfiguration(String directory, String extension) {
+            this.directory = directory;
+            this.extension = extension;
+        }
+
+        public String getDirectory() {
+            return directory;
+        }
+
+        public String getExtension() {
+            return extension;
+        }
+
+    }
 }
