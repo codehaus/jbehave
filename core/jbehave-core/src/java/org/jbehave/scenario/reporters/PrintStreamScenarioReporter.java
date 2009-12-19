@@ -1,16 +1,23 @@
 package org.jbehave.scenario.reporters;
 
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
+import static org.apache.commons.lang.StringEscapeUtils.escapeXml;
+import static org.jbehave.scenario.reporters.PrintStreamScenarioReporter.Format.PLAIN;
 import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_END;
 import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_START;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
+import org.apache.commons.lang.ArrayUtils;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.KeyWords;
@@ -58,12 +65,15 @@ import org.jbehave.scenario.i18n.I18nKeyWords;
  */
 public class PrintStreamScenarioReporter implements ScenarioReporter {
 
+    public enum Format { PLAIN, HTML, XML }
+    
     protected PrintStream output;
-    protected final Properties outputPatterns;
-    protected final KeyWords keywords;
-    protected final boolean reportErrors;
-    protected Throwable cause;
-
+    private final Properties outputPatterns;
+    private final Format format;    
+    private final KeyWords keywords;
+    private final boolean reportErrors;
+    private Throwable cause;
+    
     public PrintStreamScenarioReporter() {
         this(System.out);
     }
@@ -76,16 +86,26 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         this(System.out, outputPatterns, new I18nKeyWords(), false);
     }
 
+    public PrintStreamScenarioReporter(Properties outputPatterns, Format format) {
+        this(System.out, outputPatterns, format, new I18nKeyWords(), false);
+    }
+
     public PrintStreamScenarioReporter(KeyWords keywords) {
         this(System.out, new Properties(), keywords, false);
     }
 
     public PrintStreamScenarioReporter(PrintStream output, Properties outputPatterns, KeyWords keywords,
             boolean reportErrors) {
+        this(output, outputPatterns, PLAIN, keywords, reportErrors);
+    }
+
+    public PrintStreamScenarioReporter(PrintStream output, Properties outputPatterns, Format format,
+            KeyWords keywords, boolean reportErrors) {
         this.output = output;
         this.outputPatterns = outputPatterns;
+        this.format = format;
         this.keywords = keywords;
-        this.reportErrors = reportErrors;
+        this.reportErrors = reportErrors;   
     }
 
     public void successful(String step) {
@@ -112,7 +132,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 
     public void afterScenario() {
         if (cause != null && reportErrors) {
-            print(format("afterScenario.withFailure", "\n{0}\n", stackTrace(cause)));
+            print(format("afterScenarioWithFailure", "\n{0}\n", stackTrace(cause)));
         } else {
             print(format("afterScenario", "\n"));
         }
@@ -125,7 +145,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        print(format("beforeStory", "{0}\n", story.getBlurb().asString()));
+        print(format("beforeStory", "{0}\n({1})\n", story.getBlurb().asString(), story.getStoryPath()));
     }
 
     public void beforeStory(Blurb blurb) {
@@ -174,7 +194,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     /**
-     * Formats event output by key, conventionally equal to the method name.
+     * Formats event output by key, usually equal to the method name.
      * 
      * @param key the event key
      * @param defaultPattern the default pattern to return if a custom pattern
@@ -183,7 +203,38 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
      * @return A formatted event output
      */
     protected String format(String key, String defaultPattern, Object... args) {
-        return MessageFormat.format(lookupPattern(key, defaultPattern), args);
+        return MessageFormat.format(lookupPattern(key, escape(defaultPattern)), escapeAll(args));
+    }
+
+    private String escape(String defaultPattern) {
+        return (String) escapeAll(defaultPattern)[0];
+    }
+
+    private Object[] escapeAll(Object... args) {
+        return escape(format, args);
+    }
+
+    /**
+     * Escapes args' string values according to format
+     * 
+     * @param format the Format used by the PrintStream
+     * @param args the array of args to escape
+     * @return The cloned and escaped array of args
+     */
+    protected Object[] escape(final Format format, Object... args) {
+        // Transformer that escapes HTML and XML strings
+        Transformer escapingTransformer = new Transformer( ) {
+            public Object transform(Object object) {
+                switch ( format ){
+                    case HTML: return escapeHtml(object.toString());
+                    case XML: return escapeXml(object.toString());
+                    default: return object;
+                }
+            }
+        };
+        List<?> list = Arrays.asList( ArrayUtils.clone( args ) );
+        CollectionUtils.transform( list, escapingTransformer );
+        return list.toArray();
     }
 
     /**
@@ -214,9 +265,14 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         this.output = output;
     }
 
+    /**
+     * Prints text to output stream, replacing parameter start and end placeholders
+     * 
+     * @param text the String to print
+     */
     protected void print(String text) {
-        output.print(text.replace(PARAMETER_VALUE_START, format("parameterValueStart", ""))
-                         .replace(PARAMETER_VALUE_END, format("parameterValueEnd", "")));
+        output.print(text.replace(format(PARAMETER_VALUE_START, PARAMETER_VALUE_START), format("parameterValueStart", ""))
+                         .replace(format(PARAMETER_VALUE_END, PARAMETER_VALUE_END), format("parameterValueEnd", "")));
     }
 
 }
