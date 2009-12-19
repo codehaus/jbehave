@@ -14,6 +14,7 @@ import java.io.PrintStream;
  */
 public class FilePrintStreamFactory implements PrintStreamFactory {
 
+    private File outputDirectory;
     private PrintStream printStream;
 
     public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass,
@@ -23,10 +24,12 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
 
     public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass,
             ScenarioNameResolver scenarioNameResolver, FileConfiguration configuration) {
-        this(outputDirectory(scenarioClass,  configuration), fileName(scenarioClass, scenarioNameResolver, configuration));
+        this(outputDirectory(scenarioClass, configuration),
+                fileName(scenarioClass, scenarioNameResolver, configuration));
     }
 
-    public FilePrintStreamFactory(File outputDirectory, String fileName) {
+    public FilePrintStreamFactory(File outputDirectory, String fileName) {        
+        this.outputDirectory = outputDirectory;
         outputDirectory.mkdirs();
         try {
             printStream = new PrintStream(new FileOutputStream(new File(outputDirectory, fileName), true));
@@ -39,8 +42,12 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
         return printStream;
     }
 
+    public File getOutputDirectory() {
+        return outputDirectory;
+    }
+
     static File outputDirectory(Class<? extends RunnableScenario> scenarioClass, FileConfiguration configuration) {
-        String classesDir = scenarioClass.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String classesDir = scenarioClass.getProtectionDomain().getCodeSource().getLocation().getFile();        
         File targetDirectory = new File(classesDir).getParentFile();
         return new File(targetDirectory, configuration.getDirectory());
     }
@@ -52,6 +59,12 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
         return name + "." + configuration.getExtension();
     }
 
+    /**
+     * Configuration class for file print streams. Allows specification of the
+     * file directory (relative to the scenario class code source location) and
+     * the file extension. Provides as defaults {@link #DIRECTORY} and
+     * {@link #HTML}.
+     */
     public static class FileConfiguration {
         public static final String DIRECTORY = "jbehave-reports";
         public static final String HTML = "html";
