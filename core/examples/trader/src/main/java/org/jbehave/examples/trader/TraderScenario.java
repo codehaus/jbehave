@@ -12,6 +12,7 @@ import org.jbehave.scenario.reporters.FilePrintStreamFactory;
 import org.jbehave.scenario.reporters.HtmlPrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.jbehave.scenario.reporters.FilePrintStreamFactory.FileConfiguration;
 
 public class TraderScenario extends JUnitScenario {
 
@@ -26,8 +27,15 @@ public class TraderScenario extends JUnitScenario {
 
             @Override
             public ScenarioReporter forReportingScenarios() {
-                return new CollectingScenarioReporter(new PrintStreamScenarioReporter(),
-                        new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter).getPrintStream()));
+                return new CollectingScenarioReporter(
+                        // report to System.out
+                        new PrintStreamScenarioReporter(),
+                        // report to .txt file in PLAIN format
+                        new PrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter, new FileConfiguration("txt"))
+                                .getPrintStream()),
+                        // report to .html file in HTML format        
+                        new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter, new FileConfiguration("html"))
+                                .getPrintStream()));
             }
 
         }, new TraderSteps());
