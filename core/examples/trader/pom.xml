@@ -98,6 +98,15 @@
               <goal>stepdoc</goal>
             </goals>
           </execution>
+          <execution>
+            <id>render-reports-generated</id>
+            <phase>post-integration-test</phase>
+            <configuration>
+            </configuration>
+            <goals>
+              <goal>render-reports</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -144,6 +153,25 @@
       </plugin>
     </plugins>
   </build>
+  <reporting>
+    <excludeDefaults>true</excludeDefaults>
+    <plugins>
+      <plugin>
+        <groupId>org.jbehave</groupId>
+        <artifactId>jbehave-maven-plugin</artifactId>
+        <version>${pom.version}</version>
+        <configuration>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>render-reports</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
   <profiles>
     <profile>
       <id>ant</id>

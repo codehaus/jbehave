@@ -32,7 +32,13 @@
       <fileset refid="dependency.fileset" />
       <mapper type="flatten" />
     </copy>
-
+    <copy todir="target/classes">
+      <fileset dir="src/main/java">
+        <include name="**/*.scenario"/>
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+    
     <path id="scenario.classpath">
       <fileset dir="target/lib" includes="**/*.jar" />
       <pathelement location="target/classes" />
@@ -61,6 +67,14 @@
       scenarioExcludes="**/i18n/scenarios/*.java" classLoaderInjected="false" />
     <scenarioRunner scenarioIncludes="**/i18n/scenarios/*.java"
       scenarioExcludes="" classLoaderInjected="true" />
+  </target>
+
+  <target name="render-reports" depends="compile">
+    <taskdef name="reportRenderer" classname="org.jbehave.ant.ReportRendererTask"
+      classpathref="scenario.classpath" />
+
+    <reportRenderer outputDirectory="target/jbehave-reports" format="html" />
+  
   </target>
 
   <target name="stepdoc" depends="compile">
