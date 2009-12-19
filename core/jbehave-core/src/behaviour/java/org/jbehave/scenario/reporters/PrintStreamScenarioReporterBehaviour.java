@@ -80,15 +80,16 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // Then
         String expected = 
+        "<link href=\"style/jbehave-reports.css\" rel=\"stylesheet\" type=\"text/css\">\n" +    
         "<div class=\"story\">\n<h1>An interesting story</h1>\n<h2>/path/to/story</h2>\n" +
         "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
         "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
-        "<div class=\"step.successful\">Given I have a balance of $50</div>\n" +
-        "<div class=\"step.successful\">When I request $20</div>\n" +
-        "<div class=\"step.successful\">When I ask Liz for a loan of $100</div>\n" +
-        "<div class=\"step.pending\">Then I should have a balance of $30<span class=\"keyword.pending\">(PENDING)</span></div>\n" +
-        "<div class=\"step.notPerformed\">Then I should have $20<span class=\"keyword.notPerformed\">(NOT PERFORMED)</span></div>\n" +
-        "<div class=\"step.failed\">Then I don't return loan<span class=\"keyword.failed\">(FAILED)</span></div>\n" +
+        "<div class=\"step successful\">Given I have a balance of $50</div>\n" +
+        "<div class=\"step successful\">When I request $20</div>\n" +
+        "<div class=\"step successful\">When I ask Liz for a loan of $100</div>\n" +
+        "<div class=\"step pending\">Then I should have a balance of $30<span class=\"keyword pending\">(PENDING)</span></div>\n" +
+        "<div class=\"step notPerformed\">Then I should have $20<span class=\"keyword notPerformed\">(NOT PERFORMED)</span></div>\n" +
+        "<div class=\"step failed\">Then I don't return loan<span class=\"keyword failed\">(FAILED)</span></div>\n" +
         "<h3 class=\"examplesTable\">Examples:</h3>\n" +
         "<table class=\"examplesTable\">\n" +
         "<thead>\n" +
@@ -126,15 +127,16 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // Then
         String expected = 
+        "<link href=\"style/jbehave-reports.css\" rel=\"stylesheet\" type=\"text/css\">\n" +    
         "<div class=\"story\">\n<h1>An interesting story</h1>\n<h2>/path/to/story</h2>\n" +
         "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
         "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
-        "<div class=\"step.successful\">Given I have a balance of $50</div>\n" +
-        "<div class=\"step.successful\">When I request $20</div>\n" +
-        "<div class=\"step.successful\">When I ask Liz for a loan of $100</div>\n" +
-        "<div class=\"step.pending\">Then I should have a balance of $30<span class=\"keyword.pending\">(PENDING)</span></div>\n" +
-        "<div class=\"step.notPerformed\">Then I should have $20<span class=\"keyword.notPerformed\">(NOT PERFORMED)</span></div>\n" +
-        "<div class=\"step.failed\">Then I don't return loan<span class=\"keyword.failed\">(FAILED)</span></div>\n" +
+        "<div class=\"step successful\">Given I have a balance of $50</div>\n" +
+        "<div class=\"step successful\">When I request $20</div>\n" +
+        "<div class=\"step successful\">When I ask Liz for a loan of $100</div>\n" +
+        "<div class=\"step pending\">Then I should have a balance of $30<span class=\"keyword pending\">(PENDING)</span></div>\n" +
+        "<div class=\"step notPerformed\">Then I should have $20<span class=\"keyword notPerformed\">(NOT PERFORMED)</span></div>\n" +
+        "<div class=\"step failed\">Then I don't return loan<span class=\"keyword failed\">(FAILED)</span></div>\n" +
         "<h3 class=\"examplesTable\">Examples:</h3>\n" +
         "<table class=\"examplesTable\">\n" +
         "<thead>\n" +

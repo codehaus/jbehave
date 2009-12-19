@@ -44,6 +44,26 @@
               </artifactItems>
             </configuration>
           </execution>
+          <execution>
+            <id>unpack-jbehave-reports-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.jbehave</groupId>
+                  <artifactId>jbehave-core</artifactId>
+                  <version>${pom.version}</version>
+                  <outputDirectory>${project.build.directory}/jbehave-reports</outputDirectory>
+                  <includes>**\/*.css,**\/*.ftl</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
