@@ -24,6 +24,8 @@ import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.FilePrintStreamFactory.FileConfiguration;
+import org.jbehave.scenario.reporters.FreemarkerReportRenderer.RendererTemplateNotFoundException;
+import org.jbehave.scenario.reporters.FreemarkerReportRenderer.RenderingFailedException;
 import org.junit.Test;
 
 
@@ -151,7 +153,8 @@ public class PrintStreamScenarioReporterBehaviour {
     }    
     
     private void narrateAnInterestingStory(ScenarioReporter reporter) {
-        StoryDefinition story = new StoryDefinition(new Blurb("An interesting story"), new ArrayList<ScenarioDefinition>(), "/path/to/story");
+        StoryDefinition story = new StoryDefinition(new Blurb("An interesting story"), new ArrayList<ScenarioDefinition>(), 
+                "/path/to/story");
         boolean embeddedStory = true;
         reporter.beforeStory(story, embeddedStory);
         String title = "I ask for a loan";
@@ -310,6 +313,56 @@ public class PrintStreamScenarioReporterBehaviour {
         return new File(outputDirectory, fileName);
     }
     
+    @Test
+    public void shouldReportEventsToFilePrintStreamAndRenderOutputAsHtml() throws IOException {
+        // Given
+        FilePrintStreamFactory printStreamFactory = new FilePrintStreamFactory(MyScenario.class, new UnderscoredCamelCaseResolver());
+        ScenarioReporter reporter = new HtmlPrintStreamScenarioReporter(printStreamFactory.getPrintStream());
+        
+        // When 
+        narrateAnInterestingStory(reporter);
+        File outputDirectory = printStreamFactory.getOutputDirectory();
+        ReportRenderer renderer = new FreemarkerReportRenderer();
+        renderer.render(outputDirectory,"html");
+
+        // Then
+        File renderedOutput = new File(outputDirectory, "index.html");
+        ensureThat(renderedOutput.exists());
+        ensureThat(IOUtils.toString(new FileReader(renderedOutput)).length() > 0);
+    }     
+        
+    @Test(expected=RenderingFailedException.class)
+    public void shouldFailRenderingOutputWithInexistentTemplates() throws IOException {
+        // Given
+        Properties templates = new Properties();
+        templates.setProperty("html", "/inexistent");
+        ReportRenderer renderer = new FreemarkerReportRenderer(templates);
+        // When 
+        File outputDirectory = new File("target");
+        renderer.render(outputDirectory,"html");
+        // Then ... fail as expected        
+    }        
+
+    @Test(expected=RenderingFailedException.class)
+    public void shouldFailRenderingOutputWithInexistentOutputDirectory() throws IOException {
+        // Given
+        ReportRenderer renderer = new FreemarkerReportRenderer();
+        // When 
+        File outputDirectory = new File("inexistent");
+        renderer.render(outputDirectory,"html");
+        // Then ... fail as expected        
+    }        
+
+    @Test(expected=RendererTemplateNotFoundException.class)
+    public void shouldFailRenderingOutputWithInvalidFormat() throws IOException {
+        // Given
+        ReportRenderer renderer = new FreemarkerReportRenderer();
+        // When 
+        File outputDirectory = new File("target");
+        renderer.render(outputDirectory,"invalid");
+        // Then ... fail as expected        
+    }        
+
     private static class MyScenario extends Scenario {
         
     }
