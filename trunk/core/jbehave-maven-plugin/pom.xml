@@ -42,8 +42,4 @@
       <version>2.0.1</version>
     </dependency>
   </dependencies>
-  <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/behaviour/java</testSourceDirectory>
-  </build>
 </project>
