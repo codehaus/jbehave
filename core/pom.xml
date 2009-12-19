@@ -73,6 +73,10 @@
     <testSourceDirectory>src/behaviour/java</testSourceDirectory>
     <resources>
       <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+      </resource>
+      <resource>
         <directory>${project.build.sourceDirectory}</directory>
         <filtering>false</filtering>
         <excludes>
