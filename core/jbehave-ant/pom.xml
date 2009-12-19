@@ -21,8 +21,4 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/behaviour/java</testSourceDirectory>
-  </build>
 </project>

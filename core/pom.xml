@@ -69,8 +69,8 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/behaviour</testSourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/behaviour/java</testSourceDirectory>
     <resources>
       <resource>
         <directory>${project.build.sourceDirectory}</directory>
