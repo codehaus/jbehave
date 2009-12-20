@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,7 +25,6 @@ import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.FilePrintStreamFactory.FileConfiguration;
-import org.jbehave.scenario.reporters.FreemarkerReportRenderer.RendererTemplateNotFoundException;
 import org.jbehave.scenario.reporters.FreemarkerReportRenderer.RenderingFailedException;
 import org.junit.Test;
 
@@ -80,7 +80,6 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // Then
         String expected = 
-        "<link href=\"style/jbehave-reports.css\" rel=\"stylesheet\" type=\"text/css\">\n" +    
         "<div class=\"story\">\n<h1>An interesting story</h1>\n<h2>/path/to/story</h2>\n" +
         "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
         "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
@@ -127,7 +126,6 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // Then
         String expected = 
-        "<link href=\"style/jbehave-reports.css\" rel=\"stylesheet\" type=\"text/css\">\n" +    
         "<div class=\"story\">\n<h1>An interesting story</h1>\n<h2>/path/to/story</h2>\n" +
         "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
         "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
@@ -316,7 +314,7 @@ public class PrintStreamScenarioReporterBehaviour {
     }
     
     @Test
-    public void shouldReportEventsToFilePrintStreamAndRenderOutputAsHtml() throws IOException {
+    public void shouldReportEventsToFilePrintStreamsAndRenderAggregatedIndex() throws IOException {
         // Given
         FilePrintStreamFactory printStreamFactory = new FilePrintStreamFactory(MyScenario.class, new UnderscoredCamelCaseResolver());
         ScenarioReporter reporter = new HtmlPrintStreamScenarioReporter(printStreamFactory.getPrintStream());
@@ -325,10 +323,13 @@ public class PrintStreamScenarioReporterBehaviour {
         narrateAnInterestingStory(reporter);
         File outputDirectory = printStreamFactory.getOutputDirectory();
         ReportRenderer renderer = new FreemarkerReportRenderer();
-        renderer.render(outputDirectory,"html");
+        renderer.render(outputDirectory, asList("html"));
 
-        // Then
-        File renderedOutput = new File(outputDirectory, "index.html");
+        // Then        
+        ensureFileExists(new File(outputDirectory, "rendered/index.html"));
+    }
+
+    private void ensureFileExists(File renderedOutput) throws IOException, FileNotFoundException {
         ensureThat(renderedOutput.exists());
         ensureThat(IOUtils.toString(new FileReader(renderedOutput)).length() > 0);
     }     
@@ -337,31 +338,11 @@ public class PrintStreamScenarioReporterBehaviour {
     public void shouldFailRenderingOutputWithInexistentTemplates() throws IOException {
         // Given
         Properties templates = new Properties();
-        templates.setProperty("html", "/inexistent");
+        templates.setProperty("index", "/inexistent");
         ReportRenderer renderer = new FreemarkerReportRenderer(templates);
         // When 
         File outputDirectory = new File("target");
-        renderer.render(outputDirectory,"html");
-        // Then ... fail as expected        
-    }        
-
-    @Test(expected=RenderingFailedException.class)
-    public void shouldFailRenderingOutputWithInexistentOutputDirectory() throws IOException {
-        // Given
-        ReportRenderer renderer = new FreemarkerReportRenderer();
-        // When 
-        File outputDirectory = new File("inexistent");
-        renderer.render(outputDirectory,"html");
-        // Then ... fail as expected        
-    }        
-
-    @Test(expected=RendererTemplateNotFoundException.class)
-    public void shouldFailRenderingOutputWithInvalidFormat() throws IOException {
-        // Given
-        ReportRenderer renderer = new FreemarkerReportRenderer();
-        // When 
-        File outputDirectory = new File("target");
-        renderer.render(outputDirectory,"invalid");
+        renderer.render(outputDirectory, asList("html"));
         // Then ... fail as expected        
     }        
 

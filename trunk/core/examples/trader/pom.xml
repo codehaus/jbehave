@@ -39,7 +39,7 @@
                   <groupId>org.jbehave.site</groupId>
                   <artifactId>jbehave-site-resources</artifactId>
                   <version>2.0</version>
-                  <outputDirectory>${project.build.directory}/jbehave-reports</outputDirectory>
+                  <outputDirectory>${project.build.directory}/jbehave-reports/rendered</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -58,7 +58,7 @@
                   <groupId>org.jbehave</groupId>
                   <artifactId>jbehave-core</artifactId>
                   <version>${pom.version}</version>
-                  <outputDirectory>${project.build.directory}/jbehave-reports</outputDirectory>
+                  <outputDirectory>${project.build.directory}/jbehave-reports/rendered</outputDirectory>
                   <includes>**\/*.css,**\/*.ftl</includes>
                 </artifactItem>
               </artifactItems>

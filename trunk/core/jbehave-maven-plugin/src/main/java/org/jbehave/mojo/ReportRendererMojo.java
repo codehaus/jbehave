@@ -1,6 +1,9 @@
 package org.jbehave.mojo;
 
+import static java.util.Arrays.asList;
+
 import java.io.File;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.maven.doxia.siterenderer.Renderer;
@@ -29,11 +32,11 @@ public class ReportRendererMojo extends AbstractMavenReport {
     private File outputDirectory;
 
     /**
-     * Format of rendering output. Defaults to "html".
+     * Formats of generated output. Defaults to asList("html", "xml", "txt").
      * 
-     * @parameter expression="html"
+     * @parameter 
      */
-    private String format = "html";
+    private List<String> formats = asList("html", "xml", "txt");
 
     /**
      * <i>Maven Internal</i>: The Doxia Site Renderer.
@@ -59,12 +62,12 @@ public class ReportRendererMojo extends AbstractMavenReport {
         this.outputDirectory = outputDirectory;
     }
 
-    public String getFormat() {
-        return format;
+    public List<String> getFormats() {
+        return formats;
     }
 
-    public void setFormat(String format) {
-        this.format = format;
+    public void setFormats(List<String> formats) {
+        this.formats = formats;
     }
 
     public Renderer getSiteRenderer() {
@@ -82,11 +85,11 @@ public class ReportRendererMojo extends AbstractMavenReport {
     protected void executeReport(Locale locale) throws MavenReportException {
         ReportRenderer reportRenderer = new FreemarkerReportRenderer();
         try {
-            getLog().info("Rendering reports in '" + outputDirectory + "' using format '" + format + "'");
-            reportRenderer.render(outputDirectory, format);
+            getLog().info("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'");
+            reportRenderer.render(outputDirectory, formats);
         } catch (RuntimeException e) {
             String message = "Failed to render reports in outputDirectory " + outputDirectory
-                    + " using format " + format;
+                    + " using formats " + formats;
             getLog().warn(message, e);
             throw new MavenReportException(message, e);
         }
