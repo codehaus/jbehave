@@ -1,8 +1,11 @@
 package org.jbehave.ant;
 
-import static org.apache.tools.ant.Project.*;
+import static java.util.Arrays.asList;
+import static org.apache.tools.ant.Project.MSG_INFO;
+import static org.apache.tools.ant.Project.MSG_WARN;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -22,17 +25,17 @@ public class ReportRendererTask extends Task {
     private String outputDirectory = "target/jbehave-reports";
 
     /**
-     * The format of the rendering
+     * The format of the generated output
      */
-    private String format = "html";
+    private List<String> formats = asList("html", "xml", "txt");
 
     public void execute() throws BuildException {
         ReportRenderer renderer = new FreemarkerReportRenderer();
         try {
-            log("Rendering reports in '" + outputDirectory + "' using format '" + format + "'", MSG_INFO);
-            renderer.render(new File(outputDirectory), format);
+            log("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'", MSG_INFO);
+            renderer.render(new File(outputDirectory), formats);
         } catch (Throwable e) {
-            String message = "Failed to render reports in '" + outputDirectory + "' using format '" + format + "'";
+            String message = "Failed to render reports in '" + outputDirectory + "' using formats '" + formats + "'";
             log(message, MSG_WARN);
             throw new BuildException(message, e);
         }
@@ -44,8 +47,8 @@ public class ReportRendererTask extends Task {
         this.outputDirectory = outputDirectory;
     }
 
-    public void setFormat(String format) {
-        this.format = format;
+    public void setFormats(String formats) {
+        this.formats = asList(formats.split(","));
     }
 
     

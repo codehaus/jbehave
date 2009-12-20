@@ -45,7 +45,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
         patterns.setProperty("pending", "<div class=\"step pending\">{0}<span class=\"keyword pending\">({1})</span></div>\n");
         patterns.setProperty("notPerformed", "<div class=\"step notPerformed\">{0}<span class=\"keyword notPerformed\">({1})</span></div>\n");
         patterns.setProperty("failed", "<div class=\"step failed\">{0}<span class=\"keyword failed\">({1})</span></div>\n");
-        patterns.setProperty("beforeStory", "<link href=\"style/jbehave-reports.css\" rel=\"stylesheet\" type=\"text/css\">\n<div class=\"story\">\n<h1>{0}</h1>\n<h2>{1}</h2>\n");
+        patterns.setProperty("beforeStory", "<div class=\"story\">\n<h1>{0}</h1>\n<h2>{1}</h2>\n");
         patterns.setProperty("afterStory", "</div>\n");
         patterns.setProperty("beforeScenario", "<div class=\"scenario\">\n<h2>{0} {1}</h2>\n");
         patterns.setProperty("afterScenario", "</div>\n");
