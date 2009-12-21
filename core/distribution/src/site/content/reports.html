@@ -88,12 +88,13 @@ JBehave provides an implementation (<a
 based on <a href="http://freemarker.org">Freemarker</a> to allow a
 templateable and easily styleable way to render the report views.</p>
 
-<p>The default style is bundled in the <b>jbehave-core.jar</b>
-(extract ftl/*.ftl and style/jbehave-reports.css) but can be overridden.
-The FTL files need to be the classpath for the <b>FreemarkerReportRenderer</b>
-to find them, while the CSS file needs to be copied to the <b>jbehave-reports/style</b>
-directory. Also note that the default style makes use of images found in
-the <b>jbehave-site-resources.jar</b>.</p>
+<p>The default resources required for the report rendering are
+bundled in the <b>jbehave-core.jar</b> (extract ftl/*.ftl, js/*.js and
+style/*.css) but can be overridden. The FTL files need to be the
+classpath for the <b>FreemarkerReportRenderer</b> to find them, while
+the js and CSS files needs to be copied to the <b>jbehave-reports/js</b>
+and <b>jbehave-reports/style</b> directories. Also note that the default
+style makes use of images found in the <b>jbehave-site-resources.jar</b>.</p>
 
 <h2>Next?</h2>
 
