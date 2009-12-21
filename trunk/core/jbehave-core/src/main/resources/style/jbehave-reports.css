@@ -102,7 +102,6 @@ b {
 
 div.story h2 {
   background-color: #fff;
-  border: solid;
   border-color: #ffcd13;
 }
 
@@ -117,11 +116,12 @@ div.story h2 {
 
 .scenario {
   text-align: left;
-  margin-right: 10px;
+  padding-left: 1px;
 }
 
 .step {
   color: black;
+  padding-left: 10px;
 }
 
 .successful {
@@ -141,6 +141,8 @@ div.story h2 {
 }
 
 .parameter {
+  color: purple;
+  padding-left: 0px;
   text-weight: bold;
 }
 

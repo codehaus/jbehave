@@ -68,7 +68,7 @@ public class FreemarkerReportRenderer implements ReportRenderer {
         List<Report> renderedReports = renderedReports(reportFiles);
         Map<String, Object> dataModel = newDataModel();
         dataModel.put("reports", renderedReports);
-        dataModel.put("publishedDate", new Date());
+        dataModel.put("date", new Date());
         write(outputDirectory, outputName, resource, dataModel);
     }
 
