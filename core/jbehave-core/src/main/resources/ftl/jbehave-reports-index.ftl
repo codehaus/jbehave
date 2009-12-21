@@ -19,12 +19,12 @@
 <h2>Story Reports</h2>
 
 <table>
-<tr><th>Name</th><th>Formats</th></tr>
+<tr><th>Name</th><th>View</th></tr>
 <#list reports as report>
 <#assign filesByFormat = report.filesByFormat >
 <tr>
 <td>${report.name}</td>
-<td><#list filesByFormat.keySet() as format><#assign file = filesByFormat.get(format)><a href="${file.path}">${format}</a><#if format_has_next>,</#if></#list></td>
+<td><#list filesByFormat.keySet() as format><#assign file = filesByFormat.get(format)><a href="${file.path}">${format}</a><#if format_has_next>|</#if></#list></td>
 </tr>
 </#list>
 </table>
@@ -33,8 +33,8 @@
 
 <div class="clear"></div>
 <div id="footer">
-<div class="left">Generated on ${publishedDate?string("dd/MM/yyyy")}</div>
-<div class="right">JBehave &#169; 2003-2009</div>
+<div class="left">Generated at ${date?string("dd/MM/yyyy HH:mm:ss")}</div>
+<div class="right">JBehave &#169; 2003-2009</div> 
 <div class="clear"></div>
 </div>
 
