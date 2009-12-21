@@ -44,12 +44,7 @@ public class PassSilentlyDecorator implements ScenarioReporter {
     }
     
     public void beforeStory(final Blurb blurb) {
-        beforeStoryState = new State() {
-            public void report() {
-                delegate.beforeStory(blurb);
-                beforeStoryState = State.SILENT;
-            }
-        };
+        beforeStory(new StoryDefinition(blurb), false);
     };
 
     public void failed(final String step, final Throwable e) {
@@ -130,22 +125,38 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         });
 	}
 	
-	public void examplesTable(final ExamplesTable table) {
+	public void beforeExamples(final ExamplesTable table) {
         currentScenario.add(new Todo() {
             public void doNow() {
-                delegate.examplesTable(table);
+                delegate.beforeExamples(table);
             }
         });		
 	}
 
-	public void examplesTableRow(final Map<String, String> tableRow) {
+	public void example(final Map<String, String> tableRow) {
         currentScenario.add(new Todo() {
             public void doNow() {
-                delegate.examplesTableRow(tableRow);
+                delegate.example(tableRow);
             }
         });		
 	}
 	
+    public void afterExamples() {
+        currentScenario.add(new Todo() {
+            public void doNow() {
+                delegate.afterExamples();
+            }
+        });     
+    }
+
+    public void examplesTable(ExamplesTable table) {
+        beforeExamples(table);        
+    }
+
+    public void examplesTableRow(Map<String, String> tableRow) {
+        example(tableRow);        
+    }
+
     private static interface Todo {
         void doNow();
     }

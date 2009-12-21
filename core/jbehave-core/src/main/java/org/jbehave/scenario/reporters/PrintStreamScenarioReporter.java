@@ -125,25 +125,6 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         print(format("failed", "{0} ({1})\n", step, keywords.failed()));
     }
 
-    public void beforeScenario(String title) {
-        cause = null;
-        print(format("beforeScenario", "{0} {1}\n", keywords.scenario(), title));
-    }
-
-    public void afterScenario() {
-        if (cause != null && reportErrors) {
-            print(format("afterScenarioWithFailure", "\n{0}\n", stackTrace(cause)));
-        } else {
-            print(format("afterScenario", "\n"));
-        }
-    }
-
-    private String stackTrace(Throwable cause) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();        
-        cause.printStackTrace(new PrintStream(out));
-        return out.toString();
-    }
-
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
         print(format("beforeStory", "{0}\n({1})\n", story.getBlurb().asString(), story.getStoryPath()));
     }
@@ -167,8 +148,27 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         print(format("givenScenarios", "{0} {1}\n", keywords.givenScenarios(), givenScenarios));
     }
 
-    public void examplesTable(ExamplesTable table) {
-        print(format("examplesTable", "{0}\n", keywords.examplesTable()));
+    public void beforeScenario(String title) {
+        cause = null;
+        print(format("beforeScenario", "{0} {1}\n", keywords.scenario(), title));
+    }
+
+    public void afterScenario() {
+        if (cause != null && reportErrors) {
+            print(format("afterScenarioWithFailure", "\n{0}\n", stackTrace(cause)));
+        } else {
+            print(format("afterScenario", "\n"));
+        }
+    }
+
+    private String stackTrace(Throwable cause) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();        
+        cause.printStackTrace(new PrintStream(out));
+        return out.toString();
+    }
+
+    public void beforeExamples(ExamplesTable table) {
+        print(format("beforeExamples", "{0}\n", keywords.examplesTable()));
         print(format("examplesTableStart", "\n"));
         final List<Map<String, String>> rows = table.getRows();
         final List<String> headers = table.getHeaders();
@@ -189,8 +189,20 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         print(format("examplesTableEnd", "\n"));
     }
 
+    public void example(Map<String, String> tableRow) {
+        print(format("example", "\n{0} {1}\n", keywords.examplesTableRow(), tableRow));
+    }
+
+    public void afterExamples() {
+        print(format("afterExamples", "\n"));
+    }
+
+    public void examplesTable(ExamplesTable table) {
+        beforeExamples(table);        
+    }
+
     public void examplesTableRow(Map<String, String> tableRow) {
-        print(format("examplesTableRow", "\n{0} {1}\n", keywords.examplesTableRow(), tableRow));
+        example(tableRow);        
     }
 
     /**

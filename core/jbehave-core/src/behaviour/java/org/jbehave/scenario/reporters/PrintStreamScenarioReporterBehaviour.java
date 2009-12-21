@@ -59,6 +59,7 @@ public class PrintStreamScenarioReporterBehaviour {
         "\n\n" + // Examples table
         "\nExample: {to=Mauro, money=$30}\n" +
         "\nExample: {to=Paul, money=$50}\n" +
+        "\n" +  // end of examples
         "\n\n";  // end of scenario and story        
         ensureThatOutputIs(out, expected);
     }
@@ -80,7 +81,8 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // Then
         String expected = 
-        "<div class=\"story\">\n<h1>An interesting story</h1>\n<h2>/path/to/story</h2>\n" +
+        "<div class=\"story\">\n<h1>An interesting story</h1>\n" +
+        "<div class=\"path\">/path/to/story</div>\n" +
         "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
         "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
         "<div class=\"step successful\">Given I have a balance of $50</div>\n" +
@@ -89,8 +91,9 @@ public class PrintStreamScenarioReporterBehaviour {
         "<div class=\"step pending\">Then I should have a balance of $30<span class=\"keyword pending\">(PENDING)</span></div>\n" +
         "<div class=\"step notPerformed\">Then I should have $20<span class=\"keyword notPerformed\">(NOT PERFORMED)</span></div>\n" +
         "<div class=\"step failed\">Then I don't return loan<span class=\"keyword failed\">(FAILED)</span></div>\n" +
-        "<h3 class=\"examplesTable\">Examples:</h3>\n" +
-        "<table class=\"examplesTable\">\n" +
+        "<div class=\"examples\">\n" + 
+        "<h3>Examples:</h3>\n" +
+        "<table>\n" +
         "<thead>\n" +
         "<tr>\n<th>money</th><th>to</th></tr>\n" +
         "</thead>\n" +
@@ -99,8 +102,9 @@ public class PrintStreamScenarioReporterBehaviour {
         "<tr>\n<td>$50</td><td>Paul</td></tr>\n" +
         "</tbody>\n" +
         "</table>\n" +
-        "\n<h3 class=\"examplesTableRow\">Example: {to=Mauro, money=$30}</h3>\n" +
-        "\n<h3 class=\"examplesTableRow\">Example: {to=Paul, money=$50}</h3>\n"+
+        "\n<h3 class=\"example\">Example: {to=Mauro, money=$30}</h3>\n" +
+        "\n<h3 class=\"example\">Example: {to=Paul, money=$50}</h3>\n"+
+        "</div>\n" + // end of examples 
         "</div>\n</div>\n";  // end of scenario and story 
         ensureThatOutputIs(out, expected);        
     }    
@@ -119,6 +123,7 @@ public class PrintStreamScenarioReporterBehaviour {
         Properties patterns = new Properties();        
         patterns.setProperty("afterStory", "</div><!-- after story -->\n");
         patterns.setProperty("afterScenario", "</div><!-- after scenario -->\n");
+        patterns.setProperty("afterExamples", "</div><!-- after examples -->\n");
         ScenarioReporter reporter = new HtmlPrintStreamScenarioReporter(factory.getPrintStream(), patterns);
         
         // When 
@@ -126,7 +131,8 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // Then
         String expected = 
-        "<div class=\"story\">\n<h1>An interesting story</h1>\n<h2>/path/to/story</h2>\n" +
+        "<div class=\"story\">\n<h1>An interesting story</h1>\n" +
+        "<div class=\"path\">/path/to/story</div>\n" +        
         "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n" +
         "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n" +
         "<div class=\"step successful\">Given I have a balance of $50</div>\n" +
@@ -135,8 +141,9 @@ public class PrintStreamScenarioReporterBehaviour {
         "<div class=\"step pending\">Then I should have a balance of $30<span class=\"keyword pending\">(PENDING)</span></div>\n" +
         "<div class=\"step notPerformed\">Then I should have $20<span class=\"keyword notPerformed\">(NOT PERFORMED)</span></div>\n" +
         "<div class=\"step failed\">Then I don't return loan<span class=\"keyword failed\">(FAILED)</span></div>\n" +
-        "<h3 class=\"examplesTable\">Examples:</h3>\n" +
-        "<table class=\"examplesTable\">\n" +
+        "<div class=\"examples\">\n" + 
+        "<h3>Examples:</h3>\n" +
+        "<table>\n" +
         "<thead>\n" +
         "<tr>\n<th>money</th><th>to</th></tr>\n" +
         "</thead>\n" +
@@ -145,8 +152,9 @@ public class PrintStreamScenarioReporterBehaviour {
         "<tr>\n<td>$50</td><td>Paul</td></tr>\n" +
         "</tbody>\n" +
         "</table>\n" +
-        "\n<h3 class=\"examplesTableRow\">Example: {to=Mauro, money=$30}</h3>\n" +
-        "\n<h3 class=\"examplesTableRow\">Example: {to=Paul, money=$50}</h3>\n"+
+        "\n<h3 class=\"example\">Example: {to=Mauro, money=$30}</h3>\n" +
+        "\n<h3 class=\"example\">Example: {to=Paul, money=$50}</h3>\n"+
+        "</div><!-- after examples -->\n" +
         "</div><!-- after scenario -->\n" +
         "</div><!-- after story -->\n";
         ensureThatOutputIs(out, expected);        
@@ -167,9 +175,10 @@ public class PrintStreamScenarioReporterBehaviour {
         reporter.notPerformed("Then I should have $20");
         reporter.failed("Then I don't return loan", new Exception("Naughty me!"));
         ExamplesTable table = new ExamplesTable("|money|to|\n|$30|Mauro|\n|$50|Paul|\n");
-        reporter.examplesTable(table);
-        reporter.examplesTableRow(table.getRow(0));
-        reporter.examplesTableRow(table.getRow(1));
+        reporter.beforeExamples(table);
+        reporter.example(table.getRow(0));
+        reporter.example(table.getRow(1));
+        reporter.afterExamples();
         reporter.afterScenario();
         reporter.afterStory(embeddedStory);
     }

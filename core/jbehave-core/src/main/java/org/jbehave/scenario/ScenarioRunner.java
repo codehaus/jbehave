@@ -91,11 +91,12 @@ public class ScenarioRunner {
 	private void runExamplesTableScenario(Configuration configuration,
 			ScenarioDefinition scenario, ExamplesTable table,
 			CandidateSteps... candidateSteps) {
-		reporter.examplesTable(table);
+		reporter.beforeExamples(table);
 		for (Map<String,String> tableRow : table.getRows() ) {
-			reporter.examplesTableRow(tableRow);
+			reporter.example(tableRow);
 			runScenario(configuration, scenario, tableRow, candidateSteps);
 		}
+		reporter.afterExamples();
 	}
 
 	private void runScenario(Configuration configuration,
