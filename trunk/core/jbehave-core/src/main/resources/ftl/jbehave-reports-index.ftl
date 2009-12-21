@@ -5,20 +5,18 @@
 <title>JBehave Reports</title>
 
 <style type="text/css" media="all">
-@import url( "./style/jbehave.css" );
+@import url( "./style/jbehave-reports.css" );
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 </head>
 
-<body class="composite">
+<body>
 <div id="banner"><img src="images/jbehave-logo.png" alt="jbehave" />
 <div class="clear"></div>
 </div>
 
-<div id="bodyColumn">
-<div id="contentBox">
-<div class="section">
+<div class="reports">
 
 <table>
 <tr><th>Name</th><th>Formats</th></tr>
@@ -32,12 +30,10 @@
 </table>
 <br />
 </div>
-</div>
-</div>
 <div class="clear"></div>
 <div id="footer">
-<div class="left">Published on ${publishedDate?string("dd/MM/yyyy")}</div>
-<div class="right">&#169; 2003-2009</div>
+<div class="left">Generated on ${publishedDate?string("dd/MM/yyyy")}</div>
+<div class="right">JBehave &#169; 2003-2009</div>
 <div class="clear"></div>
 </div>
 
