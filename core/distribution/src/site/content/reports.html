@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Reports</title>
+</head>
+
+<body>
+
+<h2>Scenario Reporters</h2>
+
+<p>Reporting is an essential element of BDD as it allows to monitor
+the outcome of the scenarios that have been run. At the heart of
+JBehave's reporting is the <a
+    href="javadoc/core/org/jbehave/scenario/reporters/ScenarioReporter.html">ScenarioReporter</a>,
+which is used to report events as they occur.</p>
+
+<p>Currently, the scenario reporters supported are:</p>
+<ul>
+    <li><a
+        href="javadoc/core/org/jbehave/scenario/reporters/PrintStreamScenarioReporter.html">PrintStreamScenarioReporter</a>:
+    generic reporter to a print stream, using formats that are
+    configurable</li>
+    <li><a
+        href="javadoc/core/org/jbehave/scenario/reporters/HtmlPrintStreamScenarioReporter.html">HtmlPrintStreamScenarioReporter</a>:
+    specialises the <b>PrintStreamScenarioReporter</b> to use HTML
+    formats</li>
+    <li><a
+        href="javadoc/core/org/jbehave/scenario/reporters/DelegatingScenarioReporter.html">DelegatingScenarioReporter</a>:
+    delegates to any number of reporters as a proxy.</li>
+</ul>
+
+<p>Let's see an example of how we can configure the scenario
+reporters. We use the <b>DelegatingScenarioReporter</b> as a proxy for
+the reporters we want to configure, in the example below a plain text
+reporter (both to <b>System.out</b> and to a file) and an HTML reporter
+to a file:</p>
+<pre class="brush: java">
+    private static ScenarioNameResolver converter = new UnderscoredCamelCaseResolver(".scenario");
+
+    public TraderScenario(final Class scenarioClass) {
+        super(new PropertyBasedConfiguration() {
+            @Override
+            public ScenarioDefiner forDefiningScenarios() {
+                return new ClasspathScenarioDefiner(converter, new PatternScenarioParser(this));
+            }
+        
+            @Override
+            public ScenarioReporter forReportingScenarios() {
+                return new DelegatingScenarioReporter (
+                        // report to System.out in PLAIN format
+                        new PrintStreamScenarioReporter(),
+                        // report to .txt file in PLAIN format
+                        new PrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter, new FileConfiguration("txt"))
+                                .getPrintStream()),
+                        // report to .html file in HTML format        
+                        new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter, new FileConfiguration("html"))
+                                .getPrintStream()));
+            }
+
+        }, new TraderSteps());
+    }
+</pre>
+
+<p>Note that for the file-based reporters we use the <a
+    href="javadoc/core/org/jbehave/scenario/reporters/FilePrintStreamFactory.html">FilePrintStreamFactory</a>
+in which we inject the <a
+    href="javadoc/core/org/jbehave/scenario/parser/ScenarioNameResolver.html">ScenarioNameResolver</a>
+to derive the report file names from the scenario class, using the same
+name resolution mechanism used for mapping Java classes and textual
+scenarios. So, e.g., if the scenario class is <b>com.example.MyScenario</b>,
+we'll end up with file report outputs of the form: <b>com.example.my_scenario.[format]</b>
+(where <b>format</b> is <b>txt</b> and <b>html</b> in the example
+above).</p>
+
+<h2>Report Rendering</h2>
+
+<p>The generation of the reports is only the first part of a
+complete HTML-based reporting solution. Next we need to render the
+reports, aggregating all the ones that have been configured and
+generated in a given output directory, and presenting a collective index
+view for all formats configured. Moreover, we need to style the view,
+both for HTML and non-HTML report formats.</p>
+
+<p>The rendering is the responsibility of the <a
+    href="javadoc/core/org/jbehave/scenario/reporters/ReportRenderer.html">ReportRenderer</a>.
+JBehave provides an implementation (<a
+    href="javadoc/core/org/jbehave/scenario/reporters/FreemarkerReportRenderer.html">FreemarkerReportRenderer</a>)
+based on <a href="http://freemarker.org">Freemarker</a> to allow a
+templateable and easily styleable way to render the report views.</p>
+
+<p>The default style is bundled in the <b>jbehave-core.jar</b>
+(extract ftl/*.ftl and style/jbehave-reports.css) but can be overridden.
+The FTL files need to be the classpath for the <b>FreemarkerReportRenderer</b>
+to find them, while the CSS file needs to be copied to the <b>jbehave-reports/style</b>
+directory. Also note that the default style makes use of images found in
+the <b>jbehave-site-resources.jar</b>.</p>
+
+<h2>Next?</h2>
+
+<span class="followup">The <a
+    href="https://svn.codehaus.org/jbehave/trunk/core/examples/trader">trader
+example</a> is configured to have a fully-working end-to-end use of JBehave
+reporting. After running the build simply open the page <b>target/jbehave-reports/rendered/index.html</b></span>
+
+<div class="clear">
+<hr />
+</div>
+
+</body>
+</html>
