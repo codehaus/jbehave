@@ -187,7 +187,7 @@ public class PatternScenarioParser implements ScenarioParser {
 		String scenario = keywords.scenario();
 		String concatenatedKeywords = concatenateWithOr(keywords.given(),
 				keywords.when(), keywords.then(), keywords.others());
-		return compile(scenario + "(.*?)\\s*(" + concatenatedKeywords + ").*");
+		return compile(scenario + "((.|\\n)*?)\\s*(" + concatenatedKeywords + ").*");
 	}
 
 	private String concatenateWithOr(String given, String when, String then,

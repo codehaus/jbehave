@@ -18,7 +18,7 @@ import org.junit.Test;
 
 public class PatternScenarioParserBehaviour {
 
-    private static final String NL = System.getProperty("line.separator");
+    private static final String NL = "\n";
 
     @Test
     public void shouldExtractGivensWhensAndThensFromSimpleScenarios() {
@@ -53,14 +53,15 @@ public class PatternScenarioParserBehaviour {
     @Test
     public void shouldExtractGivensWhensAndThensFromMultilineScenarios() {
         ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
-        StoryDefinition story = parser.defineStoryFrom(
-                "Given a scenario" + NL +
-                "with this line" + NL +
-                "When I parse it" + NL +
-                "with another line" + NL + NL +
-                "Then I should get steps" + NL +
-                "without worrying about lines" + NL +
-                "or extra white space between or after steps" + NL + NL, null);
+        String wholeStory = 
+            "Given a scenario" + NL +
+            "with this line" + NL +
+            "When I parse it" + NL +
+            "with another line" + NL + NL +
+            "Then I should get steps" + NL +
+            "without worrying about lines" + NL +
+            "or extra white space between or after steps" + NL + NL;
+        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
 
         List<String> steps = story.getScenarios().get(0).getSteps();
         
@@ -74,7 +75,20 @@ public class PatternScenarioParserBehaviour {
     }
     
     @Test
-    public void canParseMultipleScenariosFromOneStory() {
+    public void shouldExtractMultilineScenarioTitle() {
+        String wholeStory = 
+            "Scenario: A title\n that is spread across\n multiple lines" + NL +  NL +
+            "Given a step that's pending" + NL +
+            "When I run the scenario" + NL +
+            "Then I should see this in the output";
+        
+        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory, null);
+        
+        ensureThat(story.getScenarios().get(0).getTitle(), equalTo("A title\n that is spread across\n multiple lines"));
+    }
+
+    @Test
+    public void shouldParseMultipleScenariosFromOneStory() {
         String wholeStory = 
             "Scenario: the first scenario " + NL + NL +
             "Given my scenario" + NL + NL +
@@ -90,7 +104,7 @@ public class PatternScenarioParserBehaviour {
     }
     
     @Test
-    public void canParseFullStory() {
+    public void shouldParseFullStory() {
         String wholeStory = 
             "Story: I can output narratives" + NL + NL +
             
@@ -146,16 +160,16 @@ public class PatternScenarioParserBehaviour {
                 "And I should see this in the output"
         )));
     }
-    
+
     @Test
-    public void canParseLongStoryWithKeywordSplitScenarios() {
+    public void shouldParseLongStoryWithKeywordSplitScenarios() {
         ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
     	ensureLongStoryCanBeParsed(parser);        
     }
 
     @Test
     @Ignore("on Windows, it should fail due to regex stack overflow")
-    public void canParseLongStoryWithPatternSplitScenarios() {
+    public void shouldParseLongStoryWithPatternSplitScenarios() {
         ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration()){
 
 			@Override
@@ -196,7 +210,7 @@ public class PatternScenarioParserBehaviour {
 	}
 	
 	@Test
-	public void canParseStoryWithTemplateScenario() {
+	public void shouldParseStoryWithTemplateScenario() {
 		String wholeStory =
 				"Scenario: A template scenario with table values" + NL +  NL +
 	            "Given a step with a <one>" + NL +
@@ -235,7 +249,7 @@ public class PatternScenarioParserBehaviour {
 	    }
 	
 	@Test
-	public void canParseStoryWithGivenScenarios() {
+	public void shouldParseStoryWithGivenScenarios() {
 		String wholeStory =
 				"Scenario: A scenario with given scenarios" + NL + NL +
 	            "GivenScenarios: path/to/one,path/to/two" + NL + NL +
