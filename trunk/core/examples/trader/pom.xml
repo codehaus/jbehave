@@ -59,7 +59,7 @@
                   <artifactId>jbehave-core</artifactId>
                   <version>${pom.version}</version>
                   <outputDirectory>${project.build.directory}/jbehave-reports/rendered</outputDirectory>
-                  <includes>**\/*.css,**\/*.ftl</includes>
+                  <includes>**\/*.css,**\/*.ftl,**\/*.js</includes>
                 </artifactItem>
               </artifactItems>
             </configuration>
