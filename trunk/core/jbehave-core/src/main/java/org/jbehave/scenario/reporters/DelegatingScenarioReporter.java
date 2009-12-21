@@ -1,6 +1,7 @@
 package org.jbehave.scenario.reporters;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -8,116 +9,114 @@ import java.util.Map;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.StoryDefinition;
-import org.jbehave.scenario.reporters.ScenarioReporter;
 
 /**
- * Reporter which collects other {@link ScenarioReporter}s and delegates all invocations to the collected reporters.
+ * Reporter which collects other {@link ScenarioReporter}s and delegates all
+ * invocations to the collected reporters.
  * 
  * @author Mirko FriedenHagen
  */
-public class CollectingScenarioReporter implements ScenarioReporter {
+public class DelegatingScenarioReporter implements ScenarioReporter {
 
-    private final Collection<ScenarioReporter> reporters;
+    private final Collection<ScenarioReporter> delegates;
 
     /**
-     * Initializes this reporter with a collection of reporters.
+     * Creates DelegatingScenarioReporter with a given collections of delegates
      * 
-     * @param scenarioReporters
-     *            the reporters to iterate over.
+     * @param delegates the ScenarioReporters to delegate to
      */
-    public CollectingScenarioReporter(final Collection<ScenarioReporter> scenarioReporters) {
-        this.reporters = scenarioReporters;
+    public DelegatingScenarioReporter(Collection<ScenarioReporter> delegates) {
+        this.delegates = delegates;
     }
 
     /**
-     * Initializes this reporter with an array of reporters.
+     * Creates DelegatingScenarioReporter with a given varargs of delegates
      * 
-     * @param scenarioReporters
-     *            the reporters to iterate over.
+     * @param delegates the ScenarioReporters to delegate to
      */
-    public CollectingScenarioReporter(final ScenarioReporter... scenarioReporters) {
-        this(Arrays.asList(scenarioReporters));
+    public DelegatingScenarioReporter(ScenarioReporter... delegates) {
+        this(asList(delegates));
     }
 
     public void afterScenario() {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.afterScenario();
         }
     }
 
     public void afterStory(boolean embeddedStory) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.afterStory(embeddedStory);
         }
     }
 
     public void afterStory() {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.afterStory();
         }
     }
 
     public void beforeScenario(String title) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.beforeScenario(title);
         }
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.beforeStory(story, embeddedStory);
         }
     }
-    
+
     public void beforeStory(Blurb blurb) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.beforeStory(blurb);
         }
     }
 
     public void examplesTable(ExamplesTable table) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.examplesTable(table);
         }
     }
 
     public void examplesTableRow(Map<String, String> tableRow) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.examplesTableRow(tableRow);
         }
     }
 
     public void failed(String step, Throwable e) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.failed(step, e);
         }
     }
 
     public void givenScenarios(List<String> givenScenarios) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.givenScenarios(givenScenarios);
         }
     }
 
     public void notPerformed(String step) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.notPerformed(step);
         }
     }
 
     public void pending(String step) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.pending(step);
         }
     }
 
     public void successful(String step) {
-        for (ScenarioReporter reporter : reporters) {
+        for (ScenarioReporter reporter : delegates) {
             reporter.successful(step);
         }
     }
-    
-    public Collection<ScenarioReporter> getScenarioReporters() {
-        return reporters;
+
+    public Collection<ScenarioReporter> getDelegates() {
+        return delegates;
     }
 }
