@@ -28,12 +28,6 @@
   margin-bottom: 40px;
 }
 
-#reports {
-  margin: 0 auto 0 auto;
-  margin-left: 30px;
-  text-align: left;
-}
-
 body {
   margin: 0;
   font-family: "Lucida Grande", "Arial", "Helvetica", "Verdana", sans-serif;
@@ -55,19 +49,6 @@ body, td, select, input, li {
   font-size: 13px;
 }
 
-div.section {
-  background-color: #fff;
-  position: absolute;
-  top: 140px;
-  padding: 15px;
-  right: 10px;
-  left: 210px;
-}
-
-div.section ul li, div.section ol li {
-  margin-left: 35px;
-}
-
 a {
   text-decoration: none;
 }
@@ -87,25 +68,6 @@ a:active, a:hover {
 
 b {
   color: #333;
-}
-
-table.bodyTable th {
-  color: #fff;
-  background-color: #bbb;
-  text-align: left;
-  font-weight: bold;
-}
-
-table.bodyTable th, table.bodyTable td {
-  font-size: 1em;
-}
-
-table.bodyTable tr.a {
-  background-color: #ddd;
-}
-
-table.bodyTable tr.b {
-  background-color: #eee;
 }
 
 .logo {
@@ -136,6 +98,12 @@ table.bodyTable tr.b {
   visibility: visible;
   overflow: visible;
   display: table;
+}
+
+.reports {
+  margin-left: 30px;
+  margin-top: 30px;
+  text-align: left;
 }
 
 .story {

@@ -3,12 +3,10 @@
 <html>
 <head>
 <title>JBehave Reports</title>
-
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <style type="text/css" media="all">
 @import url( "./style/jbehave-reports.css" );
 </style>
-
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 </head>
 
 <body>
@@ -17,6 +15,8 @@
 </div>
 
 <div class="reports">
+
+<h2>Story Reports</h2>
 
 <table>
 <tr><th>Name</th><th>Formats</th></tr>
@@ -30,6 +30,7 @@
 </table>
 <br />
 </div>
+
 <div class="clear"></div>
 <div id="footer">
 <div class="left">Generated on ${publishedDate?string("dd/MM/yyyy")}</div>
