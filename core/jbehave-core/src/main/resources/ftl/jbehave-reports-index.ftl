@@ -21,8 +21,13 @@
 <div class="section">
 
 <table>
+<tr><th>Name</th><th>Formats</th></tr>
 <#list reports as report>
-<tr><td><a href="${report.path}">${report.name}</a></td></tr>
+<#assign filesByFormat = report.filesByFormat >
+<tr>
+<td>${report.name}</td>
+<td><#list filesByFormat.keySet() as format><#assign file = filesByFormat.get(format)><a href="${file.path}">${format}</a><#if format_has_next>,</#if></#list></td>
+</tr>
 </#list>
 </table>
 <br />
