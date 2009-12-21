@@ -347,7 +347,7 @@ public class PrintStreamScenarioReporterBehaviour {
     public void shouldFailRenderingOutputWithInexistentTemplates() throws IOException {
         // Given
         Properties templates = new Properties();
-        templates.setProperty("index", "/inexistent");
+        templates.setProperty("index", "target/inexistent");
         ReportRenderer renderer = new FreemarkerReportRenderer(templates);
         // When 
         File outputDirectory = new File("target");
