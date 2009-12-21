@@ -40,7 +40,7 @@ public class PassSilentlyDecoratorBehaviour {
         decorator.afterScenario();
         
         decorator.beforeScenario("My scenario 3");
-		decorator.examplesTable(examplesTable);
+		decorator.beforeExamples(examplesTable);
         decorator.successful("Given step 3.1");
         decorator.successful("When step 3.2");
         decorator.failed("Then step 3.3", anException);
@@ -74,7 +74,7 @@ public class PassSilentlyDecoratorBehaviour {
         inOrder.verify(delegate).afterScenario();
         
         inOrder.verify(delegate).beforeScenario("My scenario 3");
-        inOrder.verify(delegate).examplesTable(examplesTable);
+        inOrder.verify(delegate).beforeExamples(examplesTable);
         inOrder.verify(delegate).successful("Given step 3.1");
         inOrder.verify(delegate).successful("When step 3.2");
         inOrder.verify(delegate).failed("Then step 3.3", anException);

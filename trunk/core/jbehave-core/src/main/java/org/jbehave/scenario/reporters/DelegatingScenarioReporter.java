@@ -74,16 +74,30 @@ public class DelegatingScenarioReporter implements ScenarioReporter {
         }
     }
 
-    public void examplesTable(ExamplesTable table) {
+    public void beforeExamples(ExamplesTable table) {
         for (ScenarioReporter reporter : delegates) {
-            reporter.examplesTable(table);
+            reporter.beforeExamples(table);
         }
     }
 
-    public void examplesTableRow(Map<String, String> tableRow) {
+    public void example(Map<String, String> tableRow) {
         for (ScenarioReporter reporter : delegates) {
-            reporter.examplesTableRow(tableRow);
+            reporter.example(tableRow);
         }
+    }
+
+    public void afterExamples() {
+        for (ScenarioReporter reporter : delegates) {
+            reporter.afterExamples();
+        }
+    }
+
+    public void examplesTable(ExamplesTable table) {
+        beforeExamples(table);
+    }
+
+    public void examplesTableRow(Map<String, String> tableRow) {
+        example(tableRow);
     }
 
     public void failed(String step, Throwable e) {
@@ -119,4 +133,5 @@ public class DelegatingScenarioReporter implements ScenarioReporter {
     public Collection<ScenarioReporter> getDelegates() {
         return delegates;
     }
+
 }

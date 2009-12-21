@@ -39,10 +39,7 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 	}
 
     public void afterStory() {
-        delegate.afterStory();
-        if (failure != null) {
-            throw failure;
-        }
+        afterStory(false);
     }
 	
 	public void beforeScenario(String title) {
@@ -50,8 +47,7 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 	}
 
 	public void beforeStory(Blurb blurb) {
-		failure = null;
-		delegate.beforeStory(blurb);
+	    beforeStory(new StoryDefinition(blurb), false);
 	}
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
@@ -80,13 +76,24 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.givenScenarios(givenScenarios);		
 	}
 
-	public void examplesTable(ExamplesTable table) {
-		delegate.examplesTable(table);
+	public void beforeExamples(ExamplesTable table) {
+		delegate.beforeExamples(table);
 	}
 
-	public void examplesTableRow(Map<String, String> tableRow) {
-		delegate.examplesTableRow(tableRow);
+	public void example(Map<String, String> tableRow) {
+		delegate.example(tableRow);
 	}
 
+    public void afterExamples() {
+        delegate.afterExamples();        
+    }
+
+    public void examplesTable(ExamplesTable table) {
+        beforeExamples(table);
+    }
+
+    public void examplesTableRow(Map<String, String> tableRow) {
+        example(tableRow);
+    }
 
 }
