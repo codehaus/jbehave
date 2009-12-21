@@ -6,6 +6,7 @@ import org.jbehave.scenario.RunnableScenario;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
+import org.jbehave.scenario.parser.ScenarioNameResolver;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.DelegatingScenarioReporter;
 import org.jbehave.scenario.reporters.FilePrintStreamFactory;
@@ -16,7 +17,7 @@ import org.jbehave.scenario.reporters.FilePrintStreamFactory.FileConfiguration;
 
 public class TraderScenario extends JUnitScenario {
 
-    private static UnderscoredCamelCaseResolver converter = new UnderscoredCamelCaseResolver(".scenario");
+    private static ScenarioNameResolver converter = new UnderscoredCamelCaseResolver(".scenario");
 
     public TraderScenario(final Class<? extends RunnableScenario> scenarioClass) {
         super(new PropertyBasedConfiguration() {
