@@ -298,7 +298,7 @@ public class CandidateStep {
     public static class NoGroupFoundForName extends RuntimeException {
 
         public NoGroupFoundForName(String name, String[] groupNames) {
-            super("No group found for name " + name + " amongst " + asList(groupNames));
+            super("No group found for name '" + name + "' amongst '" + asList(groupNames) + "'");
         }
 
     }
@@ -307,12 +307,12 @@ public class CandidateStep {
     public static class StartingWordNotFound extends RuntimeException {
 
         public StartingWordNotFound(String step, StepType stepType, Map<StepType, String> startingWordsByType) {
-            super("No starting word found for step " + step + " of type " + stepType + " amongst "
-                    + startingWordsByType);
+            super("No starting word found for step '" + step + "' of type '" + stepType + "' amongst '"
+                    + startingWordsByType+"'");
         }
 
         public StartingWordNotFound(StepType stepType, Map<StepType, String> startingWordsByType) {
-            super("No starting word found of type " + stepType + " amongst " + startingWordsByType);
+            super("No starting word found of type '" + stepType + "' amongst '" + startingWordsByType+"'");
         }
 
     }
