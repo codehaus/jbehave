@@ -200,20 +200,18 @@ public class CandidateStepBehaviour {
         
     @Test
     public void shouldMatchMethodParametersByParanamerNamesInNaturalOrder() throws Exception {
-    	ParanamerNamedParameterSteps steps = new ParanamerNamedParameterSteps();
-        CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
-        		WHEN, stepMethodFor("methodWithNamedParametersInNaturalOrder", ParanamerNamedParameterSteps.class), steps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
-        candidateStep.useParanamer(paranamer);
-        candidateStep.createFrom(tableRow, "When I live on the first floor but some call it the ground").perform();
-        ensureThat(steps.ith, equalTo("first"));
-        ensureThat(steps.nth, equalTo("ground"));
+        shouldMatchMethodParametersByParanamerSomeOrder("methodWithNamedParametersInNaturalOrder");
     }
 
     @Test
     public void shouldMatchMethodParametersByParanamerInverseOrder() throws Exception {
-    	ParanamerNamedParameterSteps steps = new ParanamerNamedParameterSteps();
+        shouldMatchMethodParametersByParanamerSomeOrder("methodWithNamedParametersInInverseOrder");
+    }
+
+    private void shouldMatchMethodParametersByParanamerSomeOrder(String methodName) throws IntrospectionException {
+        ParanamerNamedParameterSteps steps = new ParanamerNamedParameterSteps();
         CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
-        		WHEN, stepMethodFor("methodWithNamedParametersInInverseOrder", ParanamerNamedParameterSteps.class), steps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
+        		WHEN, stepMethodFor(methodName, ParanamerNamedParameterSteps.class), steps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
         candidateStep.useParanamer(paranamer);
         candidateStep.createFrom(tableRow, "When I live on the first floor but some call it the ground").perform();
         ensureThat(steps.ith, equalTo("first"));
