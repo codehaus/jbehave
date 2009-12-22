@@ -95,6 +95,21 @@ b {
   text-align: left;
 }
 
+div.reports table {
+  border: solid;
+}
+
+div.reports table th {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+}
+
+div.reports table td {
+  text-align: left;
+  padding: 5px;
+}
+
 .story {
   text-align: left;
   margin-left: 10px;
@@ -159,7 +174,7 @@ div.examples table th {
   font-weight: bold;
 }
 
-div.examples table th, div.examples table td {
+div.examples table td {
   text-align: center;
 }
 

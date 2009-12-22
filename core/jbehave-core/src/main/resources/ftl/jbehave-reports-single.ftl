@@ -1,3 +1,4 @@
+<#ftl strip_whitespace=true>
 <html>
 <head>
 <title>${name}</title>
@@ -9,7 +10,8 @@
 <#if format == "html">
 ${body}
 <#else>
-<pre class="brush: ${format}">
+<#assign brushFormat = format> <#if format == "stats"><#assign brushFormat = "plain"> </#if>
+<pre class="brush: ${brushFormat}">
 ${body}
 </pre>
 </#if>
