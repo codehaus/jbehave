@@ -39,6 +39,17 @@ public class ParameterConvertersBehaviour {
 		ensureThat((BigDecimal) converters.convert("3.0", BigDecimal.class), equalTo(new BigDecimal("3.0")));
 	}
 
+    @Test
+    public void shouldConvertNaNAndInfinityValuesToNumbers() {
+        ParameterConverters converters = new ParameterConverters();
+        ensureThat((Float) converters.convert("Infinity", Float.class), equalTo(Float.POSITIVE_INFINITY));
+        ensureThat((Float) converters.convert("-Infinity", Float.class), equalTo(Float.NEGATIVE_INFINITY));
+        ensureThat((Float) converters.convert("NaN", Float.class), equalTo(Float.NaN));
+        ensureThat((Double) converters.convert("NaN", Double.class), equalTo(Double.NaN));
+        ensureThat((Double) converters.convert("Infinity", Double.class), equalTo(Double.POSITIVE_INFINITY));
+        ensureThat((Double) converters.convert("-Infinity", Double.class), equalTo(Double.NEGATIVE_INFINITY));
+    }
+
 	@SuppressWarnings("unchecked")
 	@Test	
 	public void shouldConvertCommaSeparatedValuesToListsOfNumbers()
