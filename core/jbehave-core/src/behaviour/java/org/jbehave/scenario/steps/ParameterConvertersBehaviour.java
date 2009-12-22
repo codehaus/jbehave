@@ -90,20 +90,24 @@ public class ParameterConvertersBehaviour {
         Type doublesType = SomeSteps.methodFor("aMethodWithListOfDoubles")
                 .getGenericParameterTypes()[0];
         List<Double> doubles = (List<Double>) converters.convert(
-                "3, 0.5, 0.0, 8.00", doublesType);
+                "3, 0.5, 0.0, 8.00, NaN, Infinity", doublesType);
         ensureThat(doubles.get(0), equalTo(3.0d));
         ensureThat(doubles.get(1), equalTo(0.5d));
         ensureThat(doubles.get(2), equalTo(0.0d));
         ensureThat(doubles.get(3), equalTo(8.00d));
+        ensureThat(doubles.get(4), equalTo(Double.NaN));
+        ensureThat(doubles.get(5), equalTo(Double.POSITIVE_INFINITY));
 
         Type floatsType = SomeSteps.methodFor("aMethodWithListOfFloats")
                 .getGenericParameterTypes()[0];
         List<Float> floats = (List<Float>) converters.convert(
-                "3, 0.5, 0.0, 8.00", floatsType);
+                "3, 0.5, 0.0, 8.00, NaN, -Infinity", floatsType);
         ensureThat(floats.get(0), equalTo(3.0f));
         ensureThat(floats.get(1), equalTo(0.5f));
         ensureThat(floats.get(2), equalTo(0.0f));
         ensureThat(floats.get(3), equalTo(8.00f));
+        ensureThat(floats.get(4), equalTo(Float.NaN));
+        ensureThat(floats.get(5), equalTo(Float.NEGATIVE_INFINITY));
 
         Type longsType = SomeSteps.methodFor("aMethodWithListOfLongs")
                 .getGenericParameterTypes()[0];
