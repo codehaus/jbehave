@@ -79,9 +79,31 @@
                 <scenarioInclude>**/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
+                <scenarioExclude>**/scenarios/NonSuccessful.java</scenarioExclude>
                 <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
               </scenarioExcludes>
               <skip>false</skip>
+              <batch>false</batch>
+              <ignoreFailure>false</ignoreFailure>
+              <classLoaderInjected>false</classLoaderInjected>
+            </configuration>
+            <goals>
+              <goal>run-scenarios</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>run-scenarios-in-batch-mode</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <scenarioIncludes>
+                <scenarioInclude>**/scenarios/*.java</scenarioInclude>
+              </scenarioIncludes>
+              <scenarioExcludes>
+                <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
+              </scenarioExcludes>
+              <skip>false</skip>
+              <batch>true</batch>
+              <ignoreFailure>true</ignoreFailure>
               <classLoaderInjected>false</classLoaderInjected>
             </configuration>
             <goals>
