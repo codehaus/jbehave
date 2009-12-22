@@ -4,8 +4,6 @@ import static java.util.Arrays.asList;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,9 +117,7 @@ public class StatisticsScenarioReporter implements ScenarioReporter {
             p.setProperty(event, data.get(event).toString());
         }
         try {
-            Writer writer = new OutputStreamWriter(output);
-            p.store(writer, this.getClass().getName());
-            writer.close();
+            p.store(output, this.getClass().getName());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
