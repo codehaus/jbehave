@@ -137,7 +137,7 @@ public class CandidateStepBehaviour {
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new CandidateStep("windows on the $nth floors",
         		WHEN, SomeSteps.methodFor("aMethodWithListOfLongs"), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
-        candidateStep.createFrom(tableRow, "When windows on the 1L,2L,3L floors").perform();
+        candidateStep.createFrom(tableRow, "When windows on the 1,2,3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1L, 2L, 3L).toString()));
 
         candidateStep = new CandidateStep("windows on the $nth floors", WHEN,
@@ -152,7 +152,7 @@ public class CandidateStepBehaviour {
 
         candidateStep = new CandidateStep("windows on the $nth floors", WHEN,
                 SomeSteps.methodFor("aMethodWithListOfFloats"), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
-        candidateStep.createFrom(tableRow, "When windows on the 1.1f,2.2f,3.3f floors").perform();
+        candidateStep.createFrom(tableRow, "When windows on the 1.1,2.2,3.3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1.1f, 2.2f, 3.3f).toString()));
 
     }

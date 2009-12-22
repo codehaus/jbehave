@@ -114,6 +114,7 @@ public class ParameterConverters {
 
 	public static class NumberListConverter implements ParameterConverter {
 
+	    private NumberConverter numberConverter = new NumberConverter();
 		private NumberFormat numberFormat;
 		private String valueSeparator;
 
@@ -129,9 +130,8 @@ public class ParameterConverters {
 
 		public boolean accept(Type type) {
 			if (type instanceof ParameterizedType) {
-				ParameterizedType parameterizedType = (ParameterizedType) type;
-				Type rawType = parameterizedType.getRawType();
-				Type argumentType = parameterizedType.getActualTypeArguments()[0];
+				Type rawType = rawType(type);
+				Type argumentType = argumentType(type);
 				return List.class.isAssignableFrom((Class<?>) rawType)
 						&& Number.class
 								.isAssignableFrom((Class<?>) argumentType);
@@ -139,9 +139,34 @@ public class ParameterConverters {
 			return false;
 		}
 
-		public Object convertValue(String value, Type type) {
+        private Type rawType(Type type) {
+            return ((ParameterizedType) type).getRawType();
+        }
+
+        private Type argumentType(Type type) {
+            return ((ParameterizedType) type).getActualTypeArguments()[0];
+        }
+
+		@SuppressWarnings("unchecked")
+        public Object convertValue(String value, Type type) {
+            Class<? extends Number> argumentType = (Class<? extends Number>) argumentType(type);
 			List<String> values = trim(asList(value.split(valueSeparator)));
-			List<Number> numbers = new ArrayList<Number>();
+			if ( argumentType.equals(Number.class) ){
+	            return convertWithNumberFormat(values);			    
+			}
+			return convertWithNumberConverter(values, argumentType);
+		}
+
+        private List<Number> convertWithNumberConverter(List<String> values, Class<? extends Number> type) {
+            List<Number> numbers = new ArrayList<Number>();
+            for (String value : values) {
+                numbers.add((Number) numberConverter.convertValue(value, type));
+            }
+            return numbers;
+        }
+
+        private List<Number> convertWithNumberFormat(List<String> values) {
+            List<Number> numbers = new ArrayList<Number>();
 			for (String numberValue : values) {
 				try {
 					numbers.add(numberFormat.parse(numberValue));
@@ -149,8 +174,8 @@ public class ParameterConverters {
 					throw new InvalidParameterException(numberValue, e);
 				}
 			}
-			return numbers;
-		}
+            return numbers;
+        }
 
 	}
 
