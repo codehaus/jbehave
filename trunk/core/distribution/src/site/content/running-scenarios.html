@@ -30,7 +30,7 @@ examples on how to configure both extensions - using the trader example.</p>
   <scenarioRunner scenarioIncludes="**/scenarios/*.java"
     scenarioExcludes="**/*Steps.java" classLoaderInjected="[true|false]"
     skip="[true|false]" ignoreFailure="[true|false]"
-    scope="[compile|test]"
+    batch="[true|false]" scope="[compile|test]"
     sourceDirectory="[sourceDirectory|src/main/java]"
     testSourceDirectory="[testSourceDirectory|src/test/java]" />
     
@@ -38,7 +38,8 @@ examples on how to configure both extensions - using the trader example.</p>
     classname="org.jbehave.ant.ReportRendererTask"
     classpathref="your.runtime.classpath" />
   
-  <renderReports formats="html,txt,stats" />
+  <renderReports outputDirectory="${basedir}/target/jbehave-reports"
+    formats="html,txt,stats" />
     
 </pre>
 
@@ -72,6 +73,7 @@ source directory (which can be optionally specified and defaults to <b>src/test/
               <classLoaderInjected>[true|false]</classLoaderInjected>
               <skip>[true|false]</skip> 
               <ignoreFailure>[true|false]</ignoreFailure>
+              <batch>[true|false]</batch>
               <scope>[compile|test]</scope>
             </configuration>
             <goals>
@@ -82,6 +84,7 @@ source directory (which can be optionally specified and defaults to <b>src/test/
             <id>render-reports</id>
             <phase>integration-test</phase>
             <configuration>
+              <outputDirectory>${basedir}/target/jbehave-reports</outputDirectory>
               <formats>
                 <format>txt</format>
                 <format>html</format>
@@ -111,6 +114,19 @@ as used in the loading of I18n resource bundles. If the user does not
 require the class loader during instantiation, its injection can be
 disabled by setting the property <b>classLoaderInjected</b> to <b>false</b>.
 In this case only the default public constructor is required.</p>
+
+<h2>Running Scenarios for reports</h2>
+
+<p>By default, the scenario runners are configured to <b>fail-fast</b>,
+i.e. the execution will stop at first failure (but will complete
+execution of the all the scenarios in the story or textual scenario
+file). To allow the generation of complete reports view, the runners
+need to be enabled to execute scenario in <b>batch</b> and <b>ignoreFailure</b>
+modes (i.e. setting these flags to <b>true</b>). In this way all
+scenarios will run and the build will be nominally successful but a full
+report can ben generated, including the failed and pending steps. Note
+that the batch mode is strictly speaking not essential but makes it
+easier to get a summary of the failed scenarios.</p>
 
 <div class="clear">
 <hr />
