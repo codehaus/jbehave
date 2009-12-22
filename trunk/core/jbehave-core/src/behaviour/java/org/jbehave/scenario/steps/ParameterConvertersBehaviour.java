@@ -40,7 +40,7 @@ public class ParameterConvertersBehaviour {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
+	@Test	
 	public void shouldConvertCommaSeparatedValuesToListsOfNumbers()
 			throws ParseException, IntrospectionException {
 		ParameterConverters converters = new ParameterConverters();
@@ -48,13 +48,13 @@ public class ParameterConvertersBehaviour {
 				.getGenericParameterTypes()[0];
 		List<Number> list = (List<Number>) converters.convert(
 				"3, 0.5, 6.1f, 8.00", type);
-		ensureThat(list.get(0), equalTo(NUMBER_FORMAT.parse("3")));
-		ensureThat(list.get(1), equalTo(NUMBER_FORMAT.parse("0.5")));
-		ensureThat(list.get(2), equalTo(NUMBER_FORMAT.parse("6.1f")));
-		ensureThat(list.get(3), equalTo(NUMBER_FORMAT.parse("8.00")));
+        ensureThat(list.get(0), equalTo(NUMBER_FORMAT.parse("3")));
+        ensureThat(list.get(1), equalTo(NUMBER_FORMAT.parse("0.5")));
+        ensureThat(list.get(2), equalTo(NUMBER_FORMAT.parse("6.1f")));
+        ensureThat(list.get(3), equalTo(NUMBER_FORMAT.parse("8.00")));
 	}
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
 	@Test
 	public void shouldConvertCommaSeparatedValuesToListsOfNumbersWithCustomFormat()
 			throws ParseException, IntrospectionException {
@@ -70,6 +70,46 @@ public class ParameterConvertersBehaviour {
 		ensureThat(list.get(2), equalTo(numberFormat.parse("6.1f")));
 		ensureThat(list.get(3), equalTo(numberFormat.parse("8.00")));
 	}
+	
+    @SuppressWarnings("unchecked")
+    @Test   
+    public void shouldConvertCommaSeparatedValuesOfSpecificNumberTypes()
+            throws ParseException, IntrospectionException {
+        ParameterConverters converters = new ParameterConverters();
+        Type doublesType = SomeSteps.methodFor("aMethodWithListOfDoubles")
+                .getGenericParameterTypes()[0];
+        List<Double> doubles = (List<Double>) converters.convert(
+                "3, 0.5, 0.0, 8.00", doublesType);
+        ensureThat(doubles.get(0), equalTo(3.0d));
+        ensureThat(doubles.get(1), equalTo(0.5d));
+        ensureThat(doubles.get(2), equalTo(0.0d));
+        ensureThat(doubles.get(3), equalTo(8.00d));
+
+        Type floatsType = SomeSteps.methodFor("aMethodWithListOfFloats")
+                .getGenericParameterTypes()[0];
+        List<Float> floats = (List<Float>) converters.convert(
+                "3, 0.5, 0.0, 8.00", floatsType);
+        ensureThat(floats.get(0), equalTo(3.0f));
+        ensureThat(floats.get(1), equalTo(0.5f));
+        ensureThat(floats.get(2), equalTo(0.0f));
+        ensureThat(floats.get(3), equalTo(8.00f));
+
+        Type longsType = SomeSteps.methodFor("aMethodWithListOfLongs")
+                .getGenericParameterTypes()[0];
+        List<Long> longs = (List<Long>) converters.convert(
+                "3, 0, 8", longsType);
+        ensureThat(longs.get(0), equalTo(3L));
+        ensureThat(longs.get(1), equalTo(0L));
+        ensureThat(longs.get(2), equalTo(8L));
+
+        Type intsType = SomeSteps.methodFor("aMethodWithListOfIntegers")
+                .getGenericParameterTypes()[0];
+        List<Integer> ints = (List<Integer>) converters.convert(
+                "3, 0, 8", intsType);
+        ensureThat(ints.get(0), equalTo(3));
+        ensureThat(ints.get(1), equalTo(0));
+        ensureThat(ints.get(2), equalTo(8));
+    }
 	
 	@Test
 	public void shouldConvertCommaSeparatedValuesToListOfStrings() throws IntrospectionException {
