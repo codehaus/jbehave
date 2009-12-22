@@ -64,7 +64,9 @@
       classpathref="scenario.classpath" />
 
     <scenarioRunner scenarioIncludes="**/scenarios/*.java" sourceDirectory="${basedir}/src/main/java"
-      scenarioExcludes="**/i18n/scenarios/*.java" classLoaderInjected="false" />
+      scenarioExcludes="**/scenarios/NonSuccessful.java,**/i18n/scenarios/*.java" batch="true" ignoreFailure="false" classLoaderInjected="false" />
+    <scenarioRunner scenarioIncludes="**/scenarios/*.java" sourceDirectory="${basedir}/src/main/java"
+      scenarioExcludes="**/i18n/scenarios/*.java" batch="true" ignoreFailure="true" classLoaderInjected="false" />
     <scenarioRunner scenarioIncludes="**/i18n/scenarios/*.java" sourceDirectory="${basedir}/src/main/java"
       scenarioExcludes="" classLoaderInjected="true" />
   </target>

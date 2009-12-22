@@ -23,10 +23,11 @@
             <phase>integration-test</phase>
             <configuration>
               <scenarioIncludes>
-                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
+                <scenarioInclude>**/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
-                <scenarioExclude>**/*Steps.java</scenarioExclude>
+                <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
+                <scenarioExclude>**/NonSuccessful.java</scenarioExclude>
               </scenarioExcludes>
               <skip>false</skip>
               <scope>test</scope>
