@@ -1,6 +1,7 @@
 package org.jbehave.scenario.reporters;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
@@ -204,6 +205,20 @@ public class FreemarkerReportRenderer implements ReportRenderer {
 
         public Map<String, File> getFilesByFormat() {
             return filesByFormat;
+        }
+        
+        public Properties asProperties(String format){
+            Properties p = new Properties();
+            File stats = filesByFormat.get(format);
+            if ( stats == null ){
+                return p;
+            }
+            try {
+                p.load(new FileInputStream(stats));
+            } catch (IOException e) {
+                // return empty map
+            }
+            return p;
         }
 
     }

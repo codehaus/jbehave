@@ -25,6 +25,9 @@ which is used to report events as they occur.</p>
     specialises the <b>PrintStreamScenarioReporter</b> to use HTML
     formats</li>
     <li><a
+        href="javadoc/core/org/jbehave/scenario/reporters/StatisticsScenarioReporter.html">StatisticsScenarioReporter</a>:
+    collects statistics and stores them as properties</li>
+    <li><a
         href="javadoc/core/org/jbehave/scenario/reporters/DelegatingScenarioReporter.html">DelegatingScenarioReporter</a>:
     delegates to any number of reporters as a proxy.</li>
 </ul>
@@ -47,14 +50,18 @@ to a file:</p>
             @Override
             public ScenarioReporter forReportingScenarios() {
                 return new DelegatingScenarioReporter (
-                        // report to System.out in PLAIN format
+                return new DelegatingScenarioReporter(
+                        // report to System.out
                         new PrintStreamScenarioReporter(),
                         // report to .txt file in PLAIN format
-                        new PrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter, new FileConfiguration("txt"))
-                                .getPrintStream()),
-                        // report to .html file in HTML format        
-                        new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter, new FileConfiguration("html"))
-                                .getPrintStream()));
+                        new PrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
+                                new FileConfiguration("txt")).getPrintStream()),
+                        // report to .html file in HTML format
+                        new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
+                                new FileConfiguration("html")).getPrintStream()),
+                        // report to .stats file in Properties format
+                        new StatisticsScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
+                                new FileConfiguration("stats")).getPrintStream()));
             }
 
         }, new TraderSteps());
@@ -69,8 +76,8 @@ to derive the report file names from the scenario class, using the same
 name resolution mechanism used for mapping Java classes and textual
 scenarios. So, e.g., if the scenario class is <b>com.example.MyScenario</b>,
 we'll end up with file report outputs of the form: <b>com.example.my_scenario.[format]</b>
-(where <b>format</b> is <b>txt</b> and <b>html</b> in the example
-above).</p>
+(where <b>format</b> is <b>txt</b>, <b>html</b> and <b>stats</b>in the
+example above).</p>
 
 <h2>Report Rendering</h2>
 
@@ -95,6 +102,16 @@ classpath for the <b>FreemarkerReportRenderer</b> to find them, while
 the js and CSS files needs to be copied to the <b>jbehave-reports/js</b>
 and <b>jbehave-reports/style</b> directories. Also note that the default
 style makes use of images found in the <b>jbehave-site-resources.jar</b>.</p>
+
+<span class="followup">Note that the <b>stats</b> report defined
+above is treated in the rendering slightly differently from other
+reports, in that the statistics are displayed in the index page, if
+available. Conventionally, it looks for a report format named <b>stats</b>,
+so if you configure it with a different name or not configure it at all,
+the statistics will be displayed as not available (<b>N/A</b>). Also,
+note that the report formats configured should match ones found in the
+Ant or Maven execution for the report rendering task or goal (c.f. <a
+    href="running-scenarios.html">running scenarios</a> for examples).</span>
 
 <h2>Next?</h2>
 

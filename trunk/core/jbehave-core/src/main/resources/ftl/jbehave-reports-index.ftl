@@ -1,3 +1,6 @@
+<#ftl strip_whitespace=true>
+<#macro stat name stats><#assign value = stats.get(name)!"N/A">${value}</#macro>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -19,11 +22,20 @@
 <h2>Story Reports</h2>
 
 <table>
-<tr><th>Name</th><th>View</th></tr>
+<tr><th>Name</th><th>Statistics</th><th>View</th></tr>
 <#list reports as report>
-<#assign filesByFormat = report.filesByFormat >
+<#assign filesByFormat = report.filesByFormat>
 <tr>
 <td>${report.name}</td>
+<td>
+<#assign stats = report.asProperties("stats")>
+<#if (stats.size() > 0)>
+Scenarios: <@stat "scenarios" stats/> (Failed: <@stat "scenariosFailed" stats/>)<br/>
+Steps: <@stat "steps" stats/> (Success: <@stat "stepsSuccessful" stats/>; Pending: <@stat "stepsPending" stats/>; Not Performed: <@stat "stepsNotPerformed" stats/>; Failed: <@stat "stepsFailed" stats/>)<br/>
+<#else>
+N/A
+</#if>
+</td>
 <td><#list filesByFormat.keySet() as format><#assign file = filesByFormat.get(format)><a href="${file.path}">${format}</a><#if format_has_next>|</#if></#list></td>
 </tr>
 </#list>

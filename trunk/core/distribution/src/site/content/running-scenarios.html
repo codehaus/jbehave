@@ -34,6 +34,12 @@ examples on how to configure both extensions - using the trader example.</p>
     sourceDirectory="[sourceDirectory|src/main/java]"
     testSourceDirectory="[testSourceDirectory|src/test/java]" />
     
+  <taskdef name="renderReports"
+    classname="org.jbehave.ant.ReportRendererTask"
+    classpathref="your.runtime.classpath" />
+  
+  <renderReports formats="html,txt,stats" />
+    
 </pre>
 
 <p>Remember to include <b>jbehave-ant</b> to your runtime classpath.</p>
@@ -70,6 +76,20 @@ source directory (which can be optionally specified and defaults to <b>src/test/
             </configuration>
             <goals>
               <goal>run-scenarios</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>render-reports</id>
+            <phase>integration-test</phase>
+            <configuration>
+              <formats>
+                <format>txt</format>
+                <format>html</format>
+                <format>stats</format>
+              </formats>
+            </configuration>
+            <goals>
+              <goal>render-reports</goal>
             </goals>
           </execution>
         </executions>
