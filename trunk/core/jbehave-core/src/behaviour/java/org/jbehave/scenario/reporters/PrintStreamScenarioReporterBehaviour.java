@@ -129,6 +129,47 @@ public class PrintStreamScenarioReporterBehaviour {
                 + "</div><!-- after scenario -->\n" + "</div><!-- after story -->\n";
         ensureThatOutputIs(out, expected);
     }
+    
+    @Test
+    public void shouldReportEventsToXmlPrintStream() {
+        // Given
+        final OutputStream out = new ByteArrayOutputStream();
+        PrintStreamFactory factory = new PrintStreamFactory() {
+
+            public PrintStream getPrintStream() {
+                return new PrintStream(out);
+            }
+        };
+        ScenarioReporter reporter = new XmlPrintStreamScenarioReporter(factory.getPrintStream());
+
+        // When
+        narrateAnInterestingStory(reporter);
+
+        // Then
+        String expected = 
+            "<story path=\"/path/to/story\" title=\"An interesting story\">\n" + 
+            "<scenario keyword=\"Scenario:\" title=\"I ask for a loan\">\n" + 
+            "<givenScenarios keyword=\"GivenScenarios:\"paths=\"[/given/scenario1,/given/scenario2]\"</givenScenarios>\n" + 
+            "<step outcome=\"successful\">Given I have a balance of $50</step>\n" + 
+            "<step outcome=\"successful\">When I request $20</step>\n" + 
+            "<step outcome=\"successful\">When I ask Liz for a loan of $100</step>\n" + 
+            "<step outcome=\"pending\" keyword=\"PENDING\">Then I should have a balance of $30</step>\n" + 
+            "<step outcome=\"notPerformed\" keyword=\"NOT PERFORMED\">Then I should have $20</step>\n" + 
+            "<step outcome=\"failed\" keyword=\"FAILED\">Then I don&apos;t return loan</step>\n" + 
+            "<examples keyword=\"Examples:\">\n" + 
+            "<parameters>\n" + 
+            "<names><name>money</name><name>to</name></names>\n" + 
+            "<values><value>$30</value><value>Mauro</value></values>\n" + 
+            "<values><value>$50</value><value>Paul</value></values>\n" + 
+            "</parameters>\n" + 
+            "\n<example keyword=\"Example:\">{to=Mauro, money=$30}</example>\n" + 
+            "\n<example keyword=\"Example:\">{to=Paul, money=$50}</example>\n" + 
+            "</examples>\n" + 
+            "</scenario>\n" + 
+            "</story>\n";
+        ensureThatOutputIs(out, expected);
+    }
+
 
     private void narrateAnInterestingStory(ScenarioReporter reporter) {
         StoryDefinition story = new StoryDefinition(new Blurb("An interesting story"),
@@ -156,7 +197,7 @@ public class PrintStreamScenarioReporterBehaviour {
     private void ensureThatOutputIs(OutputStream out, String expected) {
         // JUnit assertion allows easier comparison of strings in IDE
         assertEquals(expected, dos2unix(out.toString()));
-        // ensureThat(out.toString(), equalTo(expected));
+        //ensureThat(out.toString(), equalTo(expected));
     }
 
     private String dos2unix(String string) {
