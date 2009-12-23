@@ -145,9 +145,10 @@
             <phase>post-integration-test</phase>
             <configuration>
               <formats>
-                <format>html</format>
-                <format>stats</format>
                 <format>txt</format>
+                <format>html</format>
+                <format>xml</format>
+                <format>stats</format>
               </formats>
             </configuration>
             <goals>

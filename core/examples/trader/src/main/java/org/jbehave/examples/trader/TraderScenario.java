@@ -8,12 +8,13 @@ import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ScenarioDefiner;
 import org.jbehave.scenario.parser.ScenarioNameResolver;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
-import org.jbehave.scenario.reporters.StatisticsScenarioReporter;
 import org.jbehave.scenario.reporters.DelegatingScenarioReporter;
 import org.jbehave.scenario.reporters.FilePrintStreamFactory;
 import org.jbehave.scenario.reporters.HtmlPrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.jbehave.scenario.reporters.StatisticsScenarioReporter;
+import org.jbehave.scenario.reporters.XmlPrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.FilePrintStreamFactory.FileConfiguration;
 
 public class TraderScenario extends JUnitScenario {
@@ -38,6 +39,9 @@ public class TraderScenario extends JUnitScenario {
                         // report to .html file in HTML format
                         new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
                                 new FileConfiguration("html")).getPrintStream()),
+                        // report to .xml file in XML format
+                        new XmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
+                                new FileConfiguration("xml")).getPrintStream()),
                         // report to .stats file in Properties format
                         new StatisticsScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
                                 new FileConfiguration("stats")).getPrintStream()));
