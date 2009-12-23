@@ -1,5 +1,6 @@
 package org.jbehave.scenario.steps;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 
@@ -23,16 +24,16 @@ public class StepsBehaviour {
         MultipleAliasesSteps steps = new MultipleAliasesSteps();
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(9));
-
-        candidateSteps[0].createFrom(tableRow, "Given a given").perform();
-        candidateSteps[1].createFrom(tableRow, "Given a given alias").perform();
-        candidateSteps[2].createFrom(tableRow, "Given another given alias").perform();
-        candidateSteps[3].createFrom(tableRow, "When a when").perform();
-        candidateSteps[4].createFrom(tableRow, "When a when alias").perform();
-        candidateSteps[5].createFrom(tableRow, "When another when alias").perform();
-        candidateSteps[6].createFrom(tableRow, "Then a then").perform();
-        candidateSteps[7].createFrom(tableRow, "Then a then alias").perform();
-        candidateSteps[8].createFrom(tableRow, "Then another then alias").perform();
+        
+        findCandidateStep(candidateSteps, "GIVEN a given").createFrom(tableRow, "Given a given").perform();
+        findCandidateStep(candidateSteps, "GIVEN a given alias").createFrom(tableRow, "Given a given alias").perform();
+        findCandidateStep(candidateSteps, "GIVEN another given alias").createFrom(tableRow, "Given another given alias").perform();
+        findCandidateStep(candidateSteps, "WHEN a when").createFrom(tableRow, "When a when").perform();
+        findCandidateStep(candidateSteps, "WHEN a when alias").createFrom(tableRow, "When a when alias").perform();
+        findCandidateStep(candidateSteps, "WHEN another when alias").createFrom(tableRow, "When another when alias").perform();
+        findCandidateStep(candidateSteps, "THEN a then").createFrom(tableRow, "Then a then").perform();
+        findCandidateStep(candidateSteps, "THEN a then alias").createFrom(tableRow, "Then a then alias").perform();
+        findCandidateStep(candidateSteps, "THEN another then alias").createFrom(tableRow, "Then another then alias").perform();
 
         ensureThat(steps.givens, equalTo(3));
         ensureThat(steps.whens, equalTo(3));
@@ -45,16 +46,25 @@ public class StepsBehaviour {
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(6));
 
-        candidateSteps[0].createFrom(tableRow, "Given a given").perform();
-        candidateSteps[1].createFrom(tableRow, "Given a given alias").perform();
-        candidateSteps[2].createFrom(tableRow, "When a when").perform();
-        candidateSteps[3].createFrom(tableRow, "When a when alias").perform();
-        candidateSteps[4].createFrom(tableRow, "Then a then").perform();
-        candidateSteps[5].createFrom(tableRow, "Then a then alias").perform();
-
+        findCandidateStep(candidateSteps, "GIVEN a given").createFrom(tableRow, "Given a given").perform();
+        findCandidateStep(candidateSteps, "GIVEN a given alias").createFrom(tableRow, "Given a given alias").perform();
+        findCandidateStep(candidateSteps, "WHEN a when").createFrom(tableRow, "When a when").perform();
+        findCandidateStep(candidateSteps, "WHEN a when alias").createFrom(tableRow, "When a when alias").perform();
+        findCandidateStep(candidateSteps, "THEN a then").createFrom(tableRow, "Then a then").perform();
+        findCandidateStep(candidateSteps, "THEN a then alias").createFrom(tableRow, "Then a then alias").perform();
+        
         ensureThat(steps.givens, equalTo(2));
         ensureThat(steps.whens, equalTo(2));
         ensureThat(steps.thens, equalTo(2));
+    }
+
+    private CandidateStep findCandidateStep(CandidateStep[] candidateSteps, String candidateStepAsString) {
+        for (CandidateStep candidateStep : candidateSteps) {
+            if ( candidateStepAsString.equals(candidateStep.toString()) ){
+                return candidateStep;
+            }
+        }
+        throw new RuntimeException("CandidateStep "+candidateStepAsString+" not found amongst "+asList(candidateSteps));
     }
 
     @Test
@@ -117,9 +127,9 @@ public class StepsBehaviour {
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(3));
 
-        candidateSteps[0].createFrom(tableRow, "Dato che un dato che").perform();
-        candidateSteps[1].createFrom(tableRow, "Quando un quando").perform();
-        candidateSteps[2].createFrom(tableRow, "Allora un allora").perform();
+        findCandidateStep(candidateSteps, "GIVEN un dato che").createFrom(tableRow, "Dato che un dato che").perform();
+        findCandidateStep(candidateSteps, "WHEN un quando").createFrom(tableRow, "Quando un quando").perform();
+        findCandidateStep(candidateSteps, "THEN un allora").createFrom(tableRow, "Allora un allora").perform();
 
         ensureThat(steps.givens, equalTo(1));
         ensureThat(steps.whens, equalTo(1));
