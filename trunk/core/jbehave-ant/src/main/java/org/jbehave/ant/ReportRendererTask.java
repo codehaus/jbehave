@@ -27,7 +27,7 @@ public class ReportRendererTask extends Task {
     /**
      * The format of the generated output
      */
-    private List<String> formats = asList("html", "xml", "txt");
+    private List<String> formats = asList();
 
     public void execute() throws BuildException {
         ReportRenderer renderer = new FreemarkerReportRenderer();

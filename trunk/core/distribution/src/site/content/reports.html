@@ -25,6 +25,10 @@ which is used to report events as they occur.</p>
     specialises the <b>PrintStreamScenarioReporter</b> to use HTML
     formats</li>
     <li><a
+        href="javadoc/core/org/jbehave/scenario/reporters/XmlPrintStreamScenarioReporter.html">XmlPrintStreamScenarioReporter</a>:
+    specialises the <b>PrintStreamScenarioReporter</b> to use XML
+    formats</li>
+    <li><a
         href="javadoc/core/org/jbehave/scenario/reporters/StatisticsScenarioReporter.html">StatisticsScenarioReporter</a>:
     collects statistics and stores them as properties</li>
     <li><a
@@ -49,7 +53,6 @@ to a file:</p>
         
             @Override
             public ScenarioReporter forReportingScenarios() {
-                return new DelegatingScenarioReporter (
                 return new DelegatingScenarioReporter(
                         // report to System.out
                         new PrintStreamScenarioReporter(),
@@ -59,6 +62,9 @@ to a file:</p>
                         // report to .html file in HTML format
                         new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
                                 new FileConfiguration("html")).getPrintStream()),
+                        // report to .xml file in XML format
+                        new XmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
+                                new FileConfiguration("xml")).getPrintStream()),
                         // report to .stats file in Properties format
                         new StatisticsScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
                                 new FileConfiguration("stats")).getPrintStream()));
@@ -76,8 +82,7 @@ to derive the report file names from the scenario class, using the same
 name resolution mechanism used for mapping Java classes and textual
 scenarios. So, e.g., if the scenario class is <b>com.example.MyScenario</b>,
 we'll end up with file report outputs of the form: <b>com.example.my_scenario.[format]</b>
-(where <b>format</b> is <b>txt</b>, <b>html</b> and <b>stats</b>in the
-example above).</p>
+(where <b>format</b> is any of <b>txt,html,xml,stats</b>in the example above).</p>
 
 <h2>Report Rendering</h2>
 
