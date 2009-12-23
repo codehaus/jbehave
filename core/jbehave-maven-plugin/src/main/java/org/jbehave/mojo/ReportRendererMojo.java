@@ -32,11 +32,11 @@ public class ReportRendererMojo extends AbstractMavenReport {
     private File outputDirectory;
 
     /**
-     * Formats of generated output. Defaults to asList("html", "xml", "txt").
+     * Formats of generated output. Defaults to asList().
      * 
      * @parameter 
      */
-    private List<String> formats = asList("html", "xml", "txt");
+    private List<String> formats = asList();
 
     /**
      * <i>Maven Internal</i>: The Doxia Site Renderer.
