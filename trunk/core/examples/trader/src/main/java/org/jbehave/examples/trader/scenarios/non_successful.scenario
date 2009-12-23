@@ -10,7 +10,7 @@ Then the traders returned are:
 |name|rank|
 |Moe|Stooge 1|
 
-Scenario: An scenario with pending and non executed steps
+Scenario: A scenario with pending and non executed steps
 
 Given the traders:
 |name|rank|
