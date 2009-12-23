@@ -22,7 +22,7 @@ examples on how to configure both extensions - using the trader example.</p>
 
 <h2>Running as Ant task</h2>
 
-<pre class="brush: xml">
+<script type="syntaxhighlighter" class="brush: xml"><![CDATA[
   <taskdef name="scenarioRunner"
     classname="org.jbehave.ant.ScenarioRunnerTask"
     classpathref="your.runtime.classpath" />
@@ -41,7 +41,7 @@ examples on how to configure both extensions - using the trader example.</p>
   <renderReports outputDirectory="${basedir}/target/jbehave-reports"
     formats="txt,html,xml,stats" />
     
-</pre>
+]]></script>
 
 <p>Remember to include <b>jbehave-ant</b> to your runtime classpath.</p>
 
@@ -54,7 +54,7 @@ source directory (which can be optionally specified and defaults to <b>src/test/
 
 <h2>Running as Maven Plugin</h2>
 
-<pre class="brush: xml">
+<script type="syntaxhighlighter" class="brush: xml"><![CDATA[
    <plugin>
         <groupId>org.jbehave</groupId>
         <artifactId>jbehave-maven-plugin</artifactId>
@@ -98,7 +98,7 @@ source directory (which can be optionally specified and defaults to <b>src/test/
           </execution>
         </executions>
     </plugin>
-</pre>
+]]></script>
 
 <p>Note: we are using as default scope <b>compile</b>, which means
 that the scenarios will be looked up in the POM source directory. If the
