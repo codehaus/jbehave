@@ -1,5 +1,5 @@
 <#ftl strip_whitespace=true>
-<#macro stat name stats><#assign value = stats.get(name)!"N/A">${value}</#macro>
+<#macro renderStat stats name description class=""><#assign value = stats.get(name)!"N/A"><#if (value != "0")><span class="${class}">${description} ${value}</span><#else>${description} ${value}</#if></#macro>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -30,8 +30,8 @@
 <td>
 <#assign stats = report.asProperties("stats")>
 <#if (stats.size() > 0)>
-Scenarios: <@stat "scenarios" stats/> (Failed: <@stat "scenariosFailed" stats/>)<br/>
-Steps: <@stat "steps" stats/> (Success: <@stat "stepsSuccessful" stats/>; Pending: <@stat "stepsPending" stats/>; Not Performed: <@stat "stepsNotPerformed" stats/>; Failed: <@stat "stepsFailed" stats/>)<br/>
+<@renderStat stats "scenarios" "Scenarios:" "successful"/> (<@renderStat stats "scenariosFailed" "Failed:" "failed" />)<br/>
+<@renderStat stats "steps" "Steps:" /> (<@renderStat stats "stepsSuccessful" "Successful:" "successful"/>; <@renderStat stats "stepsPending" "Pending:" "pending"/>; <@renderStat stats "stepsNotPerformed" "Not Performed:" "notPerformed" />; <@renderStat stats "stepsFailed" "Failed:" "failed"/>)<br/>
 <#else>
 N/A
 </#if>
