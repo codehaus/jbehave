@@ -60,6 +60,29 @@ purely conventional - they only serve the purpose of matching the step method in
 the use of the angle brackets is required as it is used to replace the name with the value in the reporting.
 </p>
 
+<p>It is also important to note that the same (<code>@Named</code>-annotated) methods can match steps 
+that are executed both as standalone or via examples table, provided that both regex patterns are configured,
+one as the main pattern and one as an alias:</p>
+
+<script type="syntaxhighlighter" class="brush: java"><![CDATA[
+    @Given("a stock of symbol $symbol and a threshold of $threshold") // standalone
+    @Alias("a stock of <symbol> and a <threshold>") // examples table
+    public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+        // ...
+    }
+]]></script>
+
+<p>Moreover, the examples table alias can happily co-exists with other standalone aliases:</p>
+
+<script type="syntaxhighlighter" class="brush: java"><![CDATA[
+    @Given("a stock of symbol $symbol and a threshold of $threshold") // standalone
+    @Aliases(values={"a stock with a symbol of $symbol and a threshold of $threshold", // a standalone alias
+                     "a stock of <symbol> and a <threshold>"}) // an examples table alias
+    public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+        // ...
+    }
+]]></script>
+
 <div class="clear">
 <hr />
 </div>
