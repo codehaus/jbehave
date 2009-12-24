@@ -144,11 +144,11 @@ div.story h2 {
 }
 
 .pending {
-  color: #ffaa00;
+  color: olive;
 }
 
 .notPerformed {
-  color: #ffaa00;
+  color: brown;
 }
 
 .failed {
