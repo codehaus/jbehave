@@ -24,17 +24,18 @@ example:</p>
 <p>We notice that two lines are repeated and identical but for the
 values. We can then rewrite this scenario as:</p>
 
-<pre class="brush: bdd">
-    Given a stock of symbol [symbol] and a threshold of [threshold]
-    When the stock is traded at [price]
-    Then the alert status should be [status]
+<script type="syntaxhighlighter" class="brush: bdd"><![CDATA[
+    Given a stock of <symbol> and a <threshold>
+    When the stock is traded at <price>
+    Then the alert status should be <status>
     
     Examples: 
     
     |symbol|threshold|price|status|
     |STK1|10.0|5.0|OFF|
     |STK1|10.0|11.0|ON|
-</pre>
+]]></script>
+
 <p>The <b>Examples:</b> keyword signals that the scenario should be
 repeated for as many times as there are data rows in the examples table.
 At each execution, the named parameters are taken from the corresponding
@@ -46,12 +47,18 @@ named parameters allow the parameters to be injected using the table row
 values with the corresponding header name, instead of being extracted
 from the annotation pattern match. As such, <b>the step annotation pattern
 must hold the verbatim textual step</b>. e.g.:</p>
-<pre class="brush: java">
-    @Given("a stock of symbol [symbol] and a threshold of [threshold]")
+
+<script type="syntaxhighlighter" class="brush: java"><![CDATA[
+    @Given("a stock of <symbol> and a <threshold>")
     public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
         // ...
     }
-</pre>
+]]></script>
+
+<p>Also note that while the characters delimiting the parameter names in the regex pattern are
+purely conventional - they only serve the purpose of matching the step method in a readable manner - 
+the use of the angle brackets is required as it is used to replace the name with the value in the reporting.
+</p>
 
 <div class="clear">
 <hr />

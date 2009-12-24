@@ -89,30 +89,17 @@ public class TraderSteps extends Steps {
         return traders;
     }
     
-    @Given("a stock of <symbol> and a <threshold>")
-    public void aStockWithTableParams(@Named("symbol") String symbol, @Named("threshold") double threshold) {
-        stock = new Stock(symbol, threshold);
-    }
-
     @Given("a stock of symbol %symbol and a threshold of %threshold")
-    public void aStockWithNamedParams(@Named("symbol") String symbol, @Named("threshold") double threshold) {
+    @Alias("a stock of <symbol> and a <threshold>") // alias used with examples table
+    public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
         stock = new Stock(symbol, threshold);
-    }
-
-    @When("the stock is traded with <price>")
-    public void theStockIsTradedAtWithTableParam(@Named("price") double price) {
-        stock.tradeAt(price);
     }
 
     @When("the stock is traded at price %price")
-    @Aliases(values={"the stock is sold at price %price", "the stock is exchanged at price %price"}) // multiple aliases
-    public void theStockIsTradedAtWithNamedParam(@Named("price") double price) {
+    @Aliases(values={"the stock is sold at price %price", "the stock is exchanged at price %price",
+            "the stock is traded with <price>"}) // multiple aliases, one used with examples table
+    public void theStockIsTraded(@Named("price") double price) {
         stock.tradeAt(price);
-    }
-
-    @Then("the trader is alerted with <status>")
-    public void theAlertStatusIsWithTableParam(@Named("status") String status) {
-        ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
     @Given("the alert status is %status") // shows that matching pattern need only be unique for step type
@@ -123,8 +110,8 @@ public class TraderSteps extends Steps {
     }
 
     @Then("the alert status is %status")
-    @Alias("the alert status will be %status") // single alias
-    public void theAlertStatusIsWithNamedParam(@Named("status") String status) {
+    @Alias("the trader is alerted with <status>") // alias used with examples table
+    public void theAlertStatusIs(@Named("status") String status) {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
