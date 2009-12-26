@@ -14,8 +14,11 @@ import java.io.PrintStream;
  */
 public class FilePrintStreamFactory implements PrintStreamFactory {
 
-    private File outputDirectory;
     private PrintStream printStream;
+    private Class<? extends RunnableScenario> scenarioClass;
+    private ScenarioNameResolver scenarioNameResolver;
+    private FileConfiguration configuration;
+    private File outputFile;
 
     public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass,
             ScenarioNameResolver scenarioNameResolver) {
@@ -24,35 +27,49 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
 
     public FilePrintStreamFactory(Class<? extends RunnableScenario> scenarioClass,
             ScenarioNameResolver scenarioNameResolver, FileConfiguration configuration) {
-        this(outputDirectory(scenarioClass, configuration),
-                fileName(scenarioClass, scenarioNameResolver, configuration));
+        this.scenarioClass = scenarioClass;
+        this.scenarioNameResolver = scenarioNameResolver;
+        this.configuration = configuration;
+        this.outputFile = outputFile(scenarioClass, scenarioNameResolver, this.configuration);
     }
 
-    public FilePrintStreamFactory(File outputDirectory, String fileName) {        
-        this.outputDirectory = outputDirectory;
-        outputDirectory.mkdirs();
-        try {
-            printStream = new PrintStream(new FileOutputStream(new File(outputDirectory, fileName), true));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public FilePrintStreamFactory(File outputFile) {        
+        this.outputFile = outputFile;
     }
 
     public PrintStream getPrintStream() {
+        try {
+            outputFile.getParentFile().mkdirs();
+            printStream = new PrintStream(new FileOutputStream(outputFile, true));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         return printStream;
     }
 
-    public File getOutputDirectory() {
-        return outputDirectory;
+    public File getOutputFile() {
+        return outputFile;
     }
 
-    static File outputDirectory(Class<? extends RunnableScenario> scenarioClass, FileConfiguration configuration) {
+    public void useConfiguration(FileConfiguration configuration) {
+        this.configuration = configuration;
+        this.outputFile = outputFile(scenarioClass, scenarioNameResolver, configuration);        
+    }
+
+    protected File outputFile(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver,
+            FileConfiguration configuration) {
+        File outputDirectory = outputDirectory(scenarioClass, configuration);
+        String fileName = fileName(scenarioClass, scenarioNameResolver, configuration);
+        return new File(outputDirectory, fileName);
+    }
+
+    protected File outputDirectory(Class<? extends RunnableScenario> scenarioClass, FileConfiguration configuration) {
         String classesDir = scenarioClass.getProtectionDomain().getCodeSource().getLocation().getFile();        
         File targetDirectory = new File(classesDir).getParentFile();
         return new File(targetDirectory, configuration.getDirectory());
     }
 
-    static String fileName(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver,
+    protected String fileName(Class<? extends RunnableScenario> scenarioClass, ScenarioNameResolver scenarioNameResolver,
             FileConfiguration configuration) {
         String scenarioName = scenarioNameResolver.resolve(scenarioClass).replace('/', '.');
         String name = scenarioName.substring(0, scenarioName.lastIndexOf("."));
@@ -94,4 +111,5 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
         }
 
     }
+
 }

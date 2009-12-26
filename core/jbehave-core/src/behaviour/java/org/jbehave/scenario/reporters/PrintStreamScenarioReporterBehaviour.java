@@ -3,6 +3,9 @@ package org.jbehave.scenario.reporters;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
+import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.HTML;
+import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.STATS;
+import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.TXT;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
@@ -46,11 +49,11 @@ public class PrintStreamScenarioReporterBehaviour {
                 + "When I request $20\n" + "When I ask Liz for a loan of $100\n"
                 + "Then I should have a balance of $30 (PENDING)\n" + "Then I should have $20 (NOT PERFORMED)\n"
                 + "Then I don't return loan (FAILED)\n" + "Examples:\n\n" + "|money|to|\n" + "|$30|Mauro|\n"
-                + "|$50|Paul|\n" + "\n\n" + // Examples table
-                "\nExample: {to=Mauro, money=$30}\n" + "\nExample: {to=Paul, money=$50}\n" + "\n" + // end
-                // of
-                // examples
-                "\n\n"; // end of scenario and story
+                + "|$50|Paul|\n" + "\n\n" // Examples table
+                + "\nExample: {to=Mauro, money=$30}\n" + "\nExample: {to=Paul, money=$50}\n" + "\n" // end
+                                                                                                    // of
+                                                                                                    // examples
+                + "\n\n"; // end of scenario and story
         ensureThatOutputIs(out, expected);
     }
 
@@ -129,7 +132,7 @@ public class PrintStreamScenarioReporterBehaviour {
                 + "</div><!-- after scenario -->\n" + "</div><!-- after story -->\n";
         ensureThatOutputIs(out, expected);
     }
-    
+
     @Test
     public void shouldReportEventsToXmlPrintStream() {
         // Given
@@ -146,30 +149,24 @@ public class PrintStreamScenarioReporterBehaviour {
         narrateAnInterestingStory(reporter);
 
         // Then
-        String expected = 
-            "<story path=\"/path/to/story\" title=\"An interesting story\">\n" + 
-            "<scenario keyword=\"Scenario:\" title=\"I ask for a loan\">\n" + 
-            "<givenScenarios keyword=\"GivenScenarios:\"paths=\"[/given/scenario1,/given/scenario2]\"</givenScenarios>\n" + 
-            "<step outcome=\"successful\">Given I have a balance of $50</step>\n" + 
-            "<step outcome=\"successful\">When I request $20</step>\n" + 
-            "<step outcome=\"successful\">When I ask Liz for a loan of $100</step>\n" + 
-            "<step outcome=\"pending\" keyword=\"PENDING\">Then I should have a balance of $30</step>\n" + 
-            "<step outcome=\"notPerformed\" keyword=\"NOT PERFORMED\">Then I should have $20</step>\n" + 
-            "<step outcome=\"failed\" keyword=\"FAILED\">Then I don&apos;t return loan</step>\n" + 
-            "<examples keyword=\"Examples:\">\n" + 
-            "<parameters>\n" + 
-            "<names><name>money</name><name>to</name></names>\n" + 
-            "<values><value>$30</value><value>Mauro</value></values>\n" + 
-            "<values><value>$50</value><value>Paul</value></values>\n" + 
-            "</parameters>\n" + 
-            "\n<example keyword=\"Example:\">{to=Mauro, money=$30}</example>\n" + 
-            "\n<example keyword=\"Example:\">{to=Paul, money=$50}</example>\n" + 
-            "</examples>\n" + 
-            "</scenario>\n" + 
-            "</story>\n";
+        String expected = "<story path=\"/path/to/story\" title=\"An interesting story\">\n"
+                + "<scenario keyword=\"Scenario:\" title=\"I ask for a loan\">\n"
+                + "<givenScenarios keyword=\"GivenScenarios:\"paths=\"[/given/scenario1,/given/scenario2]\"</givenScenarios>\n"
+                + "<step outcome=\"successful\">Given I have a balance of $50</step>\n"
+                + "<step outcome=\"successful\">When I request $20</step>\n"
+                + "<step outcome=\"successful\">When I ask Liz for a loan of $100</step>\n"
+                + "<step outcome=\"pending\" keyword=\"PENDING\">Then I should have a balance of $30</step>\n"
+                + "<step outcome=\"notPerformed\" keyword=\"NOT PERFORMED\">Then I should have $20</step>\n"
+                + "<step outcome=\"failed\" keyword=\"FAILED\">Then I don&apos;t return loan</step>\n"
+                + "<examples keyword=\"Examples:\">\n" + "<parameters>\n"
+                + "<names><name>money</name><name>to</name></names>\n"
+                + "<values><value>$30</value><value>Mauro</value></values>\n"
+                + "<values><value>$50</value><value>Paul</value></values>\n" + "</parameters>\n"
+                + "\n<example keyword=\"Example:\">{to=Mauro, money=$30}</example>\n"
+                + "\n<example keyword=\"Example:\">{to=Paul, money=$50}</example>\n" + "</examples>\n"
+                + "</scenario>\n" + "</story>\n";
         ensureThatOutputIs(out, expected);
     }
-
 
     private void narrateAnInterestingStory(ScenarioReporter reporter) {
         StoryDefinition story = new StoryDefinition(new Blurb("An interesting story"),
@@ -197,7 +194,7 @@ public class PrintStreamScenarioReporterBehaviour {
     private void ensureThatOutputIs(OutputStream out, String expected) {
         // JUnit assertion allows easier comparison of strings in IDE
         assertEquals(expected, dos2unix(out.toString()));
-        //ensureThat(out.toString(), equalTo(expected));
+        // ensureThat(out.toString(), equalTo(expected));
     }
 
     private String dos2unix(String string) {
@@ -302,16 +299,16 @@ public class PrintStreamScenarioReporterBehaviour {
 
     @Test
     public void shouldCreateAndWriteToFilePrintStreamForScenarioClass() throws IOException {
-        UnderscoredCamelCaseResolver converter = new UnderscoredCamelCaseResolver(".scenario");
 
         // Given
         Class<MyScenario> scenarioClass = MyScenario.class;
-        File file = fileFor(scenarioClass, converter);
+        ScenarioNameResolver converter = new UnderscoredCamelCaseResolver(".scenario");
+        FilePrintStreamFactory factory = new FilePrintStreamFactory(scenarioClass, converter);
+        File file = factory.getOutputFile();
         file.delete();
         ensureThat(!file.exists());
 
         // When
-        FilePrintStreamFactory factory = new FilePrintStreamFactory(scenarioClass, converter);
         PrintStream printStream = factory.getPrintStream();
         printStream.print("Hello World");
 
@@ -320,41 +317,54 @@ public class PrintStreamScenarioReporterBehaviour {
         ensureThat(IOUtils.toString(new FileReader(file)), equalTo("Hello World"));
     }
 
-    private File fileFor(Class<MyScenario> scenarioClass, UnderscoredCamelCaseResolver converter) {
-        FileConfiguration configuration = new FileConfiguration();
-        File outputDirectory = FilePrintStreamFactory.outputDirectory(scenarioClass, configuration);
-        String fileName = FilePrintStreamFactory.fileName(scenarioClass, converter, configuration);
-        return new File(outputDirectory, fileName);
-    }
-
     @Test
     public void shouldReportEventsToFilePrintStreamsAndRenderAggregatedIndex() throws IOException {
-        ScenarioNameResolver nameResolver = new UnderscoredCamelCaseResolver();
         Class<MyScenario> scenarioClass = MyScenario.class;
-        ScenarioReporter htmlReporter = new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(
-                scenarioClass, nameResolver, new FileConfiguration("html")).getPrintStream());
-        ScenarioReporter statsReporter = new StatisticsScenarioReporter(new FilePrintStreamFactory(
-                scenarioClass, nameResolver, new FileConfiguration("stats")).getPrintStream());
-        ScenarioReporter txtReporter = new PrintStreamScenarioReporter(new FilePrintStreamFactory(
-                scenarioClass, nameResolver, new FileConfiguration("txt")).getPrintStream());
-        ScenarioReporter reporter = new DelegatingScenarioReporter(htmlReporter, statsReporter, txtReporter);
+        ScenarioNameResolver nameResolver = new UnderscoredCamelCaseResolver();
+        FilePrintStreamFactory printStreamFactory = new FilePrintStreamFactory(scenarioClass, nameResolver);
+        ScenarioReporter reporter = new ScenarioReporterBuilder(printStreamFactory).with(HTML).with(TXT).with(STATS)
+                .build();
 
         // When
         narrateAnInterestingStory(reporter);
-        File outputDirectory = new FilePrintStreamFactory(scenarioClass, new UnderscoredCamelCaseResolver())
-                .getOutputDirectory();
+        File outputDirectory = printStreamFactory.getOutputFile().getParentFile();
         ReportRenderer renderer = new FreemarkerReportRenderer();
-        renderer.render(outputDirectory, asList("html", "stats", "txt"));
+        renderer.render(outputDirectory, asList("html", "txt", "stats"));
 
         // Then
         ensureFileExists(new File(outputDirectory, "rendered/index.html"));
     }
 
+    @Test
+    public void shouldBuildPrintStreamReportersAndOverrideDefaultForAGivenFormat() throws IOException {
+        Class<MyScenario> scenarioClass = MyScenario.class;
+        ScenarioNameResolver nameResolver = new UnderscoredCamelCaseResolver();
+        FilePrintStreamFactory factory = new FilePrintStreamFactory(scenarioClass, nameResolver);
+        ScenarioReporter reporter = new ScenarioReporterBuilder(factory){
+               public ScenarioReporter reporterFor(Format format){
+                       switch (format) {
+                           case TXT:
+                               factory.useConfiguration(new FileConfiguration("text"));
+                               return new PrintStreamScenarioReporter(factory.getPrintStream(), new Properties(),  new I18nKeyWords(), true);
+                            default:
+                               return super.reporterFor(format);
+                       }
+                   }
+        }.with(TXT).build();
+
+        // When
+        narrateAnInterestingStory(reporter);        
+
+        // Then
+        File outputFile = factory.getOutputFile();
+        ensureFileExists(outputFile);
+    }
+    
     private void ensureFileExists(File renderedOutput) throws IOException, FileNotFoundException {
         ensureThat(renderedOutput.exists());
         ensureThat(IOUtils.toString(new FileReader(renderedOutput)).length() > 0);
-    }
-
+    }    
+    
     @Test(expected = RenderingFailedException.class)
     public void shouldFailRenderingOutputWithInexistentTemplates() throws IOException {
         // Given

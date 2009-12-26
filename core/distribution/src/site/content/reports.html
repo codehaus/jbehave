@@ -53,29 +53,23 @@ to a file:</p>
         
             @Override
             public ScenarioReporter forReportingScenarios() {
-                return new DelegatingScenarioReporter(
-                        // report to System.out
-                        new PrintStreamScenarioReporter(),
-                        // report to .txt file in PLAIN format
-                        new PrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
-                                new FileConfiguration("txt")).getPrintStream()),
-                        // report to .html file in HTML format
-                        new HtmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
-                                new FileConfiguration("html")).getPrintStream()),
-                        // report to .xml file in XML format
-                        new XmlPrintStreamScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
-                                new FileConfiguration("xml")).getPrintStream()),
-                        // report to .stats file in Properties format
-                        new StatisticsScenarioReporter(new FilePrintStreamFactory(scenarioClass, converter,
-                                new FileConfiguration("stats")).getPrintStream()));
+                return new ScenarioReporterBuilder(new FilePrintStreamFactory(scenarioClass, converter))
+                            .with(CONSOLE) // report to System.out
+                            .with(STATS)  // report to .stats file in Properties format
+                            .with(TXT)    // report to .txt file in PLAIN format
+                            .with(HTML)   // report to .html file in HTML format
+                            .with(XML)    // report to .xml file in XML format
+                            .build();
             }
 
         }, new TraderSteps());
     }
 </pre>
 
-<p>Note that for the file-based reporters we use the <a
-    href="javadoc/core/org/jbehave/scenario/reporters/FilePrintStreamFactory.html">FilePrintStreamFactory</a>
+<p>Note that we use the <a
+    href="javadoc/core/org/jbehave/scenario/reporters/ScenarioReporterBuilder.html">ScenarioReporterBuilder</a>
+to implement a builder pattern for file-based reporters via the <a
+    href="javadoc/core/org/jbehave/scenario/reporters/FilePrintStreamFactory.html">FilePrintStreamFactory</a>,
 in which we inject the <a
     href="javadoc/core/org/jbehave/scenario/parser/ScenarioNameResolver.html">ScenarioNameResolver</a>
 to derive the report file names from the scenario class, using the same
@@ -84,6 +78,22 @@ scenarios. So, e.g., if the scenario class is <b>com.example.MyScenario</b>,
 we'll end up with file report outputs of the form: <b>com.example.my_scenario.[format]</b>
 (where <b>format</b> is any of <b>txt,html,xml,stats</b> in the example above).</p>
 
+<p>The builder provides defaults for all the formats supported, but if the user needs to create a bespoke instance of 
+a reporter for a given format, it can be easily done by overriding the default.  E.g. to override the reporter for <b>TXT</b> format
+to use a ".text" extension (a possibly keywords for a different Locale):</p>
+<pre class="brush: java">
+
+        ScenarioReporter reporter = new ScenarioReporterBuilder(factory){
+               public ScenarioReporter reporterFor(Format format){
+                       switch (format) {
+                           case TXT:
+                               factory.useConfiguration(new FileConfiguration("text"));
+                               return new PrintStreamScenarioReporter(factory.getPrintStream(), new Properties(),  new I18nKeyWords(Locale.ITALIAN), true);
+                            default:
+                               return super.reporterFor(format);
+                       }
+                   }
+</pre>
 <h2>Report Rendering</h2>
 
 <p>The generation of the reports is only the first part of a
