@@ -36,7 +36,7 @@
 N/A
 </#if>
 </td>
-<td><#list filesByFormat.keySet() as format><#assign file = filesByFormat.get(format)><a href="${file.path}">${format}</a><#if format_has_next>|</#if></#list></td>
+<td><#list filesByFormat.keySet() as format><#assign file = filesByFormat.get(format)><a href="${file.name}">${format}</a><#if format_has_next>|</#if></#list></td>
 </tr>
 </#list>
 </table>
