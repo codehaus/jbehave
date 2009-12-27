@@ -155,6 +155,10 @@
                   <name>defaultFormats</name>
                   <value>stats</value>
                 </property>
+                <property>
+                  <name>renderedDirectory</name>
+                  <value>rendered</value>
+                </property>
               </templateProperties>
             </configuration>
             <goals>

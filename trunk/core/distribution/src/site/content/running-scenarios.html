@@ -27,10 +27,14 @@ examples on how to configure both extensions - using the trader example.</p>
     classname="org.jbehave.ant.ScenarioRunnerTask"
     classpathref="your.runtime.classpath" />
   
-  <scenarioRunner scenarioIncludes="**/scenarios/*.java"
-    scenarioExcludes="**/*Steps.java" classLoaderInjected="[true|false]"
-    skip="[true|false]" ignoreFailure="[true|false]"
-    batch="[true|false]" scope="[compile|test]"
+  <scenarioRunner 
+    scenarioIncludes="**/scenarios/*.java"
+    scenarioExcludes="**/*Steps.java" 
+    classLoaderInjected="[true|false]"
+    skip="[true|false]" 
+    ignoreFailure="[true|false]"
+    batch="[true|false]" 
+    scope="[compile|test]"
     sourceDirectory="[sourceDirectory|src/main/java]"
     testSourceDirectory="[testSourceDirectory|src/test/java]" />
     
@@ -38,8 +42,10 @@ examples on how to configure both extensions - using the trader example.</p>
     classname="org.jbehave.ant.ReportRendererTask"
     classpathref="your.runtime.classpath" />
   
-  <renderReports outputDirectory="${basedir}/target/jbehave-reports"
-    formats="txt,html,xml" templateProperties="defaultFormats=stats" />
+  <renderReports 
+    outputDirectory="${basedir}/target/jbehave-reports" 
+    formats="txt,html,xml" 
+    templateProperties="defaultFormats=stats\nrenderedDirectory=rendered" />
     
 ]]></script>
 
@@ -95,6 +101,10 @@ source directory (which can be optionally specified and defaults to <b>src/test/
                   <name>defaultFormats</name>
                   <value>stats</value>
                 </property>
+                <property>
+                  <name>renderedDirectory</name>
+                  <value>rendered</value>
+                </property>                
               </templateProperties>
             </configuration>
             <goals>
