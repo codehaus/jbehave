@@ -40,7 +40,7 @@ public interface ScenarioReporter {
 	 */
 	void examplesTable(ExamplesTable table);
 
-	void beforeExamples(ExamplesTable table);
+	void beforeExamples(List<String> steps, ExamplesTable table);
 
     /**
      * @deprecated Use example(Map<String, String> )

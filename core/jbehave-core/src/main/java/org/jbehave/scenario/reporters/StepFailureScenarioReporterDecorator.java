@@ -1,5 +1,6 @@
 package org.jbehave.scenario.reporters;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -76,8 +77,8 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.givenScenarios(givenScenarios);		
 	}
 
-	public void beforeExamples(ExamplesTable table) {
-		delegate.beforeExamples(table);
+	public void beforeExamples(List<String> steps, ExamplesTable table) {
+		delegate.beforeExamples(steps, table);
 	}
 
 	public void example(Map<String, String> tableRow) {
@@ -89,7 +90,7 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
     }
 
     public void examplesTable(ExamplesTable table) {
-        beforeExamples(table);
+        beforeExamples(new ArrayList<String>(), table);
     }
 
     public void examplesTableRow(Map<String, String> tableRow) {

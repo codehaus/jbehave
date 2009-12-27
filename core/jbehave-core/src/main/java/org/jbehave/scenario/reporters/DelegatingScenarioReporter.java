@@ -2,6 +2,7 @@ package org.jbehave.scenario.reporters;
 
 import static java.util.Arrays.asList;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -74,9 +75,9 @@ public class DelegatingScenarioReporter implements ScenarioReporter {
         }
     }
 
-    public void beforeExamples(ExamplesTable table) {
+    public void beforeExamples(List<String> steps, ExamplesTable table) {
         for (ScenarioReporter reporter : delegates) {
-            reporter.beforeExamples(table);
+            reporter.beforeExamples(steps, table);
         }
     }
 
@@ -93,7 +94,7 @@ public class DelegatingScenarioReporter implements ScenarioReporter {
     }
 
     public void examplesTable(ExamplesTable table) {
-        beforeExamples(table);
+        beforeExamples(new ArrayList<String>(), table);
     }
 
     public void examplesTableRow(Map<String, String> tableRow) {

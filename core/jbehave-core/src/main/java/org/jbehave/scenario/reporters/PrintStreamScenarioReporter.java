@@ -9,6 +9,7 @@ import static org.jbehave.scenario.steps.CandidateStep.PARAMETER_VALUE_START;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -167,8 +168,11 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         return out.toString();
     }
 
-    public void beforeExamples(ExamplesTable table) {
+    public void beforeExamples(List<String> steps, ExamplesTable table) {
         print(format("beforeExamples", "{0}\n", keywords.examplesTable()));
+        for (String step : steps) {
+            print(format("examplesStep", "{0}\n", step));
+        }
         print(format("examplesTableStart", "\n"));
         final List<Map<String, String>> rows = table.getRows();
         final List<String> headers = table.getHeaders();
@@ -198,7 +202,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     public void examplesTable(ExamplesTable table) {
-        beforeExamples(table);        
+        beforeExamples(new ArrayList<String>(), table);        
     }
 
     public void examplesTableRow(Map<String, String> tableRow) {

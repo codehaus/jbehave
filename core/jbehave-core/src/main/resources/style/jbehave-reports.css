@@ -167,6 +167,8 @@ div.story h2 {
 
 div.examples table {
   border: solid;
+  margin-top: 12px;
+  margin-left: 12px;
 }
 
 div.examples table th {
