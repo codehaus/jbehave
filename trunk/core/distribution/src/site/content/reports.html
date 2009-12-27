@@ -55,10 +55,9 @@ to a file:</p>
             public ScenarioReporter forReportingScenarios() {
                 return new ScenarioReporterBuilder(new FilePrintStreamFactory(scenarioClass, converter))
                             .with(CONSOLE) // report to System.out
-                            .with(STATS)  // report to .stats file in Properties format
-                            .with(TXT)    // report to .txt file in PLAIN format
-                            .with(HTML)   // report to .html file in HTML format
-                            .with(XML)    // report to .xml file in XML format
+                            .with(TXT)     // report to .txt file in PLAIN format
+                            .with(HTML)    // report to .html file in HTML format
+                            .with(XML)     // report to .xml file in XML format
                             .build();
             }
 
@@ -76,11 +75,14 @@ to derive the report file names from the scenario class, using the same
 name resolution mechanism used for mapping Java classes and textual
 scenarios. So, e.g., if the scenario class is <b>com.example.MyScenario</b>,
 we'll end up with file report outputs of the form: <b>com.example.my_scenario.[format]</b>
-(where <b>format</b> is any of <b>txt,html,xml,stats</b> in the example above).</p>
+(where <b>format</b> is any of <b>txt,html,xml</b> in the example
+above).</p>
 
-<p>The builder provides defaults for all the formats supported, but if the user needs to create a bespoke instance of 
-a reporter for a given format, it can be easily done by overriding the default.  E.g. to override the reporter for <b>TXT</b> format
-to use a ".text" extension (a possibly keywords for a different Locale):</p>
+<p>The builder provides defaults for all the formats supported, but
+if the user needs to create a bespoke instance of a reporter for a given
+format, it can be easily done by overriding the default. E.g. to
+override the reporter for <b>TXT</b> format to use a ".text" extension
+(a possibly keywords for a different Locale):</p>
 <pre class="brush: java">
 
         ScenarioReporter reporter = new ScenarioReporterBuilder(factory){
@@ -88,12 +90,13 @@ to use a ".text" extension (a possibly keywords for a different Locale):</p>
                        switch (format) {
                            case TXT:
                                factory.useConfiguration(new FileConfiguration("text"));
-                               return new PrintStreamScenarioReporter(factory.getPrintStream(), new Properties(),  new I18nKeyWords(Locale.ITALIAN), true);
+                               return new PrintStreamScenarioReporter(factory.getPrintStream(), new Properties(), new I18nKeyWords(Locale.ITALIAN), true);
                             default:
                                return super.reporterFor(format);
                        }
                    }
 </pre>
+
 <h2>Report Rendering</h2>
 
 <p>The generation of the reports is only the first part of a
@@ -118,15 +121,40 @@ the js and CSS files needs to be copied to the <b>jbehave-reports/js</b>
 and <b>jbehave-reports/style</b> directories. Also note that the default
 style makes use of images found in the <b>jbehave-site-resources.jar</b>.</p>
 
-<span class="followup">Note that the <b>stats</b> report defined
-above is treated in the rendering slightly differently from other
-reports, in that the statistics are displayed in the index page, if
-available. Conventionally, it looks for a report format named <b>stats</b>,
-so if you configure it with a different name or not configure it at all,
-the statistics will be displayed as not available (<b>N/A</b>). Also,
-note that the report formats configured should match ones found in the
-Ant or Maven execution for the report rendering task or goal (c.f. <a
-    href="running-scenarios.html">running scenarios</a> for examples).</span>
+<p>Also, note that the report formats configured should match ones
+found in the Ant or Maven execution for the report rendering task or
+goal (c.f. <a href="running-scenarios.html">running scenarios</a> for
+examples).</p>
+
+<h2>Reporting Statistics</h2>
+
+<p>The scenario statistics report above is treated in the rendering
+slightly differently from other reports, in that the statistics are
+displayed on the index page, if available. To ensure they are always
+available the scenario reporter builder automatically builds with the <b>stats</b>
+reporter included by default. To change or remove default formats simply
+override the method:</p>
+<pre class="brush: java">
+        new ScenarioReporterBuilder(factory){
+               protected void withDefaultFormats() {
+                    with(Format.STATS);
+               }
+        }
+</pre>
+
+<p>By default, JBehave outputs file reports to the directory <b>jbehave-reports</b>
+(relative to the scenario class code source location, e.g. the <b>target</b> directory in Maven), 
+but this can be changed via the builder:</p>
+
+<pre class="brush: java">
+        new ScenarioReporterBuilder(factory).outputTo("my-reports")
+</pre>
+
+<p>If the default formats or the output file directory are modified via the builder,
+then correspondingly we need to inform the report render of these changes.  See
+<a href="running-scenarios.html">running scenarios</a> for details on how to configure
+these changes.
+</p>
 
 <h2>Next?</h2>
 

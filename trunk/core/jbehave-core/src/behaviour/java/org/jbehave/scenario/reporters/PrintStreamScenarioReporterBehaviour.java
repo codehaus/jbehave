@@ -4,7 +4,6 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.HTML;
-import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.STATS;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.TXT;
 import static org.junit.Assert.assertEquals;
 
@@ -322,14 +321,14 @@ public class PrintStreamScenarioReporterBehaviour {
         Class<MyScenario> scenarioClass = MyScenario.class;
         ScenarioNameResolver nameResolver = new UnderscoredCamelCaseResolver();
         FilePrintStreamFactory printStreamFactory = new FilePrintStreamFactory(scenarioClass, nameResolver);
-        ScenarioReporter reporter = new ScenarioReporterBuilder(printStreamFactory).with(HTML).with(TXT).with(STATS)
+        ScenarioReporter reporter = new ScenarioReporterBuilder(printStreamFactory).with(HTML).with(TXT)
                 .build();
 
         // When
         narrateAnInterestingStory(reporter);
         File outputDirectory = printStreamFactory.getOutputFile().getParentFile();
         ReportRenderer renderer = new FreemarkerReportRenderer();
-        renderer.render(outputDirectory, asList("html", "txt", "stats"));
+        renderer.render(outputDirectory, asList("html", "txt"));
 
         // Then
         ensureFileExists(new File(outputDirectory, "rendered/index.html"));

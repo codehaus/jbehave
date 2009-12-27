@@ -144,12 +144,18 @@
             <id>render-reports-generated</id>
             <phase>post-integration-test</phase>
             <configuration>
+              <outputDirectory>${project.build.directory}/jbehave-reports</outputDirectory>
               <formats>
                 <format>txt</format>
                 <format>html</format>
                 <format>xml</format>
-                <format>stats</format>
               </formats>
+              <templateProperties>
+                <property>
+                  <name>defaultFormats</name>
+                  <value>stats</value>
+                </property>
+              </templateProperties>
             </configuration>
             <goals>
               <goal>render-reports</goal>

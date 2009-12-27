@@ -5,6 +5,7 @@ import static java.util.Arrays.asList;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.project.MavenProject;
@@ -37,6 +38,13 @@ public class ReportRendererMojo extends AbstractMavenReport {
      * @parameter 
      */
     private List<String> formats = asList();
+
+    /**
+     * Non-default template properties. Defaults to new Properties().
+     * 
+     * @parameter 
+     */
+    private Properties templateProperties = new Properties();
 
     /**
      * <i>Maven Internal</i>: The Doxia Site Renderer.
@@ -83,13 +91,14 @@ public class ReportRendererMojo extends AbstractMavenReport {
     }
 
     protected void executeReport(Locale locale) throws MavenReportException {
-        ReportRenderer reportRenderer = new FreemarkerReportRenderer();
+        ReportRenderer reportRenderer = new FreemarkerReportRenderer(templateProperties);
         try {
-            getLog().info("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'");
+            getLog().info("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'" 
+            		    + " and template properties '"+templateProperties+"'");
             reportRenderer.render(outputDirectory, formats);
         } catch (RuntimeException e) {
             String message = "Failed to render reports in outputDirectory " + outputDirectory
-                    + " using formats " + formats;
+                    + " using formats " + formats + " and template properties '"+templateProperties+"'";
             getLog().warn(message, e);
             throw new MavenReportException(message, e);
         }

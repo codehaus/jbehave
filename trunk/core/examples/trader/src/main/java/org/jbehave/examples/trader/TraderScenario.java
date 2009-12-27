@@ -2,7 +2,6 @@ package org.jbehave.examples.trader;
 
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.CONSOLE;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.HTML;
-import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.STATS;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.TXT;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.XML;
 
@@ -33,7 +32,6 @@ public class TraderScenario extends JUnitScenario {
             public ScenarioReporter forReportingScenarios() {
                 return new ScenarioReporterBuilder(new FilePrintStreamFactory(scenarioClass, converter))
                             .with(CONSOLE)
-                            .with(STATS)
                             .with(TXT)
                             .with(HTML)
                             .with(XML)
