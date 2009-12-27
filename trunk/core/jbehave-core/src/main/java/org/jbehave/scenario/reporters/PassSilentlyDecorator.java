@@ -125,10 +125,10 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         });
 	}
 	
-	public void beforeExamples(final ExamplesTable table) {
+	public void beforeExamples(final List<String> steps, final ExamplesTable table) {
         currentScenario.add(new Todo() {
             public void doNow() {
-                delegate.beforeExamples(table);
+                delegate.beforeExamples(steps, table);
             }
         });		
 	}
@@ -150,7 +150,7 @@ public class PassSilentlyDecorator implements ScenarioReporter {
     }
 
     public void examplesTable(ExamplesTable table) {
-        beforeExamples(table);        
+        beforeExamples(new ArrayList<String>(), table);        
     }
 
     public void examplesTableRow(Map<String, String> tableRow) {

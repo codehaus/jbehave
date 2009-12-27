@@ -51,6 +51,7 @@ public class XmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter 
         patterns.setProperty("afterScenarioWithFailure", "<failure>{0}</failure>\n</scenario>\n");
         patterns.setProperty("givenScenarios", "<givenScenarios keyword=\"{0}\"paths=\"{1}\"</givenScenarios>\n");
         patterns.setProperty("beforeExamples", "<examples keyword=\"{0}\">\n");
+        patterns.setProperty("examplesStep", "<step>{0}</step>\n");
         patterns.setProperty("afterExamples", "</examples>\n");
         patterns.setProperty("examplesTableStart", "<parameters>\n");
         patterns.setProperty("examplesTableHeadStart", "<names>");

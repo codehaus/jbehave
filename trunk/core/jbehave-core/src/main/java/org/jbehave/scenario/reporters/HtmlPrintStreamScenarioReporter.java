@@ -52,6 +52,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
         patterns.setProperty("afterScenarioWithFailure", "<div class=\"scenario.failure\">{0}</div>\n</div>\n");
         patterns.setProperty("givenScenarios", "<div class=\"givenScenarios\">{0} {1}</div>\n");
         patterns.setProperty("beforeExamples", "<div class=\"examples\">\n<h3>{0}</h3>\n");
+        patterns.setProperty("examplesStep", "<div class=\"step\">{0}</div>\n");
         patterns.setProperty("afterExamples", "</div>\n");
         patterns.setProperty("examplesTableStart", "<table>\n");
         patterns.setProperty("examplesTableHeadStart", "<thead>\n<tr>\n");

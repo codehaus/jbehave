@@ -60,7 +60,7 @@ public class ScenarioRunner {
     		reporter.beforeScenario(scenario.getTitle());
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
         	if ( isExamplesTableScenario(scenario) ){ // run examples table scenario
-        		runExamplesTableScenario(configuration, scenario, scenario.getTable(), candidateSteps);
+        		runExamplesTableScenario(configuration, scenario, candidateSteps);
         	} else { // run plain old scenario
             	runScenario(configuration, scenario, new HashMap<String, String>(), candidateSteps);        		
         	}
@@ -89,9 +89,9 @@ public class ScenarioRunner {
 	}
 
 	private void runExamplesTableScenario(Configuration configuration,
-			ScenarioDefinition scenario, ExamplesTable table,
-			CandidateSteps... candidateSteps) {
-		reporter.beforeExamples(table);
+			ScenarioDefinition scenario, CandidateSteps... candidateSteps) {
+		ExamplesTable table = scenario.getTable();
+        reporter.beforeExamples(scenario.getSteps(), table);
 		for (Map<String,String> tableRow : table.getRows() ) {
 			reporter.example(tableRow);
 			runScenario(configuration, scenario, tableRow, candidateSteps);
