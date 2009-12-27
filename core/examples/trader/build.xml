@@ -63,12 +63,16 @@
     <taskdef name="scenarioRunner" classname="org.jbehave.ant.ScenarioRunnerTask"
       classpathref="scenario.classpath" />
 
-    <scenarioRunner scenarioIncludes="**/scenarios/*.java" sourceDirectory="${basedir}/src/main/java"
-      scenarioExcludes="**/scenarios/NonSuccessful.java,**/i18n/scenarios/*.java" batch="true" ignoreFailure="false" classLoaderInjected="false" />
-    <scenarioRunner scenarioIncludes="**/scenarios/*.java" sourceDirectory="${basedir}/src/main/java"
-      scenarioExcludes="**/i18n/scenarios/*.java" batch="true" ignoreFailure="true" classLoaderInjected="false" />
-    <scenarioRunner scenarioIncludes="**/i18n/scenarios/*.java" sourceDirectory="${basedir}/src/main/java"
-      scenarioExcludes="" classLoaderInjected="true" />
+    <scenarioRunner scenarioIncludes="**/scenarios/*.java"
+      sourceDirectory="${basedir}/src/main/java"
+      scenarioExcludes="**/scenarios/NonSuccessful.java,**/i18n/scenarios/*.java"
+      batch="true" ignoreFailure="false" classLoaderInjected="false" />
+    <scenarioRunner scenarioIncludes="**/scenarios/*.java"
+      sourceDirectory="${basedir}/src/main/java" scenarioExcludes="**/i18n/scenarios/*.java"
+      batch="true" ignoreFailure="true" classLoaderInjected="false" />
+    <scenarioRunner scenarioIncludes="**/i18n/scenarios/*.java"
+      sourceDirectory="${basedir}/src/main/java" scenarioExcludes=""
+      classLoaderInjected="true" />
   </target>
 
   <target name="reports-resources">
@@ -82,14 +86,17 @@
       <fileset refid="reports.dependency.fileset" />
       <mapper type="flatten" />
     </copy>
-    <unzip src="${basedir}/target/lib/reports/jbehave-core-${version}.jar" dest="${basedir}/target/jbehave-reports/rendered/">
+    <unzip src="${basedir}/target/lib/reports/jbehave-core-${version}.jar"
+      dest="${basedir}/target/jbehave-reports/rendered/">
       <patternset>
         <include name="**/*.ftl" />
         <include name="**/*.css" />
         <include name="**/*.js" />
       </patternset>
     </unzip>
-    <unzip src="${basedir}/target/lib/reports/jbehave-site-resources-2.0.1.jar" dest="${basedir}/target/jbehave-reports/rendered/">
+    <unzip
+      src="${basedir}/target/lib/reports/jbehave-site-resources-2.0.1.jar"
+      dest="${basedir}/target/jbehave-reports/rendered/">
     </unzip>
   </target>
 
@@ -98,7 +105,7 @@
       classpathref="scenario.classpath" />
 
     <reportRenderer outputDirectory="${basedir}/target/jbehave-reports"
-      formats="txt,html,xml" templateProperties="defaultFormats=stats"/>
+      formats="txt,html,xml" templateProperties="defaultFormats=stats\nrenderedDirectory=rendered" />
 
   </target>
 
