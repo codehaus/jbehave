@@ -36,14 +36,14 @@ public interface ScenarioReporter {
 	void givenScenarios(List<String> givenScenarios);
 
 	/**
-	 * @deprecated Use beforeExamples(ExamplesTable)
+	 * @deprecated Use beforeExamples(List<String>, ExamplesTable)
 	 */
 	void examplesTable(ExamplesTable table);
 
 	void beforeExamples(List<String> steps, ExamplesTable table);
 
     /**
-     * @deprecated Use example(Map<String, String> )
+     * @deprecated Use example(Map<String,String>)
      */	
 	void examplesTableRow(Map<String, String> tableRow);
 
