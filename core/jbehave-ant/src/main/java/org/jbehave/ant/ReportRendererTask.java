@@ -5,7 +5,10 @@ import static org.apache.tools.ant.Project.MSG_INFO;
 import static org.apache.tools.ant.Project.MSG_WARN;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -29,13 +32,20 @@ public class ReportRendererTask extends Task {
      */
     private List<String> formats = asList();
 
+    /**
+     * The template properties
+     */
+    private Properties templateProperties = new Properties();
+
     public void execute() throws BuildException {
-        ReportRenderer renderer = new FreemarkerReportRenderer();
+        ReportRenderer renderer = new FreemarkerReportRenderer(templateProperties);
         try {
-            log("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'", MSG_INFO);
+            log("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'"
+               +" and template properties '"+templateProperties+"'", MSG_INFO);
             renderer.render(new File(outputDirectory), formats);
         } catch (Throwable e) {
-            String message = "Failed to render reports in '" + outputDirectory + "' using formats '" + formats + "'";
+            String message = "Failed to render reports in '" + outputDirectory + "' using formats '" + formats + "'"
+                            +" and template properties '"+templateProperties+"'";
             log(message, MSG_WARN);
             throw new BuildException(message, e);
         }
@@ -49,6 +59,15 @@ public class ReportRendererTask extends Task {
 
     public void setFormats(String formats) {
         this.formats = asList(formats.split(","));
+    }
+    
+    public void setTemplateProperties(String properties){
+        try {
+            templateProperties.load(new StringReader(properties));
+        } catch (IOException e) {
+            String message = "Failed to load template properties: "+properties;
+            log(message, MSG_WARN);
+        }        
     }
 
     

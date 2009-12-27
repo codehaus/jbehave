@@ -1,5 +1,6 @@
 package org.jbehave.scenario.reporters;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,18 +17,34 @@ import org.jbehave.scenario.reporters.FilePrintStreamFactory.FileConfiguration;
  * </p>
  * <p>
  * To build reporter with default delegates for given formats:
- * 
  * <pre>
  * Class&lt;MyScenario&gt; scenarioClass = MyScenario.class;
  * ScenarioNameResolver nameResolver = new UnderscoredCamelCaseResolver();
  * FilePrintStreamFactory printStreamFactory = new FilePrintStreamFactory(scenarioClass, nameResolver);
- * ScenarioReporter reporter = new ScenarioReporterBuilder(printStreamFactory).with(HTML).with(TXT).with(STATS).build();
+ * ScenarioReporter reporter = new ScenarioReporterBuilder(printStreamFactory).with(HTML).with(TXT).build();
  * </pre> 
  * </p>
- * <p>To override the default instance of a given reporter delegate, e.g. to report format <b>TXT</b> to <b>.text</b> files
- * and to inject other non-default parameters, such as keywords for a different locale:
+ * <p>The builder is configured to build with the {@link Format#STATS} format by default.  To change the default formats
+ * the user can override the method:
  * <pre>
- * ScenarioReporter reporter = new ScenarioReporterBuilder(printStreamFactory){
+ * new ScenarioReporterBuilder(printStreamFactory){
+ *    protected void withDefaultFormats() {
+ *      with(Format.STATS);
+ *    }
+ *  }
+ * </pre>
+ * </p>
+ * <p>The builder configures the file-based reporters to output to the default file directory {@link FileConfiguration#DIRECTORY}.
+ * To change the default:
+ * <pre>
+ * new ScenarioReporterBuilder(printStreamFactory).outputTo("my-reports").with(HTML).with(TXT).build();
+ * </pre>
+ * </p> 
+ * <p>The builder provides default instances for all reporters.  To change the reporter for a specific instance, 
+ * e.g. to report format <b>TXT</b> to <b>.text</b> files and to inject other non-default parameters, 
+ * such as keywords for a different locale:
+ * <pre>
+ * new ScenarioReporterBuilder(printStreamFactory){
  *   public ScenarioReporter reporterFor(Format format){
  *       switch (format) {
  *           case TXT:
@@ -47,15 +64,26 @@ public class ScenarioReporterBuilder {
 
     protected final FilePrintStreamFactory factory;
     protected Map<Format, ScenarioReporter> delegates = new HashMap<Format, ScenarioReporter>();
+    private String fileDirectory = new FileConfiguration().getDirectory();
 
     public ScenarioReporterBuilder(FilePrintStreamFactory factory) {
         this.factory = factory;
+        withDefaultFormats();
+    }
+
+    protected void withDefaultFormats() {
+        with(Format.STATS);
     }
 
     public ScenarioReporter build() {
         return new DelegatingScenarioReporter(delegates.values());
     }
 
+    public ScenarioReporterBuilder outputTo(String fileDirectory){        
+        this.fileDirectory = fileDirectory;
+        return this;
+    }
+    
     public ScenarioReporterBuilder with(Format format) {
         delegates.put(format, reporterFor(format));
         return this;
@@ -66,20 +94,28 @@ public class ScenarioReporterBuilder {
             case CONSOLE:
                 return new PrintStreamScenarioReporter();
             case STATS:
-                factory.useConfiguration(new FileConfiguration("stats"));
+                factory.useConfiguration(fileConfiguration("stats"));
                 return new StatisticsScenarioReporter(factory.getPrintStream());
             case TXT:
-                factory.useConfiguration(new FileConfiguration("txt"));
+                factory.useConfiguration(fileConfiguration("txt"));
                 return new PrintStreamScenarioReporter(factory.getPrintStream());
             case HTML:
-                factory.useConfiguration(new FileConfiguration("html"));
+                factory.useConfiguration(fileConfiguration("html"));
                 return new HtmlPrintStreamScenarioReporter(factory.getPrintStream());
             case XML:
-                factory.useConfiguration(new FileConfiguration("xml"));
+                factory.useConfiguration(fileConfiguration("xml"));
                 return new XmlPrintStreamScenarioReporter(factory.getPrintStream());
             default:
                 throw new UnsupportedReporterFormatException(format);
         }
+    }
+    
+    public Map<Format, ScenarioReporter> getDelegates() {
+        return Collections.unmodifiableMap(delegates);
+    }
+
+    protected FileConfiguration fileConfiguration(String extension) {
+        return new FileConfiguration(fileDirectory, extension);
     }
 
     @SuppressWarnings("serial")

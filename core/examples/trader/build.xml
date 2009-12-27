@@ -98,7 +98,7 @@
       classpathref="scenario.classpath" />
 
     <reportRenderer outputDirectory="${basedir}/target/jbehave-reports"
-      formats="txt,html,xml,stats" />
+      formats="txt,html,xml" templateProperties="defaultFormats=stats"/>
 
   </target>
 
