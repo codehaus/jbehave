@@ -27,7 +27,7 @@
               </scenarioIncludes>
               <scenarioExcludes>
                 <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
-                <scenarioExclude>**/NonSuccessful.java</scenarioExclude>
+                <scenarioExclude>**/*NonSuccessful.java</scenarioExclude>
               </scenarioExcludes>
               <skip>false</skip>
               <scope>test</scope>
