@@ -25,7 +25,7 @@ public class TraderScenario extends JUnitScenario {
         super(new PropertyBasedConfiguration() {
             @Override
             public ScenarioDefiner forDefiningScenarios() {
-                return new ClasspathScenarioDefiner(converter, new PatternScenarioParser(this));
+                return new ClasspathScenarioDefiner(converter, new PatternScenarioParser(keywords()));
             }
 
             @Override

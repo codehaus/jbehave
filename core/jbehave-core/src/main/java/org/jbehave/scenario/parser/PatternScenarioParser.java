@@ -9,29 +9,36 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jbehave.scenario.Configuration;
-import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.definition.Blurb;
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
-import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.i18n.I18nKeyWords;
 
 /**
- * Pattern-based scenario parser, which uses the configured keywords to find the
+ * Pattern-based scenario parser, which uses the keywords provided to find the
  * steps in the text scenarios.
  */
 public class PatternScenarioParser implements ScenarioParser {
 
 	private static final String NONE = "";
 	private static final String COMMA = ",";
-	private final Configuration configuration;
+	private final KeyWords keywords;
 
 	public PatternScenarioParser() {
-		this(new PropertyBasedConfiguration());
+		this(new I18nKeyWords());
 	}
 
+	public PatternScenarioParser(KeyWords keywords) {
+		this.keywords = keywords;
+	}
+
+	/**
+	 * @deprecated Since 2.4, use PatternScenarioParser(KeyWords)
+	 */
 	public PatternScenarioParser(Configuration configuration) {
-		this.configuration = configuration;
+	    this(configuration.keywords());
 	}
 
 	public StoryDefinition defineStoryFrom(String wholeStoryAsString, String storyPath) {
@@ -94,7 +101,7 @@ public class PatternScenarioParser implements ScenarioParser {
 	}
 
 	private Blurb parseBlurbFrom(String wholeStoryAsString) {
-		String scenario = configuration.keywords().scenario();
+		String scenario = keywords.scenario();
 		Pattern findStoryBlurb = compile("(.*?)(" + scenario + ").*", DOTALL);
 		Matcher matcher = findStoryBlurb.matcher(wholeStoryAsString);
 		if (matcher.find()) {
@@ -117,7 +124,7 @@ public class PatternScenarioParser implements ScenarioParser {
 
 	protected List<String> splitScenariosWithKeyword(String allScenariosInFile) {
 		List<String> scenarios = new ArrayList<String>();
-		String scenarioKeyword = configuration.keywords().scenario();
+		String scenarioKeyword = keywords.scenario();
 
 		String allScenarios = null;
 		// chomp off anything before first keyword, if found
@@ -163,13 +170,12 @@ public class PatternScenarioParser implements ScenarioParser {
 	}
 
 	private Pattern patternToPullScenariosIntoGroupFour() {
-		String scenario = configuration.keywords().scenario();
+		String scenario = keywords.scenario();
 		return compile(".*?((" + scenario + ") (.|\\s)*?)\\s*(\\Z|" + scenario
 				+ ").*", DOTALL);
 	}
 
 	private Pattern patternToPullGivenScenariosIntoGroupOne() {
-		KeyWords keywords = configuration.keywords();
 		String givenScenarios = keywords.givenScenarios();
 		String concatenatedKeywords = concatenateWithOr(keywords.given(),
 				keywords.when(), keywords.then(), keywords.others());
@@ -177,13 +183,11 @@ public class PatternScenarioParser implements ScenarioParser {
 	}
 
 	private Pattern patternToPullScenarioTableIntoGroupOne() {
-		KeyWords keywords = configuration.keywords();
 		String table = keywords.examplesTable();
 		return compile(".*"+table+"\\s*((.|\\s)*)");
 	}
 
 	private Pattern patternToPullScenarioTitleIntoGroupOne() {
-		KeyWords keywords = configuration.keywords();
 		String scenario = keywords.scenario();
 		String concatenatedKeywords = concatenateWithOr(keywords.given(),
 				keywords.when(), keywords.then(), keywords.others());
@@ -229,7 +233,6 @@ public class PatternScenarioParser implements ScenarioParser {
 	}
 
 	private Pattern patternToPullOutSteps() {
-		KeyWords keywords = configuration.keywords();
 		String givenWhenThen = concatenateWithOr(keywords.given(), keywords
 				.when(), keywords.then(), keywords.others());
 		String givenWhenThenSpaced = concatenateWithSpaceOr(keywords.given(),

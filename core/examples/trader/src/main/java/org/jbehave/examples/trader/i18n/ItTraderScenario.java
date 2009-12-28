@@ -27,7 +27,7 @@ public class ItTraderScenario extends JUnitScenario {
 				// use underscored camel case scenario files with extension ".scenario"
 				return new ClasspathScenarioDefiner(
 						new UnderscoredCamelCaseResolver(".scenario"),
-						new PatternScenarioParser(this), classLoader);
+						new PatternScenarioParser(keywords()), classLoader);
 			}
 
 			@Override

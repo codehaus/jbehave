@@ -8,10 +8,10 @@ import static org.jbehave.Ensure.ensureThat;
 
 import java.util.List;
 
-import org.jbehave.scenario.PropertyBasedConfiguration;
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
-import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -19,10 +19,10 @@ import org.junit.Test;
 public class PatternScenarioParserBehaviour {
 
     private static final String NL = "\n";
+    private ScenarioParser parser = new PatternScenarioParser(new I18nKeyWords());
 
     @Test
     public void shouldExtractGivensWhensAndThensFromSimpleScenarios() {
-        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
         StoryDefinition story = parser.defineStoryFrom(
                 "Given a scenario" + NL + 
                 "When I parse it" + NL + 
@@ -36,7 +36,6 @@ public class PatternScenarioParserBehaviour {
     
     @Test
     public void shouldExtractGivensWhensAndThensFromSimpleScenariosContainingKeywordsAsPartOfTheContent() {
-        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
         StoryDefinition story = parser.defineStoryFrom(
                 "Given a scenario Givenly" + NL + 
                 "When I parse it to Whenever" + NL +
@@ -52,7 +51,6 @@ public class PatternScenarioParserBehaviour {
     
     @Test
     public void shouldExtractGivensWhensAndThensFromMultilineScenarios() {
-        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
         String wholeStory = 
             "Given a scenario" + NL +
             "with this line" + NL +
@@ -82,7 +80,7 @@ public class PatternScenarioParserBehaviour {
             "When I run the scenario" + NL +
             "Then I should see this in the output";
         
-        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory, null);
+        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
         
         ensureThat(story.getScenarios().get(0).getTitle(), equalTo("A title\n that is spread across\n multiple lines"));
     }
@@ -94,7 +92,6 @@ public class PatternScenarioParserBehaviour {
             "Given my scenario" + NL + NL +
             "Scenario: the second scenario" + NL + NL +
             "Given my second scenario";
-        PatternScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
         StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
         
         ensureThat(story.getScenarios().get(0).getTitle(), equalTo("the first scenario"));
@@ -128,7 +125,7 @@ public class PatternScenarioParserBehaviour {
             "Then I should see this in the output" + NL +
             "And I should see this in the output" + NL;
         
-        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory, null);
+        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
         
         ensureThat(story.getBlurb().asString(), equalTo("Story: I can output narratives" + NL + NL +
                     "As a developer" + NL +
@@ -163,14 +160,13 @@ public class PatternScenarioParserBehaviour {
 
     @Test
     public void shouldParseLongStoryWithKeywordSplitScenarios() {
-        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration());
     	ensureLongStoryCanBeParsed(parser);        
     }
 
     @Test
     @Ignore("on Windows, it should fail due to regex stack overflow")
     public void shouldParseLongStoryWithPatternSplitScenarios() {
-        ScenarioParser parser = new PatternScenarioParser(new PropertyBasedConfiguration()){
+        ScenarioParser parser = new PatternScenarioParser(new I18nKeyWords()){
 
 			@Override
 			protected List<String> splitScenarios(String allScenariosInFile) {
@@ -222,7 +218,7 @@ public class PatternScenarioParserBehaviour {
 	            "|a|b|c|" + NL +
 	            "|d|e|f|";
 		
-	        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory, null);
+	        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
 	        
 	        ScenarioDefinition scenario = story.getScenarios().get(0);
 			ensureThat(scenario.getTitle(), equalTo("A template scenario with table values"));	        
@@ -257,7 +253,7 @@ public class PatternScenarioParserBehaviour {
 	            "When I run the scenario of name <two>" + NL +
 	            "Then I should see <three> in the output";
 		
-	        StoryDefinition story = new PatternScenarioParser(new PropertyBasedConfiguration()).defineStoryFrom(wholeStory, null);
+	        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
 	        
 	        ScenarioDefinition scenario = story.getScenarios().get(0);
 			ensureThat(scenario.getTitle(), equalTo("A scenario with given scenarios"));	        
