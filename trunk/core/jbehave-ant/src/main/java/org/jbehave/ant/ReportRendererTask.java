@@ -4,9 +4,7 @@ import static java.util.Arrays.asList;
 import static org.apache.tools.ant.Project.MSG_INFO;
 import static org.apache.tools.ant.Project.MSG_WARN;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.util.List;
 import java.util.Properties;
 
@@ -63,7 +61,7 @@ public class ReportRendererTask extends Task {
     
     public void setTemplateProperties(String properties){
         try {
-            templateProperties.load(new StringReader(properties));
+            templateProperties.load(new ByteArrayInputStream(properties.getBytes()));
         } catch (IOException e) {
             String message = "Failed to load template properties: "+properties;
             log(message, MSG_WARN);
