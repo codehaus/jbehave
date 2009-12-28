@@ -4,8 +4,8 @@ package org.jbehave.scenario.errors;
  * ErrorStrategy allows to define error handling strategies. Two standard
  * strategies are provided:
  * <ul>
- * <li>{@link SILENT}: silently absorbs the error</li>
- * <li>{@link RETHROW}: rethrows the error</li>
+ * <li>{@link ErrorStrategy#SILENT}: silently absorbs the error</li>
+ * <li>{@link ErrorStrategy#RETHROW}: rethrows the error</li>
  * </ul>
  */
 public interface ErrorStrategy {
@@ -16,6 +16,9 @@ public interface ErrorStrategy {
 	ErrorStrategy SILENT = new ErrorStrategy() {
 		public void handleError(Throwable throwable) {
 		}
+		public String toString() {
+		    return "SILENT";
+		};
 	};
 	
 	/**
@@ -25,6 +28,9 @@ public interface ErrorStrategy {
 		public void handleError(Throwable throwable) throws Throwable {
 			throw throwable;
 		}
+        public String toString() {
+            return "RETHROW";
+        };
 	};
 
 	void handleError(Throwable throwable) throws Throwable;
