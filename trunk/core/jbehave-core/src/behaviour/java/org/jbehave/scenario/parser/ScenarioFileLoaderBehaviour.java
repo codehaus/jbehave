@@ -6,10 +6,10 @@ import static org.mockito.Mockito.verify;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.errors.InvalidScenarioResourceException;
 import org.jbehave.scenario.errors.ScenarioNotFoundException;
+import org.jbehave.scenario.i18n.I18nKeyWords;
 import org.jbehave.scenario.parser.scenarios.MyPendingScenario;
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ public class ScenarioFileLoaderBehaviour {
 
     @Test(expected = InvalidScenarioResourceException.class)
     public void cannotLoadScenarioForInvalidResource() {
-        ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(new PropertyBasedConfiguration()), new InvalidClassLoader());
+        ClasspathScenarioDefiner loader = new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(new I18nKeyWords()), new InvalidClassLoader());
         loader.loadScenarioDefinitionsFor(MyPendingScenario.class);
     }
 

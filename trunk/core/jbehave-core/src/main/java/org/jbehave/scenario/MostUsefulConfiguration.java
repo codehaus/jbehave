@@ -48,7 +48,7 @@ public class MostUsefulConfiguration implements Configuration {
 	 * camel-cased name - so MyScenario.java maps to my_scenario.
 	 */
 	public ScenarioDefiner forDefiningScenarios() {
-		return new ClasspathScenarioDefiner(new PatternScenarioParser(this));
+		return new ClasspathScenarioDefiner(new PatternScenarioParser(keywords()));
 	}
 
 	/**
