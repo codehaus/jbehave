@@ -79,7 +79,7 @@
                 <scenarioInclude>**/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
               <scenarioExcludes>
-                <scenarioExclude>**/scenarios/NonSuccessful.java</scenarioExclude>
+                <scenarioExclude>**/scenarios/*NonSuccessful.java</scenarioExclude>
                 <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
               </scenarioExcludes>
               <skip>false</skip>
