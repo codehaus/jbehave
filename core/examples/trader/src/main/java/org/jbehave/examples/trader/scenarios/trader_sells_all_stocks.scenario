@@ -1,4 +1,6 @@
-Trader sells all stocks
+Story: In order to cut my losses
+As a Trader
+I want to sell all stocks when alerted
 
 Scenario: Trader sells it all and goes to Bermuda.
 This scenario shows that the same step pattern can be used for different step types
