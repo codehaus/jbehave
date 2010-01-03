@@ -157,16 +157,20 @@ public class Steps implements CandidateSteps {
 	private void createCandidateStep(List<CandidateStep> steps, Method method,
 			StepType stepType, String stepPatternAsString) {
 		checkForDuplicateCandidateSteps(steps, stepType, stepPatternAsString);
-		CandidateStep step = new CandidateStep(stepPatternAsString, stepType, method,
-				this, configuration.getPatternBuilder(), configuration
-						.getParameterConverters(), configuration
-						.getStartingWordsByType());
-		step.useStepMonitor(configuration.getMonitor());
+        CandidateStep step = createCandidateStep(method, stepType, stepPatternAsString, configuration);
+        step.useStepMonitor(configuration.getMonitor());
 		step.useParanamer(configuration.getParanamer());
 		steps.add(step);
 	}
 
-	private void checkForDuplicateCandidateSteps(List<CandidateStep> steps,
+    protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString,  StepsConfiguration configuration) {
+        return new CandidateStep(stepPatternAsString, stepType, method,
+                this, configuration.getPatternBuilder(), configuration
+                        .getParameterConverters(), configuration
+                        .getStartingWordsByType());
+    }
+
+    private void checkForDuplicateCandidateSteps(List<CandidateStep> steps,
 			StepType stepType, String patternAsString) {
 		for (CandidateStep step : steps) {
 			if (step.getStepType() == stepType && step.getPatternAsString().equals(patternAsString)) {

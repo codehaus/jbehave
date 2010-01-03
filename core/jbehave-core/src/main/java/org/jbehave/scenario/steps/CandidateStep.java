@@ -34,7 +34,7 @@ public class CandidateStep {
     private final String patternAsString;
     private final StepType stepType;
     private final Method method;
-    private final CandidateSteps steps;
+    protected final CandidateSteps steps;
     private final ParameterConverters parameterConverters;
     private final Map<StepType, String> startingWordsByType;
     private final Pattern pattern;
@@ -64,6 +64,10 @@ public class CandidateStep {
         this.paranamer = paranamer;
     }
 
+    protected Paranamer getParanamer() {
+        return paranamer;
+    }
+
     public boolean matches(String stepAsString) {
         try {
             Matcher matcher = matcherForStep(stepAsString);
@@ -82,12 +86,7 @@ public class CandidateStep {
     public Step createFrom(Map<String, String> tableRow, final String stepAsString) {
         Matcher matcher = matcherForStep(stepAsString);
         matcher.find();
-        Type[] types = method.getGenericParameterTypes();
-        String[] annotationNames = annotatedParameterNames();
-        String[] parameterNames = paranamer.lookupParameterNames(method, false);
-        Object[] args = argsForStep(tableRow, matcher, types, annotationNames, parameterNames);
-        String translatedStep = translatedStep(stepAsString, tableRow, types, annotationNames, parameterNames);
-        return createStep(stepAsString, args, translatedStep);
+        return createStep(stepAsString, tableRow, matcher, method, stepMonitor, groupNames);
     }
 
     private Matcher matcherForStep(final String stepAsString) {
@@ -96,7 +95,7 @@ public class CandidateStep {
         return pattern.matcher(trimmed);
     }
 
-    private Object[] argsForStep(Map<String, String> tableRow, Matcher matcher, Type[] types, String[] annotationNames,
+    protected Object[] argsForStep(Map<String, String> tableRow, Matcher matcher, Type[] types, String[] annotationNames,
             String[] parameterNames) {
         final Object[] args = new Object[types.length];
         for (int position = 0; position < types.length; position++) {
@@ -106,7 +105,7 @@ public class CandidateStep {
         return args;
     }
 
-    private String translatedStep(String stepAsString, Map<String, String> tableRow, Type[] types, String[] annotationNames,
+    protected String translatedStep(String stepAsString, Map<String, String> tableRow, Type[] types, String[] annotationNames,
             String[] parameterNames) {
         String replacedStepText = stepAsString;
         for (int position = 0; position < types.length; position++) {
@@ -173,7 +172,7 @@ public class CandidateStep {
         return tableRow.get(name) != null;
     }
 
-    private String getGroup(Matcher matcher, String name) {
+    protected String getGroup(Matcher matcher, String name) {
         for (int i = 0; i < groupNames.length; i++) {
             String groupName = groupNames[i];
             if (name.equals(groupName)) {
@@ -212,7 +211,7 @@ public class CandidateStep {
      * @return An array of annotated parameter names, which <b>may</b> include
      *         <code>null</code> values for parameters that are not annotated
      */
-    private String[] annotatedParameterNames() {
+    protected String[] annotatedParameterNames() {
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         String[] names = new String[parameterAnnotations.length];
         for (int x = 0; x < parameterAnnotations.length; x++) {
@@ -247,7 +246,13 @@ public class CandidateStep {
         return startingWord;
     }
 
-    private Step createStep(final String stepAsString, final Object[] args, final String translatedStep) {
+    protected Step createStep(final String stepAsString, Map<String, String> tableRow, Matcher matcher,
+                              final Method method, final StepMonitor stepMonitor, String[] groupNames) {
+        Type[] types = method.getGenericParameterTypes();
+        String[] annotationNames = annotatedParameterNames();
+        String[] parameterNames = paranamer.lookupParameterNames(method, false);
+        final String translatedStep = translatedStep(stepAsString, tableRow, types, annotationNames, parameterNames);
+        final Object[] args = argsForStep(tableRow, matcher, types, annotationNames, parameterNames);
         return new Step() {
             public StepResult perform() {
                 try {
