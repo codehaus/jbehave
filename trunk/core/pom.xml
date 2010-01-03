@@ -13,6 +13,7 @@
     <module>jbehave-core</module>
     <module>jbehave-ant</module>
     <module>jbehave-maven-plugin</module>
+    <module>jbehave-pico</module>
   </modules>
 
   <dependencyManagement>
