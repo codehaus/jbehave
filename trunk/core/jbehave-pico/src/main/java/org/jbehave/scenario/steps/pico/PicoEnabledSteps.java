@@ -8,37 +8,18 @@ import java.lang.reflect.Method;
 
 public class PicoEnabledSteps extends Steps {
 
-    private PicoContainer parent;
-
-    public PicoEnabledSteps() {
-        super();
-    }
-
-    public PicoEnabledSteps(KeyWords keywords) {
-        super(keywords);
-    }
-
-    public PicoEnabledSteps(ParameterConverters converters) {
-        super(converters);
-    }
-
-    public PicoEnabledSteps(StepsConfiguration configuration) {
+    public PicoEnabledSteps(PicoEnabledStepsConfiguration configuration) {
         super(configuration);
     }
 
-    public PicoEnabledSteps withParentContainer(PicoContainer parent) {
-        this.parent = parent;
-        return this;
-    }
-
     protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString, StepsConfiguration configuration) {
-        if (parent == null) {
-            throw new NullPointerException("Parent container should be provided via PicoEnabledSteps#withParentContainer(PicoContainer)");
+        if (!(configuration instanceof PicoEnabledStepsConfiguration)) {
+            throw new PicoEnabledException("StepsConfiguration parameter should be instanceof PicoEnabledStepsConfiguration");
         }
         return new PicoEnabledCandidateStep(stepPatternAsString, stepType, method,
                 this, configuration.getPatternBuilder(),
                 configuration.getParameterConverters(),
-                configuration.getStartingWordsByType(), parent);
+                configuration.getStartingWordsByType(), ((PicoEnabledStepsConfiguration) configuration).getParentContainer());
     }
 
 
