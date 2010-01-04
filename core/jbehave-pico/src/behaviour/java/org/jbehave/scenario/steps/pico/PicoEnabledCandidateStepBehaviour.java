@@ -57,6 +57,7 @@ public class PicoEnabledCandidateStepBehaviour {
     @Before
     public void setup() {
         parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+        parent.as(Characteristics.NO_CACHE).addComponent(new PicoEnabledStepsConfiguration(parent));
     }
 
 
@@ -211,7 +212,7 @@ public class PicoEnabledCandidateStepBehaviour {
     @Test
     @Ignore
     public void shouldCreateStepFromTableValuesViaAnnotations() throws Exception {
-    	AnnotationNamedParameterSteps steps = new AnnotationNamedParameterSteps();
+    	AnnotationNamedParameterSteps steps = new AnnotationNamedParameterSteps(parent.getComponent(PicoEnabledStepsConfiguration.class));
     	tableRow.put("ith", "first");
     	tableRow.put("nth", "ground");
         CandidateStep candidateStep = new CandidateStep("I live on the ith floor but some call it the nth",
@@ -261,7 +262,6 @@ public class PicoEnabledCandidateStepBehaviour {
     public void shouldCreateStepsOfDifferentTypesWithSameMatchingPattern() throws Throwable {
         parent.addComponent(NamedTypeSteps.class);
         NamedTypeSteps steps = parent.getComponent(NamedTypeSteps.class);
-        steps.withParentContainer(parent);
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(2));
         guard(candidateSteps[0].createFrom(tableRow, "Given foo named xyz").perform());
@@ -281,7 +281,6 @@ public class PicoEnabledCandidateStepBehaviour {
     public void shouldNotCreateStepOfWrongType() {
         parent.addComponent(NamedTypeSteps.class);
         NamedTypeSteps steps = parent.getComponent(NamedTypeSteps.class);
-        steps.withParentContainer(parent);
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(2));
         candidateSteps[0].createFrom(tableRow, "Given foo named xyz").perform();
@@ -293,6 +292,10 @@ public class PicoEnabledCandidateStepBehaviour {
     public static class NamedTypeSteps extends PicoEnabledSteps {
         String givenName;
         String whenName;
+
+        public NamedTypeSteps(PicoEnabledStepsConfiguration configuration) {
+            super(configuration);
+        }
 
         @Given("foo named $name")
         public void givenFoo(String name) {
@@ -310,6 +313,10 @@ public class PicoEnabledCandidateStepBehaviour {
     	String ith;
         String nth;
 
+        public AnnotationNamedParameterSteps(PicoEnabledStepsConfiguration configuration) {
+            super(configuration);
+        }
+
         public void methodWithNamedParametersInNaturalOrder(@Named("ith") String ithName, @Named("nth") String nthName){
     		this.ith = ithName;
     		this.nth = nthName;
@@ -325,6 +332,10 @@ public class PicoEnabledCandidateStepBehaviour {
     public static class ParanamerNamedParameterSteps extends PicoEnabledSteps {
     	String ith;
         String nth;
+
+        public ParanamerNamedParameterSteps(PicoEnabledStepsConfiguration configuration) {
+            super(configuration);
+        }
 
         public void methodWithNamedParametersInNaturalOrder(String ith, String nth){
     		this.ith = ith;
