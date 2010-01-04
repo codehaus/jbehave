@@ -261,7 +261,7 @@ public class PicoEnabledCandidateStepBehaviour {
     public void shouldCreateStepsOfDifferentTypesWithSameMatchingPattern() throws Throwable {
         parent.addComponent(NamedTypeSteps.class);
         NamedTypeSteps steps = parent.getComponent(NamedTypeSteps.class);
-        steps.withPicoContainer(parent);
+        steps.withParentContainer(parent);
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(2));
         guard(candidateSteps[0].createFrom(tableRow, "Given foo named xyz").perform());
@@ -281,7 +281,7 @@ public class PicoEnabledCandidateStepBehaviour {
     public void shouldNotCreateStepOfWrongType() {
         parent.addComponent(NamedTypeSteps.class);
         NamedTypeSteps steps = parent.getComponent(NamedTypeSteps.class);
-        steps.withPicoContainer(parent);
+        steps.withParentContainer(parent);
         CandidateStep[] candidateSteps = steps.getSteps();
         ensureThat(candidateSteps.length, equalTo(2));
         candidateSteps[0].createFrom(tableRow, "Given foo named xyz").perform();

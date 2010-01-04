@@ -11,11 +11,7 @@ public class PicoEnabledSteps extends Steps {
     private PicoContainer parent;
 
     public PicoEnabledSteps() {
-    }
-
-    public PicoEnabledSteps withPicoContainer(PicoContainer parent) {
-        this.parent = parent;
-        return this;
+        super();
     }
 
     public PicoEnabledSteps(KeyWords keywords) {
@@ -26,14 +22,18 @@ public class PicoEnabledSteps extends Steps {
         super(converters);
     }
 
-
     public PicoEnabledSteps(StepsConfiguration configuration) {
         super(configuration);
     }
 
+    public PicoEnabledSteps withParentContainer(PicoContainer parent) {
+        this.parent = parent;
+        return this;
+    }
+
     protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString, StepsConfiguration configuration) {
         if (parent == null) {
-            throw new NullPointerException("parent should be passed in via usePicoContainer(..)");
+            throw new NullPointerException("Parent container should be provided via PicoEnabledSteps#withParentContainer(PicoContainer)");
         }
         return new PicoEnabledCandidateStep(stepPatternAsString, stepType, method,
                 this, configuration.getPatternBuilder(),
