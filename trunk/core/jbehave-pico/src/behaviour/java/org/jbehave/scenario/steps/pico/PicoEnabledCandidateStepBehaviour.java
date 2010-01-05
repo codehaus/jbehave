@@ -2,6 +2,7 @@ package org.jbehave.scenario.steps.pico;
 
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 import org.jbehave.scenario.reporters.ScenarioReporter;
@@ -63,14 +64,14 @@ public class PicoEnabledCandidateStepBehaviour {
 
     @Test
     public void shouldMatchASimpleString() throws Exception {
-        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("I laugh", GIVEN, SomeSteps2.class.getMethod("aMethod"),
+        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("I laugh", GIVEN, SomeSteps.class.getMethod("aMethod"),
                 null, PATTERN_BUILDER, new ParameterConverters(), startingWords, new EmptyPicoContainer());
         ensureThat(candidateStep.matches("Given I laugh"));
     }
 
     @Test
     public void shouldMatchAStringWithArguments() throws Exception {
-        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("windows on the $nth floor", WHEN, SomeSteps2.class
+        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("windows on the $nth floor", WHEN, SomeSteps.class
 				        .getMethod("aMethod"), null, PATTERN_BUILDER, new ParameterConverters(), startingWords, new EmptyPicoContainer());
         ensureThat(candidateStep.matches("When windows on the 1st floor"));
         ensureThat(not(candidateStep.matches("When windows on the 1st floor are open")));
@@ -78,9 +79,9 @@ public class PicoEnabledCandidateStepBehaviour {
 
     @Test
     public void shouldProvideARealStepUsingTheMatchedString() throws Exception {
-        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps2.class);
-        SomeSteps2 someSteps = parent.getComponent(SomeSteps2.class);
-        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("I live on the $args floor", THEN, SomeSteps2.class.getMethod(
+        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
+        SomeSteps someSteps = parent.getComponent(SomeSteps.class);
+        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("I live on the $args floor", THEN, SomeSteps.class.getMethod(
 				        "aMethodWith", String.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         Step step = candidateStep.createFrom(tableRow, "Then I live on the 1st floor");
         step.perform();
@@ -89,31 +90,31 @@ public class PicoEnabledCandidateStepBehaviour {
 
     @Test
     public void shouldMatchMultilineStrings() throws Exception {
-        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("the grid should look like $grid", THEN, SomeSteps2.class
+        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("the grid should look like $grid", THEN, SomeSteps.class
 				        .getMethod("aMethod"), null, PATTERN_BUILDER, new ParameterConverters(), startingWords, new EmptyPicoContainer());
         ensureThat(candidateStep.matches("Then the grid should look like " + NL + "...." + NL + "...." + NL));
     }
 
     @Test
     public void shouldConvertArgsToAppropriateNumbers() throws Exception {
-        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps2.class);
-        SomeSteps2 someSteps = parent.getComponent(SomeSteps2.class);
-        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("I should live in no. $args", THEN, SomeSteps2.class.getMethod(
+        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
+        SomeSteps someSteps = parent.getComponent(SomeSteps.class);
+        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("I should live in no. $args", THEN, SomeSteps.class.getMethod(
 				        "aMethodWith", int.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "Then I should live in no. 14").perform();
         ensureThat((Integer) someSteps.args, equalTo(14));
 
-        candidateStep = new PicoEnabledCandidateStep("I should live in no. $args", THEN, SomeSteps2.class.getMethod("aMethodWith",
+        candidateStep = new PicoEnabledCandidateStep("I should live in no. $args", THEN, SomeSteps.class.getMethod("aMethodWith",
 				        long.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "Then I should live in no. 14").perform();
         ensureThat((Long) someSteps.args, equalTo(14L));
 
-        candidateStep = new PicoEnabledCandidateStep("I should live in no. $args", THEN, SomeSteps2.class.getMethod("aMethodWith",
+        candidateStep = new PicoEnabledCandidateStep("I should live in no. $args", THEN, SomeSteps.class.getMethod("aMethodWith",
 				        double.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "Then I should live in no. 14").perform();
         ensureThat((Double) someSteps.args, equalTo(14.0));
 
-        candidateStep = new PicoEnabledCandidateStep("I should live in no. $args", THEN, SomeSteps2.class.getMethod("aMethodWith",
+        candidateStep = new PicoEnabledCandidateStep("I should live in no. $args", THEN, SomeSteps.class.getMethod("aMethodWith",
 				        float.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "Then I should live in no. 14").perform();
         ensureThat((Float) someSteps.args, equalTo(14.0f));
@@ -122,9 +123,9 @@ public class PicoEnabledCandidateStepBehaviour {
     @Test
     public void shouldProvideAStepWithADescriptionThatMatchesTheCandidateStep() throws Exception {
         ScenarioReporter reporter = mock(ScenarioReporter.class);
-        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps2.class);
-        SomeSteps2 someSteps = parent.getComponent(SomeSteps2.class);
-        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("I live on the $nth floor", THEN, SomeSteps2.class.getMethod(
+        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
+        SomeSteps someSteps = parent.getComponent(SomeSteps.class);
+        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("I live on the $nth floor", THEN, SomeSteps.class.getMethod(
 				        "aMethodWith", String.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         Step step = candidateStep.createFrom(tableRow, "Then I live on the 1st floor");
 
@@ -139,9 +140,9 @@ public class PicoEnabledCandidateStepBehaviour {
         String windowsNewline = "\r\n";
         String unixNewline = "\n";
         String systemNewline = System.getProperty("line.separator");
-        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps2.class);
-        SomeSteps2 someSteps = parent.getComponent(SomeSteps2.class);
-        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("the grid should look like $grid", THEN, SomeSteps2.class.getMethod(
+        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
+        SomeSteps someSteps = parent.getComponent(SomeSteps.class);
+        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("the grid should look like $grid", THEN, SomeSteps.class.getMethod(
 				        "aMethodWith", String.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         Step step = candidateStep.createFrom(tableRow, "Then the grid should look like" + windowsNewline + ".." + unixNewline
                 + ".." + windowsNewline);
@@ -152,25 +153,25 @@ public class PicoEnabledCandidateStepBehaviour {
     @Test
     @Ignore
     public void shouldConvertArgsToListOfNumbers() throws Exception {
-        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps2.class);
-        SomeSteps2 someSteps = parent.getComponent(SomeSteps2.class);
+        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
+        SomeSteps someSteps = parent.getComponent(SomeSteps.class);
         PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("windows on the $nth floors",
-        		WHEN, SomeSteps2.methodFor("aMethodWithListOfLongs"), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
+        		WHEN, stepMethodFor("aMethodWithListOfLongs", SomeSteps.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "When windows on the 1L,2L,3L floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1L, 2L, 3L).toString()));
 
         candidateStep = new PicoEnabledCandidateStep("windows on the $nth floors", WHEN,
-                SomeSteps2.methodFor("aMethodWithListOfIntegers"), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
+                stepMethodFor("aMethodWithListOfIntegers", SomeSteps.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "When windows on the 1,2,3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1, 2, 3).toString()));
 
         candidateStep = new PicoEnabledCandidateStep("windows on the $nth floors", WHEN,
-                SomeSteps2.methodFor("aMethodWithListOfDoubles"), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
+                stepMethodFor("aMethodWithListOfDoubles", SomeSteps.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "When windows on the 1.1,2.2,3.3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1.1, 2.2, 3.3).toString()));
 
         candidateStep = new PicoEnabledCandidateStep("windows on the $nth floors", WHEN,
-                SomeSteps2.methodFor("aMethodWithListOfFloats"), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
+                stepMethodFor("aMethodWithListOfFloats", SomeSteps.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "When windows on the 1.1f,2.2f,3.3f floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList(1.1f, 2.2f, 3.3f).toString()));
 
@@ -179,10 +180,10 @@ public class PicoEnabledCandidateStepBehaviour {
     @Test
     @Ignore
     public void shouldConvertArgsToListOfStrings() throws Exception {
-        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps2.class);
-        SomeSteps2 someSteps = parent.getComponent(SomeSteps2.class);
+        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
+        SomeSteps someSteps = parent.getComponent(SomeSteps.class);
         PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("windows on the $nth floors",
-        		WHEN, SomeSteps2.methodFor("aMethodWithListOfStrings"), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
+        		WHEN, stepMethodFor("aMethodWithListOfStrings", SomeSteps.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
         candidateStep.createFrom(tableRow, "When windows on the 1,2,3 floors").perform();
         ensureThat(((List<?>) someSteps.args).toString(), equalTo(asList("1", "2", "3").toString()));
     }
@@ -349,6 +350,68 @@ public class PicoEnabledCandidateStepBehaviour {
 
     }
 
+    public static class SomeSteps extends PicoEnabledSteps {
+
+        public SomeSteps(PicoEnabledStepsConfiguration configuration) {
+            super(configuration);
+        }
+
+        public Object args;
+
+        public void aMethod() {
+
+        }
+
+        public void aMethodWith(String args) {
+            this.args = args;
+        }
+
+        public void aMethodWith(double args) {
+            this.args = args;
+        }
+
+        public void aMethodWith(long args) {
+            this.args = args;
+        }
+
+        public void aMethodWith(int args) {
+            this.args = args;
+        }
+
+        public void aMethodWith(float args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfStrings(List<String> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfLongs(List<Long> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfIntegers(List<Integer> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfDoubles(List<Double> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfFloats(List<Float> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithListOfNumbers(List<Number> args) {
+            this.args = args;
+        }
+
+        public void aMethodWithExamplesTable(ExamplesTable args) {
+            this.args = args;
+        }
+
+    }
+
     static Method stepMethodFor(String methodName, Class<? extends Steps> stepsClass) throws IntrospectionException {
         BeanInfo beanInfo = Introspector.getBeanInfo(stepsClass);
         for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
@@ -358,5 +421,6 @@ public class PicoEnabledCandidateStepBehaviour {
         }
         return null;
     }
+    
 
 }
