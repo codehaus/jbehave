@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.jbehave.scenario.annotations.Given;
-import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
 import org.jbehave.scenario.parser.StepPatternBuilder;
@@ -199,6 +198,39 @@ public class CandidateStepBehaviour {
     }
         
     @Test
+    public void shouldMatchMethodParametersByAnnotatedNamesInNaturalOrderForJsr330Named() throws Exception {
+    	Jsr330AnnotationNamedParameterSteps steps = new Jsr330AnnotationNamedParameterSteps();
+        CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
+        		WHEN, stepMethodFor("methodWithNamedParametersInNaturalOrder", Jsr330AnnotationNamedParameterSteps.class), steps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
+        candidateStep.createFrom(tableRow, "When I live on the first floor but some call it the ground").perform();
+        ensureThat(steps.ith, equalTo("first"));
+        ensureThat(steps.nth, equalTo("ground"));
+    }
+
+    @Test
+    public void shouldMatchMethodParametersByAnnotatedNamesInverseOrderForJsr330Named() throws Exception {
+    	Jsr330AnnotationNamedParameterSteps steps = new Jsr330AnnotationNamedParameterSteps();
+        CandidateStep candidateStep = new CandidateStep("I live on the $ith floor but some call it the $nth",
+        		WHEN, stepMethodFor("methodWithNamedParametersInInverseOrder", Jsr330AnnotationNamedParameterSteps.class), steps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
+        candidateStep.createFrom(tableRow, "When I live on the first floor but some call it the ground").perform();
+        ensureThat(steps.ith, equalTo("first"));
+        ensureThat(steps.nth, equalTo("ground"));
+    }
+
+    @Test
+    public void shouldCreateStepFromTableValuesViaAnnotationsForJsr330Named() throws Exception {
+    	Jsr330AnnotationNamedParameterSteps steps = new Jsr330AnnotationNamedParameterSteps();
+    	tableRow.put("ith", "first");
+    	tableRow.put("nth", "ground");
+        CandidateStep candidateStep = new CandidateStep("I live on the ith floor but some call it the nth",
+        		WHEN, stepMethodFor("methodWithNamedParametersInNaturalOrder", Jsr330AnnotationNamedParameterSteps.class), steps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
+        candidateStep.createFrom(tableRow, "When I live on the <ith> floor but some call it the <nth>").perform();
+        ensureThat(steps.ith, equalTo("first"));
+        ensureThat(steps.nth, equalTo("ground"));
+    }
+
+
+    @Test
     public void shouldMatchMethodParametersByParanamerNamesInNaturalOrder() throws Exception {
         shouldMatchMethodParametersByParanamerSomeOrder("methodWithNamedParametersInNaturalOrder");
     }
@@ -265,38 +297,6 @@ public class CandidateStepBehaviour {
         @When("foo named $name")
         public void whenFoo(String name) {
         	whenName = name;
-        }
-
-    }
-
-    static class AnnotationNamedParameterSteps extends Steps {
-    	String ith;
-        String nth;
-
-        public void methodWithNamedParametersInNaturalOrder(@Named("ith") String ithName, @Named("nth") String nthName){
-    		this.ith = ithName;    	
-    		this.nth = nthName;
-        }
-        
-        public void methodWithNamedParametersInInverseOrder(@Named("nth") String nthName, @Named("ith") String ithName){
-    		this.ith = ithName;    	
-    		this.nth = nthName;
-        }
-
-    }
-
-    static class ParanamerNamedParameterSteps extends Steps {
-    	String ith;
-        String nth;
-
-        public void methodWithNamedParametersInNaturalOrder(String ith, String nth){
-    		this.ith = ith;
-    		this.nth = nth;
-        }
-
-        public void methodWithNamedParametersInInverseOrder(String nth, String ith){
-    		this.ith = ith;
-    		this.nth = nth;
         }
 
     }
