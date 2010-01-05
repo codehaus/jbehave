@@ -5,7 +5,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsArray.array;
 import static org.jbehave.Ensure.ensureThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,9 +27,9 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         CandidateSteps steps = mock(Steps.class);
         Step executableStep = mock(Step.class);
         
-        stub(candidate.matches("my step")).toReturn(true);
-        stub(candidate.createFrom(tableRow, "my step")).toReturn(executableStep);
-        stub(steps.getSteps()).toReturn(new CandidateStep[] {candidate});
+        when(candidate.matches("my step")).thenReturn(true);
+        when(candidate.createFrom(tableRow, "my step")).thenReturn(executableStep);
+        when(steps.getSteps()).thenReturn(new CandidateStep[] {candidate});
         
         // When
         Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableRow, steps);
@@ -47,8 +47,8 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         CandidateStep candidate = mock(CandidateStep.class);
         CandidateSteps steps = mock(Steps.class);
         
-        stub(candidate.matches("my step")).toReturn(false);
-        stub(steps.getSteps()).toReturn(new CandidateStep[] {candidate});
+        when(candidate.matches("my step")).thenReturn(false);
+        when(steps.getSteps()).thenReturn(new CandidateStep[] {candidate});
         
         // When
         Step[] executableSteps = creator.createStepsFrom(new ScenarioDefinition("", asList("my step")), tableRow, steps);
@@ -69,19 +69,19 @@ public class UnmatchedToPendingStepCreatorBehaviour {
     	Step stepAfter1 = mock(Step.class);
     	Step stepAfter2 = mock(Step.class);
 
-    	stub(steps1.runBeforeScenario()).toReturn(Arrays.asList(stepBefore1));
-    	stub(steps2.runBeforeScenario()).toReturn(Arrays.asList(stepBefore2));
-    	stub(steps1.runAfterScenario()).toReturn(Arrays.asList(stepAfter1));
-    	stub(steps2.runAfterScenario()).toReturn(Arrays.asList(stepAfter2));
+    	when(steps1.runBeforeScenario()).thenReturn(Arrays.asList(stepBefore1));
+    	when(steps2.runBeforeScenario()).thenReturn(Arrays.asList(stepBefore2));
+    	when(steps1.runAfterScenario()).thenReturn(Arrays.asList(stepAfter1));
+    	when(steps2.runAfterScenario()).thenReturn(Arrays.asList(stepAfter2));
 
     	// And which have a 'normal' step that matches our scenario
         CandidateStep candidate = mock(CandidateStep.class);
         Step normalStep = mock(Step.class);
         
-        stub(candidate.matches("my step")).toReturn(true);
-        stub(candidate.createFrom(tableRow, "my step")).toReturn(normalStep);
-        stub(steps1.getSteps()).toReturn(new CandidateStep[] {candidate});
-        stub(steps2.getSteps()).toReturn(new CandidateStep[] {});
+        when(candidate.matches("my step")).thenReturn(true);
+        when(candidate.createFrom(tableRow, "my step")).thenReturn(normalStep);
+        when(steps1.getSteps()).thenReturn(new CandidateStep[] {candidate});
+        when(steps2.getSteps()).thenReturn(new CandidateStep[] {});
     	
         // When we create the series of steps for the scenario
     	UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
