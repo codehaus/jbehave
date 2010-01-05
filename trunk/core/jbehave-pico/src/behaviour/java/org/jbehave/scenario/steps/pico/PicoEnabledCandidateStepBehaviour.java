@@ -135,10 +135,9 @@ public class PicoEnabledCandidateStepBehaviour {
     }
 
     @Test
-    public void shouldNotFailJustBecauseWeHaveDifferentNewlinesToTheOneTheScenarioWasWrittenIn() throws Exception {
+    public void shouldConvertWindowsNewlinesToUnix() throws Exception {
         String windowsNewline = "\r\n";
         String unixNewline = "\n";
-        String systemNewline = System.getProperty("line.separator");
         parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
         SomeSteps someSteps = parent.getComponent(SomeSteps.class);
         PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("the grid should look like $grid", THEN, SomeSteps.class.getMethod(
@@ -146,7 +145,7 @@ public class PicoEnabledCandidateStepBehaviour {
         Step step = candidateStep.createFrom(tableRow, "Then the grid should look like" + windowsNewline + ".." + unixNewline
                 + ".." + windowsNewline);
         step.perform();
-        ensureThat((String) someSteps.args, equalTo(".." + systemNewline + ".." + systemNewline));
+        ensureThat((String) someSteps.args, equalTo(".." + unixNewline + ".." + unixNewline));
     }
 
     @Test
