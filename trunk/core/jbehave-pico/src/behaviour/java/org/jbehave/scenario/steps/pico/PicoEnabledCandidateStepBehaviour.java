@@ -135,7 +135,6 @@ public class PicoEnabledCandidateStepBehaviour {
     }
 
     @Test
-    @Ignore()    
     public void shouldNotFailJustBecauseWeHaveDifferentNewlinesToTheOneTheScenarioWasWrittenIn() throws Exception {
         String windowsNewline = "\r\n";
         String unixNewline = "\n";

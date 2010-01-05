@@ -176,10 +176,14 @@ public class CandidateStep {
         for (int i = 0; i < groupNames.length; i++) {
             String groupName = groupNames[i];
             if (name.equals(groupName)) {
-                return matcher.group(i + 1);
+                return dos2unix(matcher.group(i + 1));
             }
         }
         throw new NoGroupFoundForName(name, groupNames);
+    }
+    
+    private String dos2unix(String string) {
+        return string.replace("\r\n", "\n");
     }
 
     private boolean isGroupName(String name) {
