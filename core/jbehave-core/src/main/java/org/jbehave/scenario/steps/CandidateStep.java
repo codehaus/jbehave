@@ -217,14 +217,20 @@ public class CandidateStep {
         for (int x = 0; x < parameterAnnotations.length; x++) {
             Annotation[] annotations = parameterAnnotations[x];
             for (Annotation annotation : annotations) {
-                if (annotation.annotationType().isAssignableFrom(Named.class)) {
-                    names[x] = ((Named) annotation).value();
-                } else if ("javax.inject.Named".equals(annotation.annotationType().getName())) {
-                    names[x] = Jsr330Helper.getNamedValue(annotation);
-                }
+                names[x] = annotationName(annotation);
             }
         }
         return names;
+    }
+
+    private String annotationName(Annotation annotation) {
+        if (annotation.annotationType().isAssignableFrom(Named.class)) {
+            return ((Named) annotation).value();
+        } else if ("javax.inject.Named".equals(annotation.annotationType().getName())) {
+            return Jsr330Helper.getNamedValue(annotation);
+        } else {
+            return null;
+        }
     }
 
     private String findStartingWord(final String stepAsString) throws StartingWordNotFound {
@@ -322,13 +328,14 @@ public class CandidateStep {
         }
 
     }
-
+    
     /**
      * This is a different class, because the @Inject jar may not be in the classpath.
      */
-    public static class Jsr330Helper {
-        private static String getNamedValue(Annotation ann) {
-            return ((javax.inject.Named) ann).value();
+    private static class Jsr330Helper {
+
+        private static String getNamedValue(Annotation annotation) {
+            return ((javax.inject.Named) annotation).value();
         }
 
     }
