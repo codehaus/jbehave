@@ -6,7 +6,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
 import java.util.HashMap;
@@ -50,23 +50,23 @@ public class ScenarioRunnerBehaviour {
         CandidateStep[] someCandidateSteps = new CandidateStep[0];
         Step step = mock(Step.class);
         StepResult result = mock(StepResult.class);
-        stub(step.perform()).toReturn(result);
+        when(step.perform()).thenReturn(result);
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         StepCreator creator = mock(StepCreator.class);
         CandidateSteps mySteps = mock(Steps.class);
-        stub(mySteps.getSteps()).toReturn(someCandidateSteps);
+        when(mySteps.getSteps()).thenReturn(someCandidateSteps);
         IllegalArgumentException anException = new IllegalArgumentException();
         Step pendingStep = mock(Step.class);
         Step successfulStep = mock(Step.class);
         Step failingStep = mock(Step.class);
-        stub(pendingStep.perform()).toReturn(StepResult.pending("pendingStep"));
-        stub(successfulStep.perform()).toReturn(StepResult.success("successfulStep"));
-        stub(successfulStep.doNotPerform()).toReturn(StepResult.notPerformed("successfulStep"));
-        stub(failingStep.perform()).toReturn(StepResult.failure("failingStep", anException));
-        stub(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).toReturn(
+        when(pendingStep.perform()).thenReturn(StepResult.pending("pendingStep"));
+        when(successfulStep.perform()).thenReturn(StepResult.success("successfulStep"));
+        when(successfulStep.doNotPerform()).thenReturn(StepResult.notPerformed("successfulStep"));
+        when(failingStep.perform()).thenReturn(StepResult.failure("failingStep", anException));
+        when(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).thenReturn(
                 new Step[] { failingStep, successfulStep });
-        stub(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).toReturn(new Step[] { successfulStep });
-        stub(creator.createStepsFrom(scenarioDefinition3, tableRow, mySteps)).toReturn(
+        when(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).thenReturn(new Step[] { successfulStep });
+        when(creator.createStepsFrom(scenarioDefinition3, tableRow, mySteps)).thenReturn(
                 new Step[] { successfulStep, pendingStep });
 
         // When
@@ -106,21 +106,21 @@ public class ScenarioRunnerBehaviour {
         CandidateStep[] someCandidateSteps = new CandidateStep[0];
         Step step = mock(Step.class);
         StepResult result = mock(StepResult.class);
-        stub(step.perform()).toReturn(result);
+        when(step.perform()).thenReturn(result);
 
         ScenarioDefiner scenarioDefiner = mock(ScenarioDefiner.class);
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         StepCreator creator = mock(StepCreator.class);
         CandidateSteps mySteps = mock(Steps.class);
-        stub(mySteps.getSteps()).toReturn(someCandidateSteps);
+        when(mySteps.getSteps()).thenReturn(someCandidateSteps);
         Step successfulStep = mock(Step.class);
-        stub(successfulStep.perform()).toReturn(StepResult.success("successfulStep"));
+        when(successfulStep.perform()).thenReturn(StepResult.success("successfulStep"));
         Step anotherSuccessfulStep = mock(Step.class);
-        stub(anotherSuccessfulStep.perform()).toReturn(StepResult.success("anotherSuccessfulStep"));
-        stub(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).toReturn(new Step[] { successfulStep });
-        stub(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).toReturn(
+        when(anotherSuccessfulStep.perform()).thenReturn(StepResult.success("anotherSuccessfulStep"));
+        when(creator.createStepsFrom(scenarioDefinition1, tableRow, mySteps)).thenReturn(new Step[] { successfulStep });
+        when(creator.createStepsFrom(scenarioDefinition2, tableRow, mySteps)).thenReturn(
                 new Step[] { anotherSuccessfulStep });
-        stub(scenarioDefiner.loadScenarioDefinitionsFor("/path/to/given/scenario1")).toReturn(storyDefinition1);
+        when(scenarioDefiner.loadScenarioDefinitionsFor("/path/to/given/scenario1")).thenReturn(storyDefinition1);
         ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
 
         // When
@@ -148,12 +148,12 @@ public class ScenarioRunnerBehaviour {
         Step fourthStepAlsoPending = mock(Step.class);
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
-        stub(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).toReturn(
+        when(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).thenReturn(
                 new Step[] { firstStepNormal, secondStepPending, thirdStepNormal, fourthStepAlsoPending });
-        stub(firstStepNormal.perform()).toReturn(StepResult.success("Given I succeed"));
-        stub(secondStepPending.perform()).toReturn(StepResult.pending("When I am pending"));
-        stub(thirdStepNormal.doNotPerform()).toReturn(StepResult.notPerformed("Then I should not be performed"));
-        stub(fourthStepAlsoPending.doNotPerform()).toReturn(
+        when(firstStepNormal.perform()).thenReturn(StepResult.success("Given I succeed"));
+        when(secondStepPending.perform()).thenReturn(StepResult.pending("When I am pending"));
+        when(thirdStepNormal.doNotPerform()).thenReturn(StepResult.notPerformed("Then I should not be performed"));
+        when(fourthStepAlsoPending.doNotPerform()).thenReturn(
                 StepResult.notPerformed("Then I should not be performed either"));
 
         // When
@@ -181,12 +181,12 @@ public class ScenarioRunnerBehaviour {
         Step secondStepNotPerformed = mock(Step.class);
         StepResult failure = StepResult.failure("When I fail", new IllegalStateException());
         StepResult notPerformed = StepResult.notPerformed("Then I should not be performed");
-        stub(firstStepExceptional.perform()).toReturn(failure);
-        stub(secondStepNotPerformed.doNotPerform()).toReturn(notPerformed);
+        when(firstStepExceptional.perform()).thenReturn(failure);
+        when(secondStepNotPerformed.doNotPerform()).thenReturn(notPerformed);
         ErrorStrategy errorStrategy = mock(ErrorStrategy.class);
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
-        stub(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).toReturn(
+        when(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).thenReturn(
                 new Step[] { firstStepExceptional, secondStepNotPerformed });
         StoryDefinition story = new StoryDefinition(new ScenarioDefinition(""));
         boolean embeddedStory = false;
@@ -215,14 +215,14 @@ public class ScenarioRunnerBehaviour {
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         Step pendingStep = mock(Step.class);
         Step secondStep = mock(Step.class);
-        stub(pendingStep.perform()).toReturn(StepResult.pending("pendingStep"));
-        stub(secondStep.perform()).toReturn(StepResult.success("secondStep"));
+        when(pendingStep.perform()).thenReturn(StepResult.pending("pendingStep"));
+        when(secondStep.perform()).thenReturn(StepResult.success("secondStep"));
         StepCreator creator = mock(StepCreator.class);
         CandidateSteps mySteps = mock(Steps.class);
         ScenarioDefinition scenario1 = mock(ScenarioDefinition.class);
         ScenarioDefinition scenario2 = mock(ScenarioDefinition.class);
-        stub(creator.createStepsFrom(scenario1, tableRow, mySteps)).toReturn(new Step[] { pendingStep });
-        stub(creator.createStepsFrom(scenario2, tableRow, mySteps)).toReturn(new Step[] { secondStep });
+        when(creator.createStepsFrom(scenario1, tableRow, mySteps)).thenReturn(new Step[] { pendingStep });
+        when(creator.createStepsFrom(scenario2, tableRow, mySteps)).thenReturn(new Step[] { secondStep });
 
         // When
         ScenarioRunner runner = new ScenarioRunner();
@@ -240,11 +240,11 @@ public class ScenarioRunnerBehaviour {
         ScenarioReporter reporter = mock(ScenarioReporter.class);
         Step pendingStep = mock(Step.class);
         StepResult pendingResult = StepResult.pending("My step isn't defined!");
-        stub(pendingStep.perform()).toReturn(pendingResult);
+        when(pendingStep.perform()).thenReturn(pendingResult);
         PendingErrorStrategy strategy = mock(PendingErrorStrategy.class);
         StepCreator creator = mock(StepCreator.class);
         Steps mySteps = mock(Steps.class);
-        stub(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).toReturn(
+        when(creator.createStepsFrom((ScenarioDefinition) anyObject(), eq(tableRow), eq(mySteps))).thenReturn(
                 new Step[] { pendingStep });
 
         // When
