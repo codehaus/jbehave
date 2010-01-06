@@ -117,17 +117,17 @@ public class CandidateStepBehaviour {
         verify(reporter).successful("Then I live on the 1st floor");
     }
 
-    @Test
-    public void shouldConvertWindowsNewlinesToUnix() throws Exception {
+    public void shouldConvertStringParameterValuesToUseSystemNewline() throws Exception {
         String windowsNewline = "\r\n";
         String unixNewline = "\n";
+        String systemNewline = System.getProperty("line.separator");
         SomeSteps someSteps = new SomeSteps();
         CandidateStep candidateStep = new CandidateStep("the grid should look like $grid", THEN, SomeSteps.class.getMethod(
 				        "aMethodWith", String.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
         Step step = candidateStep.createFrom(tableRow, "Then the grid should look like" + windowsNewline + ".." + unixNewline
                 + ".." + windowsNewline);
         step.perform();
-        ensureThat((String) someSteps.args, equalTo(".." + unixNewline + ".." + unixNewline));
+        ensureThat((String) someSteps.args, equalTo(".." + systemNewline + ".." + systemNewline));
     }
 
     @Test

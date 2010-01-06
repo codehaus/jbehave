@@ -135,7 +135,8 @@ public class PicoEnabledCandidateStepBehaviour {
     }
 
     @Test
-    public void shouldConvertWindowsNewlinesToUnix() throws Exception {
+    public void shouldConvertStringParameterValuesToUseUnixNewline() throws Exception {
+    	// conversion to system new line is done in ParameterConverters - still todo 
         String windowsNewline = "\r\n";
         String unixNewline = "\n";
         parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
