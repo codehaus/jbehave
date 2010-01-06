@@ -1,33 +1,5 @@
 package org.jbehave.scenario.steps.pico;
 
-import org.jbehave.scenario.annotations.Given;
-import org.jbehave.scenario.annotations.When;
-import org.jbehave.scenario.definition.ExamplesTable;
-import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
-import org.jbehave.scenario.parser.StepPatternBuilder;
-import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.jbehave.scenario.steps.*;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.picocontainer.Characteristics;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.ConstructorInjection;
-
-import javax.inject.Named;
-
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.MethodDescriptor;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -38,6 +10,39 @@ import static org.jbehave.scenario.steps.StepType.THEN;
 import static org.jbehave.scenario.steps.StepType.WHEN;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.MethodDescriptor;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Named;
+
+import org.jbehave.scenario.annotations.Given;
+import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
+import org.jbehave.scenario.parser.StepPatternBuilder;
+import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.jbehave.scenario.steps.CandidateStep;
+import org.jbehave.scenario.steps.ParameterConverters;
+import org.jbehave.scenario.steps.Step;
+import org.jbehave.scenario.steps.StepResult;
+import org.jbehave.scenario.steps.StepType;
+import org.jbehave.scenario.steps.Steps;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.ConstructorInjection;
 
 public class PicoEnabledCandidateStepBehaviour {
 
@@ -135,19 +140,19 @@ public class PicoEnabledCandidateStepBehaviour {
     }
 
     @Test
-    public void shouldConvertStringParameterValuesToUseUnixNewline() throws Exception {
-    	// conversion to system new line is done in ParameterConverters - still todo 
+    public void shouldConvertStringParameterValuesToUseSystemNewline() throws Exception {
         String windowsNewline = "\r\n";
         String unixNewline = "\n";
-        parent.as(Characteristics.USE_NAMES).addComponent(SomeSteps.class);
-        SomeSteps someSteps = parent.getComponent(SomeSteps.class);
-        PicoEnabledCandidateStep candidateStep = new PicoEnabledCandidateStep("the grid should look like $grid", THEN, SomeSteps.class.getMethod(
-				        "aMethodWith", String.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords, parent);
+        String systemNewline = System.getProperty("line.separator");
+        SomeSteps someSteps = new SomeSteps(null);
+        CandidateStep candidateStep = new CandidateStep("the grid should look like $grid", THEN, SomeSteps.class.getMethod(
+				        "aMethodWith", String.class), someSteps, PATTERN_BUILDER, new ParameterConverters(), startingWords);
         Step step = candidateStep.createFrom(tableRow, "Then the grid should look like" + windowsNewline + ".." + unixNewline
                 + ".." + windowsNewline);
         step.perform();
-        ensureThat((String) someSteps.args, equalTo(".." + unixNewline + ".." + unixNewline));
+        ensureThat((String) someSteps.args, equalTo(".." + systemNewline + ".." + systemNewline));
     }
+
 
     @Test
     @Ignore

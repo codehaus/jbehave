@@ -35,7 +35,7 @@ public class CandidateStep {
     private final StepType stepType;
     private final Method method;
     protected final CandidateSteps steps;
-    private final ParameterConverters parameterConverters;
+    protected final ParameterConverters parameterConverters;
     private final Map<StepType, String> startingWordsByType;
     private final Pattern pattern;
     private final String[] groupNames;
@@ -137,7 +137,7 @@ public class CandidateStep {
             arg = getTableValue(tableRow, name);
         } else {
             stepMonitor.usingNaturalOrderForArg(position);
-            arg = matcher.group(position + 1);
+            arg = getGroup(matcher, position);
         }
         stepMonitor.foundArg(arg, position);
         return arg;
@@ -176,16 +176,16 @@ public class CandidateStep {
         for (int i = 0; i < groupNames.length; i++) {
             String groupName = groupNames[i];
             if (name.equals(groupName)) {
-                return dos2unix(matcher.group(i + 1));
+                return getGroup(matcher, i);
             }
         }
         throw new NoGroupFoundForName(name, groupNames);
     }
-    
-    private String dos2unix(String string) {
-        return string.replace("\r\n", "\n");
-    }
 
+	private String getGroup(Matcher matcher, int i) {
+		return matcher.group(i + 1);
+	}
+    
     private boolean isGroupName(String name) {
         for (String groupName : groupNames) {
             if (name.equals(groupName)) {
