@@ -46,7 +46,8 @@ public class PicoEnabledCandidateStep extends CandidateStep {
 
         // populate named entries from regex match
         for (String groupName : groupNames) {
-            stepContainer.addConfig(groupName, getGroup(matcher, groupName));
+        	String value = getGroup(matcher, groupName);
+			stepContainer.addConfig(groupName, parameterConverters.convert(value, String.class));
         }
 
         return new Step() {

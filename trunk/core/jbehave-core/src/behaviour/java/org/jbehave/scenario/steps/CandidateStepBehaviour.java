@@ -117,6 +117,7 @@ public class CandidateStepBehaviour {
         verify(reporter).successful("Then I live on the 1st floor");
     }
 
+    @Test
     public void shouldConvertStringParameterValuesToUseSystemNewline() throws Exception {
         String windowsNewline = "\r\n";
         String unixNewline = "\n";
