@@ -34,7 +34,7 @@ public class CandidateStep {
     private final String patternAsString;
     private final StepType stepType;
     private final Method method;
-    protected final CandidateSteps steps;
+    protected final Object steps;
     protected final ParameterConverters parameterConverters;
     private final Map<StepType, String> startingWordsByType;
     private final Pattern pattern;
@@ -46,10 +46,16 @@ public class CandidateStep {
     public CandidateStep(String patternAsString, StepType stepType, Method method, CandidateSteps steps,
             StepPatternBuilder patternBuilder, ParameterConverters parameterConverters,
             Map<StepType, String> startingWords) {
+        this(patternAsString, stepType, method, (Object) steps, patternBuilder, parameterConverters, startingWords);
+    }
+
+    public CandidateStep(String patternAsString, StepType stepType, Method method, Object stepsInstance,
+            StepPatternBuilder patternBuilder, ParameterConverters parameterConverters,
+            Map<StepType, String> startingWords) {
         this.patternAsString = patternAsString;
         this.stepType = stepType;
         this.method = method;
-        this.steps = steps;
+        this.steps = stepsInstance;
         this.parameterConverters = parameterConverters;
         this.startingWordsByType = startingWords;
         this.pattern = patternBuilder.buildPattern(patternAsString);

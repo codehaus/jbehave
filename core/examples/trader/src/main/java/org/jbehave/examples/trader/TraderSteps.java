@@ -29,26 +29,12 @@ import org.jbehave.scenario.steps.StepMonitor;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.scenario.steps.StepsConfiguration;
 
-public class TraderSteps extends Steps {
+public class TraderSteps {
 
-	private static final StepsConfiguration configuration = new StepsConfiguration();
     private Stock stock;
     private Trader trader;
     private List<Trader> traders = new ArrayList<Trader>();
     private List<Trader> searchedTraders;
-
-    public TraderSteps() {
-        super(configuration);
-        StepMonitor monitor = new SilentStepMonitor();
-		configuration.useParameterConverters(new ParameterConverters(
-        		monitor, new TraderConverter(mockTradePersister())));  // define converter for custom type Trader
-        configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("%")); // use '%' instead of '$' to identify parameters
-        configuration.useMonitor(monitor);
-    }
-
-    private TraderPersister mockTradePersister() {
-        return new TraderPersister(new Trader("Mauro", asList(new Stock("STK1", 10.d))));
-    }
 
     @Given("a trader of name %trader")
     public void aTrader(Trader trader) {
