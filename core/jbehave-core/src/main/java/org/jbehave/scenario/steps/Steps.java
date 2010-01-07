@@ -23,18 +23,24 @@ import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.annotations.AfterScenario.Outcome;
 import org.jbehave.scenario.definition.KeyWords;
 import org.jbehave.scenario.errors.BeforeOrAfterScenarioException;
+import org.jbehave.scenario.parser.StepPatternBuilder;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 
 /**
  * <p>
- * Extend this class to provide the definition of steps that match the scenario
- * you want to run.
+ * Default implementation of {@link CandidateSteps} which provides access to the
+ * definition of candidate steps that match the scenario you want to run.
  * </p>
  * <p>
- * You can define the methods that should be run when each step is performed by
- * annotating them with @Given, @When or @Then, and providing a value for each
- * annotation that matches the step. By default, the match is performed using a
- * '$' prefix to pick up parameters.
+ * To provide your candidate steps method, you can either extend the
+ * {@link Steps} class or pass it a POJO instance that it can wrap.
+ * In the former case, the instance is the {@link Steps} class itself.
+ * </p>
+ * <p>
+ * You can define the methods that should be run by annotating them with @Given, @When
+ * or @Then, and providing a value for each annotation that matches the step.
+ * The value is interpreted by the {@link StepPatternBuilder}, which by default
+ * interprets the '$' as parameters.
  * </p>
  * <p>
  * For instance, you could define a method as:
@@ -69,169 +75,151 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
  */
 public class Steps implements CandidateSteps {
 
-	private final StepsConfiguration configuration;
+    private final StepsConfiguration configuration;
     private Object instance;
 
     /**
-	 * Creates Steps with default configuration
-	 */
-	public Steps() {
-		this(new StepsConfiguration());
-	}
+     * Creates Steps with default configuration
+     */
+    public Steps() {
+        this(new StepsConfiguration());
+    }
 
-	/**
-	 * Creates Steps with all default configuration except for custom starting
-	 * keywords
-	 * 
-	 * @param keywords
-	 *            the KeyWords which hold the words with which we expect steps
-	 *            in the scenarios to start
-	 */
-	public Steps(KeyWords keywords) {
-		this(new StepsConfiguration(keywords));
-	}
+    /**
+     * Creates Steps with all default configuration except for custom starting
+     * keywords
+     * 
+     * @param keywords the KeyWords which hold the words with which we expect
+     *            steps in the scenarios to start
+     */
+    public Steps(KeyWords keywords) {
+        this(new StepsConfiguration(keywords));
+    }
 
-	/**
-	 * Creates Steps with all default configuration except for custom starting
-	 * keywords
-	 * 
-	 * @param startingWords
-	 *            the words with which we expect steps in the scenarios to start
-	 * @deprecated Use Steps(KeyWords)
-	 */
-	public Steps(String... startingWords) {
-		this(new StepsConfiguration(startingWords));
-	}
+    /**
+     * Creates Steps with all default configuration except for custom starting
+     * keywords
+     * 
+     * @param startingWords the words with which we expect steps in the
+     *            scenarios to start
+     * @deprecated Use Steps(KeyWords)
+     */
+    public Steps(String... startingWords) {
+        this(new StepsConfiguration(startingWords));
+    }
 
-	/**
-	 * Creates Steps with all default dependencies except for custom parameter
-	 * converters.
-	 * 
-	 * @param converters
-	 *            a set of converters which can change strings into other
-	 *            objects to pass into executable steps
-	 */
-	public Steps(ParameterConverters converters) {
-		this(new StepsConfiguration(converters));
-	}
+    /**
+     * Creates Steps with all default dependencies except for custom parameter
+     * converters.
+     * 
+     * @param converters a set of converters which can change strings into other
+     *            objects to pass into executable steps
+     */
+    public Steps(ParameterConverters converters) {
+        this(new StepsConfiguration(converters));
+    }
 
-	/**
-	 * Creates Steps with all custom dependencies
-	 * 
-	 * @param configuration
-	 *            the StepsConfiguration
-	 */
-	public Steps(StepsConfiguration configuration) {
-		this.configuration = configuration;
-	}
+    /**
+     * Creates Steps with given custom configuration
+     * 
+     * @param configuration the StepsConfiguration
+     */
+    public Steps(StepsConfiguration configuration) {
+        this.configuration = configuration;
+        this.instance = this;
+    }
 
-    private Steps(StepsConfiguration configuration, Object instance) {
-        this(configuration);
+    /**
+     * Creates Steps with given custom configuration wrapping a POJO instance
+     * containing the annotatated steps methods
+     * 
+     * @param configuration the StepsConfiguration
+     * @param instance the POJO instance
+     */
+    public Steps(StepsConfiguration configuration, Object instance) {
+        this.configuration = configuration;
         this.instance = instance;
     }
 
+    public CandidateStep[] getSteps() {
+        return getSteps(instance.getClass());
+    }
 
-
-	public CandidateStep[] getSteps() {
-        if (instance == null) {
-		    return getSteps(this.getClass());
-        } else {
-            return getSteps(instance.getClass());
+    public CandidateStep[] getSteps(Class<?> stepsClass) {
+        List<CandidateStep> steps = new ArrayList<CandidateStep>();
+        for (Method method : stepsClass.getMethods()) {
+            if (method.isAnnotationPresent(Given.class)) {
+                String value = encode(method.getAnnotation(Given.class).value());
+                createCandidateStep(steps, method, GIVEN, value);
+                createCandidateStepsFromAliases(steps, method, GIVEN);
+            }
+            if (method.isAnnotationPresent(When.class)) {
+                String value = encode(method.getAnnotation(When.class).value());
+                createCandidateStep(steps, method, WHEN, value);
+                createCandidateStepsFromAliases(steps, method, WHEN);
+            }
+            if (method.isAnnotationPresent(Then.class)) {
+                String value = encode(method.getAnnotation(Then.class).value());
+                createCandidateStep(steps, method, THEN, value);
+                createCandidateStepsFromAliases(steps, method, THEN);
+            }
         }
-	}
+        return steps.toArray(new CandidateStep[steps.size()]);
+    }
 
-	public CandidateStep[] getSteps(Class<?> stepsClass) {
-		List<CandidateStep> steps = new ArrayList<CandidateStep>();
-		for (Method method : stepsClass.getMethods()) {
-			if (method.isAnnotationPresent(Given.class)) {
-				String value = encode(method.getAnnotation(Given.class).value());
-				createCandidateStep(steps, method, GIVEN, value);
-				createCandidateStepsFromAliases(steps, method, GIVEN);
-			}
-			if (method.isAnnotationPresent(When.class)) {
-				String value = encode(method.getAnnotation(When.class).value());
-				createCandidateStep(steps, method, WHEN, value);
-				createCandidateStepsFromAliases(steps, method, WHEN);
-			}
-			if (method.isAnnotationPresent(Then.class)) {
-				String value = encode(method.getAnnotation(Then.class).value());
-				createCandidateStep(steps, method, THEN, value);
-				createCandidateStepsFromAliases(steps, method, THEN);
-			}
-		}
-		return steps.toArray(new CandidateStep[steps.size()]);
-	}
+    private String encode(String value) {
+        return configuration.getKeywords().encode(value);
+    }
 
-	private String encode(String value) {
-		return configuration.getKeywords().encode(value);
-	}
-
-	private void createCandidateStep(List<CandidateStep> steps, Method method,
-			StepType stepType, String stepPatternAsString) {
-		checkForDuplicateCandidateSteps(steps, stepType, stepPatternAsString);
+    private void createCandidateStep(List<CandidateStep> steps, Method method, StepType stepType,
+            String stepPatternAsString) {
+        checkForDuplicateCandidateSteps(steps, stepType, stepPatternAsString);
         CandidateStep step = createCandidateStep(method, stepType, stepPatternAsString, configuration);
         step.useStepMonitor(configuration.getMonitor());
-		step.useParanamer(configuration.getParanamer());
-		steps.add(step);
-	}
+        step.useParanamer(configuration.getParanamer());
+        steps.add(step);
+    }
 
-    protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString,  StepsConfiguration configuration) {
-        if (instance == null) {
-            return new CandidateStep(stepPatternAsString, stepType, method,
-                this, configuration.getPatternBuilder(), configuration
-                        .getParameterConverters(), configuration
-                        .getStartingWordsByType());
-        } else {
-            return new CandidateStep(stepPatternAsString, stepType, method,
-                instance, configuration.getPatternBuilder(), configuration
-                        .getParameterConverters(), configuration
-                        .getStartingWordsByType());
+    protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString,
+            StepsConfiguration configuration) {
+        return new CandidateStep(stepPatternAsString, stepType, method, instance, configuration.getPatternBuilder(),
+                configuration.getParameterConverters(), configuration.getStartingWordsByType());
+    }
 
+    private void checkForDuplicateCandidateSteps(List<CandidateStep> steps, StepType stepType, String patternAsString) {
+        for (CandidateStep step : steps) {
+            if (step.getStepType() == stepType && step.getPatternAsString().equals(patternAsString)) {
+                throw new DuplicateCandidateStepFoundException(stepType, patternAsString);
+            }
         }
     }
 
-    private void checkForDuplicateCandidateSteps(List<CandidateStep> steps,
-			StepType stepType, String patternAsString) {
-		for (CandidateStep step : steps) {
-			if (step.getStepType() == stepType && step.getPatternAsString().equals(patternAsString)) {
-				throw new DuplicateCandidateStepFoundException(stepType, patternAsString);
-			}
-		}
-	}
+    private void createCandidateStepsFromAliases(List<CandidateStep> steps, Method method, StepType stepType) {
+        if (method.isAnnotationPresent(Aliases.class)) {
+            String[] aliases = method.getAnnotation(Aliases.class).values();
+            for (String alias : aliases) {
+                createCandidateStep(steps, method, stepType, alias);
+            }
+        }
+        if (method.isAnnotationPresent(Alias.class)) {
+            createCandidateStep(steps, method, stepType, method.getAnnotation(Alias.class).value());
+        }
+    }
 
-	private void createCandidateStepsFromAliases(List<CandidateStep> steps,
-			Method method, StepType stepType) {
-		if (method.isAnnotationPresent(Aliases.class)) {
-			String[] aliases = method.getAnnotation(Aliases.class).values();
-			for (String alias : aliases) {
-				createCandidateStep(steps, method, stepType, alias);
-			}
-		}
-		if (method.isAnnotationPresent(Alias.class)) {
-			createCandidateStep(steps, method, stepType, method.getAnnotation(
-					Alias.class).value());
-		}
-	}
+    public List<Step> runBeforeScenario() {
+        return stepsHaving(BeforeScenario.class, new OkayToRun());
+    }
 
-	public List<Step> runBeforeScenario() {
-		return stepsHaving(BeforeScenario.class, new OkayToRun());
-	}
+    public List<Step> runAfterScenario() {
+        List<Step> steps = new ArrayList<Step>();
+        steps.addAll(stepsHavingOutcome(AfterScenario.class, ANY, new OkayToRun(), new OkayToRun()));
+        steps.addAll(stepsHavingOutcome(AfterScenario.class, SUCCESS, new OkayToRun(), new DoNotRun()));
+        steps.addAll(stepsHavingOutcome(AfterScenario.class, FAILURE, new DoNotRun(), new OkayToRun()));
+        return steps;
+    }
 
-	public List<Step> runAfterScenario() {
-		List<Step> steps = new ArrayList<Step>();
-		steps.addAll(stepsHavingOutcome(AfterScenario.class, ANY,
-				new OkayToRun(), new OkayToRun()));
-		steps.addAll(stepsHavingOutcome(AfterScenario.class, SUCCESS,
-				new OkayToRun(), new DoNotRun()));
-		steps.addAll(stepsHavingOutcome(AfterScenario.class, FAILURE,
-				new DoNotRun(), new OkayToRun()));
-		return steps;
-	}
-
-	private List<Step> stepsHaving(
-			final Class<? extends Annotation> annotationClass,
-			final StepPart forScenarios) {
-		List<Step> steps = new ArrayList<Step>();
+    private List<Step> stepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forScenarios) {
+        List<Step> steps = new ArrayList<Step>();
         Method[] methods;
         if (instance == null) {
             methods = this.getClass().getMethods();
@@ -239,110 +227,88 @@ public class Steps implements CandidateSteps {
             methods = instance.getClass().getMethods();
         }
         for (final Method method : methods) {
-			if (method.isAnnotationPresent(annotationClass)) {
-				steps.add(new Step() {
-					public StepResult doNotPerform() {
-						return forScenarios.run(annotationClass, method);
-					}
+            if (method.isAnnotationPresent(annotationClass)) {
+                steps.add(new Step() {
+                    public StepResult doNotPerform() {
+                        return forScenarios.run(annotationClass, method);
+                    }
 
-					public StepResult perform() {
-						return forScenarios.run(annotationClass, method);
-					}
+                    public StepResult perform() {
+                        return forScenarios.run(annotationClass, method);
+                    }
 
-				});
-			}
-		}
-		return steps;
-	}
-
-	private List<Step> stepsHavingOutcome(
-			final Class<? extends AfterScenario> annotationClass,
-			final Outcome outcome, final StepPart forSuccessfulScenarios,
-			final StepPart forUnsuccessfulScenarios) {
-		List<Step> steps = new ArrayList<Step>();
-        Method[] methods;
-        if (instance == null) {
-            methods = this.getClass().getMethods();
-        } else {
-            methods = instance.getClass().getMethods();
+                });
+            }
         }
-		for (final Method method : methods) {
-			if (method.isAnnotationPresent(annotationClass)) {
-				AfterScenario annotation = method
-						.getAnnotation(annotationClass);
-				if (outcome.equals(annotation.uponOutcome())) {
-					steps.add(new Step() {
+        return steps;
+    }
 
-						public StepResult doNotPerform() {
-							return forUnsuccessfulScenarios.run(
-									annotationClass, method);
-						}
+    private List<Step> stepsHavingOutcome(final Class<? extends AfterScenario> annotationClass, final Outcome outcome,
+            final StepPart forSuccessfulScenarios, final StepPart forUnsuccessfulScenarios) {
+        List<Step> steps = new ArrayList<Step>();
+        Method[] methods = instance.getClass().getMethods();
+        for (final Method method : methods) {
+            if (method.isAnnotationPresent(annotationClass)) {
+                AfterScenario annotation = method.getAnnotation(annotationClass);
+                if (outcome.equals(annotation.uponOutcome())) {
+                    steps.add(new Step() {
 
-						public StepResult perform() {
-							return forSuccessfulScenarios.run(annotationClass,
-									method);
-						}
+                        public StepResult doNotPerform() {
+                            return forUnsuccessfulScenarios.run(annotationClass, method);
+                        }
 
-					});
-				}
-			}
-		}
-		return steps;
-	}
+                        public StepResult perform() {
+                            return forSuccessfulScenarios.run(annotationClass, method);
+                        }
 
-    public static CandidateSteps make(StepsConfiguration configuration, Object instance) {
-        return new Steps(configuration, instance);
+                    });
+                }
+            }
+        }
+        return steps;
     }
 
     private class OkayToRun implements StepPart {
-		public StepResult run(final Class<? extends Annotation> annotation,
-				Method method) {
-			try {
-                if (instance == null) {
-				    method.invoke(Steps.this);
-                } else {
-                    method.invoke(instance);
+        public StepResult run(final Class<? extends Annotation> annotation, Method method) {
+            try {
+                method.invoke(instance);
+            } catch (InvocationTargetException e) {
+                if (e.getCause() != null) {
+                    throw new BeforeOrAfterScenarioException(annotation, method, e.getCause());
                 }
-			} catch (InvocationTargetException e) {
-				if (e.getCause() != null) {
-					throw new BeforeOrAfterScenarioException(annotation,
-							method, e.getCause());
-				}
-			} catch (Throwable t) {
-				throw new RuntimeException(t);
-			}
-			return new SilentStepResult();
-		}
-	}
+            } catch (Throwable t) {
+                throw new RuntimeException(t);
+            }
+            return new SilentStepResult();
+        }
+    }
 
-	private class DoNotRun implements StepPart {
-		public StepResult run(Class<? extends Annotation> annotation,
-				Method method) {
-			return new SilentStepResult();
-		}
-	}
+    private class DoNotRun implements StepPart {
+        public StepResult run(Class<? extends Annotation> annotation, Method method) {
+            return new SilentStepResult();
+        }
+    }
 
-	private interface StepPart {
-		StepResult run(Class<? extends Annotation> annotation, Method method);
-	}
+    private interface StepPart {
+        StepResult run(Class<? extends Annotation> annotation, Method method);
+    }
 
-	public class SilentStepResult extends StepResult {
-		public SilentStepResult() {
-			super("");
-		}
+    public class SilentStepResult extends StepResult {
+        public SilentStepResult() {
+            super("");
+        }
 
-		@Override
-		public void describeTo(ScenarioReporter reporter) {
-		}
-	}
+        @Override
+        public void describeTo(ScenarioReporter reporter) {
+        }
+    }
 
-	@SuppressWarnings("serial")
-	public static class DuplicateCandidateStepFoundException extends
-			RuntimeException {
+    @SuppressWarnings("serial")
+    public static class DuplicateCandidateStepFoundException extends RuntimeException {
 
-		public DuplicateCandidateStepFoundException(StepType stepType, String patternAsString) {
-			super(stepType+" "+patternAsString);
-		}
+        public DuplicateCandidateStepFoundException(StepType stepType, String patternAsString) {
+            super(stepType + " " + patternAsString);
+        }
 
-	}
+    }
 }
