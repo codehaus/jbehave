@@ -70,8 +70,9 @@ import org.jbehave.scenario.reporters.ScenarioReporter;
 public class Steps implements CandidateSteps {
 
 	private final StepsConfiguration configuration;
+    private Object instance;
 
-	/**
+    /**
 	 * Creates Steps with default configuration
 	 */
 	public Steps() {
@@ -124,8 +125,19 @@ public class Steps implements CandidateSteps {
 		this.configuration = configuration;
 	}
 
+    private Steps(StepsConfiguration configuration, Object instance) {
+        this(configuration);
+        this.instance = instance;
+    }
+
+
+
 	public CandidateStep[] getSteps() {
-		return getSteps(this.getClass());
+        if (instance == null) {
+		    return getSteps(this.getClass());
+        } else {
+            return getSteps(instance.getClass());
+        }
 	}
 
 	public CandidateStep[] getSteps(Class<?> stepsClass) {
@@ -164,10 +176,18 @@ public class Steps implements CandidateSteps {
 	}
 
     protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString,  StepsConfiguration configuration) {
-        return new CandidateStep(stepPatternAsString, stepType, method,
+        if (instance == null) {
+            return new CandidateStep(stepPatternAsString, stepType, method,
                 this, configuration.getPatternBuilder(), configuration
                         .getParameterConverters(), configuration
                         .getStartingWordsByType());
+        } else {
+            return new CandidateStep(stepPatternAsString, stepType, method,
+                instance, configuration.getPatternBuilder(), configuration
+                        .getParameterConverters(), configuration
+                        .getStartingWordsByType());
+
+        }
     }
 
     private void checkForDuplicateCandidateSteps(List<CandidateStep> steps,
@@ -212,7 +232,13 @@ public class Steps implements CandidateSteps {
 			final Class<? extends Annotation> annotationClass,
 			final StepPart forScenarios) {
 		List<Step> steps = new ArrayList<Step>();
-		for (final Method method : this.getClass().getMethods()) {
+        Method[] methods;
+        if (instance == null) {
+            methods = this.getClass().getMethods();
+        } else {
+            methods = instance.getClass().getMethods();
+        }
+        for (final Method method : methods) {
 			if (method.isAnnotationPresent(annotationClass)) {
 				steps.add(new Step() {
 					public StepResult doNotPerform() {
@@ -234,7 +260,13 @@ public class Steps implements CandidateSteps {
 			final Outcome outcome, final StepPart forSuccessfulScenarios,
 			final StepPart forUnsuccessfulScenarios) {
 		List<Step> steps = new ArrayList<Step>();
-		for (final Method method : this.getClass().getMethods()) {
+        Method[] methods;
+        if (instance == null) {
+            methods = this.getClass().getMethods();
+        } else {
+            methods = instance.getClass().getMethods();
+        }
+		for (final Method method : methods) {
 			if (method.isAnnotationPresent(annotationClass)) {
 				AfterScenario annotation = method
 						.getAnnotation(annotationClass);
@@ -258,11 +290,19 @@ public class Steps implements CandidateSteps {
 		return steps;
 	}
 
-	private class OkayToRun implements StepPart {
+    public static CandidateSteps make(StepsConfiguration configuration, Object instance) {
+        return new Steps(configuration, instance);
+    }
+
+    private class OkayToRun implements StepPart {
 		public StepResult run(final Class<? extends Annotation> annotation,
 				Method method) {
 			try {
-				method.invoke(Steps.this);
+                if (instance == null) {
+				    method.invoke(Steps.this);
+                } else {
+                    method.invoke(instance);
+                }
 			} catch (InvocationTargetException e) {
 				if (e.getCause() != null) {
 					throw new BeforeOrAfterScenarioException(annotation,
