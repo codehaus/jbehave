@@ -8,11 +8,17 @@ package org.jbehave.scenario.steps;
  */
 public class StepsFactory {
 
-    public static CandidateSteps[] createCandidateSteps(Object... stepsInstances) {
-        return createCandidateSteps(new StepsConfiguration(), stepsInstances);
+    private StepsConfiguration configuration;
+
+    public StepsFactory() {
+        this(new StepsConfiguration());
     }
 
-    public static CandidateSteps[] createCandidateSteps(StepsConfiguration configuration, Object... stepsInstances) {
+    public StepsFactory(StepsConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
+    public CandidateSteps[] createCandidateSteps(Object... stepsInstances) {
         CandidateSteps[] candidateSteps = new CandidateSteps[stepsInstances.length];
         for (int i = 0; i < stepsInstances.length; i++) {
             candidateSteps[i] = new Steps(configuration, stepsInstances[i]);

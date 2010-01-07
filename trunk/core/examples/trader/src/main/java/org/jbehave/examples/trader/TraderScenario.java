@@ -5,7 +5,6 @@ import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.CONS
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.HTML;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.TXT;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.XML;
-import static org.jbehave.scenario.steps.StepsFactory.createCandidateSteps;
 
 import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
@@ -14,11 +13,20 @@ import org.jbehave.examples.trader.persistence.TraderPersister;
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.RunnableScenario;
-import org.jbehave.scenario.parser.*;
+import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
+import org.jbehave.scenario.parser.PatternScenarioParser;
+import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
+import org.jbehave.scenario.parser.ScenarioDefiner;
+import org.jbehave.scenario.parser.ScenarioNameResolver;
+import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.FilePrintStreamFactory;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporterBuilder;
-import org.jbehave.scenario.steps.*;
+import org.jbehave.scenario.steps.ParameterConverters;
+import org.jbehave.scenario.steps.SilentStepMonitor;
+import org.jbehave.scenario.steps.StepMonitor;
+import org.jbehave.scenario.steps.StepsConfiguration;
+import org.jbehave.scenario.steps.StepsFactory;
 
 public class TraderScenario extends JUnitScenario {
 
@@ -43,14 +51,14 @@ public class TraderScenario extends JUnitScenario {
 
         });
 
-        StepsConfiguration config = new StepsConfiguration();
+        StepsConfiguration configuration = new StepsConfiguration();
         StepMonitor monitor = new SilentStepMonitor();
-		config.useParameterConverters(new ParameterConverters(
+		configuration.useParameterConverters(new ParameterConverters(
         		monitor, new TraderConverter(mockTradePersister())));  // define converter for custom type Trader
-        config.usePatternBuilder(new PrefixCapturingPatternBuilder("%")); // use '%' instead of '$' to identify parameters
-        config.useMonitor(monitor);
-
-        addSteps(createCandidateSteps(config, new TraderSteps()));
+        configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("%")); // use '%' instead of '$' to identify parameters
+        configuration.useMonitor(monitor);
+        
+        addSteps(new StepsFactory(configuration).createCandidateSteps(new TraderSteps()));
     }
 
     private TraderPersister mockTradePersister() {
