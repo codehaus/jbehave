@@ -5,7 +5,7 @@ import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.CONS
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.HTML;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.TXT;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.XML;
-import static org.jbehave.scenario.steps.StepsFactory.makeCandidateSteps;
+import static org.jbehave.scenario.steps.StepsFactory.createCandidateSteps;
 
 import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
@@ -50,7 +50,7 @@ public class TraderScenario extends JUnitScenario {
         config.usePatternBuilder(new PrefixCapturingPatternBuilder("%")); // use '%' instead of '$' to identify parameters
         config.useMonitor(monitor);
 
-        addSteps(makeCandidateSteps(config, new TraderSteps()));
+        addSteps(createCandidateSteps(config, new TraderSteps()));
     }
 
     private TraderPersister mockTradePersister() {

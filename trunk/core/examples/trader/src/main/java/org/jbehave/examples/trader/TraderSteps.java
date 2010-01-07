@@ -1,6 +1,5 @@
 package org.jbehave.examples.trader;
 
-import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
@@ -10,11 +9,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
 import org.jbehave.examples.trader.model.Stock.AlertStatus;
-import org.jbehave.examples.trader.persistence.TraderPersister;
 import org.jbehave.scenario.annotations.Alias;
 import org.jbehave.scenario.annotations.Aliases;
 import org.jbehave.scenario.annotations.Given;
@@ -22,13 +19,12 @@ import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.definition.ExamplesTable;
-import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
-import org.jbehave.scenario.steps.ParameterConverters;
-import org.jbehave.scenario.steps.SilentStepMonitor;
-import org.jbehave.scenario.steps.StepMonitor;
-import org.jbehave.scenario.steps.Steps;
-import org.jbehave.scenario.steps.StepsConfiguration;
 
+/**
+ * POJO holding the candidate steps for the trader example.  
+ * The {@link CandidateSteps} instance wrapping this are created via the {@link StepsFactory}
+ * in the {@link TraderScenario}.
+ */
 public class TraderSteps {
 
     private Stock stock;

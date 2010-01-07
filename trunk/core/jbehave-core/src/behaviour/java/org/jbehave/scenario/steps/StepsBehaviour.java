@@ -58,6 +58,24 @@ public class StepsBehaviour {
         ensureThat(steps.thens, equalTo(2));
     }
 
+    @Test
+    public void shouldProvideCandidateStepsCorrespondingToAnnotatedStepsInPojo() {
+        PojoSteps steps = new PojoSteps();
+        CandidateStep[] candidateSteps = StepsFactory.createCandidateSteps(steps)[0].getSteps();
+        ensureThat(candidateSteps.length, equalTo(6));
+
+        findCandidateStep(candidateSteps, "GIVEN a given").createFrom(tableRow, "Given a given").perform();
+        findCandidateStep(candidateSteps, "GIVEN a given alias").createFrom(tableRow, "Given a given alias").perform();
+        findCandidateStep(candidateSteps, "WHEN a when").createFrom(tableRow, "When a when").perform();
+        findCandidateStep(candidateSteps, "WHEN a when alias").createFrom(tableRow, "When a when alias").perform();
+        findCandidateStep(candidateSteps, "THEN a then").createFrom(tableRow, "Then a then").perform();
+        findCandidateStep(candidateSteps, "THEN a then alias").createFrom(tableRow, "Then a then alias").perform();
+        
+        ensureThat(steps.givens, equalTo(2));
+        ensureThat(steps.whens, equalTo(2));
+        ensureThat(steps.thens, equalTo(2));
+    }
+
     private CandidateStep findCandidateStep(CandidateStep[] candidateSteps, String candidateStepAsString) {
         for (CandidateStep candidateStep : candidateSteps) {
             if ( candidateStepAsString.equals(candidateStep.toString()) ){
@@ -200,6 +218,32 @@ public class StepsBehaviour {
     }
 
     static class SingleAliasSteps extends Steps {
+
+        private int givens;
+        private int whens;
+        private int thens;
+
+        @org.jbehave.scenario.annotations.Given("a given")
+        @org.jbehave.scenario.annotations.Alias("a given alias")
+        public void given() {
+            givens++;
+        }
+
+        @org.jbehave.scenario.annotations.When("a when")
+        @org.jbehave.scenario.annotations.Alias("a when alias")
+        public void when() {
+            whens++;
+        }
+
+        @org.jbehave.scenario.annotations.Then("a then")
+        @org.jbehave.scenario.annotations.Alias("a then alias")
+        public void then() {
+            thens++;
+        }
+
+    }
+
+    static class PojoSteps {
 
         private int givens;
         private int whens;
