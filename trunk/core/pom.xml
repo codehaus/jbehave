@@ -13,7 +13,6 @@
     <module>jbehave-core</module>
     <module>jbehave-ant</module>
     <module>jbehave-maven-plugin</module>
-    <module>jbehave-pico</module>
   </modules>
 
   <dependencyManagement>
@@ -21,7 +20,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit-dep</artifactId>
-        <version>4.5</version>
+        <version>4.4</version>
         <exclusions>
           <exclusion>
             <groupId>org.hamcrest</groupId>
