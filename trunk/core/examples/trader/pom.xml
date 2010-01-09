@@ -57,7 +57,7 @@
                 <artifactItem>
                   <groupId>org.jbehave</groupId>
                   <artifactId>jbehave-core</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${jbehave.version}</version>
                   <outputDirectory>${project.build.directory}/jbehave-reports/rendered</outputDirectory>
                   <includes>**\/*.css,**\/*.ftl,**\/*.js</includes>
                 </artifactItem>
@@ -69,7 +69,6 @@
       <plugin>
         <groupId>org.jbehave</groupId>
         <artifactId>jbehave-maven-plugin</artifactId>
-        <version>${pom.version}</version>
         <executions>
           <execution>
             <id>run-scenarios-found</id>
@@ -217,7 +216,6 @@
       <plugin>
         <groupId>org.jbehave</groupId>
         <artifactId>jbehave-maven-plugin</artifactId>
-        <version>${pom.version}</version>
         <configuration>
         </configuration>
         <reportSets>

@@ -23,12 +23,12 @@
     <dependency>
       <groupId>org.jbehave</groupId>
       <artifactId>jbehave-core</artifactId>
-      <version>${pom.version}</version>
+      <version>${jbehave.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jbehave</groupId>
       <artifactId>jbehave-ant</artifactId>
-      <version>${pom.version}</version>
+      <version>${jbehave.version}</version>
     </dependency>
   </dependencies>
 
@@ -44,7 +44,7 @@
         <plugin>
           <groupId>org.jbehave</groupId>
           <artifactId>jbehave-maven-plugin</artifactId>
-          <version>${pom.version}</version>
+          <version>${jbehave.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -75,5 +75,6 @@
   </build>
   <properties>
     <scenario.includes>**/scenario/*.java</scenario.includes>
+    <jbehave.version>${pom.version}</jbehave.version>
   </properties>
 </project>
