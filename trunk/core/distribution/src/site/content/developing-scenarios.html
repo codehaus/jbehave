@@ -8,8 +8,9 @@
 
 <h2>Writing Textual Scenarios</h2>
 
-<p><a href="concepts.html">Behaviour-Driven Development</a> encourages you to start defining the scenarios that
-express the desired behaviour in a textual format, e.g.:</p>
+<p><a href="concepts.html">Behaviour-Driven Development</a>
+encourages you to start defining the scenarios that express the desired
+behaviour in a textual format, e.g.:</p>
 <pre class="brush: bdd">
     Given a stock of symbol STK1 and a threshold of 10.0
     When the stock is traded at 5.0
@@ -27,13 +28,13 @@ the functionality that is being verified, i.e. <b>trader_is_alerted_of_status.sc
 
 <h2>Mapping Textual Scenario Steps to Java Methods via annotations</h2>
 
-<p>JBehave maps textual steps to Java methods via a <a
-    href="javadoc/core/org/jbehave/scenario/steps/CandidateSteps.html">CandidateSteps</a>
-instance. The scenario writer need only extend the default
-implementation <a
-    href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>,
-and provide annotated methods that match, by regex patterns, the textual
-steps:</p>
+<p>JBehave maps textual steps to Java methods via <a
+    href="javadoc/core/org/jbehave/scenario/steps/CandidateSteps.html">CandidateSteps</a>.
+The scenario writer need only provide annotated methods that match, by
+regex patterns, the textual steps. One way this can be done is by
+extending the default implementation <a
+    href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>:
+</p>
 <pre class="brush: java">
 public class TraderSteps extends Steps {
 
@@ -55,6 +56,39 @@ public class TraderSteps extends Steps {
     }
 
 }
+</pre>
+<p>Equivalently, as composition is often preferrable to inheritance,
+the scenario writer can use a POJO (i.e. without extending Steps)</p>
+<pre class="brush: java">
+public class TraderSteps { // look, Ma, I'm a POJO!!
+ 
+    private Stock stock;
+
+    @Given("a stock of symbol $symbol and a threshold of $threshold")
+    public void aStock(String symbol, double threshold) {
+        stock = new Stock(symbol, threshold);
+    }
+
+    @When("the stock is traded at $price")
+    public void theStockIsTradedAt(double price) {
+        stock.tradeAt(price);
+    }
+
+    @Then("the alert status should be $status")
+    public void theAlertStatusShouldBe(String status) {
+        ensureThat(stock.getStatus().name(), equalTo(status));
+    }
+
+}
+</pre>
+<p>If POJOs are used we need to create <a
+    href="javadoc/core/org/jbehave/scenario/steps/CandidateSteps.html">CandidateSteps</a>
+via the <a
+    href="javadoc/core/org/jbehave/scenario/steps/StepsFactory.html">StepsFactory</a>
+</p>
+<pre class="brush: java">
+    StepsConfiguration configuration = ... // optional configuration
+    new StepsFactory(configuration).createCandidateSteps(new TraderSteps()));    
 </pre>
 <p>Each step is annotated with one of the <a href="annotations.html">step
 annotations</a>, each holding a regex pattern as value. The pattern is used
@@ -85,26 +119,23 @@ which maps to out textual scenario in same package.</p>
 such as <a href="javadoc/core/org/jbehave/scenario/JUnitScenario.html">JUnitScenario</a>
 </p>
 <p>Must provide a default constructor.</p>
-<p>(Only when running via Maven) Must provide an additional
+<p>(Only when running with external resources) Must provide an additional
 constructor with a ClassLoader parameter.</p>
 
 <p>Thus in our case the example Scenario would look like:</p>
 <pre class="brush: java">
-public class TraderIsAletedOfStatus extends JUnitScenario {
+public class TraderScenario extends JUnitScenario {
 
-    public TraderIsAletedOfStatus() {
-        this(Thread.currentThread().getContextClassLoader());
-    }
-
-    public TraderIsAletedOfStatus(final ClassLoader classLoader) {
+    public TraderScenario() {
         super(new MostUsefulConfiguration() {
             public ScenarioDefiner forDefiningScenarios() {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"), 
-                            new PatternScenarioParser(new PropertyBasedConfiguration()), classLoader);
+                             new PatternScenarioParser(keywords()));
             }
-        }, new TraderSteps());
+        });
+        addSteps(new TraderSteps()); // if TraderSteps extends Steps
+        addSteps(new StepsFactory().createCandidateSteps(new TraderSteps())); // if TraderSteps is a POJO
     }
-
 }
 </pre>
 
