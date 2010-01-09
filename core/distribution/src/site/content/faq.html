@@ -112,5 +112,19 @@ new Configuration(){
 <p>Alternatively, you can use <a
     href="javadoc/core/org/jbehave/scenario/PropertyBasedConfiguration.html">PropertyBasedConfiguration</a>
 setting system property <b>"org.jbehave.outputall"</b>.</p>
+
+<h3>Can my steps classes be POJOs?</h3>
+
+<p>Yes, one can write steps as POJOs and then create an instance of
+<a href="javadoc/core/org/jbehave/steps/CandidateSteps.html">CandidateSteps</a>
+via the <a href="javadoc/core/org/jbehave/steps/StepsFactory.html">StepsFactory</a>
+<pre class="brush: java">
+    StepsConfiguration configuration = ... // optional configuration
+    new StepsFactory(configuration).createCandidateSteps(new TraderSteps()));    
+</pre>
+
+<p>Alternatively, one can extend the <a
+    href="javadoc/core/org/jbehave/steps/Steps.html">Steps</a> class.</p>
+
 </body>
 </html>
