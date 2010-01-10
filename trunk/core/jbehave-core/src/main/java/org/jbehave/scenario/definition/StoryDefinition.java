@@ -10,7 +10,7 @@ public class StoryDefinition {
     private final Blurb blurb;
     private final List<ScenarioDefinition> scenarioDefinitions;
     private String name = "Story";
-    private String storyPath;
+    private String path = "";
 
     public StoryDefinition(ScenarioDefinition... scenarioDefinitions) {
         this(asList(scenarioDefinitions));
@@ -19,19 +19,19 @@ public class StoryDefinition {
     public StoryDefinition(List<ScenarioDefinition> scenarioDefinitions) {
         this(Blurb.EMPTY, scenarioDefinitions);
     }
-    
+
     public StoryDefinition(Blurb blurb, ScenarioDefinition... scenarioDefinitions) {
         this(blurb, asList(scenarioDefinitions));
     }
-    
+
     public StoryDefinition(Blurb blurb, List<ScenarioDefinition> scenarioDefinitions) {
-        this.blurb = blurb;
-        this.scenarioDefinitions = scenarioDefinitions;
+        this(blurb, "", scenarioDefinitions);
     }
 
-    public StoryDefinition(Blurb blurb, List<ScenarioDefinition> scenarioDefinitions, String storyPath) {
-        this(blurb, scenarioDefinitions);
-        this.storyPath = storyPath;
+    public StoryDefinition(Blurb blurb, String path, List<ScenarioDefinition> scenarioDefinitions) {
+        this.blurb = blurb;
+        this.path = path;
+        this.scenarioDefinitions = scenarioDefinitions;
     }
 
     public Blurb getBlurb() {
@@ -41,16 +41,16 @@ public class StoryDefinition {
     public List<ScenarioDefinition> getScenarios() {
         return unmodifiableList(scenarioDefinitions);
     }
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    
-    public void namedAs(String name){
+
+    public void namedAs(String name) {
         this.name = name;
     }
 
-    public String getStoryPath() {
-        return storyPath;  
+    public String getPath() {
+        return (path != null ? path : "");
     }
 }
