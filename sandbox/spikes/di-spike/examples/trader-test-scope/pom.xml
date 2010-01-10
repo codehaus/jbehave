@@ -10,13 +10,12 @@
   <name>JBehave Trader Test Scope Example</name>
 
   <build>
-    <!-- JBEHAVE-155: we want to prove that we can run scenarios in test scope -->
+    <!-- JBEHAVE-155: we can run scenarios in test scope -->
     <testSourceDirectory>${basedir}/../trader/src/main/java</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.jbehave</groupId>
         <artifactId>jbehave-maven-plugin</artifactId>
-        <version>${pom.version}</version>
         <executions>
           <execution>
             <id>run-scenarios-found</id>
