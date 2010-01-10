@@ -45,20 +45,19 @@ public class ClasspathScenarioDefiner implements ScenarioDefiner {
 
     public StoryDefinition loadScenarioDefinitionsFor(Class<? extends RunnableScenario> scenarioClass) {
         String storyPath = resolver.resolve(scenarioClass);
-        String wholeFileAsString = asString(loadInputStreamFor(storyPath));
-        return parser.defineStoryFrom(wholeFileAsString, storyPath);
+        String wholeStoryAsString = asString(loadInputStreamFor(storyPath));
+        return parser.defineStoryFrom(wholeStoryAsString, storyPath);
     }
 
-	public StoryDefinition loadScenarioDefinitionsFor(String scenarioPath) {
-        String wholeFileAsString = asString(loadInputStreamFor(scenarioPath));
-        return parser.defineStoryFrom(wholeFileAsString, scenarioPath);
+	public StoryDefinition loadScenarioDefinitionsFor(String storyPath) {
+        String wholeStoryAsString = asString(loadInputStreamFor(storyPath));
+        return parser.defineStoryFrom(wholeStoryAsString, storyPath);
 	}
 
-
-	private InputStream loadInputStreamFor(String scenarioPath) {
-		InputStream stream = classLoader.getResourceAsStream(scenarioPath);
+	private InputStream loadInputStreamFor(String path) {
+		InputStream stream = classLoader.getResourceAsStream(path);
         if (stream == null) {
-            throw new ScenarioNotFoundException("Scenario " + scenarioPath + " could not be found by classloader "
+            throw new ScenarioNotFoundException("Path '" + path + "' could not be found by classloader "
                     + classLoader);
         }
         return stream;
@@ -72,7 +71,7 @@ public class ClasspathScenarioDefiner implements ScenarioDefiner {
             output.write(bytes);
             return output.toString();
         } catch (IOException e) {
-            throw new InvalidScenarioResourceException("Failed to convert scenario resource to string", e);
+            throw new InvalidScenarioResourceException("Failed to convert input resource to string", e);
         }
     }
 

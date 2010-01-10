@@ -127,11 +127,11 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        print(format("beforeStory", "{0}\n({1})\n", story.getBlurb().asString(), story.getStoryPath()));
+        print(format("beforeStory", "{0}\n({1})\n", story.getBlurb().asString(), story.getPath()));
     }
 
     public void beforeStory(Blurb blurb) {
-        print(format("beforeStory", "{0}\n", blurb.asString()));
+        beforeStory(new StoryDefinition(blurb), false);
     }
 
     public void afterStory(boolean embeddedStory) {
@@ -142,7 +142,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     public void afterStory() {
-        print(format("afterStory", "\n"));
+        afterStory(false);
     }
 
     public void givenScenarios(List<String> givenScenarios) {
