@@ -41,9 +41,13 @@ public class PatternScenarioParser implements ScenarioParser {
 	    this(configuration.keywords());
 	}
 
-	public StoryDefinition defineStoryFrom(String wholeStoryAsString, String storyPath) {
-		Blurb blurb = parseBlurbFrom(wholeStoryAsString);
-		List<ScenarioDefinition> scenarioDefinitions = parseScenariosFrom(wholeStoryAsString);
+    public StoryDefinition defineStoryFrom(String wholeStoryAsText) {
+        return defineStoryFrom(wholeStoryAsText, null);
+    }
+    
+	public StoryDefinition defineStoryFrom(String wholeStoryAsText, String storyPath) {
+		Blurb blurb = parseBlurbFrom(wholeStoryAsText);
+		List<ScenarioDefinition> scenarioDefinitions = parseScenariosFrom(wholeStoryAsText);
 		return new StoryDefinition(blurb, storyPath, scenarioDefinitions);
 	}
 
