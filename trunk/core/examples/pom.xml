@@ -13,8 +13,6 @@
   <modules>
     <module>gameoflife</module>
     <module>gameoflife/scenarios</module>
-    <module>noughtsandcrosses</module>
-    <module>noughtsandcrosses/scenarios</module>
     <module>trader</module>
     <module>trader-test-scope</module>
   </modules>
@@ -77,4 +75,13 @@
     <scenario.includes>**/scenario/*.java</scenario.includes>
     <jbehave.version>${pom.version}</jbehave.version>
   </properties>
+  <profiles>
+    <profile>
+      <id>gui</id>
+      <modules>
+        <module>noughtsandcrosses</module>
+        <module>noughtsandcrosses/scenarios</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
