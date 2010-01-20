@@ -22,19 +22,18 @@ public class PicoStepsFactory {
 
     public CandidateSteps[] createCandidateSteps() {
         List<Steps> steps = new ArrayList<Steps>();
-        for (ComponentAdapter<?> componentAdapter : parent.getComponentAdapters()) {
-            Method[] methods = componentAdapter.getComponentImplementation().getMethods();
-            if (isStep(methods)) {
-                steps.add(new Steps(configuration, parent.getComponent(componentAdapter.getComponentKey())));
+        for (ComponentAdapter<?> adapter : parent.getComponentAdapters()) {
+            if (containsStepsAnnotations(adapter.getComponentImplementation())) {
+                steps.add(new Steps(configuration, parent.getComponent(adapter.getComponentKey())));
             }
         }
         return steps.toArray(new CandidateSteps[steps.size()]);
     }
 
-    private boolean isStep(Method[] methods) {
-        for (Method method : methods) {
-            for (Annotation ann : method.getAnnotations()) {
-                if (ann.annotationType().getName().startsWith("org.jbehave.scenario.annotations")) {
+    private boolean containsStepsAnnotations(Class<?> componentClass) {
+        for (Method method : componentClass.getMethods()) {
+            for (Annotation annotation : method.getAnnotations()) {
+                if (annotation.annotationType().getName().startsWith("org.jbehave.scenario.annotations")) {
                     return true;
                 }
             }

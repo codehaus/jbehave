@@ -15,68 +15,54 @@ import org.picocontainer.injectors.ConstructorInjection;
 
 import java.lang.reflect.Field;
 
-import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class PicoStepsFactoryBehaviour {
 
-    private static Field instMethod;
+    private static Field stepsInstance;
 
     @Before
-    public void steup() throws NoSuchFieldException {
-        instMethod = Steps.class.getDeclaredField("instance");
-        instMethod.setAccessible(true);
+    public void setUp() throws NoSuchFieldException {
+        stepsInstance = Steps.class.getDeclaredField("instance");
+        stepsInstance.setAccessible(true);
     }
 
 
     @Test
-    public void ensureThatContainerCanBeUsedToMakeSteps() throws NoSuchFieldException, IllegalAccessException {
+    public void ensureThatStepsCanBeCreated() throws NoSuchFieldException, IllegalAccessException {
         MutablePicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.as(Characteristics.USE_NAMES).addComponent(FooSteps.class);
 
-        CandidateSteps[] foo = new PicoStepsFactory(new StepsConfiguration(), parent).createCandidateSteps();
-        assertOneFooStepsComponent(foo);
+        CandidateSteps[] steps = new PicoStepsFactory(new StepsConfiguration(), parent).createCandidateSteps();
+        assertFooStepsFound(steps);
     }
 
     @Test
-    public void ensureThatContainerCanBeUsedToMakeStepsWithACtorDep() throws NoSuchFieldException, IllegalAccessException {
+    public void ensureThatStepsWithConstructorDependencyCanBeCreated() throws NoSuchFieldException, IllegalAccessException {
         MutablePicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
-        parent.as(Characteristics.USE_NAMES).addComponent(ExtendedFooSteps.class);
+        parent.as(Characteristics.USE_NAMES).addComponent(FooStepsWithDependency.class);
         parent.addComponent(Integer.class, 42);
 
-        CandidateSteps[] foo = new PicoStepsFactory(new StepsConfiguration(), parent).createCandidateSteps();
-        assertOneFooStepsComponent(foo);
-        assertEquals(42, (int) ((ExtendedFooSteps) instMethod.get(foo[0])).num);
+        CandidateSteps[] steps = new PicoStepsFactory(new StepsConfiguration(), parent).createCandidateSteps();
+        assertFooStepsFound(steps);
+        assertEquals(42, (int) ((FooStepsWithDependency) stepsInstance.get(steps[0])).integer);
     }
 
-    private void assertOneFooStepsComponent(CandidateSteps[] foo) throws NoSuchFieldException, IllegalAccessException {
-        assertEquals(1, foo.length);
-        assertTrue(foo[0] instanceof Steps);
-        Object instance = instMethod.get(foo[0]);
+    private void assertFooStepsFound(CandidateSteps[] steps) throws NoSuchFieldException, IllegalAccessException {
+        assertEquals(1, steps.length);
+        assertTrue(steps[0] instanceof Steps);
+        Object instance = stepsInstance.get(steps[0]);
         assertTrue(instance instanceof FooSteps);
     }
 
-    public static class ExtendedFooSteps extends FooSteps {
-        private final Integer num;
 
-        public ExtendedFooSteps(Integer foo) {
-            this.num = foo;
-        }
-    }
-
-    @Test
-    public void ensureThatMissingDepsMakeItBarf() throws NoSuchFieldException, IllegalAccessException {
+    @Test(expected=AbstractInjector.UnsatisfiableDependenciesException.class)
+    public void ensureThatStepsWithMissingDependenciesCannotBeCreated() throws NoSuchFieldException, IllegalAccessException {
         MutablePicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
-        parent.as(Characteristics.USE_NAMES).addComponent(ExtendedFooSteps.class);
+        parent.as(Characteristics.USE_NAMES).addComponent(FooStepsWithDependency.class);
 
-        CandidateSteps[] foo = new CandidateSteps[0];
-        try {
-            foo = new PicoStepsFactory(new StepsConfiguration(), parent).createCandidateSteps();
-            fail("should have barfed");
-        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            // expected
-        }
+        new PicoStepsFactory(new StepsConfiguration(), parent).createCandidateSteps();
     }
 
     public static class FooSteps {
@@ -87,5 +73,12 @@ public class PicoStepsFactoryBehaviour {
 
     }
 
+    public static class FooStepsWithDependency extends FooSteps {
+        private final Integer integer;
 
+        public FooStepsWithDependency(Integer steps) {
+            this.integer = steps;
+        }
+
+    }
 }
