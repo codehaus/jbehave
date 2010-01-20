@@ -78,6 +78,15 @@ we'll end up with file report outputs of the form: <b>com.example.my_scenario.[f
 (where <b>format</b> is any of <b>txt,html,xml</b> in the example
 above).</p>
 
+<span class="followup">The file-based print stream factory for the scenario reporting requires the scenario class to
+be provided in order to derive from it the output file paths (with the appropriate format extension).  
+If you want to migrate multiple scenarios to using file-based reporting, an intermediate stepping stone might be 
+to provide as a scenario class the parent class in which you build the scenario reporter (TraderScenario.class in the example),
+which will result in all reporting (for a given format) to be appended to the same file.   
+Then gradually you can refactor your scenario classes to provide their class to the parent (as the example shows).  Otherwise,
+you may want to keep output in a single file, the choice is yours.
+</span>
+
 <p>The builder provides defaults for all the formats supported, but
 if the user needs to create a bespoke instance of a reporter for a given
 format, it can be easily done by overriding the default. E.g. to
