@@ -66,6 +66,8 @@ import org.jbehave.scenario.i18n.I18nKeyWords;
  */
 public class PrintStreamScenarioReporter implements ScenarioReporter {
 
+    private static final String EMPTY = "";
+
     public enum Format { PLAIN, HTML, XML }
     
     protected PrintStream output;
@@ -181,7 +183,7 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
             print(format("examplesTableHeadCell", "{0}|", header));
         }
         print(format("examplesTableHeadEnd", "\n"));
-        print(format("examplesTableBodyStart", ""));
+        print(format("examplesTableBodyStart", EMPTY));
         for (Map<String, String> row : rows) {
             print(format("examplesTableRowStart", "|"));
             for (String header : headers) {
@@ -242,10 +244,14 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         Transformer escapingTransformer = new Transformer( ) {
             public Object transform(Object object) {
                 switch ( format ){
-                    case HTML: return escapeHtml(object.toString());
-                    case XML: return escapeXml(object.toString());
+                    case HTML: return escapeHtml(asString(object));
+                    case XML: return escapeXml(asString(object));
                     default: return object;
                 }
+            }
+
+            private String asString(Object object) {
+                return  ( object != null ? object.toString() : EMPTY );
             }
         };
         List<?> list = Arrays.asList( ArrayUtils.clone( args ) );
@@ -287,8 +293,8 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
      * @param text the String to print
      */
     protected void print(String text) {
-        output.print(text.replace(format(PARAMETER_VALUE_START, PARAMETER_VALUE_START), format("parameterValueStart", ""))
-                         .replace(format(PARAMETER_VALUE_END, PARAMETER_VALUE_END), format("parameterValueEnd", "")));
+        output.print(text.replace(format(PARAMETER_VALUE_START, PARAMETER_VALUE_START), format("parameterValueStart", EMPTY))
+                         .replace(format(PARAMETER_VALUE_END, PARAMETER_VALUE_END), format("parameterValueEnd", EMPTY)));
     }
 
 }
