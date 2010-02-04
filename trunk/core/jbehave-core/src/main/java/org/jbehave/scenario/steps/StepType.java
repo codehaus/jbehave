@@ -23,6 +23,10 @@ public enum StepType {
     /**
      * Represents repetition of previous step
      */
-	AND	
+	AND,
 	
+	/**
+	 * Represents an ignorable step 
+	 */
+	IGNORE
 }

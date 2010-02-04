@@ -113,6 +113,12 @@ public class DelegatingScenarioReporter implements ScenarioReporter {
         }
     }
 
+    public void ignorable(String step) {
+        for (ScenarioReporter reporter : delegates) {
+            reporter.ignorable(step);
+        }
+    }
+    
     public void notPerformed(String step) {
         for (ScenarioReporter reporter : delegates) {
             reporter.notPerformed(step);

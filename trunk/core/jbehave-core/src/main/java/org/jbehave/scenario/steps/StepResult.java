@@ -37,6 +37,18 @@ public abstract class StepResult {
 			reporter.notPerformed(step);
 		}
 	}
+	
+	
+    public static class Ignorable extends StepResult {
+        public Ignorable(String step) {
+            super(step);
+        }
+
+        @Override
+        public void describeTo(ScenarioReporter reporter) {
+            reporter.ignorable(step);
+        }
+    }
 
 	public static class Pending extends StepResult {
 		public Pending(String step) {
@@ -91,6 +103,10 @@ public abstract class StepResult {
     public static StepResult success(String step) {
 		return new Success(step);
 	}
+
+    public static StepResult ignorable(String step) {
+        return new Ignorable(step);
+    }
 
 	public static StepResult pending(String step) {
 		return new Pending(step);

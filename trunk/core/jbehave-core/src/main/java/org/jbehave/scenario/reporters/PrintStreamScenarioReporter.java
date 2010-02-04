@@ -115,6 +115,10 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
         print(format("successful", "{0}\n", step));
     }
 
+    public void ignorable(String step) {
+        print(format("ignorable", "{0}\n", step));
+    }
+
     public void pending(String step) {
         print(format("pending", "{0} ({1})\n", step, keywords.pending()));
     }

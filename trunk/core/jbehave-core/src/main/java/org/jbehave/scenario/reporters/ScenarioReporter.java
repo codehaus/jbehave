@@ -53,6 +53,8 @@ public interface ScenarioReporter {
 
     void successful(String step);
 
+    void ignorable(String step);
+
     void pending(String step);
 
     void notPerformed(String step);

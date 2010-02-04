@@ -21,12 +21,13 @@ public class KeyWords {
 	public static final String WHEN = "When";
 	public static final String THEN = "Then";
 	public static final String AND = "And";
+    public static final String IGNORABLE = "Ignorable";
 	public static final String PENDING = "Pending";
 	public static final String NOT_PERFORMED = "NotPerformed";
 	public static final String FAILED = "Failed";
 	public static final String EXAMPLES_TABLE_ROW = "ExamplesTableRow";
 	protected static final List<String> KEYWORDS = asList(SCENARIO,
-			GIVEN_SCENARIOS, EXAMPLES_TABLE, GIVEN, WHEN, THEN, AND, PENDING,
+			GIVEN_SCENARIOS, EXAMPLES_TABLE, GIVEN, WHEN, THEN, AND, IGNORABLE, PENDING,
 			NOT_PERFORMED, FAILED, EXAMPLES_TABLE_ROW);
 
 	private final String scenario;
@@ -41,7 +42,7 @@ public class KeyWords {
 	public KeyWords(Map<String, String> keywords, StringEncoder encoder) {
 		this(keywords.get(SCENARIO), keywords.get(GIVEN_SCENARIOS), keywords
 				.get(EXAMPLES_TABLE), keywords.get(GIVEN), keywords.get(WHEN),
-				keywords.get(THEN), keywords.get(AND), keywords.get(PENDING),
+				keywords.get(THEN), keywords.get(AND), keywords.get(IGNORABLE), keywords.get(PENDING),
 				keywords.get(NOT_PERFORMED), keywords.get(FAILED), keywords.get(EXAMPLES_TABLE_ROW));
 		this.encoder = encoder;
 	}
@@ -85,21 +86,25 @@ public class KeyWords {
 	public String and() {
 		return others[0];
 	}
-
-	public String pending() {
-		return others[1];
+	
+	public String ignorable(){
+	    return others[1];
 	}
 
-	public String notPerformed() {
+	public String pending() {
 		return others[2];
 	}
 
-	public String failed() {
+	public String notPerformed() {
 		return others[3];
 	}
 
-	public String examplesTableRow() {
+	public String failed() {
 		return others[4];
+	}
+
+	public String examplesTableRow() {
+		return others[5];
 	}
 
 	public String[] others() {

@@ -143,6 +143,10 @@ div.story h2 {
   color: green;
 }
 
+.ignorable {
+  color: blue;
+}
+
 .pending {
   color: olive;
 }
