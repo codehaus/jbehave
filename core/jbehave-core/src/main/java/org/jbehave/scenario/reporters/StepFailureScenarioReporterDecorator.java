@@ -61,6 +61,10 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
 		delegate.failed(step, failure);
 	}
 
+    public void ignorable(String step) {
+        delegate.ignorable(step);
+    }
+    
 	public void notPerformed(String step) {
 		delegate.notPerformed(step);
 	}

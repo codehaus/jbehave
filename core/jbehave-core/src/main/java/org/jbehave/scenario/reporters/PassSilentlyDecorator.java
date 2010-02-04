@@ -46,6 +46,14 @@ public class PassSilentlyDecorator implements ScenarioReporter {
     public void beforeStory(final Blurb blurb) {
         beforeStory(new StoryDefinition(blurb), false);
     };
+    
+    public void ignorable(final String step) {
+        currentScenario.add(new Todo() {
+            public void doNow() {
+                delegate.ignorable(step);
+            }
+        });
+    }
 
     public void failed(final String step, final Throwable e) {
         currentScenario.add(new Todo() {

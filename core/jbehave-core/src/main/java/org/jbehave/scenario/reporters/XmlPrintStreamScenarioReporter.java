@@ -41,6 +41,7 @@ public class XmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter 
     private static Properties defaultHtmlPatterns() {
         Properties patterns = new Properties();
         patterns.setProperty("successful", "<step outcome=\"successful\">{0}</step>\n");
+        patterns.setProperty("ignorable", "<step outcome=\"ignorable\">{0}</step>\n");
         patterns.setProperty("pending", "<step outcome=\"pending\" keyword=\"{1}\">{0}</step>\n");
         patterns.setProperty("notPerformed", "<step outcome=\"notPerformed\" keyword=\"{1}\">{0}</step>\n");
         patterns.setProperty("failed", "<step outcome=\"failed\" keyword=\"{1}\">{0}</step>\n");

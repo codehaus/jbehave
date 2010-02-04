@@ -16,16 +16,16 @@ import org.jbehave.scenario.definition.StoryDefinition;
 
 /**
  * <p>
- * Scenario reporter that collects statistics and stores them as properties to output
- * stream
+ * Scenario reporter that collects statistics and stores them as properties to
+ * output stream
  * </p>
  */
 public class StatisticsScenarioReporter implements ScenarioReporter {
 
     private final OutputStream output;
     private final Map<String, Integer> data = new HashMap<String, Integer>();
-    private final List<String> events = asList("steps", "stepsSuccessful", "stepsPending", "stepsNotPerformed",
-            "stepsFailed", "scenarios", "scenariosFailed", "givenScenarios", "examples");
+    private final List<String> events = asList("steps", "stepsSuccessful", "stepsIgnorable", "stepsPending",
+            "stepsNotPerformed", "stepsFailed", "scenarios", "scenariosFailed", "givenScenarios", "examples");
 
     private Throwable cause;
 
@@ -36,6 +36,11 @@ public class StatisticsScenarioReporter implements ScenarioReporter {
     public void successful(String step) {
         count("steps");
         count("stepsSuccessful");
+    }
+
+    public void ignorable(String step) {
+        count("steps");
+        count("stepsIgnorable");
     }
 
     public void pending(String step) {

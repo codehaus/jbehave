@@ -74,6 +74,15 @@ public class CandidateStep {
         return paranamer;
     }
 
+    public boolean ignore(String stepAsString) {
+        try {
+            String ignoreWord = startingWordFor(StepType.IGNORE);
+            return stepAsString.startsWith(ignoreWord);
+        } catch (StartingWordNotFound e) {
+            return false;
+        }
+    }
+
     public boolean matches(String stepAsString) {
         try {
             Matcher matcher = matcherForStep(stepAsString);
