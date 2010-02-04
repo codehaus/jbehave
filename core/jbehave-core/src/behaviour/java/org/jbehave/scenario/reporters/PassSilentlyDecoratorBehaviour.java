@@ -28,6 +28,7 @@ public class PassSilentlyDecoratorBehaviour {
         decorator.beforeStory(story, embeddedStory);
         decorator.beforeScenario("My scenario 1");
         decorator.successful("Given step 1.1");
+        decorator.ignorable("!-- ignore me");
         decorator.successful("When step 1.2");
         decorator.successful("Then step 1.3");
         decorator.afterScenario();
@@ -57,6 +58,7 @@ public class PassSilentlyDecoratorBehaviour {
         
         verify(delegate, never()).beforeScenario("My scenario 1");
         verify(delegate, never()).successful("Given step 1.1");
+        verify(delegate, never()).ignorable("!-- ignore me");
         verify(delegate, never()).successful("When step 1.2");
         verify(delegate, never()).successful("Then step 1.3");
 

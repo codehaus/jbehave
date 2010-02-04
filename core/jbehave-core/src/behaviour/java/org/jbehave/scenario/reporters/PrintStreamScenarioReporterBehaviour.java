@@ -48,6 +48,7 @@ public class PrintStreamScenarioReporterBehaviour {
                 + "Scenario: I ask for a loan\n"
                 + "GivenScenarios: [/given/scenario1,/given/scenario2]\n" 
                 + "Given I have a balance of $50\n"
+                + "!-- A comment\n"
                 + "When I request $20\n" 
                 + "When I ask Liz for a loan of $100\n"
                 + "Then I should have a balance of $30 (PENDING)\n" 
@@ -87,6 +88,7 @@ public class PrintStreamScenarioReporterBehaviour {
                 + "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n"
                 + "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n"
                 + "<div class=\"step successful\">Given I have a balance of $50</div>\n"
+                + "<div class=\"step ignorable\">!-- A comment</div>\n"
                 + "<div class=\"step successful\">When I request $20</div>\n"
                 + "<div class=\"step successful\">When I ask Liz for a loan of $100</div>\n"
                 + "<div class=\"step pending\">Then I should have a balance of $30 <span class=\"keyword pending\">(PENDING)</span></div>\n"
@@ -131,6 +133,7 @@ public class PrintStreamScenarioReporterBehaviour {
                 + "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n"
                 + "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n"
                 + "<div class=\"step successful\">Given I have a balance of $50</div>\n"
+                + "<div class=\"step ignorable\">!-- A comment</div>\n"
                 + "<div class=\"step successful\">When I request $20</div>\n"
                 + "<div class=\"step successful\">When I ask Liz for a loan of $100</div>\n"
                 + "<div class=\"step pending\">Then I should have a balance of $30 <span class=\"keyword pending\">(PENDING)</span></div>\n"
@@ -168,6 +171,7 @@ public class PrintStreamScenarioReporterBehaviour {
                 + "<scenario keyword=\"Scenario:\" title=\"I ask for a loan\">\n"
                 + "<givenScenarios keyword=\"GivenScenarios:\"paths=\"[/given/scenario1,/given/scenario2]\"</givenScenarios>\n"
                 + "<step outcome=\"successful\">Given I have a balance of $50</step>\n"
+                + "<step outcome=\"ignorable\">!-- A comment</step>\n"
                 + "<step outcome=\"successful\">When I request $20</step>\n"
                 + "<step outcome=\"successful\">When I ask Liz for a loan of $100</step>\n"
                 + "<step outcome=\"pending\" keyword=\"PENDING\">Then I should have a balance of $30</step>\n"
@@ -195,6 +199,7 @@ public class PrintStreamScenarioReporterBehaviour {
         reporter.beforeScenario(title);
         reporter.givenScenarios(asList("/given/scenario1,/given/scenario2"));
         reporter.successful("Given I have a balance of $50");
+        reporter.ignorable("!-- A comment");
         reporter.successful("When I request $20");
         reporter.successful("When I ask Liz for a loan of $100");
         reporter.pending("Then I should have a balance of $30");

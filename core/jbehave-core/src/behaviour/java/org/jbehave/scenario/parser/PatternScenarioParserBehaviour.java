@@ -25,13 +25,15 @@ public class PatternScenarioParserBehaviour {
     public void shouldExtractGivensWhensAndThensFromSimpleScenarios() {
         StoryDefinition story = parser.defineStoryFrom(
                 "Given a scenario" + NL + 
+                "!-- ignore me" + NL + 
                 "When I parse it" + NL + 
                 "Then I should get steps", null);
         
         List<String> steps = story.getScenarios().get(0).getSteps();
         ensureThat(steps.get(0), equalTo("Given a scenario"));
-        ensureThat(steps.get(1), equalTo("When I parse it"));
-        ensureThat(steps.get(2), equalTo("Then I should get steps"));
+        ensureThat(steps.get(1), equalTo("!-- ignore me"));
+        ensureThat(steps.get(2), equalTo("When I parse it"));
+        ensureThat(steps.get(3), equalTo("Then I should get steps"));
     }
     
     @Test
@@ -40,13 +42,15 @@ public class PatternScenarioParserBehaviour {
                 "Given a scenario Givenly" + NL + 
                 "When I parse it to Whenever" + NL +
                 "And I parse it to Anderson" + NL +
+                "!-- ignore me too" + NL +
                 "Then I should get steps Thenact", null);
         
         List<String> steps = story.getScenarios().get(0).getSteps();
         ensureThat(steps.get(0), equalTo("Given a scenario Givenly"));
         ensureThat(steps.get(1), equalTo("When I parse it to Whenever"));
         ensureThat(steps.get(2), equalTo("And I parse it to Anderson"));
-        ensureThat(steps.get(3), equalTo("Then I should get steps Thenact"));
+        ensureThat(steps.get(3), equalTo("!-- ignore me too"));
+        ensureThat(steps.get(4), equalTo("Then I should get steps Thenact"));
     }    
     
     @Test
@@ -112,6 +116,7 @@ public class PatternScenarioParserBehaviour {
             "Scenario: A pending scenario" + NL +  NL +
             "Given a step that's pending" + NL +
             "When I run the scenario" + NL +
+            "!-- A comment between steps" +  NL +
             "Then I should see this in the output" + NL +
 
             "Scenario: A passing scenario" + NL +
@@ -137,6 +142,7 @@ public class PatternScenarioParserBehaviour {
         ensureThat(story.getScenarios().get(0).getSteps(), equalTo(asList(
                 "Given a step that's pending",
                 "When I run the scenario",
+                "!-- A comment between steps",
                 "Then I should see this in the output"
         )));
         

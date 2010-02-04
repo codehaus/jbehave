@@ -28,6 +28,7 @@ public class DelegatingScenarioReporterBehaviour {
         delegator.beforeScenario("My scenario 1");
         delegator.givenScenarios(givenScenarios);
         delegator.successful("Given step 1.1");
+        delegator.ignorable("!-- ignore me");
         delegator.pending("When step 1.2");
         delegator.notPerformed("Then step 1.3");
         delegator.beforeExamples(asList("Given step <one>", "Then step <two>"), examplesTable);
@@ -50,6 +51,7 @@ public class DelegatingScenarioReporterBehaviour {
         inOrder.verify(delegate).beforeScenario("My scenario 1");
         inOrder.verify(delegate).givenScenarios(givenScenarios);
         inOrder.verify(delegate).successful("Given step 1.1");
+        inOrder.verify(delegate).ignorable("!-- ignore me");
         inOrder.verify(delegate).pending("When step 1.2");
         inOrder.verify(delegate).notPerformed("Then step 1.3");
         inOrder.verify(delegate).beforeExamples(asList("Given step <one>", "Then step <two>"), examplesTable);
