@@ -118,6 +118,7 @@ setting system property <b>"org.jbehave.outputall"</b>.</p>
 <p>Yes, one can write steps as POJOs and then create an instance of
 <a href="javadoc/core/org/jbehave/steps/CandidateSteps.html">CandidateSteps</a>
 via the <a href="javadoc/core/org/jbehave/steps/StepsFactory.html">StepsFactory</a>
+</p>
 <pre class="brush: java">
     StepsConfiguration configuration = ... // optional configuration
     new StepsFactory(configuration).createCandidateSteps(new TraderSteps()));    
@@ -125,6 +126,21 @@ via the <a href="javadoc/core/org/jbehave/steps/StepsFactory.html">StepsFactory<
 
 <p>Alternatively, one can extend the <a
     href="javadoc/core/org/jbehave/steps/Steps.html">Steps</a> class.</p>
+
+<h3>Can I insert comments in the textual scenarios?</h3>
+
+<p>Yes, one can add them the scenario title, which allows free text up the first keyword of the scenario, e.g. the first Given.</p>
+
+<p>From version 2.4.1, one can also insert ignorable steps between executable steps, using keyword "!--" (which can be changed via I18n properties)</p> 
+<pre class="brush: bdd">
+Scenario: This is a description of the scenario, of the intended behaviour and its verification
+
+Given a precondition
+!-- This is an ignorable step, used to insert a comment,
+which can be multiline, just like any other step!
+When something happens
+Then outcome is verified 
+</pre>
 
 </body>
 </html>
