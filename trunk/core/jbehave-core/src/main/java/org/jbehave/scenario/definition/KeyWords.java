@@ -2,6 +2,7 @@ package org.jbehave.scenario.definition;
 
 import static java.util.Arrays.asList;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,113 +10,164 @@ import org.jbehave.scenario.i18n.StringEncoder;
 
 /**
  * Provides the keywords which allow parsers to find steps in scenarios and
- * match those steps with candidates through the Given, When and Then
- * annotations
+ * match those steps with candidates through the annotations (Given, When and Then)
+ * or though other keywords (And, "!--").  It also provides keywords used in reporting.  
  */
 public class KeyWords {
 
-	public static final String SCENARIO = "Scenario";
-	public static final String GIVEN_SCENARIOS = "GivenScenarios";
-	public static final String EXAMPLES_TABLE = "ExamplesTable";
-	public static final String GIVEN = "Given";
-	public static final String WHEN = "When";
-	public static final String THEN = "Then";
-	public static final String AND = "And";
+    public static final String SCENARIO = "Scenario";
+    public static final String GIVEN_SCENARIOS = "GivenScenarios";
+    public static final String EXAMPLES_TABLE = "ExamplesTable";
+    public static final String GIVEN = "Given";
+    public static final String WHEN = "When";
+    public static final String THEN = "Then";
+    public static final String AND = "And";
     public static final String IGNORABLE = "Ignorable";
-	public static final String PENDING = "Pending";
-	public static final String NOT_PERFORMED = "NotPerformed";
-	public static final String FAILED = "Failed";
-	public static final String EXAMPLES_TABLE_ROW = "ExamplesTableRow";
-	protected static final List<String> KEYWORDS = asList(SCENARIO,
-			GIVEN_SCENARIOS, EXAMPLES_TABLE, GIVEN, WHEN, THEN, AND, IGNORABLE, PENDING,
-			NOT_PERFORMED, FAILED, EXAMPLES_TABLE_ROW);
+    public static final String PENDING = "Pending";
+    public static final String NOT_PERFORMED = "NotPerformed";
+    public static final String FAILED = "Failed";
+    public static final String EXAMPLES_TABLE_ROW = "ExamplesTableRow";
+    public static final List<String> KEYWORDS = asList(SCENARIO, GIVEN_SCENARIOS, EXAMPLES_TABLE, GIVEN, WHEN, THEN,
+            AND, IGNORABLE, PENDING, NOT_PERFORMED, FAILED, EXAMPLES_TABLE_ROW);
 
-	private final String scenario;
-	private final String givenScenarios;
-	private final String given;
-	private final String when;
-	private final String then;
-	private final String examplesTable;
-	private final String[] others;
-	private StringEncoder encoder;
+    private final String scenario;
+    private final String givenScenarios;
+    private final String examplesTable;
+    private final String given;
+    private final String when;
+    private final String then;
+    private final String and;
+    private final String ignorable;
+    private final String pending;
+    private final String notPerformed;
+    private final String failed;
+    private final String examplesTableRow;
+    private final String[] others;
+    private StringEncoder encoder;
 
-	public KeyWords(Map<String, String> keywords, StringEncoder encoder) {
-		this(keywords.get(SCENARIO), keywords.get(GIVEN_SCENARIOS), keywords
-				.get(EXAMPLES_TABLE), keywords.get(GIVEN), keywords.get(WHEN),
-				keywords.get(THEN), keywords.get(AND), keywords.get(IGNORABLE), keywords.get(PENDING),
-				keywords.get(NOT_PERFORMED), keywords.get(FAILED), keywords.get(EXAMPLES_TABLE_ROW));
-		this.encoder = encoder;
-	}
+    public static Map<String, String> defaultKeywords() {
+        Map<String, String> keywords = new HashMap<String, String>();
+        keywords.put(SCENARIO, "Scenario:");
+        keywords.put(GIVEN_SCENARIOS, "GivenScenarios:");
+        keywords.put(EXAMPLES_TABLE, "Examples:");
+        keywords.put(GIVEN, "Given");
+        keywords.put(WHEN, "When");
+        keywords.put(THEN, "Then");
+        keywords.put(AND, "And");
+        keywords.put(IGNORABLE, "!--");
+        keywords.put(PENDING, "PENDING");
+        keywords.put(NOT_PERFORMED, "NOT PERFORMED");
+        keywords.put(FAILED, "FAILED");
+        keywords.put(EXAMPLES_TABLE_ROW, "Example:");
+        return keywords;
+    }
 
-	public KeyWords(String scenario, String givenScenarios,
-			String examplesTable, String given, String when, String then,
-			String... others) {
-		this.scenario = scenario;
-		this.givenScenarios = givenScenarios;
-		this.examplesTable = examplesTable;
-		this.given = given;
-		this.when = when;
-		this.then = then;
-		this.others = others;
-	}
+    public KeyWords() {
+        this(defaultKeywords());
+    }
 
-	public String scenario() {
-		return scenario;
-	}
+    public KeyWords(Map<String, String> keywords) {
+        this(keywords, new StringEncoder());
+    }
 
-	public String givenScenarios() {
-		return givenScenarios;
-	}
+    public KeyWords(Map<String, String> keywords, StringEncoder encoder) {
+        this.scenario = keywords.get(SCENARIO);
+        this.givenScenarios =  keywords.get(GIVEN_SCENARIOS);
+        this.examplesTable = keywords.get(EXAMPLES_TABLE);
+        this.given =  keywords.get(GIVEN);
+        this.when = keywords.get(WHEN);
+        this.then = keywords.get(THEN);
+        this.and = keywords.get(AND);
+        this.ignorable = keywords.get(IGNORABLE);
+        this.pending = keywords.get(PENDING);
+        this.notPerformed = keywords.get(NOT_PERFORMED);
+        this.failed = keywords.get(FAILED);
+        this.examplesTableRow = keywords.get(EXAMPLES_TABLE_ROW);
+        this.others = new String[]{and, ignorable};
+        this.encoder = encoder;
+    }
 
-	public String examplesTable() {
-		return examplesTable;
-	}
+    /**
+     * @deprecated Use KeyWords(Map<String,String>, StringEncoder)
+     */
+    public KeyWords(String scenario, String givenScenarios, String examplesTable, String given, String when,
+            String then, String... others) {
+        this.scenario = scenario;
+        this.givenScenarios = givenScenarios;
+        this.examplesTable = examplesTable;
+        this.given = given;
+        this.when = when;
+        this.then = then;
+        if (others.length < 6) {
+            throw new IllegalArgumentException("Insufficient keywords: " + asList(others) + ", but requires another "
+                    + (6 - others.length));
+        }
+        this.and = others[0];
+        this.ignorable = others[1];
+        this.pending = others[2];
+        this.notPerformed = others[3];
+        this.failed = others[4];
+        this.examplesTableRow = others[5];
+        this.others = others;
+    }
 
-	public String given() {
-		return given;
-	}
+    public String scenario() {
+        return scenario;
+    }
 
-	public String when() {
-		return when;
-	}
+    public String givenScenarios() {
+        return givenScenarios;
+    }
 
-	public String then() {
-		return then;
-	}
+    public String examplesTable() {
+        return examplesTable;
+    }
 
-	public String and() {
-		return others[0];
-	}
-	
-	public String ignorable(){
-	    return others[1];
-	}
+    public String given() {
+        return given;
+    }
 
-	public String pending() {
-		return others[2];
-	}
+    public String when() {
+        return when;
+    }
 
-	public String notPerformed() {
-		return others[3];
-	}
+    public String then() {
+        return then;
+    }
 
-	public String failed() {
-		return others[4];
-	}
+    public String and() {
+        return and;
+    }
 
-	public String examplesTableRow() {
-		return others[5];
-	}
+    public String ignorable() {
+        return ignorable;
+    }
 
-	public String[] others() {
-		return others;
-	}
+    public String pending() {
+        return pending;
+    }
 
-	public String encode(String value) {
-		if ( encoder != null ){
-			return encoder.encode(value);
-		}
-		return value;
-	}
+    public String notPerformed() {
+        return notPerformed;
+    }
+
+    public String failed() {
+        return failed;
+    }
+
+    public String examplesTableRow() {
+        return examplesTableRow;
+    }
+
+    public String[] others() {
+        return others;
+    }
+
+    public String encode(String value) {
+        if (encoder != null) {
+            return encoder.encode(value);
+        }
+        return value;
+    }
 
 }
