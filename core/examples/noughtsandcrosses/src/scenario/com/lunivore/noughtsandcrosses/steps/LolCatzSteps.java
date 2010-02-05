@@ -2,11 +2,13 @@ package com.lunivore.noughtsandcrosses.steps;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
+import static org.jbehave.scenario.definition.KeyWords.*;
 
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 
@@ -31,12 +33,18 @@ public class LolCatzSteps extends Steps {
     }
     
     public LolCatzSteps(OAndXUniverse universe) {
-    	super("Gief", "Wen", "Den", "And"); //deprecated, use super(lolCatsKeywords()); 
+    	super(lolCatzKeywords()); 
 		this.universe = universe;
 	}
     
     public static KeyWords lolCatzKeywords(){
-    	return new KeyWords("I can haz:", "Gief I can haz:", "Ezemples:", "Gief", "Wen", "Den", "And");
+        Map<String, String> keywords = KeyWords.defaultKeywords();
+        // Override only the keywords that are required
+        keywords.put(SCENARIO, "I can haz:");
+        keywords.put(GIVEN, "Gief");
+        keywords.put(WHEN, "Wen");
+        keywords.put(THEN, "Den");
+        return new KeyWords(keywords);
     }
 
 	@Given("game")
