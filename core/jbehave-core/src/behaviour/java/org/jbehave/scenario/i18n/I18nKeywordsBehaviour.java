@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.jbehave.scenario.definition.KeyWords;
-import org.jbehave.scenario.i18n.I18nKeyWords.KeywordNotFoundExcepion;
-import org.jbehave.scenario.i18n.I18nKeyWords.ResourceBundleNotFoundExcepion;
+import org.jbehave.scenario.i18n.I18nKeyWords.I18nKeywordNotFoundException;
+import org.jbehave.scenario.i18n.I18nKeyWords.ResourceBundleNotFoundException;
 import org.jbehave.scenario.steps.StepType;
 import org.jbehave.scenario.steps.StepsConfiguration;
 import org.junit.Test;
@@ -30,12 +30,12 @@ public class I18nKeywordsBehaviour {
 		ensureKeywordsAreLocalisedFor(new Locale("it"), null);
 	}
 
-	@Test(expected = ResourceBundleNotFoundExcepion.class)
+	@Test(expected = ResourceBundleNotFoundException.class)
 	public void shouldFailIfResourceBundleIsNotFound() throws IOException {
 		ensureKeywordsAreLocalisedFor(new Locale("en"), "unknown");
 	}
 
-	@Test(expected = KeywordNotFoundExcepion.class)
+	@Test(expected = I18nKeywordNotFoundException.class)
 	public void shouldFailIfKeywordIsNotFound() throws IOException {
 		ensureKeywordsAreLocalisedFor(new Locale("es"), null);
 	}
