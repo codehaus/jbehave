@@ -56,7 +56,7 @@ public class I18nKeyWords extends KeyWords {
         try {
             return encoder.encode(bundle.getString(name));
         } catch (MissingResourceException e) {
-            throw new KeywordNotFoundExcepion(name, bundle);
+            throw new I18nKeywordNotFoundException(name, bundle);
         }
     }
 
@@ -67,14 +67,14 @@ public class I18nKeyWords extends KeyWords {
             }
             return getBundle(bundleName, locale);
         } catch (MissingResourceException e) {
-            throw new ResourceBundleNotFoundExcepion(bundleName, locale, classLoader, e);
+            throw new ResourceBundleNotFoundException(bundleName, locale, classLoader, e);
         }
     }
 
     @SuppressWarnings("serial")
-    public static final class ResourceBundleNotFoundExcepion extends RuntimeException {
+    public static final class ResourceBundleNotFoundException extends RuntimeException {
 
-        public ResourceBundleNotFoundExcepion(String bundleName, Locale locale, ClassLoader classLoader,
+        public ResourceBundleNotFoundException(String bundleName, Locale locale, ClassLoader classLoader,
                 MissingResourceException cause) {
             super("Resource bundle " + bundleName + " not found for locale " + locale + " in classLoader "
                     + classLoader, cause);
@@ -83,10 +83,10 @@ public class I18nKeyWords extends KeyWords {
     }
 
     @SuppressWarnings("serial")
-    public static final class KeywordNotFoundExcepion extends RuntimeException {
+    public static final class I18nKeywordNotFoundException extends RuntimeException {
 
-        public KeywordNotFoundExcepion(String name, ResourceBundle bundle) {
-            super("Keyword " + name + " not found in resource bundle " + bundle);
+        public I18nKeywordNotFoundException(String name, ResourceBundle bundle) {
+            super("I18nKeyword " + name + " not found in resource bundle " + bundle);
         }
 
     }

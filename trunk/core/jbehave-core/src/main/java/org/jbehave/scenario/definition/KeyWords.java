@@ -71,20 +71,28 @@ public class KeyWords {
     }
 
     public KeyWords(Map<String, String> keywords, StringEncoder encoder) {
-        this.scenario = keywords.get(SCENARIO);
-        this.givenScenarios =  keywords.get(GIVEN_SCENARIOS);
-        this.examplesTable = keywords.get(EXAMPLES_TABLE);
-        this.given =  keywords.get(GIVEN);
-        this.when = keywords.get(WHEN);
-        this.then = keywords.get(THEN);
-        this.and = keywords.get(AND);
-        this.ignorable = keywords.get(IGNORABLE);
-        this.pending = keywords.get(PENDING);
-        this.notPerformed = keywords.get(NOT_PERFORMED);
-        this.failed = keywords.get(FAILED);
-        this.examplesTableRow = keywords.get(EXAMPLES_TABLE_ROW);
+        this.scenario = keyword(SCENARIO, keywords);
+        this.givenScenarios =  keyword(GIVEN_SCENARIOS, keywords);
+        this.examplesTable = keyword(EXAMPLES_TABLE, keywords);
+        this.given =  keyword(GIVEN, keywords);
+        this.when = keyword(WHEN, keywords);
+        this.then = keyword(THEN, keywords);
+        this.and = keyword(AND, keywords);
+        this.ignorable = keyword(IGNORABLE, keywords);
+        this.pending = keyword(PENDING, keywords);
+        this.notPerformed = keyword(NOT_PERFORMED, keywords);
+        this.failed = keyword(FAILED, keywords);
+        this.examplesTableRow = keyword(EXAMPLES_TABLE_ROW, keywords);
         this.others = new String[]{and, ignorable};
         this.encoder = encoder;
+    }
+
+    private String keyword(String name, Map<String, String> keywords) {
+        String keyword = keywords.get(name);
+        if ( keyword == null ){
+            throw new KeywordNotFoundException(name, keywords);
+        }
+        return keyword;        
     }
 
     /**
@@ -170,4 +178,12 @@ public class KeyWords {
         return value;
     }
 
+    @SuppressWarnings("serial")
+    public static final class KeywordNotFoundException extends RuntimeException {
+
+        public KeywordNotFoundException(String name, Map<String, String> keywords) {
+            super("Keyword "+name+" not found amongst "+keywords);
+        }
+        
+    }
 }
