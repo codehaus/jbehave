@@ -2,7 +2,7 @@ package org.jbehave.scenario.steps;
 
 import static org.jbehave.scenario.steps.StepType.AND;
 import static org.jbehave.scenario.steps.StepType.GIVEN;
-import static org.jbehave.scenario.steps.StepType.IGNORE;
+import static org.jbehave.scenario.steps.StepType.IGNORABLE;
 import static org.jbehave.scenario.steps.StepType.THEN;
 import static org.jbehave.scenario.steps.StepType.WHEN;
 
@@ -121,7 +121,7 @@ public class StepsConfiguration {
 		words.put(WHEN, keywords.when());
 		words.put(THEN, keywords.then());
 		words.put(AND, keywords.and());
-        words.put(IGNORE, keywords.ignorable());
+        words.put(IGNORABLE, keywords.ignorable());
 		return words;
 	}
 

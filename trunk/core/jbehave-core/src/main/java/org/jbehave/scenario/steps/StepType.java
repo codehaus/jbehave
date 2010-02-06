@@ -28,5 +28,5 @@ public enum StepType {
 	/**
 	 * Represents an ignorable step 
 	 */
-	IGNORE
+	IGNORABLE
 }

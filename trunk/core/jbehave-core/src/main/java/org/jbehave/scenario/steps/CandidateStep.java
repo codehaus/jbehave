@@ -76,7 +76,7 @@ public class CandidateStep {
 
     public boolean ignore(String stepAsString) {
         try {
-            String ignoreWord = startingWordFor(StepType.IGNORE);
+            String ignoreWord = startingWordFor(StepType.IGNORABLE);
             return stepAsString.startsWith(ignoreWord);
         } catch (StartingWordNotFound e) {
             return false;
