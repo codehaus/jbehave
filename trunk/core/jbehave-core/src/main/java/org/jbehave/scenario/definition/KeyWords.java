@@ -10,8 +10,9 @@ import org.jbehave.scenario.i18n.StringEncoder;
 
 /**
  * Provides the keywords which allow parsers to find steps in scenarios and
- * match those steps with candidates through the annotations (Given, When and Then)
- * or though other keywords (And, "!--").  It also provides keywords used in reporting.  
+ * match those steps with candidates through the annotations (Given, When and
+ * Then) or though other keywords (And, "!--"). It also provides keywords used
+ * in reporting.
  */
 public class KeyWords {
 
@@ -62,19 +63,33 @@ public class KeyWords {
         return keywords;
     }
 
+    /**
+     * Creates KeyWords with default values {@link #defaultKeywords()}.
+     */
     public KeyWords() {
         this(defaultKeywords());
     }
 
+    /**
+     * Creates KeyWords with provided values and default encoder
+     * 
+     * @param keywords the Map of keywords indexed by their name
+     */
     public KeyWords(Map<String, String> keywords) {
         this(keywords, new StringEncoder());
     }
 
+    /**
+     * Creates a KeyWords from the map provided.  
+     * 
+     * @param keywords the Map of keywords indexed by their name
+     * @param encoder the StringEncoder used to encode the values
+     */
     public KeyWords(Map<String, String> keywords, StringEncoder encoder) {
         this.scenario = keyword(SCENARIO, keywords);
-        this.givenScenarios =  keyword(GIVEN_SCENARIOS, keywords);
+        this.givenScenarios = keyword(GIVEN_SCENARIOS, keywords);
         this.examplesTable = keyword(EXAMPLES_TABLE, keywords);
-        this.given =  keyword(GIVEN, keywords);
+        this.given = keyword(GIVEN, keywords);
         this.when = keyword(WHEN, keywords);
         this.then = keyword(THEN, keywords);
         this.and = keyword(AND, keywords);
@@ -83,19 +98,31 @@ public class KeyWords {
         this.notPerformed = keyword(NOT_PERFORMED, keywords);
         this.failed = keyword(FAILED, keywords);
         this.examplesTableRow = keyword(EXAMPLES_TABLE_ROW, keywords);
-        this.others = new String[]{and, ignorable};
+        this.others = new String[] { and, ignorable };
         this.encoder = encoder;
     }
 
     private String keyword(String name, Map<String, String> keywords) {
         String keyword = keywords.get(name);
-        if ( keyword == null ){
+        if (keyword == null) {
             throw new KeywordNotFoundException(name, keywords);
         }
-        return keyword;        
+        return keyword;
     }
 
     /**
+     * Legacy constructor for KeyWords that provids explicitly the keywords
+     * values. The {@link others} vararg must include 6 additional keywords
+     * (and, ignorable, pending, notPerformed, failed, examplesTableRow).
+     * 
+     * @param scenario
+     * @param givenScenarios
+     * @param examplesTable
+     * @param given
+     * @param when
+     * @param then
+     * @param others
+     * 
      * @deprecated Use KeyWords(Map<String,String>, StringEncoder)
      */
     public KeyWords(String scenario, String givenScenarios, String examplesTable, String given, String when,
@@ -107,8 +134,7 @@ public class KeyWords {
         this.when = when;
         this.then = then;
         if (others.length < 6) {
-            throw new IllegalArgumentException("Insufficient keywords: " + asList(others) + ", but requires another "
-                    + (6 - others.length));
+            throw new InsufficientKeywordsException(others);
         }
         this.and = others[0];
         this.ignorable = others[1];
@@ -182,8 +208,18 @@ public class KeyWords {
     public static final class KeywordNotFoundException extends RuntimeException {
 
         public KeywordNotFoundException(String name, Map<String, String> keywords) {
-            super("Keyword "+name+" not found amongst "+keywords);
+            super("Keyword " + name + " not found amongst " + keywords);
         }
-        
+
     }
+
+    @SuppressWarnings("serial")
+    public static final class InsufficientKeywordsException extends RuntimeException {
+
+        public InsufficientKeywordsException(String... others) {
+            super("Insufficient keywords: " + asList(others) + ", but requires another " + (6 - others.length));
+        }
+
+    }
+
 }
