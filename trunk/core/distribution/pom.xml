@@ -8,6 +8,9 @@
   <artifactId>jbehave-distribution</artifactId>
   <packaging>pom</packaging>
   <name>JBehave Distribution</name>
+  <properties>
+    <jbehave.site.version>2.0.2</jbehave.site.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>${pom.groupId}</groupId>
@@ -131,7 +134,7 @@
                 <artifactItem>
                   <groupId>org.jbehave.site</groupId>
                   <artifactId>jbehave-site-resources</artifactId>
-                  <version>2.0.1</version>
+                  <version>${jbehave.site.version}</version>
                   <outputDirectory>${project.build.directory}/site</outputDirectory>
                 </artifactItem>
               </artifactItems>
@@ -150,7 +153,7 @@
                 <artifactItem>
                   <groupId>org.jbehave.site</groupId>
                   <artifactId>jbehave-site-templates</artifactId>
-                  <version>2.0.1</version>
+                  <version>${jbehave.site.version}</version>
                   <outputDirectory>${project.build.directory}/templates</outputDirectory>
                 </artifactItem>
               </artifactItems>
