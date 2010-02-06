@@ -1,0 +1,4 @@
+Scenario: A scenario that verifies order matching of steps
+
+Given a step that has exactly one parameter
+Then the parameter value is "exactly one parameter"
