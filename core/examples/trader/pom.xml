@@ -10,10 +10,13 @@
   <name>JBehave Trader Example</name>
 
   <dependencies>
+    <dependency>
+      <groupId>org.jbehave</groupId>
+      <artifactId>jbehave-pico</artifactId>
+      <version>${jbehave.version}</version>
+    </dependency>
   </dependencies>
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/behaviour/java</testSourceDirectory>
     <resources>
       <resource>
         <directory>${basedir}/src/main/java</directory>
@@ -38,7 +41,7 @@
                 <artifactItem>
                   <groupId>org.jbehave.site</groupId>
                   <artifactId>jbehave-site-resources</artifactId>
-                  <version>2.0.1</version>
+                  <version>2.0.2</version>
                   <outputDirectory>${project.build.directory}/jbehave-reports/rendered</outputDirectory>
                 </artifactItem>
               </artifactItems>

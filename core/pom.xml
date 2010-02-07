@@ -6,11 +6,12 @@
   <version>2.5-SNAPSHOT</version>
   <name>JBehave</name>
   <inceptionYear>2003</inceptionYear>
-  <description />
+  <description>JBehave is a project that supports and facilitates Behaviour-Driven Development.</description>
   <url>http://jbehave.org</url>
 
   <modules>
     <module>jbehave-core</module>
+    <module>jbehave-pico</module>
     <module>jbehave-ant</module>
     <module>jbehave-maven-plugin</module>
   </modules>

@@ -13,6 +13,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.jbehave.scenario.annotations.AfterScenario;
 import org.jbehave.scenario.annotations.Alias;
 import org.jbehave.scenario.annotations.Aliases;
@@ -311,4 +313,10 @@ public class Steps implements CandidateSteps {
         }
 
     }
+    
+    @Override
+    public String toString() {
+       return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+    
 }

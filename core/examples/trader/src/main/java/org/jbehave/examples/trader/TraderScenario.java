@@ -10,6 +10,7 @@ import org.jbehave.examples.trader.converters.TraderConverter;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
 import org.jbehave.examples.trader.persistence.TraderPersister;
+import org.jbehave.examples.trader.service.TradingService;
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.RunnableScenario;
@@ -22,6 +23,7 @@ import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.FilePrintStreamFactory;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporterBuilder;
+import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.ParameterConverters;
 import org.jbehave.scenario.steps.SilentStepMonitor;
 import org.jbehave.scenario.steps.StepMonitor;
@@ -58,7 +60,11 @@ public class TraderScenario extends JUnitScenario {
         configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("%")); // use '%' instead of '$' to identify parameters
         configuration.useMonitor(monitor);
         
-        addSteps(new StepsFactory(configuration).createCandidateSteps(new TraderSteps()));
+        addSteps(createSteps(configuration));
+    }
+
+    protected CandidateSteps[] createSteps(StepsConfiguration configuration) {
+        return new StepsFactory(configuration).createCandidateSteps(new TraderSteps(new TradingService()));
     }
 
     private TraderPersister mockTradePersister() {
