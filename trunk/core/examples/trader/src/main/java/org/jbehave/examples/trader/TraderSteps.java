@@ -12,6 +12,7 @@ import java.util.Map;
 import org.jbehave.examples.trader.model.Stock;
 import org.jbehave.examples.trader.model.Trader;
 import org.jbehave.examples.trader.model.Stock.AlertStatus;
+import org.jbehave.examples.trader.service.TradingService;
 import org.jbehave.scenario.annotations.Alias;
 import org.jbehave.scenario.annotations.Aliases;
 import org.jbehave.scenario.annotations.Given;
@@ -19,6 +20,8 @@ import org.jbehave.scenario.annotations.Named;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.steps.CandidateSteps;
+import org.jbehave.scenario.steps.StepsFactory;
 
 /**
  * POJO holding the candidate steps for the trader example.  
@@ -27,10 +30,15 @@ import org.jbehave.scenario.definition.ExamplesTable;
  */
 public class TraderSteps {
 
+    private TradingService service;    
     private Stock stock;
     private Trader trader;
     private List<Trader> traders = new ArrayList<Trader>();
     private List<Trader> searchedTraders;
+        
+    public TraderSteps(TradingService service) {
+        this.service = service;
+    }
 
     @Given("a trader of name %trader")
     public void aTrader(Trader trader) {
@@ -65,7 +73,7 @@ public class TraderSteps {
         for (Map<String, String> row : rows) {
             String name = row.get("name");
             String rank = row.get("rank");
-            traders.add(new Trader(name, rank));
+            traders.add(service.newTrader(name, rank));
         }
         Collections.sort(traders);
         return traders;
@@ -74,7 +82,7 @@ public class TraderSteps {
     @Given("a stock of symbol %symbol and a threshold of %threshold")
     @Alias("a stock of <symbol> and a <threshold>") // alias used with examples table
     public void aStock(@Named("symbol") String symbol, @Named("threshold") double threshold) {
-        stock = new Stock(symbol, threshold);
+        stock = service.newStock(symbol, threshold);
     }
 
     @When("the stock is traded at price %price")

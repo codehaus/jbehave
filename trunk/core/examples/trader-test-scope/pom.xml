@@ -9,6 +9,13 @@
   <artifactId>jbehave-trader-test-scope-example</artifactId>
   <name>JBehave Trader Test Scope Example</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.jbehave</groupId>
+      <artifactId>jbehave-pico</artifactId>
+      <version>${jbehave.version}</version>
+    </dependency>
+  </dependencies>
   <build>
     <!-- JBEHAVE-155: we can run scenarios in test scope -->
     <testSourceDirectory>${basedir}/../trader/src/main/java</testSourceDirectory>
