@@ -55,8 +55,7 @@ textual step:</p>
 
 <h2>Scenario Annotations</h2>
 
-<p>JBehave also supports the following Java method scenario
-annotations:</p>
+<p>JBehave supports the following Java method scenario annotations:</p>
 
 <ul>
     <li><a
@@ -70,8 +69,8 @@ annotations:</p>
 the corresponding method to be executed before each scenario, while the
 <b>AfterScenario</b> holds an optional <a
     href="javadoc/core/org/jbehave/scenario/annotations/AfterScenario.Outcome.html">Outcome</a>
-value, which specifies whether the method should be executed depending on the
-outcome of the scenario:</p>
+value, which specifies whether the method should be executed depending
+on the outcome of the scenario:</p>
 
 <pre class="brush: java">
 
@@ -96,6 +95,35 @@ outcome of the scenario:</p>
     }
 </pre>
 
+<h2>Story Annotations</h2>
+
+<p>JBehave supports the following Java method story annotations:</p>
+
+<ul>
+    <li><a
+        href="javadoc/core/org/jbehave/scenario/annotations/BeforeStory.html">BeforeStory</a>
+    </li>
+    <li><a
+        href="javadoc/core/org/jbehave/scenario/annotations/AfterStory.html">AfterStory</a>
+    </li>
+</ul>
+<p>The <b>BeforeStory</b> and <b>AfterStory</b> annotations allow
+the corresponding methods to be executed before and after each story:</p>
+
+<pre class="brush: java">
+
+    @BeforeStory
+    public void beforeEachStory() {
+        // ...
+    }
+        
+    @AfterStory 
+    public void afterEachStory() {
+        // ...
+    }
+    
+</pre>
+
 <h2>Parameter Annotations</h2>
 
 <p>JBehave supports the following Java parameter annotations:</p>
@@ -105,7 +133,8 @@ outcome of the scenario:</p>
         href="javadoc/core/org/jbehave/scenario/annotations/Named.html">Named</a>
     </li>
 </ul>
-<p>Parameter annotations are used in <a href="parameter-injection.html">parameter injection</a>.</p>
+<p>Parameter annotations are used in <a
+    href="parameter-injection.html">parameter injection</a>.</p>
 
 <div class="clear">
 <hr />
