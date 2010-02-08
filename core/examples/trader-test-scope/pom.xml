@@ -15,6 +15,11 @@
       <artifactId>jbehave-pico</artifactId>
       <version>${jbehave.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.jbehave</groupId>
+      <artifactId>jbehave-spring</artifactId>
+      <version>${jbehave.version}</version>
+    </dependency>
   </dependencies>
   <build>
     <!-- JBEHAVE-155: we can run scenarios in test scope -->
