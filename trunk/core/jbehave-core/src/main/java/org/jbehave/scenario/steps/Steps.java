@@ -16,9 +16,11 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.jbehave.scenario.annotations.AfterScenario;
+import org.jbehave.scenario.annotations.AfterStory;
 import org.jbehave.scenario.annotations.Alias;
 import org.jbehave.scenario.annotations.Aliases;
 import org.jbehave.scenario.annotations.BeforeScenario;
+import org.jbehave.scenario.annotations.BeforeStory;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
@@ -208,6 +210,14 @@ public class Steps implements CandidateSteps {
         }
     }
 
+    public List<Step> runBeforeStory() {
+        return stepsHaving(BeforeStory.class, new OkayToRun());
+    }
+
+    public List<Step> runAfterStory() {
+        return stepsHaving(AfterStory.class, new OkayToRun());
+    }
+
     public List<Step> runBeforeScenario() {
         return stepsHaving(BeforeScenario.class, new OkayToRun());
     }
@@ -220,7 +230,7 @@ public class Steps implements CandidateSteps {
         return steps;
     }
 
-    private List<Step> stepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forScenarios) {
+    List<Step> stepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forScenarios) {
         List<Step> steps = new ArrayList<Step>();
         Method[] methods;
         if (instance == null) {
@@ -270,7 +280,7 @@ public class Steps implements CandidateSteps {
         return steps;
     }
 
-    private class OkayToRun implements StepPart {
+    class OkayToRun implements StepPart {
         public StepResult run(final Class<? extends Annotation> annotation, Method method) {
             try {
                 method.invoke(instance);

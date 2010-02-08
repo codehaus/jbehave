@@ -64,7 +64,7 @@ public class TraderScenario extends JUnitScenario {
     }
 
     protected CandidateSteps[] createSteps(StepsConfiguration configuration) {
-        return new StepsFactory(configuration).createCandidateSteps(new TraderSteps(new TradingService()));
+        return new StepsFactory(configuration).createCandidateSteps(new TraderSteps(new TradingService()), new BeforeAfterSteps());
     }
 
     private TraderPersister mockTradePersister() {

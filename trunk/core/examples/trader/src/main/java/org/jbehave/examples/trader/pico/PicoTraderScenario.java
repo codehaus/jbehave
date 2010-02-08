@@ -1,5 +1,6 @@
 package org.jbehave.examples.trader.pico;
 
+import org.jbehave.examples.trader.BeforeAfterSteps;
 import org.jbehave.examples.trader.TraderScenario;
 import org.jbehave.examples.trader.TraderSteps;
 import org.jbehave.examples.trader.service.TradingService;
@@ -30,6 +31,7 @@ public class PicoTraderScenario extends TraderScenario {
         MutablePicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.as(Characteristics.USE_NAMES).addComponent(TradingService.class);
         parent.as(Characteristics.USE_NAMES).addComponent(TraderSteps.class);
+        parent.as(Characteristics.USE_NAMES).addComponent(BeforeAfterSteps.class);
         return parent;
     }
     

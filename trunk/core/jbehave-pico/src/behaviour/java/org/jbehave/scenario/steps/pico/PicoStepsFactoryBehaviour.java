@@ -60,7 +60,7 @@ public class PicoStepsFactoryBehaviour {
 
     private void assertFooStepsFound(CandidateSteps[] steps) throws NoSuchFieldException, IllegalAccessException {
         assertEquals(1, steps.length);
-        assertTrue(steps[0] instanceof Steps);
+        assertTrue(steps[0] instanceof CandidateSteps);
         Object instance = stepsInstance.get(steps[0]);
         assertTrue(instance instanceof FooSteps);
     }

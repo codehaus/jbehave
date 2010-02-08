@@ -1,6 +1,6 @@
 package org.jbehave.scenario.steps;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents the list of candidate steps that can be performed
@@ -8,31 +8,46 @@ import java.util.Collection;
 public interface CandidateSteps {
 
     /**
-     * Return all the steps that can be performed by the implementing class
+     * Return all the candidate steps that can be performed by the implementing class
      * 
      * @return The list of candidate steps
      */
     CandidateStep[] getSteps();
 
     /**
-     * Return all the steps that can be performed by the given class
+     * Return all the candidate steps that can be performed by the given class
      * 
      * @return The list of candidate steps
      */
     CandidateStep[] getSteps(Class<?> stepsClass);
 
     /**
-     * Return all steps to run before scenario
+     * Return all the executable steps to run before each story
      * 
      * @return The list of steps 
      */
-    Collection<? extends Step> runBeforeScenario();
+    List<Step> runBeforeStory();
 
     /**
-     * Return all steps to run after scenario
+     * Return all the executable steps to run after each story
      * 
      * @return The list of steps 
      */
-    Collection<? extends Step> runAfterScenario();
+    List<Step> runAfterStory();
+
+    /**
+     * Return all the executable steps to run before each scenario
+     * 
+     * @return The list of steps 
+     */
+    List<Step> runBeforeScenario();
+
+    /**
+     * Return all the executable steps to run after each scenario
+     * 
+     * @return The list of steps 
+     */
+    List<Step> runAfterScenario();
+
 
 }
