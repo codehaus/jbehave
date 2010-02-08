@@ -14,6 +14,7 @@ import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.Step;
+import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.StepResult;
 
 /**
@@ -31,6 +32,7 @@ public class ScenarioRunner {
     private ScenarioReporter reporter;
     private ErrorStrategy errorStrategy;
     private Throwable throwable;
+    private StepCreator stepCreator;
 
     public void run(Class<? extends RunnableScenario> scenarioClass, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
 		StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioClass);
@@ -49,13 +51,15 @@ public class ScenarioRunner {
     }
     
     public void run(StoryDefinition story, Configuration configuration, boolean embeddedStory, CandidateSteps... candidateSteps) throws Throwable {
+        stepCreator = configuration.forCreatingSteps();
         reporter = configuration.forReportingScenarios();
         pendingStepStrategy = configuration.forPendingSteps();
         errorStrategy = configuration.forHandlingErrors();
         currentStrategy = ErrorStrategy.SILENT;
         throwable = null;
         
-        reporter.beforeStory(story, embeddedStory);            
+        reporter.beforeStory(story, embeddedStory);          
+        runSteps(stepCreator.createStepsFrom(story, StepCreator.Stage.BEFORE, candidateSteps), embeddedStory);
         for (ScenarioDefinition scenario : story.getScenarios()) {
     		reporter.beforeScenario(scenario.getTitle());
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
@@ -66,11 +70,28 @@ public class ScenarioRunner {
         	}
     		reporter.afterScenario();
         }
+        runSteps(stepCreator.createStepsFrom(story, StepCreator.Stage.AFTER, candidateSteps), embeddedStory);
         reporter.afterStory(embeddedStory);            
         currentStrategy.handleError(throwable);
     }
 
-	private void runGivenScenarios(Configuration configuration,
+	
+    /**
+     * Runs a list of steps.  The running can be skipped in certain cases,
+     * e.g. when running in embedded story mode.
+     * 
+     * @param steps the Steps to run
+     * @param skip the boolean flag to skip running
+     */
+    private void runSteps(Step[] steps, boolean skip) {
+        if ( skip ) return; 
+        state = new FineSoFar();
+        for (Step step : steps) {
+            state.run(step);
+        }
+    }
+	
+    private void runGivenScenarios(Configuration configuration,
 			ScenarioDefinition scenario, CandidateSteps... candidateSteps)
 			throws Throwable {
 		List<String> givenScenarios = scenario.getGivenScenarios();
@@ -101,11 +122,8 @@ public class ScenarioRunner {
 
 	private void runScenario(Configuration configuration,
 			ScenarioDefinition scenario, Map<String, String> tableRow, CandidateSteps... candidateSteps) {
-		Step[] steps = configuration.forCreatingSteps().createStepsFrom(scenario, tableRow, candidateSteps);
-		state = new FineSoFar();
-		for (Step step : steps) {
-		    state.run(step);
-		}
+        Step[] steps = stepCreator.createStepsFrom(scenario, tableRow, candidateSteps);
+		runSteps(steps, false);
 	};
 
     private class SomethingHappened implements State {
