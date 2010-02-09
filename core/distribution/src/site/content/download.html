@@ -44,6 +44,16 @@ dependency as</p>
 specifying the correct version.
 </p>
 
+<p>If you are using the JBehave dependency-injection extensions
+you'll need to also add the corresponding module</p>
+<script type="syntaxhighlighter" class="brush: xml"><![CDATA[
+  <dependency> 
+    <groupId>org.jbehave</groupId>
+    <artifactId>jbehave-[pico|spring]</artifactId>
+    <version>[version]</version>
+  </dependency>
+]]></script>
+
 <p>JBehave was designed to be embeddable in different development
 environments. The <b>jbehave-core</b> contains support for running
 scenarios as JUnit tests - which can be run either in your favourite IDE

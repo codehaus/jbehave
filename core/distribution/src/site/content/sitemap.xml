@@ -31,6 +31,7 @@
   <section>
     <name>Advanced Topics</name>
     <page>aliases.html</page>
+    <page>dependency-injection.html</page>
     <page>parameter-injection.html</page>
     <page>parameter-converters.html</page>
     <page>table-examples.html</page>
