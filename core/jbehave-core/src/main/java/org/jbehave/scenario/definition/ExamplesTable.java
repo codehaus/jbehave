@@ -15,7 +15,8 @@ import java.util.Map;
  */
 public class ExamplesTable {
 
-	private static final String COLUMN_SEPARATOR = "\\|";
+	private static final String NEWLINE = "\n";
+    private static final String COLUMN_SEPARATOR = "\\|";
 	private final List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private final String tableAsString;
     private final List<String> headers = new ArrayList<String>();
@@ -27,7 +28,7 @@ public class ExamplesTable {
 
 	private void parse() {
 		data.clear();
-		String[] rows = tableAsString.split("\n");
+		String[] rows = tableAsString.trim().split(NEWLINE);
 		headers.clear();
 		for (int row = 0; row < rows.length; row++) {
 			List<String> columns = columnsFor(rows[row]);
