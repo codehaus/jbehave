@@ -73,7 +73,7 @@ public class PatternScenarioParser implements ScenarioParser {
 	}
 
 	private ExamplesTable findTable(String scenario) {
-		Matcher findingTable = patternToPullScenarioTableIntoGroupOne()
+		Matcher findingTable = patternToPullExamplesTableIntoGroupOne()
 		.matcher(scenario);
 		String table = findingTable.find() ? findingTable.group(1).trim() : NONE;
 		return new ExamplesTable(table);
@@ -186,9 +186,9 @@ public class PatternScenarioParser implements ScenarioParser {
 		return compile(".*"+givenScenarios+"(.*?)\\s*(" + concatenatedKeywords + ").*");
 	}
 
-	private Pattern patternToPullScenarioTableIntoGroupOne() {
+	private Pattern patternToPullExamplesTableIntoGroupOne() {
 		String table = keywords.examplesTable();
-		return compile(".*"+table+"\\s*((.|\\s)*)");
+		return compile(".*"+table+"\\s*(.*)", DOTALL);
 	}
 
 	private Pattern patternToPullScenarioTitleIntoGroupOne() {
