@@ -6,21 +6,24 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class ExamplesTableBehaviour {
+    String tableAsString = 
+        "|one|two|\n" + 
+        "|11|12|\n" +
+        "|21|22|\n";
 
     @Test
     public void shouldParseTableIntoHeadersAndRows() {
-        String tableAsString = "|one|two|\n" + 
-                               "|11|12|\n" +
-                               "|21|22|\n";
-        ensureTableContentIsParsed(new ExamplesTable(tableAsString));
+        ExamplesTable table = new ExamplesTable(tableAsString);
+        ensureTableContentIsParsed(table);
+        assertEquals(tableAsString, table.toString());
     }
 
     @Test
     public void shouldTrimTableBeforeParsing() {
-        String tableAsString = "|one|two|\n" + 
-                               "|11|12|\n" +
-                               "|21|22|\n";
-        ensureTableContentIsParsed(new ExamplesTable("\n    \n" +tableAsString + "\n    \n"));
+        String untrimmedTableAsString = "\n    \n" +tableAsString + "\n    \n";
+        ExamplesTable table = new ExamplesTable(untrimmedTableAsString);
+        ensureTableContentIsParsed(table);
+        assertEquals(untrimmedTableAsString, table.toString());
     }
 
     private void ensureTableContentIsParsed(ExamplesTable table) {
