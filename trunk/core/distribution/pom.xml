@@ -29,6 +29,11 @@
     </dependency>
     <dependency>
       <groupId>${pom.groupId}</groupId>
+      <artifactId>jbehave-guice</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
       <artifactId>jbehave-ant</artifactId>
       <version>${pom.version}</version>
     </dependency>
@@ -125,6 +130,26 @@
                 <artifactItem>
                   <groupId>${pom.groupId}</groupId>
                   <artifactId>jbehave-spring</artifactId>
+                  <version>${pom.version}</version>
+                  <classifier>javadoc</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>unpack-javadoc-guice</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/site/javadoc/guice</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${pom.groupId}</groupId>
+                  <artifactId>jbehave-guice</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
                 </artifactItem>

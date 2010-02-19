@@ -16,6 +16,7 @@
     <module>jbehave-maven-plugin</module>
     <module>jbehave-pico</module>
     <module>jbehave-spring</module>
+    <module>jbehave-guice</module>
   </modules>
 
   <dependencyManagement>

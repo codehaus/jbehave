@@ -15,6 +15,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
  * {@link ListableBeanFactory} for the composition and instantiation of all
  * components that contains scenario annotated methods.
  * 
+ * @author Paul Hammant
  * @author Mauro Talevi
  */
 public class SpringStepsFactory {
