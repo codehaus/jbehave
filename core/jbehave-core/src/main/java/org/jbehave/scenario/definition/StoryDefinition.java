@@ -8,6 +8,7 @@ import java.util.List;
 public class StoryDefinition {
 
     private final Blurb blurb;
+    private final Narrative narrative;
     private final List<ScenarioDefinition> scenarioDefinitions;
     private String name = "Story";
     private String path = "";
@@ -17,25 +18,30 @@ public class StoryDefinition {
     }
 
     public StoryDefinition(List<ScenarioDefinition> scenarioDefinitions) {
-        this(Blurb.EMPTY, scenarioDefinitions);
+        this(Blurb.EMPTY, Narrative.EMPTY, scenarioDefinitions);
     }
 
     public StoryDefinition(Blurb blurb, ScenarioDefinition... scenarioDefinitions) {
-        this(blurb, asList(scenarioDefinitions));
+        this(blurb, Narrative.EMPTY, asList(scenarioDefinitions));
     }
 
-    public StoryDefinition(Blurb blurb, List<ScenarioDefinition> scenarioDefinitions) {
-        this(blurb, "", scenarioDefinitions);
+    public StoryDefinition(Blurb blurb, Narrative narrative, List<ScenarioDefinition> scenarioDefinitions) {
+        this(blurb, narrative, "", scenarioDefinitions);
     }
 
-    public StoryDefinition(Blurb blurb, String path, List<ScenarioDefinition> scenarioDefinitions) {
+    public StoryDefinition(Blurb blurb, Narrative narrative, String path, List<ScenarioDefinition> scenarioDefinitions) {
         this.blurb = blurb;
+        this.narrative = narrative;
         this.path = path;
         this.scenarioDefinitions = scenarioDefinitions;
     }
 
     public Blurb getBlurb() {
         return blurb;
+    }
+
+    public Narrative getNarrative() {
+        return narrative;
     }
 
     public List<ScenarioDefinition> getScenarios() {

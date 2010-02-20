@@ -3,12 +3,16 @@ package org.jbehave.scenario.i18n;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 import static org.jbehave.scenario.definition.KeyWords.AND;
+import static org.jbehave.scenario.definition.KeyWords.AS_A;
 import static org.jbehave.scenario.definition.KeyWords.EXAMPLES_TABLE;
 import static org.jbehave.scenario.definition.KeyWords.EXAMPLES_TABLE_ROW;
 import static org.jbehave.scenario.definition.KeyWords.FAILED;
 import static org.jbehave.scenario.definition.KeyWords.GIVEN;
 import static org.jbehave.scenario.definition.KeyWords.GIVEN_SCENARIOS;
 import static org.jbehave.scenario.definition.KeyWords.IGNORABLE;
+import static org.jbehave.scenario.definition.KeyWords.IN_ORDER_TO;
+import static org.jbehave.scenario.definition.KeyWords.I_WANT_TO;
+import static org.jbehave.scenario.definition.KeyWords.NARRATIVE;
 import static org.jbehave.scenario.definition.KeyWords.NOT_PERFORMED;
 import static org.jbehave.scenario.definition.KeyWords.PENDING;
 import static org.jbehave.scenario.definition.KeyWords.SCENARIO;
@@ -74,6 +78,10 @@ public class I18nKeywordsBehaviour {
     private void ensureKeywordsAreLocalisedFor(Locale locale, String bundleName) throws IOException {
         KeyWords keywords = keyWordsFor(locale, bundleName);
         Properties properties = bundleFor(locale);
+        ensureKeywordIs(properties, NARRATIVE, keywords.narrative());
+        ensureKeywordIs(properties, IN_ORDER_TO, keywords.inOrderTo());
+        ensureKeywordIs(properties, AS_A, keywords.asA());
+        ensureKeywordIs(properties, I_WANT_TO, keywords.iWantTo());
         ensureKeywordIs(properties, SCENARIO, keywords.scenario());
         ensureKeywordIs(properties, GIVEN_SCENARIOS, keywords.givenScenarios());
         ensureKeywordIs(properties, EXAMPLES_TABLE, keywords.examplesTable());

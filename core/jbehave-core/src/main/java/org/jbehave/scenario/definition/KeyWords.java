@@ -16,6 +16,10 @@ import org.jbehave.scenario.i18n.StringEncoder;
  */
 public class KeyWords {
 
+    public static final String NARRATIVE = "Narrative";
+    public static final String IN_ORDER_TO = "InOrderTo";
+    public static final String AS_A = "AsA";
+    public static final String I_WANT_TO = "IWantTo";
     public static final String SCENARIO = "Scenario";
     public static final String GIVEN_SCENARIOS = "GivenScenarios";
     public static final String EXAMPLES_TABLE = "ExamplesTable";
@@ -28,9 +32,14 @@ public class KeyWords {
     public static final String NOT_PERFORMED = "NotPerformed";
     public static final String FAILED = "Failed";
     public static final String EXAMPLES_TABLE_ROW = "ExamplesTableRow";
-    public static final List<String> KEYWORDS = asList(SCENARIO, GIVEN_SCENARIOS, EXAMPLES_TABLE, GIVEN, WHEN, THEN,
-            AND, IGNORABLE, PENDING, NOT_PERFORMED, FAILED, EXAMPLES_TABLE_ROW);
+    public static final List<String> KEYWORDS = asList(NARRATIVE, IN_ORDER_TO, AS_A, I_WANT_TO, SCENARIO,
+            GIVEN_SCENARIOS, EXAMPLES_TABLE, GIVEN, WHEN, THEN, AND, IGNORABLE, PENDING, NOT_PERFORMED, FAILED,
+            EXAMPLES_TABLE_ROW);
 
+    private final String narrative;
+    private final String inOrderTo;
+    private final String asA;
+    private final String iWantTo;
     private final String scenario;
     private final String givenScenarios;
     private final String examplesTable;
@@ -48,6 +57,10 @@ public class KeyWords {
 
     public static Map<String, String> defaultKeywords() {
         Map<String, String> keywords = new HashMap<String, String>();
+        keywords.put(NARRATIVE, "Narrative:");
+        keywords.put(IN_ORDER_TO, "In order to:");
+        keywords.put(AS_A, "As a:");
+        keywords.put(I_WANT_TO, "I want to:");
         keywords.put(SCENARIO, "Scenario:");
         keywords.put(GIVEN_SCENARIOS, "GivenScenarios:");
         keywords.put(EXAMPLES_TABLE, "Examples:");
@@ -80,12 +93,16 @@ public class KeyWords {
     }
 
     /**
-     * Creates a KeyWords from the map provided.  
+     * Creates a KeyWords from the map provided.
      * 
      * @param keywords the Map of keywords indexed by their name
      * @param encoder the StringEncoder used to encode the values
      */
     public KeyWords(Map<String, String> keywords, StringEncoder encoder) {
+        this.narrative = keyword(NARRATIVE, keywords);
+        this.inOrderTo = keyword(IN_ORDER_TO, keywords);
+        this.asA = keyword(AS_A, keywords);
+        this.iWantTo = keyword(I_WANT_TO, keywords);
         this.scenario = keyword(SCENARIO, keywords);
         this.givenScenarios = keyword(GIVEN_SCENARIOS, keywords);
         this.examplesTable = keyword(EXAMPLES_TABLE, keywords);
@@ -112,8 +129,9 @@ public class KeyWords {
 
     /**
      * Legacy constructor for KeyWords that provids explicitly the keywords
-     * values. The {@link others} vararg must include 6 additional keywords
-     * (and, ignorable, pending, notPerformed, failed, examplesTableRow).
+     * values. The {@link others} vararg must include 10 additional keywords
+     * (and, ignorable, pending, notPerformed, failed, examplesTableRow,
+     * narrative, inOrderTo, asA, iWantTo).
      * 
      * @param scenario
      * @param givenScenarios
@@ -122,7 +140,6 @@ public class KeyWords {
      * @param when
      * @param then
      * @param others
-     * 
      * @deprecated Use KeyWords(Map<String,String>, StringEncoder)
      */
     public KeyWords(String scenario, String givenScenarios, String examplesTable, String given, String when,
@@ -133,7 +150,7 @@ public class KeyWords {
         this.given = given;
         this.when = when;
         this.then = then;
-        if (others.length < 6) {
+        if (others.length < 7) {
             throw new InsufficientKeywordsException(others);
         }
         this.and = others[0];
@@ -142,7 +159,27 @@ public class KeyWords {
         this.notPerformed = others[3];
         this.failed = others[4];
         this.examplesTableRow = others[5];
+        this.narrative = others[6];
+        this.inOrderTo = others[7];
+        this.asA = others[8];
+        this.iWantTo = others[9];
         this.others = others;
+    }
+
+    public String narrative() {
+        return narrative;
+    }
+
+    public String inOrderTo() {
+        return inOrderTo;
+    }
+
+    public String asA() {
+        return asA;
+    }
+
+    public String iWantTo() {
+        return iWantTo;
     }
 
     public String scenario() {
@@ -217,9 +254,8 @@ public class KeyWords {
     public static final class InsufficientKeywordsException extends RuntimeException {
 
         public InsufficientKeywordsException(String... others) {
-            super("Insufficient keywords: " + asList(others) + ", but requires another " + (6 - others.length));
+            super("Insufficient keywords: " + asList(others) + ", but requires another " + (10 - others.length));
         }
 
     }
-
 }
