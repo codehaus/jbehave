@@ -122,8 +122,11 @@ div.story h2 {
 
 .narrative {
   text-align: left;
-  margin-left: 10px;
-  color: purple; 
+  color: blue; 
+}
+
+.element {
+  padding-left: 10px;	
 }
 
 span.inOrderTo, span.asA, span.iWantTo {
