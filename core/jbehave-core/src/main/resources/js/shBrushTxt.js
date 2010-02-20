@@ -5,7 +5,7 @@
  */
 SyntaxHighlighter.brushes.Txt = function()
 {
-	var keywords =	'Given When Then And Scenario GivenScenarios Examples Example PENDING NOT PERFORMED FAILED';
+	var keywords =	'Narrative Given When Then And Scenario GivenScenarios Examples Example PENDING NOT PERFORMED FAILED';
 	
 	this.regexList = [
 		{ regex: new RegExp(this.getKeywords(keywords), 'gm'),		css: 'keyword' }		// txt keyword

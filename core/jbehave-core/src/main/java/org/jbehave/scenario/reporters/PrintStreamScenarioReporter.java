@@ -22,6 +22,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
 import org.jbehave.scenario.definition.KeyWords;
+import org.jbehave.scenario.definition.Narrative;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.i18n.I18nKeyWords;
 
@@ -133,7 +134,12 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     }
 
     public void beforeStory(StoryDefinition story, boolean embeddedStory) {
-        print(format("beforeStory", "{0}\n({1})\n", story.getBlurb().asString(), story.getPath()));
+        print(format("beforeStory", "{0}\n({1})\n", story.getBlurb().asString(), story.getPath()));            
+        if (!story.getNarrative().isEmpty()) {
+            Narrative narrative = story.getNarrative();
+            print(format("narrative", "{0}\n{1} {2}\n{3} {4}\n{5} {6}\n", keywords.narrative(), keywords.inOrderTo(),
+                    narrative.inOrderTo(), keywords.asA(), narrative.asA(), keywords.iWantTo(), narrative.iWantTo()));
+        }
     }
 
     public void beforeStory(Blurb blurb) {
