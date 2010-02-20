@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.HTML;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.TXT;
-import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,6 +45,10 @@ public class PrintStreamScenarioReporterBehaviour {
         // Then
         String expected = "An interesting story\n" 
                 + "(/path/to/story)\n" 
+                + "Narrative:\n"
+                + "In order to renovate my house\n"
+                + "As a customer\n"
+                + "I want to get a loan\n"
                 + "Scenario: I ask for a loan\n"
                 + "GivenScenarios: [/given/scenario1,/given/scenario2]\n" 
                 + "Given I have a balance of $50\n"
@@ -82,10 +85,15 @@ public class PrintStreamScenarioReporterBehaviour {
 
         // When
         narrateAnInterestingStory(reporter);
-
+        
         // Then
         String expected = "<div class=\"story\">\n<h1>An interesting story</h1>\n"
                 + "<div class=\"path\">/path/to/story</div>\n"
+                + "<div class=\"narrative\">Narrative:\n" 
+                + "<div class=\"narrative inOrderTo\">In order to renovate my house</div>\n" 
+                + "<div class=\"narrative asA\">As a customer</div>\n"
+                + "<div class=\"narrative iWantTo\">I want to get a loan</div>\n"
+                + "</div>\n" 
                 + "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n"
                 + "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n"
                 + "<div class=\"step successful\">Given I have a balance of $50</div>\n"
@@ -131,6 +139,11 @@ public class PrintStreamScenarioReporterBehaviour {
         // Then
         String expected = "<div class=\"story\">\n<h1>An interesting story</h1>\n"
                 + "<div class=\"path\">/path/to/story</div>\n"
+                + "<div class=\"narrative\">Narrative:\n" 
+                + "<div class=\"narrative inOrderTo\">In order to renovate my house</div>\n" 
+                + "<div class=\"narrative asA\">As a customer</div>\n"
+                + "<div class=\"narrative iWantTo\">I want to get a loan</div>\n"
+                + "</div>\n"                 
                 + "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n"
                 + "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n"
                 + "<div class=\"step successful\">Given I have a balance of $50</div>\n"
@@ -167,8 +180,14 @@ public class PrintStreamScenarioReporterBehaviour {
         // When
         narrateAnInterestingStory(reporter);
 
+        
         // Then
         String expected = "<story path=\"/path/to/story\" title=\"An interesting story\">\n"
+                + "<narrative keyword=\"Narrative:\">\n" 
+                + "  <inOrderTo keyword=\"In order to\">renovate my house</inOrderTo>\n"
+                + "  <asA keyword=\"As a\">customer</asA>\n" 
+                + "  <iWantTo keyword=\"I want to\">get a loan</iWantTo>\n" 
+                + "</narrative>\n" 
                 + "<scenario keyword=\"Scenario:\" title=\"I ask for a loan\">\n"
                 + "<givenScenarios keyword=\"GivenScenarios:\"paths=\"[/given/scenario1,/given/scenario2]\"</givenScenarios>\n"
                 + "<step outcome=\"successful\">Given I have a balance of $50</step>\n"
@@ -217,8 +236,8 @@ public class PrintStreamScenarioReporterBehaviour {
 
     private void ensureThatOutputIs(OutputStream out, String expected) {
         // JUnit assertion allows easier comparison of strings in IDE
-        assertEquals(expected, dos2unix(out.toString()));
-        // ensureThat(out.toString(), equalTo(expected));
+        //assertEquals(expected, dos2unix(out.toString()));
+        ensureThat(out.toString(), equalTo(expected));
     }
 
     private String dos2unix(String string) {

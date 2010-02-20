@@ -29,9 +29,14 @@ public class Narrative {
         return iWantTo;
     }
     
+    public boolean isEmpty() {
+        return EMPTY == this;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
 
 }
