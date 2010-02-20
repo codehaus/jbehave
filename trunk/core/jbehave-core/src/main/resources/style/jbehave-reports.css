@@ -126,6 +126,10 @@ div.story h2 {
   color: purple; 
 }
 
+span.inOrderTo, span.asA, span.iWantTo {
+  font-weight: bold;
+}
+
 .path, .givenScenarios {
   font-weight: bold;
   font-size: 16px;

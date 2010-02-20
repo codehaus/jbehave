@@ -1,6 +1,7 @@
 package org.jbehave.scenario.reporters;
 
 import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jbehave.Ensure.ensureThat;
 import static org.jbehave.scenario.reporters.ScenarioReporterBuilder.Format.HTML;
@@ -90,9 +91,9 @@ public class PrintStreamScenarioReporterBehaviour {
         String expected = "<div class=\"story\">\n<h1>An interesting story</h1>\n"
                 + "<div class=\"path\">/path/to/story</div>\n"
                 + "<div class=\"narrative\">Narrative:\n" 
-                + "<div class=\"narrative inOrderTo\">In order to renovate my house</div>\n" 
-                + "<div class=\"narrative asA\">As a customer</div>\n"
-                + "<div class=\"narrative iWantTo\">I want to get a loan</div>\n"
+                + "<div class=\"inOrderTo\"><span class=\"keyword inOrderTo\">In order to</span> renovate my house</div>\n" 
+                + "<div class=\"asA\"><span class=\"keyword asA\">As a</span> customer</div>\n" 
+                + "<div class=\"iWantTo\"><span class=\"keyword iWantTo\">I want to</span> get a loan</div>\n" 
                 + "</div>\n" 
                 + "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n"
                 + "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n"
@@ -116,7 +117,7 @@ public class PrintStreamScenarioReporterBehaviour {
                 "</div>\n</div>\n"; // end of scenario and story
         ensureThatOutputIs(out, expected);
     }
-
+    
     @Test
     public void shouldReportEventsToHtmlPrintStreamUsingCustomOutputPatterns() {
         // Given
@@ -140,10 +141,10 @@ public class PrintStreamScenarioReporterBehaviour {
         String expected = "<div class=\"story\">\n<h1>An interesting story</h1>\n"
                 + "<div class=\"path\">/path/to/story</div>\n"
                 + "<div class=\"narrative\">Narrative:\n" 
-                + "<div class=\"narrative inOrderTo\">In order to renovate my house</div>\n" 
-                + "<div class=\"narrative asA\">As a customer</div>\n"
-                + "<div class=\"narrative iWantTo\">I want to get a loan</div>\n"
-                + "</div>\n"                 
+                + "<div class=\"inOrderTo\"><span class=\"keyword inOrderTo\">In order to</span> renovate my house</div>\n" 
+                + "<div class=\"asA\"><span class=\"keyword asA\">As a</span> customer</div>\n" 
+                + "<div class=\"iWantTo\"><span class=\"keyword iWantTo\">I want to</span> get a loan</div>\n" 
+                + "</div>\n" 
                 + "<div class=\"scenario\">\n<h2>Scenario: I ask for a loan</h2>\n"
                 + "<div class=\"givenScenarios\">GivenScenarios: [/given/scenario1,/given/scenario2]</div>\n"
                 + "<div class=\"step successful\">Given I have a balance of $50</div>\n"
@@ -236,8 +237,8 @@ public class PrintStreamScenarioReporterBehaviour {
 
     private void ensureThatOutputIs(OutputStream out, String expected) {
         // JUnit assertion allows easier comparison of strings in IDE
-        //assertEquals(expected, dos2unix(out.toString()));
-        ensureThat(out.toString(), equalTo(expected));
+        assertEquals(expected, dos2unix(out.toString()));
+        //ensureThat(out.toString(), equalTo(expected));
     }
 
     private String dos2unix(String string) {
