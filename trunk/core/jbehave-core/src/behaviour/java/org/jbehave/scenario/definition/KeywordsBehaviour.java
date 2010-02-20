@@ -14,6 +14,7 @@ public class KeywordsBehaviour {
     @Test
     public void shouldHaveAllKeywordsSetByDefault() throws IOException {
         KeyWords keywords = new KeyWords();
+        assertEquals("Narrative:", keywords.narrative());
         assertEquals("Scenario:", keywords.scenario());
         assertEquals("GivenScenarios:", keywords.givenScenarios());
         assertEquals("Examples:", keywords.examplesTable());
@@ -35,7 +36,7 @@ public class KeywordsBehaviour {
 
     @Test(expected=InsufficientKeywordsException.class)
     public void shouldFailIfSomeKeywordIsMissingInVarargConstructor() throws IOException {
-        new KeyWords("scenario", "givenScenario", "examples", "given", "when", "then", "and", "!--");
+        new KeyWords("scenario", "givenScenario", "examples", "given", "when", "then", "and", "!--", "narrative");
     }
 
 }

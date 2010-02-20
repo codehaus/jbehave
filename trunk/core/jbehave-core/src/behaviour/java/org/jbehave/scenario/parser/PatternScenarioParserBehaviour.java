@@ -9,6 +9,7 @@ import static org.jbehave.Ensure.ensureThat;
 import java.util.List;
 
 import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.definition.Narrative;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.i18n.I18nKeyWords;
@@ -102,17 +103,33 @@ public class PatternScenarioParserBehaviour {
         ensureThat(story.getScenarios().get(0).getSteps(), equalTo(asList("Given my scenario")));
         ensureThat(story.getScenarios().get(1).getTitle(), equalTo("the second scenario"));
         ensureThat(story.getScenarios().get(1).getSteps(), equalTo(asList("Given my second scenario")));
+    }   
+    
+    @Test
+    public void shouldParseNarrativeFromStory() {
+        StoryDefinition story = parser.defineStoryFrom(
+                "Narrative: This bit of text is ignored" + NL + 
+                "In order to renovate my house" + NL + 
+                "As a customer" + NL + 
+                "I want to get a loan" + NL + 
+                "Scenario:  A first scenario", null);
+        Narrative narrative = story.getNarrative();
+        ensureThat(narrative, not(equalTo(Narrative.EMPTY)));
+        ensureThat(narrative.inOrderTo().toString(), equalTo("renovate my house"));
+        ensureThat(narrative.asA().toString(), equalTo("customer"));
+        ensureThat(narrative.iWantTo().toString(), equalTo("get a loan"));
     }
     
     @Test
     public void shouldParseFullStory() {
         String wholeStory = 
             "Story: I can output narratives" + NL + NL +
-            
+
+            "Narrative: " + NL +
+            "In order to see what we're not delivering" + NL + NL +
             "As a developer" + NL +
             "I want to see the narrative for my story when a scenario in that story breaks" + NL +
-            "So that I can see what we're not delivering" + NL + NL +
-            
+
             "Scenario: A pending scenario" + NL +  NL +
             "Given a step that's pending" + NL +
             "When I run the scenario" + NL +
@@ -132,10 +149,11 @@ public class PatternScenarioParserBehaviour {
         
         StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
         
-        ensureThat(story.getBlurb().asString(), equalTo("Story: I can output narratives" + NL + NL +
-                    "As a developer" + NL +
-                    "I want to see the narrative for my story when a scenario in that story breaks" + NL +
-                    "So that I can see what we're not delivering"));
+        ensureThat(story.getBlurb().asString(), equalTo("Story: I can output narratives"));
+        
+        ensureThat(story.getNarrative().inOrderTo(), equalTo("see what we're not delivering"));
+        ensureThat(story.getNarrative().asA(), equalTo("developer"));
+        ensureThat(story.getNarrative().iWantTo(), equalTo("see the narrative for my story when a scenario in that story breaks"));
         
         ensureThat(story.getScenarios().get(0).getTitle(), equalTo("A pending scenario"));
 		ensureThat(story.getScenarios().get(0).getGivenScenarios().size(), equalTo(0));
@@ -224,31 +242,31 @@ public class PatternScenarioParserBehaviour {
 	            "|a|b|c|" + NL +
 	            "|d|e|f|";
 		
-	        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
-	        
-	        ScenarioDefinition scenario = story.getScenarios().get(0);
-			ensureThat(scenario.getTitle(), equalTo("A template scenario with table values"));	        
-			ensureThat(scenario.getGivenScenarios().size(), equalTo(0));
-			ensureThat(scenario.getSteps(), equalTo(asList(
-	                "Given a step with a <one>",
-	                "When I run the scenario of name <two>",
-	                "Then I should see <three> in the output"
-	        )));
-	        ExamplesTable table = scenario.getTable();
-			ensureThat(table.toString(), equalTo(
-	        		"|one|two|three|" + NL +
-		            "|a|b|c|" + NL +
-		            "|d|e|f|"));	        
-	        ensureThat(table.getRowCount(), equalTo(2));
-	        ensureThat(table.getRow(0), not(nullValue()));
-	        ensureThat(table.getRow(0).get("one"), equalTo("a"));
-	        ensureThat(table.getRow(0).get("two"), equalTo("b"));
-	        ensureThat(table.getRow(0).get("three"), equalTo("c"));
-	        ensureThat(table.getRow(1), not(nullValue()));
-	        ensureThat(table.getRow(1).get("one"), equalTo("d"));
-	        ensureThat(table.getRow(1).get("two"), equalTo("e"));
-	        ensureThat(table.getRow(1).get("three"), equalTo("f"));
-	    }
+        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
+        
+        ScenarioDefinition scenario = story.getScenarios().get(0);
+        ensureThat(scenario.getTitle(), equalTo("A template scenario with table values"));          
+        ensureThat(scenario.getGivenScenarios().size(), equalTo(0));
+        ensureThat(scenario.getSteps(), equalTo(asList(
+                "Given a step with a <one>",
+                "When I run the scenario of name <two>",
+                "Then I should see <three> in the output"
+        )));
+        ExamplesTable table = scenario.getTable();
+        ensureThat(table.toString(), equalTo(
+                "|one|two|three|" + NL +
+                "|a|b|c|" + NL +
+                "|d|e|f|"));            
+        ensureThat(table.getRowCount(), equalTo(2));
+        ensureThat(table.getRow(0), not(nullValue()));
+        ensureThat(table.getRow(0).get("one"), equalTo("a"));
+        ensureThat(table.getRow(0).get("two"), equalTo("b"));
+        ensureThat(table.getRow(0).get("three"), equalTo("c"));
+        ensureThat(table.getRow(1), not(nullValue()));
+        ensureThat(table.getRow(1).get("one"), equalTo("d"));
+        ensureThat(table.getRow(1).get("two"), equalTo("e"));
+        ensureThat(table.getRow(1).get("three"), equalTo("f"));
+	}
 	
 	@Test
 	public void shouldParseStoryWithGivenScenarios() {
@@ -259,19 +277,19 @@ public class PatternScenarioParserBehaviour {
 	            "When I run the scenario of name <two>" + NL +
 	            "Then I should see <three> in the output";
 		
-	        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
-	        
-	        ScenarioDefinition scenario = story.getScenarios().get(0);
-			ensureThat(scenario.getTitle(), equalTo("A scenario with given scenarios"));	        
-			ensureThat(scenario.getGivenScenarios(), equalTo(asList(
-	                "path/to/one",
-	                "path/to/two")));   
-	        ensureThat(scenario.getSteps(), equalTo(asList(
-	                "Given a step with a <one>",
-	                "When I run the scenario of name <two>",
-	                "Then I should see <three> in the output"
-	        )));
+        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
+        
+        ScenarioDefinition scenario = story.getScenarios().get(0);
+        ensureThat(scenario.getTitle(), equalTo("A scenario with given scenarios"));            
+        ensureThat(scenario.getGivenScenarios(), equalTo(asList(
+                "path/to/one",
+                "path/to/two")));   
+        ensureThat(scenario.getSteps(), equalTo(asList(
+                "Given a step with a <one>",
+                "When I run the scenario of name <two>",
+                "Then I should see <three> in the output"
+        )));
 
-	    }
+	}
 	    
 }

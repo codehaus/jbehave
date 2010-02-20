@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.jbehave.scenario.Scenario;
 import org.jbehave.scenario.definition.Blurb;
 import org.jbehave.scenario.definition.ExamplesTable;
+import org.jbehave.scenario.definition.Narrative;
 import org.jbehave.scenario.definition.ScenarioDefinition;
 import org.jbehave.scenario.definition.StoryDefinition;
 import org.jbehave.scenario.i18n.I18nKeyWords;
@@ -192,7 +193,7 @@ public class PrintStreamScenarioReporterBehaviour {
 
     private void narrateAnInterestingStory(ScenarioReporter reporter) {
         StoryDefinition story = new StoryDefinition(new Blurb("An interesting story"),
-                "/path/to/story", new ArrayList<ScenarioDefinition>());
+                new Narrative("renovate my house", "customer", "get a loan"), "/path/to/story", new ArrayList<ScenarioDefinition>());
         boolean embeddedStory = true;
         reporter.beforeStory(story, embeddedStory);
         String title = "I ask for a loan";
