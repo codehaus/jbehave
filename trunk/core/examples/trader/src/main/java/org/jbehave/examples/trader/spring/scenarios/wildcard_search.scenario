@@ -1,6 +1,10 @@
-Scenario: Traders can be searched by name.   This is the same scenario as
-org.jbehave.examples.trader.scenarios.wildcard_search, with the only difference that
-the candidate steps class (TraderSteps) is created, with it dependency, via a PicoContainer.
+Narrative: 
+
+In order to improve the quality of my integration code
+As a scenario writer
+I want to compose candidate steps classes via Spring
+
+Scenario: Traders can be searched by name
 
 Given the traders: 
 |name|rank|
