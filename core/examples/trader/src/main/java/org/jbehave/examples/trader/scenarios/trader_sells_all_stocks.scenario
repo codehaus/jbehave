@@ -1,4 +1,8 @@
-Story: In order to cut my losses
+Story: Any free-text description can go here (and Story: is also optional)
+
+Narrative: The narrative is keyword based
+
+In order to cut my losses
 As a Trader
 I want to sell all stocks when alerted
 
