@@ -47,7 +47,7 @@ public class HtmlPrintStreamScenarioReporter extends PrintStreamScenarioReporter
         patterns.setProperty("notPerformed", "<div class=\"step notPerformed\">{0} <span class=\"keyword notPerformed\">({1})</span></div>\n");
         patterns.setProperty("failed", "<div class=\"step failed\">{0} <span class=\"keyword failed\">({1})</span></div>\n");
         patterns.setProperty("beforeStory", "<div class=\"story\">\n<h1>{0}</h1>\n<div class=\"path\">{1}</div>\n");
-        patterns.setProperty("narrative", "<div class=\"narrative\">{0}\n<div class=\"inOrderTo\"><span class=\"keyword inOrderTo\">{1}</span> {2}</div>\n<div class=\"asA\"><span class=\"keyword asA\">{3}</span> {4}</div>\n<div class=\"iWantTo\"><span class=\"keyword iWantTo\">{5}</span> {6}</div>\n</div>\n");        
+        patterns.setProperty("narrative", "<div class=\"narrative\"><h2>{0}</h2>\n<div class=\"element inOrderTo\"><span class=\"keyword inOrderTo\">{1}</span> {2}</div>\n<div class=\"element asA\"><span class=\"keyword asA\">{3}</span> {4}</div>\n<div class=\"element iWantTo\"><span class=\"keyword iWantTo\">{5}</span> {6}</div>\n</div>\n");        
         patterns.setProperty("afterStory", "</div>\n");
         patterns.setProperty("beforeScenario", "<div class=\"scenario\">\n<h2>{0} {1}</h2>\n");
         patterns.setProperty("afterScenario", "</div>\n");
