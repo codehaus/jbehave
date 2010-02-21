@@ -105,6 +105,11 @@ public class TraderSteps {
         ensureThat(stock.getStatus().name(), equalTo(status));
     }
 
+    @Then(value="the alert status is currently %status", priority=1) // prioritise over potential match with previous method
+    public void theAlertStatusIsCurrently(@Named("status") String status) {
+        ensureThat(stock.getStatus().name(), equalTo(status));
+    }    
+    
     @When("the trader sells all stocks")
     public void theTraderSellsAllStocks() {
         trader.sellAllStocks();

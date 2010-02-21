@@ -126,4 +126,47 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         ensureThat(afterSteps, array(equalTo(stepAfter1), equalTo(stepAfter2)));
     }
 
+    @Test
+    public void shouldPrioritiseAnnotatedSteps() {
+        // Given some Steps classes  
+        // and some candidate steps split across them
+
+        CandidateSteps steps1 = mock(Steps.class);
+        CandidateSteps steps2 = mock(Steps.class);
+        CandidateStep candidate1 = mock(CandidateStep.class);
+        CandidateStep candidate2 = mock(CandidateStep.class);
+        CandidateStep candidate3 = mock(CandidateStep.class);
+        CandidateStep candidate4 = mock(CandidateStep.class);
+        Step step1 = mock(Step.class);
+        Step step2 = mock(Step.class);
+        Step step3 = mock(Step.class);
+        Step step4 = mock(Step.class);
+
+        when(steps1.getSteps()).thenReturn(new CandidateStep[]{candidate1, candidate2});
+        when(steps2.getSteps()).thenReturn(new CandidateStep[]{candidate3, candidate4});
+        
+        // all matching the same step string with different priorities
+        String stepAsString = "Given a step";
+        when(candidate1.matches(stepAsString)).thenReturn(true);
+        when(candidate2.matches(stepAsString)).thenReturn(true);
+        when(candidate3.matches(stepAsString)).thenReturn(true);
+        when(candidate4.matches(stepAsString)).thenReturn(true);
+        when(candidate1.getPriority()).thenReturn(1);
+        when(candidate2.getPriority()).thenReturn(2);
+        when(candidate3.getPriority()).thenReturn(3);
+        when(candidate4.getPriority()).thenReturn(4);
+        when(candidate1.createFrom(tableRow, stepAsString)).thenReturn(step1);
+        when(candidate2.createFrom(tableRow, stepAsString)).thenReturn(step2);
+        when(candidate3.createFrom(tableRow, stepAsString)).thenReturn(step3);
+        when(candidate4.createFrom(tableRow, stepAsString)).thenReturn(step4);
+        
+        // When we create the series of steps for the scenario
+        UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
+        Step[] steps = creator.createStepsFrom(new ScenarioDefinition(asList(stepAsString)), tableRow,
+                steps1, steps2);
+
+        // Then the step with highest priority is returned
+        ensureThat(step4, equalTo(steps[0]));
+    }
+
 }
