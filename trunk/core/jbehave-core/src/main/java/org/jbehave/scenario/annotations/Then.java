@@ -11,4 +11,6 @@ public @interface Then {
 
     String value();
 
+    int priority() default 0;
+
 }

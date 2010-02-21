@@ -1,6 +1,6 @@
 package org.jbehave.examples.trader.scenarios;
 
-import org.jbehave.examples.trader.OrderMatchingSteps;
+import org.jbehave.examples.trader.PriorityMatchingSteps;
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.MostUsefulConfiguration;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
@@ -11,9 +11,9 @@ import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.steps.StepsConfiguration;
 import org.jbehave.scenario.steps.StepsFactory;
 
-public class OrderMatching extends JUnitScenario {
+public class PriorityMatching extends JUnitScenario {
 
-    public OrderMatching() {
+    public PriorityMatching() {
         super(new MostUsefulConfiguration() {
             @Override
             public ScenarioDefiner forDefiningScenarios() {
@@ -24,7 +24,7 @@ public class OrderMatching extends JUnitScenario {
 
         StepsConfiguration configuration = new StepsConfiguration();
         configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("$")); 
-        addSteps(new StepsFactory(configuration).createCandidateSteps(new OrderMatchingSteps()));
+        addSteps(new StepsFactory(configuration).createCandidateSteps(new PriorityMatchingSteps()));
 
     }
 

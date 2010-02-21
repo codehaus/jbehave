@@ -1,11 +1,12 @@
 package org.jbehave.examples.trader;
 
-import junit.framework.Assert;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.jbehave.Ensure.ensureThat;
 
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 
-public class OrderMatchingSteps {
+public class PriorityMatchingSteps {
 
     private String param;
 
@@ -14,14 +15,14 @@ public class OrderMatchingSteps {
         this.param = param;
     }
     
-    @Given("a step that has exactly one $param")
+    @Given(value="a step that has exactly one $param", priority=1)
     public void hasExactlyOne(String param){
         this.param = param;
     }
 
     @Then("the parameter value is \"$param\"")
     public void theParamValue(String param){
-        Assert.assertEquals(this.param, param);
+       ensureThat(this.param, equalTo(param));
     }
 
 }

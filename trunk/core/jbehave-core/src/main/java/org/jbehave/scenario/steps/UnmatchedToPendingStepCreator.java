@@ -1,6 +1,10 @@
 package org.jbehave.scenario.steps;
 
+import static java.util.Arrays.asList;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,22 +55,36 @@ public class UnmatchedToPendingStepCreator implements StepCreator {
 
     private void addMatchedScenarioSteps(ScenarioDefinition scenarioDefinition, List<Step> steps,
             Map<String, String> tableRow, CandidateSteps... candidateSteps) {
+        List<CandidateStep> prioritised = prioritise(candidateSteps);
         for (String stringStep : scenarioDefinition.getSteps()) {
             Step step = new PendingStep(stringStep);
-            for (CandidateSteps candidates : candidateSteps) {
-                for (CandidateStep candidate : candidates.getSteps()) {
-                    if (candidate.ignore(stringStep)) { // ignorable steps are added so they can be reported
-                        step = new IgnorableStep(stringStep);
-                        break;
-                    }                        
-                    if (candidate.matches(stringStep)) {
-                        step = candidate.createFrom(tableRow, stringStep);
-                        break;
-                    }
+            for (CandidateStep candidate : prioritised) {
+                if (candidate.ignore(stringStep)) { // ignorable steps are added
+                                                    // so they can be reported
+                    step = new IgnorableStep(stringStep);
+                    break;
+                }
+                if (candidate.matches(stringStep)) {
+                    step = candidate.createFrom(tableRow, stringStep);
+                    break;
                 }
             }
             steps.add(step);
         }
+    }
+
+    private List<CandidateStep> prioritise(CandidateSteps[] candidateSteps) {
+        List<CandidateStep> steps = new ArrayList<CandidateStep>();
+        for (CandidateSteps candidates : candidateSteps) {
+            steps.addAll(asList(candidates.getSteps()));
+        }
+        Collections.sort(steps, new Comparator<CandidateStep>() {
+            public int compare(CandidateStep o1, CandidateStep o2) {
+                // sort by decreasing order of priority
+                return -1* o1.getPriority().compareTo(o2.getPriority());
+            }
+        });
+        return steps;
     }
 
 }

@@ -13,7 +13,10 @@ Then the alert status is OFF
 When the stock is sold at price 11.0
 Then the alert status is OFF
 When the stock is sold at price 16.0
+!-- The next steps show step priority in action, since both textual steps could be matched by same regex pattern,  
+we set a higher priority to the less-greedy pattern
 Then the alert status is ON
+Then the alert status is currently ON
 
 Scenario:
 

@@ -153,19 +153,25 @@ public class Steps implements CandidateSteps {
         List<CandidateStep> steps = new ArrayList<CandidateStep>();
         for (Method method : stepsClass.getMethods()) {
             if (method.isAnnotationPresent(Given.class)) {
-                String value = encode(method.getAnnotation(Given.class).value());
-                createCandidateStep(steps, method, GIVEN, value);
-                createCandidateStepsFromAliases(steps, method, GIVEN);
+                Given annotation = method.getAnnotation(Given.class);
+                String value = encode(annotation.value());
+                int priority = annotation.priority();
+                createCandidateStep(steps, method, GIVEN, value, priority);
+                createCandidateStepsFromAliases(steps, method, GIVEN, priority);
             }
             if (method.isAnnotationPresent(When.class)) {
-                String value = encode(method.getAnnotation(When.class).value());
-                createCandidateStep(steps, method, WHEN, value);
-                createCandidateStepsFromAliases(steps, method, WHEN);
+                When annotation = method.getAnnotation(When.class);
+                String value = encode(annotation.value());
+                int priority = annotation.priority();
+                createCandidateStep(steps, method, WHEN, value, priority);
+                createCandidateStepsFromAliases(steps, method, WHEN, priority);
             }
             if (method.isAnnotationPresent(Then.class)) {
-                String value = encode(method.getAnnotation(Then.class).value());
-                createCandidateStep(steps, method, THEN, value);
-                createCandidateStepsFromAliases(steps, method, THEN);
+                Then annotation = method.getAnnotation(Then.class);
+                String value = encode(annotation.value());
+                int priority = annotation.priority();
+                createCandidateStep(steps, method, THEN, value, priority);
+                createCandidateStepsFromAliases(steps, method, THEN, priority);
             }
         }
         return steps.toArray(new CandidateStep[steps.size()]);
@@ -176,18 +182,18 @@ public class Steps implements CandidateSteps {
     }
 
     private void createCandidateStep(List<CandidateStep> steps, Method method, StepType stepType,
-            String stepPatternAsString) {
+            String stepPatternAsString, int priority) {
         checkForDuplicateCandidateSteps(steps, stepType, stepPatternAsString);
-        CandidateStep step = createCandidateStep(method, stepType, stepPatternAsString, configuration);
+        CandidateStep step = createCandidateStep(method, stepType, stepPatternAsString, priority, configuration);
         step.useStepMonitor(configuration.getMonitor());
         step.useParanamer(configuration.getParanamer());
         steps.add(step);
     }
 
-    protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString,
+    protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString, int priority,
             StepsConfiguration configuration) {
-        return new CandidateStep(stepPatternAsString, stepType, method, instance, configuration.getPatternBuilder(),
-                configuration.getParameterConverters(), configuration.getStartingWordsByType());
+        return new CandidateStep(stepPatternAsString, priority, stepType, method, instance,
+                configuration.getPatternBuilder(), configuration.getParameterConverters(), configuration.getStartingWordsByType());
     }
 
     private void checkForDuplicateCandidateSteps(List<CandidateStep> steps, StepType stepType, String patternAsString) {
@@ -198,15 +204,16 @@ public class Steps implements CandidateSteps {
         }
     }
 
-    private void createCandidateStepsFromAliases(List<CandidateStep> steps, Method method, StepType stepType) {
+    private void createCandidateStepsFromAliases(List<CandidateStep> steps, Method method, StepType stepType, int priority) {
         if (method.isAnnotationPresent(Aliases.class)) {
             String[] aliases = method.getAnnotation(Aliases.class).values();
             for (String alias : aliases) {
-                createCandidateStep(steps, method, stepType, alias);
+                createCandidateStep(steps, method, stepType, alias, priority);
             }
         }
         if (method.isAnnotationPresent(Alias.class)) {
-            createCandidateStep(steps, method, stepType, method.getAnnotation(Alias.class).value());
+            String alias = method.getAnnotation(Alias.class).value();
+            createCandidateStep(steps, method, stepType, alias, priority);
         }
     }
 

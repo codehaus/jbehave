@@ -32,6 +32,7 @@ public class CandidateStep {
     public static final String PARAMETER_VALUE_START = "\uFF5F";
     public static final String PARAMETER_VALUE_END = "\uFF60";
     private final String patternAsString;
+    private final Integer priority;
     private final StepType stepType;
     private final Method method;
     protected final Object steps;
@@ -43,16 +44,17 @@ public class CandidateStep {
     private StepMonitor stepMonitor = new SilentStepMonitor();
     private Paranamer paranamer = new NullParanamer();
 
-    public CandidateStep(String patternAsString, StepType stepType, Method method, CandidateSteps steps,
-            StepPatternBuilder patternBuilder, ParameterConverters parameterConverters,
-            Map<StepType, String> startingWords) {
-        this(patternAsString, stepType, method, (Object) steps, patternBuilder, parameterConverters, startingWords);
+    public CandidateStep(String patternAsString, int priority, StepType stepType, Method method,
+            CandidateSteps steps, StepPatternBuilder patternBuilder,
+            ParameterConverters parameterConverters, Map<StepType, String> startingWords) {
+        this(patternAsString, priority, stepType, method, (Object) steps, patternBuilder, parameterConverters, startingWords);
     }
 
-    public CandidateStep(String patternAsString, StepType stepType, Method method, Object stepsInstance,
-            StepPatternBuilder patternBuilder, ParameterConverters parameterConverters,
-            Map<StepType, String> startingWords) {
+    public CandidateStep(String patternAsString, int priority, StepType stepType, Method method,
+            Object stepsInstance, StepPatternBuilder patternBuilder,
+            ParameterConverters parameterConverters, Map<StepType, String> startingWords) {
         this.patternAsString = patternAsString;
+        this.priority = priority;
         this.stepType = stepType;
         this.method = method;
         this.steps = stepsInstance;
@@ -72,6 +74,10 @@ public class CandidateStep {
 
     protected Paranamer getParanamer() {
         return paranamer;
+    }
+
+    public Integer getPriority() {
+        return priority;
     }
 
     public boolean ignore(String stepAsString) {
@@ -358,5 +364,6 @@ public class CandidateStep {
         }
 
     }
+
 
 }
