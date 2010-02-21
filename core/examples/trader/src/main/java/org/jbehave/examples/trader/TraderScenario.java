@@ -32,18 +32,18 @@ import org.jbehave.scenario.steps.StepsFactory;
 
 public class TraderScenario extends JUnitScenario {
 
-    private static ScenarioNameResolver converter = new UnderscoredCamelCaseResolver(".scenario");
+    private static ScenarioNameResolver resolver = new UnderscoredCamelCaseResolver(".scenario");
 
     public TraderScenario(final Class<? extends RunnableScenario> scenarioClass) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ScenarioDefiner forDefiningScenarios() {
-                return new ClasspathScenarioDefiner(converter, new PatternScenarioParser(keywords()));
+                return new ClasspathScenarioDefiner(resolver, new PatternScenarioParser(keywords()));
             }
 
             @Override
             public ScenarioReporter forReportingScenarios() {
-                return new ScenarioReporterBuilder(new FilePrintStreamFactory(scenarioClass, converter))
+                return new ScenarioReporterBuilder(new FilePrintStreamFactory(scenarioClass, resolver))
                             .with(CONSOLE)
                             .with(TXT)
                             .with(HTML)
