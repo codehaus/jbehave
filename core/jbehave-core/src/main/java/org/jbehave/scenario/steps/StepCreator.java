@@ -15,7 +15,7 @@ public interface StepCreator {
         BEFORE, AFTER
     };
 
-    Step[] createStepsFrom(StoryDefinition storyDefinition, Stage stage, CandidateSteps... candidateSteps);
+    Step[] createStepsFrom(StoryDefinition storyDefinition, Stage stage, boolean embeddedStory, CandidateSteps... candidateSteps);
 
     Step[] createStepsFrom(ScenarioDefinition scenarioDefinition, Map<String, String> tableRow,
             CandidateSteps... candidateSteps);

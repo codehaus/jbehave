@@ -86,6 +86,33 @@ public class StepsBehaviour {
     }
 
     @Test
+    public void shouldProvideStepsToBePerformedBeforeStory() {
+        MultipleAliasesSteps steps = new MultipleAliasesSteps();
+        List<Step> beforeStory = steps.runBeforeStory(false);
+        ensureThat(beforeStory.size(), equalTo(1));        
+        beforeStory.get(0).perform();
+        ensureThat(steps.beforeStory);
+        List<Step> beforeEmbeddedStory = steps.runBeforeStory(true);
+        ensureThat(beforeEmbeddedStory.size(), equalTo(1));        
+        beforeEmbeddedStory.get(0).perform();
+        ensureThat(steps.beforeEmbeddedStory);
+    }
+    
+    @Test
+    public void shouldProvideStepsToBePerformedAfterStory() {
+        MultipleAliasesSteps steps = new MultipleAliasesSteps();
+        List<Step> afterStory = steps.runAfterStory(false);
+        ensureThat(afterStory.size(), equalTo(1));        
+        afterStory.get(0).perform();
+        ensureThat(steps.afterStory);
+        List<Step> afterEmbeddedStory = steps.runAfterStory(true);
+        ensureThat(afterEmbeddedStory.size(), equalTo(1));        
+        afterEmbeddedStory.get(0).perform();
+        ensureThat(steps.afterEmbeddedStory);
+    }
+
+    
+    @Test
     public void shouldProvideStepsToBePerformedBeforeScenarios() {
     	MultipleAliasesSteps steps = new MultipleAliasesSteps();
     	List<Step> executableSteps = steps.runBeforeScenario();
@@ -175,6 +202,10 @@ public class StepsBehaviour {
         private boolean afterAny;
         private boolean afterSuccess;
         private boolean afterFailure;
+        private boolean beforeStory;
+        private boolean afterStory;
+        private boolean beforeEmbeddedStory;
+        private boolean afterEmbeddedStory;
         
         @org.jbehave.scenario.annotations.Given("a given")
         @org.jbehave.scenario.annotations.Aliases(values={"a given alias", "another given alias"})
@@ -193,6 +224,27 @@ public class StepsBehaviour {
         public void then() {
             thens++;
         }
+
+        @org.jbehave.scenario.annotations.BeforeStory
+        public void beforeStory() {
+            beforeStory = true;
+        }
+        
+        @org.jbehave.scenario.annotations.AfterStory
+        public void afterStory() {
+            afterStory = true;
+        }
+
+        @org.jbehave.scenario.annotations.BeforeStory(uponEmbedded=true)
+        public void beforeEmbeddedStory() {
+            beforeEmbeddedStory = true;
+        }
+        
+        @org.jbehave.scenario.annotations.AfterStory(uponEmbedded=true)
+        public void afterEmbeddedStory() {
+            afterEmbeddedStory = true;
+        }
+        
         
         @org.jbehave.scenario.annotations.BeforeScenario
         public void beforeScenarios() {
