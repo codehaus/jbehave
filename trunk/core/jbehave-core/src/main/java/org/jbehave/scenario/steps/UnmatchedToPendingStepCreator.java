@@ -16,15 +16,15 @@ import org.jbehave.scenario.definition.StoryDefinition;
  */
 public class UnmatchedToPendingStepCreator implements StepCreator {
 
-    public Step[] createStepsFrom(StoryDefinition storyDefinition, Stage stage, CandidateSteps... candidateSteps) {
+    public Step[] createStepsFrom(StoryDefinition storyDefinition, Stage stage, boolean embeddedStory, CandidateSteps... candidateSteps) {
         List<Step> steps = new ArrayList<Step>();
         for (CandidateSteps candidates : candidateSteps) {
             switch (stage) {
                 case BEFORE:
-                    steps.addAll(candidates.runBeforeStory());
+                    steps.addAll(candidates.runBeforeStory(embeddedStory));
                     break;
                 case AFTER:
-                    steps.addAll(candidates.runAfterStory());
+                    steps.addAll(candidates.runAfterStory(embeddedStory));
                     break;
                 default:
                     break;

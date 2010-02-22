@@ -109,17 +109,18 @@ public class UnmatchedToPendingStepCreatorBehaviour {
         Step stepAfter1 = mock(Step.class);
         Step stepAfter2 = mock(Step.class);
 
-        when(steps1.runBeforeStory()).thenReturn(asList(stepBefore1));
-        when(steps2.runBeforeStory()).thenReturn(asList(stepBefore2));
-        when(steps1.runAfterStory()).thenReturn(asList(stepAfter1));
-        when(steps2.runAfterStory()).thenReturn(asList(stepAfter2));
+        boolean embeddedStory = false;
+        when(steps1.runBeforeStory(embeddedStory)).thenReturn(asList(stepBefore1));
+        when(steps2.runBeforeStory(embeddedStory)).thenReturn(asList(stepBefore2));
+        when(steps1.runAfterStory(embeddedStory)).thenReturn(asList(stepAfter1));
+        when(steps2.runAfterStory(embeddedStory)).thenReturn(asList(stepAfter2));
 
         // When we create the series of steps for the scenario
         UnmatchedToPendingStepCreator creator = new UnmatchedToPendingStepCreator();
         Step[] beforeSteps = creator.createStepsFrom(new StoryDefinition(new ScenarioDefinition("")), Stage.BEFORE,
-                steps1, steps2);
+                embeddedStory, steps1, steps2);
         Step[] afterSteps = creator.createStepsFrom(new StoryDefinition(new ScenarioDefinition("")), Stage.AFTER,
-                steps1, steps2);
+                embeddedStory, steps1, steps2);
 
         // Then all before and after steps should be added
         ensureThat(beforeSteps, array(equalTo(stepBefore1), equalTo(stepBefore2)));

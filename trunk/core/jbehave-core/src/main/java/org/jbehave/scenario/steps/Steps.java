@@ -26,7 +26,7 @@ import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.annotations.AfterScenario.Outcome;
 import org.jbehave.scenario.definition.KeyWords;
-import org.jbehave.scenario.errors.BeforeOrAfterScenarioException;
+import org.jbehave.scenario.errors.BeforeOrAfterException;
 import org.jbehave.scenario.parser.StepPatternBuilder;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 
@@ -217,43 +217,71 @@ public class Steps implements CandidateSteps {
         }
     }
 
-    public List<Step> runBeforeStory() {
-        return stepsHaving(BeforeStory.class, new OkayToRun());
+    public List<Step> runBeforeStory(boolean embeddedStory) {
+        return storyStepsHaving(BeforeStory.class, embeddedStory, new OkayToRun());
     }
 
-    public List<Step> runAfterStory() {
-        return stepsHaving(AfterStory.class, new OkayToRun());
+    public List<Step> runAfterStory(boolean embeddedStory) {
+        return storyStepsHaving(AfterStory.class, embeddedStory, new OkayToRun());
+    }
+
+    List<Step> storyStepsHaving(final Class<? extends Annotation> annotationClass, boolean embeddedStory, final StepPart forSuccess) {
+        List<Step> steps = new ArrayList<Step>();
+        for (final Method method : methodsOf(instance)) {
+            if (method.isAnnotationPresent(annotationClass)) {
+                if ( runnableStoryStep(method.getAnnotation(annotationClass), embeddedStory) ){
+                    steps.add(new Step() {
+                        public StepResult doNotPerform() {
+                            return forSuccess.run(annotationClass, method);
+                        }
+
+                        public StepResult perform() {
+                            return forSuccess.run(annotationClass, method);
+                        }
+                    });                    
+                }
+            }
+        }
+        return steps;
+    }
+
+    private boolean runnableStoryStep(Annotation annotation, boolean embeddedStory) {
+        boolean uponEmbedded = uponEmbedded(annotation);
+        return uponEmbedded == embeddedStory;
+    }    
+
+    private boolean uponEmbedded(Annotation annotation) {
+        if ( annotation instanceof BeforeStory ){
+            return ((BeforeStory)annotation).uponEmbedded();
+        } else  if ( annotation instanceof AfterStory ){
+            return ((AfterStory)annotation).uponEmbedded();
+        } 
+        return false;
     }
 
     public List<Step> runBeforeScenario() {
-        return stepsHaving(BeforeScenario.class, new OkayToRun());
+        return scenarioStepsHaving(BeforeScenario.class, new OkayToRun());
     }
 
     public List<Step> runAfterScenario() {
         List<Step> steps = new ArrayList<Step>();
-        steps.addAll(stepsHavingOutcome(AfterScenario.class, ANY, new OkayToRun(), new OkayToRun()));
-        steps.addAll(stepsHavingOutcome(AfterScenario.class, SUCCESS, new OkayToRun(), new DoNotRun()));
-        steps.addAll(stepsHavingOutcome(AfterScenario.class, FAILURE, new DoNotRun(), new OkayToRun()));
+        steps.addAll(scenarioStepsHavingOutcome(AfterScenario.class, ANY, new OkayToRun(), new OkayToRun()));
+        steps.addAll(scenarioStepsHavingOutcome(AfterScenario.class, SUCCESS, new OkayToRun(), new DoNotRun()));
+        steps.addAll(scenarioStepsHavingOutcome(AfterScenario.class, FAILURE, new DoNotRun(), new OkayToRun()));
         return steps;
     }
 
-    List<Step> stepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forScenarios) {
+    List<Step> scenarioStepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forSuccess) {
         List<Step> steps = new ArrayList<Step>();
-        Method[] methods;
-        if (instance == null) {
-            methods = this.getClass().getMethods();
-        } else {
-            methods = instance.getClass().getMethods();
-        }
-        for (final Method method : methods) {
+        for (final Method method : methodsOf(instance)) {
             if (method.isAnnotationPresent(annotationClass)) {
                 steps.add(new Step() {
                     public StepResult doNotPerform() {
-                        return forScenarios.run(annotationClass, method);
+                        return forSuccess.run(annotationClass, method);
                     }
 
                     public StepResult perform() {
-                        return forScenarios.run(annotationClass, method);
+                        return forSuccess.run(annotationClass, method);
                     }
 
                 });
@@ -262,22 +290,21 @@ public class Steps implements CandidateSteps {
         return steps;
     }
 
-    private List<Step> stepsHavingOutcome(final Class<? extends AfterScenario> annotationClass, final Outcome outcome,
-            final StepPart forSuccessfulScenarios, final StepPart forUnsuccessfulScenarios) {
+    private List<Step> scenarioStepsHavingOutcome(final Class<? extends AfterScenario> annotationClass, final Outcome outcome,
+            final StepPart forSuccess, final StepPart forFailure) {
         List<Step> steps = new ArrayList<Step>();
-        Method[] methods = instance.getClass().getMethods();
-        for (final Method method : methods) {
+        for (final Method method : methodsOf(instance)) {
             if (method.isAnnotationPresent(annotationClass)) {
                 AfterScenario annotation = method.getAnnotation(annotationClass);
                 if (outcome.equals(annotation.uponOutcome())) {
                     steps.add(new Step() {
 
                         public StepResult doNotPerform() {
-                            return forUnsuccessfulScenarios.run(annotationClass, method);
+                            return forFailure.run(annotationClass, method);
                         }
 
                         public StepResult perform() {
-                            return forSuccessfulScenarios.run(annotationClass, method);
+                            return forSuccess.run(annotationClass, method);
                         }
 
                     });
@@ -287,13 +314,25 @@ public class Steps implements CandidateSteps {
         return steps;
     }
 
+    private Method[] methodsOf(Object instance) {
+        Method[] methods;
+        if (instance == null) {
+            methods = this.getClass().getMethods();
+        } else {
+            methods = instance.getClass().getMethods();
+        }
+        return methods;
+    }
+
     class OkayToRun implements StepPart {
         public StepResult run(final Class<? extends Annotation> annotation, Method method) {
             try {
                 method.invoke(instance);
             } catch (InvocationTargetException e) {
                 if (e.getCause() != null) {
-                    throw new BeforeOrAfterScenarioException(annotation, method, e.getCause());
+                    throw new BeforeOrAfterException(annotation, method, e.getCause());
+                } else {
+                    throw new RuntimeException(e);
                 }
             } catch (Throwable t) {
                 throw new RuntimeException(t);

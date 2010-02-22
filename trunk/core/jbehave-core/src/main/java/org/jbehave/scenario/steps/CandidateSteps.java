@@ -22,18 +22,20 @@ public interface CandidateSteps {
     CandidateStep[] getSteps(Class<?> stepsClass);
 
     /**
-     * Return all the executable steps to run before each story
+     * Return all the executable steps to run before each story, based on the embedded status
      * 
+     * @param embeddedStory the boolean flag denoting the embedded status 
      * @return The list of steps 
      */
-    List<Step> runBeforeStory();
+    List<Step> runBeforeStory(boolean embeddedStory);
 
     /**
-     * Return all the executable steps to run after each story
+     * Return all the executable steps to run after each story, based on the embedded status
      * 
+     * @param embeddedStory the boolean flag denoting the embedded status 
      * @return The list of steps 
      */
-    List<Step> runAfterStory();
+    List<Step> runAfterStory(boolean embeddedStory);
 
     /**
      * Return all the executable steps to run before each scenario

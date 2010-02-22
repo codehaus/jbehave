@@ -59,7 +59,7 @@ public class ScenarioRunner {
         throwable = null;
         
         reporter.beforeStory(story, embeddedStory);          
-        runSteps(stepCreator.createStepsFrom(story, StepCreator.Stage.BEFORE, candidateSteps), embeddedStory);
+        runSteps(stepCreator.createStepsFrom(story, StepCreator.Stage.BEFORE, embeddedStory, candidateSteps), embeddedStory);
         for (ScenarioDefinition scenario : story.getScenarios()) {
     		reporter.beforeScenario(scenario.getTitle());
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
@@ -70,7 +70,7 @@ public class ScenarioRunner {
         	}
     		reporter.afterScenario();
         }
-        runSteps(stepCreator.createStepsFrom(story, StepCreator.Stage.AFTER, candidateSteps), embeddedStory);
+        runSteps(stepCreator.createStepsFrom(story, StepCreator.Stage.AFTER, embeddedStory, candidateSteps), embeddedStory);
         reporter.afterStory(embeddedStory);            
         currentStrategy.handleError(throwable);
     }
