@@ -16,6 +16,7 @@ import org.jbehave.scenario.steps.CandidateSteps;
 import org.jbehave.scenario.steps.Step;
 import org.jbehave.scenario.steps.StepCreator;
 import org.jbehave.scenario.steps.StepResult;
+import org.jbehave.scenario.steps.StepCreator.Stage;
 
 /**
  * Runs the steps of each scenario in a story and describes the results to the {@link ScenarioReporter}.
@@ -56,38 +57,22 @@ public class ScenarioRunner {
         throwable = null;
         
         reporter.beforeStory(story, embeddedStory);          
-        runSteps(stepCreator.createStepsFrom(story, StepCreator.Stage.BEFORE, embeddedStory, candidateSteps), embeddedStory);
+        runStorySteps(story, embeddedStory, StepCreator.Stage.BEFORE, candidateSteps);
         for (ScenarioDefinition scenario : story.getScenarios()) {
     		reporter.beforeScenario(scenario.getTitle());
         	runGivenScenarios(configuration, scenario, candidateSteps); // first run any given scenarios, if any
         	if ( isExamplesTableScenario(scenario) ){ // run examples table scenario
         		runExamplesTableScenario(configuration, scenario, candidateSteps);
         	} else { // run plain old scenario
-            	runScenario(configuration, scenario, new HashMap<String, String>(), candidateSteps);        		
+            	runScenarioSteps(configuration, scenario, new HashMap<String, String>(), candidateSteps);        		
         	}
     		reporter.afterScenario();
         }
-        runSteps(stepCreator.createStepsFrom(story, StepCreator.Stage.AFTER, embeddedStory, candidateSteps), embeddedStory);
+        runStorySteps(story, embeddedStory, StepCreator.Stage.AFTER, candidateSteps);
         reporter.afterStory(embeddedStory);            
         currentStrategy.handleError(throwable);
     }
 
-	
-    /**
-     * Runs a list of steps.  The running can be skipped in certain cases,
-     * e.g. when running in embedded story mode.
-     * 
-     * @param steps the Steps to run
-     * @param skip the boolean flag to skip running
-     */
-    private void runSteps(Step[] steps, boolean skip) {
-        if ( skip ) return; 
-        state = new FineSoFar();
-        for (Step step : steps) {
-            state.run(step);
-        }
-    }
-	
     private void runGivenScenarios(Configuration configuration,
 			ScenarioDefinition scenario, CandidateSteps... candidateSteps)
 			throws Throwable {
@@ -112,17 +97,35 @@ public class ScenarioRunner {
         reporter.beforeExamples(scenario.getSteps(), table);
 		for (Map<String,String> tableRow : table.getRows() ) {
 			reporter.example(tableRow);
-			runScenario(configuration, scenario, tableRow, candidateSteps);
+			runScenarioSteps(configuration, scenario, tableRow, candidateSteps);
 		}
 		reporter.afterExamples();
 	}
 
-	private void runScenario(Configuration configuration,
+    private void runStorySteps(StoryDefinition story, boolean embeddedStory, Stage stage, CandidateSteps... candidateSteps) {
+        Step[] steps = stepCreator.createStepsFrom(story, stage, embeddedStory, candidateSteps);
+        runSteps(steps);
+    }
+
+	private void runScenarioSteps(Configuration configuration,
 			ScenarioDefinition scenario, Map<String, String> tableRow, CandidateSteps... candidateSteps) {
         Step[] steps = stepCreator.createStepsFrom(scenario, tableRow, candidateSteps);
-		runSteps(steps, false);
-	};
+		runSteps(steps);		
+	}
 
+    /**
+     * Runs a list of steps. 
+     * 
+     * @param steps the Steps to run
+     */
+    private void runSteps(Step[] steps) {
+        if ( steps == null || steps.length == 0 ) return;
+        state = new FineSoFar();
+        for (Step step : steps) {
+            state.run(step);
+        }
+    }
+    
     private class SomethingHappened implements State {
         public void run(Step step) {
             StepResult result = step.doNotPerform();

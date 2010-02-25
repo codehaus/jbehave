@@ -300,8 +300,9 @@ public class ScenarioRunnerBehaviour {
     }
 
     private void givenStoryWithNoBeforeOrAfterSteps(StoryDefinition storyDefinition, boolean embeddedStory, StepCreator creator, CandidateSteps mySteps) {
-        when(creator.createStepsFrom(storyDefinition, Stage.BEFORE, embeddedStory, mySteps)).thenReturn(new Step[] {});
-        when(creator.createStepsFrom(storyDefinition, Stage.AFTER, embeddedStory, mySteps)).thenReturn(new Step[] {});
+        Step[] steps = new Step[] {};   
+        when(creator.createStepsFrom(storyDefinition, Stage.BEFORE, embeddedStory, mySteps)).thenReturn(steps);
+        when(creator.createStepsFrom(storyDefinition, Stage.AFTER, embeddedStory, mySteps)).thenReturn(steps);
     }
 
     private Configuration configurationWithPendingStrategy(StepCreator creator, ScenarioReporter reporter,
