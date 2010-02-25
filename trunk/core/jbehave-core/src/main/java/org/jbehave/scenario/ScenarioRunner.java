@@ -37,7 +37,8 @@ public class ScenarioRunner {
     public void run(Class<? extends RunnableScenario> scenarioClass, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
 		StoryDefinition story = configuration.forDefiningScenarios().loadScenarioDefinitionsFor(scenarioClass);
 		story.namedAs(scenarioClass.getSimpleName());
-		run(story, configuration, candidateSteps);
+	    // always start in a non-embedded mode
+        run(story, configuration, false, candidateSteps);
     }
 
     public void run(String scenarioPath, Configuration configuration, boolean embeddedStory, CandidateSteps... candidateSteps) throws Throwable {
@@ -46,10 +47,6 @@ public class ScenarioRunner {
 		run(story, configuration, embeddedStory, candidateSteps);
     }    
 
-    public void run(StoryDefinition story, Configuration configuration, CandidateSteps... candidateSteps) throws Throwable {
-        run(story, configuration, false, candidateSteps);
-    }
-    
     public void run(StoryDefinition story, Configuration configuration, boolean embeddedStory, CandidateSteps... candidateSteps) throws Throwable {
         stepCreator = configuration.forCreatingSteps();
         reporter = configuration.forReportingScenarios();
