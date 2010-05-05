@@ -53,8 +53,7 @@ public class ScenarioRunner {
         reporter = configuration.forReportingScenarios();
         pendingStepStrategy = configuration.forPendingSteps();
         errorStrategy = configuration.forHandlingErrors();
-        currentStrategy = ErrorStrategy.SILENT;
-        throwable = null;
+        resetErrorState(embeddedStory);
         
         reporter.beforeStory(story, embeddedStory);          
         runStorySteps(story, embeddedStory, StepCreator.Stage.BEFORE, candidateSteps);
@@ -69,9 +68,18 @@ public class ScenarioRunner {
     		reporter.afterScenario();
         }
         runStorySteps(story, embeddedStory, StepCreator.Stage.AFTER, candidateSteps);
-        reporter.afterStory(embeddedStory);            
+        reporter.afterStory(embeddedStory);                          
         currentStrategy.handleError(throwable);
     }
+
+	private void resetErrorState(boolean embeddedStory) {
+		if ( embeddedStory ) {
+			// do not reset error state for embedded stories
+			return;
+		}
+		currentStrategy = ErrorStrategy.SILENT;
+		throwable = null;
+	}
 
     private void runGivenScenarios(Configuration configuration,
 			ScenarioDefinition scenario, CandidateSteps... candidateSteps)
