@@ -40,7 +40,8 @@ public class ScenarioRunnerTask extends AbstractScenarioTask {
                     failedScenarios.put(scenarioName, e);
                 } else {
                     if (ignoreFailure()) {
-                        log(message, e, MSG_WARN);
+                        log(message, MSG_WARN);
+                        e.printStackTrace();
                     } else {
                         throw new BuildException(message, e);
                     }
@@ -48,7 +49,7 @@ public class ScenarioRunnerTask extends AbstractScenarioTask {
             }
         }
         if (batch && failedScenarios.size() > 0) {
-            String message = "Failure in runing scenarios: " + format(failedScenarios);
+            String message = "Failure in running scenarios: " + format(failedScenarios);
             if (ignoreFailure()) {
                 log(message, MSG_WARN);
             } else {

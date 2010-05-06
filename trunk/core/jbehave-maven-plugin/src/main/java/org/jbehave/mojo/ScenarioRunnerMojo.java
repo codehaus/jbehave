@@ -50,7 +50,7 @@ public class ScenarioRunnerMojo extends AbstractScenarioMojo {
         }
 
         if (batch && failedScenarios.size() > 0) {
-            String message = "Failure in runing scenarios: " + format(failedScenarios);
+            String message = "Failure in running scenarios: " + format(failedScenarios);
             if ( ignoreFailure() ){
                 getLog().warn(message);
             } else {

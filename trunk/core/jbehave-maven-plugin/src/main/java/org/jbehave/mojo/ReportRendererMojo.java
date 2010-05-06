@@ -47,6 +47,13 @@ public class ReportRendererMojo extends AbstractMavenReport {
     private Properties templateProperties = new Properties();
 
     /**
+     * The flag to ignore failures
+     * 
+     * @parameter
+     */
+    private boolean ignoreFailure = false;
+    
+    /**
      * <i>Maven Internal</i>: The Doxia Site Renderer.
      * 
      * @component
@@ -91,16 +98,23 @@ public class ReportRendererMojo extends AbstractMavenReport {
     }
 
     protected void executeReport(Locale locale) throws MavenReportException {
-        ReportRenderer reportRenderer = new FreemarkerReportRenderer(templateProperties);
+        ReportRenderer renderer = new FreemarkerReportRenderer(templateProperties);
         try {
             getLog().info("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'" 
             		    + " and template properties '"+templateProperties+"'");
-            reportRenderer.render(outputDirectory, formats);
+            renderer.render(outputDirectory, formats);
         } catch (RuntimeException e) {
             String message = "Failed to render reports in outputDirectory " + outputDirectory
                     + " using formats " + formats + " and template properties '"+templateProperties+"'";
             getLog().warn(message, e);
             throw new MavenReportException(message, e);
+        }
+        int scenarios = renderer.countScenarios();
+        int failed = renderer.countFailedScenarios();
+    	String message = "Rendered reports with "+scenarios+" scenarios (of which "+failed+" failed)";
+    	getLog().info(message);
+        if ( !ignoreFailure && failed > 0 ){
+			throw new MavenReportException(message);
         }
     }
 
