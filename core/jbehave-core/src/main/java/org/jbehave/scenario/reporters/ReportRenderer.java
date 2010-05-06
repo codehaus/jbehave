@@ -12,4 +12,8 @@ public interface ReportRenderer {
 
     void render(File outputDirectory, List<String> formats);
 
+	int countScenarios();
+
+	int countFailedScenarios();
+
 }

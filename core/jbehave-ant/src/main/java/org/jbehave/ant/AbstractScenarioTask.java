@@ -209,7 +209,7 @@ public abstract class AbstractScenarioTask extends Task {
         this.scenarioExcludes = asList(scenarioExcludesCSV.split(","));
     }
     
-    public void setclassLoaderInjected(boolean classLoaderInjected) {
+    public void setClassLoaderInjected(boolean classLoaderInjected) {
         this.classLoaderInjected = classLoaderInjected;
     }
 
@@ -220,7 +220,5 @@ public abstract class AbstractScenarioTask extends Task {
     public void setIgnoreFailure(boolean ignoreFailure) {
         this.ignoreFailure = ignoreFailure;
     }
-
-
 
 }

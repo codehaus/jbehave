@@ -31,6 +31,11 @@ public class ReportRendererTask extends Task {
     private List<String> formats = asList();
 
     /**
+     * The flag to ignore failures
+     */
+    private boolean ignoreFailure = false;
+    
+    /**
      * The template properties
      */
     private Properties templateProperties = new Properties();
@@ -46,6 +51,13 @@ public class ReportRendererTask extends Task {
                             +" and template properties '"+templateProperties+"'";
             log(message, MSG_WARN);
             throw new BuildException(message, e);
+        }
+        int scenarios = renderer.countScenarios();
+        int failed = renderer.countFailedScenarios();
+    	String message = "Rendered reports with "+scenarios+" scenarios (of which "+failed+" failed)";
+    	log(message, MSG_INFO);
+        if ( !ignoreFailure && failed > 0 ){
+			throw new BuildException(message);
         }
     }
     
@@ -68,5 +80,7 @@ public class ReportRendererTask extends Task {
         }        
     }
 
-    
+    public void setIgnoreFailure(boolean ignoreFailure){
+    	this.ignoreFailure = ignoreFailure;    	
+    }
 }

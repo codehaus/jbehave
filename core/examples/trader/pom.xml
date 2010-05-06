@@ -92,12 +92,10 @@
               </scenarioIncludes>
               <scenarioExcludes>
                 <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
-                <scenarioExclude>**/scenarios/Failure*.java</scenarioExclude>
-                <scenarioExclude>**/scenarios/*NonSuccessful.java</scenarioExclude>
               </scenarioExcludes>
               <skip>false</skip>
               <batch>false</batch>
-              <ignoreFailure>false</ignoreFailure>
+              <ignoreFailure>true</ignoreFailure>
               <classLoaderInjected>false</classLoaderInjected>
             </configuration>
             <goals>
@@ -173,6 +171,7 @@
                   <value>rendered</value>
                 </property>
               </templateProperties>
+              <ignoreFailure>true</ignoreFailure>
             </configuration>
             <goals>
               <goal>render-reports</goal>
@@ -191,13 +190,21 @@
               <tasks>
                 <taskdef name="scenarioRunner"
                   classname="org.jbehave.ant.ScenarioRunnerTask"
-                  classpathref="maven.runtime.classpath" />
+                  classpathref="maven.runtime.classpath"/>
                 <scenarioRunner scenarioIncludes="**/scenarios/*.java"
                   scenarioExcludes="**/i18n/scenarios/*.java"
-                  classLoaderInjected="false" skip="${skip.ant.scenarios}" />
+                  classLoaderInjected="false" skip="${skip.ant.scenarios}" 
+                  ignoreFailure="true" />
                 <scenarioRunner scenarioIncludes="**/i18n/scenarios/*.java"
-                  scenarioExcludes="" classLoaderInjected="true"
-                  skip="${skip.ant.scenarios}" />
+                  scenarioExcludes=""
+                  classLoaderInjected="false" skip="${skip.ant.scenarios}" 
+                  ignoreFailure="false" />
+                <taskdef name="reportRenderer"
+                  classname="org.jbehave.ant.ReportRendererTask"
+                  classpathref="maven.runtime.classpath" />
+                <reportRenderer outputDirectory="${basedir}/target/jbehave-reports"
+                  formats="txt,html,xml" templateProperties="defaultFormats=stats"
+                  ignoreFailure="true" />
               </tasks>
             </configuration>
             <goals>

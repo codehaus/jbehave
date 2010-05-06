@@ -160,6 +160,13 @@ found in the Ant or Maven execution for the report rendering task or
 goal (c.f. <a href="running-scenarios.html">running scenarios</a> for
 examples).</p>
 
+<span class="followup">When running in a continuous-integration (CI) environment, it is
+important to bear in mind that the two-phase process requires that the <b>ignoreFailure=true</b>
+flag be set in the report generation (i.e. the running of the scenarios), so that all reports are 
+collected, while the <b>ignoreFailure</b> flag in the report rendering will determine the behaviour upon any scenario failures.  
+The default value for the rendering phase is <b>ignoreFailure=false</b> is adequate for CI builds.
+</span>
+
 <h2>Reporting Statistics</h2>
 
 <p>The scenario statistics report above is treated in the rendering
