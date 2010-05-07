@@ -11,14 +11,14 @@ import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 
 /**
- * A Stepdoc represents the documentation on a single {@link Step}, which
- * includes:
+ * A Stepdoc represents the documentation on a single candidate step, which includes:
  * <ul>
- * <li>the associated annotation in the {@link Steps} class</li>
- * <li>the pattern to match the candidate step that configured in the annotation
- * </li>
- * <li>the aliases for the step (optional)</li>
- * <li>the matched method inthe {@link Steps} class</li>
+ * <li>the associated annotation in the method of the {@link CandidateSteps}
+ * class</li>
+ * <li>the pattern to match the candidate step that is configured in the
+ * annotation</li>
+ * <li>the alias patterns for the candidate step (optional)</li>
+ * <li>the method in the {@link CandidateSteps} class</li>
  * </ul>
  * 
  * @author Mauro Talevi
@@ -64,38 +64,40 @@ public class Stepdoc implements Comparable<Stepdoc> {
 	public List<String> getAliasPatterns() {
 		return aliasPatterns;
 	}
-	
+
 	public Method getMethod() {
 		return method;
 	}
-	
-    public CandidateSteps getCandidateSteps() {
+
+	public CandidateSteps getCandidateSteps() {
 		return candidateSteps;
 	}
 
 	/**
-     * Method signature without "public void" prefix
-     * @return The method signature in String format
-     */
-    public String getMethodSignature() {
-        String methodSignature = method.toString();
-        return methodSignature.replaceFirst("public void ", "");
-    }
+	 * Method signature without "public void" prefix
+	 * 
+	 * @return The method signature in String format
+	 */
+	public String getMethodSignature() {
+		String methodSignature = method.toString();
+		return methodSignature.replaceFirst("public void ", "");
+	}
 
-    @Override
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[Stepdoc pattern=").append(pattern).append(", aliases=")
-				.append(aliasPatterns).append(", method=").append(getMethodSignature())
-				.append(", candidateSteps=").append(candidateSteps.getClass()).append("]");
+				.append(aliasPatterns).append(", method=").append(
+						getMethodSignature()).append(", candidateSteps=")
+				.append(candidateSteps.getClass()).append("]");
 		return sb.toString();
 	}
 
 	public int compareTo(Stepdoc that) {
-        int compare = this.priority.compareTo(that.priority);
-        if (compare == 0) {
-            compare = this.pattern.compareTo(that.pattern);
-        }
-        return compare;
+		int compare = this.priority.compareTo(that.priority);
+		if (compare == 0) {
+			compare = this.pattern.compareTo(that.pattern);
+		}
+		return compare;
 	}
 }
