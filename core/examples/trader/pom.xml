@@ -93,7 +93,7 @@
               <scenarioExcludes>
                 <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
               </scenarioExcludes>
-              <skip>false</skip>
+              <skip>${skip.mvn}</skip>
               <batch>false</batch>
               <ignoreFailure>true</ignoreFailure>
               <classLoaderInjected>false</classLoaderInjected>
@@ -112,7 +112,7 @@
               <scenarioExcludes>
                 <scenarioExclude>**/i18n/scenarios/*.java</scenarioExclude>
               </scenarioExcludes>
-              <skip>false</skip>
+              <skip>${skip.mvn}</skip>
               <batch>true</batch>
               <ignoreFailure>true</ignoreFailure>
               <classLoaderInjected>false</classLoaderInjected>
@@ -128,7 +128,7 @@
               <scenarioIncludes>
                 <scenarioInclude>**/i18n/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
-              <skip>false</skip>
+              <skip>${skip.mvn}</skip>
               <classLoaderInjected>true</classLoaderInjected>
             </configuration>
             <goals>
@@ -171,7 +171,8 @@
                   <value>rendered</value>
                 </property>
               </templateProperties>
-              <ignoreFailure>true</ignoreFailure>
+              <skip>${skip.mvn}</skip>
+              <ignoreFailure>${ignore.failure.reports}</ignoreFailure>
             </configuration>
             <goals>
               <goal>render-reports</goal>
@@ -193,18 +194,18 @@
                   classpathref="maven.runtime.classpath"/>
                 <scenarioRunner scenarioIncludes="**/scenarios/*.java"
                   scenarioExcludes="**/i18n/scenarios/*.java"
-                  classLoaderInjected="false" skip="${skip.ant.scenarios}" 
+                  classLoaderInjected="false" skip="${skip.ant}" 
                   ignoreFailure="true" />
                 <scenarioRunner scenarioIncludes="**/i18n/scenarios/*.java"
                   scenarioExcludes=""
-                  classLoaderInjected="false" skip="${skip.ant.scenarios}" 
+                  classLoaderInjected="false" skip="${skip.ant}" 
                   ignoreFailure="false" />
                 <taskdef name="reportRenderer"
                   classname="org.jbehave.ant.ReportRendererTask"
                   classpathref="maven.runtime.classpath" />
                 <reportRenderer outputDirectory="${basedir}/target/jbehave-reports"
                   formats="txt,html,xml" templateProperties="defaultFormats=stats"
-                  ignoreFailure="true" />
+                  skip="${skip.ant}" ignoreFailure="${ignore.failure.reports}" />
               </tasks>
             </configuration>
             <goals>
@@ -220,7 +221,7 @@
                   classpathref="maven.runtime.classpath" />
                 <stepdoc scenarioIncludes="**/scenarios/*.java"
                   scenarioExcludes="**/i18n/scenarios/*.java"
-                  classLoaderInjected="false" skip="${skip.ant.stepdoc}" />
+                  classLoaderInjected="false" skip="${skip.stepdoc}" />
               </tasks>
             </configuration>
             <goals>
@@ -253,8 +254,14 @@
     <profile>
       <id>ant</id>
       <properties>
-        <skip.ant.scenarios>false</skip.ant.scenarios>
-        <skip.ant.stepdoc>false</skip.ant.stepdoc>
+        <skip.ant>false</skip.ant>
+        <skip.mvn>true</skip.mvn>
+      </properties>
+    </profile>
+    <profile>
+      <id>reports-failure</id>
+      <properties>
+        <ignore.failure.reports>false</ignore.failure.reports>
       </properties>
     </profile>
     <profile>
@@ -265,8 +272,9 @@
     </profile>
   </profiles>
   <properties>
-    <skip.ant.scenarios>true</skip.ant.scenarios>
-    <skip.ant.stepdoc>true</skip.ant.stepdoc>
+    <ignore.failure.reports>true</ignore.failure.reports>
+    <skip.ant>true</skip.ant>
+    <skip.mvn>false</skip.mvn>
     <skip.stepdoc>true</skip.stepdoc>
   </properties>
 </project>
