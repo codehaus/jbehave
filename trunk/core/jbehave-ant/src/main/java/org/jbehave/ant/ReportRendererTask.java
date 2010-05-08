@@ -31,6 +31,11 @@ public class ReportRendererTask extends Task {
     private List<String> formats = asList();
 
     /**
+     * The flag to skip
+     */
+    private boolean skip = false;
+    
+    /**
      * The flag to ignore failures
      */
     private boolean ignoreFailure = false;
@@ -41,6 +46,10 @@ public class ReportRendererTask extends Task {
     private Properties templateProperties = new Properties();
 
     public void execute() throws BuildException {
+        if (skip) {
+            log("Skipped rendering reports", MSG_INFO);
+            return;
+        }
         ReportRenderer renderer = new FreemarkerReportRenderer(templateProperties);
         try {
             log("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'"
@@ -79,8 +88,12 @@ public class ReportRendererTask extends Task {
             log(message, MSG_WARN);
         }        
     }
+    
+    public void setSkip(boolean skip) {
+		this.skip = skip;
+	}
 
-    public void setIgnoreFailure(boolean ignoreFailure){
+	public void setIgnoreFailure(boolean ignoreFailure){
     	this.ignoreFailure = ignoreFailure;    	
     }
 }

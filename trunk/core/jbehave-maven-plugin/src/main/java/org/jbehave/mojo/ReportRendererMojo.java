@@ -47,6 +47,13 @@ public class ReportRendererMojo extends AbstractMavenReport {
     private Properties templateProperties = new Properties();
 
     /**
+     * The flag to skip rendering
+     * 
+     * @parameter
+     */
+    private boolean skip = false;
+    
+    /**
      * The flag to ignore failures
      * 
      * @parameter
@@ -98,6 +105,10 @@ public class ReportRendererMojo extends AbstractMavenReport {
     }
 
     protected void executeReport(Locale locale) throws MavenReportException {
+        if (skip) {
+            getLog().info("Skipped rendering reports");
+            return;
+        }
         ReportRenderer renderer = new FreemarkerReportRenderer(templateProperties);
         try {
             getLog().info("Rendering reports in '" + outputDirectory + "' using formats '" + formats + "'" 
