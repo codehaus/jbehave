@@ -220,7 +220,11 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
     public void examplesTableRow(Map<String, String> tableRow) {
         example(tableRow);        
     }
-
+    
+    public void dryRun(){
+    	print(format("dryRun", "{0}\n", keywords.dryRun()));
+    }
+    
     /**
      * Formats event output by key, usually equal to the method name.
      * 

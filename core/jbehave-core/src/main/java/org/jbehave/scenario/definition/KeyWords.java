@@ -32,9 +32,11 @@ public class KeyWords {
     public static final String NOT_PERFORMED = "NotPerformed";
     public static final String FAILED = "Failed";
     public static final String EXAMPLES_TABLE_ROW = "ExamplesTableRow";
+    public static final String DRY_RUN = "DryRun";
+    
     public static final List<String> KEYWORDS = asList(NARRATIVE, IN_ORDER_TO, AS_A, I_WANT_TO, SCENARIO,
             GIVEN_SCENARIOS, EXAMPLES_TABLE, GIVEN, WHEN, THEN, AND, IGNORABLE, PENDING, NOT_PERFORMED, FAILED,
-            EXAMPLES_TABLE_ROW);
+            EXAMPLES_TABLE_ROW, DRY_RUN);
 
     private final String narrative;
     private final String inOrderTo;
@@ -52,6 +54,7 @@ public class KeyWords {
     private final String notPerformed;
     private final String failed;
     private final String examplesTableRow;
+	private final String dryRun;
     private final String[] others;
     private StringEncoder encoder;
 
@@ -73,6 +76,7 @@ public class KeyWords {
         keywords.put(NOT_PERFORMED, "NOT PERFORMED");
         keywords.put(FAILED, "FAILED");
         keywords.put(EXAMPLES_TABLE_ROW, "Example:");
+        keywords.put(DRY_RUN, "Dry Run: steps are not executed");
         return keywords;
     }
 
@@ -115,6 +119,7 @@ public class KeyWords {
         this.notPerformed = keyword(NOT_PERFORMED, keywords);
         this.failed = keyword(FAILED, keywords);
         this.examplesTableRow = keyword(EXAMPLES_TABLE_ROW, keywords);
+        this.dryRun = keyword(DRY_RUN, keywords);
         this.others = new String[] { and, ignorable };
         this.encoder = encoder;
     }
@@ -150,7 +155,7 @@ public class KeyWords {
         this.given = given;
         this.when = when;
         this.then = then;
-        if (others.length < 7) {
+        if (others.length < 11) {
             throw new InsufficientKeywordsException(others);
         }
         this.and = others[0];
@@ -163,6 +168,7 @@ public class KeyWords {
         this.inOrderTo = others[7];
         this.asA = others[8];
         this.iWantTo = others[9];
+        this.dryRun = others[10];
         this.others = others;
     }
 
@@ -230,6 +236,10 @@ public class KeyWords {
         return examplesTableRow;
     }
 
+    public String dryRun(){
+    	return dryRun;
+    }
+    
     public String[] others() {
         return others;
     }
@@ -254,7 +264,7 @@ public class KeyWords {
     public static final class InsufficientKeywordsException extends RuntimeException {
 
         public InsufficientKeywordsException(String... others) {
-            super("Insufficient keywords: " + asList(others) + ", but requires another " + (10 - others.length));
+            super("Insufficient keywords: " + asList(others) + ", but requires another " + (11 - others.length));
         }
 
     }

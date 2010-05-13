@@ -93,6 +93,10 @@ public class StepFailureScenarioReporterDecorator implements ScenarioReporter {
         delegate.afterExamples();        
     }
 
+	public void dryRun() {
+		delegate.dryRun();
+	}
+
     public void examplesTable(ExamplesTable table) {
         beforeExamples(new ArrayList<String>(), table);
     }

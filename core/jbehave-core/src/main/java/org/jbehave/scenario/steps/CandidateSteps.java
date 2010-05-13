@@ -50,6 +50,12 @@ public interface CandidateSteps {
      * @return The list of steps 
      */
     List<Step> runAfterScenario();
-
+    
+    /**
+     * Returns the steps configuration
+     * 
+     * @return The StepsConfiguration
+     */
+    StepsConfiguration getConfiguration();
 
 }

@@ -156,21 +156,21 @@ public class Steps implements CandidateSteps {
                 Given annotation = method.getAnnotation(Given.class);
                 String value = encode(annotation.value());
                 int priority = annotation.priority();
-                createCandidateStep(steps, method, GIVEN, value, priority);
+                addCandidateStep(steps, method, GIVEN, value, priority);
                 createCandidateStepsFromAliases(steps, method, GIVEN, priority);
             }
             if (method.isAnnotationPresent(When.class)) {
                 When annotation = method.getAnnotation(When.class);
                 String value = encode(annotation.value());
                 int priority = annotation.priority();
-                createCandidateStep(steps, method, WHEN, value, priority);
+                addCandidateStep(steps, method, WHEN, value, priority);
                 createCandidateStepsFromAliases(steps, method, WHEN, priority);
             }
             if (method.isAnnotationPresent(Then.class)) {
                 Then annotation = method.getAnnotation(Then.class);
                 String value = encode(annotation.value());
                 int priority = annotation.priority();
-                createCandidateStep(steps, method, THEN, value, priority);
+                addCandidateStep(steps, method, THEN, value, priority);
                 createCandidateStepsFromAliases(steps, method, THEN, priority);
             }
         }
@@ -181,19 +181,20 @@ public class Steps implements CandidateSteps {
         return configuration.getKeywords().encode(value);
     }
 
-    private void createCandidateStep(List<CandidateStep> steps, Method method, StepType stepType,
+    private void addCandidateStep(List<CandidateStep> steps, Method method, StepType stepType,
             String stepPatternAsString, int priority) {
         checkForDuplicateCandidateSteps(steps, stepType, stepPatternAsString);
-        CandidateStep step = createCandidateStep(method, stepType, stepPatternAsString, priority, configuration);
-        step.useStepMonitor(configuration.getMonitor());
-        step.useParanamer(configuration.getParanamer());
-        steps.add(step);
+        steps.add(createCandidateStep(method, stepType, stepPatternAsString, priority, configuration));
     }
 
     protected CandidateStep createCandidateStep(Method method, StepType stepType, String stepPatternAsString, int priority,
             StepsConfiguration configuration) {
-        return new CandidateStep(stepPatternAsString, priority, stepType, method, instance,
+        CandidateStep step = new CandidateStep(stepPatternAsString, priority, stepType, method, instance,
                 configuration.getPatternBuilder(), configuration.getParameterConverters(), configuration.getStartingWordsByType());
+        step.useStepMonitor(configuration.getMonitor());        
+        step.useParanamer(configuration.getParanamer());
+        step.doDryRun(configuration.dryRun());
+        return step;
     }
 
     private void checkForDuplicateCandidateSteps(List<CandidateStep> steps, StepType stepType, String patternAsString) {
@@ -208,12 +209,12 @@ public class Steps implements CandidateSteps {
         if (method.isAnnotationPresent(Aliases.class)) {
             String[] aliases = method.getAnnotation(Aliases.class).values();
             for (String alias : aliases) {
-                createCandidateStep(steps, method, stepType, alias, priority);
+                addCandidateStep(steps, method, stepType, alias, priority);
             }
         }
         if (method.isAnnotationPresent(Alias.class)) {
             String alias = method.getAnnotation(Alias.class).value();
-            createCandidateStep(steps, method, stepType, alias, priority);
+            addCandidateStep(steps, method, stepType, alias, priority);
         }
     }
 
@@ -271,6 +272,10 @@ public class Steps implements CandidateSteps {
         return steps;
     }
 
+	public StepsConfiguration getConfiguration() {
+		return configuration;
+	}
+    
     List<Step> scenarioStepsHaving(final Class<? extends Annotation> annotationClass, final StepPart forSuccess) {
         List<Step> steps = new ArrayList<Step>();
         for (final Method method : methodsOf(instance)) {
@@ -374,5 +379,5 @@ public class Steps implements CandidateSteps {
     public String toString() {
        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-    
+
 }

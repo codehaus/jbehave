@@ -40,6 +40,7 @@ public class StepsConfiguration {
 	private KeyWords keywords;
 	private String[] startingWords;
 	private Map<StepType,String> startingWordsByType;
+	private boolean dryRun;
 
 	public StepsConfiguration() {
 		this(new I18nKeyWords());
@@ -47,22 +48,23 @@ public class StepsConfiguration {
 
 	public StepsConfiguration(KeyWords keywords) {
 		this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
-				new NullParanamer(), new ParameterConverters(), keywords);
+				new NullParanamer(), new ParameterConverters(), keywords, false);
 	}
 
 	public StepsConfiguration(ParameterConverters converters) {
 		this(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
-				new NullParanamer(), converters, new I18nKeyWords());
+				new NullParanamer(), converters, new I18nKeyWords(), false);
 	}
 
 	public StepsConfiguration(StepPatternBuilder patternBuilder,
 			StepMonitor monitor, Paranamer paranamer,
-			ParameterConverters parameterConverters, KeyWords keywords) {
+			ParameterConverters parameterConverters, KeyWords keywords, boolean dryRun) {
 		this.patternBuilder = patternBuilder;
 		this.monitor = monitor;
 		this.paranamer = paranamer;
 		this.parameterConverters = parameterConverters;
 		this.keywords = keywords;
+		this.dryRun = dryRun;
 		startingWordsFromKeywords();
 	}
 
@@ -179,6 +181,14 @@ public class StepsConfiguration {
 	public void useKeyWords(KeyWords keywords) {
 		this.keywords = keywords;
 		startingWordsFromKeywords();
+	}
+
+	public boolean dryRun() {
+		return dryRun;
+	}
+	
+	public void doDryRun(boolean dryRun){
+		this.dryRun = dryRun;
 	}
 
 }

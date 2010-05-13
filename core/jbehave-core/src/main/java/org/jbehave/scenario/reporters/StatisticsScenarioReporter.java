@@ -108,6 +108,9 @@ public class StatisticsScenarioReporter implements ScenarioReporter {
         example(tableRow);
     }
 
+	public void dryRun() {
+	}
+
     private void count(String event) {
         Integer count = data.get(event);
         if (count == null) {
@@ -135,5 +138,6 @@ public class StatisticsScenarioReporter implements ScenarioReporter {
             data.put(event, 0);
         }
     }
+
 
 }

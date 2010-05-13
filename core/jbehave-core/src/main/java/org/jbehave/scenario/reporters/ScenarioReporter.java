@@ -61,4 +61,6 @@ public interface ScenarioReporter {
 
     void failed(String step, Throwable e);
 
+	void dryRun();
+
 }
