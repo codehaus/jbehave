@@ -289,6 +289,23 @@ public class CandidateStepBehaviour {
         ensureThat(steps.whenTimes, equalTo(2));
     }
 
+    @Test
+    public void shouldPerformStepsInDryRunMode() {
+    	StepsConfiguration configuration = new StepsConfiguration();
+    	configuration.doDryRun(true);
+        NamedTypeSteps steps = new NamedTypeSteps(configuration);
+        CandidateStep[] candidateSteps = steps.getSteps();
+        ensureThat(candidateSteps.length, equalTo(2));
+        candidateSteps[0].createFrom(tableRow, "Given foo named xyz").perform();
+        candidateSteps[0].createFrom(tableRow, "And foo named xyz").perform();
+        candidateSteps[1].createFrom(tableRow, "When foo named Bar").perform();
+        candidateSteps[1].createFrom(tableRow, "And foo named Bar").perform();
+        ensureThat(steps.givenName, nullValue());
+        ensureThat(steps.givenTimes, equalTo(0));
+        ensureThat(steps.whenName, nullValue());
+        ensureThat(steps.whenTimes, equalTo(0));
+    }
+
 	@Test(expected=StartingWordNotFound.class)
     public void shouldNotCreateStepOfWrongType() {
         NamedTypeSteps steps = new NamedTypeSteps();
@@ -306,7 +323,15 @@ public class CandidateStepBehaviour {
 		int givenTimes;
 		int whenTimes;
 
-        @Given("foo named $name")
+		public NamedTypeSteps(){
+			this(new StepsConfiguration());
+		}
+		
+        public NamedTypeSteps(StepsConfiguration configuration) {
+			super(configuration);
+		}
+
+		@Given("foo named $name")
         public void givenFoo(String name) {
         	givenName = name;
         	givenTimes++;

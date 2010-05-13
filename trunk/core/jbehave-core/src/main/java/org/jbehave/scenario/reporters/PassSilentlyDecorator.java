@@ -165,6 +165,14 @@ public class PassSilentlyDecorator implements ScenarioReporter {
         example(tableRow);        
     }
 
+	public void dryRun() {
+		currentScenario.add(new Todo() {
+			public void doNow() {
+				delegate.dryRun();
+			}
+		});
+	}
+
     private static interface Todo {
         void doNow();
     }

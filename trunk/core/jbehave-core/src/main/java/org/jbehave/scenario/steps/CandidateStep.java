@@ -35,15 +35,16 @@ public class CandidateStep {
     private final Integer priority;
     private final StepType stepType;
     private final Method method;
-    protected final Object steps;
-    protected final ParameterConverters parameterConverters;
+    private final Object steps;
+    private final ParameterConverters parameterConverters;
     private final Map<StepType, String> startingWordsByType;
     private final Pattern pattern;
     private final String[] groupNames;
 
     private StepMonitor stepMonitor = new SilentStepMonitor();
     private Paranamer paranamer = new NullParanamer();
-
+    private boolean dryRun = false;
+    
     public CandidateStep(String patternAsString, int priority, StepType stepType, Method method,
             CandidateSteps steps, StepPatternBuilder patternBuilder,
             ParameterConverters parameterConverters, Map<StepType, String> startingWords) {
@@ -72,11 +73,19 @@ public class CandidateStep {
         this.paranamer = paranamer;
     }
 
-    protected Paranamer getParanamer() {
+    public Paranamer getParanamer() {
         return paranamer;
     }
 
-    public Integer getPriority() {
+    public boolean dryRun() {
+		return dryRun;
+	}
+
+	public void doDryRun(boolean dryRun) {
+		this.dryRun = dryRun;
+	}
+
+	public Integer getPriority() {
         return priority;
     }
 
@@ -306,8 +315,10 @@ public class CandidateStep {
         return new Step() {
             public StepResult perform() {
                 try {
-                    stepMonitor.performing(stepAsString);
-                    method.invoke(steps, args);
+                    stepMonitor.performing(stepAsString, dryRun);
+                    if ( !dryRun ){
+                        method.invoke(steps, args);                    	
+                    }
                     return StepResult.success(stepAsString).withTranslatedText(translatedStep);
                 } catch (Throwable t) {
                     return failureWithOriginalException(stepAsString, t);

@@ -60,7 +60,7 @@ public abstract class TraderScenario extends JUnitScenario {
         		monitor, new TraderConverter(mockTradePersister())));  // define converter for custom type Trader
         configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("%")); // use '%' instead of '$' to identify parameters
         configuration.useMonitor(monitor);
-        
+        configuration.doDryRun(false);
         addSteps(createSteps(configuration));
     }
 

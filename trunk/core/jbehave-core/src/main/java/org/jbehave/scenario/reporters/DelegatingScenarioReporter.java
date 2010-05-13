@@ -137,6 +137,12 @@ public class DelegatingScenarioReporter implements ScenarioReporter {
         }
     }
 
+	public void dryRun() {
+        for (ScenarioReporter reporter : delegates) {
+            reporter.dryRun();
+        }
+	}
+	
     public Collection<ScenarioReporter> getDelegates() {
         return delegates;
     }
