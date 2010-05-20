@@ -35,7 +35,7 @@ public class CandidateStep {
     private final Integer priority;
     private final StepType stepType;
     private final Method method;
-    private final Object steps;
+    private final Object stepsInstance;
     private final ParameterConverters parameterConverters;
     private final Map<StepType, String> startingWordsByType;
     private final Pattern pattern;
@@ -58,7 +58,7 @@ public class CandidateStep {
         this.priority = priority;
         this.stepType = stepType;
         this.method = method;
-        this.steps = stepsInstance;
+        this.stepsInstance = stepsInstance;
         this.parameterConverters = parameterConverters;
         this.startingWordsByType = startingWords;
         this.pattern = patternBuilder.buildPattern(patternAsString);
@@ -113,9 +113,9 @@ public class CandidateStep {
         			matchesType = startingWordFor(stepType).equals(findStartingWord(previousNonAndStep));
         		}
         	}
-            stepMonitor.stepMatchesType(step, previousNonAndStep, matchesType, stepType);
+            stepMonitor.stepMatchesType(step, previousNonAndStep, matchesType, stepType, method, stepsInstance);
             boolean matchesPattern = matcherForStep(step).matches();
-            stepMonitor.stepMatchesPattern(step, matchesPattern, pattern.pattern());
+            stepMonitor.stepMatchesPattern(step, matchesPattern, pattern.pattern(), method, stepsInstance);
             // must match both type and pattern
             return matchesType && matchesPattern;
         } catch (StartingWordNotFound e) {
@@ -317,7 +317,7 @@ public class CandidateStep {
                 try {
                     stepMonitor.performing(stepAsString, dryRun);
                     if ( !dryRun ){
-                        method.invoke(steps, args);                    	
+                        method.invoke(stepsInstance, args);                    	
                     }
                     return StepResult.success(stepAsString).withTranslatedText(translatedStep);
                 } catch (Throwable t) {
