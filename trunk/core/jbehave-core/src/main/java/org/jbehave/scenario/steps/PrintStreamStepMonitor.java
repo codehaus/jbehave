@@ -14,8 +14,8 @@ import java.lang.reflect.Type;
 public class PrintStreamStepMonitor implements StepMonitor {
 
 	private static final String CONVERTED_VALUE_OF_TYPE = "Converted value ''{0}'' of type ''{1}'' to ''{2}'' with converter ''{3}''";
-	private static final String STEP_MATCHES_TYPE = "Step ''{0}'' (with previous step ''{1}'') ''{2}'' type ''{3}'' for method ''{4}'' with annotations ''{5}'' in Steps ''{6}''";
-	private static final String STEP_MATCHES_PATTERN = "Step ''{0}'' {1} pattern ''{2}'' for method ''{3}'' with annotations ''{4}'' in Steps ''{5}''";
+	private static final String STEP_MATCHES_TYPE = "Step ''{0}'' (with previous step ''{1}'') ''{2}'' type ''{3}'' for method ''{4}'' with annotations ''{5}'' in steps instance ''{6}''";
+	private static final String STEP_MATCHES_PATTERN = "Step ''{0}'' {1} pattern ''{2}'' for method ''{3}'' with annotations ''{4}'' in steps instance ''{5}''";
 	private static final String PERFORMING = "Performing step ''{0}'' {1}";
 	private static final String DRY_RUN = "(DRY RUN)";
 	private static final String MATCHES = "matches";
