@@ -148,9 +148,6 @@ public class PrintStreamScenarioReporter implements ScenarioReporter {
 
     public void afterStory(boolean embeddedStory) {
         print(format("afterStory", "\n"));
-        if ( !embeddedStory && cause != null) {
-            throw new RuntimeException(cause);
-        }
     }
 
     public void afterStory() {

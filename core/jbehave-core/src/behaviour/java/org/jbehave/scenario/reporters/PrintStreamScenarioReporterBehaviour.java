@@ -214,7 +214,7 @@ public class PrintStreamScenarioReporterBehaviour {
     private void narrateAnInterestingStory(ScenarioReporter reporter) {
         StoryDefinition story = new StoryDefinition(new Blurb("An interesting story"),
                 new Narrative("renovate my house", "customer", "get a loan"), "/path/to/story", new ArrayList<ScenarioDefinition>());
-        boolean embeddedStory = true;
+        boolean embeddedStory = false;
         reporter.beforeStory(story, embeddedStory);
         String title = "I ask for a loan";
         reporter.beforeScenario(title);

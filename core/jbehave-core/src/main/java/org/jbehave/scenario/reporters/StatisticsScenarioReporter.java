@@ -128,7 +128,7 @@ public class StatisticsScenarioReporter implements ScenarioReporter {
         try {
             p.store(output, this.getClass().getName());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+        	e.printStackTrace();
         }
     }
 
