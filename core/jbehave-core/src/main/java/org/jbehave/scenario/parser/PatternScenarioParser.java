@@ -206,7 +206,7 @@ public class PatternScenarioParser implements ScenarioParser {
 		String givenScenarios = keywords.givenScenarios();
 		String concatenatedKeywords = concatenateWithOr(keywords.given(),
 				keywords.when(), keywords.then(), keywords.others());
-		return compile(".*"+givenScenarios+"(.*?)\\s*(" + concatenatedKeywords + ").*");
+		return compile(".*"+givenScenarios+"((.|\\n)*?)\\s*(" + concatenatedKeywords + ").*");
 	}
 
 	private Pattern patternToPullExamplesTableIntoGroupOne() {

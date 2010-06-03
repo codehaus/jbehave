@@ -295,7 +295,7 @@ public class PatternScenarioParserBehaviour {
 	public void shouldParseStoryWithGivenScenarios() {
 		String wholeStory =
 				"Scenario: A scenario with given scenarios" + NL + NL +
-	            "GivenScenarios: path/to/one,path/to/two" + NL + NL +
+	            "GivenScenarios: path/to/one , "+ NL + " path/to/two" + NL + NL +
 	            "Given a step with a <one>" + NL +
 	            "When I run the scenario of name <two>" + NL +
 	            "Then I should see <three> in the output";
