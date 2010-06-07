@@ -293,26 +293,26 @@ public class PatternScenarioParserBehaviour {
 	
 	@Test
 	public void shouldParseStoryWithGivenScenarios() {
-		String wholeStory =
-				"Scenario: A scenario with given scenarios" + NL + NL +
-	            "GivenScenarios: path/to/one , "+ NL + " path/to/two" + NL + NL +
-	            "Given a step with a <one>" + NL +
-	            "When I run the scenario of name <two>" + NL +
-	            "Then I should see <three> in the output";
-		
-        StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
+		// no newlines or spaces in CSV
+		parseStoryWithGivenScenarios(
+				"GivenScenarios: path/to/one,path/to/two" + NL +
+				"Given a step with a <one>");
+
+		// newlines and spaces in CSV
+		parseStoryWithGivenScenarios(
+				"GivenScenarios: path/to/one , "+ NL + " path/to/two" + NL + NL +
+				"Given a step with a <one>");
+	}
+
+	private void parseStoryWithGivenScenarios(String wholeStory) {
+		StoryDefinition story = parser.defineStoryFrom(wholeStory, null);
         
         ScenarioDefinition scenario = story.getScenarios().get(0);
-        ensureThat(scenario.getTitle(), equalTo("A scenario with given scenarios"));            
         ensureThat(scenario.getGivenScenarios(), equalTo(asList(
                 "path/to/one",
                 "path/to/two")));   
         ensureThat(scenario.getSteps(), equalTo(asList(
-                "Given a step with a <one>",
-                "When I run the scenario of name <two>",
-                "Then I should see <three> in the output"
-        )));
-
+                "Given a step with a <one>")));
 	}
 	    
 }
