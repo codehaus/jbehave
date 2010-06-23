@@ -58,7 +58,7 @@ public class SeleniumPerScenarioStepsTest {
 			
 		};
         StoryDefinition definition = parser.defineStoryFrom(input, path);
-        runner.run(definition, configuration, true, steps);
+        runner.run(definition, configuration, false, steps);
 	}
 
 
